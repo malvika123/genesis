@@ -42,7 +42,7 @@ function reset(cfg = {}) {
   initItems();
   for (let i = 0; i < W * H; i++) food[i] *= 1 - 0.35 * tree[i]; // little grass grows in the shade of trees
   const n = clamp(cfg.people ?? 2, 2, 40),
-    nh = clamp(cfg.herbivores ?? 14, 0, 40),
+    nh = clamp(cfg.herbivores ?? 20, 0, 40),
     np = clamp(cfg.predators ?? 6, 0, 12),
     nf = clamp(cfg.fish ?? 24, 0, 60),
     inst = true;
