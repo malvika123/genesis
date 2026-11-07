@@ -157,7 +157,7 @@ function probe(w, k) {
   px.fill(0);
   px[IB + 11] = 1;
   PR[k].set(px);
-  forward(w, px, ph, pz);
+  forward(w, px, ph, pz, hOf(w));
   let s = 0;
   for (const q of PR[k].act) s += pz[q];
   return s;

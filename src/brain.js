@@ -1,14 +1,46 @@
-// Genesis — The neural network: inborn instincts, choosing an action, and actor-critic learning with eligibility traces.
+// Genesis — The neural network: brain regions, a brain that grows and prunes, inborn instincts,
+// choosing an action, and learning (actor-critic with eligibility traces, a dopamine-like signal,
+// mood chemicals that change how fast it learns, and replay in sleep).
 // Copyright (c) 2026 Malvika Sen. MIT License.
 
-// ---------- brain ----------
-function newW(sp, inst) {
-  const w = new Float32Array(NW);
-  for (let i = 0; i < O2; i++) w[i] = gauss() * 0.35;
-  for (let i = O2; i < O3; i++) w[i] = gauss() * 0.3;
-  for (let i = O3; i < OV; i++) w[i] = gauss() * 0.05;
+// ---------- how a brain is laid out ----------
+// One array of connection strengths per brain:
+//   [ direct: senses → choices (NA × NI) ][ senses → thinking units (H × NI) ]
+//   [ thinking units → choices (NA × H) ][ thinking units → its forecast of how things will go (H) ]
+// The first two parts sit at the same place in every brain, so only the last two depend on how many
+// thinking units (H) the kind can grow. H is worked out from the array's length.
+const hOf = (w) => (w.length - OI) / (NI + NA + 1),
+  O2of = (H) => OI + H * NI,
+  OVof = (H) => OI + H * NI + NA * H;
+
+// Brain regions. Real brains are not one uniform network: a fear centre (the amygdala) watches for
+// danger and pain, a memory centre (the hippocampus) holds where things were and what just happened,
+// and the rest is general. Every eighth thinking unit is a fear unit, the next a memory unit, and the
+// rest are general. A region unit is only wired to the senses that region deals with.
+const REGION = ['fear', 'memory'];
+const regionOf = (j) => (j % 8 === 0 ? 0 : j % 8 === 1 ? 1 : 2);
+const FEAR_IN = new Uint8Array(NI),
+  MEM_IN = new Uint8Array(NI);
+for (let s = 0; s < 8; s++) for (const c of [2, 3, 4, 5]) FEAR_IN[s * NCH + c] = 1; // danger and other creatures
+for (const k of [3, 4, 5, 11, 26]) FEAR_IN[IB + k] = 1; // pain, injury, darkness, (always on), anger
+for (const k of [9, 11, 12, 13, 14, 15]) MEM_IN[IB + k] = 1; // loneliness, memories of water and food
+for (let j = 0; j < NM; j++) MEM_IN[IB + 27 + j] = 1; // what it was just thinking
+const wired = (j, i) => {
+  const r = regionOf(j);
+  return r === 2 || (r === 0 ? FEAR_IN[i] : MEM_IN[i]) === 1;
+};
+
+// ---------- a new brain (the inborn part, from the genes) ----------
+function newW(sp, inst, H = SP[sp].hmax) {
+  const w = new Float32Array(OI + H * NI + NA * H + H),
+    O2 = O2of(H),
+    OV = OVof(H);
+  for (let i = 0; i < OI; i++) w[i] = gauss() * 0.05;
+  for (let j = 0; j < H; j++)
+    for (let i = 0; i < NI; i++) w[OI + j * NI + i] = wired(j, i) ? gauss() * 0.35 : 0;
+  for (let i = O2; i < OV; i++) w[i] = gauss() * 0.3;
   if (inst) {
-    const D = (k, i, v) => (w[O3 + k * NI + i] += v),
+    const D = (k, i, v) => (w[k * NI + i] += v),
       B = IB + 11;
     D(A_EAT, HB, 4);
     D(A_EAT, IB, 3);
@@ -76,23 +108,30 @@ function newW(sp, inst) {
   }
   return w;
 }
-function forward(w, x, h, z, nh = NH, rf = null) {
-  for (let j = 0; j < NH; j++) {
+
+// ---------- thinking: from senses to a choice ----------
+// nh: how many thinking units are grown and working (the rest are silent)
+function forward(w, x, h, z, nh, rf = null) {
+  const H = hOf(w),
+    O2 = O2of(H),
+    OV = OVof(H);
+  if (nh === undefined || nh > H) nh = H;
+  for (let j = 0; j < H; j++) {
     if (j >= nh) {
       h[j] = 0;
       continue;
     }
     let s = 0;
-    const o = j * NI;
+    const o = OI + j * NI;
     for (let i = 0; i < NI; i++) s += w[o + i] * x[i];
     h[j] = Math.tanh(s);
   }
   let mx = -1e9;
   for (let k = 0; k < NA; k++) {
     let s = 0,
-      o = O2 + k * NH;
-    for (let j = 0; j < NH; j++) s += w[o + j] * h[j];
-    o = O3 + k * NI;
+      o = O2 + k * H;
+    for (let j = 0; j < nh; j++) s += w[o + j] * h[j];
+    o = k * NI;
     for (let i = 0; i < NI; i++) s += w[o + i] * x[i];
     if (rf) s += rf[k];
     z[k] = s;
@@ -105,13 +144,16 @@ function forward(w, x, h, z, nh = NH, rf = null) {
   }
   for (let k = 0; k < NA; k++) z[k] /= sm;
   let V = 0;
-  for (let j = 0; j < NH; j++) V += w[OV + j] * h[j];
+  for (let j = 0; j < nh; j++) V += w[OV + j] * h[j];
   return V;
 }
 const RF = new Float32Array(NA),
   tg = new Float32Array(NA),
   tdp = new Float32Array(NH),
   tdv = new Float32Array(NH);
+
+// ---------- learning ----------
+// Eligibility traces: which connections were just used, so that what follows can be credited to them.
 function trace(a, act) {
   const gl = GAM * LAM,
     h = a.h,
@@ -119,17 +161,21 @@ function trace(a, act) {
     z = a.z,
     w = a.lw,
     eP = a.eP,
-    eV = a.eV;
+    eV = a.eV,
+    H = h.length,
+    O2 = O2of(H),
+    OV = OVof(H),
+    nh = a.nh;
   for (let k = 0; k < NA; k++) tg[k] = (k === act ? 1 : 0) - z[k];
-  for (let j = 0; j < NH; j++) {
+  for (let j = 0; j < nh; j++) {
     let s = 0;
-    for (let k = 0; k < NA; k++) s += w[O2 + k * NH + j] * tg[k];
+    for (let k = 0; k < NA; k++) s += w[O2 + k * H + j] * tg[k];
     const dd = 1 - h[j] * h[j];
     tdp[j] = s * dd;
     tdv[j] = w[OV + j] * dd;
   }
-  for (let j = 0; j < NH; j++) {
-    const o = j * NI,
+  for (let j = 0; j < nh; j++) {
+    const o = OI + j * NI,
       p = tdp[j],
       v = tdv[j];
     for (let i = 0; i < NI; i++) {
@@ -139,13 +185,84 @@ function trace(a, act) {
   }
   for (let k = 0; k < NA; k++) {
     const g = tg[k];
-    let o = O2 + k * NH;
-    for (let j = 0; j < NH; j++) eP[o + j] = gl * eP[o + j] + g * h[j];
-    o = O3 + k * NI;
+    let o = O2 + k * H;
+    for (let j = 0; j < nh; j++) eP[o + j] = gl * eP[o + j] + g * h[j];
+    o = k * NI;
     for (let i = 0; i < NI; i++) eP[o + i] = gl * eP[o + i] + g * x[i];
   }
-  for (let j = 0; j < NH; j++) eV[OV + j] = gl * eV[OV + j] + h[j];
+  for (let j = 0; j < nh; j++) eV[OV + j] = gl * eV[OV + j] + h[j];
 }
+// fade the traces without adding to them (when the body overrode its choice)
+function fadeTraces(a) {
+  const gl = GAM * LAM,
+    n = a.eP.length;
+  for (let i = 0; i < n; i++) {
+    a.eP[i] *= gl;
+    a.eV[i] *= gl;
+  }
+}
+// The dopamine-like signal d ("better or worse than expected") strengthens or weakens the connections
+// that were just used. rate already includes how plastic the brain is and the mood chemicals.
+function learnStep(a, d, rate) {
+  const w = a.lw,
+    eP = a.eP,
+    eV = a.eV,
+    H = a.h.length,
+    nh = a.nh,
+    O2 = O2of(H),
+    OV = OVof(H),
+    cm = a.cm;
+  let ch = 0;
+  const up = (i) => {
+    const u = rate * (AP * d * eP[i] + AV * d * eV[i]);
+    if (u) {
+      w[i] = clamp(w[i] + u, -6, 6);
+      ch += Math.abs(u);
+    }
+  };
+  for (let i = 0; i < OI; i++) up(i);
+  for (let j = 0; j < nh; j++) {
+    const o = OI + j * NI;
+    for (let i = 0; i < NI; i++) if (cm[j * NI + i]) up(o + i);
+  }
+  for (let k = 0; k < NA; k++) for (let j = 0; j < nh; j++) up(O2 + k * H + j);
+  for (let j = 0; j < nh; j++) up(OV + j);
+  a.learn += ch;
+}
+
+// ---------- a brain that grows, and prunes ----------
+// Like a child's brain, it starts with fewer working thinking units and grows more until it is grown
+// (how many it can grow is inherited). From then until it is fully adult, connections that are weak
+// and that learning never used are pruned away for good — use it or lose it.
+function grownUnits(a) {
+  const H = a.h.length,
+    max = Math.max(a.S.nh, Math.round(H * (a.g.bs ?? 1)));
+  return Math.round(a.S.nh + (max - a.S.nh) * clamp(a.age / a.S.mat, 0, 1));
+}
+function prune(a) {
+  const w = a.lw,
+    g = a.g.w,
+    cm = a.cm;
+  let n = 0;
+  for (let j = 0; j < a.nh; j++)
+    for (let i = 0; i < NI; i++) {
+      const c = j * NI + i,
+        q = OI + c;
+      if (cm[c] && Math.abs(w[q]) < 0.1 && Math.abs(w[q] - g[q]) < 0.02) {
+        cm[c] = 0;
+        w[q] = 0;
+        n++;
+      }
+    }
+  return n;
+}
+// how many connections are working in its brain now
+function connections(a) {
+  let c = OI + NA * a.nh + a.nh;
+  for (let j = 0; j < a.nh; j++) for (let i = 0; i < NI; i++) c += a.cm[j * NI + i];
+  return c;
+}
+
 // Sleep replay. Like the hippocampus replaying the day's experiences during sleep, a creature keeps
 // its most striking recent moments — a big relief or a sharp hurt — and goes over them again while
 // asleep, learning from each one a second time: the choice it made, what followed, and how that
@@ -169,22 +286,27 @@ function replay(a, rate) {
   const m = a.mem[(rnd() * a.mem.length) | 0],
     w = a.lw,
     x = m.x,
-    V = forward(w, x, RH, RZ, a.S.nh),
+    H = a.h.length,
+    O2 = O2of(H),
+    OV = OVof(H),
+    nh = a.nh,
+    V = forward(w, x, RH, RZ, nh),
     d = clamp(m.r + GAM * m.vn - V, -2, 2);
-  for (let j = 0; j < NH; j++) {
+  for (let j = 0; j < nh; j++) {
     let s = 0;
-    for (let k = 0; k < NA; k++) s += w[O2 + k * NH + j] * ((k === m.act ? 1 : 0) - RZ[k]);
+    for (let k = 0; k < NA; k++) s += w[O2 + k * H + j] * ((k === m.act ? 1 : 0) - RZ[k]);
     const dd = 1 - RH[j] * RH[j],
       g = rate * d * (AP * s + AV * w[OV + j]) * dd,
-      o = j * NI;
-    if (g) for (let i = 0; i < NI; i++) if (x[i]) w[o + i] = clamp(w[o + i] + g * x[i], -6, 6);
+      o = OI + j * NI;
+    if (g)
+      for (let i = 0; i < NI; i++) if (x[i] && a.cm[j * NI + i]) w[o + i] = clamp(w[o + i] + g * x[i], -6, 6);
     w[OV + j] = clamp(w[OV + j] + rate * AV * d * RH[j], -6, 6);
   }
   for (let k = 0; k < NA; k++) {
     const g = rate * AP * d * ((k === m.act ? 1 : 0) - RZ[k]);
-    let o = O2 + k * NH;
-    for (let j = 0; j < NH; j++) w[o + j] = clamp(w[o + j] + g * RH[j], -6, 6);
-    o = O3 + k * NI;
+    let o = O2 + k * H;
+    for (let j = 0; j < nh; j++) w[o + j] = clamp(w[o + j] + g * RH[j], -6, 6);
+    o = k * NI;
     for (let i = 0; i < NI; i++) if (x[i]) w[o + i] = clamp(w[o + i] + g * x[i], -6, 6);
   }
   a.learn += Math.abs(d) * rate;
@@ -194,13 +316,15 @@ function imitate(a, act, rate) {
   const x = a.xi,
     h = a.h,
     z = a.z,
-    w = a.lw;
+    w = a.lw,
+    H = h.length,
+    O2 = O2of(H);
   for (let k = 0; k < NA; k++) {
     const g = rate * ((k === act ? 1 : 0) - z[k]);
     if (!g) continue;
-    let o = O2 + k * NH;
-    for (let j = 0; j < NH; j++) w[o + j] += g * h[j];
-    o = O3 + k * NI;
+    let o = O2 + k * H;
+    for (let j = 0; j < a.nh; j++) w[o + j] += g * h[j];
+    o = k * NI;
     for (let i = 0; i < NI; i++) w[o + i] += g * x[i];
   }
   a.learn += rate;

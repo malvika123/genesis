@@ -9,6 +9,7 @@ const gene = (sp, inst) => ({
   c: 0.2 + rnd() * 0.6,
   b: 0.6 + rnd() * 0.8,
   so: 0.5 + rnd(),
+  bs: 0.75 + rnd() * 0.25, // how big a brain it can grow (inherited)
   w: newW(sp, inst),
 });
 function mk(sp, x, y, sex, g, gen, age, k = KDEF[sp]) {
@@ -24,10 +25,16 @@ function mk(sp, x, y, sex, g, gen, age, k = KDEF[sp]) {
     g,
     gen,
     lw: Float32Array.from(g.w),
-    eP: new Float32Array(NW),
-    eV: new Float32Array(NW),
+    eP: new Float32Array(g.w.length),
+    eV: new Float32Array(g.w.length),
     xi: new Float32Array(NI),
-    h: new Float32Array(NH),
+    h: new Float32Array(hOf(g.w)),
+    cm: null, // which senses → thinking-unit connections exist (regions, then pruning)
+    nh: 0, // thinking units grown so far
+    pruned: 0,
+    stress: 0,
+    da: 0, // the last dopamine-like signal: better (+) or worse (−) than expected
+    mod: 1, // how strongly the mood chemicals are turning its learning up or down
     z: new Float32Array(NA),
     e: 80,
     w: 85,
@@ -98,6 +105,11 @@ function mk(sp, x, y, sex, g, gen, age, k = KDEF[sp]) {
     play: 0, // what it is holding: 0 nothing, 1 stone, 2 stick, 3 sharp stone
     nuts: 0,
   };
+  // its brain's wiring: region units only connect to their region's senses
+  const units = a.h.length;
+  a.cm = new Uint8Array(units * NI);
+  for (let j = 0; j < units; j++) for (let i = 0; i < NI; i++) a.cm[j * NI + i] = wired(j, i) ? 1 : 0;
+  a.nh = grownUnits(a);
   a.p0 = PR.map((_, k) => probe(a.lw, k));
   return a;
 }
@@ -106,8 +118,8 @@ function mut(v, lo, hi) {
 }
 // A child gets a random mix of both parents' inborn wiring. Only habits a parent learned strongly (well-worn, repeated) can pass on, each with a 50% chance and only partly.
 function child(p, q) {
-  const w = new Float32Array(NW);
-  for (let i = 0; i < NW; i++) {
+  const w = new Float32Array(p.g.w.length);
+  for (let i = 0; i < w.length; i++) {
     let v = rnd() < 0.5 ? p.g.w[i] : q.g.w[i];
     const P = rnd() < 0.5 ? p : q,
       d = P.lw[i] - P.g.w[i];
@@ -115,6 +127,9 @@ function child(p, q) {
     if (rnd() < 0.03) v += gauss() * 0.4;
     w[i] = clamp(v, -6, 6);
   }
+  // region units stay wired only to their own senses
+  const units = hOf(w);
+  for (let j = 0; j < units; j++) for (let i = 0; i < NI; i++) if (!wired(j, i)) w[OI + j * NI + i] = 0;
   const pk = (k) => (rnd() < 0.5 ? p.g[k] : q.g[k]);
   return {
     s: mut(pk('s'), 0.4, 2),
@@ -123,6 +138,7 @@ function child(p, q) {
     c: mut(pk('c'), 0.05, 1),
     b: mut(pk('b'), 0.3, 1.8),
     so: mut(pk('so'), 0.2, 2),
+    bs: mut(pk('bs') ?? 0.9, 0.5, 1),
     w,
   };
 }

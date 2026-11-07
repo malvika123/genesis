@@ -26,12 +26,10 @@ const NCH = 15, // per direction: water, food, danger, herbivore, person, predat
   IB = NS + 4,
   NM = 8, // short-term memory: this many of the brain's own units are fed back in at the next step
   NI = IB + 27 + NM, // IB + 18 cold; IB + 19 … 24 its hands and feet; IB + 25 heat; IB + 26 anger; then memory
-  NH = 24,
+  NH = 64, // the most thinking units any brain can grow (see each kind's hmax)
   NA = 18,
-  O2 = NH * NI,
-  O3 = O2 + NA * NH,
-  OV = O3 + NA * NI,
-  NW = OV + NH;
+  O3 = 0, // where the direct senses → choices connections start in a brain's array
+  OI = NA * NI; // where the senses → thinking units connections start
 const A_STAY = 8,
   A_EAT = 9,
   A_DRINK = 10,
@@ -53,7 +51,8 @@ const SP = [
     col: 3, // kinds of colour cone: people tell red from green
     cold: 14, // no fur: people feel cold below about 14 °C
     hot: 33, // and overheat above about 33 °C, though sweating lets them bear heat better than most
-    nh: 16,
+    nh: 16, // thinking units working at birth
+    hmax: 64, // and the most it can grow by adulthood
     plast: 1.2,
     adl: 1,
     cur: 1.6,
@@ -84,6 +83,7 @@ const SP = [
     cold: -10, // thick winter coat
     hot: 30,
     nh: 10,
+    hmax: 16,
     plast: 1.2,
     adl: 0.5,
     cur: 0.3,
@@ -114,6 +114,7 @@ const SP = [
     cold: -12, // thick fur
     hot: 28,
     nh: 12,
+    hmax: 20,
     plast: 1.2,
     adl: 0.5,
     cur: 0.5,
@@ -144,6 +145,7 @@ const SP = [
     cold: 0, // fish don't feel cold here
     hot: 99,
     nh: 6,
+    hmax: 8,
     plast: 1,
     adl: 0.5,
     cur: 0.2,

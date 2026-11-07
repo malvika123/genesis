@@ -76,7 +76,9 @@ function sim() {
       a.w = Math.min(100, a.w + 0.2);
       mom.e -= 0.03;
     } else {
-      a.e -= (S.dE / DAY) * a.g.m * (0.8 + 0.2 * a.g.s + 0.04 * a.g.v) * df;
+      // a big brain is costly to run: a grown human brain burns a large share of the body's energy
+      const brain = a.sp === 0 ? 1 + (0.1 * (a.nh - S.nh)) / Math.max(1, S.hmax - S.nh) : 1;
+      a.e -= (S.dE / DAY) * a.g.m * (0.8 + 0.2 * a.g.s + 0.04 * a.g.v) * df * brain;
       a.w -= (S.dW / DAY) * df;
     }
     const fish = a.sp === 3,
@@ -142,6 +144,7 @@ function sim() {
     if (!a.vis[bi]) {
       a.vis[bi] = 1;
       a.vc++;
+      a.novel = tick;
       a.bored = 0;
       if (a.age > 5) {
         a.bonus[6] +=
@@ -221,7 +224,10 @@ function sim() {
     // When too hot, land animals instinctively seek shade and water.
     if (a.sp !== 3 && a.heat > 0.3)
       for (let s = 0; s < 8; s++) RF[s] += (a.heat - 0.3) * 3 * (1.5 * x[s * NCH + 12] + x[s * NCH]);
-    const V = forward(a.lw, x, a.h, a.z, S.nh, RF);
+    // the brain grows through childhood, and prunes unused connections from then until fully adult
+    a.nh = grownUnits(a);
+    if (!a.found && a.age % DAY === a.id % DAY && a.age >= S.mat && a.age < S.mat * 1.6) a.pruned += prune(a);
+    const V = forward(a.lw, x, a.h, a.z, a.nh, RF);
     // the brain's state now becomes its short-term memory for the next step
     for (let j = 0; j < NM; j++) a.hm[j] = a.h[j];
     const pl = young
@@ -232,17 +238,21 @@ function sim() {
     if (a.has && a.sp !== 3 && Math.abs(r) > 0.3) remember(a, lastAct, r, V);
     if (a.asleep && a.mem.length && tick % 2 === 0) replay(a, pl * 0.5);
     else if (!a.asleep) a.dream = null;
+    // stress builds up under fear, pain, hunger and thirst, and fades when things are calm
+    a.stress = a.stress * 0.99 + 0.01 * clamp(a.fear + a.painA + (a.e < 20) + (a.w < 20), 0, 2);
     if (a.has) {
+      // d is the dopamine-like signal: how much better (or worse) things went than it expected
       const d = clamp(r + GAM * V - a.Vp, -2, 2);
-      let ch = 0;
-      for (let i = 0; i < NW; i++) {
-        const u = pl * (AP * d * a.eP[i] + AV * d * a.eV[i]);
-        if (u) {
-          a.lw[i] = clamp(a.lw[i] + u, -6, 6);
-          ch += Math.abs(u);
-        }
-      }
-      a.learn += ch;
+      // Mood chemicals change how much it learns from this moment: fear makes a bad experience stick
+      // (noradrenaline), something new makes it learn faster (a dopamine burst for novelty), and
+      // long, heavy stress makes learning worse (cortisol).
+      let mod = 1;
+      if (d < 0) mod *= 1 + a.fear;
+      if (tick - (a.novel ?? -9) < 2) mod *= 1.5;
+      if (a.stress > 0.5) mod *= 0.6;
+      a.da = d;
+      a.mod = mod;
+      learnStep(a, d, pl * mod);
       a.fear = clamp(a.fear * 0.9 + 0.4 * Math.max(0, -d), 0, 1);
       for (let k = 0; k < 9; k++) a.cz[k] = a.cz[k] * 0.995 + Math.abs(a.rk[k]) * Math.abs(d);
     }
@@ -255,13 +265,7 @@ function sim() {
     if (a.whO === 'berries' && x[IB + 16] && hu > 0.4 && act !== A_EAT)
       followed(a, 'berries', 'walked past the red berries, hungry as it was');
     if (act === chosen) trace(a, act);
-    else {
-      const gl = GAM * LAM;
-      for (let i = 0; i < NW; i++) {
-        a.eP[i] *= gl;
-        a.eV[i] *= gl;
-      }
-    }
+    else fadeTraces(a);
     a.Vp = V;
     a.has = true;
     a.act = act;

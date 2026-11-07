@@ -253,6 +253,22 @@ function thinkHTML(a, S) {
         .slice(0, 2)
         .map((q) => ING[q[0]] || q[0].replace(/^go /, 'heading '))
         .join(' or ');
+  // the dopamine-like signal and the mood chemicals, straight from its learning
+  if (a.da > 0.3) o += '<br>Dopamine: a burst — that went better than it expected';
+  else if (a.da < -0.3) o += '<br>Dopamine: a dip — that went worse than it expected';
+  if (a.mod > 1.05 || a.mod < 0.95)
+    o +=
+      '<br>Learning ' +
+      (a.mod > 1 ? 'faster now' : 'slower now') +
+      ' (' +
+      [
+        a.da < 0 && a.fear > 0.1 ? 'fear makes the bad moment stick' : '',
+        tick - (a.novel ?? -9) < 2 ? 'something new' : '',
+        a.stress > 0.5 ? 'worn down by long stress' : '',
+      ]
+        .filter(Boolean)
+        .join(', ') +
+      ')';
   const ex = a.mind ? a.mind.V : 0;
   o += '<br>Expects things to ' + (ex > 0.3 ? 'get better' : ex < -0.3 ? 'get worse' : 'stay about the same');
   const mem = [
@@ -292,6 +308,26 @@ function doingHTML(a, S, stage, night) {
   if (a.sp === 0) o += '<br>In its hand: ' + HAND[a.hand] + (a.nuts ? ' · nuts cracked: ' + a.nuts : '');
   o += '<br>Nearby: ' + (around.length ? around.join(', ') : 'no one in sight');
   o += '<br>' + seesText(a);
+  {
+    const H = a.h.length,
+      grown = a.nh,
+      max = Math.max(a.S.nh, Math.round(H * (a.g.bs ?? 1))),
+      fear = [...Array(grown).keys()].filter((j) => regionOf(j) === 0).length,
+      memo = [...Array(grown).keys()].filter((j) => regionOf(j) === 1).length;
+    o +=
+      '<br>Brain: ' +
+      grown +
+      ' thinking units' +
+      (grown < max ? ' (still growing, up to ' + max + ')' : '') +
+      ' — ' +
+      fear +
+      ' in its fear centre, ' +
+      memo +
+      ' in its memory centre, the rest general; ' +
+      connections(a).toLocaleString() +
+      ' connections' +
+      (a.pruned ? ', ' + a.pruned.toLocaleString() + ' unused ones pruned' : '');
+  }
   const fam = [];
   if (a.mom && !a.mom.dead && !a.mom.gone) fam.push('mother ' + (a.mom.name || ''));
   if (a.mate && !a.mate.dead && !a.mate.gone) fam.push('partner ' + (a.mate.name || ''));

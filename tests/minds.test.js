@@ -54,3 +54,48 @@ test('replaying a rewarding moment in sleep makes that choice more likely in tha
   );
   assert.ok(a.dream, 'it was dreaming of that moment');
 });
+
+test('a baby is born with a small brain that grows until adulthood', () => {
+  const E = createEngine();
+  E.setSeed(3);
+  E.reset({});
+  const p = E.state().ag.find((o) => o.sp === 0);
+  const baby = E.mk(0, p.x, p.y, 1, E.child(p, p), 1, 0, p.k);
+  assert.equal(E.grownUnits(baby), baby.S.nh, 'a newborn has only its birth units working');
+  baby.age = baby.S.mat;
+  assert.ok(E.grownUnits(baby) > baby.S.nh * 2, 'grown, it has far more');
+  assert.ok(E.grownUnits(baby) <= baby.h.length);
+});
+
+test('fear and memory units are wired only to their own senses', () => {
+  const E = createEngine();
+  E.setSeed(3);
+  E.reset({});
+  const a = E.state().ag.find((o) => o.sp === 0);
+  const fearUnit = 0,
+    foodEast = 0 * E.NCH + 1,
+    predatorEast = 0 * E.NCH + 5;
+  assert.equal(E.regionOf(fearUnit), 0);
+  assert.equal(a.cm[fearUnit * E.NI + foodEast], 0, 'the fear centre does not see food');
+  assert.equal(a.cm[fearUnit * E.NI + predatorEast], 1, 'it does see predators');
+  assert.equal(a.g.w[E.OI + fearUnit * E.NI + foodEast], 0);
+});
+
+test('pruning removes weak connections that learning never used, and keeps used ones', () => {
+  const E = createEngine();
+  E.setSeed(3);
+  E.reset({});
+  const a = E.state().ag.find((o) => o.sp === 0);
+  a.nh = 20;
+  const before = E.connections(a);
+  // one weak connection that learning strengthened must survive
+  const j = 2,
+    i = 5,
+    q = E.OI + j * E.NI + i;
+  a.g.w[q] = 0.01;
+  a.lw[q] = 0.09;
+  const n = E.prune(a);
+  assert.ok(n > 0, 'some unused connections were pruned');
+  assert.equal(E.connections(a), before - n);
+  assert.equal(a.cm[j * E.NI + i], 1, 'the used one is kept');
+});

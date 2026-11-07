@@ -78,7 +78,9 @@ function featName(i) {
 }
 const CC = new Float32Array(NA * NI);
 function mind(a, act, chosen, rf) {
-  const w = a.lw,
+  const H = a.h.length,
+    O2 = O2of(H),
+    w = a.lw,
     x = a.xi,
     h = a.h,
     z = a.z;
@@ -88,11 +90,11 @@ function mind(a, act, chosen, rf) {
         CC[k * NI + i] = 0;
         continue;
       }
-      let g = w[O3 + k * NI + i];
-      for (let j = 0; j < NH; j++) {
+      let g = w[k * NI + i];
+      for (let j = 0; j < a.nh; j++) {
         const hj = h[j];
         if (!hj) continue;
-        g += w[O2 + k * NH + j] * (1 - hj * hj) * w[j * NI + i];
+        g += w[O2 + k * H + j] * (1 - hj * hj) * w[OI + j * NI + i];
       }
       CC[k * NI + i] = g * x[i];
     }
