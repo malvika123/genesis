@@ -17,49 +17,88 @@ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:en
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,sans-serif;line-height:1.5}
-main{max-width:980px;margin:0 auto;padding:20px 16px 40px}
-h1{font-size:2rem;font-weight:800;margin:0 0 4px;letter-spacing:-.02em}
-p.sub{margin:0 0 6px;color:var(--mute);max-width:72ch}
+html,body{height:100%}
+body{display:flex;flex-direction:column;height:100dvh;overflow:hidden}
+header{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;padding:8px 12px;border-bottom:1px solid var(--line);background:var(--panel)}
+header h1{font-size:1.15rem;font-weight:800;margin:0;letter-spacing:-.02em}
+nav{display:flex;gap:4px;flex-wrap:wrap}
+nav button{border:0;background:transparent;color:var(--mute);padding:6px 12px;border-radius:8px}
+nav button[aria-selected=true]{background:var(--acc);color:var(--bg)}
+.ctl{display:flex;gap:10px;align-items:center;margin-left:auto}
+.view{flex:1;min-height:0}
+.view[hidden]{display:none}
+.page{overflow-y:auto;padding:16px 16px 40px}
+.page>div{max-width:900px;margin:0 auto}
+#v-world{position:relative;display:flex;flex-direction:column}
+#v-world[hidden]{display:none}
+#stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:8px}
+#hud{position:absolute;left:16px;top:14px;display:flex;gap:6px;flex-wrap:wrap;pointer-events:none}
+#hud span{background:color-mix(in srgb,var(--panel) 88%,transparent);border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:.8rem;font-weight:600}
+#chip{position:absolute;left:16px;bottom:14px;display:flex;gap:8px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:4px 6px 4px 14px;font-size:.9rem}
+#chip[hidden]{display:none}
+p.sub{margin:0 0 10px;color:var(--mute);max-width:72ch}
 .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0}
 button,select,input{font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 12px}
 button{cursor:pointer;font-weight:600}button.go{background:var(--acc);color:var(--bg);border-color:var(--acc)}
 input[type=number]{width:70px}input[type=checkbox]{padding:0;width:auto}label{color:var(--mute);font-size:.9rem}
 :focus-visible{outline:2px solid var(--acc);outline-offset:2px}
-.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
 canvas{display:block}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:14px 0}
+#cv{border:1px solid var(--line);border-radius:10px;cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:0 0 14px}
 .stat,.box{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
 .stat b{display:block;font-size:1.3rem;font-weight:800}.stat span{color:var(--mute);font-size:.85rem}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:700px){.two{grid-template-columns:1fr}}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:700px){.two{grid-template-columns:1fr}.ctl{margin-left:0}}
 .box h2{font-size:1rem;margin:0 0 6px}
 #log{font-size:.85rem;color:var(--mute);min-height:7.5em;margin:0;padding-left:1.1em}
 #log li{margin-bottom:4px}
 </style>
 </head>
 <body>
-<main>
-<h1>Genesis v0.6</h1>
-<p class="sub">Every creature is a reinforcement-learning agent with its own personality. Its eyes report what lies in eight directions, its body reports hunger, thirst, tiredness and pain, and a neural network chooses what to do: walk, stay, eat, drink, sleep, mate, attack, or share food. Survival is wired in like a brainstem: when starving it reaches for food in front of it, when parched it drinks. Everything else is learned from what its body feels. It can only fall asleep when tired, then sleeps until rested or woken by pain. Children can’t mate: people reach that at 16 (hunter-gatherers have their first child around 19 to 20), predators at 4, herbivores at 1.5. A child gets a random mix of its parents’ wiring, and only habits a parent learned strongly can pass on, and only partly.</p>
-<p class="sub">Human minds differ from the animals in the ways research points to: a bigger brain, a long childhood and a learning window that stays open well into adulthood (animals stop learning as much once grown), a strong curiosity that rewards finding new places, imitation of elders, and a long memory of where food and water were. Fish live in the ponds and eat algae. People can learn to catch them, and predators hunt anything, including each other when starving.</p>
-<p class="sub">Pink is female, blue is male, yellow-green ovals are herbivores, red diamonds are predators, white fish swim in the water, faded means asleep. Rivers and ponds have shallow edges for drinking and a darker deep middle that can drown you. Black holes are pits that trap and hurt. Red dots on grass are poisonous berries. One cell is about 3 km, one step is 15 minutes, and a year is squeezed into 3 days. Click a creature to see its thoughts.</p>
-<div class="bar">
+<header>
+<h1>Genesis</h1>
+<nav role="tablist">
+<button role="tab" data-tab="world" aria-selected="true">World</button>
+<button role="tab" data-tab="mind" aria-selected="false">Mind &amp; whisper</button>
+<button role="tab" data-tab="stats" aria-selected="false">Stats &amp; events</button>
+<button role="tab" data-tab="setup" aria-selected="false">New world</button>
+<button role="tab" data-tab="about" aria-selected="false">About</button>
+</nav>
+<div class="ctl">
 <button class="go" id="play">Pause</button>
 <label>Speed <select id="spd"><option value="0.06">Very slow</option><option value="0.15" selected>Slow</option><option value="0.5">Medium</option><option value="1">1×</option><option value="3">3×</option><option value="10">10×</option><option value="30">30×</option></select></label>
-<label>Humans <input id="fnd" type="number" min="2" max="40" value="2"></label>
-<label>Herbivores <input id="hrb" type="number" min="0" max="40" value="14"></label>
-<label>Predators <input id="prd" type="number" min="0" max="8" value="3"></label>
-<label>Fish <input id="fsh" type="number" min="0" max="60" value="24"></label>
-<button id="reset">Restart world</button>
 </div>
+</header>
+<section class="view" id="v-world">
+<div id="stage"><canvas id="cv" width="704" height="440"></canvas></div>
+<div id="hud"></div>
+<div id="chip" hidden><span id="chiptxt"></span><button id="chipgo" class="go">Open mind</button></div>
+</section>
+<section class="view page" id="v-mind" hidden><div>
 <div class="box" style="margin-bottom:12px"><h2>Inspect</h2><div id="ibody">Click a creature on the map to see its body, feelings, lessons and what it is doing.</div></div>
 <div class="box" style="margin-bottom:12px"><h2>Whisper an idea</h2><p class="sub" style="margin:0 0 8px">Click a creature and type anything. It reaches them in their sleep or a quiet moment, as their own thought. Your words are read for the ideas in them (water, food, fish, berries, hunters, pits, sharing, others, sleep, a partner, exploring, a direction) and whether you say do or don’t. Each becomes a small nudge in their brain, never a command. Words that mean nothing in their world stay a vague feeling.</p><div class="bar" style="margin:0"><input id="wtxt" list="wlist" disabled placeholder="Click a creature first" style="flex:1;min-width:220px"><datalist id="wlist"><option value="There is water to the north"><option value="You could catch the fish in the river"><option value="Never eat the red berries"><option value="Stay away from the hunters"><option value="Feed your little ones when they are hungry"><option value="Find the others, you are not alone"><option value="Explore, there is more out there"></datalist><button id="wgo" disabled>Whisper</button><span id="wmsg" style="color:var(--mute);font-size:.9rem"></span></div></div>
-<div class="scroll"><canvas id="cv" width="704" height="440"></canvas></div>
+</div></section>
+<section class="view page" id="v-stats" hidden><div>
 <div class="grid" id="stats"></div>
 <div class="two">
 <div class="box"><h2>Population over time (people, herbivores, predators, fish)</h2><canvas id="ch" width="440" height="120" style="width:100%;height:auto"></canvas></div>
 <div class="box"><h2>Recent events and lessons</h2><ul id="log"></ul></div>
 </div>
-</main>
+</div></section>
+<section class="view page" id="v-setup" hidden><div>
+<p class="sub">Choose how many of each to start with, then begin a fresh world.</p>
+<div class="bar">
+<label>Humans <input id="fnd" type="number" min="2" max="40" value="2"></label>
+<label>Herbivores <input id="hrb" type="number" min="0" max="40" value="14"></label>
+<label>Predators <input id="prd" type="number" min="0" max="8" value="3"></label>
+<label>Fish <input id="fsh" type="number" min="0" max="60" value="24"></label>
+<button class="go" id="reset">Restart world</button>
+</div>
+</div></section>
+<section class="view page" id="v-about" hidden><div>
+<p class="sub">Every creature is a reinforcement-learning agent with its own personality. Its eyes report what lies in eight directions, its body reports hunger, thirst, tiredness and pain, and a neural network chooses what to do: walk, stay, eat, drink, sleep, mate, attack, or share food. Survival is wired in like a brainstem: when starving it reaches for food in front of it, when parched it drinks. Everything else is learned from what its body feels. It can only fall asleep when tired, then sleeps until rested or woken by pain. Children can’t mate: people reach that at 16 (hunter-gatherers have their first child around 19 to 20), predators at 4, herbivores at 1.5. A child gets a random mix of its parents’ wiring, and only habits a parent learned strongly can pass on, and only partly.</p>
+<p class="sub">Human minds differ from the animals in the ways research points to: a bigger brain, a long childhood and a learning window that stays open well into adulthood (animals stop learning as much once grown), a strong curiosity that rewards finding new places, imitation of elders, and a long memory of where food and water were. Fish live in the ponds and eat algae. People can learn to catch them, and predators hunt anything, including each other when starving.</p>
+<p class="sub">Pink is female, blue is male, yellow-green ovals are herbivores, red diamonds are predators, white fish swim in the water, faded means asleep. Rivers and ponds have shallow edges for drinking and a darker deep middle that can drown you. Black holes are pits that trap and hurt. Red dots on grass are poisonous berries. One cell is about 3 km, one step is 15 minutes, and a year is squeezed into 3 days. Click a creature to see its thoughts.</p>
+</div></section>
 <script src="src/config.js"></script>
 <script src="src/state.js"></script>
 <script src="src/brain.js"></script>

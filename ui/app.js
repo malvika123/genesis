@@ -41,6 +41,7 @@ function mindHTML(a, m) {
   return o;
 }
 function draw() {
+  cx.setTransform(cv.width / (W * C), 0, 0, cv.height / (H * C), 0, 0);
   const s = getComputedStyle(document.documentElement),
     v = (n) => s.getPropertyValue(n).trim();
   cx.fillStyle = v('--dirt');
@@ -253,6 +254,15 @@ function draw() {
   $('stats').innerHTML = st
     .map((x) => '<div class="stat"><b>' + x[0] + '</b><span>' + x[1] + '</span></div>')
     .join('');
+  $('hud').innerHTML = [
+    c[0] + ' people',
+    c[1] + ' herbivores',
+    c[2] + ' predators',
+    c[3] + ' fish',
+    'Year ' + Math.floor(tick / TY) + ', day ' + dayN() + (night ? ' (night)' : ''),
+  ]
+    .map((t) => '<span>' + t + '</span>')
+    .join('');
   cc.clearRect(0, 0, 440, 120);
   const mx = Math.max(20, ...hist.flat());
   [
@@ -287,6 +297,7 @@ function loop() {
     if (acc > 10) acc = 0;
   }
   draw();
+  updateChip();
   requestAnimationFrame(loop);
 }
 $('play').onclick = () => {
@@ -311,6 +322,7 @@ $('reset').onclick = () => {
   fillIdeas();
   running = true;
   $('play').textContent = 'Pause';
+  showTab('world');
 };
 function fillIdeas() {
   const T = $('wtxt'),
@@ -343,7 +355,7 @@ $('wtxt').onkeydown = (e) => {
 };
 cv.onclick = (e) => {
   const r = cv.getBoundingClientRect(),
-    k = cv.width / r.width,
+    k = (W * C) / r.width,
     qx = ((e.clientX - r.left) * k) / C,
     qy = ((e.clientY - r.top) * k) / C;
   let b = null,
@@ -358,6 +370,46 @@ cv.onclick = (e) => {
   sel = b;
   fillIdeas();
 };
+// ---------- full-screen world, tabs ----------
+function fit() {
+  const r = $('stage').getBoundingClientRect(),
+    pad = 16,
+    asp = W / H;
+  let w = r.width - pad,
+    h = w / asp;
+  if (h > r.height - pad) {
+    h = r.height - pad;
+    w = h * asp;
+  }
+  if (w < 50) return;
+  const d = window.devicePixelRatio || 1;
+  cv.style.width = w + 'px';
+  cv.style.height = h + 'px';
+  cv.width = Math.round(w * d);
+  cv.height = Math.round(h * d);
+}
+function showTab(name) {
+  document
+    .querySelectorAll('nav button')
+    .forEach((b) => b.setAttribute('aria-selected', b.dataset.tab === name));
+  document.querySelectorAll('.view').forEach((v) => (v.hidden = v.id !== 'v-' + name));
+  if (name === 'world') fit();
+}
+document.querySelectorAll('nav button').forEach((b) => (b.onclick = () => showTab(b.dataset.tab)));
+function updateChip() {
+  const chip = $('chip');
+  if (!sel || sel.gone) {
+    chip.hidden = true;
+    return;
+  }
+  const t = (sel.name || 'A ' + SP[sel.sp].n.toLowerCase()) + ' is selected';
+  if ($('chiptxt').textContent !== t) $('chiptxt').textContent = t;
+  chip.hidden = false;
+}
+$('chipgo').onclick = () => showTab('mind');
+new ResizeObserver(fit).observe($('stage'));
+window.addEventListener('resize', fit);
 reset(readCfg());
 fillIdeas();
+fit();
 loop();
