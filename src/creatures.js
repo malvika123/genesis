@@ -11,10 +11,12 @@ const gene = (sp, inst) => ({
   so: 0.5 + rnd(),
   w: newW(sp, inst),
 });
-function mk(sp, x, y, sex, g, gen, age) {
+function mk(sp, x, y, sex, g, gen, age, k = KDEF[sp]) {
   const a = {
     id: NID++,
     sp,
+    k, // which kind of animal (see KINDS)
+    S: KBIO[k], // its biology
     x,
     y,
     sex,
@@ -61,7 +63,7 @@ function mk(sp, x, y, sex, g, gen, age) {
     gone: false,
     found: false,
     learn: 0,
-    lf: Math.max(SP[sp].mat * 2, SP[sp].life * clamp(0.72 + gauss() * 0.2, 0.45, 1)),
+    lf: Math.max(KBIO[k].mat * 2, KBIO[k].life * clamp(0.72 + gauss() * 0.2, 0.45, 1)),
     vis: new Uint8Array((W >> 2) * (H >> 2)),
     mw: null,
     mf: null,
@@ -114,10 +116,26 @@ function child(p, q) {
 }
 // Where the first creatures are born. Fish anywhere in the water. People start together in one warm,
 // low-lying region near fresh water (as early humans did) but not side by side, so they still have to
-// find each other. Predators start as a small pack. Herbivores start in a few herds on grassy land
-// that isn't too cold, so they can find mates in a big world.
+// find each other. Each kind of animal starts where it would live — bison on open grassland, deer at
+// the woodland edge, big cats in warm lands, bears in cool forests — in herds, a pack, or pairs.
 function spawn(sp, n, inst) {
-  const land = (i) => !water[i] && !rock[i] && !pit[i] && alt[i] < 1.5;
+  const kinds = KINDS.map((k, i) => i).filter((i) => KINDS[i].sp === sp);
+  // share the starting number between the kinds, at least one pair of each when there are enough
+  const counts = kinds.map((k) => Math.round(n * KINDS[k].share));
+  if (n >= 2 * kinds.length) counts.forEach((c, j) => (counts[j] = Math.max(2, c)));
+  // then trim from (or add to) the most numerous kind until the total is right
+  let extra = counts.reduce((t, c) => t + c, 0) - n;
+  while (extra > 0) {
+    const j = counts.indexOf(Math.max(...counts));
+    counts[j]--;
+    extra--;
+  }
+  for (let j = 0; extra < 0; j = (j + 1) % counts.length) (counts[j]++, extra++);
+  kinds.forEach((k, j) => spawnKind(sp, k, counts[j], inst));
+}
+function spawnKind(sp, k, n, inst) {
+  const K = KINDS[k],
+    land = (i) => !water[i] && !rock[i] && !pit[i] && alt[i] < 1.5;
   const freshNear = (x, y) => {
     for (let dy = -4; dy <= 4; dy++)
       for (let dx = -4; dx <= 4; dx++) {
@@ -127,29 +145,39 @@ function spawn(sp, n, inst) {
       }
     return false;
   };
+  const suits = (i, x, y, t) => {
+    if (!land(i) || alt[i] > 0.8) return false;
+    if (sp === 0) return Math.abs(lat(y)) <= 0.45 && (t > 3000 || freshNear(x, y));
+    const h = K.hab;
+    if (!h) return true;
+    const T = meanTemp(i),
+      loose = t > 2500 ? 6 : 0;
+    return (
+      T >= h.t[0] - loose &&
+      T <= h.t[1] + loose &&
+      tree[i] >= h.tree[0] - loose / 20 &&
+      tree[i] <= h.tree[1] + loose / 20 &&
+      (sp !== 1 || t > 3000 || freshNear(x, y))
+    );
+  };
   let cx = -1,
     cy = -1;
   const centre = () => {
     cx = cy = -1;
-    for (let t = 0; t < 4000; t++) {
+    for (let t = 0; t < 5000; t++) {
       const x = (rnd() * W) | 0,
-        y = (rnd() * H) | 0,
-        i = idx(x, y);
-      if (!land(i) || alt[i] > 0.8) continue;
-      if (sp === 0 && (Math.abs(lat(y)) > 0.45 || (t < 3000 && !freshNear(x, y)))) continue;
-      if (
-        sp === 1 &&
-        (Math.abs(lat(y)) > 0.6 || ter[i] !== 0 || tree[i] > 0.25 || (t < 3000 && !freshNear(x, y)))
-      )
-        continue;
+        y = (rnd() * H) | 0;
+      if (!suits(idx(x, y), x, y, t)) continue;
       cx = x;
       cy = y;
       break;
     }
   };
+  // herds of about five, a single pack of wolves, pairs of solitary hunters, one group of people
+  const group = sp === 1 ? 5 : sp === 2 ? (K.pack ? 99 : 2) : 99;
   if (sp !== 3) centre();
-  for (let k = 0; k < n; k++) {
-    if (sp === 1 && k > 0 && k % 5 === 0) centre(); // a new herd every five
+  for (let j = 0; j < n; j++) {
+    if (sp !== 3 && j > 0 && j % group === 0) centre();
     let x,
       y,
       t = 0;
@@ -157,13 +185,13 @@ function spawn(sp, n, inst) {
       x = (rnd() * W) | 0;
       y = (rnd() * H) | 0;
       if (cx >= 0 && t < 3000) {
-        const r = sp === 0 ? 14 : sp === 1 ? 4 : 5;
+        const r = sp === 0 ? 14 : sp === 1 ? 4 : K.pack ? 5 : 8;
         x = wx(cx + Math.round((rnd() * 2 - 1) * r));
         y = clamp(cy + Math.round((rnd() * 2 - 1) * r), 0, H - 1);
       }
       t++;
     } while (t < 6000 && (sp === 3 ? !water[idx(x, y)] : !land(idx(x, y))));
-    const c = mk(sp, x, y, k % 2, gene(sp, inst), 0, (rnd() * SP[sp].mat * 0.1) | 0);
+    const c = mk(sp, x, y, j % 2, gene(sp, inst), 0, (rnd() * KBIO[k].mat * 0.1) | 0, k);
     c.found = true;
     ag.push(c);
   }

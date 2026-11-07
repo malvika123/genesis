@@ -202,5 +202,5 @@ function nameIt() {
   return n[0].toUpperCase() + n.slice(1);
 }
 function who(a) {
-  return a.sp === 0 ? a.name : 'A ' + SP[a.sp].n.toLowerCase();
+  return a.sp === 0 ? a.name : 'A ' + a.S.n.toLowerCase();
 }

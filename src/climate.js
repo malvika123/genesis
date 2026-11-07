@@ -44,7 +44,7 @@ function coldOf(a, night) {
   const i = idx(a.x, a.y),
     shelter = typeof tree !== 'undefined' && tree ? cover(i) : 0,
     wet = typeof RAIN !== 'undefined' && RAIN && RAIN[i] > 0.002 && shelter < 0.4 ? 5 : 0;
-  return clamp((SP[a.sp].cold - cellTemp(i, night) + wet) / 20, 0, 1) * (1 - 0.35 * shelter);
+  return clamp((a.S.cold - cellTemp(i, night) + wet) / 20, 0, 1) * (1 - 0.35 * shelter);
 }
 function seasonName(y) {
   const h = lat(y) < 0 ? 1 : -1,

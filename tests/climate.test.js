@@ -46,7 +46,10 @@ test('the equator is warm, the poles are cold, and the hemispheres have opposite
   const { tempAt, H, TY } = E;
   E.setTick(TY / 4); // northern midsummer
   assert.ok(tempAt(H / 2, false) > 22, 'the equator should be warm');
-  assert.ok(tempAt(0, false) > tempAt(H - 1, false) + 15, 'in northern summer the north should be much warmer than the south');
+  assert.ok(
+    tempAt(0, false) > tempAt(H - 1, false) + 15,
+    'in northern summer the north should be much warmer than the south'
+  );
   E.setTick((3 * TY) / 4); // northern midwinter
   assert.ok(tempAt(0, false) < -10, 'the north pole should freeze in its winter');
   assert.ok(tempAt(H - 1, false) > tempAt(0, false) + 15, 'and the south should then be in summer');
@@ -105,7 +108,11 @@ test('day and night are local: it is night on one side of the planet and day on 
   const { W, DAY } = E;
   for (const t of [0, DAY / 8, DAY / 3, DAY / 2]) {
     E.setTick(t);
-    assert.notEqual(E.isNightAt(0), E.isNightAt(W / 2), 'opposite sides of the world should have opposite times of day');
+    assert.notEqual(
+      E.isNightAt(0),
+      E.isNightAt(W / 2),
+      'opposite sides of the world should have opposite times of day'
+    );
   }
   let nights = 0;
   for (let x = 0; x < W; x++) if (E.isNightAt(x)) nights++;

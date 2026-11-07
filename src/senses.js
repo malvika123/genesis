@@ -6,20 +6,20 @@ const kinYoung = (a, o) =>
   o !== a &&
   !o.dead &&
   o.sp === a.sp &&
-  o.age < SP[o.sp].mat &&
+  o.age < o.S.mat &&
   (o.mom === a || a.kid === o || (o.mom && o.mom.mate === a));
 const edible = (a, o) =>
   o !== a &&
   !o.dead &&
-  !(o.found && o.age < SP[o.sp].mat) &&
+  !(o.found && o.age < o.S.mat) &&
   (a.sp === 2
-    ? o.sp !== 2 || (a.e < 15 && o !== a.mom && o !== a.kid && o.mom !== a)
+    ? o.sp !== 2 || (o.k === a.k && a.e < 15 && o !== a.mom && o !== a.kid && o.mom !== a)
     : a.sp === 0 && o.sp === 3);
 function sense(a, x, night) {
   x.fill(0);
   const tw = 1 - a.w / 100,
     te = 1 - a.e / 100;
-  const S = SP[a.sp],
+  const S = a.S,
     // in thick forest you can't see far
     r = Math.max(1.5, a.g.v * (night ? S.nv : 1) * (a.asleep ? 0.3 : 1) * (1 - 0.35 * cover(idx(a.x, a.y))));
   for (const [dx, dy, d, s] of OFF) {
@@ -64,7 +64,7 @@ function sense(a, x, night) {
       // people also see fruit on the trees as food
       // and herbivores can browse the trees
       const f =
-        (a.sp === 0
+        (a.sp === 0 || a.S.omni
           ? Math.max(food[i], fruit[i] * 1.4)
           : a.sp === 1
             ? Math.max(food[i], tree[i] * 0.3)
@@ -84,14 +84,14 @@ function sense(a, x, night) {
           c = o.sp === 3 ? 8 : o.sp === 1 ? 3 : o.sp === 0 ? 4 : 5,
           q = ((a.sp === 2 && c !== 5) || (a.sp === 0 && c === 8) ? cl * (0.15 + te) : cl) * hid;
         if (x[b + c] < q) x[b + c] = q;
-        if (o.sp === a.sp && o.sex !== a.sex && o.rd && a.rd && x[b + 6] < cl) x[b + 6] = cl;
+        if (o.k === a.k && o.sex !== a.sex && o.rd && a.rd && x[b + 6] < cl) x[b + 6] = cl;
         if ((o === a.kid || o === a.mom || o.mom === a) && x[b + 7] < cl) x[b + 7] = cl;
       }
   }
   if (a.rd) {
     const hr = r * 6;
     for (const o of ag) {
-      if (o === a || o.dead || o.sp !== a.sp || o.sex === a.sex || !o.rd) continue;
+      if (o === a || o.dead || o.k !== a.k || o.sex === a.sex || !o.rd) continue;
       const dx = dxw(o.x - a.x),
         dy = o.y - a.y,
         d = Math.hypot(dx, dy);
@@ -142,8 +142,8 @@ function sense(a, x, night) {
   }
   const here = idx(a.x, a.y);
   x[HB] =
-    (a.sp < 2 && !water[here]) || (a.sp === 3 && water[here])
-      ? a.sp === 0
+    ((a.sp < 2 || a.S.omni) && !water[here]) || (a.sp === 3 && water[here])
+      ? a.sp === 0 || a.S.omni
         ? Math.max(food[here], fruit[here])
         : a.sp === 1
           ? Math.max(food[here], tree[here] > 0.3 ? 0.2 : 0)

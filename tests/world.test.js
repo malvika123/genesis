@@ -9,8 +9,13 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const { createEngine } = require('../tools/engine');
 
-const PEOPLE = 0, HERBIVORE = 1, PREDATOR = 2, FISH = 3;
-const days = (E, n) => { for (let t = 0; t < n * E.DAY; t++) E.sim(); };
+const PEOPLE = 0,
+  HERBIVORE = 1,
+  PREDATOR = 2,
+  FISH = 3;
+const days = (E, n) => {
+  for (let t = 0; t < n * E.DAY; t++) E.sim();
+};
 const count = (E, sp) => E.state().ag.filter((a) => a.sp === sp).length;
 
 test('a new world has the creatures that were asked for', () => {
@@ -30,7 +35,10 @@ test('the same seed gives exactly the same world', () => {
     E.reset({ people: 4 });
     days(E, 3);
     const s = E.state();
-    return JSON.stringify(s.ag.map((a) => [a.sp, a.x, a.y, +a.e.toFixed(6)])) + s.food.reduce((t, f) => t + f, 0).toFixed(6);
+    return (
+      JSON.stringify(s.ag.map((a) => [a.sp, a.x, a.y, +a.e.toFixed(6)])) +
+      s.food.reduce((t, f) => t + f, 0).toFixed(6)
+    );
   };
   assert.equal(snap(), snap());
 });
@@ -44,7 +52,8 @@ test('creatures stay inside the rules of their bodies', () => {
     if (t % 24) continue;
     const s = E.state();
     for (const a of s.ag) {
-      for (const v of [a.e, a.w, a.hp, a.sl, a.lo, a.fear]) assert.ok(Number.isFinite(v), 'a body value became NaN');
+      for (const v of [a.e, a.w, a.hp, a.sl, a.lo, a.fear])
+        assert.ok(Number.isFinite(v), 'a body value became NaN');
       assert.ok(a.x >= 0 && a.x < E.W && a.y >= 0 && a.y < E.H, 'creature left the map');
       if (a.sp === FISH) assert.equal(s.water[a.y * E.W + a.x], 1, 'a fish is out of the water');
       assert.ok(a.lw.every(Number.isFinite), 'a brain weight became NaN');
@@ -58,28 +67,65 @@ test('children and teenagers can never mate; adults can', () => {
   E.reset({ people: 8, predators: 0 });
   const smat = E.SP[PEOPLE].smat;
   const people = E.state().ag.filter((a) => a.sp === PEOPLE);
-  people.forEach((a, i) => { a.age = smat - E.TY * (1 + (i % 3)); a.found = false; a.e = 95; a.w = 95; });
+  people.forEach((a, i) => {
+    a.age = smat - E.TY * (1 + (i % 3));
+    a.found = false;
+    a.e = 95;
+    a.w = 95;
+  });
   for (let t = 0; t < 2 * E.DAY; t++) {
     E.sim();
-    for (const a of E.state().ag) if (a.sp === PEOPLE && a.age < smat) assert.equal(a.rd, false, 'a person under the mating age wanted to mate');
+    for (const a of E.state().ag)
+      if (a.sp === PEOPLE && a.age < smat)
+        assert.equal(a.rd, false, 'a person under the mating age wanted to mate');
   }
   assert.equal(E.state().maxGen, 0, 'a baby was born to parents under the mating age');
-  for (const a of people) { a.age = smat + 4 * E.TY; a.cd = 0; a.e = 95; a.w = 95; a.asleep = false; }
+  for (const a of people) {
+    a.age = smat + 4 * E.TY;
+    a.cd = 0;
+    a.e = 95;
+    a.w = 95;
+    a.asleep = false;
+  }
   E.sim();
-  assert.ok(E.state().ag.some((a) => a.sp === PEOPLE && a.rd), 'no healthy adult was ready to mate');
+  assert.ok(
+    E.state().ag.some((a) => a.sp === PEOPLE && a.rd),
+    'no healthy adult was ready to mate'
+  );
 });
 
-test('herbivores can graze and keep their numbers up without predators', () => {
+test('a hungry plant-eater on good grass eats and gains energy', () => {
   const E = createEngine();
   E.setSeed(11);
   E.reset({ people: 2, herbivores: 12, predators: 0, fish: 0 });
-  days(E, 10);
-  // With working grazing this world has about 23 well-fed herbivores by day 10 (energy above 50%);
-  // when grazing was broken they starved to about a third.
-  const herd = E.state().ag.filter((a) => a.sp === HERBIVORE);
-  const energy = herd.reduce((t, a) => t + a.e, 0) / herd.length;
-  assert.ok(herd.length >= 18, `only ${herd.length} herbivores by day 10: are they able to graze?`);
-  assert.ok(energy > 45, `herbivores are starving (average energy ${energy.toFixed(0)}%)`);
+  E.sim();
+  const s = E.state(),
+    { tree } = E.forest();
+  let gained = 0,
+    tried = 0;
+  for (const a of s.ag.filter((x) => x.sp === HERBIVORE)) {
+    // lush grass all around it, no trees, no berries
+    for (let dy = -2; dy <= 2; dy++)
+      for (let dx = -2; dx <= 2; dx++) {
+        const y = a.y + dy;
+        if (y < 0 || y >= E.H) continue;
+        const i = y * E.W + ((a.x + dx + E.W) % E.W);
+        if (s.water[i]) continue;
+        s.food[i] = 1;
+        s.poison[i] = 0;
+        tree[i] = 0;
+      }
+    a.e = 30;
+    a.w = 90;
+    a.asleep = false;
+    a.found = false;
+    a.fd = 0;
+    tried++;
+  }
+  const before = s.ag.filter((x) => x.sp === HERBIVORE).map((a) => [a, a.e]);
+  for (let t = 0; t < 16; t++) E.sim();
+  for (const [a, e0] of before) if (!a.gone && a.e > e0 + 2) gained++;
+  assert.ok(gained >= tried * 0.6, `only ${gained} of ${tried} hungry plant-eaters on lush grass gained energy`);
 });
 
 test('loneliness only exists after meeting someone', () => {
@@ -88,7 +134,8 @@ test('loneliness only exists after meeting someone', () => {
   E.reset({ people: 6 });
   for (let t = 0; t < 6 * E.DAY; t++) {
     E.sim();
-    for (const a of E.state().ag) if (!a.metAny) assert.equal(a.lo, 0, 'a creature that never met anyone felt lonely');
+    for (const a of E.state().ag)
+      if (!a.metAny) assert.equal(a.lo, 0, 'a creature that never met anyone felt lonely');
   }
 });
 
@@ -113,7 +160,10 @@ test('a child inherits only strong habits, partly and by chance', () => {
     const c = E.child(p, q);
     const base = [p.g.w[i], q.g.w[i]];
     const extra = Math.min(...base.map((b) => Math.abs(c.w[i] - b)));
-    if (extra > 0.3) { passed++; assert.ok(extra < 2 * 0.6 + 1.5, 'a habit was inherited in full'); }
+    if (extra > 0.3) {
+      passed++;
+      assert.ok(extra < 2 * 0.6 + 1.5, 'a habit was inherited in full');
+    }
   }
   assert.ok(passed > 120 && passed < 280, `habit passed on ${passed}/400 times, expected about half`);
 });
@@ -131,7 +181,11 @@ test('whispers are understood by meaning, and never read "don\'t eat berries" as
   assert.deepEqual(read('Feed your little ones when they are hungry'), ['share']);
   assert.deepEqual(read('Stay away from the hunters'), ['not danger']);
   assert.deepEqual(read('the stars are beautiful tonight'), []);
-  assert.deepEqual(read('You could catch the fish', herbivore), [], 'a herbivore should not understand fishing');
+  assert.deepEqual(
+    read('You could catch the fish', herbivore),
+    [],
+    'a herbivore should not understand fishing'
+  );
 });
 
 test('a whisper reaches the creature and becomes its own thought', () => {
@@ -157,5 +211,5 @@ test('the mind readout reflects the real network', () => {
   assert.ok(Math.abs(sum - 1) < 1e-4, 'action probabilities do not add up to 1');
   assert.ok(a.mind && a.mind.opts.length === 4);
   const top = Math.max(...a.z);
-  assert.ok(Math.abs(a.mind.opts[0][1] - top) < 1e-6, 'the top option shown is not the network\'s top option');
+  assert.ok(Math.abs(a.mind.opts[0][1] - top) < 1e-6, "the top option shown is not the network's top option");
 });

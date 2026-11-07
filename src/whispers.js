@@ -186,7 +186,7 @@ function deliver(a) {
     got.push('head ' + CP[r.dir]);
   }
   const text = firstPerson(W0),
-    nm = a.sp === 0 ? a.name : 'a ' + SP[a.sp].n.toLowerCase();
+    nm = a.sp === 0 ? a.name : 'a ' + a.S.n.toLowerCase();
   a.hunch = { k: got.join(', '), text, until: tick + 2 * DAY };
   a.whO =
     (

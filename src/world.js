@@ -2,6 +2,14 @@
 // Copyright (c) 2026 Malvika Sen. MIT License.
 
 // cfg: {people, herbivores, predators, fish}
+const plural = (n) =>
+  n === 'Deer' || n === 'Bison' || n === 'Fish'
+    ? n
+    : n === 'Big cat'
+      ? 'Big cats'
+      : n === 'Wolf'
+        ? 'Wolves'
+        : n + 's';
 function reset(cfg = {}) {
   food = new Float32Array(W * H);
   ag = [];
@@ -34,7 +42,7 @@ function reset(cfg = {}) {
   for (let i = 0; i < W * H; i++) food[i] *= 1 - 0.35 * tree[i]; // little grass grows in the shade of trees
   const n = clamp(cfg.people ?? 2, 2, 40),
     nh = clamp(cfg.herbivores ?? 14, 0, 40),
-    np = clamp(cfg.predators ?? 3, 0, 8),
+    np = clamp(cfg.predators ?? 6, 0, 12),
     nf = clamp(cfg.fish ?? 24, 0, 60),
     inst = true;
   NID = 0;
@@ -42,15 +50,20 @@ function reset(cfg = {}) {
   spawn(1, nh, inst);
   spawn(2, np, inst);
   spawn(3, nf, inst);
+  const tally = (sp) =>
+    KINDS.map((K, k) => [K, ag.filter((a) => a.k === k).length])
+      .filter(([K, c]) => K.sp === sp && c)
+      .map(([K, c]) => c + ' ' + (c > 1 ? plural(K.n) : K.n).toLowerCase())
+      .join(', ');
   log(
     'The world begins with ' +
       n +
-      ' young people, ' +
-      nh +
-      ' young herbivores and ' +
-      np +
-      ' young predators (a small pack), and ' +
+      ' young people; ' +
+      (tally(1) || 'no plant-eaters') +
+      '; ' +
+      (tally(2) || 'no hunters') +
+      '; and ' +
       nf +
-      ' fish in the seas, lakes and rivers. There are mountains, pits and bushes of red berries, some of them poisonous to eat. Until they grow up, the world keeps them from starving.'
+      ' fish in the seas, lakes and rivers. There are mountains, forests, pits and bushes of red berries, some of them poisonous to eat. Until they grow up, the world keeps them from starving.'
   );
 }

@@ -15,11 +15,13 @@ function sim() {
     if (food[i] < 1) food[i] += (0.006 * food[i] * (1 - food[i]) + 0.0004) * tf;
   }
   G = new Array(W * H);
-  const pop = [0, 0, 0, 0];
+  const pop = [0, 0, 0, 0],
+    popK = [];
   for (const a of ag) {
     (G[idx(a.x, a.y)] || (G[idx(a.x, a.y)] = [])).push(a);
     pop[a.sp]++;
-    const S = SP[a.sp];
+    popK[a.k] = (popK[a.k] || 0) + 1;
+    const S = a.S;
     a.rd =
       !a.asleep &&
       a.age >= S.smat &&
@@ -28,10 +30,11 @@ function sim() {
       a.w > 40 &&
       a.age < a.lf * S.fert;
   }
-  const kids = [];
+  const kids = [],
+    kidsOf = (k) => kids.reduce((t, c) => t + (c.k === k), 0);
   for (const a of ag) {
     if (a.dead) continue;
-    const S = SP[a.sp],
+    const S = a.S,
       night = isNightAt(a.x);
     a.age++;
     a.cd = Math.max(0, a.cd - 1);
@@ -162,7 +165,8 @@ function sim() {
       const k = (a.sl - 0.45) * 3,
         own = a.sp === 1 ? 3 : a.sp === 0 ? 4 : 5;
       for (let s = 0; s < 8; s++)
-        RF[s] += k * (1.4 * x[s * NCH + 12] + 1.2 * x[s * NCH + 7] + 0.8 * x[s * NCH + own] - 1.5 * x[s * NCH + 2]);
+        RF[s] +=
+          k * (1.4 * x[s * NCH + 12] + 1.2 * x[s * NCH + 7] + 0.8 * x[s * NCH + own] - 1.5 * x[s * NCH + 2]);
       const here = idx(a.x, a.y);
       let safe = cover(here) > 0.4 ? 1 : 0;
       for (let s = 0; s < 8 && !safe; s++) if (x[s * NCH + 7] > 0.6 || x[s * NCH + own] > 0.6) safe = 1;
@@ -235,7 +239,7 @@ function sim() {
               o.sp !== a.sp ||
               o.asleep ||
               !o.has ||
-              (o !== a.mom && o.age < SP[o.sp].mat) ||
+              (o !== a.mom && o.age < o.S.mat) ||
               o.age <= a.age
             )
               continue;
@@ -308,7 +312,7 @@ function sim() {
         food[i] -= b;
         if (hu > 0.5) a.ev[2] = 'it ate after going hungry on day ' + dn;
       }
-    } else if (act === A_EAT && a.sp < 2 && !wade) {
+    } else if (act === A_EAT && (a.sp < 2 || a.S.omni) && !wade) {
       const i = idx(a.x, a.y),
         f = food[i];
       if (f > 0.3 && !poison[i]) {
@@ -326,17 +330,17 @@ function sim() {
           firsts['p' + a.sp] = 1;
           log(who(a) + ' ate red berries and got sick.');
         }
-      } else if (a.sp === 0 && fruit[i] > 0.05) {
+      } else if ((a.sp === 0 || a.S.omni) && fruit[i] > 0.05) {
         // fruit from the trees: more filling than leaves and roots
         const b = Math.min(fruit[i], 0.4);
         fruit[i] -= b;
         a.e = Math.min(100, a.e + b * 70);
         if (hu > 0.5) a.ev[2] = 'it ate fruit after going hungry on day ' + dn;
-        if (!firsts.fruit) {
+        if (a.sp === 0 && !firsts.fruit) {
           firsts.fruit = 1;
           log(a.name + ' ate fruit from the trees.');
         }
-      } else if (a.sp === 0 && f > 0.05) {
+      } else if ((a.sp === 0 || a.S.omni) && f > 0.05) {
         const b = Math.min(f, 0.5);
         a.e = Math.min(100, a.e + b * 50);
         food[i] -= b;
@@ -371,12 +375,12 @@ function sim() {
       if (a.mw && Math.abs(dxw(a.mw.x - a.x)) <= 2 && Math.abs(a.mw.y - a.y) <= 2)
         followed(a, 'water', 'found the water');
       if (th > 0.5) a.ev[3] = 'it drank after being very thirsty on day ' + dn;
-    } else if (act === A_MATE && a.rd && pop[a.sp] + kids.length < S.cap) {
+    } else if (act === A_MATE && a.rd && popK[a.k] + kidsOf(a.k) < S.cap) {
       let b = null;
       for (let yy = -1; yy <= 1 && !b; yy++)
         for (let xx = -1; xx <= 1 && !b; xx++) {
           const l = G[idx(a.x + xx, clamp(a.y + yy, 0, H - 1))];
-          if (l) b = l.find((q) => q !== a && q.sp === a.sp && q.sex !== a.sex && q.rd && !q.dead) || null;
+          if (l) b = l.find((q) => q !== a && q.k === a.k && q.sex !== a.sex && q.rd && !q.dead) || null;
         }
       if (b) {
         const fem = a.sex ? a : b,
@@ -384,8 +388,8 @@ function sim() {
           n = a.sp === 0 ? 1 + (rnd() < 0.02) : S.lit[0] + ((rnd() * (S.lit[1] - S.lit[0] + 1)) | 0),
           inh = true,
           g2 = Math.max(a.gen, b.gen) + 1;
-        for (let q = 0; q < n && pop[a.sp] + kids.length < S.cap; q++) {
-          const c = mk(a.sp, fem.x, fem.y, rnd() < 0.5 ? 1 : 0, child(fem, mal, inh), g2, 0);
+        for (let q = 0; q < n && popK[a.k] + kidsOf(a.k) < S.cap; q++) {
+          const c = mk(a.sp, fem.x, fem.y, rnd() < 0.5 ? 1 : 0, child(fem, mal, inh), g2, 0, fem.k);
           c.bond = 0.6;
           c.metAny = true;
           c.e = 60;
@@ -450,8 +454,19 @@ function sim() {
         }
       if (t) {
         a.kcd = 4;
-        const T = SP[t.sp],
-          pc = a.sp === 0 ? 0.25 : t.asleep || t.age < T.mat * T.wn ? 0.9 : 0.6;
+        const T = t.S;
+        // bigger prey is harder to bring down alone; hunters of the same kind close by help (a pack)
+        let help = 0;
+        if (a.sp === 2)
+          for (let yy = -1; yy <= 1; yy++)
+            for (let xx = -1; xx <= 1; xx++) {
+              const l = G[idx(a.x + xx, clamp(a.y + yy, 0, H - 1))];
+              if (l)
+                for (const o of l)
+                  if (o !== a && o.k === a.k && !o.dead && !o.asleep && o.age >= o.S.mat) help++;
+            }
+        const odds = clamp(((a.S.size || 1) * (1 + 0.6 * help)) / (T.size || 1), 0.15, 1.3),
+          pc = a.sp === 0 ? 0.25 : (t.asleep || t.age < T.mat * T.wn ? 0.9 : 0.6) * Math.min(1, odds);
         if (rnd() < pc) {
           t.dead = true;
           t.cause = a.sp === 0 ? 'caught by a person' : 'killed by a predator';
@@ -462,7 +477,16 @@ function sim() {
           }
           a.e = Math.min(
             100,
-            a.e + (t.sp === 3 ? (a.sp === 0 ? 30 : 20) : t.sp === 1 ? 70 : t.sp === 0 ? 70 : 50)
+            a.e +
+              (t.sp === 3
+                ? a.sp === 0
+                  ? 30
+                  : 20
+                : t.sp === 1
+                  ? 70 * Math.min(1.3, T.size || 1)
+                  : t.sp === 0
+                    ? 70
+                    : 50)
           );
           if (a.sp === 2 && t.sp !== 3)
             for (let yy = -2; yy <= 2; yy++)
@@ -470,8 +494,9 @@ function sim() {
                 const l = G[idx(a.x + xx, clamp(a.y + yy, 0, H - 1))];
                 if (l)
                   for (const o of l)
-                    if (o !== a && o.sp === 2 && !o.dead && o.age < SP[2].mat) {
-                      o.e = Math.min(100, o.e + 35);
+                    // a kill feeds the young — and, if it is big, the rest of the pack too
+                    if (o !== a && o.k === a.k && !o.dead && (o.age < o.S.mat || (T.size || 1) > 1.5)) {
+                      o.e = Math.min(100, o.e + 35 * Math.min(1.5, T.size || 1));
                       o.ev[2] = 'it shared a kill on day ' + dn;
                     }
               }
@@ -508,7 +533,7 @@ function sim() {
               : null;
     if (!c) return true;
     a.gone = true;
-    const dk = SP[a.sp].n + ': ' + c;
+    const dk = a.S.n + ': ' + c;
     deaths[dk] = (deaths[dk] || 0) + 1;
     if (a.sp === 0)
       log(
@@ -522,7 +547,7 @@ function sim() {
       );
     else if (c === 'drowned' && tick - (DL[a.sp] ?? -1e9) > DAY) {
       DL[a.sp] = tick;
-      log('A ' + SP[a.sp].n.toLowerCase() + ' drowned.');
+      log('A ' + a.S.n.toLowerCase() + ' drowned.');
     }
     return false;
   });

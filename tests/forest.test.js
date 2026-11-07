@@ -23,7 +23,10 @@ test('forests grow where it is warm and wet, not in the sea, on bare rock or abo
     if (meanTemp(i) < -3) assert.equal(tree[i], 0, 'no trees above the treeline');
   }
   const share = wooded / land;
-  assert.ok(share > 0.1 && share < 0.5, `forest should cover a fair part of the land (got ${(100 * share).toFixed(0)}%)`);
+  assert.ok(
+    share > 0.1 && share < 0.5,
+    `forest should cover a fair part of the land (got ${(100 * share).toFixed(0)}%)`
+  );
 });
 
 test('trees shelter you from rain and wind', () => {
@@ -37,7 +40,8 @@ test('trees shelter you from rain and wind', () => {
   // a cold, open spot, then the same spot thickly wooded
   let i = -1;
   for (let k = 0; k < E.W * E.H && i < 0; k++)
-    if (!s.water[k] && !s.rock[k] && E.coldOf({ sp: 0, x: k % E.W, y: (k / E.W) | 0 }, false) > 0.3) i = k;
+    if (!s.water[k] && !s.rock[k] && E.coldOf({ sp: 0, S: a.S, x: k % E.W, y: (k / E.W) | 0 }, false) > 0.3)
+      i = k;
   a.x = i % E.W;
   a.y = (i / E.W) | 0;
   tree[i] = 0;
