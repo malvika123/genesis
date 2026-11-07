@@ -256,8 +256,16 @@ const G3D = { ok: false };
   function texFor(a, v) {
     const S = SP[a.sp],
       gr = Math.round(clamp(a.age / S.mat, 0.3, 1) * 10) / 10,
-      pose = a.sp === 0 && a.moving ? Math.round(Math.sin(performance.now() / 110 + a.id) * 2) : 0,
-      key = [a.sp, a.sex, gr, a.asleep ? 1 : 0, pose, a.act === A_EAT || a.act === A_DRINK ? 1 : 0].join();
+      pose = a.moving ? Math.round(Math.sin(performance.now() / 110 + a.id) * 2) : 0,
+      key = [
+        a.sp,
+        a.sex,
+        gr,
+        a.asleep ? 1 : 0,
+        pose,
+        a.act === A_EAT || a.act === A_DRINK ? 1 : 0,
+        a.face || 1,
+      ].join();
     let t = figTex.get(key);
     if (t) return t;
     const c = document.createElement('canvas');
@@ -265,6 +273,7 @@ const G3D = { ok: false };
     const g = c.getContext('2d'),
       fake = {
         sp: a.sp,
+        face: a.face || 1,
         sex: a.sex,
         age: gr * S.mat,
         asleep: a.asleep,
@@ -278,7 +287,7 @@ const G3D = { ok: false };
         h = (5.5 + 6 * gr) * k;
       if (fake.asleep) drawCreature(g, fake, SZ / 2, SZ - h * 0.2, k, v);
       else drawCreature(g, fake, SZ / 2, SZ - h * 0.16, k, v);
-    } else drawCreature(g, fake, SZ / 2, SZ * 0.72, SZ / 22, v);
+    } else drawCreature(g, fake, SZ / 2, SZ * 0.97 - (SZ / 15) * 3.5, SZ / 15, v); // feet near the bottom, filling most of the picture
     t = new THREE.CanvasTexture(c);
     t.encoding = THREE.sRGBEncoding;
     figTex.set(key, t);
@@ -304,8 +313,10 @@ const G3D = { ok: false };
         const la = latOfY(a.ry),
           lo = lonOfX(a.rx);
         sp.position.copy(local(la, lo, 1 + EX * heightAt(la, lo) + 0.0002));
-        // a person stands about as tall as a third of a tree; fish swim at the surface
-        const s = a.sp === 0 ? 0.0046 : a.sp === 3 ? 0.0022 : 0.0042;
+        // Figures are drawn 2.5 times life size so you can find them among the trees (like the
+        // exaggerated mountains), all by the same factor so people and animals keep their true sizes
+        // compared with each other. Fish swim at the surface.
+        const s = (a.sp === 0 ? 0.0046 : a.sp === 3 ? 0.0022 : 0.0042) * 2.5;
         sp.scale.set(s, s, 1);
       }
     for (let k = n; k < pool.length; k++) pool[k].visible = false;

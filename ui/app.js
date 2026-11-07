@@ -534,6 +534,123 @@ function drawPerson(g, a, X, Y, k, gr, col) {
   g.restore();
 }
 // One creature at (X, Y); k scales its size (1 = flat-map size).
+// Until the world has several kinds of animal, its plant-eaters are drawn as deer and its hunters as wolves.
+const KIND_OF = ['Person', 'Deer', 'Wolf', 'Fish'];
+const LOOK = {
+  Deer: { col: '#a0703f', w: 4.2, h: 1.9, leg: 2.6, s: 1 },
+  Rabbit: { col: '#9b8a78', w: 2.3, h: 1.7, leg: 0.8, s: 0.7 },
+  Bison: { col: '#4a3222', w: 5.4, h: 2.8, leg: 1.8, s: 1.35 },
+  Wolf: { col: '#868b91', w: 4, h: 1.6, leg: 2, s: 0.95 },
+  'Big cat': { col: '#c9963b', w: 4.6, h: 1.6, leg: 1.8, s: 1 },
+  Bear: { col: '#5b3b26', w: 4.8, h: 2.9, leg: 1.6, s: 1.3 },
+};
+function drawAnimal(g, a, X, Y, k) {
+  const L = LOOK[a.S.n] || LOOK.Deer,
+    gr = clamp(a.age / a.S.mat, 0.35, 1),
+    u = k * L.s * (0.45 + 0.55 * gr) * 1.3,
+    f = a.face || 1,
+    bw = L.w * u,
+    bh = L.h * u,
+    leg = a.asleep ? 0 : L.leg * u,
+    swing = a.moving && !a.asleep ? Math.sin(performance.now() / 120 + a.id) * u * 0.7 : 0,
+    by = Y - leg - bh / 2 + (a.asleep ? bh * 0.3 : 0); // body centre; feet on the ground at Y
+  g.save();
+  g.lineCap = 'round';
+  g.strokeStyle = L.col;
+  g.fillStyle = L.col;
+  // legs
+  if (leg) {
+    g.lineWidth = Math.max(1, u * (a.S.n === 'Bison' || a.S.n === 'Bear' ? 0.75 : 0.45));
+    g.beginPath();
+    for (const [lx, sw] of [
+      [-0.32, swing],
+      [-0.22, -swing],
+      [0.25, -swing],
+      [0.35, swing],
+    ]) {
+      g.moveTo(X + lx * bw, by + bh * 0.3);
+      g.lineTo(X + lx * bw + sw * 0.5, Y);
+    }
+    g.stroke();
+  }
+  // tail
+  g.lineWidth = Math.max(1, u * 0.4);
+  g.beginPath();
+  const tx = X - f * bw * 0.5;
+  if (a.S.n === 'Wolf') {
+    g.moveTo(tx, by - bh * 0.1);
+    g.quadraticCurveTo(tx - f * bw * 0.25, by + bh * 0.1, tx - f * bw * 0.35, by + bh * 0.4);
+    g.lineWidth = Math.max(1.5, u * 0.8);
+  } else if (a.S.n === 'Big cat') {
+    g.moveTo(tx, by - bh * 0.1);
+    g.quadraticCurveTo(tx - f * bw * 0.45, by + bh * 0.6, tx - f * bw * 0.55, by - bh * 0.3);
+  } else {
+    g.moveTo(tx, by - bh * 0.2);
+    g.lineTo(tx - f * u * 0.5, by);
+  }
+  g.stroke();
+  // body (bison have a hump at the shoulders)
+  g.beginPath();
+  g.ellipse(X, by, bw / 2, bh / 2, 0, 0, 7);
+  g.fill();
+  if (a.S.n === 'Bison') {
+    g.beginPath();
+    g.ellipse(X + f * bw * 0.18, by - bh * 0.35, bw * 0.25, bh * 0.45, 0, 0, 7);
+    g.fill();
+  }
+  // head
+  const head = (a.S.n === 'Rabbit' ? 0.7 : a.S.n === 'Bear' || a.S.n === 'Bison' ? 0.95 : 0.75) * bh,
+    hx = X + f * (bw / 2 + head * 0.35),
+    hy = by - bh * (a.S.n === 'Bison' ? 0.05 : 0.45) + (a.act === A_EAT ? bh * 0.7 : 0);
+  g.beginPath();
+  g.arc(hx, hy, head / 2, 0, 7);
+  g.fill();
+  // snout
+  if (a.S.n === 'Deer' || a.S.n === 'Wolf') {
+    g.beginPath();
+    g.ellipse(hx + f * head * 0.45, hy + head * 0.1, head * 0.32, head * 0.2, 0, 0, 7);
+    g.fill();
+  }
+  // ears, antlers, horns
+  g.lineWidth = Math.max(1, u * 0.35);
+  g.beginPath();
+  if (a.S.n === 'Rabbit') {
+    g.ellipse(hx - f * head * 0.15, hy - head * 1.05, head * 0.16, head * 0.6, -f * 0.2, 0, 7);
+    g.ellipse(hx + f * head * 0.1, hy - head * 1.0, head * 0.16, head * 0.6, f * 0.15, 0, 7);
+    g.fill();
+  } else if (a.S.n === 'Wolf' || a.S.n === 'Big cat') {
+    const e = a.S.n === 'Wolf' ? 0.55 : 0.3;
+    g.moveTo(hx - head * 0.3, hy - head * 0.3);
+    g.lineTo(hx - head * 0.15, hy - head * (0.4 + e));
+    g.lineTo(hx + head * 0.05, hy - head * 0.35);
+    g.fill();
+  } else if (a.S.n === 'Bear') {
+    g.arc(hx - head * 0.28, hy - head * 0.42, head * 0.17, 0, 7);
+    g.arc(hx + head * 0.2, hy - head * 0.45, head * 0.17, 0, 7);
+    g.fill();
+  } else if (a.S.n === 'Deer' && !a.sex && gr > 0.8) {
+    g.strokeStyle = '#d8c6a0';
+    g.moveTo(hx, hy - head * 0.4);
+    g.lineTo(hx - f * head * 0.3, hy - head * 1.4);
+    g.moveTo(hx - f * head * 0.1, hy - head * 0.9);
+    g.lineTo(hx + f * head * 0.25, hy - head * 1.25);
+    g.stroke();
+  } else if (a.S.n === 'Bison') {
+    g.strokeStyle = '#e0d6c0';
+    g.moveTo(hx - head * 0.3, hy - head * 0.3);
+    g.quadraticCurveTo(hx - head * 0.55, hy - head * 0.75, hx - head * 0.25, hy - head * 0.8);
+    g.stroke();
+  }
+  // a pale tail patch on deer and rabbits
+  if (a.S.n === 'Deer' || a.S.n === 'Rabbit') {
+    g.fillStyle = '#f2ece2';
+    g.beginPath();
+    g.arc(X - f * bw * 0.48, by - bh * 0.15, Math.max(0.8, u * 0.4), 0, 7);
+    g.fill();
+  }
+  g.restore();
+}
+// One creature at (X, Y); k scales its size (1 = flat-map size).
 function drawCreature(g, a, X, Y, k, v, dim = 1) {
   const S = SP[a.sp],
     gr = clamp(a.age / S.mat, 0.3, 1);
@@ -541,12 +658,12 @@ function drawCreature(g, a, X, Y, k, v, dim = 1) {
   if (a.sp === 0) {
     g.globalAlpha = (a.asleep ? 0.8 : 1) * dim;
     drawPerson(g, a, X, Y, k, gr, a.sex ? v('--f') : v('--m'));
-  } else if (a.sp === 1) {
-    g.fillStyle = v('--herb');
-    g.beginPath();
-    g.ellipse(X, Y, (2 + 3 * gr) * k, (1.5 + 2.2 * gr) * k, 0, 0, 7);
-    g.fill();
-  } else if (a.sp === 3) {
+  } else if (a.sp === 1 || a.sp === 2) {
+    g.globalAlpha = (a.asleep ? 0.75 : 1) * dim;
+    const view = Object.create(a);
+    view.S = { n: KIND_OF[a.sp], mat: S.mat };
+    drawAnimal(g, view, X, Y + 3.5 * k, k);
+  } else {
     g.fillStyle = v('--fish');
     const q = (1.5 + 2 * gr) * k;
     g.beginPath();
@@ -556,15 +673,6 @@ function drawCreature(g, a, X, Y, k, v, dim = 1) {
     g.moveTo(X - q * 1.2, Y);
     g.lineTo(X - q * 2.2, Y - q * 0.8);
     g.lineTo(X - q * 2.2, Y + q * 0.8);
-    g.fill();
-  } else {
-    g.fillStyle = v('--bad');
-    const q = (3 + 4 * gr) * k;
-    g.beginPath();
-    g.moveTo(X, Y - q);
-    g.lineTo(X + q * 0.85, Y);
-    g.lineTo(X, Y + q);
-    g.lineTo(X - q * 0.85, Y);
     g.fill();
   }
   g.globalAlpha = 1;
@@ -860,6 +968,7 @@ function glide() {
       a.ry += dy * 0.12;
     }
     a.moving = Math.abs(dx) + Math.abs(dy) > 0.05;
+    if (Math.abs(dx) > 0.05) a.face = dx > 0 ? 1 : -1;
   }
 }
 function draw() {
