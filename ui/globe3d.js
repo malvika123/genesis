@@ -336,10 +336,7 @@ const G3D = { ok: false };
     if (treesFor !== alt || treeFrame++ % 600 === 0) plantTrees();
     pines.visible = leafy.visible = trunks.visible = GL.zoom > 1.8;
     if (frame++ % 12 === 0) paint(v);
-    if (!GL.held) {
-      GL.lon0 += GL.vel;
-      GL.vel += ((GL.spin ? 0.0012 : 0) - GL.vel) * 0.03;
-    }
+    spinStep();
     // gently follow a creature you asked to see
     if (GL.follow && GL.follow === sel && !GL.follow.gone && !GL.held) {
       let dl = lonOfX(sel.x) - GL.lon0;
@@ -350,7 +347,7 @@ const G3D = { ok: false };
     }
     aim();
     // the sun is overhead where it is local noon
-    const xs = ((((0.5 - (tick % DAY) / DAY) * W) % W) + W) % W,
+    const xs = ((((0.5 - (worldT() % DAY) / DAY) * W) % W) + W) % W,
       ls = (xs / W) * 2 * Math.PI - Math.PI;
     sun.position.copy(local(0, ls, 5));
     // close to the ground, space gives way to sky — blue by day, dark at night — with haze far off
