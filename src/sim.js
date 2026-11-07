@@ -1,0 +1,470 @@
+// Genesis — One step of the world: bodies, feelings, rewards, learning, choices, movement, eating, mating, hunting and death.
+// Copyright (c) 2026 Malvika Sen. MIT License.
+
+// ---------- world step ----------
+function sim() {
+  tick++;
+  const night = isNight(),
+    dn = dayN();
+  for (let i = 0; i < W * H; i++) {
+    if (rock[i]) continue;
+    const tf = water[i] ? 0.5 : TF[ter[i]];
+    if (food[i] < 1) food[i] += (0.006 * food[i] * (1 - food[i]) + 0.0004) * tf;
+  }
+  G = new Array(W * H);
+  const pop = [0, 0, 0, 0];
+  for (const a of ag) {
+    (G[idx(a.x, a.y)] || (G[idx(a.x, a.y)] = [])).push(a);
+    pop[a.sp]++;
+    const S = SP[a.sp];
+    a.rd =
+      !a.asleep &&
+      a.age >= S.smat &&
+      a.cd === 0 &&
+      a.e > (a.sp === 2 ? 25 : 45) &&
+      a.w > 40 &&
+      a.age < a.lf * S.fert;
+  }
+  const kids = [];
+  for (const a of ag) {
+    if (a.dead) continue;
+    const S = SP[a.sp];
+    a.age++;
+    a.cd = Math.max(0, a.cd - 1);
+    a.kcd = Math.max(0, a.kcd - 1);
+    if (tick % DAY === 0) a.fd = 0;
+    const young = a.age < S.mat,
+      baby = a.age < S.mat * S.wn,
+      mom = a.mom && !a.mom.dead && !a.mom.gone ? a.mom : null,
+      care = a.found && young;
+    const df = (a.asleep ? 0.6 : 1) * (baby ? 1.5 : 1);
+    if (baby && mom && (mom.x - a.x) ** 2 + (mom.y - a.y) ** 2 <= 36) {
+      a.e = Math.min(100, a.e + 0.12);
+      a.w = Math.min(100, a.w + 0.2);
+      mom.e -= 0.03;
+    } else {
+      a.e -= (S.dE / DAY) * a.g.m * (0.8 + 0.2 * a.g.s + 0.04 * a.g.v) * df;
+      a.w -= (S.dW / DAY) * df;
+    }
+    const fish = a.sp === 3,
+      onW = water[idx(a.x, a.y)] === 1,
+      inW = !fish && deep[idx(a.x, a.y)] === 1,
+      wade = !fish && onW;
+    if (fish) a.w = 100;
+    if (fish && !onW) {
+      a.hp -= 20;
+      a.painW = 1;
+    }
+    if (inW) {
+      a.hp -= 3;
+      a.painW = Math.min(1, a.painW + 0.35);
+      a.e -= 0.15;
+      if (!a.wasW) a.ev[1] = 'it nearly drowned on day ' + dn;
+    }
+    a.wasW = inW;
+    if (!inW && a.e > 10 && a.w > 10) a.hp = Math.min(100, a.hp + 0.05);
+    a.painA *= 0.97;
+    a.painW *= 0.85;
+    if (care) {
+      a.e = Math.max(a.e, 35);
+      a.w = Math.max(a.w, 35);
+      a.hp = Math.max(a.hp, 30);
+    }
+    a.sl = a.asleep
+      ? Math.max(0, a.sl - 1 / (S.sleepH * 4))
+      : Math.min(1, a.sl + (1 + 0.6 * S.circ * (night ? 1 : -1)) / ((24 - S.sleepH) * 4));
+    a.lu =
+      a.age >= S.smat && a.age < a.lf * S.fert
+        ? clamp(a.lu + (a.cd === 0 && a.e > 45 ? 0.01 : -0.02), 0, 1)
+        : 0;
+    const bi = (a.y >> 2) * 16 + (a.x >> 2);
+    if (!a.vis[bi]) {
+      a.vis[bi] = 1;
+      a.vc++;
+      if (a.age > 5) {
+        a.bonus[6] += 0.12 * a.g.c * S.cur * (young ? 1.3 : 1) * (a.cuT > tick ? a.cuX : 1);
+        a.ev[6] = 'it found a new place on day ' + dn;
+      }
+    }
+    if (a.wh && (a.asleep || (a.fear < 0.2 && a.painA < 0.2 && rnd() < 0.02))) deliver(a);
+    sense(a, a.xi, night);
+    const x = a.xi,
+      own = a.sp === 3 ? 8 : a.sp === 1 ? 3 : a.sp === 0 ? 4 : 5;
+    let seeOwn = false;
+    for (let s = 0; s < 8; s++) if (x[s * NCH + own] > 0) seeOwn = true;
+    if (seeOwn) {
+      if (!a.metAny) {
+        a.metAny = true;
+        if (a.sp === 0 && !a.mom) log(a.name + ' saw another person for the first time.');
+      }
+      if (a.lo > 0.5 && a.bond > 0.2) {
+        a.bonus[7] += 0.1;
+        a.ev[7] = 'it found others after being alone on day ' + dn;
+      }
+      a.bond = Math.min(1, a.bond + 0.004);
+      a.lo = Math.max(0, a.lo - 0.05);
+    } else {
+      a.bond = Math.max(0, a.bond - 0.0002);
+      a.lo = Math.min(a.bond, a.lo + 0.0015 * a.bond);
+    }
+    let fam = 0;
+    for (let s = 0; s < 8; s++) fam = Math.max(fam, x[s * NCH + 7]);
+    a.pr = a.kid && !a.kid.gone && a.kid.age < S.mat ? fam : 0;
+    if (a.pr > 0.5) a.bonus[7] += a.sex ? 0.01 : 0.005;
+    if (young && fam > 0.5) a.bonus[7] += 0.005;
+    const hu = 1 - a.e / 100,
+      th = 1 - a.w / 100,
+      D = [
+        a.painA * a.g.b,
+        a.painW * a.g.b,
+        3 * hu * hu + (a.e < 15 ? 1 : 0),
+        3 * th * th + (a.w < 15 ? 1 : 0),
+        0.5 * a.sl * a.sl,
+        0,
+        0,
+        S.social * a.g.so * a.lo,
+      ];
+    let r = 0;
+    for (let k = 0; k < 8; k++) {
+      a.rk[k] = a.Dp[k] - D[k] + a.bonus[k];
+      r += a.rk[k];
+      a.Dp[k] = D[k];
+      a.bonus[k] = 0;
+    }
+    RF.fill(0);
+    if (a.sp !== 3 || x[HB] > 0.05) RF[A_EAT] = 4 * hu * (x[HB] > 0.05 ? 1 : 0);
+    if (a.sp !== 3) RF[A_DRINK] = 5 * th * x[HB + 1];
+    if (a.sp === 2) RF[A_ATK] = 5 * hu * x[HB + 2];
+    const V = forward(a.lw, x, a.h, a.z, S.nh, RF);
+    if (a.has) {
+      const d = clamp(r + GAM * V - a.Vp, -2, 2);
+      let ch = 0;
+      const pl = young
+        ? S.plast
+        : a.age < S.mat * 2.2
+          ? S.adl + (1 - S.adl) * Math.max(0, 1 - (a.age - S.mat) / (S.mat * 0.3))
+          : S.adl * 0.8;
+      for (let i = 0; i < NW; i++) {
+        const u = pl * (AP * d * a.eP[i] + AV * d * a.eV[i]);
+        if (u) {
+          a.lw[i] = clamp(a.lw[i] + u, -6, 6);
+          ch += Math.abs(u);
+        }
+      }
+      a.learn += ch;
+      a.fear = clamp(a.fear * 0.9 + 0.4 * Math.max(0, -d), 0, 1);
+      for (let k = 0; k < 8; k++) a.cz[k] = a.cz[k] * 0.995 + Math.abs(a.rk[k]) * Math.abs(d);
+    }
+    a.V = V;
+    let act = sample(a.z);
+    const chosen = act;
+    if (a.sl >= 1) act = A_SLEEP;
+    if (act === A_SLEEP && !a.asleep && a.sl < 0.45) act = A_STAY;
+    if (a.asleep && a.sl > 0.08 && a.painA < 0.3 && a.painW < 0.3 && a.hp > 40) act = A_SLEEP;
+    if (a.whO === 'berries' && x[IB + 16] && hu > 0.4 && act !== A_EAT)
+      followed(a, 'berries', 'walked past the red berries, hungry as it was');
+    if (act === chosen) trace(a, act);
+    else {
+      const gl = GAM * LAM;
+      for (let i = 0; i < NW; i++) {
+        a.eP[i] *= gl;
+        a.eV[i] *= gl;
+      }
+    }
+    a.Vp = V;
+    a.has = true;
+    a.act = act;
+    a.th = actName(a, act);
+    if (a === sel) {
+      a.mind = mind(a, act, chosen, RF);
+      a.th = mindLine(a, a.mind);
+      const tt = actName(a, act);
+      if (!a.ts.length || a.ts[0].k !== tt) {
+        a.ts.unshift({ k: tt, t: 'Day ' + dn + ', ' + (isNight() ? 'night' : 'day') + ': ' + a.th });
+        if (a.ts.length > 6) a.ts.pop();
+      }
+    }
+    if (S.imit) {
+      let tch = null,
+        bd = 37;
+      const rr = Math.round(a.g.v);
+      for (let dy = -rr; dy <= rr; dy++)
+        for (let dx = -rr; dx <= rr; dx++) {
+          const X = a.x + dx,
+            Y = a.y + dy;
+          if (!inb(X, Y)) continue;
+          const l = G[idx(X, Y)];
+          if (!l) continue;
+          for (const o of l) {
+            if (
+              o === a ||
+              o.sp !== a.sp ||
+              o.asleep ||
+              !o.has ||
+              (o !== a.mom && o.age < SP[o.sp].mat) ||
+              o.age <= a.age
+            )
+              continue;
+            const dd = dx * dx + dy * dy + (o === a.mom ? -30 : 0);
+            if (dd < bd) {
+              bd = dd;
+              tch = o;
+            }
+          }
+        }
+      if (tch && tch.act !== A_SLEEP) {
+        imitate(a, tch.act, S.imit * (young ? 2 : 1));
+        if (!a.copied && a.sp === 0 && young) {
+          a.copied = 1;
+          a.ev[7] = 'it watched an elder on day ' + dn;
+        }
+      }
+    }
+    const sleepy = a.sl;
+    a.asleep = act === A_SLEEP;
+    if (a.asleep && sleepy > 0.8) a.ev[4] = 'it slept after being exhausted on day ' + dn;
+    if (act < 8) {
+      let preyS = false;
+      for (let s = 0; s < 8; s++) if (x[s * NCH + 3] > 0 || x[s * NCH + 4] > 0) preyS = true;
+      const fast =
+        ((a.sp === 1 || fish) && (a.fear > 0.25 || a.painA > 0.2)) ||
+        (a.sp === 2 && hu > 0.25 && preyS) ||
+        (a.sp === 0 && a.painA > 0.2);
+      const fe = 0.3 + 0.7 * clamp(a.e / 100, 0, 1),
+        gr = clamp(0.25 + (0.75 * a.age) / S.mat, 0.25, 1),
+        old = 1 - 0.5 * clamp((a.age / a.lf - 0.7) / 0.3, 0, 1);
+      a.acc += (fast ? S.run : S.walk) * a.g.s * fe * gr * old * (wade ? 0.5 : 1);
+      if (a.trap > 0) {
+        a.trap--;
+        a.acc = 0;
+      }
+      if (a.acc >= 1) {
+        a.acc -= 1;
+        const X = a.x + MV[act][0],
+          Y = a.y + MV[act][1];
+        if (inb(X, Y) && !rock[idx(X, Y)] && (!fish || water[idx(X, Y)])) {
+          a.x = X;
+          a.y = Y;
+          if (pit[idx(X, Y)]) {
+            a.hp -= baby ? 30 : 12;
+            a.painA = Math.min(1, a.painA + 0.7);
+            a.trap = 12;
+            a.ev[0] = 'it fell into a pit on day ' + dn;
+            if (a.sp === 0 && !firsts.pit) {
+              firsts.pit = 1;
+              log(a.name + ' fell into a pit.');
+            }
+          }
+        }
+      }
+    } else if (act === A_EAT && a.sp === 3 && onW) {
+      const i = idx(a.x, a.y),
+        f = food[i];
+      if (f > 0.05) {
+        const b = Math.min(f, 0.25);
+        a.e = Math.min(100, a.e + b * 25);
+        food[i] -= b;
+        if (hu > 0.5) a.ev[2] = 'it ate after going hungry on day ' + dn;
+      }
+    } else if (act === A_EAT && a.sp < 2 && !wade) {
+      const i = idx(a.x, a.y),
+        f = food[i];
+      if (f > 0.3 && !poison[i]) {
+        a.mf = { x: a.x, y: a.y };
+        a.mfT = tick;
+      }
+      if (poison[i] && f > 0.05) {
+        const b = Math.min(f, 0.3);
+        food[i] -= b;
+        a.e = Math.min(100, a.e + b * 10);
+        a.hp -= 22;
+        a.painA = Math.min(1, a.painA + 0.8);
+        a.ev[0] = 'it got sick from red berries on day ' + dn;
+        if (!firsts['p' + a.sp]) {
+          firsts['p' + a.sp] = 1;
+          log(who(a) + ' ate red berries and got sick.');
+        }
+      } else if (a.sp === 0 && f > 0.05) {
+        const b = Math.min(f, 0.5);
+        a.e = Math.min(100, a.e + b * 50);
+        food[i] -= b;
+        if (hu > 0.5) a.ev[2] = 'it ate after going hungry on day ' + dn;
+        if (f > 0.4) followed(a, 'food', 'found the good food');
+      } else if (a.sp === 1 && f > 0.05 && a.fd < HCAP) {
+        const b = Math.min(f, 0.3, HCAP - a.fd);
+        a.fd += b;
+        a.e = Math.min(100, a.e + b * HG);
+        food[i] -= b;
+        if (hu > 0.5) a.ev[2] = 'it ate after going hungry on day ' + dn;
+      }
+    } else if (act === A_DRINK && x[HB + 1]) {
+      a.w = Math.min(100, a.w + 20);
+      if (a.mw && Math.abs(a.mw.x - a.x) <= 2 && Math.abs(a.mw.y - a.y) <= 2)
+        followed(a, 'water', 'found the water');
+      if (th > 0.5) a.ev[3] = 'it drank after being very thirsty on day ' + dn;
+    } else if (act === A_MATE && a.rd && pop[a.sp] + kids.length < S.cap) {
+      let b = null;
+      for (let yy = -1; yy <= 1 && !b; yy++)
+        for (let xx = -1; xx <= 1 && !b; xx++) {
+          const l = G[idx(clamp(a.x + xx, 0, W - 1), clamp(a.y + yy, 0, H - 1))];
+          if (l) b = l.find((q) => q !== a && q.sp === a.sp && q.sex !== a.sex && q.rd && !q.dead) || null;
+        }
+      if (b) {
+        const fem = a.sex ? a : b,
+          mal = a.sex ? b : a,
+          n = a.sp === 0 ? 1 + (rnd() < 0.02) : S.lit[0] + ((rnd() * (S.lit[1] - S.lit[0] + 1)) | 0),
+          inh = true,
+          g2 = Math.max(a.gen, b.gen) + 1;
+        for (let q = 0; q < n && pop[a.sp] + kids.length < S.cap; q++) {
+          const c = mk(a.sp, fem.x, fem.y, rnd() < 0.5 ? 1 : 0, child(fem, mal, inh), g2, 0);
+          c.bond = 0.6;
+          c.metAny = true;
+          c.e = 60;
+          c.w = 100;
+          c.mom = fem;
+          fem.kid = mal.kid = c;
+          kids.push(c);
+        }
+        fem.mate = mal;
+        mal.mate = fem;
+        fem.e -= 10 + 12 * n;
+        mal.e -= 10;
+        fem.cd = mal.cd = S.cd;
+        a.rd = b.rd = false;
+        a.bonus[5] += 1;
+        b.bonus[5] += 1;
+        a.ev[5] = b.ev[5] = 'it mated on day ' + dn;
+        if (a.sp === 0) {
+          maxGen = Math.max(maxGen, g2);
+          const nm = kids
+            .slice(-n)
+            .map((c) => c.name)
+            .join(' and ');
+          log(
+            fem.name +
+              ' and ' +
+              mal.name +
+              (n > 1 ? ' had twins, ' : ' had a baby, ') +
+              nm +
+              ' (generation ' +
+              g2 +
+              ').'
+          );
+        }
+      }
+    } else if (act === A_GIVE && a.sp === 0 && a.e > 40) {
+      let t = null;
+      for (let yy = -1; yy <= 1; yy++)
+        for (let xx = -1; xx <= 1; xx++) {
+          const l = G[idx(clamp(a.x + xx, 0, W - 1), clamp(a.y + yy, 0, H - 1))];
+          if (l) for (const o of l) if (kinYoung(a, o) && (!t || o.e < t.e)) t = o;
+        }
+      if (t) {
+        const need = 1 - t.e / 100;
+        a.e -= 12;
+        t.e = Math.min(100, t.e + 12);
+        a.bonus[7] += 0.6 * need;
+        a.ev[7] = 'it fed a hungry child on day ' + dn;
+        a.shared++;
+        followed(a, 'share', 'fed a hungry child');
+        if (!firsts.share) {
+          firsts.share = 1;
+          log(a.name + ' shared food with ' + t.name + '. Nobody taught this.');
+        }
+      }
+    } else if (act === A_ATK && (a.sp === 2 || a.sp === 0) && a.kcd === 0 && !a.asleep) {
+      let t = null;
+      for (let yy = -1; yy <= 1 && !t; yy++)
+        for (let xx = -1; xx <= 1 && !t; xx++) {
+          const l = G[idx(clamp(a.x + xx, 0, W - 1), clamp(a.y + yy, 0, H - 1))];
+          if (l) t = l.find((o) => edible(a, o)) || null;
+        }
+      if (t) {
+        a.kcd = 4;
+        const T = SP[t.sp],
+          pc = a.sp === 0 ? 0.25 : t.asleep || t.age < T.mat * T.wn ? 0.9 : 0.6;
+        if (rnd() < pc) {
+          t.dead = true;
+          t.cause = a.sp === 0 ? 'caught by a person' : 'killed by a predator';
+          if (a.sp === 2) kills[t.sp]++;
+          else {
+            fished++;
+            followed(a, 'fish', 'caught a fish');
+          }
+          a.e = Math.min(
+            100,
+            a.e + (t.sp === 3 ? (a.sp === 0 ? 30 : 20) : t.sp === 1 ? 70 : t.sp === 0 ? 70 : 50)
+          );
+          if (a.sp === 2 && t.sp !== 3)
+            for (let yy = -2; yy <= 2; yy++)
+              for (let xx = -2; xx <= 2; xx++) {
+                const l = G[idx(clamp(a.x + xx, 0, W - 1), clamp(a.y + yy, 0, H - 1))];
+                if (l)
+                  for (const o of l)
+                    if (o !== a && o.sp === 2 && !o.dead && o.age < SP[2].mat) {
+                      o.e = Math.min(100, o.e + 35);
+                      o.ev[2] = 'it shared a kill on day ' + dn;
+                    }
+              }
+          a.ev[2] = (a.sp === 0 ? 'it caught a fish' : 'it caught prey') + ' after going hungry on day ' + dn;
+          if (a.sp === 0 && fished === 1) log('A person caught a fish for the first time.');
+          if (t.sp === 2) log('A starving predator ate another predator.');
+        } else if (t.sp !== 3) {
+          t.hp -= 25;
+          t.painA = Math.min(1, t.painA + 0.8);
+          t.ev[0] = 'it was bitten by a predator on day ' + dn;
+          if (t.hp <= 0) {
+            t.dead = true;
+            t.cause = 'killed by a predator';
+            kills[t.sp]++;
+          }
+        }
+      }
+    }
+    if (a.age % 48 === a.id % 48 && a.age > 48) lessons(a);
+  }
+  ag = ag.filter((a) => {
+    let c = a.dead
+      ? a.cause
+      : a.hp <= 0
+        ? a.wasW
+          ? 'drowned'
+          : 'its wounds'
+        : a.w <= 0
+          ? 'thirst'
+          : a.e <= 0
+            ? 'hunger'
+            : a.age > a.lf
+              ? 'old age'
+              : null;
+    if (!c) return true;
+    a.gone = true;
+    if (a.sp === 0)
+      log(
+        a.name +
+          ' died (' +
+          (c === 'drowned' ? 'drowned' : c === 'killed by a predator' ? 'killed by a predator' : 'of ' + c) +
+          ') at ' +
+          (a.age / TY).toFixed(1) +
+          ' years old.' +
+          (a.c0 || '')
+      );
+    else if (c === 'drowned' && tick - (DL[a.sp] ?? -1e9) > DAY) {
+      DL[a.sp] = tick;
+      log('A ' + SP[a.sp].n.toLowerCase() + ' drowned.');
+    }
+    return false;
+  });
+  ag.push(...kids);
+  if (!over && !ag.some((a) => a.sp === 0)) {
+    over = true;
+    log('The last person has died. Restart to try again.');
+    if (typeof onExtinct === 'function') onExtinct();
+  }
+  if (tick % 144 === 0) {
+    const c = [0, 0, 0, 0];
+    ag.forEach((a) => c[a.sp]++);
+    hist.push(c);
+    if (hist.length > 220) hist.shift();
+  }
+}
