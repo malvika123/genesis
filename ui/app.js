@@ -297,7 +297,7 @@ function loop() {
     if (acc > 10) acc = 0;
   }
   draw();
-  updateChip();
+  updateDock();
   requestAnimationFrame(loop);
 }
 $('play').onclick = () => {
@@ -327,7 +327,7 @@ $('reset').onclick = () => {
 function fillIdeas() {
   const T = $('wtxt'),
     B = $('wgo');
-  $('wmsg').textContent = '';
+  $('wmsg').textContent = 'Type anything. It reaches them in sleep or a quiet moment, as their own thought.';
   T.disabled = B.disabled = !sel;
   T.placeholder = sel
     ? 'Whisper to ' + (sel.name || 'this ' + SP[sel.sp].n.toLowerCase()) + '…'
@@ -345,7 +345,7 @@ $('wgo').onclick = () => {
     off = r.found.filter((f) => !f.ok).map((f) => f.k);
   $('wmsg').textContent =
     (u.length
-      ? 'It will carry: ' + u.join(', ') + (r.dir !== null ? ' (toward the ' + CP[r.dir] + ')' : '')
+      ? 'It will carry: ' + u.join(', ') + (r.dir !== null ? ' (toward the ' + CP[r.dir] + ')' : '') + '.'
       : 'Nothing in these words connects to its world yet, so it will only stir a feeling.') +
     (off.length ? ' A ' + SP[sel.sp].n.toLowerCase() + ' has no use for: ' + off.join(', ') + '.' : '') +
     (sel.asleep ? ' It will reach them in their sleep.' : ' It will come in sleep or a quiet moment.');
@@ -396,17 +396,29 @@ function showTab(name) {
   if (name === 'world') fit();
 }
 document.querySelectorAll('nav button').forEach((b) => (b.onclick = () => showTab(b.dataset.tab)));
-function updateChip() {
-  const chip = $('chip');
+function updateDock() {
+  const d = $('dock');
   if (!sel || sel.gone) {
-    chip.hidden = true;
+    d.hidden = true;
     return;
   }
-  const t = (sel.name || 'A ' + SP[sel.sp].n.toLowerCase()) + ' is selected';
-  if ($('chiptxt').textContent !== t) $('chiptxt').textContent = t;
-  chip.hidden = false;
+  const t = sel.name || 'A ' + SP[sel.sp].n.toLowerCase();
+  if ($('dname').textContent !== t) $('dname').textContent = t;
+  d.hidden = false;
 }
-$('chipgo').onclick = () => showTab('mind');
+document.querySelectorAll('[data-dt]').forEach(
+  (b) =>
+    (b.onclick = () => {
+      document.querySelectorAll('[data-dt]').forEach((x) => x.setAttribute('aria-selected', x === b));
+      $('dp-whisper').hidden = b.dataset.dt !== 'whisper';
+      $('dp-mind').hidden = b.dataset.dt !== 'mind';
+      $('dock').classList.remove('min');
+    })
+);
+$('dmin').onclick = () => {
+  const m = $('dock').classList.toggle('min');
+  $('dmin').textContent = m ? '+' : '–';
+};
 new ResizeObserver(fit).observe($('stage'));
 window.addEventListener('resize', fit);
 reset(readCfg());
