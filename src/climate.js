@@ -39,9 +39,12 @@ const growthAt = (i) => clamp((cellT(i) - 2) / 13, 0, 1.15);
 // How cold a creature feels (0 = comfortable, 1 = freezing for its kind). Fish don't feel it.
 function coldOf(a, night) {
   if (a.sp === 3) return 0;
-  // rain on your skin or fur makes it feel about 5 °C colder
-  const wet = typeof RAIN !== 'undefined' && RAIN && RAIN[idx(a.x, a.y)] > 0.002 ? 5 : 0;
-  return clamp((SP[a.sp].cold - cellTemp(idx(a.x, a.y), night) + wet) / 20, 0, 1);
+  // rain on your skin or fur makes it feel about 5 °C colder; under trees you stay drier and out of
+  // the wind
+  const i = idx(a.x, a.y),
+    shelter = typeof tree !== 'undefined' && tree ? cover(i) : 0,
+    wet = typeof RAIN !== 'undefined' && RAIN && RAIN[i] > 0.002 && shelter < 0.4 ? 5 : 0;
+  return clamp((SP[a.sp].cold - cellTemp(i, night) + wet) / 20, 0, 1) * (1 - 0.35 * shelter);
 }
 function seasonName(y) {
   const h = lat(y) < 0 ? 1 : -1,

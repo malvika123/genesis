@@ -20,7 +20,7 @@ const MV = [
     [1, -1],
   ],
   CP = ['east', 'south-east', 'south', 'south-west', 'west', 'north-west', 'north', 'north-east'];
-const NCH = 12, // per direction: water, food, danger, herbivore, person, predator, mate, family, fish, red berries, the sea, a steep climb
+const NCH = 13, // per direction: water, food, danger, herbivore, person, predator, mate, family, fish, red berries, the sea, a steep climb, trees
   NS = 8 * NCH,
   HB = NS,
   IB = NS + 4,

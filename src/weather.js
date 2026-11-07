@@ -176,7 +176,8 @@ function updateWeather() {
     // evaporation: from open water, and from wet ground and plants
     if (liquid(i)) HUM[i] += 0.011 * warm * dry;
     else if (!water[i] && MOIST[i] > 0) {
-      const e = Math.min(MOIST[i], 0.004 * MOIST[i] * warm * dry);
+      // shade under trees keeps the soil from drying out as fast
+      const e = Math.min(MOIST[i], 0.004 * MOIST[i] * warm * dry * (1 - 0.4 * (tree ? tree[i] : 0)));
       HUM[i] += e;
       MOIST[i] -= e * 0.8;
     }

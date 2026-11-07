@@ -117,6 +117,54 @@ const G3D = { ok: false };
     geo.computeVertexNormals();
     shapedFor = alt;
   }
+  // Real trees, shown when you zoom in: cone-shaped pines and round-crowned broadleaf trees, a few per
+  // forest cell depending on how thick the forest is. Rebuilt now and then as forests change.
+  const MAXT = 9000,
+    coneG = new THREE.ConeGeometry(0.0035, 0.011, 6).translate(0, 0.0055, 0),
+    crownG = new THREE.IcosahedronGeometry(0.0042, 0).translate(0, 0.0062, 0),
+    pines = new THREE.InstancedMesh(coneG, new THREE.MeshLambertMaterial({ color: 0x24493a }), MAXT),
+    leafy = new THREE.InstancedMesh(crownG, new THREE.MeshLambertMaterial({ color: 0x2f6b2a }), MAXT);
+  pines.count = leafy.count = 0;
+  globe.add(pines);
+  globe.add(leafy);
+  let treesFor = null,
+    treeFrame = 0;
+  const up = new THREE.Vector3(0, 1, 0),
+    q = new THREE.Quaternion(),
+    mtx = new THREE.Matrix4(),
+    scl = new THREE.Vector3(),
+    pos = new THREE.Vector3();
+  function plantTrees() {
+    let np = 0,
+      nl = 0,
+      seed = 12345;
+    const r01 = () => (seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff;
+    for (let i = 0; i < W * H && np < MAXT && nl < MAXT; i++) {
+      const t = tree[i];
+      if (t < 0.2 || water[i]) continue;
+      const n = t > 0.65 ? 3 : t > 0.4 ? 2 : 1,
+        x = i % W,
+        y = (i / W) | 0;
+      for (let k = 0; k < n; k++) {
+        const gx = x + 0.15 + 0.7 * r01(),
+          gy = y + 0.15 + 0.7 * r01(),
+          lo = (gx / W) * 2 * Math.PI - Math.PI,
+          la = LATMAX * (1 - (2 * gy) / H),
+          r = 1 + EX * heightAt(la, lo);
+        pos.copy(local(la, lo, r));
+        q.setFromUnitVectors(up, pos.clone().normalize());
+        const sz = (0.7 + 0.6 * r01()) * (fkind[i] === 3 ? 1.35 : 1);
+        scl.set(sz, sz, sz);
+        mtx.compose(pos, q, scl);
+        if (fkind[i] === 1) pines.setMatrixAt(np++, mtx);
+        else leafy.setMatrixAt(nl++, mtx);
+      }
+    }
+    pines.count = np;
+    leafy.count = nl;
+    pines.instanceMatrix.needsUpdate = leafy.instanceMatrix.needsUpdate = true;
+    treesFor = alt;
+  }
   // a point on the surface (local coordinates) for a latitude/longitude
   const local = (la, lo, r) =>
     new THREE.Vector3(Math.cos(lo) * Math.cos(la) * r, Math.sin(la) * r, -Math.sin(lo) * Math.cos(la) * r);
@@ -195,6 +243,8 @@ const G3D = { ok: false };
       camera.updateProjectionMatrix();
     }
     if (shapedFor !== alt) shape();
+    if (treesFor !== alt || treeFrame++ % 600 === 0) plantTrees();
+    pines.visible = leafy.visible = GL.zoom > 1.8;
     if (frame++ % 12 === 0) paint(v);
     if (!GL.held) {
       GL.lon0 += GL.vel;

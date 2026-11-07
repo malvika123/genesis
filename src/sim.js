@@ -7,10 +7,11 @@ function sim() {
   const dn = dayN();
   updateClimate();
   updateWeather();
+  updateForest();
   for (let i = 0; i < W * H; i++) {
     if (rock[i]) continue;
     // plants need warmth and water
-    const tf = (water[i] ? 0.5 : TF[ter[i]]) * growthAt(i) * wetness(i);
+    const tf = (water[i] ? 0.5 : TF[ter[i]] * (1 - 0.6 * tree[i])) * growthAt(i) * wetness(i);
     if (food[i] < 1) food[i] += (0.006 * food[i] * (1 - food[i]) + 0.0004) * tf;
   }
   G = new Array(W * H);
@@ -268,6 +269,8 @@ function sim() {
             a.e -= 1.5 * climb;
             a.acc -= Math.min(1, climb);
           }
+          // thick forest is slow going
+          if (!fish) a.acc -= 0.45 * cover(idx(X, Y));
           a.x = X;
           a.y = Y;
           if (pit[idx(X, Y)]) {
@@ -308,6 +311,16 @@ function sim() {
         if (!firsts['p' + a.sp]) {
           firsts['p' + a.sp] = 1;
           log(who(a) + ' ate red berries and got sick.');
+        }
+      } else if (a.sp === 0 && fruit[i] > 0.05) {
+        // fruit from the trees: more filling than leaves and roots
+        const b = Math.min(fruit[i], 0.4);
+        fruit[i] -= b;
+        a.e = Math.min(100, a.e + b * 70);
+        if (hu > 0.5) a.ev[2] = 'it ate fruit after going hungry on day ' + dn;
+        if (!firsts.fruit) {
+          firsts.fruit = 1;
+          log(a.name + ' ate fruit from the trees.');
         }
       } else if (a.sp === 0 && f > 0.05) {
         const b = Math.min(f, 0.5);

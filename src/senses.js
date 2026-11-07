@@ -20,7 +20,8 @@ function sense(a, x, night) {
   const tw = 1 - a.w / 100,
     te = 1 - a.e / 100;
   const S = SP[a.sp],
-    r = Math.max(1.5, a.g.v * (night ? S.nv : 1) * (a.asleep ? 0.3 : 1));
+    // in thick forest you can't see far
+    r = Math.max(1.5, a.g.v * (night ? S.nv : 1) * (a.asleep ? 0.3 : 1) * (1 - 0.35 * cover(idx(a.x, a.y))));
   for (const [dx, dy, d, s] of OFF) {
     if (d > r) break;
     const X = a.x + dx,
@@ -60,16 +61,20 @@ function sense(a, x, night) {
         const q = cl * Math.min(1, up / 1.5);
         if (x[b + 11] < q) x[b + 11] = q;
       }
-      const f = food[i] * cl * (0.15 + te);
+      // people also see fruit on the trees as food
+      const f = (a.sp === 0 ? Math.max(food[i], fruit[i] * 1.4) : food[i]) * cl * (0.15 + te);
       if (f > x[b + 1]) x[b + 1] = f;
+      if (tree[i] > 0.1 && x[b + 12] < cl * tree[i]) x[b + 12] = cl * tree[i];
       if (poison[i] && food[i] > 0.05 && x[b + 9] < cl) x[b + 9] = cl;
     }
     const l = G[i];
     if (l)
       for (const o of l) {
         if (o === a || o.dead) continue;
-        const c = o.sp === 3 ? 8 : o.sp === 1 ? 3 : o.sp === 0 ? 4 : 5,
-          q = (a.sp === 2 && c !== 5) || (a.sp === 0 && c === 8) ? cl * (0.15 + te) : cl;
+        // anyone among thick trees is harder to spot
+        const hid = 1 - 0.6 * cover(i),
+          c = o.sp === 3 ? 8 : o.sp === 1 ? 3 : o.sp === 0 ? 4 : 5,
+          q = ((a.sp === 2 && c !== 5) || (a.sp === 0 && c === 8) ? cl * (0.15 + te) : cl) * hid;
         if (x[b + c] < q) x[b + c] = q;
         if (o.sp === a.sp && o.sex !== a.sex && o.rd && a.rd && x[b + 6] < cl) x[b + 6] = cl;
         if ((o === a.kid || o === a.mom || o.mom === a) && x[b + 7] < cl) x[b + 7] = cl;
@@ -128,7 +133,12 @@ function sense(a, x, night) {
     }
   }
   const here = idx(a.x, a.y);
-  x[HB] = (a.sp < 2 && !water[here]) || (a.sp === 3 && water[here]) ? food[here] : 0;
+  x[HB] =
+    (a.sp < 2 && !water[here]) || (a.sp === 3 && water[here])
+      ? a.sp === 0
+        ? Math.max(food[here], fruit[here])
+        : food[here]
+      : 0;
   let wa = 0,
     pa = 0,
     ma = 0;

@@ -48,6 +48,7 @@ function placeOf(a) {
   if (iced(i)) return salt[i] ? 'on the sea ice' : 'on frozen water';
   if (salt[i]) return deep[i] ? 'out in the deep sea' : 'in the shallow sea';
   if (river[i]) return 'in a river';
+  if (tree[i] > 0.35) return 'in the ' + FOREST[fkind[i] || 2];
   if (!water[i] && cellT(i) < -2) return 'in the snow';
   return water[i]
     ? deep[i]
@@ -73,6 +74,7 @@ const PLAIN_CH = {
   'red berries': 'sees red berries',
   'the sea': 'sees the sea',
   'a steep climb': 'sees a steep climb',
+  trees: 'sees trees',
 };
 const PLAIN = {
   'food right here': 'there is food right here',
@@ -235,6 +237,7 @@ function weatherText(i) {
         : CLD[i] > 0.08
           ? 'Cloudy'
           : 'Clear sky',
+    shelter = raining(i) && tree[i] > 0.4 ? ', but sheltered by the trees' : '',
     ground = water[i]
       ? ''
       : PUD[i]
@@ -246,7 +249,7 @@ function weatherText(i) {
             : MOIST[i] > 0.8
               ? ', soaked ground'
               : '';
-  return sky + ground;
+  return sky + shelter + ground;
 }
 function doingText(a) {
   const m = a.mind;
@@ -345,6 +348,33 @@ function drawTerrain(g, v, relief = true) {
         }
       }
     }
+  // forests: a canopy of tree crowns, darkest in the rainforest, blue-green for pines; ripe fruit shows
+  const FC = ['', '#2d5a45', '#3b7a35', '#1f5e2a'];
+  for (let y = 0; y < H; y++)
+    for (let x = 0; x < W; x++) {
+      const i = y * W + x,
+        t = tree[i];
+      if (t < 0.12 || water[i]) continue;
+      g.globalAlpha = Math.min(0.9, t * 1.1);
+      g.fillStyle = FC[fkind[i]] || FC[2];
+      g.fillRect(x * C, y * C, C, C);
+      if (t > 0.35) {
+        g.globalAlpha = Math.min(0.55, t * 0.6);
+        g.fillStyle = '#0e2a14';
+        g.beginPath();
+        g.arc(x * C + 3, y * C + 3.5, 2.2, 0, 7);
+        g.arc(x * C + 8, y * C + 6, 2.4, 0, 7);
+        g.arc(x * C + 4, y * C + 8.5, 2, 0, 7);
+        g.fill();
+      }
+      if (fruit[i] > 0.15) {
+        g.globalAlpha = Math.min(1, fruit[i] * 2);
+        g.fillStyle = '#f0a020';
+        g.fillRect(x * C + 6, y * C + 2, 2, 2);
+        g.fillRect(x * C + 2, y * C + 7, 2, 2);
+      }
+    }
+  g.globalAlpha = 1;
   // relief: light from the north-west, so slopes facing it are lit and the far sides are in shade;
   // the highest ground turns to bare grey rock (the 3D globe does its own shading)
   for (let y = 0; y < H && relief; y++)

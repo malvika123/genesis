@@ -23,6 +23,7 @@ src/                the simulation engine — no browser code, so it also runs h
   lessons.js        detecting what a creature has learned, and what taught it
   creatures.js      bodies, genes, personality, inheritance
   terrain.js        height map: oceans, continents, mountains, lakes in basins, rivers that flow downhill
+  forest.js         forests by climate (rainforest, woods, pine), how they spread and die back, fruit
   world.js          starting a world: terrain, grass, weather and the first creatures
   senses.js         what each creature perceives and remembers
   mind.js           reading a creature's mind from its network
@@ -59,6 +60,7 @@ The tests check that the world is reproducible, that creatures stay within their
 ## What's in the world
 
 - **Terrain:** every place has a height. About half the world is sea — salty, so nobody can drink it, shallow along the coasts and deep further out. Continents rise to mountain ranges up to about 5 km high. Water has to drain to the sea, so basins fill into lakes and rain gathers into rivers that start in the uplands and run downhill to the coast. There are beaches, deserts, stony uplands, boulders, pits that trap and hurt, and red berries that look like food but make you sick. Grass grows back over days.
+- **Forests:** trees grow where it is warm and wet enough over the year — rainforest near the equator, broadleaf woods in the middle latitudes, pine forest in the cold and up the mountains to a treeline. They thicken over years when the soil is moist and thin out in droughts, and they shade out the grass beneath. Trees bear fruit in the growing season, which people can eat; under trees you stay dry in the rain and out of the wind; creatures among trees are harder to spot (good for hiding from predators) and see less far themselves; and thick forest is slow going. Zoom in on the 3D planet and you see the trees themselves.
 - **Height matters:** it gets about 6.5 °C colder for every kilometre up, so high peaks keep their snow; climbing costs energy and steep slopes slow you down; wind pushed up a mountain rains on that side and leaves a dry rain shadow behind it.
 - **People** (pink and blue), **herbivores** (yellow-green), **predators** (red) and **fish** (in the water). Each species has its own lifespan, age of maturity, litter size, sleep need and senses, based on real animals.
 - **A round world in 3D:** the world is a planet you can spin. Mountains stand up off the surface (heights exaggerated about 70×, as Google Earth does, since real mountains are too small to see on a whole planet), lit by the sun, with clouds floating above. Drag to turn it, scroll or pinch to zoom — the view tilts toward the horizon as you come close — or switch to a flat map. Walk east far enough and you come back from the west; the poles are capped with ice.
@@ -70,7 +72,7 @@ The tests check that the world is reproducible, that creatures stay within their
 
 ## How their minds work
 
-- **Senses:** what lies in eight directions (fresh water, food, danger, other creatures, mates, family, fish, red berries, the sea, steep climbs), plus their own hunger, thirst, tiredness, pain, injury, the time of day, and remembered water and food.
+- **Senses:** what lies in eight directions (fresh water, food, danger, other creatures, mates, family, fish, red berries, the sea, steep climbs, trees), plus their own hunger, thirst, tiredness, pain, injury, the time of day, and remembered water and food.
 - **Brain:** a small neural network chooses one of 15 actions — walk in 8 directions, stay, eat, drink, sleep, mate, attack, or share food.
 - **Learning:** actor-critic reinforcement learning with eligibility traces. Rewards come only from the body: relief from hunger and thirst, rest, warmth, company, mating, finding new places; pain, drowning, cold and injury hurt.
 - **Hard-wired survival:** like a brainstem, a starving creature reaches for food in front of it and a parched one drinks. Learning can't override that.
