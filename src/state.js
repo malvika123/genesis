@@ -23,6 +23,7 @@ let fished = 0,
   maxGen,
   nLessons,
   sel = null,
+  RETINA = false, // the raw-vision experiment: people see only light and colour, no labels
   over = false,
   NID = 0;
 const LG = [{}, {}, {}],

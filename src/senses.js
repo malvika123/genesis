@@ -102,6 +102,66 @@ function perceive(a, x) {
     }
   }
 }
+// ---------- raw vision (an experiment, chosen when making a new world) ----------
+// No labels at all: the eyes report only light. Rays fan across the field of view; each reports the
+// colour and nearness of the first thing it meets — another creature, fire, a tree, a hill, water —
+// or the ground. A lake and the sea are the same blue; a wolf is a grey shape. Whatever is within
+// touching distance is still felt, smelled and heard. Everything else, the brain must learn to see.
+const LOOKRGB = {
+  Person: [0.9, 0.72, 0.6],
+  Deer: [0.63, 0.44, 0.25],
+  Rabbit: [0.6, 0.54, 0.47],
+  Bison: [0.29, 0.2, 0.13],
+  Wolf: [0.53, 0.55, 0.57],
+  'Big cat': [0.79, 0.59, 0.23],
+  Bear: [0.36, 0.23, 0.15],
+};
+function retina(a, x, r, night) {
+  // no labelled view at all: only what is within reach (food underfoot, water to drink, someone
+  // beside it) is still known, by touch, taste and smell
+  x.fill(0, 0, NS);
+  if (a.asleep) return;
+  const look = a.act === A_STAY,
+    span = ((look ? 360 : a.S.fov) * Math.PI) / 180,
+    base = Math.atan2(MV[a.hd][1], MV[a.hd][0]),
+    h0 = Math.max(0, alt[idx(a.x, a.y)]),
+    dim = night ? 0.25 : 1;
+  for (let k = 0; k < NRAY; k++) {
+    const ang = base + (k / (NRAY - 1) - 0.5) * span * (look ? (NRAY - 1) / NRAY : 1),
+      ux = Math.cos(ang),
+      uy = Math.sin(ang);
+    let rgb = null,
+      near = 0;
+    for (let t = 1; t <= r && !rgb; t += 0.7) {
+      const X = Math.round(a.x + ux * t),
+        Y = Math.round(a.y + uy * t);
+      if (!inb(X, Y)) break;
+      const i = idx(X, Y),
+        cl = 1 - t / (r + 1),
+        l = G[i];
+      let o = null;
+      if (l) for (const q of l) if (q !== a && !q.dead && q.sp !== 3) o = q;
+      if (o) rgb = LOOKRGB[o.S.n] || [0.5, 0.5, 0.5];
+      else if (FIRE[i] > 0.03) rgb = [1, 0.55, 0.1];
+      else if (tree[i] > 0.5) rgb = [0.2, 0.4, 0.2];
+      else if (Math.max(0, alt[i]) > h0 + 0.3 * t) rgb = [0.5, 0.48, 0.45];
+      else if (water[i] && !river[i]) rgb = iced(i) ? [0.85, 0.9, 0.95] : [0.25, 0.45, 0.75];
+      else if (poison[i] && food[i] > 0.05 && a.S.col >= 3) rgb = [0.75, 0.15, 0.2];
+      if (rgb) near = cl;
+    }
+    if (!rgb) {
+      // nothing stands out: the ground, a little way off
+      const i = idx(Math.round(a.x + ux * 2), clamp(Math.round(a.y + uy * 2), 0, H - 1));
+      rgb = ter[i] === 1 ? [0.9, 0.85, 0.6] : food[i] > 0.2 ? [0.4, 0.6, 0.3] : [0.55, 0.5, 0.4];
+    }
+    const lit = rgb[0] === 1 && rgb[2] === 0.1 ? 1 : dim, // fire is bright even at night
+      o = RET + 4 * k;
+    x[o] = rgb[0] * lit;
+    x[o + 1] = rgb[1] * lit;
+    x[o + 2] = rgb[2] * lit;
+    x[o + 3] = near;
+  }
+}
 // something important teaches recognition fast: what bit you, what made you sick, what burned you
 function learnSight(a, c, amount = 0.1) {
   if (a.per) a.per[c] = Math.min(1, a.per[c] + amount * (1 - a.per[c]));
@@ -211,7 +271,8 @@ function sense(a, x, night) {
         if (o.hand === 4 && x[b + 15] < cl * 0.6) x[b + 15] = cl * 0.6; // someone carrying fire
       }
   }
-  if (a.sp === 0 && a.per) perceive(a, x);
+  if (a.sp === 0 && RETINA) retina(a, x, r, night);
+  else if (a.sp === 0 && a.per) perceive(a, x);
   if (a.rd) {
     const hr = r * 6;
     for (const o of ag) {

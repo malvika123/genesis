@@ -622,6 +622,10 @@
           <label>Humans <input id="fnd" type="number" min="2" max="40" value="8" /></label>
           <label>Plant-eaters <input id="hrb" type="number" min="0" max="40" value="20" /></label>
           <label>Hunters <input id="prd" type="number" min="0" max="12" value="6" /></label>
+          <label
+            title="People see only light and colour, with no labels, and must learn what things are. They may well die out before they do."
+            ><input id="ret" type="checkbox" /> Raw vision (experiment)</label
+          >
           <label>Fish <input id="fsh" type="number" min="0" max="60" value="24" /></label>
           <button class="go" id="reset">Restart world</button>
         </div>
@@ -700,8 +704,21 @@
           contentment — the core emotional systems of all mammals. They change what it does and learns;
           whether it experiences them, no one can say.
         </p>
-        <p class="sub">Talking: people can make six sounds while they walk or run. A baby’s cry and a scream of pain are inborn; the other four mean nothing until use gives them meaning. They hear each other, and answering pleases both. The Stats tab shows what each sound has come to mean, worked out only from when it is used. Tap a person and choose “Listen” to hear them. Children inherit genes for brain size, learning and copying — not what their parents learned, which passes on only by copying.</p>
-        <p class="sub">Fire: it needs dry fuel — grass, trees, sticks — and something hot enough. In nature it comes from lightning (and, rarely, sparks from falling rocks), spreads with the wind and uphill, and goes out in the rain. Animals flee it; people are only wary. Fire cooks food, warms, lights the night and keeps predators away. A burning stick can be carried and a fire kept going with sticks; sparks from pyrite (a rare shiny stone) or long rubbing of dry sticks can start one. Nothing tells them any of this.</p>
+        <p class="sub">
+          Talking: people can make six sounds while they walk or run. A baby’s cry and a scream of pain are
+          inborn; the other four mean nothing until use gives them meaning. They hear each other, and
+          answering pleases both. The Stats tab shows what each sound has come to mean, worked out only from
+          when it is used. Tap a person and choose “Listen” to hear them. Children inherit genes for brain
+          size, learning and copying — not what their parents learned, which passes on only by copying.
+        </p>
+        <p class="sub">
+          Fire: it needs dry fuel — grass, trees, sticks — and something hot enough. In nature it comes from
+          lightning (and, rarely, sparks from falling rocks), spreads with the wind and uphill, and goes out
+          in the rain. Animals flee it; people are only wary. Fire cooks food, warms, lights the night and
+          keeps predators away. A burning stick can be carried and a fire kept going with sticks; sparks from
+          pyrite (a rare shiny stone) or long rubbing of dry sticks can start one. Nothing tells them any of
+          this.
+        </p>
         <p class="sub">
           Storms: thunderstorms build where the sun-heated ground lifts warm, moist air — on hot, humid
           afternoons. Lightning strikes from them and thunder startles creatures nearby.
@@ -741,7 +758,7 @@
     <script src="src/forest.js"></script>
     <script src="src/items.js"></script>
     <script src="src/talk.js"></script>
-<script src="src/fire.js"></script>
+    <script src="src/fire.js"></script>
     <script src="src/world.js"></script>
     <script src="src/senses.js"></script>
     <script src="src/mind.js"></script>

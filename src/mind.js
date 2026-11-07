@@ -73,6 +73,7 @@ function actName(a, k) {
 }
 for (let j = 0; j < NM; j++) INNER[27 + j] = 'what it was just thinking';
 INNER[FIREIN - IB] = 'the warmth of a fire';
+for (let k = 0; k < 4 * NRAY; k++) INNER[RET - IB + k] = 'patches of light and colour';
 for (let k = 0; k < NSAY; k++)
   for (let q = 0; q < 3; q++) INNER[HEAR - IB + 3 * k + q] = 'hearing “' + SAYN[k] + '”';
 function featName(i) {

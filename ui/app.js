@@ -384,6 +384,8 @@ function doingHTML(a, S, stage, night) {
 // What its eyes are taking in right now, read from its real senses (the same numbers its brain gets).
 function seesText(a) {
   if (a.asleep) return 'Eyes shut: it only hears and smells what is right beside it';
+  if (RETINA && a.sp === 0)
+    return 'Sees only light and colour (raw vision): what any of it is, its brain must learn';
   const x = a.xi,
     look = a.sp === 3 || a.act === A_STAY,
     want = [
@@ -1863,6 +1865,7 @@ const readCfg = () => ({
   herbivores: +$('hrb').value || 0,
   predators: +$('prd').value || 0,
   fish: +$('fsh').value || 0,
+  retina: $('ret').checked,
 });
 function onLog(logs) {
   $('log').innerHTML = logs.map((l) => '<li>' + l + '</li>').join('');

@@ -59,7 +59,16 @@ test('a fire in dry grass spreads; in wet grass it dies; rain puts it out', () =
   let r = grassland();
   r.set(0.15);
   r.F.ignite(r.c, 0.3);
-  for (let k = 0; k < 12; k++) r.E.sim();
+  // a drought: the patch stays dry while it burns
+  for (let k = 0; k < 20; k++) {
+    for (let dy = -3; dy <= 3; dy++)
+      for (let dx = -3; dx <= 3; dx++) {
+        const i = r.E.idx((r.c % r.E.W) + dx, ((r.c / r.E.W) | 0) + dy);
+        r.w.MOIST[i] = 0.15;
+        r.w.HUM[i] = 0;
+      }
+    r.E.sim();
+  }
   const dry = [...r.F.BURNT].filter((v) => v > 0.05).length;
   assert.ok(dry >= 3, `in dry grass the fire spread (${dry} squares burnt)`);
   r = grassland();

@@ -25,6 +25,7 @@ function reset(cfg = {}) {
   nLessons = 0;
   over = false;
   sel = null;
+  RETINA = !!cfg.retina;
   for (const L of LG) for (const k in L) delete L[k];
   for (const k in DL) delete DL[k];
   makeTerrain();
