@@ -11,7 +11,7 @@ function sim() {
   for (let i = 0; i < W * H; i++) {
     if (rock[i]) continue;
     // plants need warmth and water
-    const tf = (water[i] ? 0.5 : TF[ter[i]] * (1 - 0.6 * tree[i])) * growthAt(i) * wetness(i);
+    const tf = (water[i] ? 0.5 : TF[ter[i]] * (1 - 0.35 * tree[i])) * growthAt(i) * wetness(i);
     if (food[i] < 1) food[i] += (0.006 * food[i] * (1 - food[i]) + 0.0004) * tf;
   }
   G = new Array(W * H);

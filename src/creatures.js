@@ -137,7 +137,11 @@ function spawn(sp, n, inst) {
         i = idx(x, y);
       if (!land(i) || alt[i] > 0.8) continue;
       if (sp === 0 && (Math.abs(lat(y)) > 0.45 || (t < 3000 && !freshNear(x, y)))) continue;
-      if (sp === 1 && (Math.abs(lat(y)) > 0.6 || ter[i] !== 0 || (t < 3000 && !freshNear(x, y)))) continue;
+      if (
+        sp === 1 &&
+        (Math.abs(lat(y)) > 0.6 || ter[i] !== 0 || tree[i] > 0.25 || (t < 3000 && !freshNear(x, y)))
+      )
+        continue;
       cx = x;
       cy = y;
       break;
