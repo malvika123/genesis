@@ -290,7 +290,7 @@ const G3D = { ok: false };
         h = (5.5 + 6 * gr) * k;
       if (fake.asleep) drawCreature(g, fake, SZ / 2, SZ - h * 0.2, k, v);
       else drawCreature(g, fake, SZ / 2, SZ - h * 0.16, k, v);
-    } else drawCreature(g, fake, SZ / 2, SZ * 0.86 - (SZ / 22) * 3.5, SZ / 26, v);
+    } else drawCreature(g, fake, SZ / 2, SZ * 0.97 - (SZ / 18) * 3.5, SZ / 18, v); // feet near the bottom, filling most of the picture
     t = new THREE.CanvasTexture(c);
     t.encoding = THREE.sRGBEncoding;
     figTex.set(key, t);
@@ -316,8 +316,10 @@ const G3D = { ok: false };
         const la = latOfY(a.ry),
           lo = lonOfX(a.rx);
         sp.position.copy(local(la, lo, 1 + EX * heightAt(la, lo) + 0.0002));
-        // a person stands about as tall as a third of a tree; fish swim at the surface
-        const s = a.sp === 0 ? 0.0046 : a.sp === 3 ? 0.0022 : 0.0042 * (LOOK[a.S.n] ? LOOK[a.S.n].s : 1);
+        // Figures are drawn 2.5 times life size so you can find them among the trees (like the
+        // exaggerated mountains), all by the same factor so people and animals keep their true sizes
+        // compared with each other (each kind's own size is already in its picture). Fish swim at the surface.
+        const s = (a.sp === 0 ? 0.0046 : a.sp === 3 ? 0.0022 : 0.0042 * (18 / 15)) * 2.5;
         sp.scale.set(s, s, 1);
       }
     for (let k = n; k < pool.length; k++) pool[k].visible = false;
