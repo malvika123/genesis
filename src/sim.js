@@ -13,7 +13,9 @@ function sim() {
     if (rock[i]) continue;
     // plants need warmth and water
     const tf = (water[i] ? 0.5 : TF[ter[i]] * (1 - 0.35 * tree[i])) * growthAt(i) * wetness(i);
-    if (food[i] < 1) food[i] += (0.006 * food[i] * (1 - food[i]) + 0.0004) * tf;
+    // grass spreads from what is left above ground, and grazed grass also grows back from its roots,
+    // which is why grasslands survive big herds; bare ground only greens again slowly, from seed
+    if (food[i] < 1) food[i] += (0.006 * food[i] * (1 - food[i]) + 0.0004 + 0.003 * Math.max(0, 0.6 - food[i])) * tf;
   }
   G = new Array(W * H);
   const pop = [0, 0, 0, 0],
@@ -349,18 +351,18 @@ function sim() {
         food[i] -= b;
         if (hu > 0.5) a.ev[2] = 'it ate after going hungry on day ' + dn;
         if (f > 0.4) followed(a, 'food', 'found the good food');
-      } else if (a.sp === 1 && f < 0.12 && tree[i] > 0.3 && a.fd < HCAP) {
+      } else if (a.sp === 1 && f < 0.12 && tree[i] > 0.3 && a.fd < S.hcap) {
         // where there is little grass, herbivores browse leaves and shoots: less filling, and it
         // slowly thins the trees
-        const b = Math.min(0.15, HCAP - a.fd);
+        const b = Math.min(S.bite / 2, S.hcap - a.fd);
         a.fd += b;
-        a.e = Math.min(100, a.e + b * HG * 0.7);
+        a.e = Math.min(100, a.e + b * S.hg * 0.7);
         tree[i] = Math.max(0, tree[i] - b * 0.04);
         if (hu > 0.5) a.ev[2] = 'it ate after going hungry on day ' + dn;
-      } else if (a.sp === 1 && f > 0.05 && a.fd < HCAP) {
-        const b = Math.min(f, 0.3, HCAP - a.fd);
+      } else if (a.sp === 1 && f > 0.05 && a.fd < S.hcap) {
+        const b = Math.min(f, S.bite, S.hcap - a.fd);
         a.fd += b;
-        a.e = Math.min(100, a.e + b * HG);
+        a.e = Math.min(100, a.e + b * S.hg);
         food[i] -= b;
         if (hu > 0.5) a.ev[2] = 'it ate after going hungry on day ' + dn;
       }

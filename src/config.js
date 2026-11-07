@@ -166,6 +166,7 @@ const KINDS = [
   {
     sp: 1,
     n: 'Deer',
+    mass: 70,
     cap: 60,
     share: 0.45,
     size: 1,
@@ -180,6 +181,7 @@ const KINDS = [
   {
     sp: 1,
     n: 'Rabbit',
+    mass: 2,
     cap: 45,
     share: 0.3,
     size: 0.35,
@@ -188,7 +190,6 @@ const KINDS = [
     smat: 0.5 * TY,
     life: 6 * TY,
     cd: 0.5 * TY,
-    dE: 2.5,
     cold: -18,
     walk: 0.08,
     run: 0.5,
@@ -197,7 +198,8 @@ const KINDS = [
   {
     sp: 1,
     n: 'Bison',
-    cap: 40,
+    mass: 600,
+    cap: 15,
     share: 0.25,
     size: 2.3,
     lit: [1, 1],
@@ -205,7 +207,6 @@ const KINDS = [
     smat: 3 * TY,
     life: 20 * TY,
     cd: 1.5 * TY,
-    dE: 5.5,
     dW: 4,
     cold: -30,
     walk: 0.05,
@@ -259,6 +260,22 @@ const KINDS = [
   },
   { sp: 3, n: 'Fish', share: 1, size: 1 },
 ];
-// the biology of one kind: its role's, with the kind's own differences on top
-const KBIO = KINDS.map((k) => Object.assign({}, SP[k.sp], k));
+// The biology of one kind: its role's, with the kind's own differences on top. For plant-eaters, how
+// much they eat and how fast they burn their reserves follow body mass (Kleiber's law): food needed
+// grows with mass^0.75, so a 600 kg bison eats far more grass than a deer and a 2 kg rabbit very
+// little — but the rabbit's small body burns through its reserves faster (mass^-0.25 of its store a day).
+const KBIO = KINDS.map((k) => {
+  const b = Object.assign({}, SP[k.sp], k),
+    r = (k.mass || 70) / 70; // compared with a deer
+  b.hcap = HCAP; // grass it can eat in a day
+  b.hg = HG; // energy (% of its store) from one unit of grass
+  b.bite = 0.3; // grass in one bite
+  if (k.sp === 1) {
+    b.dE = SP[1].dE * r ** -0.25;
+    b.hcap = HCAP * r ** 0.75;
+    b.hg = HG / r;
+    b.bite = 0.3 * r ** 0.75;
+  }
+  return b;
+});
 const KDEF = [0, 1, 4, 7]; // the first kind of each role
