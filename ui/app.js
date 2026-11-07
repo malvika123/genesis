@@ -1601,24 +1601,56 @@ $('wgo').onclick = () => {
 $('wtxt').onkeydown = (e) => {
   if (e.key === 'Enter') $('wgo').onclick();
 };
-// pick the creature nearest to a click (in CSS pixels), on either view
+// Pick the creature under a click (in CSS pixels), on either view. A figure stands above the spot
+// where its feet are, so a click anywhere on its body counts; a click that just misses keeps the
+// creature you were watching instead of losing it.
 function selectAt(e) {
   const r = cv.getBoundingClientRect(),
     qx = e.clientX - r.left,
-    qy = e.clientY - r.top;
+    qy = e.clientY - r.top,
+    close = view === 'globe' && G3D.ok && GL.zoom >= 6;
   let b = null,
-    bd = 18 ** 2;
+    bd = Infinity,
+    near = Infinity;
   for (const a of ag) {
     const P = screenPos(a);
     if (!P) continue;
-    const d = (P[0] - qx) ** 2 + (P[1] + (view === 'globe' ? 6 : P[2] / 2) - qy) ** 2;
-    if (d < bd) {
+    const feet = P[1] + (view === 'globe' ? 6 : P[2] / 2),
+      // how tall it looks on screen: a close-up figure (2.5× life size, see globe3d) or a marker
+      tall = close ? Math.max(14, P[2] * (a.sp === 0 ? 0.11 : 0.08)) : Math.max(14, P[2] * 0.9),
+      half = Math.max(12, tall * 0.4),
+      cy = feet - tall / 2,
+      inside = Math.abs(qx - P[0]) <= half && qy >= feet - tall - 4 && qy <= feet + 8,
+      d = (qx - P[0]) ** 2 + (qy - cy) ** 2;
+    if (d < near) near = d;
+    if (inside && d < bd) {
       bd = d;
       b = a;
     }
   }
+  if (!b && near < 60 ** 2) return; // a near miss: keep watching the one you had
   sel = b;
   fillIdeas();
+}
+// Zoom toward the place under the cursor (or between the fingers), not the middle of the screen, so
+// whatever you are zooming in on stays in view — like a map app.
+function zoomAt(z, cx, cy) {
+  const z0 = GL.zoom,
+    z1 = clamp(z, 1, 40);
+  if (z1 === z0) return;
+  const P = G3D.ok && G3D.pick ? G3D.pick(cx, cy) : null;
+  GL.zoom = z1;
+  if (!P || GL.eye) return;
+  // turn the planet until the same place is back under the cursor (the camera also tilts as it
+  // comes close, so this is corrected a few times)
+  for (let k = 0; k < 4; k++) {
+    G3D.aim();
+    const Q = G3D.pick(cx, cy);
+    if (!Q) break;
+    GL.lon0 += Math.atan2(Math.sin(P.lon - Q.lon), Math.cos(P.lon - Q.lon));
+    GL.lat0 = clamp(GL.lat0 + (P.lat - Q.lat), -1.45, 1.45);
+  }
+  GL.follow = null;
 }
 // drag to spin the globe, scroll or pinch to zoom; a click without dragging selects
 const ptr = new Map();
@@ -1653,7 +1685,14 @@ cv.addEventListener('pointermove', (e) => {
   if (view !== 'globe') return;
   if (ptr.size === 2) {
     const [a, b] = [...ptr.values()];
-    if (pinch0) GL.zoom = clamp((zoom0 * Math.hypot(a.x - b.x, a.y - b.y)) / pinch0, 1, 40);
+    if (pinch0) {
+      const r = cv.getBoundingClientRect();
+      zoomAt(
+        (zoom0 * Math.hypot(a.x - b.x, a.y - b.y)) / pinch0,
+        (a.x + b.x) / 2 - r.left,
+        (a.y + b.y) / 2 - r.top
+      );
+    }
     return;
   }
   const r = cv.getBoundingClientRect(),
@@ -1676,7 +1715,8 @@ cv.addEventListener(
   (e) => {
     if (view !== 'globe') return;
     e.preventDefault();
-    GL.zoom = clamp(GL.zoom * Math.exp(-e.deltaY * 0.0015), 1, 40);
+    const r = cv.getBoundingClientRect();
+    zoomAt(GL.zoom * Math.exp(-e.deltaY * 0.0015), e.clientX - r.left, e.clientY - r.top);
   },
   { passive: false }
 );

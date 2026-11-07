@@ -286,6 +286,30 @@ const G3D = { ok: false };
     return [px, py, cell];
   }
   G3D.project = project;
+  G3D.aim = () => aim();
+  // the latitude and longitude under a point on the canvas (CSS pixels), or null if it is space
+  const ray = new THREE.Raycaster(),
+    ndc = new THREE.Vector2(),
+    ball = new THREE.Sphere(new THREE.Vector3(), 1);
+  G3D.pick = (cx, cy) => {
+    const r = glc.getBoundingClientRect();
+    ndc.set((cx / r.width) * 2 - 1, -(cy / r.height) * 2 + 1);
+    ray.setFromCamera(ndc, camera);
+    globe.updateMatrixWorld(true);
+    // first against the bare planet, then again at the height of the ground found there
+    ball.radius = 1;
+    let p = null;
+    for (let k = 0; k < 3; k++) {
+      const hit = ray.ray.intersectSphere(ball, new THREE.Vector3());
+      if (!hit) return p;
+      p = globe.worldToLocal(hit).normalize();
+      const la = Math.asin(clamp(p.y, -1, 1)),
+        lo = Math.atan2(-p.z, p.x);
+      p = { lat: la, lon: lo };
+      ball.radius = 1 + EX * heightAt(la, lo) + 0.004;
+    }
+    return p;
+  };
 
   // ---- creatures as figures in the 3D world (only when zoomed in close) ----
   const figTex = new Map(),
