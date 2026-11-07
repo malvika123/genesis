@@ -6,7 +6,7 @@ Every creature is a reinforcement-learning agent with its own neural network. No
 
 ## Run it
 
-No install, no server, no API keys. Open `index.html` in any modern browser.
+No install, no server, no API keys. Open `index.html` in any modern browser. The 3D planet uses WebGL; without it the page falls back to a simpler globe.
 
 Everything runs locally in the page. Closing or reloading the tab starts a new world.
 
@@ -30,6 +30,8 @@ src/                the simulation engine — no browser code, so it also runs h
   sim.js            one step of the world
   ORDER             the order the engine files load in
 ui/app.js           drawing, panels, controls and the animation loop
+ui/globe3d.js       the planet in 3D (WebGL)
+vendor/three.min.js three.js 0.149 (MIT licence), included so the page works offline
 tools/              headless engine loader, experiment runner, single-file build
 tests/              automated tests
 ```
@@ -59,7 +61,7 @@ The tests check that the world is reproducible, that creatures stay within their
 - **Terrain:** every place has a height. About half the world is sea — salty, so nobody can drink it, shallow along the coasts and deep further out. Continents rise to mountain ranges up to about 5 km high. Water has to drain to the sea, so basins fill into lakes and rain gathers into rivers that start in the uplands and run downhill to the coast. There are beaches, deserts, stony uplands, boulders, pits that trap and hurt, and red berries that look like food but make you sick. Grass grows back over days.
 - **Height matters:** it gets about 6.5 °C colder for every kilometre up, so high peaks keep their snow; climbing costs energy and steep slopes slow you down; wind pushed up a mountain rains on that side and leaves a dry rain shadow behind it.
 - **People** (pink and blue), **herbivores** (yellow-green), **predators** (red) and **fish** (in the water). Each species has its own lifespan, age of maturity, litter size, sleep need and senses, based on real animals.
-- **A round world:** the world is a planet you can spin. Drag to turn it, scroll or pinch to zoom, and switch to a flat map if you like. Walk east far enough and you come back from the west; the poles are capped with ice.
+- **A round world in 3D:** the world is a planet you can spin. Mountains stand up off the surface (heights exaggerated about 70×, as Google Earth does, since real mountains are too small to see on a whole planet), lit by the sun, with clouds floating above. Drag to turn it, scroll or pinch to zoom — the view tilts toward the horizon as you come close — or switch to a flat map. Walk east far enough and you come back from the west; the poles are capped with ice.
 - **Day and night are local:** the sun circles the planet once a day, so it is noon on one side and midnight on the other, and creatures on the dark side sleep while others are active.
 - **Climate and seasons:** warm at the equator, cold at the poles, and four seasons that are opposite in the two hemispheres. In winter grass stops growing, water near the poles freezes (walkable, but you can't drink from it or drown in it) and snow covers the ground. Plants grow lushest in the tropics.
 - **Weather and the water cycle:** lakes, rivers and wet ground evaporate, faster when it is warm. Prevailing winds carry the moisture (trade winds, westerlies and polar easterlies, as on Earth). Warm air holds far more water than cold air, so where air rises and cools — along the equator, where the trade winds meet, and in drifting storms — the water condenses into clouds and falls as rain, or snow where it is freezing. Air sinking around 30° leaves dry belts, like Earth's deserts. Rain soaks the soil, grass needs that moisture to grow, downpours on soaked ground leave puddles creatures can drink from, and rain on your skin makes you feel colder.

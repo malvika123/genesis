@@ -20,8 +20,15 @@ function reset(cfg = {}) {
   for (const L of LG) for (const k in L) delete L[k];
   for (const k in DL) delete DL[k];
   makeTerrain();
+  updateClimate(); // again, now that the land has heights
   for (let i = 0; i < W * H; i++)
-    food[i] = rock[i] || pit[i] ? 0 : water[i] ? rnd() * 0.5 : rnd() * 0.6 * TF[ter[i]];
+    // the world starts as an established landscape, with grass already grown where it can grow
+    food[i] =
+      rock[i] || pit[i]
+        ? 0
+        : water[i]
+          ? rnd() * 0.5
+          : (0.35 + rnd() * 0.5) * TF[ter[i]] * Math.min(1, growthAt(i) + 0.2);
   initWeather();
   const n = clamp(cfg.people ?? 2, 2, 40),
     nh = clamp(cfg.herbivores ?? 14, 0, 40),

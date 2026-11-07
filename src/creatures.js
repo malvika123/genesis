@@ -114,7 +114,8 @@ function child(p, q) {
 }
 // Where the first creatures are born. Fish anywhere in the water. People start together in one warm,
 // low-lying region near fresh water (as early humans did) but not side by side, so they still have to
-// find each other. Predators start as a small pack. Herbivores anywhere on the lower land.
+// find each other. Predators start as a small pack. Herbivores start in a few herds on grassy land
+// that isn't too cold, so they can find mates in a big world.
 function spawn(sp, n, inst) {
   const land = (i) => !water[i] && !rock[i] && !pit[i] && alt[i] < 1.5;
   const freshNear = (x, y) => {
@@ -128,19 +129,23 @@ function spawn(sp, n, inst) {
   };
   let cx = -1,
     cy = -1;
-  if (sp === 0 || sp === 2) {
+  const centre = () => {
+    cx = cy = -1;
     for (let t = 0; t < 4000; t++) {
       const x = (rnd() * W) | 0,
         y = (rnd() * H) | 0,
         i = idx(x, y);
       if (!land(i) || alt[i] > 0.8) continue;
       if (sp === 0 && (Math.abs(lat(y)) > 0.45 || (t < 3000 && !freshNear(x, y)))) continue;
+      if (sp === 1 && (Math.abs(lat(y)) > 0.6 || ter[i] !== 0 || (t < 3000 && !freshNear(x, y)))) continue;
       cx = x;
       cy = y;
       break;
     }
-  }
+  };
+  if (sp !== 3) centre();
   for (let k = 0; k < n; k++) {
+    if (sp === 1 && k > 0 && k % 5 === 0) centre(); // a new herd every five
     let x,
       y,
       t = 0;
@@ -148,7 +153,7 @@ function spawn(sp, n, inst) {
       x = (rnd() * W) | 0;
       y = (rnd() * H) | 0;
       if (cx >= 0 && t < 3000) {
-        const r = sp === 0 ? 14 : 5;
+        const r = sp === 0 ? 14 : sp === 1 ? 4 : 5;
         x = wx(cx + Math.round((rnd() * 2 - 1) * r));
         y = clamp(cy + Math.round((rnd() * 2 - 1) * r), 0, H - 1);
       }
