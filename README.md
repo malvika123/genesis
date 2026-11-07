@@ -10,6 +10,47 @@ No install, no server, no API keys. Open `index.html` in any modern browser.
 
 Everything runs locally in the page. Closing or reloading the tab starts a new world.
 
+## Project structure
+
+```
+index.html          the page (layout and styles); loads the scripts below in order
+src/                the simulation engine — no browser code, so it also runs headless
+  config.js         world size, time scale, brain layout, each species' biology
+  state.js          shared world state, seedable random numbers, the event log
+  brain.js          neural network, instincts, actor-critic learning
+  lessons.js        detecting what a creature has learned, and what taught it
+  creatures.js      bodies, genes, personality, inheritance
+  world.js          building the terrain and the first creatures
+  senses.js         what each creature perceives and remembers
+  mind.js           reading a creature's mind from its network
+  whispers.js       turning your words into nudges in a brain
+  sim.js            one step of the world
+  ORDER             the order the engine files load in
+ui/app.js           drawing, panels, controls and the animation loop
+tools/              headless engine loader, experiment runner, single-file build
+tests/              automated tests
+```
+
+The engine never touches the page. That separation is what lets the same world run in the browser, in tests, and in large headless experiments.
+
+## For developers
+
+Needs [Node.js](https://nodejs.org) 18 or newer. There are no dependencies to install.
+
+```
+npm test                      # run the tests (about 30 seconds)
+npm run worlds                # run 5 seeded worlds for 60 days and summarise them
+npm run worlds -- --worlds 20 --days 90 --people 4 --seed 100
+npm run worlds -- --json      # machine-readable results, e.g. for analysis in Python
+npm run build                 # bundle everything into one file: dist/genesis.html
+```
+
+Worlds are seeded, so the same command always produces the same world — useful for comparing a change against what came before.
+
+The tests check that the world is reproducible, that creatures stay within their bodies' rules, that children and teenagers can never mate, that herbivores can graze, that loneliness needs someone to miss, that only strong habits are inherited (partly and by chance), that whispers are understood correctly, and that the mind readout matches the network.
+
+To play it online, enable GitHub Pages for this repo (Settings → Pages → deploy from `main`, root).
+
 ## What's in the world
 
 - **Terrain:** grass that grows back over days, sand, stony ground, boulders, a river, a lake and small ponds (shallow edges for drinking, deep middles that can drown you), pits that trap and hurt, and red berries that look like food but make you sick.

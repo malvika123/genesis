@@ -1,0 +1,19 @@
+{
+  "name": "genesis",
+  "version": "0.6.0",
+  "description": "An autonomous world of learning creatures: people, herbivores, predators and fish that learn to survive with their own neural networks.",
+  "license": "MIT",
+  "author": "Malvika Sen",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/malvika123/genesis.git"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "worlds": "node tools/run-worlds.js",
+    "build": "node tools/build.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
