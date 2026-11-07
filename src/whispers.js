@@ -176,7 +176,10 @@ function deliver(a) {
   a.wh = null;
   if (!W0) return;
   const r = interpret(W0, a);
-  const got = [];
+  const got = [],
+    person = a.sp === 0,
+    before = person ? testScore(a) : 0,
+    was = person ? a.lw.slice(0, OI) : null;
   for (const f of r.useful) {
     const d = nudge(a, f, r.dir);
     if (d) got.push(d);
@@ -185,6 +188,20 @@ function deliver(a) {
     a.lw[LWI(r.dir, IB + 11)] += 1;
     got.push('head ' + CP[r.dir]);
   }
+  // How deeply an intuition takes depends on the mind it lands in: a sharper mind (higher IQ) and a
+  // quicker-learning brain connect it to more of what they do; in a slower one it stays faint.
+  let deep = 1,
+    iq = 100;
+  if (person && got.length) {
+    const q = iqTable().get(a);
+    iq = q ? q.iq : 100;
+    deep = clamp((1 + (iq - 100) / 60) * (a.g.lr ?? 1), 0.5, 1.6);
+    for (let i = 0; i < OI; i++) {
+      const dv = a.lw[i] - was[i];
+      if (dv) a.lw[i] = clamp(was[i] + dv * deep, -6, 6);
+    }
+  }
+  const after = person ? testScore(a) : 0;
   const text = firstPerson(W0),
     nm = a.sp === 0 ? a.name : 'a ' + a.S.n.toLowerCase();
   a.hunch = { k: got.join(', '), text, until: tick + 2 * DAY };
@@ -211,7 +228,22 @@ function deliver(a) {
     (a.asleep ? 'In ' + nm + '’s sleep, a thought took shape' : 'A thought came to ' + nm) +
       ': “' +
       text +
-      '”'
+      '”' +
+      (person
+        ? '. ' +
+          (deep > 1.15
+            ? 'Its quick mind took it in deeply'
+            : deep < 0.85
+              ? 'It took hold only faintly'
+              : 'It took hold') +
+          ' (IQ ' +
+          iq +
+          '); its test score went from ' +
+          Math.round(100 * before) +
+          '% to ' +
+          Math.round(100 * after) +
+          '%.'
+        : '')
   );
 }
 function followed(a, k, what) {

@@ -1904,8 +1904,9 @@ function fillIdeas() {
     B = $('wgo');
   $('wmsg').textContent = '';
   T.disabled = B.disabled = !sel;
+  const iq = sel && sel.sp === 0 ? iqTable().get(sel) : null;
   T.placeholder = sel
-    ? 'Whisper to ' + (sel.name || 'this ' + sel.S.n.toLowerCase()) + '…'
+    ? 'Whisper to ' + (sel.name || 'this ' + sel.S.n.toLowerCase()) + (iq ? ' (IQ ' + iq.iq + ')' : '') + '…'
     : 'Click a creature first';
   if (sel && sel.wh) $('wmsg').textContent = 'A whisper is already on its way.';
 }
