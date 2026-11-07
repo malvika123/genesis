@@ -296,6 +296,7 @@ const G3D = { ok: false };
     figTex.set(key, t);
     return t;
   }
+  const FISHTINT = new THREE.Color(0.6, 0.8, 1);
   function figures(on, v) {
     let n = 0;
     if (on)
@@ -312,6 +313,10 @@ const G3D = { ok: false };
         sp.visible = true;
         sp.material.map = texFor(a, v);
         sp.material.color.setScalar(isNightAt(a.x) ? 0.45 : 1);
+        // fish swim under the surface: seen faintly, tinted by the water above them
+        if (a.sp === 3) sp.material.color.multiply(FISHTINT);
+        sp.material.opacity = a.sp === 3 ? 0.7 : 1;
+        sp.material.transparent = a.sp === 3;
         sp.material.needsUpdate = true;
         const la = latOfY(a.ry),
           lo = lonOfX(a.rx);
