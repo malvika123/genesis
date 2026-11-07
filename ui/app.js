@@ -40,6 +40,128 @@ function mindHTML(a, m) {
   if (a.hunch && tick < a.hunch.until) o += '<br>A hunch is still with it: “' + a.hunch.text + '”';
   return o;
 }
+// ---------- the floating box: what it is thinking, what it is doing ----------
+const dirTo = (a, p) => CP[(Math.round(Math.atan2(p.y - a.y, p.x - a.x) / (Math.PI / 4)) + 8) % 8];
+function doingWord(a, k) {
+  if (k < 8) return 'walking ' + CP[k];
+  return [
+    'staying put',
+    'eating',
+    'drinking',
+    'sleeping',
+    'mating',
+    a.sp === 2 ? 'attacking' : a.sp === 0 ? 'grabbing' : 'snapping',
+    'sharing food',
+  ][k - 8];
+}
+function thinkHTML(a, S, pc) {
+  let o = '';
+  if (a.mind) o += mindHTML(a, a.mind).replace(/^<br>/, '');
+  else o += 'Its mind: wait a moment for the next step…';
+  o +=
+    '<br><br><b>Feelings</b> fear ' +
+    pc(a.fear) +
+    ', loneliness ' +
+    (a.metAny ? pc(a.lo) : 'none (has never met another of its kind)') +
+    ', protectiveness ' +
+    pc(a.pr) +
+    ', desire for a partner ' +
+    pc(a.lu) +
+    ', curiosity ' +
+    pc(Math.min(1, a.g.c * S.cur)) +
+    ' (explored ' +
+    a.vc +
+    ' of 160 areas)';
+  o +=
+    '<br><b>Remembers</b> ' +
+    (a.mw ? 'water to the ' + dirTo(a, a.mw) : 'no water') +
+    ', ' +
+    (a.mf ? 'food to the ' + dirTo(a, a.mf) : 'no food') +
+    ' (memory lasts about ' +
+    S.mem +
+    ' days)';
+  o +=
+    '<br><b>Personality</b> ' +
+    (a.g.b > 1.1 ? 'cautious' : a.g.b < 0.85 ? 'bold' : 'steady') +
+    ', ' +
+    (a.g.so > 1.2 ? 'sociable' : a.g.so < 0.8 ? 'loner' : 'average sociability');
+  o += '<br><b>Lessons so far</b> ' + (a.les.length ? a.les.join('; ') : 'none yet');
+  o +=
+    '<br><b>Brain</b> ' +
+    S.nh +
+    ' neurons; ' +
+    (S.adl >= 1 ? 'keeps learning well into adulthood' : 'learning slows once grown') +
+    '; learning has rewired it by ' +
+    a.learn.toFixed(1);
+  return o;
+}
+function doingHTML(a, S, stage, pc, night) {
+  const i = idx(a.x, a.y),
+    m = a.mind;
+  let now;
+  if (a.asleep) now = 'Sleeping';
+  else if (a.trap > 0) now = 'Stuck in a pit, trying to climb out';
+  else if (m)
+    now = doingWord(a, m.act).replace(/^./, (c) => c.toUpperCase()) + (m.forced ? ' (its body made it)' : '');
+  else now = 'Just looking around';
+  const place = water[i]
+    ? deep[i]
+      ? 'in deep water'
+      : 'in shallow water'
+    : pit[i]
+      ? 'in a pit'
+      : food[i] > 0.4
+        ? 'on grass'
+        : ['on bare ground', 'on sand', 'on stony ground'][ter[i]] || 'on bare ground';
+  // who is around, within the distance it can see
+  const r = sightRange(a, night),
+    near = [0, 0, 0, 0];
+  for (const o of ag) if (o !== a && !o.dead && Math.hypot(o.x - a.x, o.y - a.y) <= r) near[o.sp]++;
+  const nm = ['person', 'herbivore', 'predator', 'fish'],
+    around = near
+      .map((n, k) => (n ? n + ' ' + nm[k] + (n > 1 ? (k === 3 ? '' : k === 0 ? '' : 's') : '') : ''))
+      .filter(Boolean);
+  if (near[0] > 1) around[around.findIndex((t) => t.endsWith('person'))] = near[0] + ' people';
+  let o = '<b>' + now + '</b>, ' + place + (night ? ', at night' : ', in daylight');
+  o +=
+    '<br><br><b>Body</b> energy ' +
+    a.e.toFixed(0) +
+    ', water ' +
+    a.w.toFixed(0) +
+    ', health ' +
+    a.hp.toFixed(0) +
+    ', sleepiness ' +
+    pc(a.sl);
+  o +=
+    '<br><b>Who</b> ' +
+    S.n +
+    ', ' +
+    (a.sex ? 'female' : 'male') +
+    ', ' +
+    stage +
+    ' (lifespan ' +
+    (a.lf / TY).toFixed(0) +
+    ' years), generation ' +
+    a.gen;
+  o +=
+    '<br><b>Can see</b> about ' +
+    r.toFixed(1) +
+    ' cells (' +
+    Math.round(r * 3) +
+    ' km)' +
+    (a.asleep ? ', short because it is asleep' : night ? ', shorter at night' : '') +
+    ' — the dashed circle';
+  o += '<br><b>Around it</b> ' + (around.length ? around.join(', ') : 'nobody in sight');
+  const fam = [];
+  if (a.mom && !a.mom.dead && !a.mom.gone) fam.push('its mother ' + (a.mom.name || 'is alive'));
+  if (a.mate && !a.mate.dead && !a.mate.gone) fam.push('its partner ' + (a.mate.name || 'is alive'));
+  if (a.kid && !a.kid.dead && !a.kid.gone) fam.push('its youngest ' + (a.kid.name || 'is alive'));
+  if (fam.length) o += '<br><b>Family</b> ' + fam.join(', ');
+  if (a.shared) o += '<br>Has shared food ' + a.shared + ' times';
+  if (a.hunch && tick < a.hunch.until) o += '<br><b>Following a hunch</b> “' + a.hunch.text + '”';
+  return o;
+}
+
 function sightRange(a, night) {
   // must match the range used in senses.js
   return Math.max(1.5, a.g.v * (night ? SP[a.sp].nv : 1) * (a.asleep ? 0.3 : 1));
@@ -174,80 +296,9 @@ function draw() {
                 ? 'adult'
                 : 'elder',
       pc = (x) => (x * 100).toFixed(0) + '%';
-    $('ibody').innerHTML =
-      (sel.name ? '<b>' + sel.name + '</b>, ' : '') +
-      S.n +
-      ', ' +
-      (sel.sex ? 'female' : 'male') +
-      ', ' +
-      stage +
-      ', age ' +
-      (sel.age / TY).toFixed(1) +
-      ' years (lifespan ' +
-      (sel.lf / TY).toFixed(0) +
-      '), generation ' +
-      sel.gen +
-      '<br>Energy ' +
-      sel.e.toFixed(0) +
-      ', water ' +
-      sel.w.toFixed(0) +
-      ', health ' +
-      sel.hp.toFixed(0) +
-      ', sleepiness ' +
-      pc(sel.sl) +
-      (sel.asleep ? ' (asleep)' : '') +
-      '<br>Feelings: fear ' +
-      pc(sel.fear) +
-      ', loneliness ' +
-      (sel.metAny ? pc(sel.lo) : 'none (has never met another of its kind)') +
-      ', protectiveness ' +
-      pc(sel.pr) +
-      ', desire for a partner ' +
-      pc(sel.lu) +
-      ', curiosity ' +
-      pc(Math.min(1, sel.g.c * S.cur)) +
-      ' (explored ' +
-      sel.vc +
-      ' of 160 areas)' +
-      '<br>Remembers: ' +
-      (sel.mw
-        ? 'water to the ' +
-          CP[(Math.round(Math.atan2(sel.mw.y - sel.y, sel.mw.x - sel.x) / (Math.PI / 4)) + 8) % 8]
-        : 'no water') +
-      ', ' +
-      (sel.mf
-        ? 'food to the ' +
-          CP[(Math.round(Math.atan2(sel.mf.y - sel.y, sel.mf.x - sel.x) / (Math.PI / 4)) + 8) % 8]
-        : 'no food') +
-      ' (memory lasts about ' +
-      S.mem +
-      ' days)' +
-      '<br>Sight: about ' +
-      sightRange(sel, night).toFixed(1) +
-      ' cells (' +
-      Math.round(sightRange(sel, night) * 3) +
-      ' km) right now' +
-      (sel.asleep ? ', short because it is asleep' : night ? ', shorter because it is night' : '') +
-      ' (dashed circle on the map)' +
-      '<br>Brain: ' +
-      S.nh +
-      ' neurons; ' +
-      (S.adl >= 1 ? 'keeps learning well into adulthood' : 'learning slows once grown') +
-      '<br>Its own forecast: ' +
-      (sel.V > 0.15 ? 'things are looking up' : sel.V < -0.15 ? 'things are getting worse' : 'steady') +
-      '<br>Personality: ' +
-      (sel.g.b > 1.1 ? 'cautious' : sel.g.b < 0.85 ? 'bold' : 'steady') +
-      ', ' +
-      (sel.g.so > 1.2 ? 'sociable' : sel.g.so < 0.8 ? 'loner' : 'average sociability') +
-      (sel.shared ? ', has shared food ' + sel.shared + ' times' : '') +
-      (sel.mind ? mindHTML(sel, sel.mind) : '<br>Its mind: wait a moment for the next step…') +
-      '<br>Lessons so far: ' +
-      (sel.les.length ? sel.les.join('; ') : 'none yet') +
-      '<br>How much learning has rewired its brain: ' +
-      sel.learn.toFixed(1);
-  } else
-    $('ibody').textContent =
-      'Click a creature on the map to see its body, feelings, lessons and what it is doing.';
+    $('ithink').innerHTML = thinkHTML(sel, S, pc);
+    $('idoing').innerHTML = doingHTML(sel, S, stage, pc, night);
+  }
   const c = [0, 0, 0, 0];
   ag.forEach((a) => c[a.sp]++);
   const asl = ag.filter((a) => a.asleep),
@@ -341,7 +392,7 @@ $('reset').onclick = () => {
 function fillIdeas() {
   const T = $('wtxt'),
     B = $('wgo');
-  $('wmsg').textContent = 'Type anything. It reaches them in sleep or a quiet moment, as their own thought.';
+  $('wmsg').textContent = '';
   T.disabled = B.disabled = !sel;
   T.placeholder = sel
     ? 'Whisper to ' + (sel.name || 'this ' + SP[sel.sp].n.toLowerCase()) + '…'
@@ -430,8 +481,8 @@ document.querySelectorAll('[data-dt]').forEach(
   (b) =>
     (b.onclick = () => {
       document.querySelectorAll('[data-dt]').forEach((x) => x.setAttribute('aria-selected', x === b));
-      $('dp-whisper').hidden = b.dataset.dt !== 'whisper';
-      $('dp-mind').hidden = b.dataset.dt !== 'mind';
+      $('dp-think').hidden = b.dataset.dt !== 'think';
+      $('dp-doing').hidden = b.dataset.dt !== 'doing';
       $('dock').classList.remove('min');
     })
 );
