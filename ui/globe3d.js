@@ -460,12 +460,12 @@ const G3D = { ok: false };
     if (GL.eye) drawEyeHands(cx, GL.eye, w, h);
     // the places its eyes can see right now
     if (sel && sel.view && !GL.eye) {
-      cx.fillStyle = 'rgba(255,255,230,.25)';
+      cx.fillStyle = 'rgba(255,255,220,.13)';
       for (const i of sel.view) {
         const Q = project(i % W, (i / W) | 0);
         if (Q) {
           cx.beginPath();
-          cx.arc(Q[0], Q[1], Math.max(1.5, Q[2] * 0.42), 0, 7);
+          cx.arc(Q[0], Q[1], Math.max(1.5, Q[2] * 0.3), 0, 7);
           cx.fill();
         }
       }
