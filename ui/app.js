@@ -521,7 +521,7 @@ function drawTerrain(g, v, relief = true) {
   // freshly burnt ground: black ash, slowly greening again
   for (let i = 0; i < W * H; i++)
     if (BURNT[i] > 0.05 && !water[i]) {
-      g.fillStyle = 'rgba(28,22,18,' + (0.7 * BURNT[i]).toFixed(2) + ')';
+      g.fillStyle = 'rgba(70,64,58,' + (0.6 * BURNT[i]).toFixed(2) + ')'; // grey ash
       g.fillRect((i % W) * C, ((i / W) | 0) * C, C, C);
     }
   // Rivers: a square is 3 km across and a river only tens of metres wide, so a river square is land
@@ -784,17 +784,18 @@ function drawFire(g, P) {
       y = (i / W) | 0,
       Q = P(x, y);
     if (!Q) continue;
-    const k = Math.max(4, Q[2]),
+    // flames and smoke are drawn at a size you can see, but never bigger than a tree up close
+    const k = clamp(Q[2], 4, 160),
       [u, v] = windAt(y);
     // smoke: a few grey puffs rising and drifting with the wind
     for (let s = 0; s < 3; s++) {
       const age = (t * 0.5 + s / 3 + i * 0.07) % 1,
         S = P(x + u * 8 * age, y + v * 8 * age);
       if (!S) continue;
-      g.globalAlpha = 0.35 * (1 - age) * Math.min(1, f * 2);
+      g.globalAlpha = 0.22 * (1 - age) * Math.min(1, f * 2);
       g.fillStyle = '#6f6a66';
       g.beginPath();
-      g.arc(S[0], S[1] - k * (0.3 + age), k * (0.15 + 0.35 * age), 0, 7);
+      g.arc(S[0], S[1] - k * (0.3 + age), Math.min(50, k * (0.12 + 0.25 * age)), 0, 7);
       g.fill();
     }
     // flames: a few flickering tongues of fire scattered over the square
