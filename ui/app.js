@@ -125,7 +125,9 @@ const PLAIN = {
   'being young': 'it is young',
   'desire to mate': 'it wants a partner',
   curiosity: 'it is curious',
-  loneliness: 'it is lonely',
+  'loneliness or grief': 'it is lonely or grieving',
+  heat: 'it is too hot',
+  anger: 'it is angry',
   'being in deep water': 'it is in deep water',
   'memory of water': 'it remembers where water is',
   'memory of food': 'it remembers where food is',
@@ -210,12 +212,27 @@ function feelingsText(a, S) {
   if (a.sl > 0.5) f.push(a.sl > 0.8 ? 'exhausted' : 'sleepy');
   if (raining(idx(a.x, a.y)) && a.sp !== 3) f.push('wet');
   if (a.cold > 0.15) f.push(a.cold > 0.6 ? 'freezing' : 'cold');
+  if (a.heat > 0.15) f.push(a.heat > 0.6 ? 'overheating' : 'too hot');
+  if (a.grief > 0.2) f.push('grieving' + (a.lost && a.lost.name ? ' for ' + a.lost.name : ''));
+  if (a.rage > 0.3) f.push('angry');
+  if (a.play > 0.3) f.push('playful');
+  if (a.bored > 0.6) f.push('bored');
   if (a.hp < 60) f.push('hurt');
   if (a.fear > 0.25) f.push('afraid');
   if (a.metAny && a.lo > 0.25) f.push('lonely');
   if (a.pr > 0.5) f.push('protective of its young');
   if (a.lu > 0.5) f.push('longing for a partner');
   if (Math.min(1, a.g.c * S.cur) > 0.5) f.push('curious');
+  const content =
+    a.e > 70 &&
+    a.w > 70 &&
+    a.painA < 0.1 &&
+    a.cold < 0.1 &&
+    a.heat < 0.1 &&
+    a.lo < 0.2 &&
+    a.fear < 0.1 &&
+    a.grief < 0.2;
+  if (content && !a.asleep) f.unshift('content');
   return f.length ? f.join(', ') : 'calm';
 }
 function thinkHTML(a, S) {

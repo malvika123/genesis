@@ -20,7 +20,7 @@ function engineSource() {
 const API = `
 return {
   setSeed, reset, sim, interpret, mind, child, mk, gene,
-  idx, inb, dxw, isNightAt, tempAt, updateClimate, iced, liquid, growth, coldOf, W, H,
+  idx, inb, dxw, isNightAt, tempAt, updateClimate, iced, liquid, growth, coldOf, heatOf, W, H,
   forest: () => ({ tree, fruit, fkind, tcap, meanTemp, cover }),
   wx: () => ({ HUM, CLD, RAIN, MOIST, PUD, PW, capacity, wetness, drinkable }),
   setTick: (t) => { tick = t; updateClimate(); },

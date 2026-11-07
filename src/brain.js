@@ -22,6 +22,8 @@ function newW(sp, inst) {
     D(A_MATE, HB + 3, 4);
     D(A_MATE, B, -1.5);
     if (sp === 2 || sp === 3) D(A_ATK, HB + 2, sp === 2 ? 7 : 0);
+    // rage is inborn in mammals: an angry animal is ready to strike
+    if (sp === 0 || sp === 2) D(A_ATK, IB + 26, 2.5);
     if (sp === 0) {
       D(A_ATK, HB + 2, 2);
       D(A_ATK, IB, 1);

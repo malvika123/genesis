@@ -86,7 +86,12 @@ function mk(sp, x, y, sex, g, gen, age, k = KDEF[sp]) {
     lu: 0,
     shared: 0,
     hd: (rnd() * 8) | 0, // which way it faces (one of the eight directions)
-    hand: 0, // what it is holding: 0 nothing, 1 stone, 2 stick, 3 sharp stone
+    hand: 0,
+    heat: 0,
+    grief: 0, // after the death of its partner, child or mother
+    rage: 0, // after being attacked
+    bored: 0, // grows while nothing new happens
+    play: 0, // what it is holding: 0 nothing, 1 stone, 2 stick, 3 sharp stone
     nuts: 0,
   };
   a.p0 = PR.map((_, k) => probe(a.lw, k));

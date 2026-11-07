@@ -15,7 +15,8 @@ function sim() {
     const tf = (water[i] ? 0.5 : TF[ter[i]] * (1 - 0.35 * tree[i])) * growthAt(i) * wetness(i);
     // grass spreads from what is left above ground, and grazed grass also grows back from its roots,
     // which is why grasslands survive big herds; bare ground only greens again slowly, from seed
-    if (food[i] < 1) food[i] += (0.006 * food[i] * (1 - food[i]) + 0.0004 + 0.003 * Math.max(0, 0.6 - food[i])) * tf;
+    if (food[i] < 1)
+      food[i] += (0.006 * food[i] * (1 - food[i]) + 0.0004 + 0.003 * Math.max(0, 0.6 - food[i])) * tf;
   }
   G = new Array(W * H);
   const pop = [0, 0, 0, 0],
@@ -87,6 +88,19 @@ function sim() {
       if (a.cold > 0.6 && !a.wasCold) a.ev[8] = 'it was freezing on day ' + dn;
     }
     a.wasCold = a.cold > 0.6;
+    // heat: sweating and panting cost water, and it is dangerous when extreme
+    a.heat = heatOf(a, night);
+    if (a.heat > 0) {
+      a.w -= 0.05 * a.heat * (a.sp === 0 ? 1.5 : 1);
+      if (a.heat > 0.7) a.hp -= (0.12 * (a.heat - 0.7)) / 0.3;
+      if (a.heat > 0.6 && !a.wasHot) a.ev[8] = 'it was overheating on day ' + dn;
+    }
+    a.wasHot = a.heat > 0.6;
+    // feelings fade: grief over days, anger within hours
+    a.grief *= 0.998;
+    a.rage *= 0.97;
+    a.play *= 0.9;
+    if (!a.asleep && a.e > 60 && a.w > 60) a.bored = Math.min(1, a.bored + 0.002);
     if (!inW && a.e > 10 && a.w > 10) a.hp = Math.min(100, a.hp + 0.05);
     a.painA *= 0.97;
     a.painW *= 0.85;
@@ -106,8 +120,10 @@ function sim() {
     if (!a.vis[bi]) {
       a.vis[bi] = 1;
       a.vc++;
+      a.bored = 0;
       if (a.age > 5) {
-        a.bonus[6] += 0.12 * a.g.c * S.cur * (young ? 1.3 : 1) * (a.cuT > tick ? a.cuX : 1);
+        a.bonus[6] +=
+          0.12 * a.g.c * S.cur * (young ? 1.3 : 1) * (a.cuT > tick ? a.cuX : 1) * (1 + 2 * a.bored);
         a.ev[6] = 'it found a new place on day ' + dn;
       }
     }
@@ -147,8 +163,8 @@ function sim() {
         0.5 * a.sl * a.sl,
         0,
         0,
-        S.social * a.g.so * a.lo,
-        1.5 * a.cold * a.cold,
+        S.social * a.g.so * a.lo + 0.8 * a.grief,
+        1.5 * (a.cold * a.cold + a.heat * a.heat),
       ];
     let r = 0;
     for (let k = 0; k < 9; k++) {
@@ -178,6 +194,9 @@ function sim() {
       RF[A_SLEEP] += safe ? 2 * k : 0;
       if (water[here] && !iced(here)) RF[A_SLEEP] -= 6;
     }
+    // When too hot, land animals instinctively seek shade and water.
+    if (a.sp !== 3 && a.heat > 0.3)
+      for (let s = 0; s < 8; s++) RF[s] += (a.heat - 0.3) * 3 * (1.5 * x[s * NCH + 12] + x[s * NCH]);
     const V = forward(a.lw, x, a.h, a.z, S.nh, RF);
     if (a.has) {
       const d = clamp(r + GAM * V - a.Vp, -2, 2);
@@ -262,6 +281,22 @@ function sim() {
           a.ev[7] = 'it watched an elder on day ' + dn;
         }
       }
+    }
+    // Play: young mammals that are fed, safe and near others enjoy being active — running, chasing,
+    // handling things. It is how they practise. The fun is a small reward of its own.
+    if (
+      young &&
+      a.sp !== 3 &&
+      !a.asleep &&
+      a.e > 60 &&
+      a.w > 60 &&
+      a.fear < 0.2 &&
+      a.painA < 0.1 &&
+      seeOwn &&
+      (act < 8 || act === A_TAKE || act === A_STRIKE)
+    ) {
+      a.bonus[6] += 0.02;
+      a.play = 1;
     }
     const sleepy = a.sl;
     a.asleep = act === A_SLEEP;
@@ -506,7 +541,10 @@ function sim() {
                   if (o !== a && o.k === a.k && !o.dead && !o.asleep && o.age >= o.S.mat) help++;
             }
         const odds = clamp(((a.S.size || 1) * (1 + 0.6 * help)) / (T.size || 1), 0.15, 1.3),
-          pc = a.sp === 0 ? 0.25 * (a.hand === 2 ? 1.5 : a.hand === 3 ? 1.25 : 1) : (t.asleep || t.age < T.mat * T.wn ? 0.9 : 0.6) * Math.min(1, odds);
+          pc =
+            a.sp === 0
+              ? 0.25 * (a.hand === 2 ? 1.5 : a.hand === 3 ? 1.25 : 1)
+              : (t.asleep || t.age < T.mat * T.wn ? 0.9 : 0.6) * Math.min(1, odds);
         if (rnd() < pc) {
           t.dead = true;
           t.cause = a.sp === 0 ? 'caught by a person' : 'killed by a predator';
@@ -546,6 +584,7 @@ function sim() {
         } else if (t.sp !== 3) {
           t.hp -= 25;
           t.painA = Math.min(1, t.painA + 0.8);
+          t.rage = 1; // attacked, it is angry as well as afraid
           t.ev[0] = 'it was bitten by a predator on day ' + dn;
           if (t.hp <= 0) {
             t.dead = true;
@@ -574,6 +613,14 @@ function sim() {
     if (!c) return true;
     a.gone = true;
     if (a.hand) putDown(a);
+    // those closest to it grieve: its partner, its mother, its young child
+    if (a.sp !== 3)
+      for (const o of [a.mate, a.mom, a.kid])
+        if (o && !o.gone && !o.dead && (o !== a.kid || o.mom === a)) {
+          o.grief = 1;
+          o.lost = a;
+          if (a.sp === 0 && o.sp === 0) log(o.name + ' is grieving for ' + a.name + '.');
+        }
     const dk = a.S.n + ': ' + c;
     deaths[dk] = (deaths[dk] || 0) + 1;
     if (a.sp === 0)

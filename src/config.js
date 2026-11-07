@@ -24,7 +24,7 @@ const NCH = 15, // per direction: water, food, danger, herbivore, person, predat
   NS = 8 * NCH,
   HB = NS,
   IB = NS + 4,
-  NI = IB + 25, // IB + 18 is how cold the creature feels; IB + 19 … 24 are about its hands and what lies at its feet
+  NI = IB + 27, // IB + 18 cold; IB + 19 … 24 its hands and what lies at its feet; IB + 25 heat; IB + 26 anger
   NH = 24,
   NA = 18,
   O2 = NH * NI,
@@ -51,6 +51,7 @@ const SP = [
     fov: 200, // field of view in degrees (about 120° of it seen with both eyes)
     col: 3, // kinds of colour cone: people tell red from green
     cold: 14, // no fur: people feel cold below about 14 °C
+    hot: 33, // and overheat above about 33 °C, though sweating lets them bear heat better than most
     nh: 16,
     plast: 1.2,
     adl: 1,
@@ -80,6 +81,7 @@ const SP = [
     fov: 310, // eyes on the sides of the head see almost all the way round
     col: 2, // red and green look alike
     cold: -10, // thick winter coat
+    hot: 30,
     nh: 10,
     plast: 1.2,
     adl: 0.5,
@@ -109,6 +111,7 @@ const SP = [
     fov: 250,
     col: 2,
     cold: -12, // thick fur
+    hot: 28,
     nh: 12,
     plast: 1.2,
     adl: 0.5,
@@ -138,6 +141,7 @@ const SP = [
     fov: 360,
     col: 4,
     cold: 0, // fish don't feel cold here
+    hot: 99,
     nh: 6,
     plast: 1,
     adl: 0.5,
@@ -200,6 +204,7 @@ const KINDS = [
     life: 6 * TY,
     cd: 0.5 * TY,
     cold: -18,
+    hot: 28,
     walk: 0.08,
     run: 0.5,
     hab: { t: [-10, 30], tree: [0, 0.4] },
@@ -250,6 +255,7 @@ const KINDS = [
     smat: 3 * TY,
     life: 15 * TY,
     cold: 2,
+    hot: 38, // big cats of warm lands bear heat well
     walk: 0.1,
     run: 0.55,
     hab: { t: [12, 32], tree: [0, 1] },
@@ -266,6 +272,7 @@ const KINDS = [
     smat: 5 * TY,
     life: 25 * TY,
     cold: -35,
+    hot: 25,
     omni: 1,
     dE: 3.5,
     run: 0.35,

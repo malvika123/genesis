@@ -13,7 +13,8 @@ function setup(find) {
   const s = E.state(),
     it = E.items();
   let cell = -1;
-  for (let i = 0; i < E.W * E.H && cell < 0; i++) if (!s.water[i] && !s.rock[i] && !s.pit[i] && find(i, it)) cell = i;
+  for (let i = 0; i < E.W * E.H && cell < 0; i++)
+    if (!s.water[i] && !s.rock[i] && !s.pit[i] && find(i, it)) cell = i;
   assert.ok(cell >= 0, 'the world should have such a cell');
   const p = s.ag.find((a) => a.sp === 0);
   p.x = cell % E.W;

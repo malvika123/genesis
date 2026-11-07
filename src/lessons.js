@@ -148,7 +148,7 @@ const WHY = [
   'the pleasure of mating',
   'the thrill of finding new places',
   'the comfort of company',
-  'the relief of getting warm',
+  'the relief of getting warm or cooling down',
 ];
 const px = new Float32Array(NI),
   ph = new Float32Array(NH),

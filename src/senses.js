@@ -251,11 +251,13 @@ function sense(a, x, night) {
   x[IB + 5] = night ? 1 : 0;
   x[IB + 6] = a.age < S.mat ? 1 : 0;
   x[IB + 7] = a.rd ? 1 : 0;
-  x[IB + 8] = a.g.c;
-  x[IB + 9] = a.lo;
+  x[IB + 8] = Math.min(1, a.g.c * (1 + a.bored)); // boredom sharpens curiosity
+  x[IB + 9] = Math.max(a.lo, a.grief);
   x[IB + 10] = deep[here];
   x[IB + 11] = 1;
   x[IB + 18] = a.cold;
+  x[IB + 25] = a.heat;
+  x[IB + 26] = a.rage;
   if (a.sp === 0) {
     x[IB + 19] = a.hand === 1 ? 1 : 0;
     x[IB + 20] = a.hand === 2 ? 1 : 0;
