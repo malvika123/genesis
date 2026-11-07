@@ -49,6 +49,63 @@ function inSight(a, k, h0) {
   }
   return true;
 }
+// ---------- learned perception (people) ----------
+// Recognising what something is, is learned. The world works out what is truly in sight; a person's
+// perception then gets it right only as well as it has learned to recognise that kind of thing. With
+// little skill, faint and distant things are missed, distances are rough guesses, and look-alikes are
+// mixed up at a distance — a deer for a wolf, a person for a hunter, the sea for a lake, red berries for
+// good food. Skill grows with seeing things up close, and fastest when something important happens.
+// Babies' vision is blurry for months; a few things get a head start, as studies of infants show:
+// faces, and snake- and spider-like shapes (here, hunters).
+const CONFUSE = { 3: 5, 5: 3, 4: 5, 0: 10, 10: 0, 1: 9, 9: 1 };
+const LEARNED = [0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 13, 14, 15]; // trees, slopes and rocks are easy to see
+function newPerception(a) {
+  const p = new Float32Array(NCH).fill(1);
+  if (a.found) {
+    // the first people start grown, with grown-up perception (a simplification: nobody is really
+    // an adult who has never seen anything)
+    for (const c of LEARNED) p[c] = 0.9;
+  } else {
+    for (const c of LEARNED) p[c] = 0.15;
+    p[4] = 0.5; // faces
+    p[7] = 0.35; // the mother, known early by sight, sound and smell
+    p[5] = 0.35; // a prepared alertness to predators
+  }
+  return p;
+}
+function perceive(a, x) {
+  const per = a.per,
+    // infant eyes and visual brain mature over the first months
+    cap = clamp(0.3 + (0.7 * a.age) / (0.5 * TY), 0, 1);
+  for (let s = 0; s < 8; s++) {
+    const b = s * NCH;
+    for (const c of LEARNED) {
+      let v = x[b + c];
+      if (!v) continue;
+      const k = Math.min(per[c], cap);
+      // close and clear: a chance to learn what it looks like
+      if (v > 0.5) per[c] += 0.003 * (1 - per[c]);
+      if (k > 0.95) continue;
+      // faint or far, and not well known: missed
+      if (v < (1 - k) * 0.5 && rnd() < 1 - k) {
+        x[b + c] = 0;
+        continue;
+      }
+      // distance is a rough guess
+      v = clamp(v * (1 + gauss() * 0.5 * (1 - k)), 0, 1);
+      // mistaken for a look-alike
+      const o = CONFUSE[c];
+      if (o !== undefined && rnd() < (1 - k) * 0.35 * (1 - v)) {
+        x[b + c] = 0;
+        if (v > x[b + o]) x[b + o] = v;
+      } else x[b + c] = v;
+    }
+  }
+}
+// something important teaches recognition fast: what bit you, what made you sick, what burned you
+function learnSight(a, c, amount = 0.1) {
+  if (a.per) a.per[c] = Math.min(1, a.per[c] + amount * (1 - a.per[c]));
+}
 function sense(a, x, night) {
   x.fill(0);
   const tw = 1 - a.w / 100,
@@ -154,6 +211,7 @@ function sense(a, x, night) {
         if (o.hand === 4 && x[b + 15] < cl * 0.6) x[b + 15] = cl * 0.6; // someone carrying fire
       }
   }
+  if (a.sp === 0 && a.per) perceive(a, x);
   if (a.rd) {
     const hr = r * 6;
     for (const o of ag) {

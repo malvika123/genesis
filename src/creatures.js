@@ -115,6 +115,7 @@ function mk(sp, x, y, sex, g, gen, age, k = KDEF[sp]) {
   for (let j = 0; j < units; j++) for (let i = 0; i < NI; i++) a.cm[j * NI + i] = wired(j, i) ? 1 : 0;
   a.nh = grownUnits(a);
   if (sp === 0) genRecord(a);
+  a.per = sp === 0 ? newPerception(a) : null;
   a.p0 = PR.map((_, k) => probe(a.lw, k));
   return a;
 }
@@ -227,6 +228,7 @@ function spawnKind(sp, k, n, inst) {
     // the first of every kind start as young adults: grown bodies, blank minds
     const c = mk(sp, x, y, j % 2, gene(sp, inst), 0, (KBIO[k].smat * (1 + rnd() * 0.3)) | 0, k);
     c.found = true;
+    if (c.per) c.per = newPerception(c); // founders see like grown-ups
     ag.push(c);
   }
 }

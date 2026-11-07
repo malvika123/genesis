@@ -83,3 +83,33 @@ test('people see red berries; deer cannot tell them from green', () => {
   E.sense(d, d.xi, false);
   assert.equal(d.xi[0 * E.NCH + 9], 0, 'a deer does not see them as red');
 });
+
+test('a newborn often misses or mistakes what it sees; with experience it sees truly', () => {
+  const E = createEngine();
+  E.setSeed(5);
+  E.reset({ people: 2 });
+  const p = E.state().ag.find((o) => o.sp === 0);
+  const baby = E.mk(0, p.x, p.y, 1, E.child(p, p), 1, 0, p.k);
+  const truth = new Float32Array(E.NI);
+  truth[0 * E.NCH + 3] = 0.4; // a plant-eater, some way off to the east
+  let right = 0,
+    wrong = 0;
+  for (let k = 0; k < 400; k++) {
+    const x = Float32Array.from(truth);
+    baby.per[3] = 0.15; // keep it unskilled for this part
+    E.perceive(baby, x);
+    if (x[0 * E.NCH + 3] > 0) right++;
+    if (x[0 * E.NCH + 5] > 0) wrong++;
+  }
+  assert.ok(right < 300, `an unskilled newborn often misses it (saw it ${right}/400 times)`);
+  assert.ok(wrong > 2, `and sometimes takes it for a hunter (${wrong}/400)`);
+  baby.age = E.TY; // a year old: its eyes have matured
+  baby.per[3] = 1;
+  let seen = 0;
+  for (let k = 0; k < 100; k++) {
+    const x = Float32Array.from(truth);
+    E.perceive(baby, x);
+    if (x[0 * E.NCH + 3] > 0 && x[0 * E.NCH + 5] === 0) seen++;
+  }
+  assert.equal(seen, 100, 'once it knows them well, it sees them every time, for what they are');
+});

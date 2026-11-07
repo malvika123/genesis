@@ -329,6 +329,31 @@ function doingHTML(a, S, stage, night) {
   if (a.sp === 0) o += '<br>In its hand: ' + HAND[a.hand] + (a.nuts ? ' · nuts cracked: ' + a.nuts : '');
   o += '<br>Nearby: ' + (around.length ? around.join(', ') : 'no one in sight');
   o += '<br>' + seesText(a);
+  if (a.per) {
+    // how well it has learned to recognise things by sight
+    const NM = {
+        0: 'fresh water',
+        1: 'food',
+        3: 'plant-eaters',
+        4: 'people',
+        5: 'hunters',
+        7: 'family',
+        9: 'red berries',
+        10: 'the sea',
+        14: 'nuts',
+        15: 'fire',
+      },
+      cap = clamp(0.3 + (0.7 * a.age) / (0.5 * TY), 0, 1),
+      sk = Object.keys(NM).map((c) => [NM[c], Math.min(a.per[c], cap)]),
+      good = sk.filter((q) => q[1] >= 0.7).map((q) => q[0]),
+      poor = sk.filter((q) => q[1] < 0.5).map((q) => q[0]);
+    o +=
+      '<br>Recognises well: ' +
+      (good.length ? good.join(', ') : 'nothing yet') +
+      (poor.length
+        ? '. Still learning: ' + poor.join(', ') + ' (often misses them, or takes them for something else)'
+        : '');
+  }
   {
     const H = a.h.length,
       grown = a.nh,

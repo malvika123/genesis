@@ -128,6 +128,7 @@ function sim() {
       a.hp -= 20 * burn;
       a.painA = Math.max(a.painA, 0.9 * burn + 0.2);
       a.ev[0] = 'it was burned by fire on day ' + dn;
+      learnSight(a, 15, 0.2);
       if (a.hp <= 0) {
         a.dead = true;
         a.cause = 'burned';
@@ -496,6 +497,7 @@ function sim() {
         a.hp -= 22;
         a.painA = Math.min(1, a.painA + 0.8);
         a.ev[0] = 'it got sick from red berries on day ' + dn;
+        learnSight(a, 9, 0.15);
         if (!firsts['p' + a.sp]) {
           firsts['p' + a.sp] = 1;
           log(who(a) + ' ate red berries and got sick.');
@@ -768,6 +770,7 @@ function sim() {
           t.hp -= 25;
           t.painA = Math.min(1, t.painA + 0.8);
           t.rage = 1; // attacked, it is angry as well as afraid
+          learnSight(t, 5, 0.15); // and now it knows what a hunter looks like
           t.ev[0] = 'it was bitten by a predator on day ' + dn;
           if (t.hp <= 0) {
             t.dead = true;
