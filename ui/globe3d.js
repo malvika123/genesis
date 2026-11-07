@@ -295,13 +295,16 @@ const G3D = { ok: false };
     const S = a.S,
       gr = Math.round(clamp(a.age / S.mat, 0.3, 1) * 10) / 10,
       pose = a.moving ? Math.round(Math.sin(a.ph || 0) * 2) : 0,
+      swf = a.act === A_STRIKE && !a.asleep ? Math.round(Math.sin(performance.now() / 130 + a.id)) : 0,
       key = [
         a.k,
         a.sex,
         gr,
         a.asleep ? 1 : 0,
         pose,
-        a.act === A_EAT || a.act === A_DRINK ? 1 : 0,
+        a.asleep ? 0 : a.act >= 8 ? a.act : 0, // what it is doing changes its pose
+        a.hand || 0,
+        swf,
         a.face || 1,
       ].join();
     let t = figTex.get(key);
@@ -320,6 +323,8 @@ const G3D = { ok: false };
         moving: pose !== 0,
         pose: pose / 2,
         ph: Math.asin(clamp(pose / 2, -1, 1)), // the leg position for this picture
+        hand: a.hand || 0,
+        swf,
         act: a.act,
         id: 0,
       };
@@ -427,6 +432,8 @@ const G3D = { ok: false };
         drawCreature(cx, a, P[0], P[1], ks, v, isNightAt(a.x) ? 0.5 : 1);
       }
     if (!GL.eye) drawWeatherFx(cx, project, GL.zoom >= 2.5);
+    if (GL.zoom >= 5 || GL.eye) drawGroundItems(cx, project);
+    if (GL.eye) drawEyeHands(cx, GL.eye, w, h);
     // the places its eyes can see right now
     if (sel && sel.view && !GL.eye) {
       cx.fillStyle = 'rgba(255,255,230,.25)';

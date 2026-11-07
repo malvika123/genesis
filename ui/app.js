@@ -695,42 +695,190 @@ function drawSky(g, streaks = true) {
 // A person as a simple little human figure — no clothes, as early humans had none. A thin pink or blue
 // outline shows whether they are female or male. Children have bigger heads for their size; walkers
 // take steps; sleepers lie down.
+// What is in a person's hand, drawn at the hand: a stone, a stick or a sharp-edged flake.
+function drawHeld(g, kind, hx, hy, h, lw) {
+  if (kind === 1) {
+    g.fillStyle = '#8f8e86';
+    g.beginPath();
+    g.ellipse(hx, hy, h * 0.075, h * 0.06, 0.3, 0, 7);
+    g.fill();
+  } else if (kind === 2) {
+    g.strokeStyle = '#7a5232';
+    g.lineWidth = Math.max(1, lw * 0.9);
+    g.beginPath();
+    g.moveTo(hx - h * 0.05, hy + h * 0.08);
+    g.lineTo(hx + h * 0.1, hy - h * 0.38);
+    g.stroke();
+  } else if (kind === 3) {
+    g.fillStyle = '#d4d8d6';
+    g.beginPath();
+    g.moveTo(hx - h * 0.05, hy + h * 0.04);
+    g.lineTo(hx + h * 0.07, hy - h * 0.12);
+    g.lineTo(hx + h * 0.06, hy + h * 0.05);
+    g.closePath();
+    g.fill();
+  }
+}
+// Things lying on the ground, drawn when you are close enough to see them: stones, fallen sticks,
+// sharp flakes and nuts, scattered about each square. P(x, y) gives where a place is on screen.
+function drawGroundItems(g, P) {
+  for (let i = 0; i < W * H; i++) {
+    const nn = nut[i] > 0.05 ? Math.min(6, Math.ceil(nut[i] * 8)) : 0;
+    if (!lying(i) && !nn) continue;
+    const x = i % W,
+      y = (i / W) | 0,
+      Q = P(x, y);
+    if (!Q || Q[2] < 40) continue;
+    const r = clamp(Q[2] * 0.012, 1.5, 7),
+      spot = (n) => {
+        // the same scattered places every time, a little way from the middle of the square
+        const a = (i * 7919 + n * 104729) % 1000,
+          b = (i * 6271 + n * 15485863) % 1000;
+        return P(x + (a / 1000 - 0.5) * 0.7, y + (b / 1000 - 0.5) * 0.7);
+      };
+    let n = 0;
+    for (let k = 0; k < stone[i] + flake[i]; k++) {
+      const S = spot(n++);
+      if (!S) continue;
+      g.fillStyle = k < stone[i] ? '#8f8e86' : '#d4d8d6';
+      g.beginPath();
+      g.ellipse(S[0], S[1], r * 1.3, r * 0.8, 0, 0, 7);
+      g.fill();
+    }
+    g.strokeStyle = '#6e4a2c';
+    g.lineWidth = Math.max(1, r * 0.5);
+    for (let k = 0; k < stick[i]; k++) {
+      const S = spot(n++);
+      if (!S) continue;
+      g.beginPath();
+      g.moveTo(S[0] - r * 3, S[1] + r * (k % 2 ? 0.8 : -0.8));
+      g.lineTo(S[0] + r * 3, S[1] - r * (k % 2 ? 0.8 : -0.8));
+      g.stroke();
+    }
+    g.fillStyle = '#7b5a35';
+    for (let k = 0; k < nn; k++) {
+      const S = spot(n++);
+      if (!S) continue;
+      g.beginPath();
+      g.arc(S[0], S[1], r * 0.6, 0, 7);
+      g.fill();
+    }
+  }
+}
+// Looking through a person's eyes: its own arms and hands at the bottom of the view, doing what it
+// is doing — swinging with its walk, reaching down to pick something up, lifting food to its mouth,
+// bringing a stone down hard — and holding whatever it holds.
+function drawEyeHands(g, a, w, h) {
+  if (a.sp !== 0 || a.asleep) return;
+  const s = h / 700,
+    skin = '#e7b896',
+    t = performance.now(),
+    bob = a.moving ? Math.sin(a.ph || 0) * 14 * s : 0,
+    act = a.act,
+    sw = Math.sin(t / 130 + a.id);
+  let rx = w * 0.6,
+    ry = h * 0.84 - bob;
+  if (act === A_STRIKE) {
+    rx = w * 0.53;
+    ry = h * (0.45 + 0.42 * ((1 - sw) / 2));
+  } else if (act === A_TAKE || act === A_DROP || act === A_DRINK) {
+    rx = w * 0.5;
+    ry = h * 0.97;
+  } else if (act === A_EAT) {
+    rx = w * 0.47;
+    ry = h * 0.93;
+  } else if (act === A_GIVE) {
+    rx = w * 0.55;
+    ry = h * 0.62;
+  }
+  const arm = (x0, y0, x1, y1) => {
+    g.strokeStyle = skin;
+    g.lineCap = 'round';
+    g.lineWidth = 64 * s;
+    g.beginPath();
+    g.moveTo(x0, y0);
+    g.lineTo(x1, y1);
+    g.stroke();
+    g.fillStyle = skin;
+    g.beginPath();
+    g.ellipse(x1, y1, 40 * s, 34 * s, 0, 0, 7);
+    g.fill();
+  };
+  g.globalAlpha = isNightAt(a.x) ? 0.55 : 1;
+  arm(w * 0.1, h + 40 * s, w * 0.27, h * 0.88 + bob);
+  arm(w * 0.78, h + 40 * s, rx, ry);
+  if (a.hand) drawHeld(g, a.hand, rx + 10 * s, ry - 30 * s, 320 * s, 26 * s);
+  g.globalAlpha = 1;
+}
+// A person, seen from the front, in the pose of what they are doing: walking, bending down to pick
+// something up or drink, a hand to the mouth when eating, an arm swinging when striking, an arm held
+// out when sharing — with whatever they hold in their hand.
 function drawPerson(g, a, X, Y, k, gr, col) {
   const h = (5.5 + 6 * gr) * k, // full height
     head = h * (0.2 + 0.1 * (1 - gr)),
     skin = '#e7b896',
     hair = '#3b2a20',
-    lw = Math.max(1, h * 0.09);
+    lw = Math.max(1, h * 0.09),
+    act = a.asleep ? -1 : a.act,
+    crouch = act === A_TAKE || act === A_DROP || act === A_DRINK || act === A_STRIKE ? 1 : 0,
+    // the strike: the arm goes up over the head and comes down hard, again and again
+    sw = act === A_STRIKE ? (a.swf ?? Math.sin(performance.now() / 130 + a.id)) : 0;
   g.save();
   // standing figures have their feet on their spot; sleepers lie across it
   g.translate(X, a.asleep ? Y : Y - h * 0.35);
   if (a.asleep) g.rotate(-Math.PI / 2); // lying down
-  const top = -h / 2,
+  const dn = crouch * h * 0.18, // bending the knees lowers the body
+    top = -h / 2 + dn,
     neck = top + head * 2,
     hip = neck + (h - head * 2) * 0.48,
     foot = h / 2,
     // legs swing while they are actually walking from one spot to the next
-    step = a.asleep || !a.moving ? 0 : Math.sin(a.ph || 0) * h * 0.16,
-    reach = a.act === A_EAT || a.act === A_DRINK || a.act === A_GIVE ? -h * 0.18 : 0;
+    step = a.asleep || !a.moving || crouch ? 0 : Math.sin(a.ph || 0) * h * 0.16;
   g.lineCap = 'round';
-  // legs
+  g.lineJoin = 'round';
+  // legs (knees out when crouching)
   g.strokeStyle = skin;
   g.lineWidth = lw * 1.3;
   g.beginPath();
-  g.moveTo(-h * 0.05, hip);
-  g.lineTo(-h * 0.1 - step, foot);
-  g.moveTo(h * 0.05, hip);
-  g.lineTo(h * 0.1 + step, foot);
+  if (crouch) {
+    g.moveTo(-h * 0.05, hip);
+    g.lineTo(-h * 0.17, (hip + foot) / 2);
+    g.lineTo(-h * 0.1, foot);
+    g.moveTo(h * 0.05, hip);
+    g.lineTo(h * 0.17, (hip + foot) / 2);
+    g.lineTo(h * 0.1, foot);
+  } else {
+    g.moveTo(-h * 0.05, hip);
+    g.lineTo(-h * 0.1 - step, foot);
+    g.moveTo(h * 0.05, hip);
+    g.lineTo(h * 0.1 + step, foot);
+  }
   g.stroke();
-  // arms
+  // arms: the left swings with walking; the right does the work
+  let rx = h * 0.2 - step * 0.6,
+    ry = hip;
+  if (act === A_STRIKE) {
+    rx = h * 0.17;
+    ry = top - h * 0.1 + ((1 - sw) / 2) * (foot - top - h * 0.05);
+  } else if (crouch) {
+    rx = h * 0.14;
+    ry = foot - h * 0.03; // reaching to the ground
+  } else if (act === A_EAT) {
+    rx = h * 0.05;
+    ry = top + head * 1.6; // hand to the mouth
+  } else if (act === A_GIVE) {
+    rx = h * 0.38;
+    ry = neck + h * 0.1; // holding it out
+  }
   g.strokeStyle = skin;
   g.lineWidth = lw;
   g.beginPath();
   g.moveTo(-h * 0.11, neck + h * 0.04);
-  g.lineTo(-h * 0.2 + step * 0.6, hip + reach);
+  g.lineTo(-h * 0.2 + step * 0.6, crouch ? hip + h * 0.06 : hip);
   g.moveTo(h * 0.11, neck + h * 0.04);
-  g.lineTo(h * 0.2 - step * 0.6, hip + reach);
+  g.lineTo(rx, ry);
   g.stroke();
+  if (a.hand) drawHeld(g, a.hand, rx, ry, h, lw);
   // body
   g.fillStyle = skin;
   g.beginPath();
