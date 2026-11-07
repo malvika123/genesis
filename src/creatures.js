@@ -86,6 +86,10 @@ function mk(sp, x, y, sex, g, gen, age, k = KDEF[sp]) {
     lu: 0,
     shared: 0,
     hd: (rnd() * 8) | 0, // which way it faces (one of the eight directions)
+    hm: new Float32Array(NM), // what it was just thinking: its brain's last state, fed back in
+    xl: new Float32Array(NI), // what it sensed at its last choice
+    mem: [], // striking moments, replayed in sleep
+    dream: null,
     hand: 0,
     heat: 0,
     grief: 0, // after the death of its partner, child or mother
@@ -122,9 +126,8 @@ function child(p, q) {
     w,
   };
 }
-// Where the first creatures are born. Fish anywhere in the water. People start together in one warm,
-// low-lying region near fresh water (as early humans did) but not side by side, so they still have to
-// find each other. Each kind of animal starts where it would live — bison on open grassland, deer at
+// Where the first creatures are born. Fish anywhere in the water. People start together as a small
+// band in one warm, low-lying region near fresh water, as early humans lived. Each kind of animal starts where it would live — bison on open grassland, deer at
 // the woodland edge, big cats in warm lands, bears in cool forests — in herds, a pack, or pairs.
 function spawn(sp, n, inst) {
   const kinds = KINDS.map((k, i) => i).filter((i) => KINDS[i].sp === sp);
@@ -193,13 +196,14 @@ function spawnKind(sp, k, n, inst) {
       x = (rnd() * W) | 0;
       y = (rnd() * H) | 0;
       if (cx >= 0 && t < 3000) {
-        const r = sp === 0 ? 14 : sp === 1 ? 4 : K.pack ? 5 : 8;
+        const r = sp === 0 ? 3 : sp === 1 ? 4 : K.pack ? 5 : 8; // people start together, as a band
         x = wx(cx + Math.round((rnd() * 2 - 1) * r));
         y = clamp(cy + Math.round((rnd() * 2 - 1) * r), 0, H - 1);
       }
       t++;
     } while (t < 6000 && (sp === 3 ? !water[idx(x, y)] : !land(idx(x, y))));
-    const c = mk(sp, x, y, j % 2, gene(sp, inst), 0, (rnd() * KBIO[k].mat * 0.1) | 0, k);
+    // the first of every kind start as young adults: grown bodies, blank minds
+    const c = mk(sp, x, y, j % 2, gene(sp, inst), 0, (KBIO[k].smat * (1 + rnd() * 0.3)) | 0, k);
     c.found = true;
     ag.push(c);
   }

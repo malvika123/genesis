@@ -146,6 +146,50 @@ function trace(a, act) {
   }
   for (let j = 0; j < NH; j++) eV[OV + j] = gl * eV[OV + j] + h[j];
 }
+// Sleep replay. Like the hippocampus replaying the day's experiences during sleep, a creature keeps
+// its most striking recent moments — a big relief or a sharp hurt — and goes over them again while
+// asleep, learning from each one a second time: the choice it made, what followed, and how that
+// compared with what it expected.
+const MEMN = 24;
+function remember(a, act, r, vn) {
+  let why = 0;
+  for (let k = 1; k < 9; k++) if (Math.abs(a.rk[k]) > Math.abs(a.rk[why])) why = k;
+  const m = { x: Float32Array.from(a.xl), act, r, vn, why };
+  if (a.mem.length < MEMN) a.mem.push(m);
+  else {
+    // forget the least striking moment, if this one matters more
+    let lo = 0;
+    for (let k = 1; k < a.mem.length; k++) if (Math.abs(a.mem[k].r) < Math.abs(a.mem[lo].r)) lo = k;
+    if (Math.abs(r) > Math.abs(a.mem[lo].r)) a.mem[lo] = m;
+  }
+}
+const RH = new Float32Array(NH),
+  RZ = new Float32Array(NA);
+function replay(a, rate) {
+  const m = a.mem[(rnd() * a.mem.length) | 0],
+    w = a.lw,
+    x = m.x,
+    V = forward(w, x, RH, RZ, a.S.nh),
+    d = clamp(m.r + GAM * m.vn - V, -2, 2);
+  for (let j = 0; j < NH; j++) {
+    let s = 0;
+    for (let k = 0; k < NA; k++) s += w[O2 + k * NH + j] * ((k === m.act ? 1 : 0) - RZ[k]);
+    const dd = 1 - RH[j] * RH[j],
+      g = rate * d * (AP * s + AV * w[OV + j]) * dd,
+      o = j * NI;
+    if (g) for (let i = 0; i < NI; i++) if (x[i]) w[o + i] = clamp(w[o + i] + g * x[i], -6, 6);
+    w[OV + j] = clamp(w[OV + j] + rate * AV * d * RH[j], -6, 6);
+  }
+  for (let k = 0; k < NA; k++) {
+    const g = rate * AP * d * ((k === m.act ? 1 : 0) - RZ[k]);
+    let o = O2 + k * NH;
+    for (let j = 0; j < NH; j++) w[o + j] = clamp(w[o + j] + g * RH[j], -6, 6);
+    o = O3 + k * NI;
+    for (let i = 0; i < NI; i++) if (x[i]) w[o + i] = clamp(w[o + i] + g * x[i], -6, 6);
+  }
+  a.learn += Math.abs(d) * rate;
+  a.dream = m;
+}
 function imitate(a, act, rate) {
   const x = a.xi,
     h = a.h,

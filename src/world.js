@@ -41,7 +41,7 @@ function reset(cfg = {}) {
   initForest();
   initItems();
   for (let i = 0; i < W * H; i++) food[i] *= 1 - 0.35 * tree[i]; // little grass grows in the shade of trees
-  const n = clamp(cfg.people ?? 2, 2, 40),
+  const n = clamp(cfg.people ?? 8, 2, 40), // early humans lived in small bands
     nh = clamp(cfg.herbivores ?? 20, 0, 40),
     np = clamp(cfg.predators ?? 6, 0, 12),
     nf = clamp(cfg.fish ?? 24, 0, 60),
@@ -59,12 +59,12 @@ function reset(cfg = {}) {
   log(
     'The world begins with ' +
       n +
-      ' young people; ' +
+      ' adults (a small band); ' +
       (tally(1) || 'no plant-eaters') +
       '; ' +
       (tally(2) || 'no hunters') +
       '; and ' +
       nf +
-      ' fish in the seas, lakes and rivers. There are mountains, forests, pits and bushes of red berries, some of them poisonous to eat. Until they grow up, the world keeps them from starving.'
+      ' fish in the seas, lakes and rivers. There are mountains, forests, pits and bushes of red berries, some of them poisonous to eat. Every creature starts grown, with a blank mind and only what its kind is born with.'
   );
 }

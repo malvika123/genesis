@@ -150,6 +150,8 @@ function sim() {
       }
     }
     if (a.wh && (a.asleep || (a.fear < 0.2 && a.painA < 0.2 && rnd() < 0.02))) deliver(a);
+    a.xl.set(a.xi); // what it sensed when it made its last choice
+    const lastAct = a.act;
     sense(a, a.xi, night);
     const x = a.xi,
       own = a.sp === 3 ? 8 : a.sp === 1 ? 3 : a.sp === 0 ? 4 : 5;
@@ -220,14 +222,19 @@ function sim() {
     if (a.sp !== 3 && a.heat > 0.3)
       for (let s = 0; s < 8; s++) RF[s] += (a.heat - 0.3) * 3 * (1.5 * x[s * NCH + 12] + x[s * NCH]);
     const V = forward(a.lw, x, a.h, a.z, S.nh, RF);
+    // the brain's state now becomes its short-term memory for the next step
+    for (let j = 0; j < NM; j++) a.hm[j] = a.h[j];
+    const pl = young
+      ? S.plast
+      : a.age < S.mat * 2.2
+        ? S.adl + (1 - S.adl) * Math.max(0, 1 - (a.age - S.mat) / (S.mat * 0.3))
+        : S.adl * 0.8;
+    if (a.has && a.sp !== 3 && Math.abs(r) > 0.3) remember(a, lastAct, r, V);
+    if (a.asleep && a.mem.length && tick % 2 === 0) replay(a, pl * 0.5);
+    else if (!a.asleep) a.dream = null;
     if (a.has) {
       const d = clamp(r + GAM * V - a.Vp, -2, 2);
       let ch = 0;
-      const pl = young
-        ? S.plast
-        : a.age < S.mat * 2.2
-          ? S.adl + (1 - S.adl) * Math.max(0, 1 - (a.age - S.mat) / (S.mat * 0.3))
-          : S.adl * 0.8;
       for (let i = 0; i < NW; i++) {
         const u = pl * (AP * d * a.eP[i] + AV * d * a.eV[i]);
         if (u) {

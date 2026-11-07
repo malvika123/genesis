@@ -131,6 +131,7 @@ const PLAIN = {
   'being in deep water': 'it is in deep water',
   'memory of water': 'it remembers where water is',
   'memory of food': 'it remembers where food is',
+  'what it was just thinking': 'it is still caught up in what just happened',
   'red berries here': 'there are red berries here',
   'a hungry child nearby': 'a hungry child is nearby',
   'a stone in its hand': 'it is holding a stone',
@@ -191,7 +192,13 @@ function thoughtText(a) {
   if (!m) return 'Taking in the world…';
   if (m.forced)
     return m.act === A_SLEEP
-      ? 'Asleep. Its body needs rest, so it can’t wake up yet.'
+      ? a.dream
+        ? 'Asleep, going over a moment from earlier: it ' +
+          plainAct(a, a.dream.act) +
+          ', and then came ' +
+          WHY[a.dream.why] +
+          '. Its brain is learning from it again.'
+        : 'Asleep. Its body needs rest, so it can’t wake up yet.'
       : 'Its instincts took over: it ' + plainAct(a, m.act) + ' (it wanted to ' + actName(a, m.chosen) + ').';
   const why = m.pos.map((q) => q[0]);
   if (m.rfc > 0.5)

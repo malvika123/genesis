@@ -258,6 +258,8 @@ function sense(a, x, night) {
   x[IB + 18] = a.cold;
   x[IB + 25] = a.heat;
   x[IB + 26] = a.rage;
+  // short-term memory: what its brain was doing a moment ago
+  for (let j = 0; j < NM; j++) x[IB + 27 + j] = a.hm[j];
   if (a.sp === 0) {
     x[IB + 19] = a.hand === 1 ? 1 : 0;
     x[IB + 20] = a.hand === 2 ? 1 : 0;

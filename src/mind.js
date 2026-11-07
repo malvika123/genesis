@@ -70,6 +70,7 @@ function actName(a, k) {
     'strike',
   ][k - 8];
 }
+for (let j = 0; j < NM; j++) INNER[27 + j] = 'what it was just thinking';
 function featName(i) {
   if (i < NS) return CHN[i % NCH] + ' to the ' + CP[(i / NCH) | 0];
   if (i < IB) return BODY[i - HB];
