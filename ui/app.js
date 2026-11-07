@@ -1073,9 +1073,46 @@ function draw() {
   cc.font = '11px sans-serif';
   cc.fillText('peak ' + mx, 4, 12);
 }
+// Speed: a slider from real time (one second here is one second there) up to very fast, on a
+// logarithmic scale so every part of it is useful. One step of the world is 15 minutes.
+const STEP_S = 900,
+  SPD_LO = Math.log10(1 / STEP_S),
+  SPD_HI = Math.log10(600);
+const stepsPerSec = () => 10 ** (SPD_LO + ((SPD_HI - SPD_LO) * +$('spd').value) / 100);
+function spdLabel() {
+  const r = stepsPerSec() * STEP_S; // seconds of world time per real second
+  const f = (v, u) =>
+    (v < 10 ? v.toFixed(1).replace(/\.0$/, '') : Math.round(v)) + ' ' + u + (v >= 1.05 ? 's' : '');
+  $('spdl').textContent =
+    r < 1.5
+      ? 'real time'
+      : '1 s = ' +
+        (r < 60
+          ? f(r, 'second')
+          : r < 3600
+            ? f(r / 60, 'minute')
+            : r < 86400
+              ? f(r / 3600, 'hour')
+              : f(r / 86400, 'day'));
+}
+try {
+  const v = localStorage.getItem('genesis-speed');
+  if (v !== null) $('spd').value = v;
+} catch (e) {}
+$('spd').oninput = () => {
+  spdLabel();
+  try {
+    localStorage.setItem('genesis-speed', $('spd').value);
+  } catch (e) {}
+};
+spdLabel();
+let lastT = performance.now();
 function loop() {
+  const now = performance.now(),
+    dt = Math.min(0.25, (now - lastT) / 1000);
+  lastT = now;
   if (running) {
-    acc += +$('spd').value / 3;
+    acc += stepsPerSec() * dt;
     let n = 0;
     while (acc >= 1 && n < 10) {
       sim();

@@ -56,6 +56,8 @@ nav button[aria-selected=true]{background:var(--acc);color:var(--bg)}
 .wrow{display:flex;gap:8px}.wrow input{flex:1;min-width:0;background:color-mix(in srgb,var(--panel) 70%,transparent)}
 p.sub{margin:0 0 10px;color:var(--mute);max-width:72ch}
 .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0}
+#spd{width:120px;padding:0;vertical-align:middle;accent-color:var(--acc)}
+#spdl{font-size:12px;color:var(--mute);display:inline-block;min-width:92px}
 button,select,input{font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 12px}
 button{cursor:pointer;font-weight:600}button.go{background:var(--acc);color:var(--bg);border-color:var(--acc)}
 input[type=number]{width:70px}input[type=checkbox]{padding:0;width:auto}label{color:var(--mute);font-size:.9rem}
@@ -94,7 +96,7 @@ canvas{display:block}
 <button id="view">Flat map</button>
 <button id="sky">Hide clouds</button>
 <button class="go" id="play">Pause</button>
-<label>Speed <select id="spd"><option value="0.02" selected>Thoughtful</option><option value="0.06">Very slow</option><option value="0.15">Slow</option><option value="0.5">Medium</option><option value="1">1×</option><option value="3">3×</option><option value="10">10×</option><option value="30">30×</option></select></label>
+<label class="spd">Speed <input type="range" id="spd" min="0" max="100" step="1" value="34" aria-describedby="spdl"> <span id="spdl"></span></label>
 </div>
 </header>
 <section class="view" id="v-world">
