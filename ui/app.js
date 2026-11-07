@@ -1233,6 +1233,16 @@ function drawAnimal(g, a, X, Y, k) {
     g.quadraticCurveTo(hx - head * 0.55, hy - head * 0.75, hx - head * 0.25, hy - head * 0.8);
     g.stroke();
   }
+  // hunters get a thin red outline, as people get pink or blue, so they are easy to pick out
+  if (a.sp === 2) {
+    g.strokeStyle = '#d23c2c';
+    g.lineWidth = Math.max(1, u * 0.35);
+    g.beginPath();
+    g.ellipse(X, by, bw / 2, bh / 2, 0, 0, 7);
+    g.moveTo(hx + head / 2, hy);
+    g.arc(hx, hy, head / 2, 0, 7);
+    g.stroke();
+  }
   // a pale tail patch on deer and rabbits
   if (a.S.n === 'Deer' || a.S.n === 'Rabbit') {
     g.fillStyle = '#f2ece2';
