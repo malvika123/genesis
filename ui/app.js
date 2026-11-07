@@ -623,7 +623,7 @@ const GL = {
   lon0: 0,
   lat0: 0.3,
   zoom: 1,
-  spin: true, // turns slowly on its own, like a planet
+  spin: false, // false: held still like a weather satellite sees Earth; true: turns with the day, seen from the sun
   held: false, // being dragged right now
   vel: 0, // extra turning from a flick (radians per frame)
   lastT: 0, // world time at the last frame, to turn the planet with its day
@@ -832,7 +832,7 @@ function findOne(sp) {
     GL.lon0 = lonOfX(a.x);
     GL.lat0 = latOfY(a.y);
     GL.zoom = Math.max(GL.zoom, 2.6);
-    GL.spin = false;
+    setSpin(false);
     GL.vel = 0;
     GL.follow = a; // keep it in view as it walks, until you drag the planet
     $('ghint').hidden = true;
@@ -990,9 +990,9 @@ $('spd').oninput = () => {
 spdLabel();
 // World time including how far it is into the next step, so the sun and the turning move smoothly.
 const worldT = () => tick + (running ? clamp(acc, 0, 0.999) : 0);
-// The planet turns once a world day, west to east like Earth. We watch from the sun's side, so the
-// sunlit half stays facing us and the land slides through morning, noon and evening. Its speed
-// follows the speed slider, and it stops when the world is paused. A flick adds momentum that fades.
+// When "Turn with the sun" is on, the planet turns once a world day, west to east like Earth, so the
+// sunlit half stays facing us; it follows the speed slider and stops when paused. When it is off, the
+// planet holds still and day and night sweep across it. A flick adds momentum that fades either way.
 function spinStep() {
   const t = worldT(),
     now = performance.now(),
@@ -1169,7 +1169,19 @@ function setView(v) {
   if (G3D.ok) G3D.show(v === 'globe');
   fit();
 }
-$('view').onclick = () => setView(view === 'globe' ? 'flat' : 'globe');
+$('view').onclick = () => {
+  setView(view === 'globe' ? 'flat' : 'globe');
+  $('turn').hidden = view !== 'globe';
+};
+// Two honest ways to watch a planet. Held still, as a satellite that circles in step with Earth sees
+// it: the land stays put and day and night sweep across it, so only the creatures move. Or seen from
+// the sun: the sunlit side stays facing you and the planet turns beneath it.
+function setSpin(v) {
+  GL.spin = v;
+  $('turn').textContent = v ? 'Hold still' : 'Turn with the sun';
+  $('turn').setAttribute('aria-pressed', v ? 'true' : 'false');
+}
+$('turn').onclick = () => setSpin(!GL.spin);
 $('sky').onclick = () => {
   showSky = !showSky;
   $('sky').textContent = showSky ? 'Hide clouds' : 'Show clouds';
