@@ -26,9 +26,11 @@ const G3D = { ok: false };
     CAPDEG = 10, // the map stops at ±80°; beyond are the polar ice caps
     TS3 = 8; // texture pixels per cell
   const scene = new THREE.Scene(),
-    camera = new THREE.PerspectiveCamera(40, 1, 0.005, 50),
+    camera = new THREE.PerspectiveCamera(40, 1, 0.0004, 12),
     globe = new THREE.Group();
   scene.add(globe);
+  const sky = new THREE.Color(0, 0, 0);
+  scene.fog = new THREE.Fog(0x000000, 50, 60);
 
   // surface pictures: the land (and sea) and, separately, the clouds
   const bandH = H * TS3,
@@ -119,12 +121,15 @@ const G3D = { ok: false };
   }
   // Real trees, shown when you zoom in: cone-shaped pines and round-crowned broadleaf trees, a few per
   // forest cell depending on how thick the forest is. Rebuilt now and then as forests change.
-  const MAXT = 9000,
-    coneG = new THREE.ConeGeometry(0.0035, 0.011, 6).translate(0, 0.0055, 0),
-    crownG = new THREE.IcosahedronGeometry(0.0042, 0).translate(0, 0.0062, 0),
+  const MAXT = 16000,
+    coneG = new THREE.ConeGeometry(0.0035, 0.011, 7).translate(0, 0.0072, 0),
+    crownG = new THREE.IcosahedronGeometry(0.0042, 1).translate(0, 0.0085, 0),
+    trunkG = new THREE.CylinderGeometry(0.0005, 0.0008, 0.0048, 5).translate(0, 0.0024, 0),
+    trunks = new THREE.InstancedMesh(trunkG, new THREE.MeshLambertMaterial({ color: 0x5a3d26 }), 2 * MAXT),
     pines = new THREE.InstancedMesh(coneG, new THREE.MeshLambertMaterial({ color: 0x24493a }), MAXT),
     leafy = new THREE.InstancedMesh(crownG, new THREE.MeshLambertMaterial({ color: 0x2f6b2a }), MAXT);
-  pines.count = leafy.count = 0;
+  pines.count = leafy.count = trunks.count = 0;
+  globe.add(trunks);
   globe.add(pines);
   globe.add(leafy);
   let treesFor = null,
@@ -142,7 +147,7 @@ const G3D = { ok: false };
     for (let i = 0; i < W * H && np < MAXT && nl < MAXT; i++) {
       const t = tree[i];
       if (t < 0.2 || water[i]) continue;
-      const n = t > 0.65 ? 3 : t > 0.4 ? 2 : 1,
+      const n = t > 0.65 ? 6 : t > 0.4 ? 4 : 2,
         x = i % W,
         y = (i / W) | 0;
       for (let k = 0; k < n; k++) {
@@ -156,13 +161,18 @@ const G3D = { ok: false };
         const sz = (0.7 + 0.6 * r01()) * (fkind[i] === 3 ? 1.35 : 1);
         scl.set(sz, sz, sz);
         mtx.compose(pos, q, scl);
+        trunks.setMatrixAt(np + nl, mtx);
         if (fkind[i] === 1) pines.setMatrixAt(np++, mtx);
         else leafy.setMatrixAt(nl++, mtx);
       }
     }
     pines.count = np;
     leafy.count = nl;
-    pines.instanceMatrix.needsUpdate = leafy.instanceMatrix.needsUpdate = true;
+    trunks.count = np + nl;
+    pines.instanceMatrix.needsUpdate =
+      leafy.instanceMatrix.needsUpdate =
+      trunks.instanceMatrix.needsUpdate =
+        true;
     treesFor = alt;
   }
   // a point on the surface (local coordinates) for a latitude/longitude
@@ -202,13 +212,19 @@ const G3D = { ok: false };
     globe.rotation.set(GL.lat0, -Math.PI / 2 - GL.lon0, 0, 'XYZ');
     const z = GL.zoom,
       d = 2.25 / Math.pow(z, 1.35),
-      tilt = clamp((z - 1.6) / 2.6, 0, 1) * 1.1,
+      // tilt toward the horizon as you come close; right down near the ground you look almost level
+      tilt = clamp((z - 1.6) / 2.6, 0, 1) * 1.1 + clamp(Math.log(z / 5) / Math.log(40 / 5), 0, 1) * 0.36,
       h0 = 1 + EX * heightAt(GL.lat0, GL.lon0);
     camera.position.set(0, -Math.sin(tilt) * d, h0 + Math.cos(tilt) * d);
+    globe.updateMatrixWorld(true);
+    // never let the camera sink into a hillside
+    const lp = globe.worldToLocal(camera.position.clone()),
+      ground =
+        1 + EX * heightAt(Math.asin(clamp(lp.y / lp.length(), -1, 1)), Math.atan2(-lp.z, lp.x)) + 0.004;
+    if (lp.length() < ground) camera.position.copy(globe.localToWorld(lp.setLength(ground)));
     camera.up.set(0, 1, 0);
     camera.lookAt(0, 0, h0);
     camera.updateMatrixWorld();
-    globe.updateMatrixWorld(true);
   }
 
   // where a cell appears on the canvas (device pixels), and how big one cell looks; null if out of sight
@@ -244,7 +260,7 @@ const G3D = { ok: false };
     }
     if (shapedFor !== alt) shape();
     if (treesFor !== alt || treeFrame++ % 600 === 0) plantTrees();
-    pines.visible = leafy.visible = GL.zoom > 1.8;
+    pines.visible = leafy.visible = trunks.visible = GL.zoom > 1.8;
     if (frame++ % 12 === 0) paint(v);
     if (!GL.held) {
       GL.lon0 += GL.vel;
@@ -259,13 +275,22 @@ const G3D = { ok: false };
       GL.vel = 0;
     }
     aim();
-    // clouds thin out as you come close, so you can see the ground you zoomed in on
-    clouds.material.opacity = clamp(1.25 - 0.22 * GL.zoom, 0.15, 0.9);
-    air.visible = GL.zoom < 3;
     // the sun is overhead where it is local noon
     const xs = ((((0.5 - (tick % DAY) / DAY) * W) % W) + W) % W,
       ls = (xs / W) * 2 * Math.PI - Math.PI;
     sun.position.copy(local(0, ls, 5));
+    // close to the ground, space gives way to sky — blue by day, dark at night — with haze far off
+    const near = clamp(Math.log(GL.zoom / 6) / Math.log(25 / 6), 0, 1),
+      light = clamp(Math.cos(GL.lon0 - ls) * Math.cos(GL.lat0) * 3 + 0.5, 0, 1);
+    sky.setRGB(0.04 + 0.5 * light, 0.07 + 0.7 * light, 0.15 + 0.78 * light);
+    renderer.setClearColor(sky, near);
+    scene.fog.color.copy(sky);
+    const dist = camera.position.length() - 1;
+    scene.fog.near = near > 0 ? dist * 2 : 50;
+    scene.fog.far = near > 0 ? dist * 2 + 0.25 / near : 60;
+    // clouds thin out as you come close so you can see the ground; from below they hang overhead
+    clouds.material.opacity = GL.zoom < 6 ? clamp(1.25 - 0.22 * GL.zoom, 0.15, 0.9) : 0.15 + 0.35 * near;
+    air.visible = GL.zoom < 3;
     renderer.render(scene, camera);
 
     // creatures and the selection ring on the 2D canvas above
@@ -274,7 +299,7 @@ const G3D = { ok: false };
     for (const a of ag) {
       const P = project(a.x, a.y);
       if (!P) continue;
-      const ks = clamp((P[2] / C) * 0.9, 0.25, 9);
+      const ks = clamp((P[2] / C) * 0.9, 0.25, Math.max(9, P[2] * 0.01));
       drawCreature(cx, a, P[0], P[1], ks, v, isNightAt(a.x) ? 0.5 : 1);
     }
     if (sel) {

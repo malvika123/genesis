@@ -1058,7 +1058,7 @@ cv.addEventListener('pointermove', (e) => {
   if (view !== 'globe') return;
   if (ptr.size === 2) {
     const [a, b] = [...ptr.values()];
-    if (pinch0) GL.zoom = clamp((zoom0 * Math.hypot(a.x - b.x, a.y - b.y)) / pinch0, 1, 5);
+    if (pinch0) GL.zoom = clamp((zoom0 * Math.hypot(a.x - b.x, a.y - b.y)) / pinch0, 1, 40);
     return;
   }
   const r = cv.getBoundingClientRect(),
@@ -1081,7 +1081,7 @@ cv.addEventListener(
   (e) => {
     if (view !== 'globe') return;
     e.preventDefault();
-    GL.zoom = clamp(GL.zoom * Math.exp(-e.deltaY * 0.0015), 1, 5);
+    GL.zoom = clamp(GL.zoom * Math.exp(-e.deltaY * 0.0015), 1, 40);
   },
   { passive: false }
 );
