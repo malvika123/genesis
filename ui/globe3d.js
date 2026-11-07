@@ -358,7 +358,9 @@ const G3D = { ok: false };
         sp.material.needsUpdate = true;
         const la = latOfY(a.ry),
           lo = lonOfX(a.rx);
-        sp.position.copy(local(la, lo, 1 + EX * heightAt(la, lo) + 0.0002));
+        const ci = idx(Math.round(a.rx), Math.round(a.ry)),
+          wading = a.sp !== 3 && water[ci] && !river[ci] && !iced(ci);
+        sp.position.copy(local(la, lo, 1 + EX * heightAt(la, lo) + (wading ? -0.0025 : 0.0002)));
         // Figures are drawn 2.5 times life size so you can find them among the trees (like the
         // exaggerated mountains), all by the same factor so people and animals keep their true sizes
         // compared with each other (each kind's own size is already in its picture). Fish swim at the surface.

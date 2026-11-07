@@ -458,7 +458,7 @@ function drawTerrain(g, v, relief = true) {
     for (let x = 0; x < W; x++) {
       const i = idx(x, y),
         t = ter[i];
-      if (water[i]) {
+      if (water[i] && !river[i]) {
         g.fillStyle = v(iced(i) ? '--ice' : '--water');
         g.fillRect(x * C, y * C, C, C);
         if (!iced(i)) {
@@ -495,6 +495,39 @@ function drawTerrain(g, v, relief = true) {
         }
       }
     }
+  // Rivers: a square is 3 km across and a river only tens of metres wide, so a river square is land
+  // with a channel running through it, joined to the next stretch of river, the lake or the sea.
+  g.strokeStyle = v('--water');
+  g.lineCap = 'round';
+  g.lineWidth = C * 0.32;
+  g.beginPath();
+  for (let y = 0; y < H; y++)
+    for (let x = 0; x < W; x++) {
+      const i = y * W + x;
+      if (!river[i]) continue;
+      // flow on to the lowest neighbouring water: a lake or the sea if there is one, else the river downhill
+      let to = -1,
+        tx = 0,
+        ty = 0,
+        lo = Infinity;
+      for (const [dx, dy] of MV) {
+        const Y = y + dy;
+        if (Y < 0 || Y >= H) continue;
+        const j = idx(x + dx, Y);
+        if (!water[j]) continue;
+        const h = river[j] ? alt[j] : -99;
+        if (h < lo) {
+          lo = h;
+          to = j;
+          tx = x + dx;
+          ty = Y;
+        }
+      }
+      g.moveTo(x * C + C / 2, y * C + C / 2);
+      if (to >= 0) g.lineTo(tx * C + C / 2, ty * C + C / 2);
+      else g.lineTo(x * C + C / 2 + 0.01, y * C + C / 2);
+    }
+  g.stroke();
   // forests: a canopy of tree crowns, darkest in the rainforest, blue-green for pines; ripe fruit shows
   const FC = ['', '#2d5a45', '#3b7a35', '#1f5e2a'];
   for (let y = 0; y < H; y++)

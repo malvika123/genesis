@@ -82,7 +82,7 @@ function sim() {
       a.w -= (S.dW / DAY) * df;
     }
     const fish = a.sp === 3,
-      onW = water[idx(a.x, a.y)] === 1,
+      onW = water[idx(a.x, a.y)] === 1 && (fish || !river[idx(a.x, a.y)]), // a river square is mostly bank
       inW = !fish && deep[idx(a.x, a.y)] === 1 && !iced(idx(a.x, a.y)),
       wade = !fish && onW;
     if (fish) a.w = 100;
@@ -219,7 +219,7 @@ function sim() {
       let safe = cover(here) > 0.4 ? 1 : 0;
       for (let s = 0; s < 8 && !safe; s++) if (x[s * NCH + 7] > 0.6 || x[s * NCH + own] > 0.6) safe = 1;
       RF[A_SLEEP] += safe ? 2 * k : 0;
-      if (water[here] && !iced(here)) RF[A_SLEEP] -= 6;
+      if (water[here] && !river[here] && !iced(here)) RF[A_SLEEP] -= 6;
     }
     // When too hot, land animals instinctively seek shade and water.
     if (a.sp !== 3 && a.heat > 0.3)
@@ -259,9 +259,11 @@ function sim() {
     a.V = V;
     let act = sample(a.z);
     const chosen = act;
-    if (a.sl >= 1) act = A_SLEEP;
+    // exhausted, the body falls asleep — but not while standing in a lake or the sea: it must get out first
+    if (a.sl >= 1 && !wade) act = A_SLEEP;
     if (act === A_SLEEP && !a.asleep && a.sl < 0.45) act = A_STAY;
     if (a.asleep && a.sl > 0.08 && a.painA < 0.3 && a.painW < 0.3 && a.hp > 40) act = A_SLEEP;
+    if (wade && act === A_SLEEP) act = A_STAY; // no sleeping standing in a lake or the sea
     if (a.whO === 'berries' && x[IB + 16] && hu > 0.4 && act !== A_EAT)
       followed(a, 'berries', 'walked past the red berries, hungry as it was');
     if (act === chosen) trace(a, act);
