@@ -462,8 +462,9 @@ function drawSky(g, streaks = true) {
     }
   g.globalAlpha = 1;
 }
-// A person as a little human figure: head, body in their colour (pink or blue), arms and legs.
-// Children have bigger heads for their size; walkers take steps; sleepers lie down.
+// A person as a simple little human figure — no clothes, as early humans had none. A thin pink or blue
+// outline shows whether they are female or male. Children have bigger heads for their size; walkers
+// take steps; sleepers lie down.
 function drawPerson(g, a, X, Y, k, gr, col) {
   const h = (5.5 + 6 * gr) * k, // full height
     head = h * (0.2 + 0.1 * (1 - gr)),
@@ -482,7 +483,7 @@ function drawPerson(g, a, X, Y, k, gr, col) {
     reach = a.act === A_EAT || a.act === A_DRINK || a.act === A_GIVE ? -h * 0.18 : 0;
   g.lineCap = 'round';
   // legs
-  g.strokeStyle = col;
+  g.strokeStyle = skin;
   g.lineWidth = lw * 1.3;
   g.beginPath();
   g.moveTo(-h * 0.05, hip);
@@ -500,7 +501,7 @@ function drawPerson(g, a, X, Y, k, gr, col) {
   g.lineTo(h * 0.2 - step * 0.6, hip + reach);
   g.stroke();
   // body
-  g.fillStyle = col;
+  g.fillStyle = skin;
   g.beginPath();
   g.moveTo(-h * 0.13, neck);
   g.lineTo(h * 0.13, neck);
@@ -518,11 +519,16 @@ function drawPerson(g, a, X, Y, k, gr, col) {
   g.arc(0, top + head * 0.9, head, Math.PI, 2 * Math.PI);
   g.fill();
   if (a.sex) g.fillRect(-head, top + head * 0.9, head * 0.35, head * 1.3); // longer hair
-  // a thin outline so they stand out against grass, sand and snow
-  g.strokeStyle = 'rgba(0,0,0,.35)';
-  g.lineWidth = Math.max(0.6, lw * 0.35);
+  // a thin pink or blue outline (female or male), which also makes them stand out on any ground
+  g.strokeStyle = col;
+  g.lineWidth = Math.max(0.8, lw * 0.45);
   g.beginPath();
   g.arc(0, top + head, head, 0, 7);
+  g.moveTo(-h * 0.13, neck);
+  g.lineTo(h * 0.13, neck);
+  g.lineTo(h * 0.1, hip + h * 0.04);
+  g.lineTo(-h * 0.1, hip + h * 0.04);
+  g.closePath();
   g.stroke();
   g.restore();
 }
