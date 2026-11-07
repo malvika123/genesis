@@ -192,6 +192,6 @@ function updateWeather() {
 const raining = (i) => RAIN[i] > 0.002;
 const snowing = (i) => raining(i) && RT[(i / W) | 0] < 0;
 // how well plants grow with this much water in the ground
-const wetness = (i) => (water[i] ? 1 : clamp(0.35 + MOIST[i] * 1.5, 0, 1));
+const wetness = (i) => (water[i] ? 1 : clamp(0.5 + MOIST[i] * 1.25, 0, 1));
 // drinkable water at a cell: open (unfrozen) water, or a puddle
 const drinkable = (i) => liquid(i) || PUD[i] === 1;
