@@ -462,16 +462,78 @@ function drawSky(g, streaks = true) {
     }
   g.globalAlpha = 1;
 }
+// A person as a little human figure: head, body in their colour (pink or blue), arms and legs.
+// Children have bigger heads for their size; walkers take steps; sleepers lie down.
+function drawPerson(g, a, X, Y, k, gr, col) {
+  const h = (5.5 + 6 * gr) * k, // full height
+    head = h * (0.2 + 0.1 * (1 - gr)),
+    skin = '#e7b896',
+    hair = '#3b2a20',
+    lw = Math.max(1, h * 0.09);
+  g.save();
+  // standing figures have their feet on their spot; sleepers lie across it
+  g.translate(X, a.asleep ? Y : Y - h * 0.35);
+  if (a.asleep) g.rotate(-Math.PI / 2); // lying down
+  const top = -h / 2,
+    neck = top + head * 2,
+    hip = neck + (h - head * 2) * 0.48,
+    foot = h / 2,
+    step = a.asleep || a.act >= 8 ? 0 : ((a.x + a.y) % 2 ? 1 : -1) * h * 0.14,
+    reach = a.act === A_EAT || a.act === A_DRINK || a.act === A_GIVE ? -h * 0.18 : 0;
+  g.lineCap = 'round';
+  // legs
+  g.strokeStyle = col;
+  g.lineWidth = lw * 1.3;
+  g.beginPath();
+  g.moveTo(-h * 0.05, hip);
+  g.lineTo(-h * 0.1 - step, foot);
+  g.moveTo(h * 0.05, hip);
+  g.lineTo(h * 0.1 + step, foot);
+  g.stroke();
+  // arms
+  g.strokeStyle = skin;
+  g.lineWidth = lw;
+  g.beginPath();
+  g.moveTo(-h * 0.11, neck + h * 0.04);
+  g.lineTo(-h * 0.2 + step * 0.6, hip + reach);
+  g.moveTo(h * 0.11, neck + h * 0.04);
+  g.lineTo(h * 0.2 - step * 0.6, hip + reach);
+  g.stroke();
+  // body
+  g.fillStyle = col;
+  g.beginPath();
+  g.moveTo(-h * 0.13, neck);
+  g.lineTo(h * 0.13, neck);
+  g.lineTo(h * 0.1, hip + h * 0.04);
+  g.lineTo(-h * 0.1, hip + h * 0.04);
+  g.closePath();
+  g.fill();
+  // head and hair
+  g.fillStyle = skin;
+  g.beginPath();
+  g.arc(0, top + head, head, 0, 7);
+  g.fill();
+  g.fillStyle = hair;
+  g.beginPath();
+  g.arc(0, top + head * 0.9, head, Math.PI, 2 * Math.PI);
+  g.fill();
+  if (a.sex) g.fillRect(-head, top + head * 0.9, head * 0.35, head * 1.3); // longer hair
+  // a thin outline so they stand out against grass, sand and snow
+  g.strokeStyle = 'rgba(0,0,0,.35)';
+  g.lineWidth = Math.max(0.6, lw * 0.35);
+  g.beginPath();
+  g.arc(0, top + head, head, 0, 7);
+  g.stroke();
+  g.restore();
+}
 // One creature at (X, Y); k scales its size (1 = flat-map size).
 function drawCreature(g, a, X, Y, k, v, dim = 1) {
   const S = SP[a.sp],
     gr = clamp(a.age / S.mat, 0.3, 1);
   g.globalAlpha = (a.asleep ? 0.45 : 1) * dim;
   if (a.sp === 0) {
-    g.fillStyle = a.sex ? v('--f') : v('--m');
-    g.beginPath();
-    g.arc(X, Y, (1.5 + 3.2 * gr) * k, 0, 7);
-    g.fill();
+    g.globalAlpha = (a.asleep ? 0.8 : 1) * dim;
+    drawPerson(g, a, X, Y, k, gr, a.sex ? v('--f') : v('--m'));
   } else if (a.sp === 1) {
     g.fillStyle = v('--herb');
     g.beginPath();
