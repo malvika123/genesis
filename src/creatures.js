@@ -38,6 +38,8 @@ function mk(sp, x, y, sex, g, gen, age, k = KDEF[sp]) {
     da: 0, // the last dopamine-like signal: better (+) or worse (−) than expected
     mod: 1, // how strongly the mood chemicals are turning its learning up or down
     z: new Float32Array(NA),
+    zv: new Float32Array(NV), // the voice's options this moment
+    voice: 0, // 0 silent, 1 … 6 one of the six sounds
     e: 80,
     w: 85,
     hp: 100,

@@ -9,7 +9,7 @@ const { createEngine } = require('../tools/engine');
 function setup(find) {
   const E = createEngine();
   E.setSeed(3);
-  E.reset({ people: 2 });
+  E.reset({ people: 2, predators: 0 }); // no predators, so nobody is killed mid-test
   const s = E.state(),
     it = E.items();
   let cell = -1;

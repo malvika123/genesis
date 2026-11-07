@@ -78,7 +78,6 @@ function doingWord(a, k) {
                 ? 'knocking two stones together'
                 : 'banging ' + HAND[a.hand] + ' on the ground';
   }
-  if (k >= A_SAY) return 'calling out “' + SAYN[k - A_SAY] + '”';
   if (k < 8) return 'walking ' + CP[k];
   return [
     'staying put',
@@ -171,7 +170,6 @@ function plainReason(n) {
   return PLAIN[n] || n;
 }
 function plainAct(a, k) {
-  if (k >= A_SAY) return 'calls out “' + SAYN[k - A_SAY] + '”';
   if (k < 8) return 'heads ' + CP[k];
   return [
     'stays where it is',
@@ -231,6 +229,7 @@ function thoughtText(a) {
   let t = why.length
     ? cap(joinReasons(why.slice(0, 2).map(plainReason))) + ', so it ' + plainAct(a, m.act) + '. ' + sure
     : 'Nothing clear is guiding it yet, so it tries something: it ' + plainAct(a, m.act) + '.';
+  if (a.voice > 0 && a.saidT === tick) t += ' And it calls out “' + SAYN[a.voice - 1] + '”.';
   if (a.hunch && tick < a.hunch.until) t += ' A thought stays with it: “' + a.hunch.text + '”';
   return t;
 }
@@ -431,7 +430,8 @@ function doingText(a) {
         ? doingWord(a, m.act).replace(/^./, (c) => c.toUpperCase())
         : 'Looking around';
   const i = idx(a.x, a.y);
-  return now + ', ' + placeOf(a) + (snowing(i) ? ', in the snow' : raining(i) ? ', in the rain' : '');
+  const call = a.voice > 0 && a.saidT === tick ? ', calling “' + SAYN[a.voice - 1] + '”' : '';
+  return now + call + ', ' + placeOf(a) + (snowing(i) ? ', in the snow' : raining(i) ? ', in the rain' : '');
 }
 let tipTab = 'think';
 function updateTip() {

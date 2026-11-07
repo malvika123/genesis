@@ -58,7 +58,6 @@ const INNER = {
 };
 function actName(a, k) {
   if (k < 8) return 'go ' + CP[k];
-  if (k >= A_SAY) return 'call “' + SAYN[k - A_SAY] + '”';
   return [
     'stay put',
     'eat',

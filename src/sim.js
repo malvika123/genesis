@@ -220,15 +220,17 @@ function sim() {
       a.bonus[k] = 0;
     }
     RF.fill(0);
+    RFV.fill(0);
     // only people have hands
     if (a.sp !== 0) {
       RF[A_TAKE] = RF[A_DROP] = RF[A_STRIKE] = -40;
-      for (let k = 0; k < NSAY; k++) RF[A_SAY + k] = -40; // only people have a voice here
+      RFV[0] = 40; // only people have a voice here
     } else if (!a.asleep) {
       // Two calls are inborn in every human: a baby cries when hungry, hurt or cold, and anyone
-      // screams when badly hurt. And a parent is drawn toward the cry of its own young child.
-      if (young && (hu > 0.5 || a.painA > 0.3 || a.cold > 0.6)) RF[A_SAY] += 4;
-      if (a.painA > 0.5) RF[A_SAY + 1] += 3;
+      // screams when badly hurt — while still running, since the voice is its own. And a parent is
+      // drawn toward the cry of its own young child.
+      if (young && (hu > 0.5 || a.painA > 0.3 || a.cold > 0.6)) RFV[1] += 4;
+      if (a.painA > 0.5) RFV[2] += 3;
       const o = HEAR;
       if (x[o] > 0 && a.kid && !a.kid.gone && a.kid.age < a.kid.S.mat)
         for (let s = 0; s < 8; s++) {
@@ -267,7 +269,7 @@ function sim() {
     // the brain grows through childhood, and prunes unused connections from then until fully adult
     a.nh = grownUnits(a);
     if (!a.found && a.age % DAY === a.id % DAY && a.age >= S.mat && a.age < S.mat * 1.6) a.pruned += prune(a);
-    const V = forward(a.lw, x, a.h, a.z, a.nh, RF);
+    const V = forward(a.lw, x, a.h, a.z, a.nh, RF, a.zv, RFV);
     // the brain's state now becomes its short-term memory for the next step
     for (let j = 0; j < NM; j++) a.hm[j] = a.h[j];
     const pl = young
@@ -306,7 +308,10 @@ function sim() {
     if (wade && act === A_SLEEP) act = A_STAY; // no sleeping standing in a lake or the sea
     if (a.whO === 'berries' && x[IB + 16] && hu > 0.4 && act !== A_EAT)
       followed(a, 'berries', 'walked past the red berries, hungry as it was');
-    if (act === chosen) trace(a, act);
+    // the voice, alongside what the body does (asleep, it is quiet)
+    const voice = a.sp === 0 && !(act === A_SLEEP || a.asleep) ? sampleV(a.zv) : 0;
+    a.voice = voice;
+    if (act === chosen) trace(a, act, voice);
     else fadeTraces(a);
     a.Vp = V;
     a.has = true;
@@ -350,7 +355,7 @@ function sim() {
           }
         }
       if (tch && tch.act !== A_SLEEP) {
-        imitate(a, tch.act, S.imit * (young ? 3 : 1) * (a.g.im ?? 1));
+        imitate(a, tch.act, S.imit * (young ? 3 : 1) * (a.g.im ?? 1), tch.voice);
         if (!a.copied && a.sp === 0 && young) {
           a.copied = 1;
           a.ev[7] = 'it watched an elder on day ' + dn;
@@ -385,10 +390,27 @@ function sim() {
           dot = (MV[act][0] * x[o + 1] + MV[act][1] * x[o + 2]) / L;
         if (dot > 0.3) S.come++;
         else if (dot < -0.3) S.flee++;
-      } else if (act >= A_SAY && a.heardFrom && !a.heardFrom.gone) {
+      }
+      if (voice > 0 && a.heardFrom && !a.heardFrom.gone) {
         S.answer++;
         a.bonus[7] += 0.02;
         a.heardFrom.bonus[7] += 0.02;
+      }
+    }
+    // making the sound
+    if (voice > 0) {
+      const k = voice - 1;
+      a.said = k;
+      a.saidT = tick;
+      a.e -= 0.02;
+      CALLS.push({ x: a.x, y: a.y, k, a });
+      tally(SNDSTAT[k], context(a));
+      // calling out to others nearby eases loneliness a little (like grooming does for apes)
+      if (seeOwn) a.bonus[7] += 0.03 * a.lo;
+      if (typeof onCall === 'function') onCall(a, k);
+      if (!firsts['say' + k] && k > 1) {
+        firsts['say' + k] = 1;
+        log(a.name + ' made the sound “' + SAYN[k] + '” for the first time.');
       }
     }
     const sleepy = a.sl;
@@ -592,20 +614,6 @@ function sim() {
           firsts.share = 1;
           log(a.name + ' shared food with ' + t.name + '. Nobody taught this.');
         }
-      }
-    } else if (act >= A_SAY && a.sp === 0 && !a.asleep) {
-      const k = act - A_SAY;
-      a.said = k;
-      a.saidT = tick;
-      a.e -= 0.02;
-      CALLS.push({ x: a.x, y: a.y, k, a });
-      tally(SNDSTAT[k], context(a));
-      // calling out to others nearby eases loneliness a little (like grooming does for apes)
-      if (seeOwn) a.bonus[7] += 0.03 * a.lo;
-      if (typeof onCall === 'function') onCall(a, k);
-      if (!firsts['say' + k] && k > 1) {
-        firsts['say' + k] = 1;
-        log(a.name + ' made the sound “' + SAYN[k] + '” for the first time.');
       }
     } else if (
       act === A_TAKE &&

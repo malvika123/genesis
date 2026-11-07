@@ -7,11 +7,15 @@
 // One array of connection strengths per brain:
 //   [ direct: senses → choices (NA × NI) ][ senses → thinking units (H × NI) ]
 //   [ thinking units → choices (NA × H) ][ thinking units → its forecast of how things will go (H) ]
-// The first two parts sit at the same place in every brain, so only the last two depend on how many
-// thinking units (H) the kind can grow. H is worked out from the array's length.
-const hOf = (w) => (w.length - OI) / (NI + NA + 1),
+//   [ senses → voice (NV × NI) ][ thinking units → voice (NV × H) ]
+// The voice is its own output, as speech is in a real brain, so a creature can walk (or run) and call
+// out at the same time. The first two parts sit at the same place in every brain; the rest depend on
+// how many thinking units (H) the kind can grow. H is worked out from the array's length.
+const hOf = (w) => (w.length - OI - NV * NI) / (NI + NA + 1 + NV),
   O2of = (H) => OI + H * NI,
-  OVof = (H) => OI + H * NI + NA * H;
+  OVof = (H) => OI + H * NI + NA * H,
+  OVDof = (H) => OVof(H) + H,
+  OVHof = (H) => OVof(H) + H + NV * NI;
 
 // Brain regions. Real brains are not one uniform network: a fear centre (the amygdala) watches for
 // danger and pain, a memory centre (the hippocampus) holds where things were and what just happened,
@@ -32,13 +36,19 @@ const wired = (j, i) => {
 
 // ---------- a new brain (the inborn part, from the genes) ----------
 function newW(sp, inst, H = SP[sp].hmax) {
-  const w = new Float32Array(OI + H * NI + NA * H + H),
+  const w = new Float32Array(OI + H * NI + NA * H + H + NV * NI + NV * H),
     O2 = O2of(H),
-    OV = OVof(H);
+    OV = OVof(H),
+    OVD = OVDof(H),
+    OVH = OVHof(H);
   for (let i = 0; i < OI; i++) w[i] = gauss() * 0.05;
   for (let j = 0; j < H; j++)
     for (let i = 0; i < NI; i++) w[OI + j * NI + i] = wired(j, i) ? gauss() * 0.35 : 0;
   for (let i = O2; i < OV; i++) w[i] = gauss() * 0.3;
+  for (let i = OVD; i < OVH; i++) w[i] = gauss() * 0.05;
+  for (let i = OVH; i < w.length; i++) w[i] = gauss() * 0.2;
+  // most of the time, anyone is quiet
+  w[OVD + IB + 11] += 4;
   if (inst) {
     const D = (k, i, v) => (w[k * NI + i] += v),
       B = IB + 11;
@@ -63,8 +73,6 @@ function newW(sp, inst, H = SP[sp].hmax) {
     D(A_ATK, IB, 1.5);
     D(A_ATK, B, -1.5);
     D(A_STAY, B, -0.5);
-    // calling out is not the first thing anyone does
-    for (let k = 0; k < NSAY; k++) D(A_SAY + k, B, -1.5);
     if (sp === 0) {
       // Hands. Human babies are born grasping whatever touches the palm, small children are drawn to
       // objects and bang whatever they hold, and everyone likes nuts. That is all that is inborn: what a
@@ -117,7 +125,7 @@ function newW(sp, inst, H = SP[sp].hmax) {
 
 // ---------- thinking: from senses to a choice ----------
 // nh: how many thinking units are grown and working (the rest are silent)
-function forward(w, x, h, z, nh, rf = null) {
+function forward(w, x, h, z, nh, rf = null, zv = null, rfv = null) {
   const H = hOf(w),
     O2 = O2of(H),
     OV = OVof(H);
@@ -151,16 +159,36 @@ function forward(w, x, h, z, nh, rf = null) {
   for (let k = 0; k < NA; k++) z[k] /= sm;
   let V = 0;
   for (let j = 0; j < nh; j++) V += w[OV + j] * h[j];
+  // the voice, chosen alongside what the body does
+  if (zv) {
+    const OVD = OVDof(H),
+      OVH = OVHof(H);
+    let m = -1e9,
+      t = 0;
+    for (let v = 0; v < NV; v++) {
+      let s = rfv ? rfv[v] : 0,
+        o = OVD + v * NI;
+      for (let i = 0; i < NI; i++) s += w[o + i] * x[i];
+      o = OVH + v * H;
+      for (let j = 0; j < nh; j++) s += w[o + j] * h[j];
+      zv[v] = s;
+      if (s > m) m = s;
+    }
+    for (let v = 0; v < NV; v++) t += zv[v] = Math.exp(zv[v] - m);
+    for (let v = 0; v < NV; v++) zv[v] /= t;
+  }
   return V;
 }
-const RF = new Float32Array(NA),
+const RFV = new Float32Array(NV), // inborn pushes on the voice: a baby's cry, a scream of pain
+  tgv = new Float32Array(NV),
+  RF = new Float32Array(NA),
   tg = new Float32Array(NA),
   tdp = new Float32Array(NH),
   tdv = new Float32Array(NH);
 
 // ---------- learning ----------
 // Eligibility traces: which connections were just used, so that what follows can be credited to them.
-function trace(a, act) {
+function trace(a, act, voice = 0) {
   const gl = GAM * LAM,
     h = a.h,
     x = a.xi,
@@ -197,6 +225,17 @@ function trace(a, act) {
     for (let i = 0; i < NI; i++) eP[o + i] = gl * eP[o + i] + g * x[i];
   }
   for (let j = 0; j < nh; j++) eV[OV + j] = gl * eV[OV + j] + h[j];
+  // the voice's own connections are credited for what it said
+  const OVD = OVDof(H),
+    OVH = OVHof(H),
+    zv = a.zv;
+  for (let v = 0; v < NV; v++) {
+    const g = (v === voice ? 1 : 0) - zv[v];
+    let o = OVD + v * NI;
+    for (let i = 0; i < NI; i++) eP[o + i] = gl * eP[o + i] + g * x[i];
+    o = OVH + v * H;
+    for (let j = 0; j < nh; j++) eP[o + j] = gl * eP[o + j] + g * h[j];
+  }
 }
 // fade the traces without adding to them (when the body overrode its choice)
 function fadeTraces(a) {
@@ -236,6 +275,10 @@ function learnStep(a, d, rate) {
   }
   for (let q = 0; q < NA; q++) for (let j = 0; j < nh; j++) up(O2 + q * H + j, k);
   for (let j = 0; j < nh; j++) up(OV + j, k);
+  const OVD = OVDof(H),
+    OVH = OVHof(H);
+  for (let i = OVD; i < OVH; i++) up(i);
+  for (let v = 0; v < NV; v++) for (let j = 0; j < nh; j++) up(OVH + v * H + j, k);
   a.learn += ch;
 }
 
@@ -322,7 +365,7 @@ function replay(a, rate) {
   a.learn += Math.abs(d) * rate;
   a.dream = m;
 }
-function imitate(a, act, rate) {
+function imitate(a, act, rate, voice = -1) {
   const x = a.xi,
     h = a.h,
     z = a.z,
@@ -337,7 +380,27 @@ function imitate(a, act, rate) {
     o = k * NI;
     for (let i = 0; i < NI; i++) w[o + i] += g * x[i];
   }
+  // copying how others use their voice: this is how a sound's use can pass from parent to child
+  if (voice >= 0) {
+    const OVD = OVDof(H),
+      OVH = OVHof(H);
+    for (let v = 0; v < NV; v++) {
+      const g = rate * ((v === voice ? 1 : 0) - a.zv[v]);
+      let o = OVD + v * NI;
+      for (let i = 0; i < NI; i++) w[o + i] += g * x[i];
+      o = OVH + v * H;
+      for (let j = 0; j < a.nh; j++) w[o + j] += g * h[j];
+    }
+  }
   a.learn += rate;
+}
+function sampleV(zv) {
+  let r = rnd();
+  for (let v = 0; v < NV; v++) {
+    r -= zv[v];
+    if (r <= 0) return v;
+  }
+  return 0;
 }
 function sample(z) {
   let r = rnd();
