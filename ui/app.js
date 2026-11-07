@@ -479,7 +479,8 @@ function drawPerson(g, a, X, Y, k, gr, col) {
     neck = top + head * 2,
     hip = neck + (h - head * 2) * 0.48,
     foot = h / 2,
-    step = a.asleep || a.act >= 8 ? 0 : ((a.x + a.y) % 2 ? 1 : -1) * h * 0.14,
+    // legs swing while they are actually walking from one spot to the next
+    step = a.asleep || !a.moving ? 0 : Math.sin(performance.now() / 110 + a.id) * h * 0.16,
     reach = a.act === A_EAT || a.act === A_DRINK || a.act === A_GIVE ? -h * 0.18 : 0;
   g.lineCap = 'round';
   // legs
@@ -588,7 +589,7 @@ function drawFlat(v) {
   cx.imageSmoothingEnabled = true;
   cx.drawImage(FLAT.c, 0, 0, cv.width, cv.height);
   cx.setTransform(cv.width / (W * C), 0, 0, cv.height / (H * C), 0, 0);
-  for (const a of ag) drawCreature(cx, a, a.x * C + C / 2, a.y * C + C / 2, 1, v);
+  for (const a of ag) drawCreature(cx, a, a.rx * C + C / 2, a.ry * C + C / 2, 1, v);
   // night is local: shade the half of the world where the sun is down
   cx.fillStyle = 'rgba(8,16,48,.38)';
   for (let x = 0; x < W; x++) if (isNightAt(x)) cx.fillRect(x * C, 0, C, H * C);
@@ -596,7 +597,7 @@ function drawFlat(v) {
     cx.strokeStyle = v('--ink');
     cx.lineWidth = 2;
     cx.beginPath();
-    cx.arc(sel.x * C + C / 2, sel.y * C + C / 2, 8, 0, 7);
+    cx.arc(sel.rx * C + C / 2, sel.ry * C + C / 2, 8, 0, 7);
     cx.stroke();
     // how far it can see right now (the same range its senses use)
     cx.save();
@@ -604,7 +605,7 @@ function drawFlat(v) {
     cx.lineWidth = 1;
     cx.setLineDash([4, 4]);
     cx.beginPath();
-    cx.arc(sel.x * C + C / 2, sel.y * C + C / 2, sightRange(sel, isNightAt(sel.x)) * C, 0, 7);
+    cx.arc(sel.rx * C + C / 2, sel.ry * C + C / 2, sightRange(sel, isNightAt(sel.x)) * C, 0, 7);
     cx.stroke();
     cx.restore();
   }
@@ -808,9 +809,9 @@ function drawGlobe(v) {
 // where a creature is on screen, in CSS pixels relative to the canvas; null if out of view
 function screenPos(a) {
   const r = cv.getBoundingClientRect();
-  if (view === 'flat') return [((a.x + 0.5) / W) * r.width, (a.y / H) * r.height, r.height / H];
+  if (view === 'flat') return [((a.rx + 0.5) / W) * r.width, (a.ry / H) * r.height, r.height / H];
   if (G3D.ok) {
-    const Q = G3D.project(a.x, a.y),
+    const Q = G3D.project(a.rx, a.ry),
       d = cv.width / r.width;
     return Q ? [Q[0] / d, Q[1] / d - 6, Q[2] / d] : null;
   }
@@ -843,7 +844,28 @@ $('hud').addEventListener('click', (e) => {
   const b = e.target.closest('[data-find]');
   if (b) findOne(+b.dataset.find);
 });
+// Creatures move one square at a time in the simulation; on screen they walk smoothly between squares
+// (rx, ry are where they are drawn), and the short way round the east–west seam.
+function glide() {
+  for (const a of ag) {
+    if (a.rx === undefined) {
+      a.rx = a.x;
+      a.ry = a.y;
+    }
+    const dx = dxw(a.x - a.rx),
+      dy = a.y - a.ry;
+    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+      a.rx = a.x;
+      a.ry = a.y;
+    } else {
+      a.rx = (((a.rx + dx * 0.12) % W) + W) % W;
+      a.ry += dy * 0.12;
+    }
+    a.moving = Math.abs(dx) + Math.abs(dy) > 0.05;
+  }
+}
 function draw() {
+  glide();
   const s = getComputedStyle(document.documentElement),
     v = (n) => s.getPropertyValue(n).trim();
   if (sel && sel.gone) {

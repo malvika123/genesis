@@ -234,7 +234,7 @@ const G3D = { ok: false };
   function project(x, y, lift = 0.004) {
     const la = latOfY(y),
       lo = lonOfX(x),
-      r = 1 + EX * Math.max(0, alt[idx(x, y)]) + lift;
+      r = 1 + EX * heightAt(la, lo) + lift;
     tmp.copy(local(la, lo, r)).applyMatrix4(globe.matrixWorld);
     nrm.copy(tmp).normalize();
     eye.copy(camera.position).sub(tmp);
@@ -248,6 +248,68 @@ const G3D = { ok: false };
     return [px, py, cell];
   }
   G3D.project = project;
+
+  // ---- creatures as figures in the 3D world (only when zoomed in close) ----
+  const figTex = new Map(),
+    pool = [],
+    SZ = 128;
+  function texFor(a, v) {
+    const S = SP[a.sp],
+      gr = Math.round(clamp(a.age / S.mat, 0.3, 1) * 10) / 10,
+      pose = a.sp === 0 && a.moving ? Math.round(Math.sin(performance.now() / 110 + a.id) * 2) : 0,
+      key = [a.sp, a.sex, gr, a.asleep ? 1 : 0, pose, a.act === A_EAT || a.act === A_DRINK ? 1 : 0].join();
+    let t = figTex.get(key);
+    if (t) return t;
+    const c = document.createElement('canvas');
+    c.width = c.height = SZ;
+    const g = c.getContext('2d'),
+      fake = {
+        sp: a.sp,
+        sex: a.sex,
+        age: gr * S.mat,
+        asleep: a.asleep,
+        moving: pose !== 0,
+        act: a.act,
+        id: 0,
+      };
+    // draw so that the feet touch the bottom middle of the picture
+    if (a.sp === 0) {
+      const k = (SZ * 0.82) / 11.5,
+        h = (5.5 + 6 * gr) * k;
+      if (fake.asleep) drawCreature(g, fake, SZ / 2, SZ - h * 0.2, k, v);
+      else drawCreature(g, fake, SZ / 2, SZ - h * 0.16, k, v);
+    } else drawCreature(g, fake, SZ / 2, SZ * 0.72, SZ / 22, v);
+    t = new THREE.CanvasTexture(c);
+    t.encoding = THREE.sRGBEncoding;
+    figTex.set(key, t);
+    return t;
+  }
+  function figures(on, v) {
+    let n = 0;
+    if (on)
+      for (const a of ag) {
+        if (!project(a.rx, a.ry, 0)) continue;
+        let sp = pool[n];
+        if (!sp) {
+          sp = new THREE.Sprite(new THREE.SpriteMaterial({ alphaTest: 0.4 }));
+          sp.center.set(0.5, 0);
+          globe.add(sp);
+          pool.push(sp);
+        }
+        n++;
+        sp.visible = true;
+        sp.material.map = texFor(a, v);
+        sp.material.color.setScalar(isNightAt(a.x) ? 0.45 : 1);
+        sp.material.needsUpdate = true;
+        const la = latOfY(a.ry),
+          lo = lonOfX(a.rx);
+        sp.position.copy(local(la, lo, 1 + EX * heightAt(la, lo) + 0.0002));
+        // a person stands about as tall as a third of a tree; fish swim at the surface
+        const s = a.sp === 0 ? 0.0046 : a.sp === 3 ? 0.0022 : 0.0042;
+        sp.scale.set(s, s, 1);
+      }
+    for (let k = n; k < pool.length; k++) pool[k].visible = false;
+  }
 
   G3D.draw = function (v) {
     const w = cv.width,
@@ -296,14 +358,19 @@ const G3D = { ok: false };
     // creatures and the selection ring on the 2D canvas above
     cx.setTransform(1, 0, 0, 1, 0, 0);
     cx.clearRect(0, 0, w, h);
-    for (const a of ag) {
-      const P = project(a.x, a.y);
-      if (!P) continue;
-      const ks = clamp((P[2] / C) * 0.9, 0.25, Math.max(9, P[2] * 0.01));
-      drawCreature(cx, a, P[0], P[1], ks, v, isNightAt(a.x) ? 0.5 : 1);
-    }
+    // Far away, creatures are drawn as markers on top so you can find them. Close up, they become
+    // figures standing on the land itself, so hills and trees can hide them like anything else.
+    const close = GL.zoom >= 6;
+    figures(close, v);
+    if (!close)
+      for (const a of ag) {
+        const P = project(a.rx, a.ry);
+        if (!P) continue;
+        const ks = clamp((P[2] / C) * 0.9, 0.25, 9);
+        drawCreature(cx, a, P[0], P[1], ks, v, isNightAt(a.x) ? 0.5 : 1);
+      }
     if (sel) {
-      const P = project(sel.x, sel.y);
+      const P = project(sel.rx, sel.ry);
       if (P) {
         cx.strokeStyle = v('--ink');
         cx.lineWidth = 2;

@@ -155,6 +155,20 @@ function sim() {
     if (a.sp !== 3 || x[HB] > 0.05) RF[A_EAT] = 4 * hu * (x[HB] > 0.05 ? 1 : 0);
     if (a.sp !== 3) RF[A_DRINK] = 5 * th * x[HB + 1];
     if (a.sp === 2) RF[A_ATK] = 5 * hu * x[HB + 2];
+    // When tired, land animals instinctively look for a safe place to sleep before they drop off —
+    // chimpanzees build a nest in the trees every evening. A gentle pull toward cover and toward their
+    // own kind and family, away from danger, and no settling down to sleep in the water.
+    if (a.sp !== 3 && !a.asleep && a.sl > 0.45) {
+      const k = (a.sl - 0.45) * 3,
+        own = a.sp === 1 ? 3 : a.sp === 0 ? 4 : 5;
+      for (let s = 0; s < 8; s++)
+        RF[s] += k * (1.4 * x[s * NCH + 12] + 1.2 * x[s * NCH + 7] + 0.8 * x[s * NCH + own] - 1.5 * x[s * NCH + 2]);
+      const here = idx(a.x, a.y);
+      let safe = cover(here) > 0.4 ? 1 : 0;
+      for (let s = 0; s < 8 && !safe; s++) if (x[s * NCH + 7] > 0.6 || x[s * NCH + own] > 0.6) safe = 1;
+      RF[A_SLEEP] += safe ? 2 * k : 0;
+      if (water[here] && !iced(here)) RF[A_SLEEP] -= 6;
+    }
     const V = forward(a.lw, x, a.h, a.z, S.nh, RF);
     if (a.has) {
       const d = clamp(r + GAM * V - a.Vp, -2, 2);
