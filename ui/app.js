@@ -469,7 +469,9 @@ const GL = {
   lon0: 0,
   lat0: 0.3,
   zoom: 1,
-  spin: true,
+  spin: true, // turns slowly on its own, like a planet
+  held: false, // being dragged right now
+  vel: 0.0012, // current turning speed (radians per frame)
   BW: 0,
   BH: 0,
   key: '',
@@ -565,7 +567,11 @@ function drawGlobe(v) {
     GL.img = GL.bctx.createImageData(BW, BH);
     GL.key = '';
   }
-  if (GL.spin) GL.lon0 += 0.0012;
+  // Keep turning. A flick carries on with momentum, then eases back to the planet's slow spin.
+  if (!GL.held) {
+    GL.lon0 += GL.vel;
+    GL.vel += ((GL.spin ? 0.0012 : 0) - GL.vel) * 0.03;
+  }
   // refresh the planet's surface a few times a second (grass, snow and ice change slowly)
   if (!GL.tdata || ++GL.tframe % 12 === 0) {
     GL.tctx.setTransform(TS / C, 0, 0, TS / C, 0, 0);
@@ -836,7 +842,8 @@ cv.addEventListener('pointerdown', (e) => {
   ptr.set(e.pointerId, { x: e.clientX, y: e.clientY, x0: e.clientX, y0: e.clientY });
   dragged = false;
   if (view === 'globe') {
-    GL.spin = false;
+    GL.held = true;
+    GL.vel = 0;
     $('ghint').hidden = true;
   }
   if (ptr.size === 2) {
@@ -859,13 +866,16 @@ cv.addEventListener('pointermove', (e) => {
     if (pinch0) GL.zoom = clamp((zoom0 * Math.hypot(a.x - b.x, a.y - b.y)) / pinch0, 1, 8);
     return;
   }
-  const R = (cv.getBoundingClientRect().width / 2) * 0.9 * GL.zoom;
+  const r = cv.getBoundingClientRect(),
+    R = (Math.min(r.width, r.height) / 2) * 0.9 * GL.zoom;
   GL.lon0 -= dx / R;
+  GL.vel = clamp(-dx / R, -0.08, 0.08); // remembered for the flick
   GL.lat0 = clamp(GL.lat0 + dy / R, -1.45, 1.45);
 });
 const endPtr = (e) => {
   if (!ptr.has(e.pointerId)) return;
   ptr.delete(e.pointerId);
+  if (ptr.size === 0) GL.held = false;
   if (!dragged && ptr.size === 0 && e.type === 'pointerup') selectAt(e);
   if (ptr.size < 2) pinch0 = 0;
 };
@@ -876,7 +886,6 @@ cv.addEventListener(
   (e) => {
     if (view !== 'globe') return;
     e.preventDefault();
-    GL.spin = false;
     GL.zoom = clamp(GL.zoom * Math.exp(-e.deltaY * 0.0015), 1, 8);
   },
   { passive: false }
@@ -884,7 +893,7 @@ cv.addEventListener(
 function setView(v) {
   view = v;
   $('view').textContent = v === 'globe' ? 'Flat map' : 'Globe';
-  $('ghint').hidden = v !== 'globe' || !GL.spin;
+  $('ghint').hidden = v !== 'globe';
   cv.classList.toggle('round', v === 'globe');
   $('v-world').classList.toggle('space', v === 'globe');
   fit();
