@@ -63,6 +63,7 @@ function doingWord(a, k) {
           ? 'knocking two stones together'
           : 'banging ' + HAND[a.hand] + ' on the ground';
   }
+  if (k >= A_SAY) return 'calling out “' + SAYN[k - A_SAY] + '”';
   if (k < 8) return 'walking ' + CP[k];
   return [
     'staying put',
@@ -145,11 +146,13 @@ const PLAIN = {
   'the urge to strike': 'a strong urge to attack',
 };
 function plainReason(n) {
+  if (n.startsWith('hearing ')) return 'it hears ' + n.slice(8);
   const m = /^(.*) to the (.*)$/.exec(n);
   if (m && PLAIN_CH[m[1]]) return 'it ' + PLAIN_CH[m[1]] + ' to the ' + m[2];
   return PLAIN[n] || n;
 }
 function plainAct(a, k) {
+  if (k >= A_SAY) return 'calls out “' + SAYN[k - A_SAY] + '”';
   if (k < 8) return 'heads ' + CP[k];
   return [
     'stays where it is',
@@ -251,7 +254,7 @@ function thinkHTML(a, S) {
       a.mind.opts
         .filter((q) => q[0] !== actName(a, a.mind.act))
         .slice(0, 2)
-        .map((q) => ING[q[0]] || q[0].replace(/^go /, 'heading '))
+        .map((q) => ING[q[0]] || q[0].replace(/^go /, 'heading ').replace(/^call /, 'calling '))
         .join(' or ');
   // the dopamine-like signal and the mood chemicals, straight from its learning
   if (a.da > 0.3) o += '<br>Dopamine: a burst — that went better than it expected';
@@ -719,6 +722,108 @@ function drawHeld(g, kind, hx, hy, h, lw) {
     g.fill();
   }
 }
+// What people say, drawn as a small speech mark over their heads for a moment after they call.
+// P(a) gives [x, y of the feet, how tall it looks] on the canvas, or null.
+function drawTalk(g, P, scale = 1) {
+  g.textAlign = 'center';
+  g.textBaseline = 'middle';
+  for (const a of ag) {
+    if (a.sp !== 0 || a.saidT === undefined || tick - a.saidT > 1 || a.dead) continue;
+    const Q = P(a);
+    if (!Q) continue;
+    const t = SAYN[a.said] + (a.said === 1 ? '!' : a.said === 0 ? '…' : ''),
+      fs = 11 * scale,
+      x = Q[0],
+      y = Q[1] - Q[2] - 9 * scale;
+    g.font = '600 ' + fs + 'px system-ui, sans-serif';
+    const w = g.measureText(t).width + 10 * scale;
+    g.globalAlpha = tick === a.saidT ? 0.95 : 0.55;
+    g.fillStyle = '#fffdf6';
+    g.strokeStyle = 'rgba(0,0,0,.25)';
+    g.lineWidth = scale;
+    g.beginPath();
+    g.roundRect(x - w / 2, y - fs * 0.8, w, fs * 1.6, fs * 0.6);
+    g.moveTo(x - 3 * scale, y + fs * 0.8);
+    g.lineTo(x, y + fs * 0.8 + 5 * scale);
+    g.lineTo(x + 3 * scale, y + fs * 0.8);
+    g.fill();
+    g.stroke();
+    g.fillStyle = '#2b2620';
+    g.fillText(t, x, y);
+  }
+  g.globalAlpha = 1;
+}
+// Hearing them: each sound is spoken with a small synthesized voice — a consonant, then a vowel
+// shaped by the throat (two formants) — higher for women and higher still for children. The cry and
+// the scream are made the way babies and frightened people make them.
+let listen = false,
+  AC = null,
+  lastVoice = 0;
+const VOWEL = { a: [800, 1200], o: [500, 900], i: [300, 2300], u: [350, 800] };
+function speak(a, k) {
+  if (!listen) return;
+  const now = performance.now();
+  if (now - lastVoice < 120) return;
+  lastVoice = now;
+  try {
+    AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+    const t0 = AC.currentTime + 0.01,
+      young = a.age < a.S.mat,
+      f0 = young ? 330 : a.sex ? 210 : 125,
+      word = SAYN[k],
+      vowel = VOWEL[word[word.length - 1]] || VOWEL.a,
+      len = k === 0 ? 0.7 : k === 1 ? 0.5 : 0.28,
+      out = AC.createGain();
+    out.gain.setValueAtTime(0, t0);
+    out.gain.linearRampToValueAtTime(0.25, t0 + 0.03);
+    out.gain.setValueAtTime(0.25, t0 + len * 0.7);
+    out.gain.linearRampToValueAtTime(0, t0 + len);
+    out.connect(AC.destination);
+    // the voice: a buzzing source shaped by two resonances, like a throat and mouth
+    const src = AC.createOscillator();
+    src.type = 'sawtooth';
+    const p = k === 1 ? f0 * 3.2 : k === 0 ? f0 * 1.3 : f0;
+    src.frequency.setValueAtTime(p, t0);
+    if (k === 0) {
+      src.frequency.linearRampToValueAtTime(p * 1.25, t0 + len * 0.3);
+      src.frequency.linearRampToValueAtTime(p * 0.8, t0 + len);
+    } else src.frequency.linearRampToValueAtTime(p * 0.9, t0 + len);
+    for (const [f, q] of [
+      [vowel[0], 6],
+      [vowel[1], 9],
+    ]) {
+      const bp = AC.createBiquadFilter();
+      bp.type = 'bandpass';
+      bp.frequency.value = f;
+      bp.Q.value = q;
+      src.connect(bp).connect(out);
+    }
+    src.start(t0 + (word[0] === 'm' ? 0 : 0.05));
+    src.stop(t0 + len + 0.05);
+    // the consonant: a short burst of breath noise (k, t, s), or a hum (m)
+    const c = word[0];
+    if ('kts'.includes(c)) {
+      const n = AC.createBuffer(1, AC.sampleRate * 0.08, AC.sampleRate),
+        d = n.getChannelData(0);
+      for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+      const ns = AC.createBufferSource(),
+        hp = AC.createBiquadFilter(),
+        ng = AC.createGain();
+      ns.buffer = n;
+      hp.type = 'highpass';
+      hp.frequency.value = c === 's' ? 4500 : c === 't' ? 2800 : 1500;
+      ng.gain.value = c === 's' ? 0.35 : 0.25;
+      ns.connect(hp).connect(ng).connect(AC.destination);
+      ns.start(t0);
+      ns.stop(t0 + (c === 's' ? 0.08 : 0.03));
+    }
+  } catch (e) {}
+}
+// the world tells the page whenever someone calls; we hear the one we are watching and those near it
+function onCall(a, k) {
+  if (!listen || !sel || sel.gone) return;
+  if (a === sel || Math.hypot(dxw(a.x - sel.x), a.y - sel.y) <= 2) speak(a, k);
+}
 // Things lying on the ground, drawn when you are close enough to see them: stones, fallen sticks,
 // sharp flakes and nuts, scattered about each square. P(x, y) gives where a place is on screen.
 function drawGroundItems(g, P) {
@@ -1076,6 +1181,7 @@ function drawFlat(v) {
   cx.setTransform(cv.width / (W * C), 0, 0, cv.height / (H * C), 0, 0);
   for (const a of ag) drawCreature(cx, a, a.rx * C + C / 2, a.ry * C + C / 2, 1, v);
   drawWeatherFx(cx, (x, y) => [x * C + C / 2, y * C + C / 2, C], false);
+  drawTalk(cx, (a) => [a.rx * C + C / 2, a.ry * C + C / 2, 6], 0.6);
   // night is local: shade the half of the world where the sun is down
   cx.fillStyle = 'rgba(8,16,48,.38)';
   for (let x = 0; x < W; x++) if (isNightAt(x)) cx.fillRect(x * C, 0, C, H * C);
@@ -1303,6 +1409,58 @@ function screenPos(a) {
 }
 
 const drawHud = { k: '' };
+// What each sound has come to mean, worked out only from when it is really used
+function soundsHTML() {
+  return (
+    '<table class="tbl"><tr><th>Sound</th><th>Used</th><th>What it seems to mean</th></tr>' +
+    SAYN.map((n, k) => {
+      const S = SNDSTAT[k],
+        m = meaning(k);
+      let t = k === 0 ? 'Inborn: a baby’s cry. ' : k === 1 ? 'Inborn: a scream of pain. ' : '';
+      if (!S || S.n < 25) t += S && S.n ? 'Too few uses to tell yet.' : 'Not used yet.';
+      else if (!m.best && !m.resp) t += 'No meaning yet: used in all kinds of situations.';
+      else {
+        if (m.best)
+          t +=
+            'Used mostly when ' +
+            CTXN[m.best.c] +
+            ' (' +
+            Math.round(100 * m.best.p) +
+            '% of the time, against ' +
+            Math.round(100 * m.best.q) +
+            '% usually). ';
+        if (m.resp) t += m.resp[0].toUpperCase() + m.resp.slice(1) + '.';
+      }
+      return '<tr><td><b>“' + n + '”</b></td><td>' + (S ? S.n : 0) + '</td><td>' + t + '</td></tr>';
+    }).join('') +
+    '</table>'
+  );
+}
+// Each generation of people: what they were born with, on average, and what they learned
+function gensHTML() {
+  const rows = GENSTAT.map((G, g) =>
+    G && G.n
+      ? '<tr><td>' +
+        g +
+        '</td><td>' +
+        G.n +
+        '</td><td>' +
+        Math.round((100 * G.bs) / G.n) +
+        '%</td><td>' +
+        (G.lr / G.n).toFixed(2) +
+        '</td><td>' +
+        (G.im / G.n).toFixed(2) +
+        '</td><td>' +
+        (G.les / G.n).toFixed(1) +
+        '</td></tr>'
+      : ''
+  ).join('');
+  return (
+    '<table class="tbl"><tr><th>Gen.</th><th>Born</th><th>Brain size</th><th>Learning speed</th><th>Copying</th><th>Lessons each</th></tr>' +
+    rows +
+    '</table>'
+  );
+}
 // e.g. "9 deer, 31 rabbits, 4 bison"
 function kindCounts(sp) {
   const n = {};
@@ -1432,6 +1590,11 @@ function draw() {
   $('stats').innerHTML = st
     .map((x) => '<div class="stat"><b>' + x[0] + '</b><span>' + x[1] + '</span></div>')
     .join('');
+  if (tick !== drawHud.talkT && $('v-stats').offsetParent) {
+    drawHud.talkT = tick;
+    $('sounds').innerHTML = soundsHTML();
+    $('gens').innerHTML = gensHTML();
+  }
   // the counts are buttons: tap one to fly to the next creature of that kind
   const hudKey = c.join() + (tick % DAY) + seasonName(0);
   if (hudKey !== drawHud.k) {
@@ -1813,11 +1976,22 @@ document.querySelectorAll('[data-dt]').forEach(
 function setEye(a) {
   GL.eye = a;
   $('deye').setAttribute('aria-pressed', a ? 'true' : 'false');
-  $('deye').textContent = a ? 'Map' : 'Its eyes';
+  $('deye').textContent = a ? 'Map' : 'Eyes';
   if (a && view !== 'globe') setView('globe');
   if (!a && G3D.eyeOff) G3D.eyeOff();
 }
 $('deye').onclick = () => setEye(GL.eye ? null : sel);
+$('dlisten').onclick = () => {
+  listen = !listen;
+  $('dlisten').setAttribute('aria-pressed', listen ? 'true' : 'false');
+  $('dlisten').textContent = listen ? 'Listening' : 'Listen';
+  if (listen) {
+    try {
+      AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+      AC.resume();
+    } catch (e) {}
+  }
+};
 $('dmin').onclick = () => {
   const m = $('dock').classList.toggle('min');
   $('dmin').textContent = m ? '+' : '–';

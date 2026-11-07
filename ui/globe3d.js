@@ -457,6 +457,16 @@ const G3D = { ok: false };
       }
     if (!GL.eye) drawWeatherFx(cx, project, GL.zoom >= 2.5);
     if (GL.zoom >= 5 || GL.eye) drawGroundItems(cx, project);
+    drawTalk(
+      cx,
+      (a) => {
+        const P = project(a.rx, a.ry);
+        if (!P) return null;
+        const ks = clamp((P[2] / C) * 0.9, 0.25, 9);
+        return [P[0], P[1], close ? Math.max(14, P[2] * 0.11) : 11.5 * ks];
+      },
+      Math.max(1, cv.width / cv.getBoundingClientRect().width)
+    );
     if (GL.eye) drawEyeHands(cx, GL.eye, w, h);
     // the places its eyes can see right now
     if (sel && sel.view && !GL.eye) {

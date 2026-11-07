@@ -333,6 +333,18 @@
         flex: none;
         white-space: nowrap;
       }
+      .tbl {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      .tbl th,
+      .tbl td {
+        text-align: left;
+        padding: 4px 6px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
       #spd {
         width: 120px;
         padding: 0;
@@ -541,7 +553,10 @@
             <button role="tab" data-dt="think" aria-selected="true">Thinking</button
             ><button role="tab" data-dt="doing" aria-selected="false">Doing</button>
           </div>
-          <button id="deye" aria-pressed="false" title="See through its eyes">Its eyes</button>
+          <button id="deye" aria-pressed="false" title="See through its eyes">Eyes</button>
+          <button id="dlisten" aria-pressed="false" title="Hear this creature and those near it">
+            Listen
+          </button>
           <button id="dmin" title="Minimise" aria-label="Minimise">–</button>
         </div>
         <div class="db" id="dbody">
@@ -577,6 +592,25 @@
           <div class="box">
             <h2>Recent events and lessons</h2>
             <ul id="log"></ul>
+          </div>
+        </div>
+        <div class="two">
+          <div class="box">
+            <h2>Their sounds — and what they seem to mean</h2>
+            <div id="sounds"></div>
+            <p class="sub">
+              Worked out only from when each sound is actually used, compared with how things usually are.
+              Nothing here is decided for them.
+            </p>
+          </div>
+          <div class="box">
+            <h2>Generations of people</h2>
+            <div id="gens"></div>
+            <p class="sub">
+              What each generation inherited, on average (brain size as a share of the largest brain a person
+              can grow), and how many lessons each learned. Learned knowledge is not inherited; it passes only
+              by copying.
+            </p>
           </div>
         </div>
       </div>
@@ -654,9 +688,22 @@
           eat, give shelter from rain and wind, hide creatures from each other, and slow you down. Zoom in on
           the planet to see the trees.
         </p>
-        <p class="sub">Vision: each creature sees only in front of it, over its kind's real field of view (about 200° for people, almost all the way round for deer), and hills and thick forest hide what is behind them. At night it sees as far as its night vision allows; asleep its eyes are shut. Only people tell red from green. Tap a creature and choose “Its eyes” to see from where it stands.</p>
-        <p class="sub">Feelings: hunger, thirst, tiredness, pain, cold and heat, fear, anger after being attacked, grief after a death, loneliness, longing, care for its young, the fun of play, boredom, curiosity and contentment — the core emotional systems of all mammals. They change what it does and learns; whether it experiences them, no one can say.</p>
-        <p class="sub">Storms: thunderstorms build where the sun-heated ground lifts warm, moist air — on hot, humid afternoons. Lightning strikes from them and thunder startles creatures nearby.</p>
+        <p class="sub">
+          Vision: each creature sees only in front of it, over its kind's real field of view (about 200° for
+          people, almost all the way round for deer), and hills and thick forest hide what is behind them. At
+          night it sees as far as its night vision allows; asleep its eyes are shut. Only people tell red from
+          green. Tap a creature and choose “Its eyes” to see from where it stands.
+        </p>
+        <p class="sub">
+          Feelings: hunger, thirst, tiredness, pain, cold and heat, fear, anger after being attacked, grief
+          after a death, loneliness, longing, care for its young, the fun of play, boredom, curiosity and
+          contentment — the core emotional systems of all mammals. They change what it does and learns;
+          whether it experiences them, no one can say.
+        </p>
+        <p class="sub">
+          Storms: thunderstorms build where the sun-heated ground lifts warm, moist air — on hot, humid
+          afternoons. Lightning strikes from them and thunder startles creatures nearby.
+        </p>
         <p class="sub">
           Hands: people can pick up the stones and fallen sticks that lie about, put them down, and strike
           with them. Nobody tells them what that is good for. The world just behaves like Earth: a stone hit
@@ -691,7 +738,7 @@
     <script src="src/terrain.js"></script>
     <script src="src/forest.js"></script>
     <script src="src/items.js"></script>
-<script src="src/talk.js"></script>
+    <script src="src/talk.js"></script>
     <script src="src/world.js"></script>
     <script src="src/senses.js"></script>
     <script src="src/mind.js"></script>
