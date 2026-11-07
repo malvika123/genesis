@@ -72,7 +72,7 @@ const SP = [
   },
   {
     n: 'Herbivore',
-    cold: 0, // thick coat
+    cold: -10, // thick winter coat
     nh: 10,
     plast: 1.2,
     adl: 0.5,
@@ -99,7 +99,7 @@ const SP = [
   },
   {
     n: 'Predator',
-    cold: -4, // thick fur
+    cold: -12, // thick fur
     nh: 12,
     plast: 1.2,
     adl: 0.5,
