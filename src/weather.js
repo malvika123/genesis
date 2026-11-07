@@ -18,8 +18,10 @@ let HUM, // water vapour in the air
 let TMP1 = null,
   TMP2 = null;
 
-// how much water the air can hold at a temperature (°C)
-const capacity = (T) => 0.25 * Math.exp(0.065 * T);
+// how much water the air can hold at a temperature (°C); a lookup table because it is used a lot
+const CAP = new Float32Array(1201);
+for (let k = 0; k <= 1200; k++) CAP[k] = 0.25 * Math.exp(0.065 * (k / 10 - 70));
+const capacity = (T) => CAP[T <= -70 ? 0 : T >= 50 ? 1200 : ((T + 70) * 10) | 0];
 
 // prevailing wind at a row, in cells per step: [east–west, north–south] (positive = east, south)
 function windAt(y) {
@@ -43,11 +45,28 @@ function lift(y) {
   return 16 * bump(d, 8 * season(), 8) + 4 * bump(a, 60, 9) - 6 * bump(a, 28, 8);
 }
 const LIFT = new Float32Array(H);
+// Mountains: wind blowing up a slope rises and rains on that side; coming down the far side it
+// warms and dries out, leaving a "rain shadow". Worked out once per world from the wind and the land.
+let OLIFT = new Float32Array(0);
+function orographic() {
+  OLIFT = new Float32Array(W * H);
+  for (let y = 0; y < H; y++) {
+    const [u] = windAt(y),
+      st = u > 0 ? -2 : 2; // two cells upwind
+    for (let x = 0; x < W; x++) {
+      const i = y * W + x,
+        up = Math.max(0, alt[i]) - Math.max(0, alt[idx(x + st, y)]);
+      OLIFT[i] = clamp(9 * up, -5, 12);
+    }
+  }
+}
 
 function initWeather() {
   const n = W * H;
   STORMS = [];
+  PATCH = null;
   SLIFT.fill(0);
+  orographic();
   HUM = new Float32Array(n);
   CLD = new Float32Array(n);
   RAIN = new Float32Array(n);
@@ -59,7 +78,7 @@ function initWeather() {
   for (let y = 0; y < H; y++)
     for (let x = 0; x < W; x++) {
       const i = y * W + x;
-      HUM[i] = capacity(RT[y]) * 0.6;
+      HUM[i] = capacity(cellT(i)) * 0.6;
       MOIST[i] = water[i] ? 1 : 0.45 + 0.1 * rnd();
     }
 }
@@ -129,25 +148,33 @@ function moveStorms() {
   STORMS = STORMS.filter((st) => st.age < st.life);
 }
 
+const NIGHT = new Uint8Array(W);
+let PATCH = null;
 function updateWeather() {
   const n = W * H;
   for (let y = 0; y < H; y++) LIFT[y] = lift(y);
+  for (let x = 0; x < W; x++) NIGHT[x] = isNightAt(x) ? 1 : 0;
+  // rising air is patchy along each belt, and the patches drift over the days (refreshed now and then)
+  if (!PATCH || tick % 8 === 0) {
+    if (!PATCH) PATCH = new Float32Array(n);
+    for (let y = 0; y < H; y++)
+      for (let x = 0; x < W; x++)
+        PATCH[y * W + x] =
+          0.5 +
+          0.5 *
+            Math.sin((6.283 * 3 * x) / W + tick / 70 + y * 0.4) *
+            Math.sin((6.283 * 2 * x) / W - tick / 110);
+  }
   for (let i = 0; i < n; i++) {
     const y = (i / W) | 0,
-      night = isNightAt(i % W),
-      T = RT[y] - (night ? 4 : 0),
-      x = i % W,
-      // rising air is patchy along each belt, and the patches drift over the days
-      patch =
-        0.5 +
-        0.5 *
-          Math.sin((6.283 * 3 * x) / W + tick / 70 + y * 0.4) *
-          Math.sin((6.283 * 2 * x) / W - tick / 110),
-      cap = capacity(T - LIFT[y] * (LIFT[y] > 0 ? 0.35 + 1.1 * patch : 1) - SLIFT[i]),
+      night = NIGHT[i % W],
+      T = cellT(i) - (night ? 4 : 0),
+      patch = PATCH[i],
+      cap = capacity(T - LIFT[y] * (LIFT[y] > 0 ? 0.35 + 1.1 * patch : 1) - SLIFT[i] - OLIFT[i]),
       warm = clamp(T / 30, 0, 1.2),
       dry = Math.max(0, 1 - HUM[i] / capacity(T));
     // evaporation: from open water, and from wet ground and plants
-    if (liquid(i)) HUM[i] += 0.02 * warm * dry;
+    if (liquid(i)) HUM[i] += 0.011 * warm * dry;
     else if (!water[i] && MOIST[i] > 0) {
       const e = Math.min(MOIST[i], 0.004 * MOIST[i] * warm * dry);
       HUM[i] += e;
@@ -176,8 +203,8 @@ function updateWeather() {
       MOIST[i] = clamp(m, 0, 1);
       // rain that the soaked ground can't take pools into a puddle, which seeps away and evaporates
       if (!rock[i] && !pit[i]) {
-        PW[i] = Math.max(0, PW[i] + Math.max(0, m - 1) - 0.004 - 0.006 * warm);
-        PUD[i] = PW[i] > 0.04 ? 1 : 0;
+        PW[i] = Math.max(0, PW[i] + Math.max(0, m - 1) - 0.006 - 0.008 * warm);
+        PUD[i] = PW[i] > 0.1 ? 1 : 0;
       }
     }
   }
@@ -190,8 +217,8 @@ function updateWeather() {
 
 // what the weather is doing at a cell, for people watching
 const raining = (i) => RAIN[i] > 0.002;
-const snowing = (i) => raining(i) && RT[(i / W) | 0] < 0;
+const snowing = (i) => raining(i) && cellT(i) < 0;
 // how well plants grow with this much water in the ground
 const wetness = (i) => (water[i] ? 1 : clamp(0.5 + MOIST[i] * 1.25, 0, 1));
 // drinkable water at a cell: open (unfrozen) water, or a puddle
-const drinkable = (i) => liquid(i) || PUD[i] === 1;
+const drinkable = (i) => (liquid(i) && !salt[i]) || PUD[i] === 1;

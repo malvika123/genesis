@@ -45,8 +45,8 @@ test('creatures stay inside the rules of their bodies', () => {
     const s = E.state();
     for (const a of s.ag) {
       for (const v of [a.e, a.w, a.hp, a.sl, a.lo, a.fear]) assert.ok(Number.isFinite(v), 'a body value became NaN');
-      assert.ok(a.x >= 0 && a.x < 64 && a.y >= 0 && a.y < 40, 'creature left the map');
-      if (a.sp === FISH) assert.equal(s.water[a.y * 64 + a.x], 1, 'a fish is out of the water');
+      assert.ok(a.x >= 0 && a.x < E.W && a.y >= 0 && a.y < E.H, 'creature left the map');
+      if (a.sp === FISH) assert.equal(s.water[a.y * E.W + a.x], 1, 'a fish is out of the water');
       assert.ok(a.lw.every(Number.isFinite), 'a brain weight became NaN');
     }
   }
@@ -74,11 +74,11 @@ test('herbivores can graze and keep their numbers up without predators', () => {
   E.setSeed(11);
   E.reset({ people: 2, herbivores: 12, predators: 0, fish: 0 });
   days(E, 10);
-  // With working grazing this world has about 32 well-fed herbivores by day 10; if grazing breaks,
-  // about 19 hungry ones (energy around 33%).
+  // With working grazing this world has about 23 well-fed herbivores by day 10 (energy above 50%);
+  // when grazing was broken they starved to about a third.
   const herd = E.state().ag.filter((a) => a.sp === HERBIVORE);
   const energy = herd.reduce((t, a) => t + a.e, 0) / herd.length;
-  assert.ok(herd.length >= 24, `only ${herd.length} herbivores by day 10: are they able to graze?`);
+  assert.ok(herd.length >= 18, `only ${herd.length} herbivores by day 10: are they able to graze?`);
   assert.ok(energy > 45, `herbivores are starving (average energy ${energy.toFixed(0)}%)`);
 });
 

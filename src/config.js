@@ -1,8 +1,8 @@
 // Genesis — World size, time scale, the brain's layout (senses in, actions out) and each species' biology.
 // Copyright (c) 2026 Malvika Sen. MIT License.
 
-const W = 64,
-  H = 40,
+const W = 128,
+  H = 80,
   C = 11,
   DAY = 96,
   TY = 288,
@@ -20,7 +20,7 @@ const MV = [
     [1, -1],
   ],
   CP = ['east', 'south-east', 'south', 'south-west', 'west', 'north-west', 'north', 'north-east'];
-const NCH = 10,
+const NCH = 12, // per direction: water, food, danger, herbivore, person, predator, mate, family, fish, red berries, the sea, a steep climb
   NS = 8 * NCH,
   HB = NS,
   IB = NS + 4,
@@ -90,7 +90,7 @@ const SP = [
     cd: TY,
     lit: [3, 6],
     wn: 0.33,
-    cap: 80,
+    cap: 160,
     fert: 0.8,
     sleepH: 4,
     nv: 0.8,
@@ -117,7 +117,7 @@ const SP = [
     cd: 1.5 * TY,
     lit: [1, 4],
     wn: 0.4,
-    cap: 10,
+    cap: 16,
     fert: 0.9,
     sleepH: 11,
     nv: 1.1,
@@ -144,7 +144,7 @@ const SP = [
     cd: 0.6 * TY,
     lit: [4, 10],
     wn: 0.2,
-    cap: 70,
+    cap: 140,
     fert: 0.9,
     sleepH: 6,
     nv: 0.7,

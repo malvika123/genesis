@@ -19,7 +19,7 @@ test('the water cycle gives wet belts and dry belts, like Earth', () => {
   E.setSeed(1);
   E.reset({ people: 2, herbivores: 0, predators: 0, fish: 0 });
   const { W, H, DAY } = E;
-  const rows = (a, b) => [a, b];
+  const rows = (a, b) => [Math.round((a * H) / 40), Math.round((b * H) / 40)];
   const band = { subtropics: [rows(10, 15), rows(25, 30)], wet: [rows(4, 10), rows(30, 36), rows(17, 23)] };
   const sum = { subtropics: 0, wet: 0 },
     cells = { subtropics: 0, wet: 0 };
@@ -61,7 +61,8 @@ test('puddles can be drunk from and dry up again', () => {
   const s = E.state();
   // a cell in the dry belt around 30° north, where it rarely rains
   let i = -1;
-  for (let k = 12 * E.W; k < 14 * E.W && i < 0; k++) if (!s.water[k] && !s.rock[k] && !s.pit[k]) i = k;
+  for (let k = Math.round(E.H * 0.3) * E.W; k < Math.round(E.H * 0.36) * E.W && i < 0; k++)
+    if (!s.water[k] && !s.rock[k] && !s.pit[k]) i = k;
   PW[i] = 0.3;
   PUD[i] = 1;
   MOIST[i] = 1;

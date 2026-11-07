@@ -38,6 +38,10 @@ function sense(a, x, night) {
     } else if (water[i]) {
       // frozen water is just ground to walk on: no drinking, no drowning
       if (iced(i)) {
+      } else if (salt[i]) {
+        // the sea looks like water but isn't drinkable; far out it is deep
+        if (x[b + 10] < cl) x[b + 10] = cl;
+        if (deep[i] && x[b + 2] < cl) x[b + 2] = cl;
       } else if (deep[i]) {
         if (x[b + 2] < cl) x[b + 2] = cl;
       } else {
@@ -50,6 +54,12 @@ function sense(a, x, night) {
         if (x[b] < q) x[b] = q;
       }
       if ((rock[i] || pit[i]) && x[b + 2] < cl) x[b + 2] = cl;
+      // ground that rises steeply ahead is hard, tiring climbing
+      const up = alt[i] - alt[idx(a.x, a.y)];
+      if (up > 0.3) {
+        const q = cl * Math.min(1, up / 1.5);
+        if (x[b + 11] < q) x[b + 11] = q;
+      }
       const f = food[i] * cl * (0.15 + te);
       if (f > x[b + 1]) x[b + 1] = f;
       if (poison[i] && food[i] > 0.05 && x[b + 9] < cl) x[b + 9] = cl;

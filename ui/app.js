@@ -19,6 +19,13 @@ function doingWord(a, k) {
     return false;
   };
   if (k === A_DRINK && a.sp !== 3 && !nearWater()) return 'trying to drink, but there is no water here';
+  if (k === A_DRINK && a.sp !== 3) {
+    let fresh = false;
+    for (let dy = -1; dy <= 1; dy++)
+      for (let dx = -1; dx <= 1; dx++)
+        if (inb(a.x + dx, a.y + dy) && drinkable(idx(a.x + dx, a.y + dy))) fresh = true;
+    if (!fresh) return 'trying to drink, but the sea is salty';
+  }
   if (k === A_MATE && a.age < SP[a.sp].smat) return 'trying to mate, but it is far too young';
   if (k === A_MATE && !a.rd) return 'wanting to mate, but its body is not ready';
   if (k === A_MATE) return 'looking for a partner';
@@ -38,8 +45,10 @@ function doingWord(a, k) {
 
 function placeOf(a) {
   const i = idx(a.x, a.y);
-  if (iced(i)) return 'on frozen water';
-  if (!water[i] && RT[a.y] < -2) return 'in the snow';
+  if (iced(i)) return salt[i] ? 'on the sea ice' : 'on frozen water';
+  if (salt[i]) return deep[i] ? 'out in the deep sea' : 'in the shallow sea';
+  if (river[i]) return 'in a river';
+  if (!water[i] && cellT(i) < -2) return 'in the snow';
   return water[i]
     ? deep[i]
       ? 'in deep water'
@@ -62,6 +71,8 @@ const PLAIN_CH = {
   family: 'sees family',
   fish: 'sees fish',
   'red berries': 'sees red berries',
+  'the sea': 'sees the sea',
+  'a steep climb': 'sees a steep climb',
 };
 const PLAIN = {
   'food right here': 'there is food right here',
@@ -194,8 +205,9 @@ function doingHTML(a, S, stage, night) {
   let o = '<b>' + doingText(a) + '</b>';
   o +=
     '<br>' +
-    Math.round(tempAt(a.y, night)) +
+    Math.round(cellTemp(idx(a.x, a.y), night)) +
     ' °C, ' +
+    (alt[idx(a.x, a.y)] > 0.4 ? alt[idx(a.x, a.y)].toFixed(1) + ' km up, ' : '') +
     (Math.abs(lat(a.y)) < 0.2 ? 'tropics, warm all year' : seasonName(a.y) + ' here') +
     (Math.abs(lat(a.y)) < 0.2
       ? ''
@@ -299,9 +311,13 @@ function drawTerrain(g, v) {
       if (water[i]) {
         g.fillStyle = v(iced(i) ? '--ice' : '--water');
         g.fillRect(x * C, y * C, C, C);
-        if (deep[i] && !iced(i)) {
-          g.fillStyle = 'rgba(0,30,70,.25)';
-          g.fillRect(x * C, y * C, C, C);
+        if (!iced(i)) {
+          // the sea gets darker the deeper it is; deep lakes are a little darker too
+          const d = salt[i] ? 0.12 + 0.6 * Math.min(1, -alt[i] / 3) : deep[i] ? 0.25 : 0;
+          if (d) {
+            g.fillStyle = 'rgba(0,25,70,' + d.toFixed(2) + ')';
+            g.fillRect(x * C, y * C, C, C);
+          }
         }
         continue;
       }
@@ -329,6 +345,28 @@ function drawTerrain(g, v) {
         }
       }
     }
+  // relief: light from the north-west, so slopes facing it are lit and the far sides are in shade;
+  // the highest ground turns to bare grey rock
+  for (let y = 0; y < H; y++)
+    for (let x = 0; x < W; x++) {
+      const i = y * W + x;
+      if (water[i]) continue;
+      const h = alt[i],
+        nw = Math.max(0, alt[idx(x - 1, Math.max(0, y - 1))]),
+        se = Math.max(0, alt[idx(x + 1, Math.min(H - 1, y + 1))]),
+        sl = (nw - se) * 1.1;
+      if (h > 2.2) {
+        g.globalAlpha = Math.min(0.6, (h - 2.2) / 3);
+        g.fillStyle = '#8a8580';
+        g.fillRect(x * C, y * C, C, C);
+      }
+      if (Math.abs(sl) > 0.02) {
+        g.globalAlpha = Math.min(0.5, Math.abs(sl));
+        g.fillStyle = sl > 0 ? '#000000' : '#ffffff';
+        g.fillRect(x * C, y * C, C, C);
+      }
+    }
+  g.globalAlpha = 1;
   // parched ground looks dusty; puddles after heavy rain
   for (let y = 0; y < H; y++)
     for (let x = 0; x < W; x++) {
@@ -348,12 +386,15 @@ function drawTerrain(g, v) {
   g.globalAlpha = 1;
   // snow on cold ground: the colder the row, the thicker the snow
   g.fillStyle = v('--snow');
-  for (let y = 0; y < H; y++) {
-    const sn = clamp(-RT[y] / 10, 0, 0.75);
-    if (sn <= 0) continue;
-    g.globalAlpha = sn;
-    for (let x = 0; x < W; x++) if (!water[idx(x, y)]) g.fillRect(x * C, y * C, C, C);
-  }
+  for (let y = 0; y < H; y++)
+    for (let x = 0; x < W; x++) {
+      const i = y * W + x;
+      if (water[i]) continue;
+      const sn = clamp(-cellT(i) / 10, 0, 0.75);
+      if (sn <= 0) continue;
+      g.globalAlpha = sn;
+      g.fillRect(x * C, y * C, C, C);
+    }
   g.globalAlpha = 1;
 }
 // Clouds, rain and snow over the land.
@@ -370,7 +411,7 @@ function drawSky(g) {
         g.fillRect(x * C - 1, y * C - 1, C + 2, C + 2);
       }
       if (RAIN[i] > 0.002) {
-        const snow = RT[y] < 0;
+        const snow = cellT(i) < 0;
         g.globalAlpha = clamp(RAIN[i] * 60, 0.35, 0.9);
         if (snow) {
           g.fillStyle = '#ffffff';
@@ -431,10 +472,24 @@ function drawCreature(g, a, X, Y, k, v, dim = 1) {
 }
 
 // ---------- flat map ----------
+const FLAT = { c: null, g: null, n: 0 };
 function drawFlat(v) {
+  // the land and sky change slowly, so they are drawn to a cached picture a few times a second
+  if (!FLAT.c) {
+    FLAT.c = document.createElement('canvas');
+    FLAT.c.width = W * C;
+    FLAT.c.height = H * C;
+    FLAT.g = FLAT.c.getContext('2d');
+    FLAT.n = 0;
+  }
+  if (FLAT.n++ % 10 === 0) {
+    drawTerrain(FLAT.g, v);
+    drawSky(FLAT.g);
+  }
+  cx.setTransform(1, 0, 0, 1, 0, 0);
+  cx.imageSmoothingEnabled = true;
+  cx.drawImage(FLAT.c, 0, 0, cv.width, cv.height);
   cx.setTransform(cv.width / (W * C), 0, 0, cv.height / (H * C), 0, 0);
-  drawTerrain(cx, v);
-  drawSky(cx);
   for (const a of ag) drawCreature(cx, a, a.x * C + C / 2, a.y * C + C / 2, 1, v);
   // night is local: shade the half of the world where the sun is down
   cx.fillStyle = 'rgba(8,16,48,.38)';
@@ -778,6 +833,8 @@ function onExtinct() {
   $('play').textContent = 'Play';
 }
 $('reset').onclick = () => {
+  FLAT.n = 0;
+  GL.tdata = null;
   reset(readCfg());
   fillIdeas();
   running = true;
@@ -903,6 +960,7 @@ $('sky').onclick = () => {
   showSky = !showSky;
   $('sky').textContent = showSky ? 'Hide clouds' : 'Show clouds';
   GL.tdata = null;
+  FLAT.n = 0;
 };
 // ---------- full-screen world, tabs ----------
 function fit() {

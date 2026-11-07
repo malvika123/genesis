@@ -17,20 +17,31 @@ function tempAt(y, night) {
 }
 function updateClimate() {
   for (let y = 0; y < H; y++) RT[y] = tempAt(y, false);
+  // each cell's daytime temperature, worked out once per step because it is used everywhere
+  if (!CT || CT.length !== W * H) CT = new Float32Array(W * H);
+  for (let i = 0; i < W * H; i++) CT[i] = RT[(i / W) | 0] - LAPSE * (alt ? Math.max(0, alt[i]) : 0);
 }
+// Air gets colder the higher you go: about 6.5 °C for every kilometre, as on Earth.
+const LAPSE = 6.5;
+const above = (i) => (alt ? Math.max(0, alt[i]) : 0);
+// daytime temperature of one cell, including its height
+let CT = null;
+const cellT = (i) => CT[i];
+const cellTemp = (i, night) => tempAt((i / W) | 0, night) - LAPSE * above(i);
 const FREEZE = -1;
 // Water that is frozen over: you can walk on it, but not drink from it or drown in it.
-const iced = (i) => water[i] === 1 && RT[(i / W) | 0] < FREEZE;
-const liquid = (i) => water[i] === 1 && RT[(i / W) | 0] >= FREEZE;
+const iced = (i) => water[i] === 1 && cellT(i) < FREEZE;
+const liquid = (i) => water[i] === 1 && cellT(i) >= FREEZE;
 // How well plants grow at this temperature: nothing below about 2 °C, normal growth at 15 °C,
 // and lusher than that in the warm tropics.
 const growth = (y) => clamp((RT[y] - 2) / 13, 0, 1.15);
+const growthAt = (i) => clamp((cellT(i) - 2) / 13, 0, 1.15);
 // How cold a creature feels (0 = comfortable, 1 = freezing for its kind). Fish don't feel it.
 function coldOf(a, night) {
   if (a.sp === 3) return 0;
   // rain on your skin or fur makes it feel about 5 °C colder
   const wet = typeof RAIN !== 'undefined' && RAIN && RAIN[idx(a.x, a.y)] > 0.002 ? 5 : 0;
-  return clamp((SP[a.sp].cold - tempAt(a.y, night) + wet) / 20, 0, 1);
+  return clamp((SP[a.sp].cold - cellTemp(idx(a.x, a.y), night) + wet) / 20, 0, 1);
 }
 function seasonName(y) {
   const h = lat(y) < 0 ? 1 : -1,

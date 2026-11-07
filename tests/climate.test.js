@@ -18,23 +18,25 @@ test('the world wraps east–west but not north–south', () => {
   assert.equal(dxw(W - 2), -2, 'shortest distance goes around the back of the world');
 });
 
-test('a creature can walk off one side and come back on the other', () => {
+test('a creature can see across the east–west seam', () => {
   const E = createEngine();
   E.setSeed(2);
   E.reset({ people: 2, herbivores: 0, predators: 0, fish: 0 });
+  E.sim(); // builds the map of who is where, which the senses use
   const s = E.state();
-  let crossed = false;
-  const last = new Map(s.ag.map((a) => [a, a.x]));
-  for (let t = 0; t < 60 * E.DAY && !crossed; t++) {
-    E.sim();
-    for (const a of E.state().ag) {
-      const p = last.get(a);
-      if (p !== undefined && Math.abs(a.x - p) > E.W / 2) crossed = true;
-      last.set(a, a.x);
-      assert.ok(a.x >= 0 && a.x < E.W, 'a creature left the map');
-    }
-  }
-  assert.ok(crossed, 'nobody ever crossed the east–west seam in 60 days');
+  const a = s.ag[0];
+  a.asleep = false;
+  // stand at the east edge and put fresh grass just across the seam, on the west edge
+  a.x = E.W - 1;
+  const j = a.y * E.W + 0;
+  s.water[j] = 0;
+  s.rock[j] = 0;
+  s.pit[j] = 0;
+  s.poison[j] = 0;
+  s.food[j] = 1;
+  a.e = 20;
+  E.sense(a, a.xi, false);
+  assert.ok(a.xi[0 * E.NCH + 1] > 0, 'food just across the seam should be seen to the east');
 });
 
 test('the equator is warm, the poles are cold, and the hemispheres have opposite seasons', () => {

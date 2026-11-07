@@ -6,6 +6,9 @@ let fished = 0,
   poison,
   firsts = {},
   water,
+  salt, // sea water: you can swim in it but not drink it
+  alt, // height of each cell in km (negative = depth of the sea)
+  river,
   deep,
   rock,
   ter,

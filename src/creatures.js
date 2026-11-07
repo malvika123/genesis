@@ -62,7 +62,7 @@ function mk(sp, x, y, sex, g, gen, age) {
     found: false,
     learn: 0,
     lf: Math.max(SP[sp].mat * 2, SP[sp].life * clamp(0.72 + gauss() * 0.2, 0.45, 1)),
-    vis: new Uint8Array(160),
+    vis: new Uint8Array((W >> 2) * (H >> 2)),
     mw: null,
     mf: null,
     mwT: 0,
@@ -112,31 +112,49 @@ function child(p, q) {
     w,
   };
 }
+// Where the first creatures are born. Fish anywhere in the water. People start together in one warm,
+// low-lying region near fresh water (as early humans did) but not side by side, so they still have to
+// find each other. Predators start as a small pack. Herbivores anywhere on the lower land.
 function spawn(sp, n, inst) {
-  let px = -1,
-    py = -1;
-  for (let i = 0; i < n; i++) {
+  const land = (i) => !water[i] && !rock[i] && !pit[i] && alt[i] < 1.5;
+  const freshNear = (x, y) => {
+    for (let dy = -4; dy <= 4; dy++)
+      for (let dx = -4; dx <= 4; dx++) {
+        if (!inb(x, y + dy)) continue;
+        const j = idx(x + dx, y + dy);
+        if (water[j] && !salt[j]) return true;
+      }
+    return false;
+  };
+  let cx = -1,
+    cy = -1;
+  if (sp === 0 || sp === 2) {
+    for (let t = 0; t < 4000; t++) {
+      const x = (rnd() * W) | 0,
+        y = (rnd() * H) | 0,
+        i = idx(x, y);
+      if (!land(i) || alt[i] > 0.8) continue;
+      if (sp === 0 && (Math.abs(lat(y)) > 0.45 || (t < 3000 && !freshNear(x, y)))) continue;
+      cx = x;
+      cy = y;
+      break;
+    }
+  }
+  for (let k = 0; k < n; k++) {
     let x,
       y,
       t = 0;
     do {
       x = (rnd() * W) | 0;
       y = (rnd() * H) | 0;
-      if (sp === 2 && px >= 0 && t < 500) {
-        x = wx(px + ((rnd() * 9) | 0) - 4);
-        y = clamp(py + ((rnd() * 9) | 0) - 4, 0, H - 1);
+      if (cx >= 0 && t < 3000) {
+        const r = sp === 0 ? 14 : 5;
+        x = wx(cx + Math.round((rnd() * 2 - 1) * r));
+        y = clamp(cy + Math.round((rnd() * 2 - 1) * r), 0, H - 1);
       }
       t++;
-    } while (
-      sp === 3
-        ? !water[idx(x, y)]
-        : water[idx(x, y)] || rock[idx(x, y)] || (sp === 0 && t < 400 && Math.abs(lat(y)) > 0.5)
-    );
-    if (px < 0) {
-      px = x;
-      py = y;
-    }
-    const c = mk(sp, x, y, i % 2, gene(sp, inst), 0, (rnd() * SP[sp].mat * 0.1) | 0);
+    } while (t < 6000 && (sp === 3 ? !water[idx(x, y)] : !land(idx(x, y))));
+    const c = mk(sp, x, y, k % 2, gene(sp, inst), 0, (rnd() * SP[sp].mat * 0.1) | 0);
     c.found = true;
     ag.push(c);
   }

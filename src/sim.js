@@ -10,7 +10,7 @@ function sim() {
   for (let i = 0; i < W * H; i++) {
     if (rock[i]) continue;
     // plants need warmth and water
-    const tf = (water[i] ? 0.5 : TF[ter[i]]) * growth((i / W) | 0) * wetness(i);
+    const tf = (water[i] ? 0.5 : TF[ter[i]]) * growthAt(i) * wetness(i);
     if (food[i] < 1) food[i] += (0.006 * food[i] * (1 - food[i]) + 0.0004) * tf;
   }
   G = new Array(W * H);
@@ -95,7 +95,7 @@ function sim() {
       a.age >= S.smat && a.age < a.lf * S.fert
         ? clamp(a.lu + (a.cd === 0 && a.e > 45 ? 0.01 : -0.02), 0, 1)
         : 0;
-    const bi = (a.y >> 2) * 16 + (a.x >> 2);
+    const bi = (a.y >> 2) * (W >> 2) + (a.x >> 2);
     if (!a.vis[bi]) {
       a.vis[bi] = 1;
       a.vc++;
@@ -262,6 +262,12 @@ function sim() {
         const X = wx(a.x + MV[act][0]),
           Y = a.y + MV[act][1];
         if (inb(X, Y) && !rock[idx(X, Y)] && (!fish || water[idx(X, Y)])) {
+          // climbing is hard work, and steep slopes slow you down
+          const climb = fish ? 0 : Math.max(0, alt[idx(X, Y)]) - Math.max(0, alt[idx(a.x, a.y)]);
+          if (climb > 0) {
+            a.e -= 1.5 * climb;
+            a.acc -= Math.min(1, climb);
+          }
           a.x = X;
           a.y = Y;
           if (pit[idx(X, Y)]) {

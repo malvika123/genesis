@@ -20,6 +20,8 @@ const CHN = [
   'family',
   'fish',
   'red berries',
+  'the sea',
+  'a steep climb',
 ];
 const BODY = { 0: 'food right here', 1: 'water within reach', 2: 'prey within reach', 3: 'a mate beside it' };
 const INNER = {

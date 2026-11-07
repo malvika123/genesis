@@ -22,7 +22,8 @@ src/                the simulation engine — no browser code, so it also runs h
   brain.js          neural network, instincts, actor-critic learning
   lessons.js        detecting what a creature has learned, and what taught it
   creatures.js      bodies, genes, personality, inheritance
-  world.js          building the terrain and the first creatures
+  terrain.js        height map: oceans, continents, mountains, lakes in basins, rivers that flow downhill
+  world.js          starting a world: terrain, grass, weather and the first creatures
   senses.js         what each creature perceives and remembers
   mind.js           reading a creature's mind from its network
   whispers.js       turning your words into nudges in a brain
@@ -55,18 +56,19 @@ The tests check that the world is reproducible, that creatures stay within their
 
 ## What's in the world
 
-- **Terrain:** grass that grows back over days, sand, stony ground, boulders, a river, a lake and small ponds (shallow edges for drinking, deep middles that can drown you), pits that trap and hurt, and red berries that look like food but make you sick.
+- **Terrain:** every place has a height. About half the world is sea — salty, so nobody can drink it, shallow along the coasts and deep further out. Continents rise to mountain ranges up to about 5 km high. Water has to drain to the sea, so basins fill into lakes and rain gathers into rivers that start in the uplands and run downhill to the coast. There are beaches, deserts, stony uplands, boulders, pits that trap and hurt, and red berries that look like food but make you sick. Grass grows back over days.
+- **Height matters:** it gets about 6.5 °C colder for every kilometre up, so high peaks keep their snow; climbing costs energy and steep slopes slow you down; wind pushed up a mountain rains on that side and leaves a dry rain shadow behind it.
 - **People** (pink and blue), **herbivores** (yellow-green), **predators** (red) and **fish** (in the water). Each species has its own lifespan, age of maturity, litter size, sleep need and senses, based on real animals.
 - **A round world:** the world is a planet you can spin. Drag to turn it, scroll or pinch to zoom, and switch to a flat map if you like. Walk east far enough and you come back from the west; the poles are capped with ice.
 - **Day and night are local:** the sun circles the planet once a day, so it is noon on one side and midnight on the other, and creatures on the dark side sleep while others are active.
 - **Climate and seasons:** warm at the equator, cold at the poles, and four seasons that are opposite in the two hemispheres. In winter grass stops growing, water near the poles freezes (walkable, but you can't drink from it or drown in it) and snow covers the ground. Plants grow lushest in the tropics.
 - **Weather and the water cycle:** lakes, rivers and wet ground evaporate, faster when it is warm. Prevailing winds carry the moisture (trade winds, westerlies and polar easterlies, as on Earth). Warm air holds far more water than cold air, so where air rises and cools — along the equator, where the trade winds meet, and in drifting storms — the water condenses into clouds and falls as rain, or snow where it is freezing. Air sinking around 30° leaves dry belts, like Earth's deserts. Rain soaks the soil, grass needs that moisture to grow, downpours on soaked ground leave puddles creatures can drink from, and rain on your skin makes you feel colder.
 - **Cold:** people have no fur and feel cold below about 14 °C; herbivores and predators have thick winter coats and only feel the cold below about -10 °C. Cold burns energy and freezing hurts, huddling next to your own kind helps, and each creature feels its own cold as an input to its brain. Nobody is taught to stay warm. The first people are born in the warmer middle of the world.
-- **Scale:** one cell is about 3 km and one step is 15 minutes. A year is squeezed into 3 days.
+- **Scale:** the world is 128 × 80 cells; one cell is about 3 km and one step is 15 minutes. A year is squeezed into 3 days.
 
 ## How their minds work
 
-- **Senses:** what lies in eight directions (water, food, rocks and pits, other creatures, mates, family, fish, red berries), plus their own hunger, thirst, tiredness, pain, injury, the time of day, and remembered water and food.
+- **Senses:** what lies in eight directions (fresh water, food, danger, other creatures, mates, family, fish, red berries, the sea, steep climbs), plus their own hunger, thirst, tiredness, pain, injury, the time of day, and remembered water and food.
 - **Brain:** a small neural network chooses one of 15 actions — walk in 8 directions, stay, eat, drink, sleep, mate, attack, or share food.
 - **Learning:** actor-critic reinforcement learning with eligibility traces. Rewards come only from the body: relief from hunger and thirst, rest, warmth, company, mating, finding new places; pain, drowning, cold and injury hurt.
 - **Hard-wired survival:** like a brainstem, a starving creature reaches for food in front of it and a parched one drinks. Learning can't override that.
