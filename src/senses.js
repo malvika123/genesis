@@ -73,6 +73,12 @@ function sense(a, x, night) {
         (0.15 + te);
       if (f > x[b + 1]) x[b + 1] = f;
       if (tree[i] > 0.1 && x[b + 12] < cl * tree[i]) x[b + 12] = cl * tree[i];
+      if (a.sp === 0) {
+        // people notice loose stones and sticks, and nuts under the trees
+        if (lying(i) && x[b + 13] < cl) x[b + 13] = cl;
+        const q = cl * Math.min(1, nut[i] * 3);
+        if (nut[i] > 0.05 && x[b + 14] < q) x[b + 14] = q;
+      }
       if (poison[i] && food[i] > 0.05 && x[b + 9] < cl) x[b + 9] = cl;
     }
     const l = G[i];
@@ -194,4 +200,12 @@ function sense(a, x, night) {
   x[IB + 10] = deep[here];
   x[IB + 11] = 1;
   x[IB + 18] = a.cold;
+  if (a.sp === 0) {
+    x[IB + 19] = a.hand === 1 ? 1 : 0;
+    x[IB + 20] = a.hand === 2 ? 1 : 0;
+    x[IB + 21] = a.hand === 3 ? 1 : 0;
+    x[IB + 22] = stone[here] + flake[here] > 0 ? 1 : 0;
+    x[IB + 23] = stick[here] > 0 ? 1 : 0;
+    x[IB + 24] = nut[here] > 0.05 ? 1 : 0;
+  }
 }

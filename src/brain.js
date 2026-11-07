@@ -29,6 +29,21 @@ function newW(sp, inst) {
     D(A_ATK, IB, 1.5);
     D(A_ATK, B, -1.5);
     D(A_STAY, B, -0.5);
+    if (sp === 0) {
+      // Hands. Human babies are born grasping whatever touches the palm, small children are drawn to
+      // objects and bang whatever they hold, and everyone likes nuts. That is all that is inborn: what a
+      // stone is good for has to be found out.
+      D(A_TAKE, IB + 22, 1.6);
+      D(A_TAKE, IB + 23, 1.6);
+      for (let h = 19; h <= 21; h++) {
+        D(A_TAKE, IB + h, -4);
+        D(A_STRIKE, IB + h, 0.9);
+      }
+      for (let s = 0; s < 8; s++) {
+        D(s, s * NCH + 13, 0.8);
+        D(s, s * NCH + 14, 1);
+      }
+    }
     const f = SP[sp].fl;
     for (let s = 0; s < 8; s++) {
       if (f) {

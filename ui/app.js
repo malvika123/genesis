@@ -31,6 +31,29 @@ function doingWord(a, k) {
   if (k === A_MATE) return 'looking for a partner';
   if (k === A_EAT && a.sp < 2 && !(food[idx(a.x, a.y)] > 0.05) && !water[idx(a.x, a.y)])
     return 'trying to eat, but there is nothing to eat here';
+  if (k === A_TAKE) {
+    const i = idx(a.x, a.y);
+    return a.hand
+      ? 'reaching for something, but its hand is already full'
+      : stone[i]
+        ? 'picking up a stone'
+        : stick[i]
+          ? 'picking up a stick'
+          : flake[i]
+            ? 'picking up a sharp stone'
+            : 'reaching for something, but there is nothing here to pick up';
+  }
+  if (k === A_DROP) return a.hand ? 'putting down ' + HAND[a.hand] : 'opening its empty hands';
+  if (k === A_STRIKE) {
+    const i = idx(a.x, a.y);
+    return !a.hand
+      ? 'swinging its empty hands'
+      : a.hand === 1 && nut[i] > 0.05
+        ? 'cracking a nut with a stone'
+        : a.hand === 1 && stone[i]
+          ? 'knocking two stones together'
+          : 'banging ' + HAND[a.hand] + ' on the ground';
+  }
   if (k < 8) return 'walking ' + CP[k];
   return [
     'staying put',
@@ -75,6 +98,8 @@ const PLAIN_CH = {
   'the sea': 'sees the sea',
   'a steep climb': 'sees a steep climb',
   trees: 'sees trees',
+  'a stone or stick on the ground': 'sees a stone or stick lying there',
+  nuts: 'sees nuts',
 };
 const PLAIN = {
   'food right here': 'there is food right here',
@@ -97,6 +122,12 @@ const PLAIN = {
   'memory of food': 'it remembers where food is',
   'red berries here': 'there are red berries here',
   'a hungry child nearby': 'a hungry child is nearby',
+  'a stone in its hand': 'it is holding a stone',
+  'a stick in its hand': 'it is holding a stick',
+  'a sharp stone in its hand': 'it is holding a sharp stone',
+  'a stone at its feet': 'there is a stone at its feet',
+  'a stick at its feet': 'there is a stick at its feet',
+  'a nut at its feet': 'there is a nut at its feet',
   'the urge to eat': 'a strong urge to eat',
   'the urge to drink': 'a strong urge to drink',
   'the urge to strike': 'a strong urge to attack',
@@ -116,6 +147,9 @@ function plainAct(a, k) {
     'tries to mate',
     a.sp === 2 ? 'attacks' : a.sp === 0 ? 'grabs' : 'snaps',
     'shares food',
+    'picks something up',
+    'puts it down',
+    'strikes with what it holds',
   ][k - 8];
 }
 function joinReasons(r) {
@@ -136,6 +170,9 @@ const ING = {
   attack: 'attacking',
   snap: 'snapping',
   'give food': 'sharing food',
+  'pick up': 'picking something up',
+  'put down': 'putting it down',
+  strike: 'striking',
 };
 const cap = (s) => s.replace(/^./, (c) => c.toUpperCase());
 function thoughtText(a) {
@@ -219,6 +256,7 @@ function doingHTML(a, S, stage, night) {
   o += '<br>' + weatherText(idx(a.x, a.y));
   o += '<br><br>' + (a.sex ? 'Female' : 'Male') + ' ' + stage + ', generation ' + a.gen;
   o += '<br>Energy ' + a.e.toFixed(0) + ' · water ' + a.w.toFixed(0) + ' · health ' + a.hp.toFixed(0);
+  if (a.sp === 0) o += '<br>In its hand: ' + HAND[a.hand] + (a.nuts ? ' · nuts cracked: ' + a.nuts : '');
   o += '<br>Nearby: ' + (around.length ? around.join(', ') : 'no one in sight');
   const fam = [];
   if (a.mom && !a.mom.dead && !a.mom.gone) fam.push('mother ' + (a.mom.name || ''));

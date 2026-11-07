@@ -39,6 +39,7 @@ function reset(cfg = {}) {
           : (0.35 + rnd() * 0.5) * TF[ter[i]] * Math.min(1, growthAt(i) + 0.2);
   initWeather();
   initForest();
+  initItems();
   for (let i = 0; i < W * H; i++) food[i] *= 1 - 0.35 * tree[i]; // little grass grows in the shade of trees
   const n = clamp(cfg.people ?? 2, 2, 40),
     nh = clamp(cfg.herbivores ?? 14, 0, 40),

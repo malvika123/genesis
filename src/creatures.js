@@ -85,6 +85,8 @@ function mk(sp, x, y, sex, g, gen, age, k = KDEF[sp]) {
     ts: [],
     lu: 0,
     shared: 0,
+    hand: 0, // what it is holding: 0 nothing, 1 stone, 2 stick, 3 sharp stone
+    nuts: 0,
   };
   a.p0 = PR.map((_, k) => probe(a.lw, k));
   return a;

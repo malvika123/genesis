@@ -27,8 +27,9 @@ return {
   whisper: (a, text) => { a.wh = text; },
   watch: (a) => { sel = a; },
   state: () => ({ deaths, ag, tick, logs, fished, kills, maxGen, nLessons, over, water, deep, food, pit, poison, rock, salt, river }),
+  items: () => ({ stone, stick, flake, nut, lying, nutCap }),
   alt: () => alt,
-  sense, SP, DAY, TY, IB, HB, NCH, A_EAT, A_SLEEP, A_GIVE,
+  sense, SP, DAY, TY, IB, HB, NCH, A_EAT, A_SLEEP, A_GIVE, A_TAKE, A_DROP, A_STRIKE, O3, NI,
 };`;
 
 // Returns a fresh, independent world: every call gets its own copy of all engine state.

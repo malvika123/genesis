@@ -20,13 +20,13 @@ const MV = [
     [1, -1],
   ],
   CP = ['east', 'south-east', 'south', 'south-west', 'west', 'north-west', 'north', 'north-east'];
-const NCH = 13, // per direction: water, food, danger, herbivore, person, predator, mate, family, fish, red berries, the sea, a steep climb, trees
+const NCH = 15, // per direction: water, food, danger, herbivore, person, predator, mate, family, fish, red berries, the sea, a steep climb, trees, loose stones or sticks, nuts
   NS = 8 * NCH,
   HB = NS,
   IB = NS + 4,
-  NI = IB + 19, // the last input (IB + 18) is how cold the creature feels
+  NI = IB + 25, // IB + 18 is how cold the creature feels; IB + 19 … 24 are about its hands and what lies at its feet
   NH = 24,
-  NA = 15,
+  NA = 18,
   O2 = NH * NI,
   O3 = O2 + NA * NH,
   OV = O3 + NA * NI,
@@ -38,6 +38,9 @@ const A_STAY = 8,
   A_MATE = 12,
   A_ATK = 13,
   A_GIVE = 14,
+  A_TAKE = 15, // pick up a stone or stick from the ground
+  A_DROP = 16, // put what is in the hand down
+  A_STRIKE = 17, // hit something with what is in the hand
   GAM = 0.97,
   LAM = 0.8,
   AP = 0.01,

@@ -126,6 +126,18 @@ const PR = [
     act: [A_ATK],
     why: [2],
   },
+  {
+    sp: [0],
+    pos: 'crack nuts open with a stone',
+    neg: 'give up on cracking nuts',
+    set: (x) => {
+      x[IB] = 0.6;
+      x[IB + 19] = 1;
+      x[IB + 24] = 1;
+    },
+    act: [A_STRIKE],
+    why: [2],
+  },
 ];
 const WHY = [
   'pain',

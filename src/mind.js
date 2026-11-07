@@ -23,6 +23,8 @@ const CHN = [
   'the sea',
   'a steep climb',
   'trees',
+  'a stone or stick on the ground',
+  'nuts',
 ];
 const BODY = { 0: 'food right here', 1: 'water within reach', 2: 'prey within reach', 3: 'a mate beside it' };
 const INNER = {
@@ -44,6 +46,12 @@ const INNER = {
   16: 'red berries here',
   17: 'a hungry child nearby',
   18: 'cold',
+  19: 'a stone in its hand',
+  20: 'a stick in its hand',
+  21: 'a sharp stone in its hand',
+  22: 'a stone at its feet',
+  23: 'a stick at its feet',
+  24: 'a nut at its feet',
 };
 function actName(a, k) {
   if (k < 8) return 'go ' + CP[k];
@@ -55,6 +63,9 @@ function actName(a, k) {
     'mate',
     a.sp === 2 ? 'attack' : a.sp === 0 ? 'grab' : 'snap',
     'give food',
+    'pick up',
+    'put down',
+    'strike',
   ][k - 8];
 }
 function featName(i) {

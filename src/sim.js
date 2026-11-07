@@ -8,6 +8,7 @@ function sim() {
   updateClimate();
   updateWeather();
   updateForest();
+  updateItems();
   for (let i = 0; i < W * H; i++) {
     if (rock[i]) continue;
     // plants need warmth and water
@@ -155,6 +156,8 @@ function sim() {
       a.bonus[k] = 0;
     }
     RF.fill(0);
+    // only people have hands
+    if (a.sp !== 0) RF[A_TAKE] = RF[A_DROP] = RF[A_STRIKE] = -40;
     if (a.sp !== 3 || x[HB] > 0.05) RF[A_EAT] = 4 * hu * (x[HB] > 0.05 ? 1 : 0);
     if (a.sp !== 3) RF[A_DRINK] = 5 * th * x[HB + 1];
     if (a.sp === 2) RF[A_ATK] = 5 * hu * x[HB + 2];
@@ -445,6 +448,40 @@ function sim() {
           log(a.name + ' shared food with ' + t.name + '. Nobody taught this.');
         }
       }
+    } else if (act === A_TAKE && a.sp === 0 && !a.asleep) {
+      if (pickUp(a)) {
+        a.e -= 0.02;
+        if (!firsts.take) {
+          firsts.take = 1;
+          log(a.name + ' picked up ' + HAND[a.hand] + ' for the first time.');
+        }
+      }
+    } else if (act === A_DROP && a.sp === 0 && a.hand) {
+      putDown(a);
+    } else if (act === A_STRIKE && a.sp === 0 && a.hand && !a.asleep) {
+      // What a blow does is up to the world, not the creature: a stone breaks a nut's shell; a stone
+      // struck on another stone can knock a sharp flake off it; a stick or a flake just hits the ground.
+      const i = idx(a.x, a.y);
+      a.e -= 0.05;
+      if (a.hand === 1 && nut[i] > 0.05) {
+        const b = Math.min(nut[i], 0.25);
+        nut[i] -= b;
+        a.e = Math.min(100, a.e + b * 110);
+        a.nuts++;
+        if (hu > 0.5) a.ev[2] = 'it cracked a nut open with a stone after going hungry on day ' + dn;
+        if (!firsts.nut) {
+          firsts.nut = 1;
+          log(a.name + ' cracked a nut open with a stone. Nobody showed them how.');
+        }
+      } else if (a.hand === 1 && stone[i] > 0 && rnd() < 0.05) {
+        stone[i]--;
+        flake[i] = Math.min(6, flake[i] + 1);
+        a.painA = Math.min(1, a.painA + 0.1);
+        if (!firsts.flake) {
+          firsts.flake = 1;
+          log(a.name + ' knocked a sharp-edged flake off a stone by striking two stones together.');
+        }
+      }
     } else if (act === A_ATK && (a.sp === 2 || a.sp === 0) && a.kcd === 0 && !a.asleep) {
       let t = null;
       for (let yy = -1; yy <= 1 && !t; yy++)
@@ -466,7 +503,7 @@ function sim() {
                   if (o !== a && o.k === a.k && !o.dead && !o.asleep && o.age >= o.S.mat) help++;
             }
         const odds = clamp(((a.S.size || 1) * (1 + 0.6 * help)) / (T.size || 1), 0.15, 1.3),
-          pc = a.sp === 0 ? 0.25 : (t.asleep || t.age < T.mat * T.wn ? 0.9 : 0.6) * Math.min(1, odds);
+          pc = a.sp === 0 ? 0.25 * (a.hand === 2 ? 1.5 : a.hand === 3 ? 1.25 : 1) : (t.asleep || t.age < T.mat * T.wn ? 0.9 : 0.6) * Math.min(1, odds);
         if (rnd() < pc) {
           t.dead = true;
           t.cause = a.sp === 0 ? 'caught by a person' : 'killed by a predator';
@@ -533,6 +570,7 @@ function sim() {
               : null;
     if (!c) return true;
     a.gone = true;
+    if (a.hand) putDown(a);
     const dk = a.S.n + ': ' + c;
     deaths[dk] = (deaths[dk] || 0) + 1;
     if (a.sp === 0)
