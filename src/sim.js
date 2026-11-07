@@ -247,9 +247,9 @@ function sim() {
       // (noradrenaline), something new makes it learn faster (a dopamine burst for novelty), and
       // long, heavy stress makes learning worse (cortisol).
       let mod = 1;
-      if (d < 0) mod *= 1 + a.fear;
-      if (tick - (a.novel ?? -9) < 2) mod *= 1.5;
-      if (a.stress > 0.5) mod *= 0.6;
+      if (d < 0) mod *= 1 + 0.5 * a.fear;
+      if (tick - (a.novel ?? -9) < 2) mod *= 1.25;
+      if (a.stress > 0.5) mod *= 0.7;
       a.da = d;
       a.mod = mod;
       learnStep(a, d, pl * mod);

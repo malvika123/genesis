@@ -213,20 +213,23 @@ function learnStep(a, d, rate) {
     OV = OVof(H),
     cm = a.cm;
   let ch = 0;
-  const up = (i) => {
-    const u = rate * (AP * d * eP[i] + AV * d * eV[i]);
-    if (u) {
-      w[i] = clamp(w[i] + u, -6, 6);
-      ch += Math.abs(u);
-    }
-  };
+  // A bigger brain changes more connections at once, so each one changes less: the brain as a whole
+  // learns as steadily as a small one instead of overwriting what already works.
+  const k = Math.min(1, a.S.nh / nh),
+    up = (i, s = 1) => {
+      const u = s * rate * (AP * d * eP[i] + AV * d * eV[i]);
+      if (u) {
+        w[i] = clamp(w[i] + u, -6, 6);
+        ch += Math.abs(u);
+      }
+    };
   for (let i = 0; i < OI; i++) up(i);
   for (let j = 0; j < nh; j++) {
     const o = OI + j * NI;
-    for (let i = 0; i < NI; i++) if (cm[j * NI + i]) up(o + i);
+    for (let i = 0; i < NI; i++) if (cm[j * NI + i]) up(o + i, k);
   }
-  for (let k = 0; k < NA; k++) for (let j = 0; j < nh; j++) up(O2 + k * H + j);
-  for (let j = 0; j < nh; j++) up(OV + j);
+  for (let q = 0; q < NA; q++) for (let j = 0; j < nh; j++) up(O2 + q * H + j, k);
+  for (let j = 0; j < nh; j++) up(OV + j, k);
   a.learn += ch;
 }
 
@@ -291,22 +294,23 @@ function replay(a, rate) {
     OV = OVof(H),
     nh = a.nh,
     V = forward(w, x, RH, RZ, nh),
-    d = clamp(m.r + GAM * m.vn - V, -2, 2);
+    d = clamp(m.r + GAM * m.vn - V, -2, 2),
+    k = Math.min(1, a.S.nh / nh); // as in learnStep: a bigger brain changes each connection less
   for (let j = 0; j < nh; j++) {
     let s = 0;
     for (let k = 0; k < NA; k++) s += w[O2 + k * H + j] * ((k === m.act ? 1 : 0) - RZ[k]);
     const dd = 1 - RH[j] * RH[j],
-      g = rate * d * (AP * s + AV * w[OV + j]) * dd,
+      g = k * rate * d * (AP * s + AV * w[OV + j]) * dd,
       o = OI + j * NI;
     if (g)
       for (let i = 0; i < NI; i++) if (x[i] && a.cm[j * NI + i]) w[o + i] = clamp(w[o + i] + g * x[i], -6, 6);
-    w[OV + j] = clamp(w[OV + j] + rate * AV * d * RH[j], -6, 6);
+    w[OV + j] = clamp(w[OV + j] + k * rate * AV * d * RH[j], -6, 6);
   }
-  for (let k = 0; k < NA; k++) {
-    const g = rate * AP * d * ((k === m.act ? 1 : 0) - RZ[k]);
-    let o = O2 + k * H;
-    for (let j = 0; j < nh; j++) w[o + j] = clamp(w[o + j] + g * RH[j], -6, 6);
-    o = k * NI;
+  for (let q = 0; q < NA; q++) {
+    const g = rate * AP * d * ((q === m.act ? 1 : 0) - RZ[q]);
+    let o = O2 + q * H;
+    for (let j = 0; j < nh; j++) w[o + j] = clamp(w[o + j] + k * g * RH[j], -6, 6);
+    o = q * NI;
     for (let i = 0; i < NI; i++) if (x[i]) w[o + i] = clamp(w[o + i] + g * x[i], -6, 6);
   }
   a.learn += Math.abs(d) * rate;
