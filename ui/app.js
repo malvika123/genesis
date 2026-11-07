@@ -29,6 +29,15 @@ function doingWord(a, k) {
   if (k === A_MATE && a.age < SP[a.sp].smat) return 'trying to mate, but it is far too young';
   if (k === A_MATE && !a.rd) return 'wanting to mate, but its body is not ready';
   if (k === A_MATE) return 'looking for a partner';
+  if (k === A_GIVE) {
+    // sharing only happens when a hungry child of its own is right beside it
+    const child = ag.some((o) => kinYoung(a, o) && Math.abs(dxw(o.x - a.x)) <= 1 && Math.abs(o.y - a.y) <= 1);
+    return !child
+      ? 'reaching out to share food, but no child is beside it'
+      : a.e <= 40
+        ? 'wanting to share food, but too hungry itself'
+        : 'sharing food with its child';
+  }
   if (k === A_EAT && a.sp < 2 && !(food[idx(a.x, a.y)] > 0.05) && !water[idx(a.x, a.y)])
     return 'trying to eat, but there is nothing to eat here';
   if (k < 8) return 'walking ' + CP[k];
@@ -115,7 +124,7 @@ function plainAct(a, k) {
     'sleeps',
     'tries to mate',
     a.sp === 2 ? 'attacks' : a.sp === 0 ? 'grabs' : 'snaps',
-    'shares food',
+    'tries to share food',
   ][k - 8];
 }
 function joinReasons(r) {
@@ -664,6 +673,8 @@ function drawCreature(g, a, X, Y, k, v, dim = 1) {
     view.S = { n: KIND_OF[a.sp], mat: S.mat };
     drawAnimal(g, view, X, Y + 3.5 * k, k);
   } else {
+    // fish are under the water: seen dimly and blue through the surface
+    g.globalAlpha *= 0.55;
     g.fillStyle = v('--fish');
     const q = (1.5 + 2 * gr) * k;
     g.beginPath();
