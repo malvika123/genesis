@@ -227,10 +227,17 @@ function sim() {
     // own kind and family, away from danger, and no settling down to sleep in the water.
     if (a.sp !== 3 && !a.asleep && a.sl > 0.45) {
       const k = (a.sl - 0.45) * 3,
-        own = a.sp === 1 ? 3 : a.sp === 0 ? 4 : 5;
+        own = a.sp === 1 ? 3 : a.sp === 0 ? 4 : 5,
+        // in the rain or the cold, cover and company matter much more (people have no fur)
+        wet = RAIN[idx(a.x, a.y)] > 0.002 ? (a.sp === 0 ? 2.5 : 1.6) : 1,
+        chill = 1 + a.cold;
       for (let s = 0; s < 8; s++)
         RF[s] +=
-          k * (1.4 * x[s * NCH + 12] + 1.2 * x[s * NCH + 7] + 0.8 * x[s * NCH + own] - 1.5 * x[s * NCH + 2]);
+          k *
+          (1.4 * wet * x[s * NCH + 12] +
+            1.2 * chill * x[s * NCH + 7] +
+            0.8 * chill * x[s * NCH + own] -
+            1.5 * x[s * NCH + 2]);
       const here = idx(a.x, a.y);
       let safe = cover(here) > 0.4 ? 1 : 0;
       for (let s = 0; s < 8 && !safe; s++) if (x[s * NCH + 7] > 0.6 || x[s * NCH + own] > 0.6) safe = 1;
