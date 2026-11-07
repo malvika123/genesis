@@ -220,13 +220,6 @@ function draw() {
       (sel.g.so > 1.2 ? 'sociable' : sel.g.so < 0.8 ? 'loner' : 'average sociability') +
       (sel.shared ? ', has shared food ' + sel.shared + ' times' : '') +
       (sel.mind ? mindHTML(sel, sel.mind) : '<br>Its mind: wait a moment for the next step…') +
-      (sel.ts.length > 1
-        ? '<br>Recent choices:<br>' +
-          sel.ts
-            .slice(1)
-            .map((q) => '&nbsp;&nbsp;' + q.t)
-            .join('<br>')
-        : '') +
       '<br>Lessons so far: ' +
       (sel.les.length ? sel.les.join('; ') : 'none yet') +
       '<br>How much learning has rewired its brain: ' +
