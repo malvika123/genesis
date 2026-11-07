@@ -125,7 +125,7 @@ function sim() {
     // fire burns: standing in a burning square hurts, and can kill
     const burn = FIRE[idx(a.x, a.y)];
     if (burn > 0.03 && !fish) {
-      a.hp -= 20 * burn;
+      a.hp -= 10 * burn;
       a.painA = Math.max(a.painA, 0.9 * burn + 0.2);
       a.ev[0] = 'it was burned by fire on day ' + dn;
       learnSight(a, 15, 0.2);
@@ -264,6 +264,17 @@ function sim() {
       RF[A_SLEEP] += safe ? 2 * k : 0;
       if (water[here] && !river[here] && !iced(here)) RF[A_SLEEP] -= 6;
     }
+    // The withdrawal reflex: everyone pulls away from painful heat without having to learn it, so the
+    // heat of flames close by pushes a creature away from them before it is in them.
+    if (a.sp !== 3 && x[FIREIN] > 0.15)
+      for (let s = 0; s < 8; s++) {
+        const f = x[s * NCH + 15];
+        if (f > 0.5) {
+          RF[s] -= 5 * x[FIREIN];
+          RF[(s + 4) % 8] += 5 * x[FIREIN];
+        }
+      }
+    if (a.sp !== 3 && FIRE[idx(a.x, a.y)] > 0.03) RF[A_STAY] -= 4; // standing in fire: move!
     // When too hot, land animals instinctively seek shade and water.
     if (a.sp !== 3 && a.heat > 0.3)
       for (let s = 0; s < 8; s++) RF[s] += (a.heat - 0.3) * 3 * (1.5 * x[s * NCH + 12] + x[s * NCH]);
