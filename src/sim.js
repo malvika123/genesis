@@ -270,7 +270,7 @@ function sim() {
             a.acc -= Math.min(1, climb);
           }
           // thick forest is slow going
-          if (!fish) a.acc -= 0.45 * cover(idx(X, Y));
+          if (!fish) a.acc -= 0.25 * cover(idx(X, Y));
           a.x = X;
           a.y = Y;
           if (pit[idx(X, Y)]) {
@@ -328,6 +328,14 @@ function sim() {
         food[i] -= b;
         if (hu > 0.5) a.ev[2] = 'it ate after going hungry on day ' + dn;
         if (f > 0.4) followed(a, 'food', 'found the good food');
+      } else if (a.sp === 1 && f < 0.12 && tree[i] > 0.3 && a.fd < HCAP) {
+        // where there is little grass, herbivores browse leaves and shoots: less filling, and it
+        // slowly thins the trees
+        const b = Math.min(0.15, HCAP - a.fd);
+        a.fd += b;
+        a.e = Math.min(100, a.e + b * HG * 0.7);
+        tree[i] = Math.max(0, tree[i] - b * 0.04);
+        if (hu > 0.5) a.ev[2] = 'it ate after going hungry on day ' + dn;
       } else if (a.sp === 1 && f > 0.05 && a.fd < HCAP) {
         const b = Math.min(f, 0.3, HCAP - a.fd);
         a.fd += b;

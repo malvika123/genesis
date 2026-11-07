@@ -62,7 +62,15 @@ function sense(a, x, night) {
         if (x[b + 11] < q) x[b + 11] = q;
       }
       // people also see fruit on the trees as food
-      const f = (a.sp === 0 ? Math.max(food[i], fruit[i] * 1.4) : food[i]) * cl * (0.15 + te);
+      // and herbivores can browse the trees
+      const f =
+        (a.sp === 0
+          ? Math.max(food[i], fruit[i] * 1.4)
+          : a.sp === 1
+            ? Math.max(food[i], tree[i] * 0.3)
+            : food[i]) *
+        cl *
+        (0.15 + te);
       if (f > x[b + 1]) x[b + 1] = f;
       if (tree[i] > 0.1 && x[b + 12] < cl * tree[i]) x[b + 12] = cl * tree[i];
       if (poison[i] && food[i] > 0.05 && x[b + 9] < cl) x[b + 9] = cl;
@@ -137,7 +145,9 @@ function sense(a, x, night) {
     (a.sp < 2 && !water[here]) || (a.sp === 3 && water[here])
       ? a.sp === 0
         ? Math.max(food[here], fruit[here])
-        : food[here]
+        : a.sp === 1
+          ? Math.max(food[here], tree[here] > 0.3 ? 0.2 : 0)
+          : food[here]
       : 0;
   let wa = 0,
     pa = 0,
