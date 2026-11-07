@@ -1,7 +1,8 @@
 // Genesis — The page: drawing the world, the Inspect and Whisper panels, the controls, and the animation loop.
 // Copyright (c) 2026 Malvika Sen. MIT License.
 
-let running = true,
+let view = 'globe',
+  running = true,
   acc = 0;
 const $ = (id) => document.getElementById(id),
   cv = $('cv'),
@@ -231,16 +232,21 @@ function updateTip() {
   const t = tipTab === 'think' ? thoughtText(sel) : doingText(sel);
   if ($('tiptxt').textContent !== t) $('tiptxt').textContent = t;
   tip.hidden = false;
+  const P = screenPos(sel);
+  if (!P) {
+    tip.hidden = true; // round the back of the planet
+    return;
+  }
   const cr = cv.getBoundingClientRect(),
     wr = $('v-world').getBoundingClientRect(),
-    px = cr.left - wr.left + ((sel.x + 0.5) / W) * cr.width,
-    py = cr.top - wr.top + (sel.y / H) * cr.height - 10,
+    px = cr.left - wr.left + P[0],
+    py = cr.top - wr.top + P[1] - 10,
     w = tip.offsetWidth,
     h = tip.offsetHeight;
   const left = clamp(px - w / 2, 4, wr.width - w - 4),
     below = py - h < 4;
   tip.style.left = left + 'px';
-  tip.style.top = (below ? py + cr.height / H + 24 : py - h) + 'px';
+  tip.style.top = (below ? py + P[2] + 24 : py - h) + 'px';
 }
 document.querySelectorAll('[data-tt]').forEach(
   (b) =>
@@ -255,112 +261,106 @@ function sightRange(a, night) {
   // must match the range used in senses.js
   return Math.max(1.5, a.g.v * (night ? SP[a.sp].nv : 1) * (a.asleep ? 0.3 : 1));
 }
-function draw() {
-  cx.setTransform(cv.width / (W * C), 0, 0, cv.height / (H * C), 0, 0);
-  const s = getComputedStyle(document.documentElement),
-    v = (n) => s.getPropertyValue(n).trim();
-  cx.fillStyle = v('--dirt');
-  cx.fillRect(0, 0, W * C, H * C);
+// ---------- drawing the world: shared pieces ----------
+// Terrain into any 2D context, in map units (one cell = C units).
+function drawTerrain(g, v) {
+  g.fillStyle = v('--dirt');
+  g.fillRect(0, 0, W * C, H * C);
   for (let y = 0; y < H; y++)
     for (let x = 0; x < W; x++) {
       const i = idx(x, y),
         t = ter[i];
       if (water[i]) {
-        cx.fillStyle = v(iced(i) ? '--ice' : '--water');
-        cx.fillRect(x * C, y * C, C, C);
+        g.fillStyle = v(iced(i) ? '--ice' : '--water');
+        g.fillRect(x * C, y * C, C, C);
         if (deep[i] && !iced(i)) {
-          cx.fillStyle = 'rgba(0,30,70,.25)';
-          cx.fillRect(x * C, y * C, C, C);
+          g.fillStyle = 'rgba(0,30,70,.25)';
+          g.fillRect(x * C, y * C, C, C);
         }
         continue;
       }
       if (t) {
-        cx.fillStyle = v(t === 1 ? '--sand' : '--stone');
-        cx.fillRect(x * C, y * C, C, C);
+        g.fillStyle = v(t === 1 ? '--sand' : '--stone');
+        g.fillRect(x * C, y * C, C, C);
       }
       if (rock[i]) {
-        cx.fillStyle = v('--rock');
-        cx.fillRect(x * C + 1, y * C + 1, C - 2, C - 2);
+        g.fillStyle = v('--rock');
+        g.fillRect(x * C + 1, y * C + 1, C - 2, C - 2);
       } else if (pit[i]) {
-        cx.fillStyle = '#1b1410';
-        cx.beginPath();
-        cx.arc(x * C + C / 2, y * C + C / 2, C / 2 - 1, 0, 7);
-        cx.fill();
+        g.fillStyle = '#1b1410';
+        g.beginPath();
+        g.arc(x * C + C / 2, y * C + C / 2, C / 2 - 1, 0, 7);
+        g.fill();
       } else if (t !== 1 && food[i] > 0.05) {
-        cx.globalAlpha = Math.min(0.85, food[i]);
-        cx.fillStyle = v('--plant');
-        cx.fillRect(x * C, y * C, C, C);
-        cx.globalAlpha = 1;
+        g.globalAlpha = Math.min(0.85, food[i]);
+        g.fillStyle = v('--plant');
+        g.fillRect(x * C, y * C, C, C);
+        g.globalAlpha = 1;
         if (poison[i]) {
-          cx.fillStyle = '#c0263d';
-          cx.fillRect(x * C + 2, y * C + 2, 3, 3);
-          cx.fillRect(x * C + 6, y * C + 5, 3, 3);
+          g.fillStyle = '#c0263d';
+          g.fillRect(x * C + 2, y * C + 2, 3, 3);
+          g.fillRect(x * C + 6, y * C + 5, 3, 3);
         }
       }
     }
   // snow on cold ground: the colder the row, the thicker the snow
-  cx.fillStyle = v('--snow');
+  g.fillStyle = v('--snow');
   for (let y = 0; y < H; y++) {
     const sn = clamp(-RT[y] / 10, 0, 0.75);
     if (sn <= 0) continue;
-    cx.globalAlpha = sn;
-    for (let x = 0; x < W; x++) if (!water[idx(x, y)]) cx.fillRect(x * C, y * C, C, C);
+    g.globalAlpha = sn;
+    for (let x = 0; x < W; x++) if (!water[idx(x, y)]) g.fillRect(x * C, y * C, C, C);
   }
-  cx.globalAlpha = 1;
-  if (isNight()) {
-    cx.fillStyle = 'rgba(5,10,30,.22)';
-    cx.fillRect(0, 0, W * C, H * C);
+  g.globalAlpha = 1;
+}
+// One creature at (X, Y); k scales its size (1 = flat-map size).
+function drawCreature(g, a, X, Y, k, v, dim = 1) {
+  const S = SP[a.sp],
+    gr = clamp(a.age / S.mat, 0.3, 1);
+  g.globalAlpha = (a.asleep ? 0.45 : 1) * dim;
+  if (a.sp === 0) {
+    g.fillStyle = a.sex ? v('--f') : v('--m');
+    g.beginPath();
+    g.arc(X, Y, (1.5 + 3.2 * gr) * k, 0, 7);
+    g.fill();
+  } else if (a.sp === 1) {
+    g.fillStyle = v('--herb');
+    g.beginPath();
+    g.ellipse(X, Y, (2 + 3 * gr) * k, (1.5 + 2.2 * gr) * k, 0, 0, 7);
+    g.fill();
+  } else if (a.sp === 3) {
+    g.fillStyle = v('--fish');
+    const q = (1.5 + 2 * gr) * k;
+    g.beginPath();
+    g.ellipse(X, Y, q * 1.4, q * 0.7, 0, 0, 7);
+    g.fill();
+    g.beginPath();
+    g.moveTo(X - q * 1.2, Y);
+    g.lineTo(X - q * 2.2, Y - q * 0.8);
+    g.lineTo(X - q * 2.2, Y + q * 0.8);
+    g.fill();
+  } else {
+    g.fillStyle = v('--bad');
+    const q = (3 + 4 * gr) * k;
+    g.beginPath();
+    g.moveTo(X, Y - q);
+    g.lineTo(X + q * 0.85, Y);
+    g.lineTo(X, Y + q);
+    g.lineTo(X - q * 0.85, Y);
+    g.fill();
   }
-  for (const a of ag) {
-    const S = SP[a.sp],
-      X = a.x * C + C / 2,
-      Y = a.y * C + C / 2,
-      gr = clamp(a.age / S.mat, 0.3, 1);
-    cx.globalAlpha = a.asleep ? 0.45 : 1;
-    if (a.sp === 0) {
-      cx.fillStyle = a.sex ? v('--f') : v('--m');
-      cx.beginPath();
-      cx.arc(X, Y, 1.5 + 3.2 * gr, 0, 7);
-      cx.fill();
-    } else if (a.sp === 1) {
-      cx.fillStyle = v('--herb');
-      cx.beginPath();
-      cx.ellipse(X, Y, 2 + 3 * gr, 1.5 + 2.2 * gr, 0, 0, 7);
-      cx.fill();
-    } else if (a.sp === 3) {
-      cx.fillStyle = v('--fish');
-      const k = 1.5 + 2 * gr;
-      cx.beginPath();
-      cx.ellipse(X, Y, k * 1.4, k * 0.7, 0, 0, 7);
-      cx.fill();
-      cx.beginPath();
-      cx.moveTo(X - k * 1.2, Y);
-      cx.lineTo(X - k * 2.2, Y - k * 0.8);
-      cx.lineTo(X - k * 2.2, Y + k * 0.8);
-      cx.fill();
-    } else {
-      cx.fillStyle = v('--bad');
-      const k = 3 + 4 * gr;
-      cx.beginPath();
-      cx.moveTo(X, Y - k);
-      cx.lineTo(X + k * 0.85, Y);
-      cx.lineTo(X, Y + k);
-      cx.lineTo(X - k * 0.85, Y);
-      cx.fill();
-    }
-    cx.globalAlpha = 1;
-  }
-  const night = isNight();
-  if (night) {
-    cx.fillStyle = 'rgba(8,16,48,.3)';
-    cx.fillRect(0, 0, W * C, H * C);
-  }
-  if (sel && sel.gone) {
-    sel = null;
-    fillIdeas();
-  }
+  g.globalAlpha = 1;
+}
+
+// ---------- flat map ----------
+function drawFlat(v) {
+  cx.setTransform(cv.width / (W * C), 0, 0, cv.height / (H * C), 0, 0);
+  drawTerrain(cx, v);
+  for (const a of ag) drawCreature(cx, a, a.x * C + C / 2, a.y * C + C / 2, 1, v);
+  // night is local: shade the half of the world where the sun is down
+  cx.fillStyle = 'rgba(8,16,48,.38)';
+  for (let x = 0; x < W; x++) if (isNightAt(x)) cx.fillRect(x * C, 0, C, H * C);
   if (sel) {
-    const S = SP[sel.sp];
     cx.strokeStyle = v('--ink');
     cx.lineWidth = 2;
     cx.beginPath();
@@ -368,14 +368,226 @@ function draw() {
     cx.stroke();
     // how far it can see right now (the same range its senses use)
     cx.save();
-    cx.strokeStyle = v('--ink');
     cx.globalAlpha = 0.6;
     cx.lineWidth = 1;
     cx.setLineDash([4, 4]);
     cx.beginPath();
-    cx.arc(sel.x * C + C / 2, sel.y * C + C / 2, sightRange(sel, night) * C, 0, 7);
+    cx.arc(sel.x * C + C / 2, sel.y * C + C / 2, sightRange(sel, isNightAt(sel.x)) * C, 0, 7);
     cx.stroke();
     cx.restore();
+  }
+}
+
+// ---------- the globe ----------
+// The map wraps all the way around: column → longitude (−180°…180°), row → latitude (+80° at the
+// top … −80° at the bottom). Beyond ±80° are the polar ice caps. Drawn as a sphere seen from space,
+// lit by the sun, which circles the planet once a day.
+const LATMAX = (80 * Math.PI) / 180,
+  TS = 4; // texture pixels per cell
+const lonOfX = (x) => ((x + 0.5) / W) * 2 * Math.PI - Math.PI,
+  latOfY = (y) => LATMAX * (1 - (2 * (y + 0.5)) / H);
+const GL = {
+  lon0: 0,
+  lat0: 0.3,
+  zoom: 1,
+  spin: true,
+  BW: 0,
+  BH: 0,
+  key: '',
+  tex: null,
+  tctx: null,
+  tdata: null,
+  tframe: 0,
+  buf: null,
+  bctx: null,
+  img: null,
+  off: null,
+  nx: null,
+  ny: null,
+  nz: null,
+  limb: null,
+  cap: [240, 246, 250],
+};
+const R0 = () => (Math.min(GL.BW, GL.BH) / 2) * 0.9 * GL.zoom;
+function globeCache() {
+  const BW = GL.BW,
+    BH = GL.BH,
+    R = R0(),
+    TW = W * TS,
+    TH = H * TS,
+    key = [BW, BH, GL.lon0.toFixed(4), GL.lat0.toFixed(4), GL.zoom.toFixed(4)].join();
+  if (key === GL.key) return;
+  GL.key = key;
+  const n = BW * BH;
+  if (!GL.off || GL.off.length !== n) {
+    GL.off = new Int32Array(n);
+    GL.nx = new Float32Array(n);
+    GL.ny = new Float32Array(n);
+    GL.nz = new Float32Array(n);
+    GL.limb = new Float32Array(n);
+  }
+  const s0 = Math.sin(GL.lat0),
+    c0 = Math.cos(GL.lat0);
+  for (let py = 0; py < BH; py++)
+    for (let px = 0; px < BW; px++) {
+      const p = py * BW + px,
+        u = (px + 0.5 - BW / 2) / R,
+        w = (BH / 2 - py - 0.5) / R,
+        rr = u * u + w * w;
+      if (rr > 1) {
+        GL.off[p] = -1;
+        continue;
+      }
+      const z = Math.sqrt(1 - rr),
+        la = Math.asin(clamp(w * c0 + z * s0, -1, 1)),
+        lo = GL.lon0 + Math.atan2(u, z * c0 - w * s0),
+        cl = Math.cos(la);
+      GL.nx[p] = cl * Math.cos(lo);
+      GL.ny[p] = cl * Math.sin(lo);
+      GL.nz[p] = Math.sin(la);
+      GL.limb[p] = 0.72 + 0.28 * z;
+      if (Math.abs(la) > LATMAX) {
+        GL.off[p] = -2;
+        continue;
+      }
+      let tu = Math.floor((((lo + Math.PI) / (2 * Math.PI)) % 1) * TW);
+      if (tu < 0) tu += TW;
+      const tv = clamp(Math.floor(((LATMAX - la) / (2 * LATMAX)) * TH), 0, TH - 1);
+      GL.off[p] = (tv * TW + tu) * 4;
+    }
+}
+// where a map cell appears on the globe, in globe-buffer pixels; null if it is round the back
+function globeProject(x, y) {
+  const la = latOfY(y),
+    dl = lonOfX(x) - GL.lon0,
+    cl = Math.cos(la),
+    s0 = Math.sin(GL.lat0),
+    c0 = Math.cos(GL.lat0),
+    c = s0 * Math.sin(la) + c0 * cl * Math.cos(dl);
+  if (c <= 0) return null;
+  const R = R0();
+  return [GL.BW / 2 + R * cl * Math.sin(dl), GL.BH / 2 - R * (c0 * Math.sin(la) - s0 * cl * Math.cos(dl)), c];
+}
+function drawGlobe(v) {
+  const BW = GL.BW,
+    BH = GL.BH;
+  if (!BW) return;
+  if (!GL.tex) {
+    GL.tex = document.createElement('canvas');
+    GL.tex.width = W * TS;
+    GL.tex.height = H * TS;
+    GL.tctx = GL.tex.getContext('2d', { willReadFrequently: true });
+  }
+  if (!GL.buf || GL.buf.width !== BW || GL.buf.height !== BH) {
+    GL.buf = document.createElement('canvas');
+    GL.buf.width = BW;
+    GL.buf.height = BH;
+    GL.bctx = GL.buf.getContext('2d');
+    GL.img = GL.bctx.createImageData(BW, BH);
+    GL.key = '';
+  }
+  if (GL.spin) GL.lon0 += 0.0012;
+  // refresh the planet's surface a few times a second (grass, snow and ice change slowly)
+  if (!GL.tdata || ++GL.tframe % 12 === 0) {
+    GL.tctx.setTransform(TS / C, 0, 0, TS / C, 0, 0);
+    drawTerrain(GL.tctx, v);
+    GL.tdata = GL.tctx.getImageData(0, 0, W * TS, H * TS).data;
+    const sn = /^#([0-9a-f]{6})$/i.exec(v('--snow'));
+    if (sn) GL.cap = [0, 2, 4].map((k) => parseInt(sn[1].slice(k, k + 2), 16));
+  }
+  globeCache();
+  // the sun is overhead where it is local noon
+  const xs = ((((0.5 - (tick % DAY) / DAY) * W) % W) + W) % W,
+    ls = (xs / W) * 2 * Math.PI - Math.PI,
+    sx = Math.cos(ls),
+    sy = Math.sin(ls);
+  const T = GL.tdata,
+    o = GL.img.data,
+    off = GL.off,
+    cap = GL.cap;
+  for (let p = 0, q = 0; p < off.length; p++, q += 4) {
+    const t = off[p];
+    if (t === -1) {
+      o[q + 3] = 0;
+      continue;
+    }
+    let r, g, b;
+    if (t === -2) {
+      r = cap[0];
+      g = cap[1];
+      b = cap[2];
+    } else {
+      r = T[t];
+      g = T[t + 1];
+      b = T[t + 2];
+    }
+    const d = GL.nx[p] * sx + GL.ny[p] * sy,
+      l = d > 0.1 ? 1 : d < -0.1 ? 0 : (d + 0.1) * 5,
+      f = (0.2 + 0.8 * l) * GL.limb[p],
+      blue = (1 - l) * 18;
+    o[q] = r * f;
+    o[q + 1] = g * f;
+    o[q + 2] = b * f + blue;
+    o[q + 3] = 255;
+  }
+  GL.bctx.putImageData(GL.img, 0, 0);
+  const k = cv.width / BW,
+    R = R0() * k,
+    c = cv.width / 2,
+    cy = cv.height / 2;
+  cx.setTransform(1, 0, 0, 1, 0, 0);
+  cx.clearRect(0, 0, cv.width, cv.height);
+  // a thin glow of atmosphere
+  const at = cx.createRadialGradient(c, cy, R * 0.98, c, cy, R * 1.08);
+  at.addColorStop(0, 'rgba(120,180,255,.45)');
+  at.addColorStop(1, 'rgba(120,180,255,0)');
+  cx.fillStyle = at;
+  cx.beginPath();
+  cx.arc(c, cy, R * 1.08, 0, 7);
+  cx.fill();
+  cx.imageSmoothingEnabled = true;
+  cx.drawImage(GL.buf, 0, 0, cv.width, cv.height);
+  // creatures: one cell is about this many screen pixels at the middle of the globe
+  const cell = (2 * Math.PI * R) / W,
+    ks = clamp((cell / C) * 0.9, 0.25, 9);
+  for (const a of ag) {
+    const P = globeProject(a.x, a.y);
+    if (!P) continue;
+    drawCreature(cx, a, P[0] * k, P[1] * k, ks * (0.5 + 0.5 * P[2]), v, isNightAt(a.x) ? 0.5 : 1);
+  }
+  if (sel) {
+    const P = globeProject(sel.x, sel.y);
+    if (P) {
+      cx.strokeStyle = v('--ink');
+      cx.lineWidth = 2;
+      cx.beginPath();
+      cx.arc(P[0] * k, P[1] * k, Math.max(7, 8 * ks), 0, 7);
+      cx.stroke();
+    }
+  }
+}
+// where a creature is on screen, in CSS pixels relative to the canvas; null if out of view
+function screenPos(a) {
+  const r = cv.getBoundingClientRect();
+  if (view === 'flat') return [((a.x + 0.5) / W) * r.width, (a.y / H) * r.height, r.height / H];
+  const P = globeProject(a.x, a.y);
+  if (!P) return null;
+  const k = r.width / GL.BW;
+  return [P[0] * k, P[1] * k - 6, ((2 * Math.PI * R0()) / W) * k];
+}
+
+function draw() {
+  const s = getComputedStyle(document.documentElement),
+    v = (n) => s.getPropertyValue(n).trim();
+  if (sel && sel.gone) {
+    sel = null;
+    fillIdeas();
+  }
+  if (view === 'globe') drawGlobe(v);
+  else drawFlat(v);
+  const night = sel ? isNightAt(sel.x) : false;
+  if (sel) {
+    const S = SP[sel.sp];
     const stage =
       sel.age < S.mat * S.wn
         ? 'baby'
@@ -401,7 +613,7 @@ function draw() {
     [c[3], 'Fish'],
     [fished, 'Fish caught by people'],
     [maxGen, 'Latest human generation'],
-    ['Year ' + Math.floor(tick / TY) + ', day ' + dayN() + (night ? ', night' : ', day'), 'Time'],
+    ['Year ' + Math.floor(tick / TY) + ', day ' + dayN(), 'Time'],
     [seasonName(0) + ' / ' + seasonName(H - 1), 'Season (north / south)'],
     [sc[0] + ' / ' + sc[1] + ' / ' + sc[2], 'Asleep now (people / herbivores / predators)'],
     [kills[0] + ' / ' + kills[1], 'Predator kills (people / herbivores)'],
@@ -415,7 +627,7 @@ function draw() {
     c[1] + ' herbivores',
     c[2] + ' predators',
     c[3] + ' fish',
-    'Year ' + Math.floor(tick / TY) + ', day ' + dayN() + (night ? ' (night)' : ''),
+    'Year ' + Math.floor(tick / TY) + ', day ' + dayN(),
     'North: ' + seasonName(0) + ' · South: ' + seasonName(H - 1),
   ]
     .map((t) => '<span>' + t + '</span>')
@@ -511,15 +723,17 @@ $('wgo').onclick = () => {
 $('wtxt').onkeydown = (e) => {
   if (e.key === 'Enter') $('wgo').onclick();
 };
-cv.onclick = (e) => {
+// pick the creature nearest to a click (in CSS pixels), on either view
+function selectAt(e) {
   const r = cv.getBoundingClientRect(),
-    k = (W * C) / r.width,
-    qx = ((e.clientX - r.left) * k) / C,
-    qy = ((e.clientY - r.top) * k) / C;
+    qx = e.clientX - r.left,
+    qy = e.clientY - r.top;
   let b = null,
-    bd = 6;
+    bd = 18 ** 2;
   for (const a of ag) {
-    const d = (a.x + 0.5 - qx) ** 2 + (a.y + 0.5 - qy) ** 2;
+    const P = screenPos(a);
+    if (!P) continue;
+    const d = (P[0] - qx) ** 2 + (P[1] + (view === 'globe' ? 6 : P[2] / 2) - qy) ** 2;
     if (d < bd) {
       bd = d;
       b = a;
@@ -527,7 +741,71 @@ cv.onclick = (e) => {
   }
   sel = b;
   fillIdeas();
+}
+// drag to spin the globe, scroll or pinch to zoom; a click without dragging selects
+const ptr = new Map();
+let dragged = false,
+  pinch0 = 0,
+  zoom0 = 1;
+cv.addEventListener('pointerdown', (e) => {
+  cv.setPointerCapture(e.pointerId);
+  ptr.set(e.pointerId, { x: e.clientX, y: e.clientY, x0: e.clientX, y0: e.clientY });
+  dragged = false;
+  if (view === 'globe') {
+    GL.spin = false;
+    $('ghint').hidden = true;
+  }
+  if (ptr.size === 2) {
+    const [p, q] = [...ptr.values()];
+    pinch0 = Math.hypot(p.x - q.x, p.y - q.y);
+    zoom0 = GL.zoom;
+  }
+});
+cv.addEventListener('pointermove', (e) => {
+  const p = ptr.get(e.pointerId);
+  if (!p) return;
+  const dx = e.clientX - p.x,
+    dy = e.clientY - p.y;
+  p.x = e.clientX;
+  p.y = e.clientY;
+  if (Math.hypot(e.clientX - p.x0, e.clientY - p.y0) > 5) dragged = true;
+  if (view !== 'globe') return;
+  if (ptr.size === 2) {
+    const [a, b] = [...ptr.values()];
+    if (pinch0) GL.zoom = clamp((zoom0 * Math.hypot(a.x - b.x, a.y - b.y)) / pinch0, 1, 8);
+    return;
+  }
+  const R = (cv.getBoundingClientRect().width / 2) * 0.9 * GL.zoom;
+  GL.lon0 -= dx / R;
+  GL.lat0 = clamp(GL.lat0 + dy / R, -1.45, 1.45);
+});
+const endPtr = (e) => {
+  if (!ptr.has(e.pointerId)) return;
+  ptr.delete(e.pointerId);
+  if (!dragged && ptr.size === 0 && e.type === 'pointerup') selectAt(e);
+  if (ptr.size < 2) pinch0 = 0;
 };
+cv.addEventListener('pointerup', endPtr);
+cv.addEventListener('pointercancel', endPtr);
+cv.addEventListener(
+  'wheel',
+  (e) => {
+    if (view !== 'globe') return;
+    e.preventDefault();
+    GL.spin = false;
+    GL.zoom = clamp(GL.zoom * Math.exp(-e.deltaY * 0.0015), 1, 8);
+  },
+  { passive: false }
+);
+function setView(v) {
+  view = v;
+  $('view').textContent = v === 'globe' ? 'Flat map' : 'Globe';
+  $('ghint').hidden = v !== 'globe' || !GL.spin;
+  cv.classList.toggle('round', v === 'globe');
+  $('v-world').classList.toggle('space', v === 'globe');
+  fit();
+}
+$('view').onclick = () => setView(view === 'globe' ? 'flat' : 'globe');
 // ---------- full-screen world, tabs ----------
 function fit() {
   const r = $('stage').getBoundingClientRect(),
@@ -535,7 +813,10 @@ function fit() {
     asp = W / H;
   let w = r.width - pad,
     h = w / asp;
-  if (h > r.height - pad) {
+  if (view === 'globe') {
+    w = r.width;
+    h = r.height;
+  } else if (h > r.height - pad) {
     h = r.height - pad;
     w = h * asp;
   }
@@ -545,6 +826,10 @@ function fit() {
   cv.style.height = h + 'px';
   cv.width = Math.round(w * d);
   cv.height = Math.round(h * d);
+  // the globe is rendered pixel by pixel, so cap its resolution to keep it smooth
+  const g = Math.min(1, Math.sqrt((560 * 560) / (cv.width * cv.height)));
+  GL.BW = Math.max(1, Math.round(cv.width * g));
+  GL.BH = Math.max(1, Math.round(cv.height * g));
 }
 function showTab(name) {
   document
@@ -587,5 +872,5 @@ new ResizeObserver(fit).observe($('stage'));
 window.addEventListener('resize', fit);
 reset(readCfg());
 fillIdeas();
-fit();
+setView('globe');
 loop();

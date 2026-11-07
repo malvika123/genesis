@@ -43,10 +43,14 @@ const wx = (x) => (x >= 0 && x < W ? x : ((x % W) + W) % W),
   idx = (x, y) => y * W + wx(x),
   inb = (x, y) => y >= 0 && y < H,
   dayN = () => Math.floor(tick / DAY) + 1,
-  isNight = () => {
-    const p = (tick % DAY) / DAY;
+  // Day and night are local, like on a real planet: the sun sweeps around the world once a day,
+  // so it is noon on one side while it is midnight on the other. Local time goes 0 → 1 over a day.
+  localTime = (x) => ((tick % DAY) / DAY + wx(x) / W) % 1,
+  isNightAt = (x) => {
+    const p = localTime(x);
     return p < 0.25 || p >= 0.75;
-  };
+  },
+  isNight = () => isNightAt(0);
 function log(t) {
   logs.unshift('Day ' + dayN() + ': ' + t);
   logs.length = Math.min(logs.length, 8);

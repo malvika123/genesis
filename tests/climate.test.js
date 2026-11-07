@@ -95,3 +95,17 @@ test('people feel cold where herbivores and predators do not, and huddling helps
   assert.ok(alone > 0, 'a person near the pole in winter should be cold');
   assert.ok(p.cold < alone, 'huddling with another person should make it less cold');
 });
+
+test('day and night are local: it is night on one side of the planet and day on the other', () => {
+  const E = createEngine();
+  E.setSeed(6);
+  E.reset({ people: 2 });
+  const { W, DAY } = E;
+  for (const t of [0, DAY / 8, DAY / 3, DAY / 2]) {
+    E.setTick(t);
+    assert.notEqual(E.isNightAt(0), E.isNightAt(W / 2), 'opposite sides of the world should have opposite times of day');
+  }
+  let nights = 0;
+  for (let x = 0; x < W; x++) if (E.isNightAt(x)) nights++;
+  assert.equal(nights, W / 2, 'half of the world should be in night at any moment');
+});

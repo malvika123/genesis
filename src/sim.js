@@ -4,8 +4,7 @@
 // ---------- world step ----------
 function sim() {
   tick++;
-  const night = isNight(),
-    dn = dayN();
+  const dn = dayN();
   updateClimate();
   for (let i = 0; i < W * H; i++) {
     if (rock[i]) continue;
@@ -29,7 +28,8 @@ function sim() {
   const kids = [];
   for (const a of ag) {
     if (a.dead) continue;
-    const S = SP[a.sp];
+    const S = SP[a.sp],
+      night = isNightAt(a.x);
     a.age++;
     a.cd = Math.max(0, a.cd - 1);
     a.kcd = Math.max(0, a.kcd - 1);
@@ -197,7 +197,7 @@ function sim() {
       a.th = mindLine(a, a.mind);
       const tt = actName(a, act);
       if (!a.ts.length || a.ts[0].k !== tt) {
-        a.ts.unshift({ k: tt, t: 'Day ' + dn + ', ' + (isNight() ? 'night' : 'day') + ': ' + a.th });
+        a.ts.unshift({ k: tt, t: 'Day ' + dn + ', ' + (isNightAt(a.x) ? 'night' : 'day') + ': ' + a.th });
         if (a.ts.length > 6) a.ts.pop();
       }
     }

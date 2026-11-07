@@ -20,7 +20,7 @@ function engineSource() {
 const API = `
 return {
   setSeed, reset, sim, interpret, mind, child, mk, gene,
-  idx, inb, dxw, tempAt, updateClimate, iced, liquid, growth, coldOf, W, H,
+  idx, inb, dxw, isNightAt, tempAt, updateClimate, iced, liquid, growth, coldOf, W, H,
   setTick: (t) => { tick = t; updateClimate(); },
   whisper: (a, text) => { a.wh = text; },
   watch: (a) => { sel = a; },

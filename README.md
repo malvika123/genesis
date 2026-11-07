@@ -56,7 +56,8 @@ The tests check that the world is reproducible, that creatures stay within their
 
 - **Terrain:** grass that grows back over days, sand, stony ground, boulders, a river, a lake and small ponds (shallow edges for drinking, deep middles that can drown you), pits that trap and hurt, and red berries that look like food but make you sick.
 - **People** (pink and blue), **herbivores** (yellow-green), **predators** (red) and **fish** (in the water). Each species has its own lifespan, age of maturity, litter size, sleep need and senses, based on real animals.
-- **A round world:** the map is a band around a planet. Walk off the east edge and you come back on the west; the top is near the north pole and the bottom near the south pole.
+- **A round world:** the world is a planet you can spin. Drag to turn it, scroll or pinch to zoom, and switch to a flat map if you like. Walk east far enough and you come back from the west; the poles are capped with ice.
+- **Day and night are local:** the sun circles the planet once a day, so it is noon on one side and midnight on the other, and creatures on the dark side sleep while others are active.
 - **Climate and seasons:** warm at the equator, cold at the poles, and four seasons that are opposite in the two hemispheres. In winter grass stops growing, water near the poles freezes (walkable, but you can't drink from it or drown in it) and snow covers the ground. Plants grow lushest in the tropics.
 - **Cold:** people have no fur and feel cold below about 14 °C; herbivores and predators have thick winter coats and only feel the cold below about -10 °C. Cold burns energy and freezing hurts, huddling next to your own kind helps, and each creature feels its own cold as an input to its brain. Nobody is taught to stay warm. The first people are born in the warmer middle of the world.
 - **Scale:** one cell is about 3 km and one step is 15 minutes. A year is squeezed into 3 days.
