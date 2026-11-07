@@ -768,7 +768,8 @@ const GL = {
   zoom: 1,
   spin: true, // turns slowly on its own, like a planet
   held: false, // being dragged right now
-  vel: 0.0012, // current turning speed (radians per frame)
+  vel: 0, // extra turning from a flick (radians per frame)
+  lastT: 0, // world time at the last frame, to turn the planet with its day
   BW: 0,
   BH: 0,
   key: '',
@@ -864,11 +865,8 @@ function drawGlobe(v) {
     GL.img = GL.bctx.createImageData(BW, BH);
     GL.key = '';
   }
-  // Keep turning. A flick carries on with momentum, then eases back to the planet's slow spin.
-  if (!GL.held) {
-    GL.lon0 += GL.vel;
-    GL.vel += ((GL.spin ? 0.0012 : 0) - GL.vel) * 0.03;
-  }
+  // Turn with the world's day (see spinStep), plus any flick.
+  spinStep();
   // refresh the planet's surface a few times a second (grass, snow and ice change slowly)
   if (!GL.tdata || ++GL.tframe % 12 === 0) {
     GL.tctx.setTransform(TS / C, 0, 0, TS / C, 0, 0);
@@ -880,7 +878,7 @@ function drawGlobe(v) {
   }
   globeCache();
   // the sun is overhead where it is local noon
-  const xs = ((((0.5 - (tick % DAY) / DAY) * W) % W) + W) % W,
+  const xs = ((((0.5 - (worldT() % DAY) / DAY) * W) % W) + W) % W,
     ls = (xs / W) * 2 * Math.PI - Math.PI,
     sx = Math.cos(ls),
     sy = Math.sin(ls);
@@ -1144,6 +1142,24 @@ $('spd').oninput = () => {
   } catch (e) {}
 };
 spdLabel();
+// World time including how far it is into the next step, so the sun and the turning move smoothly.
+const worldT = () => tick + (running ? clamp(acc, 0, 0.999) : 0);
+// The planet turns once a world day, west to east like Earth. We watch from the sun's side, so the
+// sunlit half stays facing us and the land slides through morning, noon and evening. Its speed
+// follows the speed slider, and it stops when the world is paused. A flick adds momentum that fades.
+function spinStep() {
+  const t = worldT(),
+    now = performance.now(),
+    sec = Math.min(0.25, (now - (GL.lastW || now)) / 1000),
+    d = (-2 * Math.PI * (t - GL.lastT)) / DAY,
+    most = 2.5 * sec; // at the very fastest speeds the turning can't keep up with the sun
+  GL.lastT = t;
+  GL.lastW = now;
+  if (GL.held) return;
+  if (GL.spin && Math.abs(d) < 3) GL.lon0 += clamp(d, -most, most);
+  GL.lon0 += GL.vel;
+  GL.vel *= 0.97;
+}
 let lastT = performance.now();
 function loop() {
   const now = performance.now(),
