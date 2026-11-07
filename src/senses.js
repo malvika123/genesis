@@ -36,7 +36,9 @@ function sense(a, x, night) {
         if (x[b] < cl) x[b] = cl;
       } else if (x[b + 2] < cl) x[b + 2] = cl;
     } else if (water[i]) {
-      if (deep[i]) {
+      // frozen water is just ground to walk on: no drinking, no drowning
+      if (iced(i)) {
+      } else if (deep[i]) {
         if (x[b + 2] < cl) x[b + 2] = cl;
       } else {
         const q = cl * (0.15 + tw);
@@ -63,7 +65,7 @@ function sense(a, x, night) {
     const hr = r * 6;
     for (const o of ag) {
       if (o === a || o.dead || o.sp !== a.sp || o.sex === a.sex || !o.rd) continue;
-      const dx = o.x - a.x,
+      const dx = dxw(o.x - a.x),
         dy = o.y - a.y,
         d = Math.hypot(dx, dy);
       if (d > hr || d === 0) continue;
@@ -85,9 +87,9 @@ function sense(a, x, night) {
       if (d > r) break;
       const X = a.x + dx,
         Y = a.y + dy;
-      if (inb(X, Y) && water[idx(X, Y)] && !deep[idx(X, Y)] && d < bd) {
+      if (inb(X, Y) && liquid(idx(X, Y)) && !deep[idx(X, Y)] && d < bd) {
         bd = d;
-        a.mw = { x: X, y: Y };
+        a.mw = { x: wx(X), y: Y };
       }
     }
   }
@@ -95,14 +97,14 @@ function sense(a, x, night) {
   if (a.mw && tick - a.mwT > MEM) a.mw = null;
   if (a.mf && tick - a.mfT > MEM) a.mf = null;
   if (a.mw) {
-    const dx = a.mw.x - a.x,
+    const dx = dxw(a.mw.x - a.x),
       dy = a.mw.y - a.y,
       d = Math.hypot(dx, dy) || 1;
     x[IB + 12] = (dx / d) * tw;
     x[IB + 13] = (dy / d) * tw;
   }
   if (a.mf) {
-    const dx = a.mf.x - a.x,
+    const dx = dxw(a.mf.x - a.x),
       dy = a.mf.y - a.y,
       d = Math.hypot(dx, dy) || 1;
     if (d < 1.5 && food[idx(a.mf.x, a.mf.y)] < 0.15) a.mf = null;
@@ -122,7 +124,7 @@ function sense(a, x, night) {
         Y = a.y + dy;
       if (!inb(X, Y)) continue;
       const i = idx(X, Y);
-      if (water[i]) wa = 1;
+      if (liquid(i)) wa = 1;
       const l = G[i];
       if (l)
         for (const o of l) {
@@ -157,4 +159,5 @@ function sense(a, x, night) {
   x[IB + 9] = a.lo;
   x[IB + 10] = deep[here];
   x[IB + 11] = 1;
+  x[IB + 18] = a.cold;
 }

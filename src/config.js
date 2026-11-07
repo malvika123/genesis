@@ -24,7 +24,7 @@ const NCH = 10,
   NS = 8 * NCH,
   HB = NS,
   IB = NS + 4,
-  NI = IB + 18,
+  NI = IB + 19, // the last input (IB + 18) is how cold the creature feels
   NH = 24,
   NA = 15,
   O2 = NH * NI,
@@ -45,6 +45,7 @@ const A_STAY = 8,
 const SP = [
   {
     n: 'Person',
+    cold: 14, // no fur: people feel cold below about 14 °C
     nh: 16,
     plast: 1.2,
     adl: 1,
@@ -71,6 +72,7 @@ const SP = [
   },
   {
     n: 'Herbivore',
+    cold: 0, // thick coat
     nh: 10,
     plast: 1.2,
     adl: 0.5,
@@ -97,6 +99,7 @@ const SP = [
   },
   {
     n: 'Predator',
+    cold: -4, // thick fur
     nh: 12,
     plast: 1.2,
     adl: 0.5,
@@ -123,6 +126,7 @@ const SP = [
   },
   {
     n: 'Fish',
+    cold: 0, // fish don't feel cold here
     nh: 6,
     plast: 1,
     adl: 0.5,

@@ -9,7 +9,7 @@ const $ = (id) => document.getElementById(id),
   cc = $('ch').getContext('2d');
 // ---------- drawing ----------
 // ---------- the floating box: what it is thinking, what it is doing ----------
-const dirTo = (a, p) => CP[(Math.round(Math.atan2(p.y - a.y, p.x - a.x) / (Math.PI / 4)) + 8) % 8];
+const dirTo = (a, p) => CP[(Math.round(Math.atan2(p.y - a.y, dxw(p.x - a.x)) / (Math.PI / 4)) + 8) % 8];
 function doingWord(a, k) {
   const nearWater = () => {
     for (let dy = -1; dy <= 1; dy++)
@@ -18,6 +18,9 @@ function doingWord(a, k) {
     return false;
   };
   if (k === A_DRINK && a.sp !== 3 && !nearWater()) return 'trying to drink, but there is no water here';
+  if (k === A_MATE && a.age < SP[a.sp].smat) return 'trying to mate, but it is far too young';
+  if (k === A_MATE && !a.rd) return 'wanting to mate, but its body is not ready';
+  if (k === A_MATE) return 'looking for a partner';
   if (k === A_EAT && a.sp < 2 && !(food[idx(a.x, a.y)] > 0.05) && !water[idx(a.x, a.y)])
     return 'trying to eat, but there is nothing to eat here';
   if (k < 8) return 'walking ' + CP[k];
@@ -34,6 +37,8 @@ function doingWord(a, k) {
 
 function placeOf(a) {
   const i = idx(a.x, a.y);
+  if (iced(i)) return 'on frozen water';
+  if (!water[i] && RT[a.y] < -2) return 'in the snow';
   return water[i]
     ? deep[i]
       ? 'in deep water'
@@ -63,6 +68,7 @@ const PLAIN = {
   'prey within reach': 'prey is within reach',
   'a mate beside it': 'a partner is right beside it',
   hunger: 'it is hungry',
+  cold: 'it is cold',
   thirst: 'it is thirsty',
   tiredness: 'it is tired',
   pain: 'it is in pain',
@@ -142,6 +148,7 @@ function feelingsText(a, S) {
   if (a.e < 65) f.push(a.e < 35 ? 'very hungry' : 'hungry');
   if (a.w < 65) f.push(a.w < 35 ? 'very thirsty' : 'thirsty');
   if (a.sl > 0.5) f.push(a.sl > 0.8 ? 'exhausted' : 'sleepy');
+  if (a.cold > 0.15) f.push(a.cold > 0.6 ? 'freezing' : 'cold');
   if (a.hp < 60) f.push('hurt');
   if (a.fear > 0.25) f.push('afraid');
   if (a.metAny && a.lo > 0.25) f.push('lonely');
@@ -174,7 +181,7 @@ function thinkHTML(a, S) {
 function doingHTML(a, S, stage, night) {
   const r = sightRange(a, night),
     near = [0, 0, 0, 0];
-  for (const o of ag) if (o !== a && !o.dead && Math.hypot(o.x - a.x, o.y - a.y) <= r) near[o.sp]++;
+  for (const o of ag) if (o !== a && !o.dead && Math.hypot(dxw(o.x - a.x), o.y - a.y) <= r) near[o.sp]++;
   const nm = [
       ['person', 'people'],
       ['herbivore', 'herbivores'],
@@ -183,6 +190,16 @@ function doingHTML(a, S, stage, night) {
     ],
     around = near.map((n, k) => (n ? n + ' ' + nm[k][n > 1 ? 1 : 0] : '')).filter(Boolean);
   let o = '<b>' + doingText(a) + '</b>';
+  o +=
+    '<br>' +
+    Math.round(tempAt(a.y, night)) +
+    ' °C, ' +
+    (Math.abs(lat(a.y)) < 0.2 ? 'tropics, warm all year' : seasonName(a.y) + ' here') +
+    (Math.abs(lat(a.y)) < 0.2
+      ? ''
+      : Math.abs(lat(a.y)) > 0.75
+        ? ' (near the ' + (lat(a.y) < 0 ? 'north' : 'south') + ' pole)'
+        : '');
   o += '<br><br>' + (a.sex ? 'Female' : 'Male') + ' ' + stage + ', generation ' + a.gen;
   o += '<br>Energy ' + a.e.toFixed(0) + ' · water ' + a.w.toFixed(0) + ' · health ' + a.hp.toFixed(0);
   o += '<br>Nearby: ' + (around.length ? around.join(', ') : 'no one in sight');
@@ -249,9 +266,9 @@ function draw() {
       const i = idx(x, y),
         t = ter[i];
       if (water[i]) {
-        cx.fillStyle = v('--water');
+        cx.fillStyle = v(iced(i) ? '--ice' : '--water');
         cx.fillRect(x * C, y * C, C, C);
-        if (deep[i]) {
+        if (deep[i] && !iced(i)) {
           cx.fillStyle = 'rgba(0,30,70,.25)';
           cx.fillRect(x * C, y * C, C, C);
         }
@@ -281,6 +298,19 @@ function draw() {
         }
       }
     }
+  // snow on cold ground: the colder the row, the thicker the snow
+  cx.fillStyle = v('--snow');
+  for (let y = 0; y < H; y++) {
+    const sn = clamp(-RT[y] / 10, 0, 0.75);
+    if (sn <= 0) continue;
+    cx.globalAlpha = sn;
+    for (let x = 0; x < W; x++) if (!water[idx(x, y)]) cx.fillRect(x * C, y * C, C, C);
+  }
+  cx.globalAlpha = 1;
+  if (isNight()) {
+    cx.fillStyle = 'rgba(5,10,30,.22)';
+    cx.fillRect(0, 0, W * C, H * C);
+  }
   for (const a of ag) {
     const S = SP[a.sp],
       X = a.x * C + C / 2,
@@ -372,6 +402,7 @@ function draw() {
     [fished, 'Fish caught by people'],
     [maxGen, 'Latest human generation'],
     ['Year ' + Math.floor(tick / TY) + ', day ' + dayN() + (night ? ', night' : ', day'), 'Time'],
+    [seasonName(0) + ' / ' + seasonName(H - 1), 'Season (north / south)'],
     [sc[0] + ' / ' + sc[1] + ' / ' + sc[2], 'Asleep now (people / herbivores / predators)'],
     [kills[0] + ' / ' + kills[1], 'Predator kills (people / herbivores)'],
     [nLessons, 'Lessons learned'],
@@ -385,6 +416,7 @@ function draw() {
     c[2] + ' predators',
     c[3] + ' fish',
     'Year ' + Math.floor(tick / TY) + ', day ' + dayN() + (night ? ' (night)' : ''),
+    'North: ' + seasonName(0) + ' · South: ' + seasonName(H - 1),
   ]
     .map((t) => '<span>' + t + '</span>')
     .join('');

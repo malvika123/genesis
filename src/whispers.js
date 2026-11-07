@@ -10,7 +10,7 @@ function nearestCell2(a, test) {
     bd = 1e9;
   for (let y = 0; y < H; y++)
     for (let x = 0; x < W; x++) {
-      const d = (x - a.x) ** 2 + (y - a.y) ** 2;
+      const d = dxw(x - a.x) ** 2 + (y - a.y) ** 2;
       if (d < bd && test(idx(x, y))) {
         bd = d;
         best = { x, y };
@@ -18,7 +18,7 @@ function nearestCell2(a, test) {
     }
   return best;
 }
-const dirTo2 = (a, m) => CP[(Math.round(Math.atan2(m.y - a.y, m.x - a.x) / (Math.PI / 4)) + 8) % 8];
+const dirTo2 = (a, m) => CP[(Math.round(Math.atan2(m.y - a.y, dxw(m.x - a.x)) / (Math.PI / 4)) + 8) % 8];
 // A whisper can be any words. They are read for the ideas they contain (water, food, fish, berries, hunters,
 // pits, sharing, others, sleep, partners, exploring, a direction) and whether they say do or don't.
 // Each idea becomes a small push in the brain. Words it can't connect to anything stay a vague feeling.
@@ -79,13 +79,13 @@ function interpret(text, a) {
   }
   return { found, dir, useful: found.filter((f) => f.ok) };
 }
-const bearing = (a, x, y) => (Math.round(Math.atan2(y - a.y, x - a.x) / (Math.PI / 4)) + 8) % 8;
+const bearing = (a, x, y) => (Math.round(Math.atan2(y - a.y, dxw(x - a.x)) / (Math.PI / 4)) + 8) % 8;
 function nearestDir(a, test, dir) {
   let best = null,
     bd = 1e9;
   for (let y = 0; y < H; y++)
     for (let x = 0; x < W; x++) {
-      const d = (x - a.x) ** 2 + (y - a.y) ** 2;
+      const d = dxw(x - a.x) ** 2 + (y - a.y) ** 2;
       if (d === 0 || d >= bd || !test(idx(x, y))) continue;
       if (dir !== null && Math.abs(((bearing(a, x, y) - dir + 12) % 8) - 4) < 3) continue;
       bd = d;

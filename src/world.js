@@ -9,6 +9,7 @@ function reset(cfg = {}) {
   food = new Float32Array(W * H);
   ag = [];
   tick = 0;
+  updateClimate();
   hist = [];
   logs = [];
   kills = [0, 0, 0, 0];
@@ -22,7 +23,7 @@ function reset(cfg = {}) {
   for (const k in DL) delete DL[k];
   const blob = (qx, qy, r) => {
     for (let y = 0; y < H; y++)
-      for (let x = 0; x < W; x++) if ((x - qx) ** 2 + (y - qy) ** 2 < r * r) water[idx(x, y)] = 1;
+      for (let x = 0; x < W; x++) if (dxw(x - qx) ** 2 + (y - qy) ** 2 < r * r) water[idx(x, y)] = 1;
   };
   {
     let y = 4 + rnd() * (H - 8),
@@ -39,7 +40,7 @@ function reset(cfg = {}) {
     for (let y = 0; y < H; y++) {
       dx = clamp(dx + (rnd() - 0.5) * 0.6, -0.8, 0.8);
       x = clamp(x + dx, 2, W - 3);
-      for (let k = 0; k <= 1; k++) water[idx(clamp(Math.round(x) + k, 0, W - 1), y)] = 1;
+      for (let k = 0; k <= 1; k++) water[idx(Math.round(x) + k, y)] = 1;
     }
   }
   blob(8 + rnd() * (W - 16), 6 + rnd() * (H - 12), 3.5 + rnd() * 1.5);
@@ -50,7 +51,7 @@ function reset(cfg = {}) {
       tr = 4 + rnd() * 7,
       tt = k < 4 ? 1 : 2;
     for (let y = 0; y < H; y++)
-      for (let x = 0; x < W; x++) if ((x - tx) ** 2 + (y - ty) ** 2 < tr * tr) ter[idx(x, y)] = tt;
+      for (let x = 0; x < W; x++) if (dxw(x - tx) ** 2 + (y - ty) ** 2 < tr * tr) ter[idx(x, y)] = tt;
   }
   for (let y = 0; y < H; y++)
     for (let x = 0; x < W; x++) {
@@ -66,7 +67,7 @@ function reset(cfg = {}) {
       rr = 0.8 + rnd() * 1.6;
     for (let y = 0; y < H; y++)
       for (let x = 0; x < W; x++)
-        if ((x - rx) ** 2 + (y - ry) ** 2 < rr * rr && !water[idx(x, y)]) rock[idx(x, y)] = 1;
+        if (dxw(x - rx) ** 2 + (y - ry) ** 2 < rr * rr && !water[idx(x, y)]) rock[idx(x, y)] = 1;
   }
   pit = new Uint8Array(W * H);
   poison = new Uint8Array(W * H);
@@ -88,7 +89,7 @@ function reset(cfg = {}) {
       for (let x = 0; x < W; x++) {
         const i = idx(x, y);
         if (
-          (x - bx) ** 2 + (y - by) ** 2 < 4 &&
+          dxw(x - bx) ** 2 + (y - by) ** 2 < 4 &&
           !water[i] &&
           !rock[i] &&
           !pit[i] &&

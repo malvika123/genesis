@@ -40,6 +40,7 @@ const INNER = {
   15: 'memory of food',
   16: 'red berries here',
   17: 'a hungry child nearby',
+  18: 'cold',
 };
 function actName(a, k) {
   if (k < 8) return 'go ' + CP[k];

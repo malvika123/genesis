@@ -47,11 +47,12 @@ function mk(sp, x, y, sex, g, gen, age) {
     has: false,
     act: A_STAY,
     wasW: false,
-    Dp: new Float32Array(8),
-    bonus: new Float32Array(8),
-    rk: new Float32Array(8),
-    cz: new Float32Array(8),
-    ev: new Array(8).fill(null),
+    Dp: new Float32Array(9),
+    bonus: new Float32Array(9),
+    rk: new Float32Array(9),
+    cz: new Float32Array(9),
+    ev: new Array(9).fill(null),
+    cold: 0,
     lg: {},
     les: [],
     mom: null,
@@ -122,11 +123,15 @@ function spawn(sp, n, inst) {
       x = (rnd() * W) | 0;
       y = (rnd() * H) | 0;
       if (sp === 2 && px >= 0 && t < 500) {
-        x = clamp(px + ((rnd() * 9) | 0) - 4, 0, W - 1);
+        x = wx(px + ((rnd() * 9) | 0) - 4);
         y = clamp(py + ((rnd() * 9) | 0) - 4, 0, H - 1);
       }
       t++;
-    } while (sp === 3 ? !water[idx(x, y)] : water[idx(x, y)] || rock[idx(x, y)]);
+    } while (
+      sp === 3
+        ? !water[idx(x, y)]
+        : water[idx(x, y)] || rock[idx(x, y)] || (sp === 0 && t < 400 && Math.abs(lat(y)) > 0.5)
+    );
     if (px < 0) {
       px = x;
       py = y;

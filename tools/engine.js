@@ -20,6 +20,8 @@ function engineSource() {
 const API = `
 return {
   setSeed, reset, sim, interpret, mind, child, mk, gene,
+  idx, inb, dxw, tempAt, updateClimate, iced, liquid, growth, coldOf, W, H,
+  setTick: (t) => { tick = t; updateClimate(); },
   whisper: (a, text) => { a.wh = text; },
   watch: (a) => { sel = a; },
   state: () => ({ ag, tick, logs, fished, kills, maxGen, nLessons, over, water, deep, food, pit, poison }),

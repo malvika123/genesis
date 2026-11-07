@@ -36,8 +36,12 @@ function rnd() {
 }
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v)),
   gauss = () => rnd() + rnd() + rnd() - 1.5;
-const idx = (x, y) => y * W + x,
-  inb = (x, y) => x >= 0 && y >= 0 && x < W && y < H,
+// The world wraps east–west like a globe: walking off one side brings you back on the other.
+// North and south are real edges (the poles).
+const wx = (x) => (x >= 0 && x < W ? x : ((x % W) + W) % W),
+  dxw = (d) => (d > W / 2 ? d - W : d < -W / 2 ? d + W : d),
+  idx = (x, y) => y * W + wx(x),
+  inb = (x, y) => y >= 0 && y < H,
   dayN = () => Math.floor(tick / DAY) + 1,
   isNight = () => {
     const p = (tick % DAY) / DAY;

@@ -16,7 +16,8 @@ Everything runs locally in the page. Closing or reloading the tab starts a new w
 index.html          the page (layout and styles); loads the scripts below in order
 src/                the simulation engine — no browser code, so it also runs headless
   config.js         world size, time scale, brain layout, each species' biology
-  state.js          shared world state, seedable random numbers, the event log
+  state.js          shared world state, seedable random numbers, the event log, east–west wrapping
+  climate.js        temperature by latitude, seasons, ice, and how cold each creature feels
   brain.js          neural network, instincts, actor-critic learning
   lessons.js        detecting what a creature has learned, and what taught it
   creatures.js      bodies, genes, personality, inheritance
@@ -49,19 +50,22 @@ Worlds are seeded, so the same command always produces the same world — useful
 
 The tests check that the world is reproducible, that creatures stay within their bodies' rules, that children and teenagers can never mate, that herbivores can graze, that loneliness needs someone to miss, that only strong habits are inherited (partly and by chance), that whispers are understood correctly, and that the mind readout matches the network.
 
-To play it online, enable GitHub Pages for this repo (Settings → Pages → deploy from the `develop` branch, root).
+**Play it online:** https://malvika123.github.io/genesis/
 
 ## What's in the world
 
 - **Terrain:** grass that grows back over days, sand, stony ground, boulders, a river, a lake and small ponds (shallow edges for drinking, deep middles that can drown you), pits that trap and hurt, and red berries that look like food but make you sick.
 - **People** (pink and blue), **herbivores** (yellow-green), **predators** (red) and **fish** (in the water). Each species has its own lifespan, age of maturity, litter size, sleep need and senses, based on real animals.
+- **A round world:** the map is a band around a planet. Walk off the east edge and you come back on the west; the top is near the north pole and the bottom near the south pole.
+- **Climate and seasons:** warm at the equator, cold at the poles, and four seasons that are opposite in the two hemispheres. In winter grass stops growing, water near the poles freezes (walkable, but you can't drink from it or drown in it) and snow covers the ground. Plants grow lushest in the tropics.
+- **Cold:** people have no fur and feel cold below about 14 °C; herbivores and predators have thick coats. Cold burns energy and freezing hurts, huddling next to your own kind helps, and each creature feels its own cold as an input to its brain. Nobody is taught to stay warm. The first people are born in the warmer middle of the world.
 - **Scale:** one cell is about 3 km and one step is 15 minutes. A year is squeezed into 3 days.
 
 ## How their minds work
 
 - **Senses:** what lies in eight directions (water, food, rocks and pits, other creatures, mates, family, fish, red berries), plus their own hunger, thirst, tiredness, pain, injury, the time of day, and remembered water and food.
 - **Brain:** a small neural network chooses one of 15 actions — walk in 8 directions, stay, eat, drink, sleep, mate, attack, or share food.
-- **Learning:** actor-critic reinforcement learning with eligibility traces. Rewards come only from the body: relief from hunger and thirst, rest, company, mating, finding new places; pain, drowning and injury hurt.
+- **Learning:** actor-critic reinforcement learning with eligibility traces. Rewards come only from the body: relief from hunger and thirst, rest, warmth, company, mating, finding new places; pain, drowning, cold and injury hurt.
 - **Hard-wired survival:** like a brainstem, a starving creature reaches for food in front of it and a parched one drinks. Learning can't override that.
 - **Body rules:** you can only fall asleep when tired, then you sleep until rested or woken by pain. Children can't mate (people from 16, predators from 4, herbivores from 1.5).
 - **Inheritance:** a child gets a random mix of both parents' wiring. Only habits a parent learned strongly can pass on, each with a 50% chance and only partly.
@@ -70,7 +74,7 @@ To play it online, enable GitHub Pages for this repo (Settings → Pages → dep
 
 ## Watching and whispering
 
-- **Click any creature** to read its mind, straight from its neural network: the options it is weighing and how likely each is, which senses and feelings pushed it toward its choice and which held it back, and its own forecast of whether things will get better or worse.
+- **Click any creature** and a bubble over it shows, in plain words, what it is thinking (what pushed its choice, translated straight from its neural network, and how sure it was) and what it is doing. A floating box gives a little more: its feelings, what else it considered, what it expects, remembers and has learned, its body, who is nearby and its family.
 - **Whisper an idea** in your own words. It reaches the creature in its sleep or a quiet moment and becomes its own thought. The words are read for ideas the creature can understand (water, food, fish, berries, hunters, pits, sharing, others, sleep, a partner, exploring, a direction) and whether you said do or don't. Each idea is only a small nudge in its brain — it still has to act on it, and the world decides whether it sticks.
 
 ## Honest limitations

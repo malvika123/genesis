@@ -6,9 +6,10 @@ function sim() {
   tick++;
   const night = isNight(),
     dn = dayN();
+  updateClimate();
   for (let i = 0; i < W * H; i++) {
     if (rock[i]) continue;
-    const tf = water[i] ? 0.5 : TF[ter[i]];
+    const tf = (water[i] ? 0.5 : TF[ter[i]]) * growth((i / W) | 0);
     if (food[i] < 1) food[i] += (0.006 * food[i] * (1 - food[i]) + 0.0004) * tf;
   }
   G = new Array(W * H);
@@ -38,7 +39,7 @@ function sim() {
       mom = a.mom && !a.mom.dead && !a.mom.gone ? a.mom : null,
       care = a.found && young;
     const df = (a.asleep ? 0.6 : 1) * (baby ? 1.5 : 1);
-    if (baby && mom && (mom.x - a.x) ** 2 + (mom.y - a.y) ** 2 <= 36) {
+    if (baby && mom && dxw(mom.x - a.x) ** 2 + (mom.y - a.y) ** 2 <= 36) {
       a.e = Math.min(100, a.e + 0.12);
       a.w = Math.min(100, a.w + 0.2);
       mom.e -= 0.03;
@@ -48,7 +49,7 @@ function sim() {
     }
     const fish = a.sp === 3,
       onW = water[idx(a.x, a.y)] === 1,
-      inW = !fish && deep[idx(a.x, a.y)] === 1,
+      inW = !fish && deep[idx(a.x, a.y)] === 1 && !iced(idx(a.x, a.y)),
       wade = !fish && onW;
     if (fish) a.w = 100;
     if (fish && !onW) {
@@ -62,6 +63,21 @@ function sim() {
       if (!a.wasW) a.ev[1] = 'it nearly drowned on day ' + dn;
     }
     a.wasW = inW;
+    // cold: costs energy, hurts when freezing, and huddling with your own kind helps
+    a.cold = coldOf(a, night);
+    if (a.cold > 0) {
+      let hud = false;
+      for (let yy = -1; yy <= 1 && !hud; yy++)
+        for (let xx = -1; xx <= 1 && !hud; xx++) {
+          const l = G[idx(a.x + xx, clamp(a.y + yy, 0, H - 1))];
+          if (l && l.some((o) => o !== a && o.sp === a.sp && !o.dead)) hud = true;
+        }
+      if (hud) a.cold *= 0.6;
+      a.e -= 0.05 * a.cold;
+      if (a.cold > 0.7) a.hp -= (0.12 * (a.cold - 0.7)) / 0.3;
+      if (a.cold > 0.6 && !a.wasCold) a.ev[8] = 'it was freezing on day ' + dn;
+    }
+    a.wasCold = a.cold > 0.6;
     if (!inW && a.e > 10 && a.w > 10) a.hp = Math.min(100, a.hp + 0.05);
     a.painA *= 0.97;
     a.painW *= 0.85;
@@ -123,9 +139,10 @@ function sim() {
         0,
         0,
         S.social * a.g.so * a.lo,
+        1.5 * a.cold * a.cold,
       ];
     let r = 0;
-    for (let k = 0; k < 8; k++) {
+    for (let k = 0; k < 9; k++) {
       a.rk[k] = a.Dp[k] - D[k] + a.bonus[k];
       r += a.rk[k];
       a.Dp[k] = D[k];
@@ -153,7 +170,7 @@ function sim() {
       }
       a.learn += ch;
       a.fear = clamp(a.fear * 0.9 + 0.4 * Math.max(0, -d), 0, 1);
-      for (let k = 0; k < 8; k++) a.cz[k] = a.cz[k] * 0.995 + Math.abs(a.rk[k]) * Math.abs(d);
+      for (let k = 0; k < 9; k++) a.cz[k] = a.cz[k] * 0.995 + Math.abs(a.rk[k]) * Math.abs(d);
     }
     a.V = V;
     let act = sample(a.z);
@@ -240,7 +257,7 @@ function sim() {
       }
       if (a.acc >= 1) {
         a.acc -= 1;
-        const X = a.x + MV[act][0],
+        const X = wx(a.x + MV[act][0]),
           Y = a.y + MV[act][1];
         if (inb(X, Y) && !rock[idx(X, Y)] && (!fish || water[idx(X, Y)])) {
           a.x = X;
@@ -299,14 +316,14 @@ function sim() {
       }
     } else if (act === A_DRINK && x[HB + 1]) {
       a.w = Math.min(100, a.w + 20);
-      if (a.mw && Math.abs(a.mw.x - a.x) <= 2 && Math.abs(a.mw.y - a.y) <= 2)
+      if (a.mw && Math.abs(dxw(a.mw.x - a.x)) <= 2 && Math.abs(a.mw.y - a.y) <= 2)
         followed(a, 'water', 'found the water');
       if (th > 0.5) a.ev[3] = 'it drank after being very thirsty on day ' + dn;
     } else if (act === A_MATE && a.rd && pop[a.sp] + kids.length < S.cap) {
       let b = null;
       for (let yy = -1; yy <= 1 && !b; yy++)
         for (let xx = -1; xx <= 1 && !b; xx++) {
-          const l = G[idx(clamp(a.x + xx, 0, W - 1), clamp(a.y + yy, 0, H - 1))];
+          const l = G[idx(a.x + xx, clamp(a.y + yy, 0, H - 1))];
           if (l) b = l.find((q) => q !== a && q.sp === a.sp && q.sex !== a.sex && q.rd && !q.dead) || null;
         }
       if (b) {
@@ -356,7 +373,7 @@ function sim() {
       let t = null;
       for (let yy = -1; yy <= 1; yy++)
         for (let xx = -1; xx <= 1; xx++) {
-          const l = G[idx(clamp(a.x + xx, 0, W - 1), clamp(a.y + yy, 0, H - 1))];
+          const l = G[idx(a.x + xx, clamp(a.y + yy, 0, H - 1))];
           if (l) for (const o of l) if (kinYoung(a, o) && (!t || o.e < t.e)) t = o;
         }
       if (t) {
@@ -376,7 +393,7 @@ function sim() {
       let t = null;
       for (let yy = -1; yy <= 1 && !t; yy++)
         for (let xx = -1; xx <= 1 && !t; xx++) {
-          const l = G[idx(clamp(a.x + xx, 0, W - 1), clamp(a.y + yy, 0, H - 1))];
+          const l = G[idx(a.x + xx, clamp(a.y + yy, 0, H - 1))];
           if (l) t = l.find((o) => edible(a, o)) || null;
         }
       if (t) {
@@ -398,7 +415,7 @@ function sim() {
           if (a.sp === 2 && t.sp !== 3)
             for (let yy = -2; yy <= 2; yy++)
               for (let xx = -2; xx <= 2; xx++) {
-                const l = G[idx(clamp(a.x + xx, 0, W - 1), clamp(a.y + yy, 0, H - 1))];
+                const l = G[idx(a.x + xx, clamp(a.y + yy, 0, H - 1))];
                 if (l)
                   for (const o of l)
                     if (o !== a && o.sp === 2 && !o.dead && o.age < SP[2].mat) {
