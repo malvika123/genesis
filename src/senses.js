@@ -15,22 +15,77 @@ const edible = (a, o) =>
   (a.sp === 2
     ? o.sp !== 2 || (o.k === a.k && a.e < 15 && o !== a.mom && o !== a.kid && o.mom !== a)
     : a.sp === 0 && o.sp === 3);
+// For each place a creature might look at, the cells a line of sight passes through on the way.
+const OFFL = OFF.map(([dx, dy, d]) => {
+  const n = Math.ceil(d * 2),
+    out = [],
+    key = new Set();
+  for (let j = 1; j < n; j++) {
+    const t = j / n,
+      px = Math.round(dx * t),
+      py = Math.round(dy * t);
+    if ((!px && !py) || (px === dx && py === dy) || key.has(px + ',' + py)) continue;
+    key.add(px + ',' + py);
+    out.push([px, py, t]);
+  }
+  return out;
+});
+const VIEW = new Uint8Array(8);
+// Can it see that place? Not if a hill rises above the line from its eyes to it, or if enough thick
+// forest stands in between.
+function inSight(a, k, h0) {
+  const P = OFFL[k],
+    [dx, dy] = OFF[k];
+  if (!P.length) return true;
+  const ht = Math.max(0, alt[idx(a.x + dx, clamp(a.y + dy, 0, H - 1))]);
+  let cov = 0;
+  for (const [px, py, t] of P) {
+    const Y = a.y + py;
+    if (!inb(a.x + px, Y)) return false;
+    const i = idx(a.x + px, Y);
+    if (Math.max(0, alt[i]) > h0 + (ht - h0) * t + 0.08) return false;
+    cov += cover(i);
+    if (cov > 1.4) return false;
+  }
+  return true;
+}
 function sense(a, x, night) {
   x.fill(0);
   const tw = 1 - a.w / 100,
     te = 1 - a.e / 100;
   const S = a.S,
-    // in thick forest you can't see far
-    r = Math.max(1.5, a.g.v * (night ? S.nv : 1) * (a.asleep ? 0.3 : 1) * (1 - 0.35 * cover(idx(a.x, a.y))));
-  for (const [dx, dy, d, s] of OFF) {
+    here0 = idx(a.x, a.y),
+    // in thick forest you can't see far, and at night only as far as the eyes allow
+    r = Math.max(1.5, a.g.v * (night ? S.nv : 1) * (1 - 0.35 * cover(here0))),
+    // Eyes see only in front, over each kind's real field of view: about 200° for people, most of
+    // the way round for deer, bison and rabbits, whose eyes are on the sides of the head. Having just
+    // stood still, a creature has looked all around. Asleep, its eyes are shut. Fish see all round.
+    look = a.sp === 3 || a.act === A_STAY,
+    eyes = !a.asleep,
+    h0 = Math.max(0, alt[here0]);
+  for (let s = 0; s < 8; s++) {
+    const t = Math.abs(s - a.hd),
+      diff = Math.min(t, 8 - t) * 45;
+    VIEW[s] = look || diff <= S.fov / 2 + 22.5 ? 1 : 0;
+  }
+  if (a === sel) a.view = [];
+  for (let k = 0; k < OFF.length; k++) {
+    const [dx, dy, d, s] = OFF[k];
     if (d > r) break;
     const X = a.x + dx,
       Y = a.y + dy;
     if (!inb(X, Y)) continue;
+    // seen: in the field of view, with nothing in the way (hills, thick trees). Near: close enough to
+    // hear or smell, even behind it or in the dark.
+    const seen = eyes && VIEW[s] && (a.sp === 3 || inSight(a, k, h0)),
+      near = d <= 2;
+    if (!seen && !near) continue;
     const i = idx(X, Y),
       cl = 1 - d / (r + 1),
       b = s * NCH;
-    if (a.sp === 3) {
+    if (seen && a === sel) a.view.push(i);
+    if (!seen) {
+    } else if (a.sp === 3) {
       if (water[i]) {
         const f = food[i] * cl * (0.15 + te);
         if (f > x[b + 1]) x[b + 1] = f;
@@ -79,7 +134,8 @@ function sense(a, x, night) {
         const q = cl * Math.min(1, nut[i] * 3);
         if (nut[i] > 0.05 && x[b + 14] < q) x[b + 14] = q;
       }
-      if (poison[i] && food[i] > 0.05 && x[b + 9] < cl) x[b + 9] = cl;
+      // only eyes with three kinds of colour cone (people) tell red berries from green leaves
+      if (S.col >= 3 && poison[i] && food[i] > 0.05 && x[b + 9] < cl) x[b + 9] = cl;
     }
     const l = G[i];
     if (l)

@@ -85,6 +85,7 @@ function mk(sp, x, y, sex, g, gen, age, k = KDEF[sp]) {
     ts: [],
     lu: 0,
     shared: 0,
+    hd: (rnd() * 8) | 0, // which way it faces (one of the eight directions)
     hand: 0, // what it is holding: 0 nothing, 1 stone, 2 stick, 3 sharp stone
     nuts: 0,
   };

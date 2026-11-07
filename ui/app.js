@@ -267,12 +267,50 @@ function doingHTML(a, S, stage, night) {
   o += '<br>Energy ' + a.e.toFixed(0) + ' · water ' + a.w.toFixed(0) + ' · health ' + a.hp.toFixed(0);
   if (a.sp === 0) o += '<br>In its hand: ' + HAND[a.hand] + (a.nuts ? ' · nuts cracked: ' + a.nuts : '');
   o += '<br>Nearby: ' + (around.length ? around.join(', ') : 'no one in sight');
+  o += '<br>' + seesText(a);
   const fam = [];
   if (a.mom && !a.mom.dead && !a.mom.gone) fam.push('mother ' + (a.mom.name || ''));
   if (a.mate && !a.mate.dead && !a.mate.gone) fam.push('partner ' + (a.mate.name || ''));
   if (a.kid && !a.kid.dead && !a.kid.gone) fam.push('child ' + (a.kid.name || ''));
   if (fam.length) o += '<br>Family alive: ' + fam.map((s) => s.trim()).join(', ');
   return o;
+}
+// What its eyes are taking in right now, read from its real senses (the same numbers its brain gets).
+function seesText(a) {
+  if (a.asleep) return 'Eyes shut: it only hears and smells what is right beside it';
+  const x = a.xi,
+    look = a.sp === 3 || a.act === A_STAY,
+    want = [
+      [1, 'food'],
+      [0, 'water'],
+      [4, 'a person'],
+      [3, 'a plant-eater'],
+      [5, 'a hunter'],
+      [7, 'family'],
+      [8, 'fish'],
+      [9, 'red berries'],
+      [14, 'nuts'],
+      [13, 'stones or sticks'],
+    ],
+    seen = [];
+  for (const [c, n] of want) {
+    let best = 0,
+      dir = -1;
+    for (let s = 0; s < 8; s++)
+      if (x[s * NCH + c] > best) {
+        best = x[s * NCH + c];
+        dir = s;
+      }
+    if (best > 0.05) seen.push(n + ' to the ' + CP[dir]);
+  }
+  const fov = a.S.fov >= 360 || look ? 'all around' : 'about ' + a.S.fov + '° around, facing ' + CP[a.hd];
+  return (
+    'Sees ' +
+    fov +
+    (a.S.col < 3 && a.sp !== 3 ? ' (red and green look alike to it)' : '') +
+    ': ' +
+    (seen.length ? seen.slice(0, 4).join(', ') : 'nothing it cares about')
+  );
 }
 function weatherText(i) {
   const sky = snowing(i)
@@ -313,7 +351,7 @@ function doingText(a) {
 let tipTab = 'think';
 function updateTip() {
   const tip = $('tip');
-  if (!sel || sel.gone || !$('v-world').offsetParent) {
+  if (!sel || sel.gone || GL.eye || !$('v-world').offsetParent) {
     tip.hidden = true;
     return;
   }
@@ -753,15 +791,11 @@ function drawFlat(v) {
     cx.beginPath();
     cx.arc(sel.rx * C + C / 2, sel.ry * C + C / 2, 8, 0, 7);
     cx.stroke();
-    // how far it can see right now (the same range its senses use)
-    cx.save();
-    cx.globalAlpha = 0.6;
-    cx.lineWidth = 1;
-    cx.setLineDash([4, 4]);
-    cx.beginPath();
-    cx.arc(sel.rx * C + C / 2, sel.ry * C + C / 2, sightRange(sel, isNightAt(sel.x)) * C, 0, 7);
-    cx.stroke();
-    cx.restore();
+    // what its eyes can see right now (the cells its senses actually took in)
+    if (sel.view) {
+      cx.fillStyle = 'rgba(255,255,230,.22)';
+      for (const i of sel.view) cx.fillRect((i % W) * C, ((i / W) | 0) * C, C, C);
+    }
   }
 }
 
@@ -777,6 +811,7 @@ const GL = {
   lon0: 0,
   lat0: 0.3,
   zoom: 1,
+  eye: null, // the creature whose eyes we are looking through, if any
   spin: false, // false: held still like a weather satellite sees Earth; true: turns with the day, seen from the sun
   held: false, // being dragged right now
   vel: 0, // extra turning from a flick (radians per frame)
@@ -1278,6 +1313,7 @@ cv.addEventListener('pointerdown', (e) => {
   if (view === 'globe') {
     GL.follow = null;
     GL.held = true;
+    if (GL.eye) setEye(null);
     GL.vel = 0;
     $('ghint').hidden = true;
   }
@@ -1389,6 +1425,7 @@ function showTab(name) {
 document.querySelectorAll('nav button').forEach((b) => (b.onclick = () => showTab(b.dataset.tab)));
 function updateDock() {
   const d = $('dock');
+  if (GL.eye && (GL.eye !== sel || GL.eye.gone)) setEye(null);
   if (!sel || sel.gone) {
     d.hidden = true;
     return;
@@ -1412,6 +1449,16 @@ document.querySelectorAll('[data-dt]').forEach(
       $('dock').classList.remove('min');
     })
 );
+// See through its eyes: the camera stands where it stands, at its eye height, facing where it faces,
+// with its field of view — and for animals that see two colours, red and green look alike.
+function setEye(a) {
+  GL.eye = a;
+  $('deye').setAttribute('aria-pressed', a ? 'true' : 'false');
+  $('deye').textContent = a ? 'Map' : 'Its eyes';
+  if (a && view !== 'globe') setView('globe');
+  if (!a && G3D.eyeOff) G3D.eyeOff();
+}
+$('deye').onclick = () => setEye(GL.eye ? null : sel);
 $('dmin').onclick = () => {
   const m = $('dock').classList.toggle('min');
   $('dmin').textContent = m ? '+' : '–';

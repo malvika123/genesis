@@ -28,6 +28,7 @@ test('a creature can see across the east–west seam', () => {
   a.asleep = false;
   // stand at the east edge and put fresh grass just across the seam, on the west edge
   a.x = E.W - 1;
+  a.hd = 0; // facing east, toward the seam
   const j = a.y * E.W + 0;
   s.water[j] = 0;
   s.rock[j] = 0;

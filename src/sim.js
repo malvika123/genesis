@@ -267,6 +267,7 @@ function sim() {
     a.asleep = act === A_SLEEP;
     if (a.asleep && sleepy > 0.8) a.ev[4] = 'it slept after being exhausted on day ' + dn;
     if (act < 8) {
+      a.hd = act; // it turns to face the way it walks
       let preyS = false;
       for (let s = 0; s < 8; s++) if (x[s * NCH + 3] > 0 || x[s * NCH + 4] > 0) preyS = true;
       const fast =

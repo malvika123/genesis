@@ -48,6 +48,8 @@ const A_STAY = 8,
 const SP = [
   {
     n: 'Person',
+    fov: 200, // field of view in degrees (about 120° of it seen with both eyes)
+    col: 3, // kinds of colour cone: people tell red from green
     cold: 14, // no fur: people feel cold below about 14 °C
     nh: 16,
     plast: 1.2,
@@ -75,6 +77,8 @@ const SP = [
   },
   {
     n: 'Herbivore',
+    fov: 310, // eyes on the sides of the head see almost all the way round
+    col: 2, // red and green look alike
     cold: -10, // thick winter coat
     nh: 10,
     plast: 1.2,
@@ -102,6 +106,8 @@ const SP = [
   },
   {
     n: 'Predator',
+    fov: 250,
+    col: 2,
     cold: -12, // thick fur
     nh: 12,
     plast: 1.2,
@@ -129,6 +135,8 @@ const SP = [
   },
   {
     n: 'Fish',
+    fov: 360,
+    col: 4,
     cold: 0, // fish don't feel cold here
     nh: 6,
     plast: 1,
@@ -182,6 +190,7 @@ const KINDS = [
     sp: 1,
     n: 'Rabbit',
     mass: 2,
+    fov: 350,
     cap: 45,
     share: 0.3,
     size: 0.35,
@@ -199,6 +208,7 @@ const KINDS = [
     sp: 1,
     n: 'Bison',
     mass: 600,
+    fov: 330,
     cap: 15,
     share: 0.25,
     size: 2.3,
@@ -230,6 +240,8 @@ const KINDS = [
   {
     sp: 2,
     n: 'Big cat',
+    fov: 200,
+    nv: 1.3, // sees in light about six times dimmer than people need
     cap: 8,
     share: 0.3,
     size: 1.3,
@@ -245,6 +257,7 @@ const KINDS = [
   {
     sp: 2,
     n: 'Bear',
+    fov: 210,
     cap: 6,
     share: 0.2,
     size: 2,

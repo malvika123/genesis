@@ -208,7 +208,45 @@ const G3D = { ok: false };
   G3D.show = (on) => (glc.style.display = on ? 'block' : 'none');
 
   // place the camera from the shared view state (GL.lon0, GL.lat0, GL.zoom)
+  // through a creature's eyes: stand at its place, at eye height, look the way it faces
+  let eyeFilter = '';
+  function aimEye(a) {
+    const la = latOfY(a.ry),
+      lo = lonOfX(a.rx);
+    GL.lat0 = la;
+    GL.lon0 = lo;
+    GL.zoom = 25;
+    globe.rotation.set(la, -Math.PI / 2 - lo, 0, 'XYZ');
+    const h0 = 1 + EX * heightAt(la, lo),
+      eh = a.sp === 0 ? 0.0055 : a.sp === 3 ? 0.0008 : 0.0035,
+      [mx, my] = MV[a.hd],
+      L = Math.hypot(mx, my);
+    camera.position.set(0, 0, h0 + eh);
+    camera.up.set(0, 0, 1);
+    camera.lookAt((mx / L) * 0.05, (-my / L) * 0.05, h0 + eh - 0.003);
+    // a screen can show at most about 150° without bending the picture
+    const hf = (Math.min(a.S.fov, 150) * Math.PI) / 180,
+      fov = (2 * Math.atan(Math.tan(hf / 2) / camera.aspect) * 180) / Math.PI;
+    if (camera.fov !== fov) {
+      camera.fov = fov;
+      camera.updateProjectionMatrix();
+    }
+    camera.updateMatrixWorld();
+    // eyes shut in sleep: almost nothing; at night, animals with good night eyes see more
+    const f = a.asleep
+      ? 'brightness(0.12)'
+      : (a.S.col < 3 && a.sp !== 3 ? 'url(#dichro) ' : '') +
+        (isNightAt(a.x) && a.S.nv > 0.8 ? 'brightness(' + (1 + a.S.nv) + ')' : '');
+    if (f !== eyeFilter) glc.style.filter = eyeFilter = f;
+  }
+  G3D.eyeOff = () => {
+    glc.style.filter = eyeFilter = '';
+    camera.fov = 40;
+    camera.updateProjectionMatrix();
+    GL.zoom = 8;
+  };
   function aim() {
+    if (GL.eye && !GL.eye.gone) return aimEye(GL.eye);
     globe.rotation.set(GL.lat0, -Math.PI / 2 - GL.lon0, 0, 'XYZ');
     const z = GL.zoom,
       d = 2.25 / Math.pow(z, 1.35),
@@ -301,7 +339,7 @@ const G3D = { ok: false };
     let n = 0;
     if (on)
       for (const a of ag) {
-        if (!project(a.rx, a.ry, 0)) continue;
+        if (a === GL.eye || !project(a.rx, a.ry, 0)) continue;
         let sp = pool[n];
         if (!sp) {
           sp = new THREE.Sprite(new THREE.SpriteMaterial({ alphaTest: 0.4 }));
@@ -385,7 +423,19 @@ const G3D = { ok: false };
         const ks = clamp((P[2] / C) * 0.9, 0.25, 9);
         drawCreature(cx, a, P[0], P[1], ks, v, isNightAt(a.x) ? 0.5 : 1);
       }
-    if (sel) {
+    // the places its eyes can see right now
+    if (sel && sel.view && !GL.eye) {
+      cx.fillStyle = 'rgba(255,255,230,.25)';
+      for (const i of sel.view) {
+        const Q = project(i % W, (i / W) | 0);
+        if (Q) {
+          cx.beginPath();
+          cx.arc(Q[0], Q[1], Math.max(1.5, Q[2] * 0.42), 0, 7);
+          cx.fill();
+        }
+      }
+    }
+    if (sel && !GL.eye) {
       const P = project(sel.rx, sel.ry);
       if (P) {
         cx.strokeStyle = v('--ink');
