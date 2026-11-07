@@ -49,7 +49,7 @@ Worlds are seeded, so the same command always produces the same world — useful
 
 The tests check that the world is reproducible, that creatures stay within their bodies' rules, that children and teenagers can never mate, that herbivores can graze, that loneliness needs someone to miss, that only strong habits are inherited (partly and by chance), that whispers are understood correctly, and that the mind readout matches the network.
 
-To play it online, enable GitHub Pages for this repo (Settings → Pages → deploy from `main`, root).
+To play it online, enable GitHub Pages for this repo (Settings → Pages → deploy from the `develop` branch, root).
 
 ## What's in the world
 
