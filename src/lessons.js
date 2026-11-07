@@ -179,6 +179,7 @@ function lessons(a) {
     const lab = d > 0 ? P.pos : P.neg;
     a.les.push(lab);
     nLessons++;
+    if (a.sp === 0 && GENSTAT[a.gen]) GENSTAT[a.gen].les++;
     const L = LG[a.sp];
     if (a.sp !== 0) {
       if (tick - (L[key] ?? -1e9) < DAY) return;

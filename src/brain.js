@@ -63,6 +63,8 @@ function newW(sp, inst, H = SP[sp].hmax) {
     D(A_ATK, IB, 1.5);
     D(A_ATK, B, -1.5);
     D(A_STAY, B, -0.5);
+    // calling out is not the first thing anyone does
+    for (let k = 0; k < NSAY; k++) D(A_SAY + k, B, -1.5);
     if (sp === 0) {
       // Hands. Human babies are born grasping whatever touches the palm, small children are drawn to
       // objects and bang whatever they hold, and everyone likes nuts. That is all that is inborn: what a

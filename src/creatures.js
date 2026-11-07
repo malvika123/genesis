@@ -10,6 +10,8 @@ const gene = (sp, inst) => ({
   b: 0.6 + rnd() * 0.8,
   so: 0.5 + rnd(),
   bs: 0.75 + rnd() * 0.25, // how big a brain it can grow (inherited)
+  lr: 0.8 + rnd() * 0.4, // how quickly it learns (inherited)
+  im: 0.6 + rnd() * 0.8, // how strongly it copies others (inherited)
   w: newW(sp, inst),
 });
 function mk(sp, x, y, sex, g, gen, age, k = KDEF[sp]) {
@@ -110,6 +112,7 @@ function mk(sp, x, y, sex, g, gen, age, k = KDEF[sp]) {
   a.cm = new Uint8Array(units * NI);
   for (let j = 0; j < units; j++) for (let i = 0; i < NI; i++) a.cm[j * NI + i] = wired(j, i) ? 1 : 0;
   a.nh = grownUnits(a);
+  if (sp === 0) genRecord(a);
   a.p0 = PR.map((_, k) => probe(a.lw, k));
   return a;
 }
@@ -120,10 +123,9 @@ function mut(v, lo, hi) {
 function child(p, q) {
   const w = new Float32Array(p.g.w.length);
   for (let i = 0; i < w.length; i++) {
+    // only the inborn wiring is inherited — what a parent learned in its life is not (it can pass on
+    // only by the child watching and copying)
     let v = rnd() < 0.5 ? p.g.w[i] : q.g.w[i];
-    const P = rnd() < 0.5 ? p : q,
-      d = P.lw[i] - P.g.w[i];
-    if (Math.abs(d) > 0.04 && rnd() < 0.5) v += d * (0.2 + 0.4 * rnd());
     if (rnd() < 0.03) v += gauss() * 0.4;
     w[i] = clamp(v, -6, 6);
   }
@@ -139,6 +141,8 @@ function child(p, q) {
     b: mut(pk('b'), 0.3, 1.8),
     so: mut(pk('so'), 0.2, 2),
     bs: mut(pk('bs') ?? 0.9, 0.5, 1),
+    lr: mut(pk('lr') ?? 1, 0.4, 2),
+    im: mut(pk('im') ?? 1, 0.1, 3),
     w,
   };
 }

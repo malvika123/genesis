@@ -57,6 +57,7 @@ const INNER = {
 };
 function actName(a, k) {
   if (k < 8) return 'go ' + CP[k];
+  if (k >= A_SAY) return 'call “' + SAYN[k - A_SAY] + '”';
   return [
     'stay put',
     'eat',
@@ -71,6 +72,8 @@ function actName(a, k) {
   ][k - 8];
 }
 for (let j = 0; j < NM; j++) INNER[27 + j] = 'what it was just thinking';
+for (let k = 0; k < NSAY; k++)
+  for (let q = 0; q < 3; q++) INNER[HEAR - IB + 3 * k + q] = 'hearing “' + SAYN[k] + '”';
 function featName(i) {
   if (i < NS) return CHN[i % NCH] + ' to the ' + CP[(i / NCH) | 0];
   if (i < IB) return BODY[i - HB];

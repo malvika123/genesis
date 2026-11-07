@@ -12,7 +12,8 @@ const { createEngine } = require('./engine');
 
 const args = Object.fromEntries(
   process.argv.slice(2).reduce((acc, a, i, all) => {
-    if (a.startsWith('--')) acc.push([a.slice(2), all[i + 1] && !all[i + 1].startsWith('--') ? all[i + 1] : true]);
+    if (a.startsWith('--'))
+      acc.push([a.slice(2), all[i + 1] && !all[i + 1].startsWith('--') ? all[i + 1] : true]);
     return acc;
   }, [])
 );
@@ -21,7 +22,12 @@ const opts = {
   worlds: num('worlds', 5),
   days: num('days', 60),
   seed: num('seed', 1),
-  cfg: { people: num('people', 6), herbivores: num('herbivores', 14), predators: num('predators', 3), fish: num('fish', 24) },
+  cfg: {
+    people: num('people', 6),
+    herbivores: num('herbivores', 14),
+    predators: num('predators', 3),
+    fish: num('fish', 24),
+  },
 };
 
 const E = createEngine();

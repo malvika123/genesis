@@ -142,7 +142,7 @@ test('loneliness only exists after meeting someone', () => {
   }
 });
 
-test('a child inherits only strong habits, partly and by chance', () => {
+test("a child inherits its parents' inborn wiring, but not what they learned", () => {
   const E = createEngine();
   E.setSeed(9);
   E.reset({ people: 2 });
@@ -150,25 +150,21 @@ test('a child inherits only strong habits, partly and by chance', () => {
   const i = 123;
   p.lw = Float32Array.from(p.g.w);
   q.lw = Float32Array.from(q.g.w);
-  // Weights the parents never changed are copied from one parent's inborn wiring (apart from rare mutations).
+  // Every inborn weight comes from one parent or the other (apart from rare mutations).
   const c0 = E.child(p, q);
   let same = 0;
   for (let k = 0; k < c0.w.length; k++) if (c0.w[k] === p.g.w[k] || c0.w[k] === q.g.w[k]) same++;
   assert.ok(same / c0.w.length > 0.9, 'too many inborn weights were not from either parent');
-  // A habit both parents learned strongly passes on about half the time, and never in full.
+  // A habit both parents learned strongly is not in the child's genes (only by copying them, in life).
   p.lw[i] = p.g.w[i] + 2;
   q.lw[i] = q.g.w[i] + 2;
   let passed = 0;
   for (let n = 0; n < 400; n++) {
     const c = E.child(p, q);
-    const base = [p.g.w[i], q.g.w[i]];
-    const extra = Math.min(...base.map((b) => Math.abs(c.w[i] - b)));
-    if (extra > 0.3) {
-      passed++;
-      assert.ok(extra < 2 * 0.6 + 1.5, 'a habit was inherited in full');
-    }
+    const extra = Math.min(...[p.g.w[i], q.g.w[i]].map((b) => Math.abs(c.w[i] - b)));
+    if (extra > 1) passed++;
   }
-  assert.ok(passed > 120 && passed < 280, `habit passed on ${passed}/400 times, expected about half`);
+  assert.ok(passed < 8, `a learned habit leaked into the genes ${passed}/400 times`);
 });
 
 test('whispers are understood by meaning, and never read "don\'t eat berries" as "don\'t eat"', () => {

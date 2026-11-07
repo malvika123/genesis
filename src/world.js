@@ -40,6 +40,7 @@ function reset(cfg = {}) {
   initWeather();
   initForest();
   initItems();
+  initTalk();
   for (let i = 0; i < W * H; i++) food[i] *= 1 - 0.35 * tree[i]; // little grass grows in the shade of trees
   const n = clamp(cfg.people ?? 8, 2, 40), // early humans lived in small bands
     nh = clamp(cfg.herbivores ?? 20, 0, 40),

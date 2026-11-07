@@ -9,6 +9,7 @@ function sim() {
   updateWeather();
   updateForest();
   updateItems();
+  passCalls();
   for (let i = 0; i < W * H; i++) {
     if (rock[i]) continue;
     // plants need warmth and water
@@ -158,6 +159,7 @@ function sim() {
     sense(a, a.xi, night);
     const x = a.xi,
       own = a.sp === 3 ? 8 : a.sp === 1 ? 3 : a.sp === 0 ? 4 : 5;
+    if (a.sp === 0 && (tick + a.id) % 4 === 0) tally(BASE, context(a));
     let seeOwn = false;
     for (let s = 0; s < 8; s++) if (x[s * NCH + own] > 0) seeOwn = true;
     if (seeOwn) {
@@ -202,7 +204,21 @@ function sim() {
     }
     RF.fill(0);
     // only people have hands
-    if (a.sp !== 0) RF[A_TAKE] = RF[A_DROP] = RF[A_STRIKE] = -40;
+    if (a.sp !== 0) {
+      RF[A_TAKE] = RF[A_DROP] = RF[A_STRIKE] = -40;
+      for (let k = 0; k < NSAY; k++) RF[A_SAY + k] = -40; // only people have a voice here
+    } else if (!a.asleep) {
+      // Two calls are inborn in every human: a baby cries when hungry, hurt or cold, and anyone
+      // screams when badly hurt. And a parent is drawn toward the cry of its own young child.
+      if (young && (hu > 0.5 || a.painA > 0.3 || a.cold > 0.6)) RF[A_SAY] += 4;
+      if (a.painA > 0.5) RF[A_SAY + 1] += 3;
+      const o = HEAR;
+      if (x[o] > 0 && a.kid && !a.kid.gone && a.kid.age < a.kid.S.mat)
+        for (let s = 0; s < 8; s++) {
+          const L = Math.hypot(MV[s][0], MV[s][1]);
+          RF[s] += (3 * x[o] * (MV[s][0] * x[o + 1] + MV[s][1] * x[o + 2])) / L;
+        }
+    }
     if (a.sp !== 3 || x[HB] > 0.05) RF[A_EAT] = 4 * hu * (x[HB] > 0.05 ? 1 : 0);
     if (a.sp !== 3) RF[A_DRINK] = 5 * th * x[HB + 1];
     if (a.sp === 2) RF[A_ATK] = 5 * hu * x[HB + 2];
@@ -252,7 +268,7 @@ function sim() {
       if (a.stress > 0.5) mod *= 0.7;
       a.da = d;
       a.mod = mod;
-      learnStep(a, d, pl * mod);
+      learnStep(a, d, pl * mod * (a.g.lr ?? 1));
       a.fear = clamp(a.fear * 0.9 + 0.4 * Math.max(0, -d), 0, 1);
       for (let k = 0; k < 9; k++) a.cz[k] = a.cz[k] * 0.995 + Math.abs(a.rk[k]) * Math.abs(d);
     }
@@ -310,7 +326,7 @@ function sim() {
           }
         }
       if (tch && tch.act !== A_SLEEP) {
-        imitate(a, tch.act, S.imit * (young ? 2 : 1));
+        imitate(a, tch.act, S.imit * (young ? 3 : 1) * (a.g.im ?? 1));
         if (!a.copied && a.sp === 0 && young) {
           a.copied = 1;
           a.ev[7] = 'it watched an elder on day ' + dn;
@@ -334,6 +350,23 @@ function sim() {
       a.play = 1;
     }
     if (act >= 8) a.mvv = 0; // not walking this step
+    // How it responded to the loudest sound it heard: came closer, moved away, or answered. Answering
+    // feels good to both — even newborns take turns "talking" with their mothers.
+    if (a.sp === 0 && a.heardK >= 0 && !a.asleep) {
+      const S = SNDSTAT[a.heardK],
+        o = HEAR + a.heardK * 3;
+      S.hear++;
+      if (act < 8) {
+        const L = Math.hypot(MV[act][0], MV[act][1]),
+          dot = (MV[act][0] * x[o + 1] + MV[act][1] * x[o + 2]) / L;
+        if (dot > 0.3) S.come++;
+        else if (dot < -0.3) S.flee++;
+      } else if (act >= A_SAY && a.heardFrom && !a.heardFrom.gone) {
+        S.answer++;
+        a.bonus[7] += 0.02;
+        a.heardFrom.bonus[7] += 0.02;
+      }
+    }
     const sleepy = a.sl;
     a.asleep = act === A_SLEEP;
     if (a.asleep && sleepy > 0.8) a.ev[4] = 'it slept after being exhausted on day ' + dn;
@@ -525,6 +558,20 @@ function sim() {
           firsts.share = 1;
           log(a.name + ' shared food with ' + t.name + '. Nobody taught this.');
         }
+      }
+    } else if (act >= A_SAY && a.sp === 0 && !a.asleep) {
+      const k = act - A_SAY;
+      a.said = k;
+      a.saidT = tick;
+      a.e -= 0.02;
+      CALLS.push({ x: a.x, y: a.y, k, a });
+      tally(SNDSTAT[k], context(a));
+      // calling out to others nearby eases loneliness a little (like grooming does for apes)
+      if (seeOwn) a.bonus[7] += 0.03 * a.lo;
+      if (typeof onCall === 'function') onCall(a, k);
+      if (!firsts['say' + k] && k > 1) {
+        firsts['say' + k] = 1;
+        log(a.name + ' made the sound “' + SAYN[k] + '” for the first time.');
       }
     } else if (act === A_TAKE && a.sp === 0 && !a.asleep) {
       if (pickUp(a)) {
