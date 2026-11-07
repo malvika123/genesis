@@ -2,6 +2,7 @@
 // Copyright (c) 2026 Malvika Sen. MIT License.
 
 let fished = 0,
+  deaths = {}, // tally of deaths by species and cause, for experiments
   pit,
   poison,
   firsts = {},

@@ -301,7 +301,7 @@ function sightRange(a, night) {
 }
 // ---------- drawing the world: shared pieces ----------
 // Terrain into any 2D context, in map units (one cell = C units).
-function drawTerrain(g, v) {
+function drawTerrain(g, v, relief = true) {
   g.fillStyle = v('--dirt');
   g.fillRect(0, 0, W * C, H * C);
   for (let y = 0; y < H; y++)
@@ -346,8 +346,8 @@ function drawTerrain(g, v) {
       }
     }
   // relief: light from the north-west, so slopes facing it are lit and the far sides are in shade;
-  // the highest ground turns to bare grey rock
-  for (let y = 0; y < H; y++)
+  // the highest ground turns to bare grey rock (the 3D globe does its own shading)
+  for (let y = 0; y < H && relief; y++)
     for (let x = 0; x < W; x++) {
       const i = y * W + x;
       if (water[i]) continue;
@@ -399,7 +399,7 @@ function drawTerrain(g, v) {
 }
 // Clouds, rain and snow over the land.
 let showSky = true;
-function drawSky(g) {
+function drawSky(g, streaks = true) {
   if (!showSky) return;
   for (let y = 0; y < H; y++)
     for (let x = 0; x < W; x++) {
@@ -410,7 +410,7 @@ function drawSky(g) {
         g.fillStyle = c > 0.2 ? '#c9d0d8' : '#ffffff';
         g.fillRect(x * C - 1, y * C - 1, C + 2, C + 2);
       }
-      if (RAIN[i] > 0.002) {
+      if (streaks && RAIN[i] > 0.002) {
         const snow = cellT(i) < 0;
         g.globalAlpha = clamp(RAIN[i] * 60, 0.35, 0.9);
         if (snow) {
@@ -711,6 +711,11 @@ function drawGlobe(v) {
 function screenPos(a) {
   const r = cv.getBoundingClientRect();
   if (view === 'flat') return [((a.x + 0.5) / W) * r.width, (a.y / H) * r.height, r.height / H];
+  if (G3D.ok) {
+    const Q = G3D.project(a.x, a.y),
+      d = cv.width / r.width;
+    return Q ? [Q[0] / d, Q[1] / d - 6, Q[2] / d] : null;
+  }
   const P = globeProject(a.x, a.y);
   if (!P) return null;
   const k = r.width / GL.BW;
@@ -724,7 +729,7 @@ function draw() {
     sel = null;
     fillIdeas();
   }
-  if (view === 'globe') drawGlobe(v);
+  if (view === 'globe') G3D.ok ? G3D.draw(v) : drawGlobe(v);
   else drawFlat(v);
   const night = sel ? isNightAt(sel.x) : false;
   if (sel) {
@@ -835,6 +840,7 @@ function onExtinct() {
 $('reset').onclick = () => {
   FLAT.n = 0;
   GL.tdata = null;
+  if (G3D.ok) G3D.repaint();
   reset(readCfg());
   fillIdeas();
   running = true;
@@ -920,7 +926,7 @@ cv.addEventListener('pointermove', (e) => {
   if (view !== 'globe') return;
   if (ptr.size === 2) {
     const [a, b] = [...ptr.values()];
-    if (pinch0) GL.zoom = clamp((zoom0 * Math.hypot(a.x - b.x, a.y - b.y)) / pinch0, 1, 8);
+    if (pinch0) GL.zoom = clamp((zoom0 * Math.hypot(a.x - b.x, a.y - b.y)) / pinch0, 1, 5);
     return;
   }
   const r = cv.getBoundingClientRect(),
@@ -943,7 +949,7 @@ cv.addEventListener(
   (e) => {
     if (view !== 'globe') return;
     e.preventDefault();
-    GL.zoom = clamp(GL.zoom * Math.exp(-e.deltaY * 0.0015), 1, 8);
+    GL.zoom = clamp(GL.zoom * Math.exp(-e.deltaY * 0.0015), 1, 5);
   },
   { passive: false }
 );
@@ -953,6 +959,7 @@ function setView(v) {
   $('ghint').hidden = v !== 'globe';
   cv.classList.toggle('round', v === 'globe');
   $('v-world').classList.toggle('space', v === 'globe');
+  if (G3D.ok) G3D.show(v === 'globe');
   fit();
 }
 $('view').onclick = () => setView(view === 'globe' ? 'flat' : 'globe');
@@ -961,6 +968,7 @@ $('sky').onclick = () => {
   $('sky').textContent = showSky ? 'Hide clouds' : 'Show clouds';
   GL.tdata = null;
   FLAT.n = 0;
+  if (G3D.ok) G3D.repaint();
 };
 // ---------- full-screen world, tabs ----------
 function fit() {

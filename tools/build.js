@@ -9,7 +9,7 @@ const path = require('path');
 const { ORDER, ROOT } = require('./engine');
 
 let html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
-const files = [...ORDER.map((n) => `src/${n}.js`), 'ui/app.js'];
+const files = [...ORDER.map((n) => `src/${n}.js`), 'vendor/three.min.js', 'ui/globe3d.js', 'ui/app.js'];
 for (const f of files) {
   const tag = `<script src="${f}"></script>`;
   if (!html.includes(tag)) throw new Error('index.html is missing ' + tag);

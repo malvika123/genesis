@@ -1,0 +1,233 @@
+// Genesis — The planet in true 3D (WebGL through three.js, vendored in vendor/three.min.js).
+// Copyright (c) 2026 Malvika Sen. MIT License.
+//
+// The land is a sphere whose surface is pushed outward by each place's height, so mountains really
+// stand up. Heights are exaggerated (as Google Earth does), because real mountains are far too small
+// to see on a whole planet. The sun lights it from the side where it is noon, clouds float on their own
+// layer above the mountains, and when you zoom in the camera tilts toward the horizon so you see ranges
+// from the side. Creatures are drawn on top, on the ordinary 2D canvas.
+//
+// If WebGL isn't available, G3D.ok stays false and the page uses the flat-shaded globe instead.
+
+const G3D = { ok: false };
+(function () {
+  if (typeof THREE === 'undefined') return;
+  const glc = document.getElementById('gl');
+  let renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({ canvas: glc, antialias: true, alpha: true });
+  } catch (e) {
+    return;
+  }
+  if (!renderer.getContext()) return;
+  renderer.outputEncoding = THREE.sRGBEncoding;
+
+  const EX = 0.011, // radius gained per km of height (about 70× exaggerated)
+    CAPDEG = 10, // the map stops at ±80°; beyond are the polar ice caps
+    TS3 = 8; // texture pixels per cell
+  const scene = new THREE.Scene(),
+    camera = new THREE.PerspectiveCamera(40, 1, 0.005, 50),
+    globe = new THREE.Group();
+  scene.add(globe);
+
+  // surface pictures: the land (and sea) and, separately, the clouds
+  const bandH = H * TS3,
+    capH = Math.round((bandH * CAPDEG) / 160);
+  const mk = () => {
+    const c = document.createElement('canvas');
+    c.width = W * TS3;
+    c.height = bandH + 2 * capH;
+    return c;
+  };
+  const landC = mk(),
+    cloudC = mk(),
+    rawC = mk(),
+    rg = rawC.getContext('2d'),
+    lg = landC.getContext('2d'),
+    cg = cloudC.getContext('2d');
+  const landTex = new THREE.CanvasTexture(landC),
+    cloudTex = new THREE.CanvasTexture(cloudC);
+  landTex.encoding = cloudTex.encoding = THREE.sRGBEncoding;
+  landTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+  const geo = new THREE.SphereGeometry(1, 384, 240),
+    base = Float32Array.from(geo.attributes.position.array);
+  const land = new THREE.Mesh(geo, new THREE.MeshLambertMaterial({ map: landTex }));
+  globe.add(land);
+  const clouds = new THREE.Mesh(
+    new THREE.SphereGeometry(1 + 5.5 * EX, 192, 120),
+    new THREE.MeshLambertMaterial({ map: cloudTex, transparent: true, depthWrite: false })
+  );
+  globe.add(clouds);
+  // a thin blue glow around the edge of the planet, like air seen edge-on
+  const air = new THREE.Mesh(
+    new THREE.SphereGeometry(1.07, 64, 40),
+    new THREE.ShaderMaterial({
+      vertexShader:
+        'varying vec3 vN; varying vec3 vP; void main(){ vN = normalize(normalMatrix * normal); vec4 p = modelViewMatrix * vec4(position,1.0); vP = p.xyz; gl_Position = projectionMatrix * p; }',
+      fragmentShader:
+        'varying vec3 vN; varying vec3 vP; void main(){ float f = dot(normalize(-vP), vN); float a = pow(clamp(1.0 + f * 1.6, 0.0, 1.0), 4.0); gl_FragColor = vec4(0.47, 0.7, 1.0, a * 0.35); }',
+      side: THREE.BackSide,
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    })
+  );
+  scene.add(air);
+  const sun = new THREE.DirectionalLight(0xffffff, 1.2);
+  globe.add(sun);
+  scene.add(sun.target);
+  scene.add(new THREE.AmbientLight(0x8fa3c8, 0.16));
+
+  // height at any latitude/longitude (radians), smoothly between cells; the sea surface is flat
+  function heightAt(la, lo) {
+    const deg = (la * 180) / Math.PI,
+      // beyond ±80° the ice cap carries on smoothly from the map's last row, flattening at the pole
+      fade = Math.abs(deg) <= 80 ? 1 : Math.max(0, (90 - Math.abs(deg)) / 10),
+      gx = ((lo + Math.PI) / (2 * Math.PI)) * W - 0.5,
+      gy = clamp(((80 - deg) / 160) * H - 0.5, 0, H - 1),
+      x0 = Math.floor(gx),
+      y0 = Math.floor(gy),
+      tx = gx - x0,
+      ty = gy - y0,
+      y1 = Math.min(H - 1, y0 + 1),
+      h = (x, y) => Math.max(0, alt[idx(x, y)]);
+    return (
+      fade *
+      ((h(x0, y0) * (1 - tx) + h(x0 + 1, y0) * tx) * (1 - ty) +
+        (h(x0, y1) * (1 - tx) + h(x0 + 1, y1) * tx) * ty)
+    );
+  }
+  // lift every vertex of the sphere by the height under it
+  let shapedFor = null;
+  function shape() {
+    const p = geo.attributes.position.array;
+    for (let k = 0; k < p.length; k += 3) {
+      const x = base[k],
+        y = base[k + 1],
+        z = base[k + 2],
+        la = Math.asin(clamp(y, -1, 1)),
+        lo = Math.atan2(-z, x),
+        r = 1 + EX * heightAt(la, lo);
+      p[k] = x * r;
+      p[k + 1] = y * r;
+      p[k + 2] = z * r;
+    }
+    geo.attributes.position.needsUpdate = true;
+    geo.computeVertexNormals();
+    shapedFor = alt;
+  }
+  // a point on the surface (local coordinates) for a latitude/longitude
+  const local = (la, lo, r) =>
+    new THREE.Vector3(Math.cos(lo) * Math.cos(la) * r, Math.sin(la) * r, -Math.sin(lo) * Math.cos(la) * r);
+
+  let frame = 0;
+  function paint(v) {
+    // land: the same drawing as the flat map, but without painted shading (the 3D light does that)
+    lg.setTransform(1, 0, 0, 1, 0, 0);
+    lg.fillStyle = v('--snow');
+    lg.fillRect(0, 0, landC.width, landC.height);
+    rg.setTransform(1, 0, 0, 1, 0, 0);
+    rg.clearRect(0, 0, rawC.width, rawC.height);
+    rg.setTransform(TS3 / C, 0, 0, TS3 / C, 0, capH);
+    drawTerrain(rg, v, false);
+    lg.drawImage(rawC, 0, 0);
+    // clouds: drawn cell by cell, then blurred into soft shapes
+    rg.setTransform(1, 0, 0, 1, 0, 0);
+    rg.clearRect(0, 0, rawC.width, rawC.height);
+    rg.setTransform(TS3 / C, 0, 0, TS3 / C, 0, capH);
+    drawSky(rg, false);
+    cg.setTransform(1, 0, 0, 1, 0, 0);
+    cg.clearRect(0, 0, cloudC.width, cloudC.height);
+    cg.filter = 'blur(' + TS3 * 0.9 + 'px)';
+    cg.drawImage(rawC, 0, 0);
+    cg.filter = 'none';
+    landTex.needsUpdate = cloudTex.needsUpdate = true;
+  }
+
+  G3D.ok = true;
+  G3D.repaint = () => (frame = 0);
+  G3D.show = (on) => (glc.style.display = on ? 'block' : 'none');
+
+  // place the camera from the shared view state (GL.lon0, GL.lat0, GL.zoom)
+  function aim() {
+    globe.rotation.set(GL.lat0, -Math.PI / 2 - GL.lon0, 0, 'XYZ');
+    const z = GL.zoom,
+      d = 2.25 / Math.pow(z, 1.35),
+      tilt = clamp((z - 1.6) / 2.6, 0, 1) * 1.1,
+      h0 = 1 + EX * heightAt(GL.lat0, GL.lon0);
+    camera.position.set(0, -Math.sin(tilt) * d, h0 + Math.cos(tilt) * d);
+    camera.up.set(0, 1, 0);
+    camera.lookAt(0, 0, h0);
+    camera.updateMatrixWorld();
+    globe.updateMatrixWorld(true);
+  }
+
+  // where a cell appears on the canvas (device pixels), and how big one cell looks; null if out of sight
+  const tmp = new THREE.Vector3(),
+    nrm = new THREE.Vector3(),
+    eye = new THREE.Vector3();
+  function project(x, y, lift = 0.004) {
+    const la = latOfY(y),
+      lo = lonOfX(x),
+      r = 1 + EX * Math.max(0, alt[idx(x, y)]) + lift;
+    tmp.copy(local(la, lo, r)).applyMatrix4(globe.matrixWorld);
+    nrm.copy(tmp).normalize();
+    eye.copy(camera.position).sub(tmp);
+    if (nrm.dot(eye) <= 0) return null; // round the back of the planet
+    const dist = eye.length();
+    tmp.project(camera);
+    if (tmp.z > 1) return null;
+    const px = ((tmp.x + 1) / 2) * cv.width,
+      py = ((1 - tmp.y) / 2) * cv.height,
+      cell = ((2 * Math.PI) / W / dist) * (cv.height / 2 / Math.tan((camera.fov * Math.PI) / 360));
+    return [px, py, cell];
+  }
+  G3D.project = project;
+
+  G3D.draw = function (v) {
+    const w = cv.width,
+      h = cv.height;
+    if (renderer.domElement.width !== w || renderer.domElement.height !== h) {
+      renderer.setPixelRatio(1);
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    if (shapedFor !== alt) shape();
+    if (frame++ % 12 === 0) paint(v);
+    if (!GL.held) {
+      GL.lon0 += GL.vel;
+      GL.vel += ((GL.spin ? 0.0012 : 0) - GL.vel) * 0.03;
+    }
+    aim();
+    // clouds thin out as you come close, so you can see the ground you zoomed in on
+    clouds.material.opacity = clamp(1.25 - 0.22 * GL.zoom, 0.15, 0.9);
+    air.visible = GL.zoom < 3;
+    // the sun is overhead where it is local noon
+    const xs = ((((0.5 - (tick % DAY) / DAY) * W) % W) + W) % W,
+      ls = (xs / W) * 2 * Math.PI - Math.PI;
+    sun.position.copy(local(0, ls, 5));
+    renderer.render(scene, camera);
+
+    // creatures and the selection ring on the 2D canvas above
+    cx.setTransform(1, 0, 0, 1, 0, 0);
+    cx.clearRect(0, 0, w, h);
+    for (const a of ag) {
+      const P = project(a.x, a.y);
+      if (!P) continue;
+      const ks = clamp((P[2] / C) * 0.9, 0.25, 9);
+      drawCreature(cx, a, P[0], P[1], ks, v, isNightAt(a.x) ? 0.5 : 1);
+    }
+    if (sel) {
+      const P = project(sel.x, sel.y);
+      if (P) {
+        cx.strokeStyle = v('--ink');
+        cx.lineWidth = 2;
+        cx.beginPath();
+        cx.arc(P[0], P[1], Math.max(7, 0.9 * P[2]), 0, 7);
+        cx.stroke();
+      }
+    }
+  };
+})();

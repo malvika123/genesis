@@ -25,7 +25,7 @@ return {
   setTick: (t) => { tick = t; updateClimate(); },
   whisper: (a, text) => { a.wh = text; },
   watch: (a) => { sel = a; },
-  state: () => ({ ag, tick, logs, fished, kills, maxGen, nLessons, over, water, deep, food, pit, poison, rock, salt, river }),
+  state: () => ({ deaths, ag, tick, logs, fished, kills, maxGen, nLessons, over, water, deep, food, pit, poison, rock, salt, river }),
   alt: () => alt,
   sense, SP, DAY, TY, IB, HB, NCH, A_EAT, A_SLEEP, A_GIVE,
 };`;

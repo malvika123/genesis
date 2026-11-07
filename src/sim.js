@@ -473,6 +473,8 @@ function sim() {
               : null;
     if (!c) return true;
     a.gone = true;
+    const dk = SP[a.sp].n + ': ' + c;
+    deaths[dk] = (deaths[dk] || 0) + 1;
     if (a.sp === 0)
       log(
         a.name +

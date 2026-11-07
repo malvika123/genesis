@@ -11,6 +11,7 @@ function reset(cfg = {}) {
   logs = [];
   kills = [0, 0, 0, 0];
   fished = 0;
+  deaths = {};
   firsts = {};
   maxGen = 0;
   nLessons = 0;
