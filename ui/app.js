@@ -8,38 +8,6 @@ const $ = (id) => document.getElementById(id),
   cx = cv.getContext('2d'),
   cc = $('ch').getContext('2d');
 // ---------- drawing ----------
-function mindHTML(a, m) {
-  const pc = (p) => Math.round(p * 100) + '%';
-  let o = '<br><b>Its mind right now</b> (read from its neural network):';
-  o += '<br>Weighing: ' + m.opts.map((q) => q[0] + ' ' + pc(q[1])).join(', ');
-  o +=
-    '<br>Chose: ' +
-    actName(a, m.act) +
-    (m.forced
-      ? ' — not its choice: ' +
-        (m.act === A_SLEEP ? 'its body is keeping it asleep' : 'its body overrode it') +
-        ' (it would have chosen ' +
-        actName(a, m.chosen) +
-        ')'
-      : '');
-  if (!m.forced) {
-    o +=
-      '<br>Pushed toward it by: ' +
-      (m.pos.length
-        ? m.pos.map((q) => q[0] + ' (' + q[2] + ')').join(', ')
-        : 'nothing strong — it was close to a random pick');
-    if (m.rfc > 0.5) o += ', and an inborn urge it cannot unlearn';
-    if (m.neg.length) o += '<br>Holding it back: ' + m.neg.map((q) => q[0] + ' (' + q[2] + ')').join(', ');
-  }
-  o +=
-    '<br>Its own forecast: ' +
-    (m.V > 0.3 ? 'things will get better' : m.V < -0.3 ? 'things will get worse' : 'about the same') +
-    ' (' +
-    m.V.toFixed(2) +
-    ')';
-  if (a.hunch && tick < a.hunch.until) o += '<br>A hunch is still with it: “' + a.hunch.text + '”';
-  return o;
-}
 // ---------- the floating box: what it is thinking, what it is doing ----------
 const dirTo = (a, p) => CP[(Math.round(Math.atan2(p.y - a.y, p.x - a.x) / (Math.PI / 4)) + 8) % 8];
 function doingWord(a, k) {
@@ -63,105 +31,6 @@ function doingWord(a, k) {
     'sharing food',
   ][k - 8];
 }
-function thinkHTML(a, S, pc) {
-  let o = '';
-  if (a.mind) o += mindHTML(a, a.mind).replace(/^<br>/, '');
-  else o += 'Its mind: wait a moment for the next step…';
-  o +=
-    '<br><br><b>Feelings</b> fear ' +
-    pc(a.fear) +
-    ', loneliness ' +
-    (a.metAny ? pc(a.lo) : 'none (has never met another of its kind)') +
-    ', protectiveness ' +
-    pc(a.pr) +
-    ', desire for a partner ' +
-    pc(a.lu) +
-    ', curiosity ' +
-    pc(Math.min(1, a.g.c * S.cur)) +
-    ' (explored ' +
-    a.vc +
-    ' of 160 areas)';
-  o +=
-    '<br><b>Remembers</b> ' +
-    (a.mw ? 'water to the ' + dirTo(a, a.mw) : 'no water') +
-    ', ' +
-    (a.mf ? 'food to the ' + dirTo(a, a.mf) : 'no food') +
-    ' (memory lasts about ' +
-    S.mem +
-    ' days)';
-  o +=
-    '<br><b>Personality</b> ' +
-    (a.g.b > 1.1 ? 'cautious' : a.g.b < 0.85 ? 'bold' : 'steady') +
-    ', ' +
-    (a.g.so > 1.2 ? 'sociable' : a.g.so < 0.8 ? 'loner' : 'average sociability');
-  o += '<br><b>Lessons so far</b> ' + (a.les.length ? a.les.join('; ') : 'none yet');
-  o +=
-    '<br><b>Brain</b> ' +
-    S.nh +
-    ' neurons; ' +
-    (S.adl >= 1 ? 'keeps learning well into adulthood' : 'learning slows once grown') +
-    '; learning has rewired it by ' +
-    a.learn.toFixed(1);
-  return o;
-}
-function doingHTML(a, S, stage, pc, night) {
-  const i = idx(a.x, a.y),
-    m = a.mind;
-  let now;
-  if (a.asleep) now = 'Sleeping';
-  else if (a.trap > 0) now = 'Stuck in a pit, trying to climb out';
-  else if (m)
-    now = doingWord(a, m.act).replace(/^./, (c) => c.toUpperCase()) + (m.forced ? ' (its body made it)' : '');
-  else now = 'Just looking around';
-  const place = placeOf(a);
-  // who is around, within the distance it can see
-  const r = sightRange(a, night),
-    near = [0, 0, 0, 0];
-  for (const o of ag) if (o !== a && !o.dead && Math.hypot(o.x - a.x, o.y - a.y) <= r) near[o.sp]++;
-  const nm = ['person', 'herbivore', 'predator', 'fish'],
-    around = near
-      .map((n, k) => (n ? n + ' ' + nm[k] + (n > 1 ? (k === 3 ? '' : k === 0 ? '' : 's') : '') : ''))
-      .filter(Boolean);
-  if (near[0] > 1) around[around.findIndex((t) => t.endsWith('person'))] = near[0] + ' people';
-  let o = '<b>' + now + '</b>, ' + place + (night ? ', at night' : ', in daylight');
-  o +=
-    '<br><br><b>Body</b> energy ' +
-    a.e.toFixed(0) +
-    ', water ' +
-    a.w.toFixed(0) +
-    ', health ' +
-    a.hp.toFixed(0) +
-    ', sleepiness ' +
-    pc(a.sl);
-  o +=
-    '<br><b>Who</b> ' +
-    S.n +
-    ', ' +
-    (a.sex ? 'female' : 'male') +
-    ', ' +
-    stage +
-    ' (lifespan ' +
-    (a.lf / TY).toFixed(0) +
-    ' years), generation ' +
-    a.gen;
-  o +=
-    '<br><b>Can see</b> about ' +
-    r.toFixed(1) +
-    ' cells (' +
-    Math.round(r * 3) +
-    ' km)' +
-    (a.asleep ? ', short because it is asleep' : night ? ', shorter at night' : '') +
-    ' — the dashed circle';
-  o += '<br><b>Around it</b> ' + (around.length ? around.join(', ') : 'nobody in sight');
-  const fam = [];
-  if (a.mom && !a.mom.dead && !a.mom.gone) fam.push('its mother ' + (a.mom.name || 'is alive'));
-  if (a.mate && !a.mate.dead && !a.mate.gone) fam.push('its partner ' + (a.mate.name || 'is alive'));
-  if (a.kid && !a.kid.dead && !a.kid.gone) fam.push('its youngest ' + (a.kid.name || 'is alive'));
-  if (fam.length) o += '<br><b>Family</b> ' + fam.join(', ');
-  if (a.shared) o += '<br>Has shared food ' + a.shared + ' times';
-  if (a.hunch && tick < a.hunch.until) o += '<br><b>Following a hunch</b> “' + a.hunch.text + '”';
-  return o;
-}
 
 function placeOf(a) {
   const i = idx(a.x, a.y);
@@ -175,31 +44,154 @@ function placeOf(a) {
         ? 'on grass'
         : ['on bare ground', 'on sand', 'on stony ground'][ter[i]] || 'on bare ground';
 }
+// ---- plain-language reading of the network ----
+const PLAIN_CH = {
+  water: 'sees water',
+  food: 'sees food',
+  'a rock, pit or deep water': 'sees danger (rocks, a pit or deep water)',
+  'a herbivore': 'sees a herbivore',
+  'a person': 'sees a person',
+  'a predator': 'sees a predator',
+  'a possible mate': 'senses a possible partner',
+  family: 'sees family',
+  fish: 'sees fish',
+  'red berries': 'sees red berries',
+};
+const PLAIN = {
+  'food right here': 'there is food right here',
+  'water within reach': 'water is right next to it',
+  'prey within reach': 'prey is within reach',
+  'a mate beside it': 'a partner is right beside it',
+  hunger: 'it is hungry',
+  thirst: 'it is thirsty',
+  tiredness: 'it is tired',
+  pain: 'it is in pain',
+  injury: 'it is hurt',
+  darkness: 'it is dark',
+  'being young': 'it is young',
+  'desire to mate': 'it wants a partner',
+  curiosity: 'it is curious',
+  loneliness: 'it is lonely',
+  'being in deep water': 'it is in deep water',
+  'memory of water': 'it remembers where water is',
+  'memory of food': 'it remembers where food is',
+  'red berries here': 'there are red berries here',
+  'a hungry child nearby': 'a hungry child is nearby',
+  'the urge to eat': 'a strong urge to eat',
+  'the urge to drink': 'a strong urge to drink',
+  'the urge to strike': 'a strong urge to attack',
+};
+function plainReason(n) {
+  const m = /^(.*) to the (.*)$/.exec(n);
+  if (m && PLAIN_CH[m[1]]) return 'it ' + PLAIN_CH[m[1]] + ' to the ' + m[2];
+  return PLAIN[n] || n;
+}
+function plainAct(a, k) {
+  if (k < 8) return 'heads ' + CP[k];
+  return [
+    'stays where it is',
+    'eats',
+    'drinks',
+    'sleeps',
+    'tries to mate',
+    a.sp === 2 ? 'attacks' : a.sp === 0 ? 'grabs' : 'snaps',
+    'shares food',
+  ][k - 8];
+}
+function joinReasons(r) {
+  const m0 = /^(.*) to the (.*)$/.exec(r[0] || ''),
+    m1 = /^(.*) to the (.*)$/.exec(r[1] || '');
+  if (m0 && m1 && m0[1] === m1[1]) return m0[1] + ' to the ' + m0[2] + ' and ' + m1[2];
+  if (r.length === 2 && r[0].startsWith('it sees ') && r[1].startsWith('it sees '))
+    return r[0] + ' and ' + r[1].slice(8);
+  return r.join(' and ');
+}
+const ING = {
+  'stay put': 'staying put',
+  eat: 'eating',
+  drink: 'drinking',
+  sleep: 'sleeping',
+  mate: 'mating',
+  grab: 'grabbing',
+  attack: 'attacking',
+  snap: 'snapping',
+  'give food': 'sharing food',
+};
+const cap = (s) => s.replace(/^./, (c) => c.toUpperCase());
 function thoughtText(a) {
   const m = a.mind;
   if (!m) return 'Taking in the world…';
   if (m.forced)
-    return (
-      (m.act === A_SLEEP ? 'Its body keeps it asleep' : 'Its body took over') +
-      '; it would have chosen to ' +
-      actName(a, m.chosen)
-    );
+    return m.act === A_SLEEP
+      ? 'Asleep. Its body needs rest, so it can’t wake up yet.'
+      : 'Its instincts took over: it ' + plainAct(a, m.act) + ' (it wanted to ' + actName(a, m.chosen) + ').';
   const why = m.pos.map((q) => q[0]);
   if (m.rfc > 0.5)
     why.unshift(
       m.act === A_EAT ? 'the urge to eat' : m.act === A_DRINK ? 'the urge to drink' : 'the urge to strike'
     );
+  const sure = m.sure < 0.15 ? 'Just a guess.' : m.sure < 0.4 ? 'Leaning that way.' : 'Fairly sure.';
   let t = why.length
-    ? why
-        .slice(0, 2)
-        .join(', ')
-        .replace(/^./, (c) => c.toUpperCase()) +
-      ' → ' +
-      actName(a, m.act)
-    : 'Nothing clear; it picks ' + actName(a, m.act) + ' almost at random';
-  t += ' (' + Math.round(m.sure * 100) + '% sure)';
-  if (a.hunch && tick < a.hunch.until) t += ' · hunch: “' + a.hunch.text + '”';
+    ? cap(joinReasons(why.slice(0, 2).map(plainReason))) + ', so it ' + plainAct(a, m.act) + '. ' + sure
+    : 'Nothing clear is guiding it yet, so it tries something: it ' + plainAct(a, m.act) + '.';
+  if (a.hunch && tick < a.hunch.until) t += ' A thought stays with it: “' + a.hunch.text + '”';
   return t;
+}
+function feelingsText(a, S) {
+  const f = [];
+  if (a.e < 65) f.push(a.e < 35 ? 'very hungry' : 'hungry');
+  if (a.w < 65) f.push(a.w < 35 ? 'very thirsty' : 'thirsty');
+  if (a.sl > 0.5) f.push(a.sl > 0.8 ? 'exhausted' : 'sleepy');
+  if (a.hp < 60) f.push('hurt');
+  if (a.fear > 0.25) f.push('afraid');
+  if (a.metAny && a.lo > 0.25) f.push('lonely');
+  if (a.pr > 0.5) f.push('protective of its young');
+  if (a.lu > 0.5) f.push('longing for a partner');
+  if (Math.min(1, a.g.c * S.cur) > 0.5) f.push('curious');
+  return f.length ? f.join(', ') : 'calm';
+}
+function thinkHTML(a, S) {
+  let o = '<b>' + thoughtText(a) + '</b>';
+  o += '<br><br>Feels: ' + feelingsText(a, S);
+  if (a.mind && !a.mind.forced)
+    o +=
+      '<br>Also considered: ' +
+      a.mind.opts
+        .filter((q) => q[0] !== actName(a, a.mind.act))
+        .slice(0, 2)
+        .map((q) => ING[q[0]] || q[0].replace(/^go /, 'heading '))
+        .join(' or ');
+  const ex = a.mind ? a.mind.V : 0;
+  o += '<br>Expects things to ' + (ex > 0.3 ? 'get better' : ex < -0.3 ? 'get worse' : 'stay about the same');
+  const mem = [
+    a.mw ? 'water to the ' + dirTo(a, a.mw) : '',
+    a.mf ? 'food to the ' + dirTo(a, a.mf) : '',
+  ].filter(Boolean);
+  o += '<br>Remembers: ' + (mem.length ? mem.join(', ') : 'nothing useful yet');
+  o += '<br>Has learned: ' + (a.les.length ? a.les.join('; ') : 'nothing yet');
+  return o;
+}
+function doingHTML(a, S, stage, night) {
+  const r = sightRange(a, night),
+    near = [0, 0, 0, 0];
+  for (const o of ag) if (o !== a && !o.dead && Math.hypot(o.x - a.x, o.y - a.y) <= r) near[o.sp]++;
+  const nm = [
+      ['person', 'people'],
+      ['herbivore', 'herbivores'],
+      ['predator', 'predators'],
+      ['fish', 'fish'],
+    ],
+    around = near.map((n, k) => (n ? n + ' ' + nm[k][n > 1 ? 1 : 0] : '')).filter(Boolean);
+  let o = '<b>' + doingText(a) + '</b>';
+  o += '<br><br>' + (a.sex ? 'Female' : 'Male') + ' ' + stage + ', generation ' + a.gen;
+  o += '<br>Energy ' + a.e.toFixed(0) + ' · water ' + a.w.toFixed(0) + ' · health ' + a.hp.toFixed(0);
+  o += '<br>Nearby: ' + (around.length ? around.join(', ') : 'no one in sight');
+  const fam = [];
+  if (a.mom && !a.mom.dead && !a.mom.gone) fam.push('mother ' + (a.mom.name || ''));
+  if (a.mate && !a.mate.dead && !a.mate.gone) fam.push('partner ' + (a.mate.name || ''));
+  if (a.kid && !a.kid.dead && !a.kid.gone) fam.push('child ' + (a.kid.name || ''));
+  if (fam.length) o += '<br>Family alive: ' + fam.map((s) => s.trim()).join(', ');
+  return o;
 }
 function doingText(a) {
   const m = a.mind;
@@ -355,18 +347,17 @@ function draw() {
     cx.stroke();
     cx.restore();
     const stage =
-        sel.age < S.mat * S.wn
-          ? 'baby'
-          : sel.age < S.mat
-            ? 'child'
-            : sel.age < S.smat
-              ? 'teenager (too young to mate)'
-              : sel.age < sel.lf * 0.7
-                ? 'adult'
-                : 'elder',
-      pc = (x) => (x * 100).toFixed(0) + '%';
-    $('ithink').innerHTML = thinkHTML(sel, S, pc);
-    $('idoing').innerHTML = doingHTML(sel, S, stage, pc, night);
+      sel.age < S.mat * S.wn
+        ? 'baby'
+        : sel.age < S.mat
+          ? 'child'
+          : sel.age < S.smat
+            ? 'teenager'
+            : sel.age < sel.lf * 0.7
+              ? 'adult'
+              : 'elder';
+    $('ithink').innerHTML = thinkHTML(sel, S);
+    $('idoing').innerHTML = doingHTML(sel, S, stage, night);
   }
   const c = [0, 0, 0, 0];
   ag.forEach((a) => c[a.sp]++);
