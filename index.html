@@ -37,8 +37,8 @@ nav button[aria-selected=true]{background:var(--acc);color:var(--bg)}
 #dock{position:absolute;right:16px;bottom:16px;width:min(390px,calc(100% - 32px));max-height:calc(100% - 90px);display:flex;flex-direction:column;background:color-mix(in srgb,var(--panel) 72%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.25);overflow:hidden}
 #dock[hidden]{display:none}
 #dock .dh{display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid var(--line)}
-#dock .dh b{font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:40%}
-#dock .dt{display:flex;gap:2px;margin-left:auto}
+#dock .dh b{font-size:.95rem;flex:1;min-width:0;line-height:1.2}
+#dock .dt{display:flex;gap:2px}
 #dock .dt button,#dmin{border:0;background:transparent;color:var(--mute);padding:4px 10px;border-radius:8px}
 #dock .dt button[aria-selected=true]{background:var(--acc);color:var(--bg)}
 #dock.min .db{display:none}

@@ -416,7 +416,13 @@ function updateDock() {
     d.hidden = true;
     return;
   }
-  const t = sel.name || 'A ' + SP[sel.sp].n.toLowerCase();
+  const yrs = sel.age / TY,
+    t =
+      (sel.name || SP[sel.sp].n) +
+      ', ' +
+      (yrs < 1
+        ? ((m) => m + (m === 1 ? ' month' : ' months'))(Math.max(1, Math.round(yrs * 12)))
+        : yrs.toFixed(1) + ' years');
   if ($('dname').textContent !== t) $('dname').textContent = t;
   d.hidden = false;
 }
