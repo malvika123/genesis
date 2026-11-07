@@ -43,6 +43,15 @@ function mindHTML(a, m) {
 // ---------- the floating box: what it is thinking, what it is doing ----------
 const dirTo = (a, p) => CP[(Math.round(Math.atan2(p.y - a.y, p.x - a.x) / (Math.PI / 4)) + 8) % 8];
 function doingWord(a, k) {
+  const nearWater = () => {
+    for (let dy = -1; dy <= 1; dy++)
+      for (let dx = -1; dx <= 1; dx++)
+        if (inb(a.x + dx, a.y + dy) && water[idx(a.x + dx, a.y + dy)]) return true;
+    return false;
+  };
+  if (k === A_DRINK && a.sp !== 3 && !nearWater()) return 'trying to drink, but there is no water here';
+  if (k === A_EAT && a.sp < 2 && !(food[idx(a.x, a.y)] > 0.05) && !water[idx(a.x, a.y)])
+    return 'trying to eat, but there is nothing to eat here';
   if (k < 8) return 'walking ' + CP[k];
   return [
     'staying put',
@@ -104,15 +113,7 @@ function doingHTML(a, S, stage, pc, night) {
   else if (m)
     now = doingWord(a, m.act).replace(/^./, (c) => c.toUpperCase()) + (m.forced ? ' (its body made it)' : '');
   else now = 'Just looking around';
-  const place = water[i]
-    ? deep[i]
-      ? 'in deep water'
-      : 'in shallow water'
-    : pit[i]
-      ? 'in a pit'
-      : food[i] > 0.4
-        ? 'on grass'
-        : ['on bare ground', 'on sand', 'on stony ground'][ter[i]] || 'on bare ground';
+  const place = placeOf(a);
   // who is around, within the distance it can see
   const r = sightRange(a, night),
     near = [0, 0, 0, 0];
@@ -162,6 +163,85 @@ function doingHTML(a, S, stage, pc, night) {
   return o;
 }
 
+function placeOf(a) {
+  const i = idx(a.x, a.y);
+  return water[i]
+    ? deep[i]
+      ? 'in deep water'
+      : 'in shallow water'
+    : pit[i]
+      ? 'in a pit'
+      : food[i] > 0.4
+        ? 'on grass'
+        : ['on bare ground', 'on sand', 'on stony ground'][ter[i]] || 'on bare ground';
+}
+function thoughtText(a) {
+  const m = a.mind;
+  if (!m) return 'Taking in the world…';
+  if (m.forced)
+    return (
+      (m.act === A_SLEEP ? 'Its body keeps it asleep' : 'Its body took over') +
+      '; it would have chosen to ' +
+      actName(a, m.chosen)
+    );
+  const why = m.pos.map((q) => q[0]);
+  if (m.rfc > 0.5)
+    why.unshift(
+      m.act === A_EAT ? 'the urge to eat' : m.act === A_DRINK ? 'the urge to drink' : 'the urge to strike'
+    );
+  let t = why.length
+    ? why
+        .slice(0, 2)
+        .join(', ')
+        .replace(/^./, (c) => c.toUpperCase()) +
+      ' → ' +
+      actName(a, m.act)
+    : 'Nothing clear; it picks ' + actName(a, m.act) + ' almost at random';
+  t += ' (' + Math.round(m.sure * 100) + '% sure)';
+  if (a.hunch && tick < a.hunch.until) t += ' · hunch: “' + a.hunch.text + '”';
+  return t;
+}
+function doingText(a) {
+  const m = a.mind;
+  let now = a.asleep
+    ? 'Sleeping'
+    : a.trap > 0
+      ? 'Stuck in a pit, climbing out'
+      : m
+        ? doingWord(a, m.act).replace(/^./, (c) => c.toUpperCase())
+        : 'Looking around';
+  return now + ', ' + placeOf(a);
+}
+let tipTab = 'think';
+function updateTip() {
+  const tip = $('tip');
+  if (!sel || sel.gone || !$('v-world').offsetParent) {
+    tip.hidden = true;
+    return;
+  }
+  const t = tipTab === 'think' ? thoughtText(sel) : doingText(sel);
+  if ($('tiptxt').textContent !== t) $('tiptxt').textContent = t;
+  tip.hidden = false;
+  const cr = cv.getBoundingClientRect(),
+    wr = $('v-world').getBoundingClientRect(),
+    px = cr.left - wr.left + ((sel.x + 0.5) / W) * cr.width,
+    py = cr.top - wr.top + (sel.y / H) * cr.height - 10,
+    w = tip.offsetWidth,
+    h = tip.offsetHeight;
+  const left = clamp(px - w / 2, 4, wr.width - w - 4),
+    below = py - h < 4;
+  tip.style.left = left + 'px';
+  tip.style.top = (below ? py + cr.height / H + 24 : py - h) + 'px';
+}
+document.querySelectorAll('[data-tt]').forEach(
+  (b) =>
+    (b.onclick = (e) => {
+      e.stopPropagation();
+      tipTab = b.dataset.tt;
+      document.querySelectorAll('[data-tt]').forEach((x) => x.setAttribute('aria-selected', x === b));
+      updateTip();
+    })
+);
 function sightRange(a, night) {
   // must match the range used in senses.js
   return Math.max(1.5, a.g.v * (night ? SP[a.sp].nv : 1) * (a.asleep ? 0.3 : 1));
@@ -274,17 +354,6 @@ function draw() {
     cx.arc(sel.x * C + C / 2, sel.y * C + C / 2, sightRange(sel, night) * C, 0, 7);
     cx.stroke();
     cx.restore();
-    cx.font = '12px sans-serif';
-    const tw = cx.measureText(sel.th).width + 12,
-      bx = clamp(sel.x * C - tw / 2, 2, W * C - tw - 2),
-      by = Math.max(2, sel.y * C - 30);
-    cx.fillStyle = v('--panel');
-    cx.fillRect(bx, by, tw, 20);
-    cx.strokeStyle = v('--line');
-    cx.lineWidth = 1;
-    cx.strokeRect(bx, by, tw, 20);
-    cx.fillStyle = v('--ink');
-    cx.fillText(sel.th, bx + 6, by + 14);
     const stage =
         sel.age < S.mat * S.wn
           ? 'baby'
@@ -363,6 +432,7 @@ function loop() {
   }
   draw();
   updateDock();
+  updateTip();
   requestAnimationFrame(loop);
 }
 $('play').onclick = () => {
