@@ -40,6 +40,10 @@ function mindHTML(a, m) {
   if (a.hunch && tick < a.hunch.until) o += '<br>A hunch is still with it: “' + a.hunch.text + '”';
   return o;
 }
+function sightRange(a, night) {
+  // must match the range used in senses.js
+  return Math.max(1.5, a.g.v * (night ? SP[a.sp].nv : 1) * (a.asleep ? 0.3 : 1));
+}
 function draw() {
   cx.setTransform(cv.width / (W * C), 0, 0, cv.height / (H * C), 0, 0);
   const s = getComputedStyle(document.documentElement),
@@ -138,6 +142,16 @@ function draw() {
     cx.beginPath();
     cx.arc(sel.x * C + C / 2, sel.y * C + C / 2, 8, 0, 7);
     cx.stroke();
+    // how far it can see right now (the same range its senses use)
+    cx.save();
+    cx.strokeStyle = v('--ink');
+    cx.globalAlpha = 0.6;
+    cx.lineWidth = 1;
+    cx.setLineDash([4, 4]);
+    cx.beginPath();
+    cx.arc(sel.x * C + C / 2, sel.y * C + C / 2, sightRange(sel, night) * C, 0, 7);
+    cx.stroke();
+    cx.restore();
     cx.font = '12px sans-serif';
     const tw = cx.measureText(sel.th).width + 12,
       bx = clamp(sel.x * C - tw / 2, 2, W * C - tw - 2),
@@ -208,6 +222,13 @@ function draw() {
       ' (memory lasts about ' +
       S.mem +
       ' days)' +
+      '<br>Sight: about ' +
+      sightRange(sel, night).toFixed(1) +
+      ' cells (' +
+      Math.round(sightRange(sel, night) * 3) +
+      ' km) right now' +
+      (sel.asleep ? ', short because it is asleep' : night ? ', shorter because it is night' : '') +
+      ' (dashed circle on the map)' +
       '<br>Brain: ' +
       S.nh +
       ' neurons; ' +
