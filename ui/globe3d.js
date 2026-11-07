@@ -250,6 +250,14 @@ const G3D = { ok: false };
       GL.lon0 += GL.vel;
       GL.vel += ((GL.spin ? 0.0012 : 0) - GL.vel) * 0.03;
     }
+    // gently follow a creature you asked to see
+    if (GL.follow && GL.follow === sel && !GL.follow.gone && !GL.held) {
+      let dl = lonOfX(sel.x) - GL.lon0;
+      dl = Math.atan2(Math.sin(dl), Math.cos(dl));
+      GL.lon0 += dl * 0.08;
+      GL.lat0 += (latOfY(sel.y) - GL.lat0) * 0.08;
+      GL.vel = 0;
+    }
     aim();
     // clouds thin out as you come close, so you can see the ground you zoomed in on
     clouds.material.opacity = clamp(1.25 - 0.22 * GL.zoom, 0.15, 0.9);

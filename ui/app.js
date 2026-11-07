@@ -752,6 +752,29 @@ function screenPos(a) {
   return [P[0] * k, P[1] * k - 6, ((2 * Math.PI * R0()) / W) * k];
 }
 
+const drawHud = { k: '' };
+// fly to the next creature of a kind, select it and show what it is thinking
+const findAt = [0, 0, 0, 0];
+function findOne(sp) {
+  const list = ag.filter((a) => a.sp === sp && !a.dead);
+  if (!list.length) return;
+  const a = list[findAt[sp]++ % list.length];
+  sel = a;
+  fillIdeas();
+  if (view === 'globe') {
+    GL.lon0 = lonOfX(a.x);
+    GL.lat0 = latOfY(a.y);
+    GL.zoom = Math.max(GL.zoom, 2.6);
+    GL.spin = false;
+    GL.vel = 0;
+    GL.follow = a; // keep it in view as it walks, until you drag the planet
+    $('ghint').hidden = true;
+  }
+}
+$('hud').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-find]');
+  if (b) findOne(+b.dataset.find);
+});
 function draw() {
   const s = getComputedStyle(document.documentElement),
     v = (n) => s.getPropertyValue(n).trim();
@@ -802,16 +825,26 @@ function draw() {
   $('stats').innerHTML = st
     .map((x) => '<div class="stat"><b>' + x[0] + '</b><span>' + x[1] + '</span></div>')
     .join('');
-  $('hud').innerHTML = [
-    c[0] + ' people',
-    c[1] + ' herbivores',
-    c[2] + ' predators',
-    c[3] + ' fish',
-    'Year ' + Math.floor(tick / TY) + ', day ' + dayN(),
-    'North: ' + seasonName(0) + ' · South: ' + seasonName(H - 1),
-  ]
-    .map((t) => '<span>' + t + '</span>')
-    .join('');
+  // the counts are buttons: tap one to fly to the next creature of that kind
+  const hudKey = c.join() + (tick % DAY) + seasonName(0);
+  if (hudKey !== drawHud.k) {
+    drawHud.k = hudKey;
+    $('hud').innerHTML =
+      [
+        [0, c[0] + ' people'],
+        [1, c[1] + ' herbivores'],
+        [2, c[2] + ' predators'],
+        [3, c[3] + ' fish'],
+      ]
+        .map(([k, t]) => '<button data-find="' + k + '" title="Show me one">' + t + '</button>')
+        .join('') +
+      [
+        'Year ' + Math.floor(tick / TY) + ', day ' + dayN(),
+        'North: ' + seasonName(0) + ' · South: ' + seasonName(H - 1),
+      ]
+        .map((t) => '<span>' + t + '</span>')
+        .join('');
+  }
   cc.clearRect(0, 0, 440, 120);
   const mx = Math.max(20, ...hist.flat());
   [
@@ -935,6 +968,7 @@ cv.addEventListener('pointerdown', (e) => {
   ptr.set(e.pointerId, { x: e.clientX, y: e.clientY, x0: e.clientX, y0: e.clientY });
   dragged = false;
   if (view === 'globe') {
+    GL.follow = null;
     GL.held = true;
     GL.vel = 0;
     $('ghint').hidden = true;
