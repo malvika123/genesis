@@ -56,7 +56,8 @@ function sense(a, x, night) {
   const S = a.S,
     here0 = idx(a.x, a.y),
     // in thick forest you can't see far, and at night only as far as the eyes allow
-    r = Math.max(1.5, a.g.v * (night ? S.nv : 1) * (1 - 0.35 * cover(here0))),
+    lit = night && (a.hand === 4 || fireNear(a.x, a.y) > 0.05), // firelight lets it see at night
+    r = Math.max(1.5, a.g.v * (night ? (lit ? Math.max(S.nv, 0.8) : S.nv) : 1) * (1 - 0.35 * cover(here0))),
     // Eyes see only in front, over each kind's real field of view: about 200° for people, most of
     // the way round for deer, bison and rabbits, whose eyes are on the sides of the head. Having just
     // stood still, a creature has looked all around. Asleep, its eyes are shut. Fish see all round.
@@ -120,7 +121,7 @@ function sense(a, x, night) {
       // and herbivores can browse the trees
       const f =
         (a.sp === 0 || a.S.omni
-          ? Math.max(food[i], fruit[i] * 1.4)
+          ? Math.max(food[i], fruit[i] * 1.4, COOK[i] * 1.6)
           : a.sp === 1
             ? Math.max(food[i], tree[i] * 0.3)
             : food[i]) *
@@ -128,6 +129,8 @@ function sense(a, x, night) {
         (0.15 + te);
       if (f > x[b + 1]) x[b + 1] = f;
       if (tree[i] > 0.1 && x[b + 12] < cl * tree[i]) x[b + 12] = cl * tree[i];
+      // fire: flames and smoke are hard to miss
+      if (FIRE[i] > 0.03 && x[b + 15] < cl) x[b + 15] = cl;
       if (a.sp === 0) {
         // people notice loose stones and sticks, and nuts under the trees
         if (lying(i) && x[b + 13] < cl) x[b + 13] = cl;
@@ -148,6 +151,7 @@ function sense(a, x, night) {
         if (x[b + c] < q) x[b + c] = q;
         if (o.k === a.k && o.sex !== a.sex && o.rd && a.rd && x[b + 6] < cl) x[b + 6] = cl;
         if ((o === a.kid || o === a.mom || o.mom === a) && x[b + 7] < cl) x[b + 7] = cl;
+        if (o.hand === 4 && x[b + 15] < cl * 0.6) x[b + 15] = cl * 0.6; // someone carrying fire
       }
   }
   if (a.rd) {
@@ -206,7 +210,7 @@ function sense(a, x, night) {
   x[HB] =
     ((a.sp < 2 || a.S.omni) && !water[here]) || (a.sp === 3 && water[here])
       ? a.sp === 0 || a.S.omni
-        ? Math.max(food[here], fruit[here])
+        ? Math.max(food[here], fruit[here], COOK[here])
         : a.sp === 1
           ? Math.max(food[here], tree[here] > 0.3 ? 0.2 : 0)
           : food[here]
@@ -258,14 +262,15 @@ function sense(a, x, night) {
   x[IB + 18] = a.cold;
   x[IB + 25] = a.heat;
   x[IB + 26] = a.rage;
+  x[FIREIN] = Math.min(1, fireNear(a.x, a.y) * 2 + (a.hand === 4 ? 0.3 : 0));
   // short-term memory: what its brain was doing a moment ago
   for (let j = 0; j < NM; j++) x[IB + 27 + j] = a.hm[j];
   if (a.sp !== 3) hear(a, x);
   if (a.sp === 0) {
-    x[IB + 19] = a.hand === 1 ? 1 : 0;
-    x[IB + 20] = a.hand === 2 ? 1 : 0;
+    x[IB + 19] = a.hand === 1 || a.hand === 5 ? 1 : 0; // a stone (or a shiny one)
+    x[IB + 20] = a.hand === 2 || a.hand === 4 ? 1 : 0; // a stick (perhaps burning)
     x[IB + 21] = a.hand === 3 ? 1 : 0;
-    x[IB + 22] = stone[here] + flake[here] > 0 ? 1 : 0;
+    x[IB + 22] = stone[here] + flake[here] + pyrite[here] > 0 ? 1 : 0;
     x[IB + 23] = stick[here] > 0 ? 1 : 0;
     x[IB + 24] = nut[here] > 0.05 ? 1 : 0;
   }

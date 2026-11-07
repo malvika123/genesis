@@ -106,6 +106,10 @@ function newW(sp, inst, H = SP[sp].hmax) {
       }
       D(s, s * NCH + 6, 5);
       D(s, s * NCH + 7, 1.5);
+      if (sp === 1 || sp === 2) {
+        D((s + 4) % 8, s * NCH + 15, 4);
+        D(s, s * NCH + 15, -4);
+      } else if (sp === 0) D(s, s * NCH + 15, -0.6);
     }
   }
   return w;

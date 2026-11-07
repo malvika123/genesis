@@ -27,8 +27,9 @@ return {
   whisper: (a, text) => { a.wh = text; },
   watch: (a) => { sel = a; },
   state: () => ({ deaths, ag, tick, logs, fished, kills, maxGen, nLessons, over, water, deep, food, pit, poison, rock, salt, river }),
-  items: () => ({ stone, stick, flake, nut, lying, nutCap }),
+  items: () => ({ stone, stick, flake, nut, pyrite, lying, nutCap }),
   talk: () => ({ SNDSTAT, BASE, GENSTAT, meaning, SAYN, HEARD, CALLS }),
+  fire: () => ({ FIRE, SMOL, BURNT, COOK, fireStats, BURNING, dryness, fuelOf, ignite, pyrite }),
   alt: () => alt,
   sense, SP, DAY, TY, IB, HB, NCH, A_STAY, A_EAT, A_SLEEP, A_GIVE, A_TAKE, A_DROP, A_STRIKE, A_SAY, NSAY, HEAR, O3, NI,
 };`;

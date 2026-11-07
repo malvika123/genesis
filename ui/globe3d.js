@@ -456,6 +456,7 @@ const G3D = { ok: false };
         drawCreature(cx, a, P[0], P[1], ks, v, isNightAt(a.x) ? 0.5 : 1);
       }
     if (!GL.eye) drawWeatherFx(cx, project, GL.zoom >= 2.5);
+    drawFire(cx, project);
     if (GL.zoom >= 5 || GL.eye) drawGroundItems(cx, project);
     drawTalk(
       cx,

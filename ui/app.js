@@ -44,24 +44,39 @@ function doingWord(a, k) {
     const i = idx(a.x, a.y);
     return a.hand
       ? 'reaching for something, but its hand is already full'
-      : stone[i]
-        ? 'picking up a stone'
-        : stick[i]
-          ? 'picking up a stick'
-          : flake[i]
-            ? 'picking up a sharp stone'
-            : 'reaching for something, but there is nothing here to pick up';
+      : FIRE[i] > 0.05 && stick[i]
+        ? 'picking up a burning stick'
+        : pyrite[i]
+          ? 'picking up a shiny yellow stone'
+          : stone[i]
+            ? 'picking up a stone'
+            : stick[i]
+              ? 'picking up a stick'
+              : flake[i]
+                ? 'picking up a sharp stone'
+                : 'reaching for something, but there is nothing here to pick up';
   }
-  if (k === A_DROP) return a.hand ? 'putting down ' + HAND[a.hand] : 'opening its empty hands';
+  if (k === A_DROP)
+    return a.hand === 4
+      ? 'putting the burning stick down'
+      : a.hand
+        ? 'putting down ' + HAND[a.hand]
+        : 'opening its empty hands';
   if (k === A_STRIKE) {
     const i = idx(a.x, a.y);
     return !a.hand
       ? 'swinging its empty hands'
-      : a.hand === 1 && nut[i] > 0.05
-        ? 'cracking a nut with a stone'
-        : a.hand === 1 && stone[i]
-          ? 'knocking two stones together'
-          : 'banging ' + HAND[a.hand] + ' on the ground';
+      : a.hand === 2 && FIRE[i] > 0.05
+        ? 'pushing a stick into the fire'
+        : a.hand === 5 && stone[i] + flake[i]
+          ? 'striking the shiny stone against a stone — sparks fly'
+          : a.hand === 2 && stick[i]
+            ? 'rubbing its stick hard against another'
+            : a.hand === 1 && nut[i] > 0.05
+              ? 'cracking a nut with a stone'
+              : a.hand === 1 && stone[i]
+                ? 'knocking two stones together'
+                : 'banging ' + HAND[a.hand] + ' on the ground';
   }
   if (k >= A_SAY) return 'calling out “' + SAYN[k - A_SAY] + '”';
   if (k < 8) return 'walking ' + CP[k];
@@ -78,6 +93,8 @@ function doingWord(a, k) {
 
 function placeOf(a) {
   const i = idx(a.x, a.y);
+  if (FIRE[i] > 0.03) return 'in the middle of a fire';
+  if (fireNear(a.x, a.y) > 0.03) return 'by a fire';
   if (iced(i)) return salt[i] ? 'on the sea ice' : 'on frozen water';
   if (salt[i]) return deep[i] ? 'out in the deep sea' : 'in the shallow sea';
   if (river[i]) return 'in a river';
@@ -110,6 +127,7 @@ const PLAIN_CH = {
   trees: 'sees trees',
   'a stone or stick on the ground': 'sees a stone or stick lying there',
   nuts: 'sees nuts',
+  fire: 'sees fire',
 };
 const PLAIN = {
   'food right here': 'there is food right here',
@@ -133,6 +151,7 @@ const PLAIN = {
   'memory of water': 'it remembers where water is',
   'memory of food': 'it remembers where food is',
   'what it was just thinking': 'it is still caught up in what just happened',
+  'the warmth of a fire': 'it feels the warmth of a fire',
   'red berries here': 'there are red berries here',
   'a hungry child nearby': 'a hungry child is nearby',
   'a stone in its hand': 'it is holding a stone',
@@ -354,6 +373,7 @@ function seesText(a) {
       [9, 'red berries'],
       [14, 'nuts'],
       [13, 'stones or sticks'],
+      [15, 'fire'],
     ],
     seen = [];
   for (const [c, n] of want) {
@@ -497,6 +517,12 @@ function drawTerrain(g, v, relief = true) {
           g.fillRect(x * C + 6, y * C + 5, 3, 3);
         }
       }
+    }
+  // freshly burnt ground: black ash, slowly greening again
+  for (let i = 0; i < W * H; i++)
+    if (BURNT[i] > 0.05 && !water[i]) {
+      g.fillStyle = 'rgba(28,22,18,' + (0.7 * BURNT[i]).toFixed(2) + ')';
+      g.fillRect((i % W) * C, ((i / W) | 0) * C, C, C);
     }
   // Rivers: a square is 3 km across and a river only tens of metres wide, so a river square is land
   // with a channel running through it, joined to the next stretch of river, the lake or the sea.
@@ -712,6 +738,30 @@ function drawHeld(g, kind, hx, hy, h, lw) {
     g.moveTo(hx - h * 0.05, hy + h * 0.08);
     g.lineTo(hx + h * 0.1, hy - h * 0.38);
     g.stroke();
+  } else if (kind === 4) {
+    // a burning stick: the wood, and a flickering flame at its end
+    g.strokeStyle = '#5a3a22';
+    g.lineWidth = Math.max(1, lw * 0.9);
+    g.beginPath();
+    g.moveTo(hx - h * 0.05, hy + h * 0.08);
+    g.lineTo(hx + h * 0.1, hy - h * 0.38);
+    g.stroke();
+    const fl = 1 + 0.25 * Math.sin(performance.now() / 70);
+    g.fillStyle = '#ffb02e';
+    g.beginPath();
+    g.ellipse(hx + h * 0.11, hy - h * 0.45, h * 0.06 * fl, h * 0.11 * fl, 0, 0, 7);
+    g.fill();
+    g.fillStyle = '#fff1a8';
+    g.beginPath();
+    g.ellipse(hx + h * 0.11, hy - h * 0.43, h * 0.03, h * 0.06 * fl, 0, 0, 7);
+    g.fill();
+  } else if (kind === 5) {
+    g.fillStyle = '#c9a43a'; // pyrite: brassy, shiny
+    g.beginPath();
+    g.ellipse(hx, hy, h * 0.07, h * 0.055, -0.3, 0, 7);
+    g.fill();
+    g.fillStyle = '#f3e3a0';
+    g.fillRect(hx - h * 0.02, hy - h * 0.03, h * 0.025, h * 0.025);
   } else if (kind === 3) {
     g.fillStyle = '#d4d8d6';
     g.beginPath();
@@ -721,6 +771,57 @@ function drawHeld(g, kind, hx, hy, h, lw) {
     g.closePath();
     g.fill();
   }
+}
+// Fire: flames over every burning square, sized by how fiercely it burns, and smoke drifting off
+// downwind. P(x, y) gives where a place is on screen and how big a square looks.
+function drawFire(g, P) {
+  if (!BURNING.length) return;
+  const t = performance.now() / 1000;
+  for (const i of BURNING) {
+    const f = FIRE[i];
+    if (!f) continue;
+    const x = i % W,
+      y = (i / W) | 0,
+      Q = P(x, y);
+    if (!Q) continue;
+    const k = Math.max(4, Q[2]),
+      [u, v] = windAt(y);
+    // smoke: a few grey puffs rising and drifting with the wind
+    for (let s = 0; s < 3; s++) {
+      const age = (t * 0.5 + s / 3 + i * 0.07) % 1,
+        S = P(x + u * 8 * age, y + v * 8 * age);
+      if (!S) continue;
+      g.globalAlpha = 0.35 * (1 - age) * Math.min(1, f * 2);
+      g.fillStyle = '#6f6a66';
+      g.beginPath();
+      g.arc(S[0], S[1] - k * (0.3 + age), k * (0.15 + 0.35 * age), 0, 7);
+      g.fill();
+    }
+    // flames: a few flickering tongues of fire scattered over the square
+    const n = 2 + Math.round(f * 4);
+    for (let s = 0; s < n; s++) {
+      const a = ((i * 37 + s * 101) % 100) / 100 - 0.5,
+        b = ((i * 61 + s * 53) % 100) / 100 - 0.5,
+        F = P(x + a * 0.8, y + b * 0.8);
+      if (!F) continue;
+      const fl = 0.75 + 0.35 * Math.sin(t * 9 + s * 2 + i),
+        hgt = k * (0.12 + 0.25 * f) * fl,
+        wid = hgt * 0.45;
+      g.globalAlpha = 0.9;
+      g.fillStyle = '#e8541c';
+      g.beginPath();
+      g.moveTo(F[0] - wid, F[1]);
+      g.quadraticCurveTo(F[0] - wid * 0.3, F[1] - hgt * 0.6, F[0], F[1] - hgt);
+      g.quadraticCurveTo(F[0] + wid * 0.3, F[1] - hgt * 0.6, F[0] + wid, F[1]);
+      g.fill();
+      g.fillStyle = '#ffc93c';
+      g.beginPath();
+      g.moveTo(F[0] - wid * 0.5, F[1]);
+      g.quadraticCurveTo(F[0], F[1] - hgt * 0.5, F[0] + wid * 0.5, F[1]);
+      g.fill();
+    }
+  }
+  g.globalAlpha = 1;
 }
 // What people say, drawn as a small speech mark over their heads for a moment after they call.
 // P(a) gives [x, y of the feet, how tall it looks] on the canvas, or null.
@@ -848,6 +949,14 @@ function drawGroundItems(g, P) {
       g.fillStyle = k < stone[i] ? '#8f8e86' : '#d4d8d6';
       g.beginPath();
       g.ellipse(S[0], S[1], r * 1.3, r * 0.8, 0, 0, 7);
+      g.fill();
+    }
+    for (let k = 0; k < pyrite[i]; k++) {
+      const S = spot(n++);
+      if (!S) continue;
+      g.fillStyle = '#c9a43a';
+      g.beginPath();
+      g.ellipse(S[0], S[1], r * 1.1, r * 0.8, 0, 0, 7);
       g.fill();
     }
     g.strokeStyle = '#6e4a2c';
@@ -1181,6 +1290,7 @@ function drawFlat(v) {
   cx.setTransform(cv.width / (W * C), 0, 0, cv.height / (H * C), 0, 0);
   for (const a of ag) drawCreature(cx, a, a.rx * C + C / 2, a.ry * C + C / 2, 1, v);
   drawWeatherFx(cx, (x, y) => [x * C + C / 2, y * C + C / 2, C], false);
+  drawFire(cx, (x, y) => [x * C + C / 2, y * C + C / 2, C]);
   drawTalk(cx, (a) => [a.rx * C + C / 2, a.ry * C + C / 2, 6], 0.6);
   // night is local: shade the half of the world where the sun is down
   cx.fillStyle = 'rgba(8,16,48,.38)';

@@ -214,7 +214,11 @@ function updateWeather() {
     CONV[i] = conv;
     // A thunderstorm: a towering cloud built by strong convection. Lightning comes from it.
     THUNDER[i] = conv > 0.25 && CLD[i] > 0.05 ? 1 : 0;
-    if (THUNDER[i] && rnd() < 0.015 * conv) STRIKES.push({ x: i % W, y, t: tick });
+    // lightning reaches the ground anywhere under and around the storm, often kilometres from its core
+    if (THUNDER[i] && rnd() < 0.015 * conv) {
+      const sy = clamp(y + Math.round((rnd() * 2 - 1) * 1.5), 0, H - 1);
+      STRIKES.push({ x: wx((i % W) + Math.round((rnd() * 2 - 1) * 1.5)), y: sy, t: tick });
+    }
     if (!water[i]) {
       // rain soaks in; water also slowly drains away deeper into the ground
       const m = MOIST[i] + r * 1.2 - 0.0006;

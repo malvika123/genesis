@@ -25,6 +25,7 @@ const CHN = [
   'trees',
   'a stone or stick on the ground',
   'nuts',
+  'fire',
 ];
 const BODY = { 0: 'food right here', 1: 'water within reach', 2: 'prey within reach', 3: 'a mate beside it' };
 const INNER = {
@@ -72,6 +73,7 @@ function actName(a, k) {
   ][k - 8];
 }
 for (let j = 0; j < NM; j++) INNER[27 + j] = 'what it was just thinking';
+INNER[FIREIN - IB] = 'the warmth of a fire';
 for (let k = 0; k < NSAY; k++)
   for (let q = 0; q < 3; q++) INNER[HEAR - IB + 3 * k + q] = 'hearing “' + SAYN[k] + '”';
 function featName(i) {

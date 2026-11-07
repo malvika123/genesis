@@ -53,7 +53,9 @@ function coldOf(a, night) {
   const i = idx(a.x, a.y),
     shelter = typeof tree !== 'undefined' && tree ? cover(i) : 0,
     wet = typeof RAIN !== 'undefined' && RAIN && RAIN[i] > 0.002 && shelter < 0.4 ? 5 : 0;
-  return clamp((a.S.cold - cellTemp(i, night) + wet) / 20, 0, 1) * (1 - 0.35 * shelter);
+  const fire =
+    typeof FIRE !== 'undefined' && FIRE ? Math.min(1, fireNear(a.x, a.y) * 3 + (a.hand === 4 ? 0.3 : 0)) : 0;
+  return clamp((a.S.cold - cellTemp(i, night) + wet) / 20, 0, 1) * (1 - 0.35 * shelter) * (1 - fire);
 }
 // how much too hot it feels, 0 … 1: shade under trees is several degrees cooler, and standing in
 // water cools the body

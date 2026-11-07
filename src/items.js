@@ -13,8 +13,9 @@
 let stone, // loose stones on the ground, a few in each cell
   stick, // fallen branches
   flake, // stones with a sharp edge
-  nut; // nuts under the trees: energy-rich, but locked in a hard shell
-const HAND = ['nothing', 'a stone', 'a stick', 'a sharp stone'];
+  nut, // nuts under the trees: energy-rich, but locked in a hard shell
+  pyrite; // shiny, brassy stones (fool's gold) found in rocky hills: struck with a stone, they throw hot sparks
+const HAND = ['nothing', 'a stone', 'a stick', 'a sharp stone', 'a burning stick', 'a shiny yellow stone'];
 
 function initItems() {
   const n = W * H;
@@ -22,6 +23,7 @@ function initItems() {
   stick = new Uint8Array(n);
   flake = new Uint8Array(n);
   nut = new Float32Array(n);
+  pyrite = new Uint8Array(n);
   for (let i = 0; i < n; i++) {
     if (water[i] || rock[i] || pit[i]) continue;
     const x = i % W,
@@ -38,6 +40,8 @@ function initItems() {
     // fallen branches under the trees
     if (tree[i] > 0.2 && rnd() < tree[i] * 0.5) stick[i] = 1 + (rnd() < 0.4);
     nut[i] = nutCap(i) * rnd();
+    // pyrite is rare, and found in rocky, hilly ground
+    if (alt[i] > 0.6 && ter[i] === 2 && rnd() < 0.05) pyrite[i] = 1;
   }
 }
 
@@ -65,18 +69,20 @@ function updateItems() {
 }
 
 // the ground at a cell, as the hands meet it
-const lying = (i) => stone[i] + stick[i] + flake[i];
+const lying = (i) => stone[i] + stick[i] + flake[i] + pyrite[i];
 function pickUp(a) {
   const i = idx(a.x, a.y);
   if (a.hand) return 0;
-  if (stone[i]) (stone[i]--, (a.hand = 1));
+  // a shiny stone catches the eye first
+  if (pyrite[i]) (pyrite[i]--, (a.hand = 5));
+  else if (stone[i]) (stone[i]--, (a.hand = 1));
   else if (stick[i]) (stick[i]--, (a.hand = 2));
   else if (flake[i]) (flake[i]--, (a.hand = 3));
   return a.hand;
 }
 function putDown(a) {
   const i = idx(a.x, a.y),
-    L = a.hand === 1 ? stone : a.hand === 2 ? stick : flake;
+    L = a.hand === 1 ? stone : a.hand === 2 || a.hand === 4 ? stick : a.hand === 5 ? pyrite : flake;
   if (a.hand && !water[i]) L[i] = Math.min(6, L[i] + 1);
   a.hand = 0;
 }

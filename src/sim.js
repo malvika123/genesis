@@ -10,6 +10,7 @@ function sim() {
   updateForest();
   updateItems();
   passCalls();
+  updateFire();
   for (let i = 0; i < W * H; i++) {
     if (rock[i]) continue;
     // plants need warmth and water
@@ -121,6 +122,22 @@ function sim() {
       if (a.heat > 0.6 && !a.wasHot) a.ev[8] = 'it was overheating on day ' + dn;
     }
     a.wasHot = a.heat > 0.6;
+    // fire burns: standing in a burning square hurts, and can kill
+    const burn = FIRE[idx(a.x, a.y)];
+    if (burn > 0.03 && !fish) {
+      a.hp -= 20 * burn;
+      a.painA = Math.max(a.painA, 0.9 * burn + 0.2);
+      a.ev[0] = 'it was burned by fire on day ' + dn;
+      if (a.hp <= 0) {
+        a.dead = true;
+        a.cause = 'burned';
+      }
+    }
+    // a burning stick in the hand burns down, and the rain can put it out
+    if (a.hand === 4) {
+      a.brand = (a.brand || 0) - 1;
+      if (a.brand <= 0 || (RAIN[idx(a.x, a.y)] > 0.004 && rnd() < 0.15)) a.hand = 0;
+    }
     // feelings fade: grief over days, anger within hours
     a.grief *= 0.998;
     a.rage *= 0.97;
@@ -440,7 +457,17 @@ function sim() {
         a.mf = { x: a.x, y: a.y };
         a.mfT = tick;
       }
-      if (poison[i] && f > 0.05) {
+      if ((a.sp === 0 || a.S.omni) && COOK[i] > 0.05) {
+        // food cooked by fire: soft, easy to chew, and it gives more energy than raw
+        const b = Math.min(COOK[i], 0.3);
+        COOK[i] -= b;
+        a.e = Math.min(100, a.e + b * 120);
+        if (hu > 0.5) a.ev[2] = 'it ate food cooked by fire after going hungry on day ' + dn;
+        if (a.sp === 0 && !firsts.cooked) {
+          firsts.cooked = 1;
+          log(a.name + ' ate food cooked by a fire.');
+        }
+      } else if (poison[i] && f > 0.05) {
         const b = Math.min(f, 0.3);
         food[i] -= b;
         a.e = Math.min(100, a.e + b * 10);
@@ -580,6 +607,23 @@ function sim() {
         firsts['say' + k] = 1;
         log(a.name + ' made the sound “' + SAYN[k] + '” for the first time.');
       }
+    } else if (
+      act === A_TAKE &&
+      a.sp === 0 &&
+      !a.asleep &&
+      !a.hand &&
+      FIRE[idx(a.x, a.y)] > 0.05 &&
+      stick[idx(a.x, a.y)]
+    ) {
+      // a branch burning at one end can be picked up by the other — carefully
+      stick[idx(a.x, a.y)]--;
+      a.hand = 4;
+      a.brand = 8;
+      a.painA = Math.min(1, a.painA + 0.15);
+      if (!firsts.brand) {
+        firsts.brand = 1;
+        log(a.name + ' picked up a burning stick from a fire.');
+      }
     } else if (act === A_TAKE && a.sp === 0 && !a.asleep) {
       if (pickUp(a)) {
         a.e -= 0.02;
@@ -589,13 +633,50 @@ function sim() {
         }
       }
     } else if (act === A_DROP && a.sp === 0 && a.hand) {
+      const i = idx(a.x, a.y),
+        was = a.hand,
+        burning = FIRE[i] > 0.03;
       putDown(a);
+      if (was === 4 && ignite(i, 0.12) && !firsts.setfire) {
+        firsts.setfire = 1;
+        log(a.name + ' put a burning stick down, and fire took hold there.');
+      } else if (was === 2 && burning && !firsts.fed) {
+        firsts.fed = 1;
+        log(a.name + ' dropped a stick onto a fire, and it burned on.');
+      }
     } else if (act === A_STRIKE && a.sp === 0 && a.hand && !a.asleep) {
       // What a blow does is up to the world, not the creature: a stone breaks a nut's shell; a stone
       // struck on another stone can knock a sharp flake off it; a stick or a flake just hits the ground.
       const i = idx(a.x, a.y);
       a.e -= 0.05;
-      if (a.hand === 1 && nut[i] > 0.05) {
+      const tinder = (food[i] > 0.1 && dryness(i) > 0.4) || (stick[i] > 0 && stickDry(i) > 0.5);
+      if (a.hand === 2 && FIRE[i] > 0.05) {
+        // a stick pushed into a fire catches
+        a.hand = 4;
+        a.brand = 8;
+        if (!firsts.brand) {
+          firsts.brand = 1;
+          log(a.name + ' held a stick in a fire until it caught.');
+        }
+      } else if (
+        ((a.hand === 5 && stone[i] + flake[i] > 0) || ((a.hand === 1 || a.hand === 3) && pyrite[i])) &&
+        tinder &&
+        rnd() < 0.08
+      ) {
+        // pyrite struck with a stone throws hot sparks; into dry grass or wood, one may catch
+        if (ignite(i, 0.1) && !firsts.madefire) {
+          firsts.madefire = 1;
+          log(a.name + ' struck a shiny stone and a spark set dry tinder alight. Nobody showed them how.');
+        }
+      } else if (a.hand === 2 && stick[i] > 0 && stickDry(i) > 0.5) {
+        // rubbing dry wood on wood, again and again, heats it until it smoulders
+        a.rub = a.lastRub === tick - 1 ? (a.rub || 0) + 1 : 1;
+        a.lastRub = tick;
+        if (a.rub >= 6 && rnd() < 0.12 && ignite(i, 0.08) && !firsts.rubfire) {
+          firsts.rubfire = 1;
+          log(a.name + ' rubbed dry sticks together until they smouldered and caught fire.');
+        }
+      } else if (a.hand === 1 && nut[i] > 0.05) {
         const b = Math.min(nut[i], 0.25);
         nut[i] -= b;
         a.e = Math.min(100, a.e + b * 110);
@@ -707,6 +788,8 @@ function sim() {
     if (!c) return true;
     a.gone = true;
     if (a.hand) putDown(a);
+    // an animal killed by fire is cooked where it fell
+    if (c === 'burned') COOK[idx(a.x, a.y)] += 0.5 * Math.min(2, a.S.size || 1);
     // those closest to it grieve: its partner, its mother, its young child
     if (a.sp !== 3)
       for (const o of [a.mate, a.mom, a.kid])
@@ -721,7 +804,9 @@ function sim() {
       log(
         a.name +
           ' died (' +
-          (c === 'drowned' || c === 'killed by a predator' || c === 'struck by lightning' ? c : 'of ' + c) +
+          (c === 'drowned' || c === 'killed by a predator' || c === 'struck by lightning' || c === 'burned'
+            ? c
+            : 'of ' + c) +
           ') at ' +
           (a.age / TY).toFixed(1) +
           ' years old.' +

@@ -20,14 +20,15 @@ const MV = [
     [1, -1],
   ],
   CP = ['east', 'south-east', 'south', 'south-west', 'west', 'north-west', 'north', 'north-east'];
-const NCH = 15, // per direction: water, food, danger, herbivore, person, predator, mate, family, fish, red berries, the sea, a steep climb, trees, loose stones or sticks, nuts
+const NCH = 16, // per direction: water, food, danger, herbivore, person, predator, mate, family, fish, red berries, the sea, a steep climb, trees, loose stones or sticks, nuts, fire
   NS = 8 * NCH,
   HB = NS,
   IB = NS + 4,
   NM = 8, // short-term memory: this many of the brain's own units are fed back in at the next step
   HEAR = IB + 27 + NM, // hearing: for each of the six sounds, how loud and from which way (3 inputs each)
   NSAY = 6,
-  NI = HEAR + 3 * NSAY, // IB + 18 cold; IB + 19 … 24 its hands and feet; IB + 25 heat; IB + 26 anger; memory; hearing
+  FIREIN = HEAR + 3 * NSAY, // the warmth of a fire close by
+  NI = FIREIN + 1, // IB + 18 cold; IB + 19 … 24 its hands and feet; IB + 25 heat; IB + 26 anger; memory; hearing
   NH = 64, // the most thinking units any brain can grow (see each kind's hmax)
   NA = 18 + NSAY, // the last six choices are the six sounds it can make
   O3 = 0, // where the direct senses → choices connections start in a brain's array
