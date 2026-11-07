@@ -14,7 +14,11 @@ let HUM, // water vapour in the air
   RAIN, // what fell on each cell this step (rain, or snow where it is freezing)
   MOIST, // soil moisture on land, 0 (parched) … 1 (soaked)
   PUD, // a puddle after heavy rain: drinkable, shallow, dries up again
-  PW; // how much water is standing in that puddle
+  PW, // how much water is standing in that puddle
+  CONV, // convection: warm, moist air rising off sun-heated ground (0 … 1.5)
+  THUNDER; // a thunderstorm overhead
+// recent lightning strikes, for the creatures nearby and for drawing: { x, y, t }
+let STRIKES = [];
 let TMP1 = null,
   TMP2 = null;
 
@@ -73,6 +77,9 @@ function initWeather() {
   MOIST = new Float32Array(n);
   PUD = new Uint8Array(n);
   PW = new Float32Array(n);
+  CONV = new Float32Array(n);
+  THUNDER = new Uint8Array(n);
+  STRIKES = [];
   TMP1 = new Float32Array(n);
   TMP2 = new Float32Array(n);
   for (let y = 0; y < H; y++)
@@ -170,7 +177,13 @@ function updateWeather() {
       night = NIGHT[i % W],
       T = cellT(i) - (night ? 4 : 0),
       patch = PATCH[i],
-      cap = capacity(T - LIFT[y] * (LIFT[y] > 0 ? 0.35 + 1.1 * patch : 1) - SLIFT[i] - OLIFT[i]),
+      // Convection: by day the sun heats the ground, the ground heats the air above it, and warm air
+      // that is also moist is buoyant and rises fast — thunderstorms build on hot, humid afternoons.
+      conv =
+        night || water[i]
+          ? 0
+          : clamp((cellTemp(i, false) - 24) / 8, 0, 1.5) * clamp((HUM[i] / capacity(T) - 0.5) * 2, 0, 1),
+      cap = capacity(T - LIFT[y] * (LIFT[y] > 0 ? 0.35 + 1.1 * patch : 1) - SLIFT[i] - OLIFT[i] - 18 * conv),
       warm = clamp(T / 30, 0, 1.2),
       dry = Math.max(0, 1 - HUM[i] / capacity(T));
     // evaporation: from open water, and from wet ground and plants
@@ -198,6 +211,10 @@ function updateWeather() {
       CLD[i] -= r;
     }
     RAIN[i] = r;
+    CONV[i] = conv;
+    // A thunderstorm: a towering cloud built by strong convection. Lightning comes from it.
+    THUNDER[i] = conv > 0.25 && CLD[i] > 0.05 ? 1 : 0;
+    if (THUNDER[i] && rnd() < 0.015 * conv) STRIKES.push({ x: i % W, y, t: tick });
     if (!water[i]) {
       // rain soaks in; water also slowly drains away deeper into the ground
       const m = MOIST[i] + r * 1.2 - 0.0006;
@@ -209,6 +226,7 @@ function updateWeather() {
       }
     }
   }
+  STRIKES = STRIKES.filter((b) => tick - b.t < 6);
   moveStorms();
   advect(HUM, TMP1);
   advect(CLD, TMP1);
@@ -219,6 +237,7 @@ function updateWeather() {
 // what the weather is doing at a cell, for people watching
 const raining = (i) => RAIN[i] > 0.002;
 const snowing = (i) => raining(i) && cellT(i) < 0;
+const stormy = (i) => THUNDER && THUNDER[i] === 1;
 // how well plants grow with this much water in the ground
 const wetness = (i) => (water[i] ? 1 : clamp(0.5 + MOIST[i] * 1.25, 0, 1));
 // drinkable water at a cell: open (unfrozen) water, or a puddle

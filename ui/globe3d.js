@@ -423,6 +423,7 @@ const G3D = { ok: false };
         const ks = clamp((P[2] / C) * 0.9, 0.25, 9);
         drawCreature(cx, a, P[0], P[1], ks, v, isNightAt(a.x) ? 0.5 : 1);
       }
+    if (!GL.eye) drawWeatherFx(cx, project, GL.zoom >= 2.5);
     // the places its eyes can see right now
     if (sel && sel.view && !GL.eye) {
       cx.fillStyle = 'rgba(255,255,230,.25)';

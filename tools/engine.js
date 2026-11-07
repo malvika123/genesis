@@ -22,7 +22,7 @@ return {
   setSeed, reset, sim, interpret, mind, child, mk, gene,
   idx, inb, dxw, isNightAt, tempAt, updateClimate, iced, liquid, growth, coldOf, heatOf, W, H,
   forest: () => ({ tree, fruit, fkind, tcap, meanTemp, cover }),
-  wx: () => ({ HUM, CLD, RAIN, MOIST, PUD, PW, capacity, wetness, drinkable }),
+  wx: () => ({ HUM, CLD, RAIN, MOIST, PUD, PW, CONV, THUNDER, STRIKES, capacity, wetness, drinkable }),
   setTick: (t) => { tick = t; updateClimate(); },
   whisper: (a, text) => { a.wh = text; },
   watch: (a) => { sel = a; },

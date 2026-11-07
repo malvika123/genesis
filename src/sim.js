@@ -36,6 +36,28 @@ function sim() {
   }
   const kids = [],
     kidsOf = (k) => kids.reduce((t, c) => t + (c.k === k), 0);
+  // Lightning: a creature it strikes is badly hurt or killed; the crack of thunder close by startles
+  // everyone near (the startle is inborn — babies throw out their arms at a loud noise).
+  for (const b of STRIKES)
+    if (b.t === tick)
+      for (const a of ag) {
+        if (a.dead || a.sp === 3) continue;
+        const d = Math.hypot(dxw(a.x - b.x), a.y - b.y);
+        // a strike lands somewhere in its 3 km square; being hit yourself is very rare
+        if (d < 0.5 && rnd() < 0.002) {
+          a.hp -= 60;
+          a.painA = 1;
+          if (a.hp <= 0) {
+            a.dead = true;
+            a.cause = 'struck by lightning';
+          }
+          if (a.sp === 0) log(a.name + ' was struck by lightning.');
+        } else if (d <= 2) {
+          a.fear = Math.min(1, a.fear + 0.6);
+          a.painA = Math.min(1, a.painA + 0.15);
+          a.ev[0] = 'thunder cracked right over it on day ' + dn;
+        }
+      }
   for (const a of ag) {
     if (a.dead) continue;
     const S = a.S,
@@ -627,7 +649,7 @@ function sim() {
       log(
         a.name +
           ' died (' +
-          (c === 'drowned' ? 'drowned' : c === 'killed by a predator' ? 'killed by a predator' : 'of ' + c) +
+          (c === 'drowned' || c === 'killed by a predator' || c === 'struck by lightning' ? c : 'of ' + c) +
           ') at ' +
           (a.age / TY).toFixed(1) +
           ' years old.' +

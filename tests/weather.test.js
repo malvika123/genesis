@@ -70,3 +70,23 @@ test('puddles can be drunk from and dry up again', () => {
   for (let t = 0; t < 2 * E.DAY && PUD[i]; t++) E.sim();
   assert.equal(PUD[i], 0, 'the puddle should dry up within a couple of days without more rain');
 });
+
+test('thunderstorms build over warm, humid land, and bring lightning', () => {
+  const E = createEngine();
+  E.setSeed(4);
+  E.reset({ people: 2 });
+  let strikes = 0,
+    rows = [];
+  for (let t = 0; t < 4 * E.DAY; t++) {
+    E.sim();
+    for (const b of E.wx().STRIKES)
+      if (b.t === E.state().tick) {
+        strikes++;
+        rows.push(b.y);
+        assert.equal(E.state().water[b.y * E.W + b.x], 0, 'storms of this kind build over land');
+      }
+  }
+  assert.ok(strikes > 0, 'there is lightning somewhere in a few days');
+  const polar = rows.filter((y) => y < E.H * 0.12 || y > E.H * 0.88).length;
+  assert.equal(polar, 0, 'no thunderstorms near the poles');
+});

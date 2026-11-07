@@ -332,13 +332,15 @@ function seesText(a) {
 function weatherText(i) {
   const sky = snowing(i)
       ? 'Snowing'
-      : raining(i)
-        ? RAIN[i] > 0.01
-          ? 'Pouring with rain'
-          : 'Raining'
-        : CLD[i] > 0.08
-          ? 'Cloudy'
-          : 'Clear sky',
+      : stormy(i)
+        ? 'Thunderstorm'
+        : raining(i)
+          ? RAIN[i] > 0.01
+            ? 'Pouring with rain'
+            : 'Raining'
+          : CLD[i] > 0.08
+            ? 'Cloudy'
+            : 'Clear sky',
     shelter = raining(i) && tree[i] > 0.4 ? ', but sheltered by the trees' : '',
     ground = water[i]
       ? ''
@@ -531,6 +533,54 @@ function drawTerrain(g, v, relief = true) {
 }
 // Clouds, rain and snow over the land.
 let showSky = true;
+// Rain falling and lightning flashing, drawn every frame over the map or the globe. P(x, y) gives where
+// a cell is on screen and how big it looks, or null if it is out of sight.
+function drawWeatherFx(g, P, rainToo = true) {
+  if (!showSky) return;
+  if (rainToo)
+    for (let i = 0; i < W * H; i++) {
+      if (!(RAIN[i] > 0.002)) continue;
+      const Q = P(i % W, (i / W) | 0);
+      if (!Q || Q[2] < 6) continue;
+      const k = Q[2],
+        snow = cellT(i) < 0,
+        t = performance.now() / 400 + i;
+      g.globalAlpha = clamp(RAIN[i] * 60, 0.3, 0.8);
+      g.strokeStyle = g.fillStyle = snow ? '#ffffff' : '#9cc3ee';
+      g.lineWidth = Math.max(1, k * 0.04);
+      g.beginPath();
+      for (let j = 0; j < 3; j++) {
+        const fx = (((j * 0.37 + i * 0.13) % 1) - 0.5) * k,
+          fy = ((((t + j * 0.33) % 1) - 0.5) * k) | 0;
+        if (snow) g.fillRect(Q[0] + fx, Q[1] + fy, k * 0.06, k * 0.06);
+        else {
+          g.moveTo(Q[0] + fx, Q[1] + fy);
+          g.lineTo(Q[0] + fx - k * 0.05, Q[1] + fy + k * 0.18);
+        }
+      }
+      g.stroke();
+    }
+  for (const b of STRIKES) {
+    if (tick - b.t > 1) continue;
+    const Q = P(b.x, b.y);
+    if (!Q) continue;
+    const k = Math.max(8, Q[2]);
+    g.globalAlpha = tick === b.t ? 0.95 : 0.4;
+    g.strokeStyle = '#fff7c2';
+    g.lineWidth = Math.max(1.5, k * 0.06);
+    g.beginPath();
+    let x = Q[0],
+      y = Q[1] - k * 1.6;
+    g.moveTo(x, y);
+    for (let j = 0; j < 4; j++) {
+      x += (j % 2 ? 1 : -1) * k * 0.15;
+      y += k * 0.4;
+      g.lineTo(x, y);
+    }
+    g.stroke();
+  }
+  g.globalAlpha = 1;
+}
 function drawSky(g, streaks = true) {
   if (!showSky) return;
   for (let y = 0; y < H; y++)
@@ -539,7 +589,9 @@ function drawSky(g, streaks = true) {
         c = CLD[i];
       if (c > 0.03) {
         g.globalAlpha = clamp(c * 3, 0, 0.6);
-        g.fillStyle = c > 0.2 ? '#c9d0d8' : '#ffffff';
+        // thunderclouds are dark and towering
+        g.fillStyle = stormy(i) ? '#59606b' : c > 0.2 ? '#c9d0d8' : '#ffffff';
+        if (stormy(i)) g.globalAlpha = 0.7;
         g.fillRect(x * C - 1, y * C - 1, C + 2, C + 2);
       }
       if (streaks && RAIN[i] > 0.002) {
@@ -799,6 +851,7 @@ function drawFlat(v) {
   cx.drawImage(FLAT.c, 0, 0, cv.width, cv.height);
   cx.setTransform(cv.width / (W * C), 0, 0, cv.height / (H * C), 0, 0);
   for (const a of ag) drawCreature(cx, a, a.rx * C + C / 2, a.ry * C + C / 2, 1, v);
+  drawWeatherFx(cx, (x, y) => [x * C + C / 2, y * C + C / 2, C], false);
   // night is local: shade the half of the world where the sun is down
   cx.fillStyle = 'rgba(8,16,48,.38)';
   for (let x = 0; x < W; x++) if (isNightAt(x)) cx.fillRect(x * C, 0, C, H * C);
