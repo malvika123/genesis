@@ -162,6 +162,39 @@ function probe(w, k) {
   for (const q of PR[k].act) s += pz[q];
   return s;
 }
+// ---------- an intelligence test ----------
+// The way a real IQ test works: everyone gets the same set of problems, and a score is compared with
+// others of the same age. Here the problems are everyday situations posed straight to a person's own
+// brain — thirsty with water nearby, a predator in sight, red berries at its feet, a stone in hand and
+// a nut on the ground… — and the score is how strongly it chooses well. IQ is that score against
+// everyone alive of the same age group (children with children, adults with adults): 100 is average,
+// and 15 points is one step above or below. So the average is always 100; whether minds are really
+// getting better shows in the raw score, generation by generation.
+const TESTS = PR.map((P, k) => k).filter((k) => !PR[k].sp || PR[k].sp.includes(0));
+function testScore(a) {
+  let s = 0;
+  for (const k of TESTS) {
+    const p = probe(a.lw, k);
+    s += PR[k].inv ? 1 - p : p;
+  }
+  return s / TESTS.length;
+}
+function iqTable() {
+  if (iqTable.t === tick && iqTable.n === ag.length) return iqTable.m;
+  const m = new Map(),
+    sc = ag.filter((a) => a.sp === 0 && !a.dead).map((a) => [a, testScore(a), a.age < a.S.mat ? 0 : 1]);
+  for (const band of [0, 1]) {
+    const mine = sc.filter((q) => q[2] === band),
+      g = mine.length >= 3 ? mine : sc,
+      mu = g.reduce((t, q) => t + q[1], 0) / Math.max(1, g.length),
+      sd = Math.max(0.005, Math.sqrt(g.reduce((t, q) => t + (q[1] - mu) ** 2, 0) / Math.max(1, g.length)));
+    for (const q of mine) m.set(q[0], { raw: q[1], iq: Math.round(100 + (15 * (q[1] - mu)) / sd) });
+  }
+  iqTable.t = tick;
+  iqTable.n = ag.length;
+  iqTable.m = m;
+  return m;
+}
 function lessons(a) {
   let done = false;
   PR.forEach((P, k) => {

@@ -329,6 +329,16 @@ function doingHTML(a, S, stage, night) {
   if (a.sp === 0) o += '<br>In its hand: ' + HAND[a.hand] + (a.nuts ? ' · nuts cracked: ' + a.nuts : '');
   o += '<br>Nearby: ' + (around.length ? around.join(', ') : 'no one in sight');
   o += '<br>' + seesText(a);
+  if (a.sp === 0) {
+    const q = iqTable().get(a);
+    if (q)
+      o +=
+        '<br>IQ ' +
+        q.iq +
+        ' — on a test of everyday problems put to its own brain it chose well ' +
+        Math.round(100 * q.raw) +
+        '% of the time, compared with others its age';
+  }
   if (a.per) {
     // how well it has learned to recognise things by sight
     const NM = {
@@ -1586,6 +1596,9 @@ function soundsHTML() {
 }
 // Each generation of people: what they were born with, on average, and what they learned
 function gensHTML() {
+  const T = iqTable(),
+    now = [];
+  for (const [a, q] of T) (now[a.gen] = now[a.gen] || []).push(q.raw);
   const rows = GENSTAT.map((G, g) =>
     G && G.n
       ? '<tr><td>' +
@@ -1600,11 +1613,13 @@ function gensHTML() {
         (G.im / G.n).toFixed(2) +
         '</td><td>' +
         (G.les / G.n).toFixed(1) +
+        '</td><td>' +
+        (now[g] ? Math.round((100 * now[g].reduce((t, v) => t + v, 0)) / now[g].length) + '%' : '–') +
         '</td></tr>'
       : ''
   ).join('');
   return (
-    '<table class="tbl"><tr><th>Gen.</th><th>Born</th><th>Brain size</th><th>Learning speed</th><th>Copying</th><th>Lessons each</th></tr>' +
+    '<table class="tbl"><tr><th>Gen.</th><th>Born</th><th>Brain size</th><th>Learning speed</th><th>Copying</th><th>Lessons each</th><th>Test score now</th></tr>' +
     rows +
     '</table>'
   );
@@ -2102,12 +2117,14 @@ function updateDock() {
     return;
   }
   const yrs = sel.age / TY,
+    iq = sel.sp === 0 ? iqTable().get(sel) : null,
     t =
       (sel.name || sel.S.n) +
       ', ' +
       (yrs < 1
         ? ((m) => m + (m === 1 ? ' month' : ' months'))(Math.max(1, Math.round(yrs * 12)))
-        : yrs.toFixed(1) + ' years');
+        : yrs.toFixed(1) + ' years') +
+      (iq ? ' · IQ ' + iq.iq : '');
   if ($('dname').textContent !== t) $('dname').textContent = t;
   d.hidden = false;
 }
