@@ -710,7 +710,7 @@ function drawPerson(g, a, X, Y, k, gr, col) {
     hip = neck + (h - head * 2) * 0.48,
     foot = h / 2,
     // legs swing while they are actually walking from one spot to the next
-    step = a.asleep || !a.moving ? 0 : Math.sin(performance.now() / 110 + a.id) * h * 0.16,
+    step = a.asleep || !a.moving ? 0 : Math.sin(a.ph || 0) * h * 0.16,
     reach = a.act === A_EAT || a.act === A_DRINK || a.act === A_GIVE ? -h * 0.18 : 0;
   g.lineCap = 'round';
   // legs
@@ -781,7 +781,7 @@ function drawAnimal(g, a, X, Y, k) {
     bw = L.w * u,
     bh = L.h * u,
     leg = a.asleep ? 0 : L.leg * u,
-    swing = a.moving && !a.asleep ? Math.sin(performance.now() / 120 + a.id) * u * 0.7 : 0,
+    swing = a.moving && !a.asleep ? Math.sin(a.ph || 0) * u * 0.7 : 0,
     by = Y - leg - bh / 2 + (a.asleep ? bh * 0.3 : 0); // body centre; feet on the ground at Y
   g.save();
   g.lineCap = 'round';
@@ -1189,23 +1189,48 @@ $('hud').addEventListener('click', (e) => {
 });
 // Creatures move one square at a time in the simulation; on screen they walk smoothly between squares
 // (rx, ry are where they are drawn), and the short way round the east–west seam.
+// Walking is drawn at its real pace: a creature on its way to the next square is shown that far along
+// the way (its progress in the world, plus how far into the next world step we are), so it moves
+// steadily instead of dashing from square to square. Its legs step in time: about two steps a second
+// of world time, sped up with the world but never faster than three a second on screen.
+let lastGlide = performance.now();
 function glide() {
+  const now = performance.now(),
+    dt = Math.min(0.1, (now - lastGlide) / 1000),
+    f = running ? clamp(acc, 0, 1) : 0,
+    cadence = Math.min(3, 2 * stepsPerSec() * STEP_S) * 2 * Math.PI;
+  lastGlide = now;
   for (const a of ag) {
+    let tx = a.x,
+      ty = a.y;
+    const walking = a.mvv > 0 && !a.asleep && !a.dead;
+    if (walking) {
+      const [mx, my] = MV[a.mvd],
+        p = clamp(a.acc + a.mvv * f, 0, 1);
+      tx += mx * p;
+      ty += my * p;
+      if (mx) a.face = mx > 0 ? 1 : -1;
+    }
     if (a.rx === undefined) {
-      a.rx = a.x;
-      a.ry = a.y;
+      a.rx = tx;
+      a.ry = ty;
     }
-    const dx = dxw(a.x - a.rx),
-      dy = a.y - a.ry;
+    const dx = dxw(tx - a.rx),
+      dy = ty - a.ry;
     if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
-      a.rx = a.x;
-      a.ry = a.y;
+      a.rx = wx(Math.round(tx)) + (tx - Math.round(tx));
+      a.ry = ty;
     } else {
-      a.rx = (((a.rx + dx * 0.12) % W) + W) % W;
-      a.ry += dy * 0.12;
+      // walk toward where it should be, never faster than a brisk version of its own pace, so a turn
+      // or a blocked step is walked out instead of jumped
+      const d = Math.hypot(dx, dy),
+        most = Math.max(a.mvv || 0, 0.05) * stepsPerSec() * dt * 1.6;
+      const k = d > most ? most / d : 1;
+      a.rx = (((a.rx + dx * k) % W) + W) % W;
+      a.ry += dy * k;
     }
-    a.moving = Math.abs(dx) + Math.abs(dy) > 0.05;
-    if (Math.abs(dx) > 0.05) a.face = dx > 0 ? 1 : -1;
+    a.moving = walking && running;
+    if (a.moving) a.ph = (a.ph || 0) + dt * cadence;
   }
 }
 function draw() {

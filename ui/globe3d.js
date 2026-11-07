@@ -294,7 +294,7 @@ const G3D = { ok: false };
   function texFor(a, v) {
     const S = a.S,
       gr = Math.round(clamp(a.age / S.mat, 0.3, 1) * 10) / 10,
-      pose = a.moving ? Math.round(Math.sin(performance.now() / 110 + a.id) * 2) : 0,
+      pose = a.moving ? Math.round(Math.sin(a.ph || 0) * 2) : 0,
       key = [
         a.k,
         a.sex,
@@ -319,6 +319,7 @@ const G3D = { ok: false };
         asleep: a.asleep,
         moving: pose !== 0,
         pose: pose / 2,
+        ph: Math.asin(clamp(pose / 2, -1, 1)), // the leg position for this picture
         act: a.act,
         id: 0,
       };

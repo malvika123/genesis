@@ -333,6 +333,7 @@ function sim() {
       a.bonus[6] += 0.02;
       a.play = 1;
     }
+    if (act >= 8) a.mvv = 0; // not walking this step
     const sleepy = a.sl;
     a.asleep = act === A_SLEEP;
     if (a.asleep && sleepy > 0.8) a.ev[4] = 'it slept after being exhausted on day ' + dn;
@@ -347,10 +348,14 @@ function sim() {
       const fe = 0.3 + 0.7 * clamp(a.e / 100, 0, 1),
         gr = clamp(0.25 + (0.75 * a.age) / S.mat, 0.25, 1),
         old = 1 - 0.5 * clamp((a.age / a.lf - 0.7) / 0.3, 0, 1);
-      a.acc += (fast ? S.run : S.walk) * a.g.s * fe * gr * old * (wade ? 0.5 : 1);
+      // how far it gets this step toward the next square (kept for drawing smooth, steady walking)
+      a.mvv = (fast ? S.run : S.walk) * a.g.s * fe * gr * old * (wade ? 0.5 : 1);
+      a.mvd = act;
+      a.acc += a.mvv;
       if (a.trap > 0) {
         a.trap--;
         a.acc = 0;
+        a.mvv = 0;
       }
       if (a.acc >= 1) {
         a.acc -= 1;
