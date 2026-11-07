@@ -110,6 +110,7 @@ function reset(cfg = {}) {
     }
   for (let i = 0; i < W * H; i++)
     food[i] = rock[i] || pit[i] ? 0 : water[i] ? rnd() * 0.5 : rnd() * 0.6 * TF[ter[i]];
+  initWeather();
   const n = clamp(cfg.people ?? 2, 2, 40),
     nh = clamp(cfg.herbivores ?? 14, 0, 40),
     np = clamp(cfg.predators ?? 3, 0, 8),

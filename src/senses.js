@@ -45,6 +45,10 @@ function sense(a, x, night) {
         if (x[b] < q) x[b] = q;
       }
     } else {
+      if (PUD[i] && a.sp !== 3) {
+        const q = cl * (0.15 + tw);
+        if (x[b] < q) x[b] = q;
+      }
       if ((rock[i] || pit[i]) && x[b + 2] < cl) x[b + 2] = cl;
       const f = food[i] * cl * (0.15 + te);
       if (f > x[b + 1]) x[b + 1] = f;
@@ -87,7 +91,7 @@ function sense(a, x, night) {
       if (d > r) break;
       const X = a.x + dx,
         Y = a.y + dy;
-      if (inb(X, Y) && liquid(idx(X, Y)) && !deep[idx(X, Y)] && d < bd) {
+      if (inb(X, Y) && drinkable(idx(X, Y)) && !deep[idx(X, Y)] && d < bd) {
         bd = d;
         a.mw = { x: wx(X), y: Y };
       }
@@ -124,7 +128,7 @@ function sense(a, x, night) {
         Y = a.y + dy;
       if (!inb(X, Y)) continue;
       const i = idx(X, Y);
-      if (liquid(i)) wa = 1;
+      if (drinkable(i)) wa = 1;
       const l = G[i];
       if (l)
         for (const o of l) {

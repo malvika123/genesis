@@ -1,6 +1,7 @@
 config
 state
 climate
+weather
 brain
 lessons
 creatures

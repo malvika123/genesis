@@ -6,9 +6,11 @@ function sim() {
   tick++;
   const dn = dayN();
   updateClimate();
+  updateWeather();
   for (let i = 0; i < W * H; i++) {
     if (rock[i]) continue;
-    const tf = (water[i] ? 0.5 : TF[ter[i]]) * growth((i / W) | 0);
+    // plants need warmth and water
+    const tf = (water[i] ? 0.5 : TF[ter[i]]) * growth((i / W) | 0) * wetness(i);
     if (food[i] < 1) food[i] += (0.006 * food[i] * (1 - food[i]) + 0.0004) * tf;
   }
   G = new Array(W * H);
@@ -316,6 +318,15 @@ function sim() {
       }
     } else if (act === A_DRINK && x[HB + 1]) {
       a.w = Math.min(100, a.w + 20);
+      // drinking from a puddle uses it up a little
+      for (let yy = -1; yy <= 1; yy++)
+        for (let xx = -1; xx <= 1; xx++) {
+          const j = idx(a.x + xx, clamp(a.y + yy, 0, H - 1));
+          if (PUD[j] && !liquid(j)) {
+            PW[j] = Math.max(0, PW[j] - 0.03);
+            yy = xx = 2;
+          }
+        }
       if (a.mw && Math.abs(dxw(a.mw.x - a.x)) <= 2 && Math.abs(a.mw.y - a.y) <= 2)
         followed(a, 'water', 'found the water');
       if (th > 0.5) a.ev[3] = 'it drank after being very thirsty on day ' + dn;

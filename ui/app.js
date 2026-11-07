@@ -149,6 +149,7 @@ function feelingsText(a, S) {
   if (a.e < 65) f.push(a.e < 35 ? 'very hungry' : 'hungry');
   if (a.w < 65) f.push(a.w < 35 ? 'very thirsty' : 'thirsty');
   if (a.sl > 0.5) f.push(a.sl > 0.8 ? 'exhausted' : 'sleepy');
+  if (raining(idx(a.x, a.y)) && a.sp !== 3) f.push('wet');
   if (a.cold > 0.15) f.push(a.cold > 0.6 ? 'freezing' : 'cold');
   if (a.hp < 60) f.push('hurt');
   if (a.fear > 0.25) f.push('afraid');
@@ -201,6 +202,7 @@ function doingHTML(a, S, stage, night) {
       : Math.abs(lat(a.y)) > 0.75
         ? ' (near the ' + (lat(a.y) < 0 ? 'north' : 'south') + ' pole)'
         : '');
+  o += '<br>' + weatherText(idx(a.x, a.y));
   o += '<br><br>' + (a.sex ? 'Female' : 'Male') + ' ' + stage + ', generation ' + a.gen;
   o += '<br>Energy ' + a.e.toFixed(0) + ' · water ' + a.w.toFixed(0) + ' · health ' + a.hp.toFixed(0);
   o += '<br>Nearby: ' + (around.length ? around.join(', ') : 'no one in sight');
@@ -211,6 +213,29 @@ function doingHTML(a, S, stage, night) {
   if (fam.length) o += '<br>Family alive: ' + fam.map((s) => s.trim()).join(', ');
   return o;
 }
+function weatherText(i) {
+  const sky = snowing(i)
+      ? 'Snowing'
+      : raining(i)
+        ? RAIN[i] > 0.01
+          ? 'Pouring with rain'
+          : 'Raining'
+        : CLD[i] > 0.08
+          ? 'Cloudy'
+          : 'Clear sky',
+    ground = water[i]
+      ? ''
+      : PUD[i]
+        ? ', puddles on the ground'
+        : MOIST[i] < 0.15
+          ? ', parched ground'
+          : MOIST[i] < 0.35
+            ? ', dry ground'
+            : MOIST[i] > 0.8
+              ? ', soaked ground'
+              : '';
+  return sky + ground;
+}
 function doingText(a) {
   const m = a.mind;
   let now = a.asleep
@@ -220,7 +245,8 @@ function doingText(a) {
       : m
         ? doingWord(a, m.act).replace(/^./, (c) => c.toUpperCase())
         : 'Looking around';
-  return now + ', ' + placeOf(a);
+  const i = idx(a.x, a.y);
+  return now + ', ' + placeOf(a) + (snowing(i) ? ', in the snow' : raining(i) ? ', in the rain' : '');
 }
 let tipTab = 'think';
 function updateTip() {
@@ -303,6 +329,23 @@ function drawTerrain(g, v) {
         }
       }
     }
+  // parched ground looks dusty; puddles after heavy rain
+  for (let y = 0; y < H; y++)
+    for (let x = 0; x < W; x++) {
+      const i = y * W + x;
+      if (water[i] || rock[i]) continue;
+      if (MOIST[i] < 0.2) {
+        g.globalAlpha = (0.2 - MOIST[i]) * 2;
+        g.fillStyle = '#d9b77a';
+        g.fillRect(x * C, y * C, C, C);
+      }
+      if (PUD[i]) {
+        g.globalAlpha = 0.85;
+        g.fillStyle = v('--water');
+        g.fillRect(x * C + 2, y * C + 3, C - 4, C - 5);
+      }
+    }
+  g.globalAlpha = 1;
   // snow on cold ground: the colder the row, the thicker the snow
   g.fillStyle = v('--snow');
   for (let y = 0; y < H; y++) {
@@ -311,6 +354,41 @@ function drawTerrain(g, v) {
     g.globalAlpha = sn;
     for (let x = 0; x < W; x++) if (!water[idx(x, y)]) g.fillRect(x * C, y * C, C, C);
   }
+  g.globalAlpha = 1;
+}
+// Clouds, rain and snow over the land.
+let showSky = true;
+function drawSky(g) {
+  if (!showSky) return;
+  for (let y = 0; y < H; y++)
+    for (let x = 0; x < W; x++) {
+      const i = y * W + x,
+        c = CLD[i];
+      if (c > 0.03) {
+        g.globalAlpha = clamp(c * 3, 0, 0.6);
+        g.fillStyle = c > 0.2 ? '#c9d0d8' : '#ffffff';
+        g.fillRect(x * C - 1, y * C - 1, C + 2, C + 2);
+      }
+      if (RAIN[i] > 0.002) {
+        const snow = RT[y] < 0;
+        g.globalAlpha = clamp(RAIN[i] * 60, 0.35, 0.9);
+        if (snow) {
+          g.fillStyle = '#ffffff';
+          g.fillRect(x * C + 2, y * C + 2, 2, 2);
+          g.fillRect(x * C + 7, y * C + 5, 2, 2);
+          g.fillRect(x * C + 4, y * C + 8, 2, 2);
+        } else {
+          g.strokeStyle = '#3d6fa8';
+          g.lineWidth = 1;
+          g.beginPath();
+          g.moveTo(x * C + 3, y * C + 1);
+          g.lineTo(x * C + 1, y * C + 6);
+          g.moveTo(x * C + 8, y * C + 4);
+          g.lineTo(x * C + 6, y * C + 9);
+          g.stroke();
+        }
+      }
+    }
   g.globalAlpha = 1;
 }
 // One creature at (X, Y); k scales its size (1 = flat-map size).
@@ -356,6 +434,7 @@ function drawCreature(g, a, X, Y, k, v, dim = 1) {
 function drawFlat(v) {
   cx.setTransform(cv.width / (W * C), 0, 0, cv.height / (H * C), 0, 0);
   drawTerrain(cx, v);
+  drawSky(cx);
   for (const a of ag) drawCreature(cx, a, a.x * C + C / 2, a.y * C + C / 2, 1, v);
   // night is local: shade the half of the world where the sun is down
   cx.fillStyle = 'rgba(8,16,48,.38)';
@@ -491,6 +570,7 @@ function drawGlobe(v) {
   if (!GL.tdata || ++GL.tframe % 12 === 0) {
     GL.tctx.setTransform(TS / C, 0, 0, TS / C, 0, 0);
     drawTerrain(GL.tctx, v);
+    drawSky(GL.tctx);
     GL.tdata = GL.tctx.getImageData(0, 0, W * TS, H * TS).data;
     const sn = /^#([0-9a-f]{6})$/i.exec(v('--snow'));
     if (sn) GL.cap = [0, 2, 4].map((k) => parseInt(sn[1].slice(k, k + 2), 16));
@@ -615,6 +695,10 @@ function draw() {
     [maxGen, 'Latest human generation'],
     ['Year ' + Math.floor(tick / TY) + ', day ' + dayN(), 'Time'],
     [seasonName(0) + ' / ' + seasonName(H - 1), 'Season (north / south)'],
+    [
+      Math.round((100 * RAIN.reduce((t, r) => t + (r > 0.002), 0)) / (W * H)) + '%',
+      'Of the world under rain or snow',
+    ],
     [sc[0] + ' / ' + sc[1] + ' / ' + sc[2], 'Asleep now (people / herbivores / predators)'],
     [kills[0] + ' / ' + kills[1], 'Predator kills (people / herbivores)'],
     [nLessons, 'Lessons learned'],
@@ -806,6 +890,11 @@ function setView(v) {
   fit();
 }
 $('view').onclick = () => setView(view === 'globe' ? 'flat' : 'globe');
+$('sky').onclick = () => {
+  showSky = !showSky;
+  $('sky').textContent = showSky ? 'Hide clouds' : 'Show clouds';
+  GL.tdata = null;
+};
 // ---------- full-screen world, tabs ----------
 function fit() {
   const r = $('stage').getBoundingClientRect(),

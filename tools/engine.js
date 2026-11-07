@@ -21,10 +21,11 @@ const API = `
 return {
   setSeed, reset, sim, interpret, mind, child, mk, gene,
   idx, inb, dxw, isNightAt, tempAt, updateClimate, iced, liquid, growth, coldOf, W, H,
+  wx: () => ({ HUM, CLD, RAIN, MOIST, PUD, PW, capacity, wetness, drinkable }),
   setTick: (t) => { tick = t; updateClimate(); },
   whisper: (a, text) => { a.wh = text; },
   watch: (a) => { sel = a; },
-  state: () => ({ ag, tick, logs, fished, kills, maxGen, nLessons, over, water, deep, food, pit, poison }),
+  state: () => ({ ag, tick, logs, fished, kills, maxGen, nLessons, over, water, deep, food, pit, poison, rock }),
   SP, DAY, TY, IB, HB, NCH, A_EAT, A_SLEEP, A_GIVE,
 };`;
 

@@ -18,6 +18,7 @@ src/                the simulation engine — no browser code, so it also runs h
   config.js         world size, time scale, brain layout, each species' biology
   state.js          shared world state, seedable random numbers, the event log, east–west wrapping
   climate.js        temperature by latitude, seasons, ice, and how cold each creature feels
+  weather.js        the water cycle: evaporation, winds, clouds, rain and snow, soil moisture, puddles
   brain.js          neural network, instincts, actor-critic learning
   lessons.js        detecting what a creature has learned, and what taught it
   creatures.js      bodies, genes, personality, inheritance
@@ -59,6 +60,7 @@ The tests check that the world is reproducible, that creatures stay within their
 - **A round world:** the world is a planet you can spin. Drag to turn it, scroll or pinch to zoom, and switch to a flat map if you like. Walk east far enough and you come back from the west; the poles are capped with ice.
 - **Day and night are local:** the sun circles the planet once a day, so it is noon on one side and midnight on the other, and creatures on the dark side sleep while others are active.
 - **Climate and seasons:** warm at the equator, cold at the poles, and four seasons that are opposite in the two hemispheres. In winter grass stops growing, water near the poles freezes (walkable, but you can't drink from it or drown in it) and snow covers the ground. Plants grow lushest in the tropics.
+- **Weather and the water cycle:** lakes, rivers and wet ground evaporate, faster when it is warm. Prevailing winds carry the moisture (trade winds, westerlies and polar easterlies, as on Earth). Warm air holds far more water than cold air, so where air rises and cools — along the equator, where the trade winds meet, and in drifting storms — the water condenses into clouds and falls as rain, or snow where it is freezing. Air sinking around 30° leaves dry belts, like Earth's deserts. Rain soaks the soil, grass needs that moisture to grow, downpours on soaked ground leave puddles creatures can drink from, and rain on your skin makes you feel colder.
 - **Cold:** people have no fur and feel cold below about 14 °C; herbivores and predators have thick winter coats and only feel the cold below about -10 °C. Cold burns energy and freezing hurts, huddling next to your own kind helps, and each creature feels its own cold as an input to its brain. Nobody is taught to stay warm. The first people are born in the warmer middle of the world.
 - **Scale:** one cell is about 3 km and one step is 15 minutes. A year is squeezed into 3 days.
 
