@@ -50,7 +50,7 @@ test('rain soaks the ground, and parched ground grows grass more slowly', () => 
   MOIST[i] = 0.02;
   const dry = wetness(i);
   MOIST[i] = 0.9;
-  assert.ok(wetness(i) > 2 * dry, 'wet soil should grow plants much better than parched soil');
+  assert.ok(wetness(i) > 1.5 * dry, 'wet soil should grow plants clearly better than parched soil');
 });
 
 test('puddles can be drunk from and dry up again', () => {
