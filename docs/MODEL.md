@@ -43,7 +43,11 @@ learning rate, copying strength, brain size), a heading, a hand (people only), a
 a neural network. People also have a perception table for what they have learned to recognise, a
 fire-handling count and a fire-making skill, memory for sleep replay, and a mother/mate/child record.
 
-**Bodies of the dead** are entities too: place, time of death, meat remaining.
+**Bodies of the dead** are entities too: place, time of death, meat remaining, how far rotting has gone
+(warmth-driven). Decay by insects and microbes runs at 0.12/day of the remaining meat at 20 °C with Q10 = 2
+(none below 0 °C); carrion birds (a process, not agents) remove 1.2/day by day on open ground above 8 °C.
+A **soil** layer (1 = usual) gains 0.8 × the rotted meat (plus a little around it) and 1% of grass eaten
+by grazers (dung); grass growth is multiplied by √soil; soil relaxes to 1 at 0.02%/step.
 
 ## 3. Process overview and scheduling
 

@@ -20,14 +20,14 @@ function engineSource() {
 const API = `
 return {
   setSeed, reset, sim, interpret, mind, child, mk, gene, perceive, newPerception, testScore, iqTable, probe, replay, remember, forward, NM, NA, NH, OI, hOf, grownUnits, prune, connections, regionOf,
-  idx, inb, dxw, isNightAt, tempAt, updateClimate, iced, liquid, growth, coldOf, heatOf, W, H,
+  idx, inb, dxw, isNightAt, tempAt, cellTemp, updateClimate, iced, liquid, growth, coldOf, heatOf, W, H,
   forest: () => ({ tree, fruit, fkind, tcap, meanTemp, cover }),
   wx: () => ({ HUM, CLD, RAIN, MOIST, PUD, PW, CONV, THUNDER, STRIKES, capacity, wetness, drinkable }),
   setTick: (t) => { tick = t; updateClimate(); },
   whisper: (a, text) => { a.wh = text; },
   watch: (a) => { sel = a; },
   state: () => ({ events, SIBS, firsts, deaths, ag, tick, logs, fished, kills, maxGen, nLessons, over, water, deep, food, pit, cave, poison, rock, salt, river }),
-  items: () => ({ bodies: BODIES, ROOT, meatAt, stone, stick, flake, nut, pyrite, lying, nutCap }),
+  items: () => ({ soil, rotten, bodies: BODIES, ROOT, meatAt, stone, stick, flake, nut, pyrite, lying, nutCap }),
   talk: () => ({ SNDSTAT, BASE, GENSTAT, meaning, SAYN, HEARD, CALLS }),
   fire: () => ({ FIRE, SMOL, BURNT, COOK, fireStats, BURNING, dryness, fuelOf, ignite, pyrite }),
   alt: () => alt,

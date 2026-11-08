@@ -19,7 +19,8 @@ function sim() {
     // grass spreads from what is left above ground, and grazed grass also grows back from its roots,
     // which is why grasslands survive big herds; bare ground only greens again slowly, from seed
     if (food[i] < 1)
-      food[i] += (0.006 * food[i] * (1 - food[i]) + 0.0004 + 0.003 * Math.max(0, 0.6 - food[i])) * tf;
+      food[i] += (0.006 * food[i] * (1 - food[i]) + 0.0004 + 0.003 * Math.max(0, 0.6 - food[i])) * tf * Math.sqrt(soil[i]);
+    if (soil[i] !== 1) soil[i] += (1 - soil[i]) * 0.0002; // settles back slowly, over months
   }
   G = new Array(W * H);
   const pop = [0, 0, 0, 0],
@@ -249,7 +250,7 @@ function sim() {
       // worth eating, a person has to find out.
       const h = idx(a.x, a.y),
         m = meatAt(a.x, a.y, 0),
-        taste = Math.max(fruit[h], COOK[h], m && tick - m.t < FRESH ? m.meat : 0);
+        taste = Math.max(fruit[h], COOK[h], m && !rotten(m) ? m.meat : 0);
       RF[A_EAT] = taste > 0.05 && !water[h] ? 4 * hu : 0;
       // and hunger alone makes any primate try putting plants in its mouth: a weaker pull, which the
       // gut then rewards or not
@@ -571,7 +572,7 @@ function sim() {
         // there is; after a couple of days it is rotting, and often makes you sick.
         const m = meatAt(a.x, a.y, a.sp === 0 ? 0 : -1),
           b = Math.min(m.meat, a.sp === 0 ? (a.hand === 3 ? 0.35 : 0.12) : 0.3),
-          rot = tick - m.t > FRESH;
+          rot = rotten(m);
         m.meat -= b;
         a.e = Math.min(100, a.e + b * 110);
         if (rot && rnd() < 0.35) {
@@ -644,6 +645,7 @@ function sim() {
         a.fd += b;
         a.e = Math.min(100, a.e + b * S.hg);
         food[i] -= b;
+        soil[i] = Math.min(4, soil[i] + 0.01 * b); // most of what grazers eat goes back as dung
         if (hu > 0.5) a.ev[2] = 'it ate after going hungry on day ' + dn;
       }
     } else if (act === A_DRINK && x[HB + 1]) {

@@ -366,7 +366,7 @@ function sense(a, x, night) {
   x[FOODIN] = a.sp === 0 && !water[here] ? Math.min(1, ROOT[here] * 2) : 0;
   {
     const m = a.sp === 0 || a.sp === 2 ? meatAt(a.x, a.y, a.sp === 0 ? 0 : 2) : null;
-    x[FOODIN + 1] = m ? Math.min(1, m.meat) * (tick - m.t > FRESH ? 0.5 : 1) : 0;
+    x[FOODIN + 1] = m ? Math.min(1, m.meat) * (rotten(m) ? 0.5 : 1) : 0;
   }
   x[IB + 16] = a.sp < 2 && poison[here] && food[here] > 0.05 ? 1 : 0;
   let hk = 0;

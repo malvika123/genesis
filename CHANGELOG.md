@@ -4,6 +4,11 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **The food chain closes.** Bodies are eaten by insects and microbes at a pace set by warmth (most of a
+  carcass gone in about three weeks of summer, nothing while frozen), and go bad on the same clock;
+  vultures strip carcasses by day on open warm ground. What rots enriches the soil, and grass there
+  grows lusher for months; grazers' dung enriches the ground too. Flies and circling vultures are
+  drawn over carcasses up close.
 - **Pair bonds instead of "last one mated with".** People and wolves form bonds that grow with time
   spent together and with mating, and fade over weeks apart; the partner is the strongest bond. Bonded
   partners are preferred when mating and missed when apart; nothing forbids other partners. Deer,

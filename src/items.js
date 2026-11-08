@@ -11,8 +11,14 @@
 // thing at a time; the nut meat is eaten the moment the shell is broken.
 
 // Bodies of the dead. A body does not vanish: it lies where it fell, then wastes to bare bones over a
-// couple of weeks (hunters, bears and people may eat its meat; no insects or vultures yet), and the bones lie for a long time.
+// couple of weeks (hunters, bears and people may eat its meat; insects, microbes and carrion birds take
+// the rest, and what rots feeds the soil), and the bones lie for a long time.
 let BODIES = [];
+// How rich the soil is (1 = as the land would be anyway). Where a body rots, its nitrogen and
+// phosphorus seep into the ground and the plants there grow lusher for a long time after (a
+// "cadaver decomposition island": Carter et al. 2007); dung where herds graze enriches the ground too.
+// Over time it settles back toward the land's usual richness (taken up by plants, washed away).
+let soil;
 // Roots and tubers: starchy food stored underground by many wild plants, most of all in grassland and
 // open woodland with a dry season. A staple of early humans — but hidden, and hard to dig out with
 // bare hands; a stick makes it much easier, as the Hadza still dig them today.
@@ -27,6 +33,7 @@ const HAND = ['nothing', 'a stone', 'a stick', 'a sharp stone', 'a burning stick
 function initItems() {
   BODIES = [];
   ROOT = new Float32Array(W * H);
+  soil = new Float32Array(W * H).fill(1);
   const n = W * H;
   stone = new Uint8Array(n);
   stick = new Uint8Array(n);
@@ -109,13 +116,46 @@ const BODY_BONES = 14 * 96,
   BODY_GONE = 120 * 96;
 function updateBodies() {
   if (tick % 96 === 0) BODIES = BODIES.filter((b) => tick - b.t < BODY_GONE);
+  if (tick % 4) return; // once an hour is plenty
+  const dt = 4 / DAY; // days
+  for (const b of BODIES) {
+    if (!(b.meat > 0.001)) continue;
+    const i = idx(b.x, b.y),
+      night = isNightAt(b.x),
+      T = cellTemp(i, night);
+    // Insects (blowfly maggots, then beetles) and microbes eat a body from within. How fast depends on
+    // warmth: in summer grassland a small carcass loses over 90% of its mass in about 20 days; it
+    // roughly doubles with every 10 °C warmer, and stops when frozen.
+    const q = T > 0 ? 0.12 * 2 ** ((T - 20) / 10) : 0,
+      bugs = b.meat * (1 - Math.exp(-q * dt));
+    b.rot = (b.rot || 0) + (T > 0 ? (T / 20) * (dt / 2) : 0); // 1: going bad (about two days at 20 °C)
+    if (q > 0.03) b.flyT = tick;
+    // Carrion birds: by day, where the ground is open and warm enough for them to soar on rising air,
+    // vultures find a carcass within hours and strip it fast (in the Serengeti they eat more carrion
+    // than all the meat-eating mammals together: Houston 1979). Simplified: they are not creatures
+    // with minds here, only what they do.
+    let birds = 0;
+    if (!b.w && !night && T > 8 && cover(i) < 0.5) {
+      birds = (b.meat - bugs) * (1 - Math.exp(-1.2 * dt));
+      b.birdT = tick;
+    }
+    b.meat = Math.max(0, b.meat - bugs - birds);
+    // what rots goes into the ground, most of it right there
+    if (!b.w) {
+      soil[i] = Math.min(4, soil[i] + 0.8 * bugs);
+      for (const [dx, dy] of MV) {
+        const j = idx(wx(b.x + dx), clamp(b.y + dy, 0, H - 1));
+        if (!water[j]) soil[j] = Math.min(4, soil[j] + 0.05 * bugs);
+      }
+    }
+  }
 }
-// a body with meat on it lying at (x, y), freshest first; meat older than about two days is rotting
-const FRESH = 2 * 96;
+// a body with meat on it lying at (x, y), freshest first; b.rot >= 1 means it has gone bad
+const rotten = (b) => (b.rot || 0) >= 1;
 function meatAt(x, y, notSp = -1) {
   let best = null;
   for (const b of BODIES)
-    if (b.x === x && b.y === y && b.meat > 0.05 && b.sp !== notSp && tick - b.t < 6 * 96 && (!best || b.t > best.t)) best = b;
+    if (b.x === x && b.y === y && b.meat > 0.05 && b.sp !== notSp && (!best || b.t > best.t)) best = b;
   return best;
 }
 // the ground at a cell, as the hands meet it

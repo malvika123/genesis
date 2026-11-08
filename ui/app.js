@@ -1078,6 +1078,33 @@ function drawBodies(g, P) {
       g.lineTo(-r * 1.6 + k * r, r * 0.3);
       g.stroke();
     }
+    g.globalAlpha = 1;
+    const t = performance.now() / 1000;
+    // flies buzzing over a body that is rotting in the warmth
+    if (b.flyT && tick - b.flyT < 8 && b.meat > 0.03) {
+      g.fillStyle = '#1b1b1b';
+      for (let k = 0; k < 7; k++) {
+        const a = t * (2 + k * 0.7) + k * 2.1;
+        g.fillRect(Math.cos(a) * r * (1.2 + (k % 3) * 0.5), -r * 0.8 + Math.sin(a * 1.3) * r * 0.7, Math.max(1, r * 0.12), Math.max(1, r * 0.12));
+      }
+    }
+    // vultures: circling high above first, then down on the carcass
+    if (b.birdT && tick - b.birdT < 8 && b.meat > 0.03) {
+      g.strokeStyle = '#2a2622';
+      g.lineWidth = Math.max(1, r * 0.18);
+      for (let k = 0; k < 3; k++) {
+        const a = t * 0.6 + (k * 2 * Math.PI) / 3,
+          R = r * (4 + k),
+          cx = Math.cos(a) * R,
+          cy = -r * 6 + Math.sin(a) * R * 0.35,
+          w = r * 0.9;
+        g.beginPath();
+        g.moveTo(cx - w, cy - w * 0.3);
+        g.quadraticCurveTo(cx - w * 0.4, cy - w * 0.5, cx, cy);
+        g.quadraticCurveTo(cx + w * 0.4, cy - w * 0.5, cx + w, cy - w * 0.3);
+        g.stroke();
+      }
+    }
     g.restore();
   }
 }
