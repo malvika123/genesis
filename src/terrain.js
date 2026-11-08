@@ -278,8 +278,16 @@ function makeTerrain() {
     pit[idx(x, y)] = 1;
   }
   // caves form where water dissolves limestone or waves and lava hollow rock: here, in stony hill country
-  for (let i = 0; i < n; i++)
-    if (!water[i] && !rock[i] && !pit[i] && ter[i] === 2 && alt[i] > 0.3 && rnd() < 0.07) cave[i] = 1;
+  // (on a slope, where a hillside can show a rock face; not in the polar ice)
+  for (let i = 0; i < n; i++) {
+    if (water[i] || rock[i] || pit[i] || ter[i] !== 2 || alt[i] < 0.3 || alt[i] > 4) continue;
+    const x = i % W,
+      y = (i / W) | 0;
+    if (y < 8 || y > H - 9) continue;
+    let steep = 0;
+    for (const [dx, dy] of NB8) if (inb(x, y + dy)) steep = Math.max(steep, Math.abs(alt[idx(x + dx, y + dy)] - alt[i]));
+    if (steep > 0.12 && rnd() < 0.08) cave[i] = 1;
+  }
   for (let k = 0; k < 10 * area; k++) {
     const bx = rnd() * W,
       by = rnd() * H;

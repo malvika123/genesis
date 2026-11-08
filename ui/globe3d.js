@@ -179,29 +179,31 @@ const G3D = { ok: false };
   // dark opening; step into the cell and you are inside the hollow, looking at dim stone walls and the
   // bright arch of daylight you came in by. (Simplified: one chamber, no tunnels.)
   const MAXC = 600,
-    CR = 0.024, // knoll radius
-    CH = 0.03, // and height
-    CI = 0.0225, // the hollow inside it
-    AW = 0.0045, // half the width of the mouth
-    AH = 0.0085, // and its height (a person is about 0.006 tall)
+    CR = 0.018, // outcrop radius
+    CH = 0.021, // and height
+    AW = 0.0042, // half the width of the mouth
+    AH = 0.0075, // and its height (a person is about 0.006 tall)
     domeG = new THREE.SphereGeometry(1, 14, 8, 0, 2 * Math.PI, 0, Math.PI / 2),
-    rockG = domeG.clone(),
+    rockG = new THREE.IcosahedronGeometry(1, 2),
     archS = new THREE.Shape();
   archS.moveTo(-AW, 0);
   archS.lineTo(-AW, AH - AW);
   archS.absarc(0, AH - AW, AW, Math.PI, 0, true);
   archS.lineTo(AW, 0);
   archS.lineTo(-AW, 0);
-  // roughen the rock a little, the same for every cave (the mouth must stay clear of it)
+  // A craggy boulder: lumps outward only (so the hollow always fits inside), flat underneath (it sits
+  // buried in the hillside), and smooth in front where the mouth is.
   {
-    const pa = rockG.attributes.position;
+    const pa = rockG.attributes.position,
+      v3 = new THREE.Vector3();
     for (let k = 0; k < pa.count; k++) {
-      const x = pa.getX(k),
-        y = pa.getY(k),
-        z = pa.getZ(k),
-        hsh = Math.sin(x * 91.7 + y * 53.3 + z * 127.1) * 43758.5453,
-        j = 1 + 0.05 * (hsh - Math.floor(hsh) - 0.5) * (y < 0.02 ? 0 : 1);
-      pa.setXYZ(k, x * j, y * j, z * j);
+      v3.fromBufferAttribute(pa, k).normalize();
+      const hsh = Math.sin(v3.x * 91.7 + v3.y * 53.3 + v3.z * 127.1) * 43758.5453,
+        hs2 = Math.sin(v3.x * 17.3 + v3.y * 211.9 + v3.z * 31.7) * 24634.6345,
+        lump = (hsh - Math.floor(hsh)) * 0.16 + (hs2 - Math.floor(hs2)) * 0.1,
+        front = v3.z > 0.45 && v3.y < 0.62 ? 0 : 1,
+        j = 1 + lump * front;
+      pa.setXYZ(k, v3.x * j, Math.max(0, v3.y) * j, v3.z * j);
     }
     rockG.computeVertexNormals();
   }
@@ -237,8 +239,13 @@ const G3D = { ok: false };
         lo = (gx / W) * 2 * Math.PI - Math.PI,
         la = LATMAX * (1 - (2 * gy) / H),
         r = 1 + EX * heightAt(la, lo);
+      // sink it into the slope: down to the lowest ground under it
+      let lowest = heightAt(la, lo);
+      for (const [da, db] of [[0.01, 0], [-0.01, 0], [0, 0.01], [0, -0.01]])
+        lowest = Math.min(lowest, heightAt(la + da, lo + db / Math.max(0.2, Math.cos(la))));
       c0.copy(local(la, lo, r));
       nn.copy(c0).normalize();
+      c0.addScaledVector(nn, EX * (lowest - heightAt(la, lo)) - 0.0012);
       // the way the mouth faces: a fixed direction for each cave, along the ground
       tw.set(0, 1, 0);
       if (Math.abs(nn.y) > 0.95) tw.set(1, 0, 0);
@@ -248,7 +255,7 @@ const G3D = { ok: false };
       f.copy(t1).multiplyScalar(Math.cos(th)).addScaledVector(t2, Math.sin(th)).normalize();
       rt.copy(nn).cross(f).normalize();
       // the knoll stands behind the middle of the cell, so the middle of the cell is inside its hollow
-      const M = c0.clone().addScaledVector(f, -0.012).addScaledVector(nn, -0.0008);
+      const M = c0.clone().addScaledVector(f, -0.0095);
       const place = (mesh, dist, flip, sx, sy, sz) => {
         bas.makeBasis(flip ? rt.clone().negate() : rt, nn, flip ? f.clone().negate() : f);
         qq.setFromRotationMatrix(bas);
@@ -257,10 +264,12 @@ const G3D = { ok: false };
         mtx.compose(pos, qq, scl);
         mesh.setMatrixAt(n, mtx);
       };
-      place(caveRock, 0, false, CR, CH, CR);
-      place(caveHall, 0, false, CI, CH * 0.94, CI);
-      place(caveMouth, CR * 1.05, false, 1, 1, 1);
-      place(caveLight, CI - 0.002, true, 1, 1, 1);
+      const sz = 0.8 + 0.5 * (((i * 40503) % 997) / 997); // a different size for each cave
+      place(caveRock, 0, false, CR * sz, CH * sz * 0.9, CR * sz);
+      const hr = CR * sz * 0.93; // the hollow, always a little smaller than the rock round it
+      place(caveHall, 0, false, hr, CH * sz * 0.9 * 0.93, hr);
+      place(caveMouth, CR * sz * 1.02 + 0.0004, false, 1, 1, 1);
+      place(caveLight, hr - 0.002, true, 1, 1, 1);
       n++;
     }
     for (const m of [caveRock, caveHall, caveMouth, caveLight]) {
