@@ -30,9 +30,11 @@ const ONS = 4, // none, lips, tip, back
     let o = VMODE;
     for (let s = 0; s < NSYLL; s++) for (const n of [ONS, 2, HT, BK, 2]) g.push([o, n]), (o += n);
     g.push([o, NSYLL]); // how many syllables
+    g.push([o + NSYLL, 9]); // a hand: not pointing, or pointing one of the eight ways
     return g;
   })(),
-  NVO = VG[VG.length - 1][0] + VG[VG.length - 1][1], // all the voice's outputs
+  NVO = VG[VG.length - 1][0] + VG[VG.length - 1][1], // all the voice's (and the pointing hand's) outputs
+  GPT = VG.length - 1, // the pointing group
   NACOU = 5 * NSYLL + 2; // what the ear gets from one word
 
 // a word as its articulations: [[onset, voiced, height, back, round], …]
@@ -109,7 +111,20 @@ function choicesFor(w) {
   c[0] = 3;
   for (let s = 0; s < w.length; s++) for (let k = 0; k < 5; k++) c[1 + s * 5 + k] = w[s][k];
   c[1 + 5 * NSYLL] = w.length - 1;
-  return c;
+  return c; // (the pointing hand is left alone: -1)
 }
+// Our ancestors were not born with a modern human voice. Apes control their calls poorly, can hardly
+// learn new ones, and rarely point to show another something. Here these abilities are inherited and
+// start low, as in our ape-like ancestors, and evolution decides whether they grow (in us they did, over
+// hundreds of thousands of years — and with a generation of about 12 years, that takes many generations
+// here too):
+//   vl — vocal control and vocal learning: how reliably the mouth does what the brain asks, how much it
+//        copies sounds it hears, how much a baby babbles;
+//   pg — the urge to point;
+//   sh — the pleasure of sharing attention: when someone looks where you pointed (in us, a drive that
+//        appears in babies around their first birthday and that apes barely have).
+const vocalCtl = (a) => (SOC.modern ? 1 : (a.g.vl ?? 1)),
+  pointUrge = (a) => (SOC.modern ? 1 : (a.g.pg ?? 1)),
+  shareJoy = (a) => (SOC.modern ? 1 : (a.g.sh ?? 1));
 // a speaker's pitch, 0 … 1: children highest, then women, then men
 const pitchOf = (a) => (a.age < a.S.mat ? 0.9 : a.sex ? 0.6 : 0.3);

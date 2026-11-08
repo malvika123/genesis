@@ -4,6 +4,11 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Speech starts where our ancestors started.** Vocal control (and with it babbling and copying sounds),
+  the urge to point, and the pleasure of shared attention are inherited and start low, as in our
+  ape-like ancestors; evolution decides whether they grow. People can point, see others point and
+  where they look, and enjoy it when someone goes where they pointed (as much as each was born to).
+  The translator notes what a word is said while pointing at. --modern-voice gives a full human voice.
 - **A human voice, and a translator.** The four fixed sounds are gone: each person has a simplified
   vocal tract (closure place, voicing, tongue height and backness, lip rounding; one or two syllables),
   so they can say over 20,000 words, none with any meaning. Listeners hear acoustic cues (burst, voicing,

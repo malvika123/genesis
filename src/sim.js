@@ -246,7 +246,10 @@ function sim() {
       if (a.painA > 0.5) RFV[2] += 3;
       // babbling: from about six months, a baby who is fed, warm and calm plays with its voice, and
       // young children keep talking to themselves and others
-      if (young && a.age > S.mat * 0.04 && hu < 0.5 && a.painA < 0.2 && a.fear < 0.3) RFV[3] += a.age < S.mat * 0.25 ? 2 : 1;
+      if (young && a.age > S.mat * 0.04 && hu < 0.5 && a.painA < 0.2 && a.fear < 0.3)
+        RFV[3] += (a.age < S.mat * 0.25 ? 2 : 1) * vocalCtl(a);
+      // the hand mostly stays down; how often it points is inherited
+      RFV[VG[GPT][0]] += 4 + 4 * (1 - pointUrge(a));
       const o = HEAR;
       if (x[o] > 0 && a.kid && !a.kid.gone && a.kid.age < a.kid.S.mat)
         for (let s = 0; s < 8; s++) {
@@ -349,6 +352,19 @@ function sim() {
     // the voice, alongside what the body does (asleep, it is quiet)
     const vc = a.sp === 0 && !(act === A_SLEEP || a.asleep) ? sampleV(a.zv) : null,
       voice = vc ? vc[0] : 0;
+    // with poor vocal control, the mouth does not quite do what the brain meant
+    if (vc && voice === 3) {
+      const ctl = vocalCtl(a);
+      for (let gi = 1; gi < GPT; gi++) if (rnd() > ctl) vc[gi] = (rnd() * VG[gi][1]) | 0;
+    }
+    a.pt = vc && vc[GPT] > 0 ? vc[GPT] - 1 : -1; // pointing this way (a direction 0 … 7), or not
+    if (a.pt >= 0) {
+      a.ptT = tick;
+      if (!firsts.point) {
+        firsts.point = 1;
+        log(a.name + ' pointed, for the first time anyone has.');
+      }
+    }
     a.voice = voice;
     a.vc = vc;
     if (act === chosen) trace(a, act, vc);
@@ -450,7 +466,21 @@ function sim() {
     // Vocal imitation, inborn in humans: hearing a word, the mouth is drawn a little toward making the
     // same sounds — strongly in babies and children, and more in those born to learn from others.
     if (a.sp === 0 && a.heardW && !a.asleep)
-      imitateVoice(a, choicesFor(a.heardW), 0.02 * (young ? 3 : 1) * (a.g.im ?? 1) * x[HEAR + 6]);
+      imitateVoice(a, choicesFor(a.heardW), 0.02 * (young ? 3 : 1) * (a.g.im ?? 1) * x[HEAR + 6] * vocalCtl(a));
+    // Shared attention: if it goes the way someone close pointed, both feel the small pleasure of
+    // having shared something — as much as each was born to (sh).
+    if (a.sp === 0 && a.seenPt && act === a.seenPt.dir && tick - a.seenPt.t <= 1) {
+      const p = a.seenPt.who;
+      a.bonus[7] += 0.01 * shareJoy(a);
+      if (p && !p.gone) {
+        p.bonus[7] += 0.03 * shareJoy(p);
+        if (!firsts.joint) {
+          firsts.joint = 1;
+          log(a.name + ' went the way ' + p.name + ' pointed: attention shared, for the first time.');
+        }
+      }
+      a.seenPt = null;
+    }
     const hs = a.heardK === 2 ? WSTAT.get(a.heardWord) : SNDSTAT[a.heardK];
     if (a.sp === 0 && a.heardK >= 0 && !a.asleep && hs) {
       const S = hs,
@@ -486,6 +516,17 @@ function sim() {
       }
       tally(st, context(a));
       if (st.who) st.who.add(a.id);
+      // said while pointing: note what lay that way, as far as the speaker could see (for the translator)
+      if (k === 2 && a.pt >= 0) {
+        let bc = -1,
+          bv = 0.15;
+        for (const c of [1, 2, 3, 4, 5, 8, 9, 0, 12, 13, 14, 15]) if (x[a.pt * NCH + c] > bv) (bv = x[a.pt * NCH + c]), (bc = c);
+        if (bc >= 0) {
+          st.pts = st.pts || {};
+          st.pts[bc] = (st.pts[bc] || 0) + 1;
+          st.npt = (st.npt || 0) + 1;
+        }
+      }
       // calling out to others nearby eases loneliness a little (like grooming does for apes)
       if (seeOwn) a.bonus[7] += 0.03 * a.lo;
       if (typeof onCall === 'function') onCall(a, k, w);
@@ -1070,7 +1111,7 @@ function fireMade(a, how) {
 //   · How much a person learns from others at all is inherited (gene im), so some are loners who learn
 //     only the hard way, as about one person in five does in experiments (Molleman et al. 2014).
 // What exactly it learns is left to its own brain.
-const SOC = { vic: true, pick: true, sound: true, calls: true },
+const SOC = { vic: true, pick: true, sound: true, calls: true, modern: false },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {

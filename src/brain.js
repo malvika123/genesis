@@ -417,7 +417,7 @@ function imitateVoice(a, vc, rate) {
 function sampleV(zv) {
   const c = new Array(VG.length).fill(-1);
   VG.forEach(([o, n], gi) => {
-    if (gi && c[0] !== 3) return;
+    if (gi && gi !== GPT && c[0] !== 3) return; // the mouth only moves when speaking; the hand any time
     let r = rnd(),
       k = 0;
     for (; k < n - 1; k++) {

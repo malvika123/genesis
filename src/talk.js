@@ -166,13 +166,16 @@ function tally(S, c) {
 }
 // per generation of people: the inborn brain they got, and what they went on to learn
 function genRecord(a) {
-  const G = GENSTAT[a.gen] || (GENSTAT[a.gen] = { n: 0, bs: 0, lr: 0, im: 0, pb: 0, cf: 0, lone: 0, c: 0, les: 0 });
+  const G = GENSTAT[a.gen] || (GENSTAT[a.gen] = { n: 0, bs: 0, lr: 0, im: 0, pb: 0, cf: 0, lone: 0, vl: 0, pg: 0, sh: 0, c: 0, les: 0 });
   G.n++;
   G.bs += a.g.bs ?? 1;
   G.lr += a.g.lr ?? 1;
   G.im += a.g.im ?? 1;
   G.pb += a.g.pb ?? 0.5;
   G.cf += a.g.cf ?? 0.3;
+  G.vl += a.g.vl ?? 1;
+  G.pg += a.g.pg ?? 1;
+  G.sh += a.g.sh ?? 1;
   if ((a.g.im ?? 1) < 0.35) G.lone++; // hardly learns from others at all
   G.c += a.g.c;
 }

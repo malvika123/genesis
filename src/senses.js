@@ -399,6 +399,7 @@ function sense(a, x, night) {
   // short-term memory: what its brain was doing a moment ago
   for (let j = 0; j < NM; j++) x[IB + 27 + j] = a.hm[j];
   if (a.sp !== 3) hear(a, x);
+  if (a.sp === 0) seeOthers(a, x);
   if (a.sp === 0) {
     x[IB + 19] = a.hand === 1 || a.hand === 5 ? 1 : 0; // a stone (or a shiny one)
     x[IB + 20] = a.hand === 2 || a.hand === 4 ? 1 : 0; // a stick (perhaps burning)
@@ -406,5 +407,40 @@ function sense(a, x, night) {
     x[IB + 22] = stone[here] + flake[here] + pyrite[here] > 0 ? 1 : 0;
     x[IB + 23] = stick[here] > 0 ? 1 : 0;
     x[IB + 24] = nut[here] > 0.05 ? 1 : 0;
+  }
+}
+
+// Seeing other people's hands and eyes: someone close (in the same square or the next) who is pointing
+// — how clearly and which way — and which way the nearest person is looking. Following another's gaze
+// is old (apes do it); what the pointing is about, nothing tells them.
+function seeOthers(a, x) {
+  a.seenPt = null;
+  let best = null,
+    gaze = null,
+    bd = 9;
+  for (let dy = -1; dy <= 1; dy++)
+    for (let dx = -1; dx <= 1; dx++) {
+      const l = G[idx(wx(a.x + dx), clamp(a.y + dy, 0, H - 1))];
+      if (!l) continue;
+      for (const o of l) {
+        if (o === a || o.sp !== 0 || o.dead || o.asleep) continue;
+        const d = dx * dx + dy * dy;
+        if (o.ptT !== undefined && tick - o.ptT <= 1 && o.pt >= 0 && (!best || d < best.d)) best = { o, d };
+        if (d < bd) (bd = d), (gaze = o);
+      }
+    }
+  if (best) {
+    const [mx, my] = MV[best.o.pt],
+      L = Math.hypot(mx, my);
+    x[SEEPT] = best.d ? 0.6 : 1;
+    x[SEEPT + 1] = mx / L;
+    x[SEEPT + 2] = my / L;
+    a.seenPt = { who: best.o, dir: best.o.pt, t: tick };
+  }
+  if (gaze) {
+    const [mx, my] = MV[gaze.hd || 0],
+      L = Math.hypot(mx, my);
+    x[SEEPT + 3] = mx / L;
+    x[SEEPT + 4] = my / L;
   }
 }

@@ -40,3 +40,33 @@ test('hearing a word draws a child\'s own mouth toward saying it (vocal imitatio
   for (let i = 0; i < 30; i++) E.social().imitateVoice(a, c, 0.05);
   assert.ok(p() > before + 0.5, 'more likely to say it now');
 });
+
+test('ancestors start with an ape-like voice: little control, little urge to point; the modern switch gives a human one', () => {
+  const E = createEngine();
+  E.setSeed(5);
+  E.reset({});
+  const ppl = E.state().ag.filter((o) => o.sp === 0);
+  assert.ok(ppl.every((p) => p.g.vl <= 0.3 && p.g.pg <= 0.3 && p.g.sh <= 0.3), 'low at the start');
+  const kid = E.child(ppl[0], ppl[1]);
+  assert.ok(kid.vl >= 0 && kid.vl <= 1 && kid.pg >= 0 && kid.sh <= 1, 'inherited, within range');
+});
+
+test('someone pointing close by is seen, with the way they point', () => {
+  const E = createEngine();
+  E.setSeed(6);
+  E.reset({ predators: 0 });
+  E.sim();
+  const [p, q] = E.state().ag.filter((o) => o.sp === 0);
+  q.x = p.x;
+  q.y = p.y;
+  q.asleep = p.asleep = false;
+  E.sim();
+  q.x = p.x;
+  q.y = p.y;
+  q.asleep = p.asleep = false;
+  q.pt = 0; // pointing east
+  q.ptT = E.state().tick;
+  const x = new Float32Array(E.NI);
+  E.sense(p, x, false);
+  assert.ok(x[E.SEEPT] > 0 && x[E.SEEPT + 1] > 0.9, 'sees the point, eastward');
+});

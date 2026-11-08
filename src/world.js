@@ -16,6 +16,7 @@ function reset(cfg = {}) {
   SOC.pick = cfg.pickyCopy !== false;
   SOC.sound = cfg.soundPhysics !== false; // off: the old rule (heard within 2.2 squares, fading evenly)
   SOC.calls = cfg.animalCalls !== false;
+  SOC.modern = !!cfg.modernVoice; // the experiment: give everyone a modern human voice from the start
   food = new Float32Array(W * H);
   ag = [];
   tick = 0;

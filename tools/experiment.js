@@ -13,6 +13,7 @@
 //   --retina         the raw-vision experiment (no labelled senses)
 //   --no-vicar       people don't learn from seeing others hurt
 //   --old-sound      sound heard within 2.2 squares, fading evenly (no physics)
+//   --modern-voice   everyone starts with a modern human voice, pointing and shared attention
 //   --no-calls       animals make no calls
 //   --no-picky       people copy the nearest elder blindly (no success bias, crowd-following or uncertainty)
 //   --workers N      run seeds in parallel in N processes                            [1]
@@ -49,6 +50,8 @@ const MILESTONES = [
   'rubfire', // makes fire with wood
   'share', // gives food to another
   'vicar', // someone is afraid after seeing another person hurt
+  'point', // someone points
+  'joint', // someone goes the way another pointed (shared attention)
   'speak', // someone first says a word of its own making
   'shared', // three people say the same word: the first shared word
 ];
@@ -99,6 +102,7 @@ function settings(a) {
       pickyCopy: !a['no-picky'],
       soundPhysics: !a['old-sound'],
       animalCalls: !a['no-calls'],
+      modernVoice: !!a['modern-voice'],
     },
   };
 }
@@ -132,6 +136,11 @@ function runWorld(E, seed, S) {
     copies_successful: ppl.length ? +(ppl.reduce((t, p) => t + (p.g.pb ?? 0.5), 0) / ppl.length).toFixed(2) : '',
     follows_crowd: ppl.length ? +(ppl.reduce((t, p) => t + (p.g.cf ?? 0.3), 0) / ppl.length).toFixed(2) : '',
     full_sibling_pct: st.SIBS[0] && st.SIBS[0].pairs ? Math.round((100 * st.SIBS[0].full) / st.SIBS[0].pairs) : '',
+    vocal_control: ppl.length ? +(ppl.reduce((t, p) => t + (p.g.vl ?? 1), 0) / ppl.length).toFixed(2) : '',
+    point_urge: ppl.length ? +(ppl.reduce((t, p) => t + (p.g.pg ?? 1), 0) / ppl.length).toFixed(2) : '',
+    share_joy: ppl.length ? +(ppl.reduce((t, p) => t + (p.g.sh ?? 1), 0) / ppl.length).toFixed(2) : '',
+    words_said: st.WSTAT ? st.WSTAT.size : '',
+    words_shared: st.WSTAT ? [...st.WSTAT.values()].filter((s) => s.who && s.who.size >= 3).length : '',
     loners_pct: ppl.length ? Math.round((100 * ppl.filter((p) => (p.g.im ?? 1) < 0.35).length) / ppl.length) : '',
     died,
     day,
@@ -139,7 +148,7 @@ function runWorld(E, seed, S) {
 }
 
 function csv(rows, S, meta) {
-  const head = ['seed', 'days_run', 'people_alive', 'generations', 'plant_eaters', 'hunters', 'fish', 'best_fire_skill', 'learns_from_others', 'copies_successful', 'follows_crowd', 'loners_pct', 'full_sibling_pct'];
+  const head = ['seed', 'days_run', 'people_alive', 'generations', 'plant_eaters', 'hunters', 'fish', 'best_fire_skill', 'learns_from_others', 'copies_successful', 'follows_crowd', 'loners_pct', 'full_sibling_pct', 'vocal_control', 'point_urge', 'share_joy', 'words_said', 'words_shared'];
   const cols = [...head, ...CAUSES.map((c) => 'died_' + c.replace(/ /g, '_')), ...MILESTONES.map((m) => 'day_' + m)];
   const lines = [
     '# Genesis experiment',

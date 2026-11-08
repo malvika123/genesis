@@ -34,10 +34,12 @@ const NCH = 16, // per direction: water, food, danger, herbivore, person, predat
   FOODIN = RET + 4 * NRAY, // underfoot, people: the leaves of root plants; meat on a body
   NAC = 3, // animals' inborn calls: a wolf's howl, a big cat's roar, a plant-eater's alarm snort
   ACALL = FOODIN + 2, // hearing them: for each, how loud and from which way (3 inputs each)
-  NI = ACALL + 3 * NAC, // IB + 18 cold; IB + 19 … 24 its hands and feet; IB + 25 heat; IB + 26 anger; memory; hearing
+  SEEPT = ACALL + 3 * NAC, // seeing others: someone close pointing (how clearly, which way), and where they are looking
+  NI = SEEPT + 5, // IB + 18 cold; IB + 19 … 24 its hands and feet; IB + 25 heat; IB + 26 anger; memory; hearing
   NH = 64, // the most thinking units any brain can grow (see each kind's hmax)
   NA = 18, // what the body does
-  NV = 34, // and, at the same time, what the voice does: silent, cry, scream or speak, and how the mouth moves (voice.js)
+  NV = 43, // (34 for the voice, then 9 for pointing: not at all, or one of the eight ways)
+  // and, at the same time, what the voice does: silent, cry, scream or speak, and how the mouth moves (voice.js)
   O3 = 0, // where the direct senses → choices connections start in a brain's array
   OI = NA * NI; // where the senses → thinking units connections start
 const A_STAY = 8,

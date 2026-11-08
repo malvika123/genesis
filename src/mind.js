@@ -79,6 +79,8 @@ INNER[FOODIN + 1 - IB] = 'a dead body with meat on it';
 for (let k = 0; k < NSAY; k++)
   for (let q = 0; q < 3; q++) INNER[HEAR - IB + 3 * k + q] = ['hearing a cry', 'hearing a scream', 'hearing someone speak'][k];
 for (let k = 0; k < 12; k++) INNER[SPEECH - IB + k] = 'the sound of the word it heard';
+for (let k = 0; k < 3; k++) INNER[SEEPT - IB + k] = 'someone close pointing';
+for (let k = 3; k < 5; k++) INNER[SEEPT - IB + k] = 'where someone close is looking';
 for (let k = 0; k < NAC; k++)
   for (let q = 0; q < 3; q++) INNER[ACALL - IB + 3 * k + q] = 'hearing a ' + ['howl', 'roar', 'snort of alarm'][k];
 function featName(i) {

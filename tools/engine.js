@@ -26,13 +26,13 @@ return {
   setTick: (t) => { tick = t; updateClimate(); },
   whisper: (a, text) => { a.wh = text; },
   watch: (a) => { sel = a; },
-  state: () => ({ events, SIBS, firsts, deaths, ag, tick, logs, fished, kills, maxGen, nLessons, over, water, deep, food, pit, cave, poison, rock, salt, river }),
+  state: () => ({ events, SIBS, WSTAT, firsts, deaths, ag, tick, logs, fished, kills, maxGen, nLessons, over, water, deep, food, pit, cave, poison, rock, salt, river }),
   items: () => ({ soil, rotten, bodies: BODIES, ROOT, meatAt, stone, stick, flake, nut, pyrite, lying, nutCap }),
   talk: () => ({ received, absorb, SND, ambient, WSTAT, acoustics, hearWord, heardAs, spell, wordOf, choicesFor, SNDSTAT, BASE, GENSTAT, meaning, SAYN, HEARD, CALLS }),
   fire: () => ({ FIRE, SMOL, BURNT, COOK, fireStats, BURNING, dryness, fuelOf, ignite, pyrite }),
   alt: () => alt,
   social: () => ({ ouch, watchOthers, imitate, imitateVoice }),
-  sense, SP, DAY, TY, IB, HB, NCH, A_STAY, A_EAT, A_SLEEP, A_GIVE, A_TAKE, A_DROP, A_STRIKE, NSAY, NV, HEAR, SPEECH, VG, O3, NI,
+  sense, SP, DAY, TY, IB, HB, NCH, A_STAY, A_EAT, A_SLEEP, A_GIVE, A_TAKE, A_DROP, A_STRIKE, NSAY, NV, HEAR, SPEECH, VG, SEEPT, O3, NI,
 };`;
 
 // Returns a fresh, independent world: every call gets its own copy of all engine state.

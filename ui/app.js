@@ -502,7 +502,9 @@ function doingText(a) {
         ? doingWord(a, m.act).replace(/^./, (c) => c.toUpperCase())
         : 'Looking around';
   const i = idx(a.x, a.y);
-  const call = a.voice > 0 && a.saidT === tick ? (a.voice === 3 ? ', saying “' : ', calling “') + a.word + '”' : '';
+  const call =
+    (a.voice > 0 && a.saidT === tick ? (a.voice === 3 ? ', saying “' : ', calling “') + a.word + '”' : '') +
+    (a.ptT !== undefined && tick - a.ptT <= 1 && a.pt >= 0 ? ', pointing ' + CP[a.pt] : '');
   return now + call + ', ' + placeOf(a) + (snowing(i) ? ', in the snow' : raining(i) ? ', in the rain' : '');
 }
 let tipTab = 'think';
@@ -1335,6 +1337,12 @@ function drawPerson(g, a, X, Y, k, gr, col) {
   } else if (act === A_GIVE) {
     rx = h * 0.38;
     ry = neck + h * 0.1; // holding it out
+  } else if ((a.ptv ?? (a.ptT !== undefined && tick - a.ptT <= 1 && a.pt >= 0 ? a.pt : -1)) >= 0) {
+    // pointing: the arm held straight out (to the side it points; up for north, lower for south)
+    const d = a.ptv ?? a.pt,
+      [mx, my] = MV[d];
+    rx = h * (mx === 0 ? 0.3 : 0.45) * (mx < 0 ? -1 : 1) * (a.face === -1 ? -1 : 1);
+    ry = neck + h * (0.02 + 0.08 * my);
   }
   g.strokeStyle = skin;
   g.lineWidth = lw;
@@ -1837,6 +1845,10 @@ function meaningText(word) {
   if (m.best)
     t += 'Said mostly when ' + CTXN[m.best.c] + ' (' + Math.round(100 * m.best.p) + '% of the time, against ' + Math.round(100 * m.best.q) + '% usually). ';
   if (m.resp) t += m.resp[0].toUpperCase() + m.resp.slice(1) + '.';
+  if (S.npt >= 5) {
+    const [c, n] = Object.entries(S.pts).sort((p, q) => q[1] - p[1])[0];
+    if (n / S.npt > 0.4) t += ' Often said while pointing at ' + CHN[c] + ' (' + Math.round((100 * n) / S.npt) + '% of the times it was said with a point).';
+  }
   return t;
 }
 function translateHTML(a) {
@@ -1894,6 +1906,11 @@ function learnerText(a) {
       (pb > 0.6 ? ', copying those doing well' : pb < 0.3 ? ', copying whoever is near' : '') +
       (cf > 0.6 ? ', going with the crowd' : '');
   if (a.vic > 0.05) t += ' · has learned from others\' pain';
+  const lv = (v) => (v < 0.2 ? 'very little' : v < 0.45 ? 'some' : v < 0.75 ? 'good' : 'full, like a modern human');
+  t +=
+    '<br>Born with ' + lv(a.g.vl ?? 1) + ' control of its voice, ' +
+    ((a.g.pg ?? 1) < 0.2 ? 'hardly any urge to point' : (a.g.pg ?? 1) < 0.5 ? 'a little urge to point' : 'a strong urge to point') +
+    ', and ' + ((a.g.sh ?? 1) < 0.2 ? 'little joy in sharing attention' : (a.g.sh ?? 1) < 0.5 ? 'some joy in sharing attention' : 'great joy in sharing attention');
   return t;
 }
 // Each generation of people: what they were born with, on average, and what they learned
@@ -1920,6 +1937,12 @@ function gensHTML() {
         '%</td><td>' +
         Math.round((100 * (G.lone || 0)) / G.n) +
         '%</td><td>' +
+        Math.round((100 * (G.vl || 0)) / G.n) +
+        '%</td><td>' +
+        Math.round((100 * (G.pg || 0)) / G.n) +
+        '%</td><td>' +
+        Math.round((100 * (G.sh || 0)) / G.n) +
+        '%</td><td>' +
         (G.les / G.n).toFixed(1) +
         '</td><td>' +
         (now[g] ? Math.round((100 * now[g].reduce((t, v) => t + v, 0)) / now[g].length) + '%' : '–') +
@@ -1927,7 +1950,7 @@ function gensHTML() {
       : ''
   ).join('');
   return (
-    '<table class="tbl"><tr><th>Gen.</th><th>Born</th><th>Brain size</th><th>Learning speed</th><th>Learns from others</th><th>Copies the successful</th><th>Follows the crowd</th><th>Loners</th><th>Lessons each</th><th>Test score now</th></tr>' +
+    '<table class="tbl"><tr><th>Gen.</th><th>Born</th><th>Brain size</th><th>Learning speed</th><th>Learns from others</th><th>Copies the successful</th><th>Follows the crowd</th><th>Loners</th><th>Voice control</th><th>Urge to point</th><th>Joy in shared attention</th><th>Lessons each</th><th>Test score now</th></tr>' +
     rows +
     '</table>'
   );

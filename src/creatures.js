@@ -12,6 +12,9 @@ const gene = (sp, inst) => ({
   bs: 0.75 + rnd() * 0.25, // how big a brain it can grow (inherited)
   lr: 0.8 + rnd() * 0.4, // how quickly it learns (inherited)
   im: 0.1 + rnd() * 1.6, // how much it learns from others at all: copying them, and feeling for them (inherited)
+  vl: rnd() * 0.3, // vocal control and learning: low, as in our ape-like ancestors (voice.js)
+  pg: rnd() * 0.3, // the urge to point
+  sh: rnd() * 0.3, // the pleasure of sharing attention
   pb: rnd(), // whom it copies: 0 anyone, 1 strongly prefers those doing well (inherited)
   cf: rnd(), // how much it goes with what most others are doing (inherited)
   w: newW(sp, inst),
@@ -152,6 +155,9 @@ function child(p, q) {
     bs: mut(pk('bs') ?? 0.9, 0.5, 1),
     lr: mut(pk('lr') ?? 1, 0.4, 2),
     im: mut(pk('im') ?? 1, 0.05, 3),
+    vl: mutA(pk('vl') ?? 1, 0, 1),
+    pg: mutA(pk('pg') ?? 1, 0, 1),
+    sh: mutA(pk('sh') ?? 1, 0, 1),
     pb: mutA(pk('pb') ?? 0.5, 0, 1),
     cf: mutA(pk('cf') ?? 0.3, 0, 1),
     w,
