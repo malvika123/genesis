@@ -697,6 +697,9 @@ function sim() {
         const room = Math.max(0, S.cap - popK[a.k] - kidsOf(a.k) - expecting(a.k)),
           gl = [];
         for (let q = 0; q < Math.min(n, room); q++) gl.push({ sex: rnd() < 0.5 ? 1 : 0, g: child(fem, mal, inh) });
+        // in a wolf pack only one female breeds: the others' breeding is held back while she is
+        // pregnant or nursing close by (reproductive suppression, as in wolves and wild dogs)
+        if (S.pack && packMother(fem)) gl.length = 0;
         if (gl.length) fem.preg = { due: tick + Math.max(1, Math.round(S.gest)), dad: mal, gen: g2, young: gl, cost: 10 + (S.yc ?? 12) * gl.length };
         if (S.pair) {
           addBond(fem, mal, 0.3);
@@ -1252,4 +1255,11 @@ function pregnancy(a, kids) {
     a.dead = true;
     a.cause = 'giving birth';
   }
+}
+
+function packMother(f) {
+  for (const o of ag)
+    if (o !== f && o.k === f.k && o.sex && !o.dead && (o.preg || o.milk) && Math.abs(dxw(o.x - f.x)) <= 4 && Math.abs(o.y - f.y) <= 4)
+      return true;
+  return false;
 }

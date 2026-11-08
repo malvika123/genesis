@@ -11,7 +11,9 @@ Genesis follows the version in `package.json`. Experiments should state the vers
   (eggs cost almost nothing). Birth hurts, and about one human birth in a hundred costs the mother's
   life. Nursing follows before she can conceive again; fathers can mate again soon. A pregnant woman's belly grows rounder as
   the birth nears; late in pregnancy she is a little slower to walk and much slower to run, so less able
-  to escape. The panel shows how far along a pregnancy is.
+  to escape. In a wolf pack only one female breeds:
+  the others' breeding is held back while she is pregnant or nursing close by. The panel shows how far
+  along a pregnancy is.
 - **The food chain closes.** Bodies are eaten by insects and microbes at a pace set by warmth (most of a
   carcass gone in about three weeks of summer, nothing while frozen), and go bad on the same clock;
   carrion birds take what is left by day on open ground, waiting while a hunter or a person is at the
