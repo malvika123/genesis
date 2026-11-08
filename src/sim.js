@@ -534,7 +534,7 @@ function sim() {
         firsts.speak = 1;
         log(a.name + ' said something: “' + word + '”.');
       }
-      if (k === 2 && st.who && st.who.size === 3 && st.n >= 10 && !st.shared) {
+      if (k === 2 && st.who && st.who.size >= 3 && st.n >= 10 && !st.shared) {
         st.shared = 1;
         if (!firsts.shared) {
           firsts.shared = 1;
