@@ -55,7 +55,9 @@ function coldOf(a, night) {
     wet = typeof RAIN !== 'undefined' && RAIN && RAIN[i] > 0.002 && shelter < 0.4 ? 5 : 0;
   const fire =
     typeof FIRE !== 'undefined' && FIRE ? Math.min(1, fireNear(a.x, a.y) * 3 + (a.hand === 4 ? 0.3 : 0)) : 0;
-  return clamp((a.S.cold - cellTemp(i, night) + wet) / 20, 0, 1) * (1 - 0.35 * shelter) * (1 - fire);
+  // a cave stays near the year's mean temperature, day and night
+  const k = typeof cave !== 'undefined' && cave && cave[i] ? 0.55 : 0.35;
+  return clamp((a.S.cold - cellTemp(i, night) + wet) / 20, 0, 1) * (1 - k * shelter) * (1 - fire);
 }
 // how much too hot it feels, 0 … 1: shade under trees is several degrees cooler, and standing in
 // water cools the body

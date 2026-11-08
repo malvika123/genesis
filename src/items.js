@@ -10,6 +10,9 @@
 // Simplifications, said honestly: a cell holds a count of stones, not individual stones; a hand holds one
 // thing at a time; the nut meat is eaten the moment the shell is broken.
 
+// Bodies of the dead. A body does not vanish: it lies where it fell, then wastes to bare bones over a
+// couple of weeks (simplified: no scavengers or insects here yet), and the bones lie for a long time.
+let BODIES = [];
 let stone, // loose stones on the ground, a few in each cell
   stick, // fallen branches
   flake, // stones with a sharp edge
@@ -18,6 +21,7 @@ let stone, // loose stones on the ground, a few in each cell
 const HAND = ['nothing', 'a stone', 'a stick', 'a sharp stone', 'a burning stick', 'a shiny yellow stone'];
 
 function initItems() {
+  BODIES = [];
   const n = W * H;
   stone = new Uint8Array(n);
   stick = new Uint8Array(n);
@@ -68,6 +72,17 @@ function updateItems() {
   }
 }
 
+function leaveBody(a, cause) {
+  if (a.sp === 3) return; // fish: not drawn lying about (they sink)
+  BODIES.push({ x: a.x, y: a.y, sp: a.sp, name: a.name || a.S.n, t: tick, cause, size: a.S.size || 1, w: !!water[idx(a.x, a.y)] });
+  if (BODIES.length > 400) BODIES.shift();
+}
+// 0 = fresh body … 1 = bare bones; gone after bones have lain a long time
+const BODY_BONES = 14 * 96,
+  BODY_GONE = 120 * 96;
+function updateBodies() {
+  if (tick % 96 === 0) BODIES = BODIES.filter((b) => tick - b.t < BODY_GONE);
+}
 // the ground at a cell, as the hands meet it
 const lying = (i) => stone[i] + stick[i] + flake[i] + pyrite[i];
 function pickUp(a) {

@@ -4,6 +4,7 @@
 let fished = 0,
   deaths = {}, // tally of deaths by species and cause, for experiments
   pit,
+  cave, // cave mouths in stony hill country: dry, out of the wind, cool in summer and mild in winter
   poison,
   firsts = {},
   water,

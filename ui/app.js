@@ -103,7 +103,9 @@ function placeOf(a) {
     ? deep[i]
       ? 'in deep water'
       : 'in shallow water'
-    : pit[i]
+    : cave[i]
+      ? 'in a cave'
+      : pit[i]
       ? 'in a pit'
       : food[i] > 0.4
         ? 'on grass'
@@ -538,6 +540,15 @@ function drawTerrain(g, v, relief = true) {
       if (rock[i]) {
         g.fillStyle = v('--rock');
         g.fillRect(x * C + 1, y * C + 1, C - 2, C - 2);
+      } else if (cave[i]) {
+        g.fillStyle = v('--rock');
+        g.fillRect(x * C, y * C, C, C);
+        g.fillStyle = '#120d0a';
+        g.beginPath();
+        g.arc(x * C + C / 2, y * C + C * 0.7, C * 0.38, Math.PI, 0);
+        g.lineTo(x * C + C * 0.88, y * C + C * 0.9);
+        g.lineTo(x * C + C * 0.12, y * C + C * 0.9);
+        g.fill();
       } else if (pit[i]) {
         g.fillStyle = '#1b1410';
         g.beginPath();
@@ -1015,6 +1026,39 @@ function drawGroundItems(g, P) {
       g.arc(S[0], S[1], r * 0.6, 0, 7);
       g.fill();
     }
+  }
+  drawBodies(g, P);
+}
+// the dead: a still figure on the ground that darkens and shrinks, then bare bones
+function drawBodies(g, P) {
+  for (const b of BODIES) {
+    const Q = P(b.x, b.y);
+    if (!Q || Q[2] < 25) continue;
+    const age = tick - b.t,
+      bones = clamp((age - 3 * 96) / (BODY_BONES - 3 * 96), 0, 1),
+      r = clamp(Q[2] * 0.02 * (b.sp === 0 ? 1 : 0.8 + 0.2 * b.size), 2, 12);
+    g.save();
+    g.translate(Q[0], Q[1]);
+    if (bones < 1) {
+      g.globalAlpha = 1 - 0.5 * bones;
+      g.fillStyle = b.sp === 0 ? '#c99a7a' : ['', '#8a6a46', '#9a8a78', '#4a3a2a', '#707478', '#b08a3c', '#5a3e2a'][b.sp] || '#777';
+      g.beginPath();
+      g.ellipse(0, 0, r * 2, r * 0.7 * (1 - 0.4 * bones), 0, 0, 7);
+      g.fill();
+      g.beginPath();
+      g.arc(-r * 2, 0, r * 0.6, 0, 7);
+      g.fill();
+    }
+    g.globalAlpha = 0.4 + 0.6 * bones;
+    g.strokeStyle = '#e8e4d6';
+    g.lineWidth = Math.max(1, r * 0.25);
+    for (let k = 0; k < 4; k++) {
+      g.beginPath();
+      g.moveTo(-r * 1.6 + k * r, -r * 0.3);
+      g.lineTo(-r * 1.6 + k * r, r * 0.3);
+      g.stroke();
+    }
+    g.restore();
   }
 }
 // Looking through a person's eyes: its own arms and hands at the bottom of the view, doing what it

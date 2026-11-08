@@ -115,6 +115,7 @@ function makeTerrain() {
   alt = new Float32Array(n);
   deep = new Uint8Array(n);
   pit = new Uint8Array(n);
+  cave = new Uint8Array(n);
   poison = new Uint8Array(n);
   river = new Uint8Array(n);
 
@@ -133,8 +134,14 @@ function makeTerrain() {
     top = sorted[n - 1];
   for (let i = 0; i < n; i++) {
     if (h[i] >= sea)
-      alt[i] = 5 * ((h[i] - sea) / (top - sea)) ** 1.7; // km above sea level
-    else alt[i] = -4.5 * ((sea - h[i]) / (sea - sorted[0])) ** 0.6; // km below
+      // km above sea level; most land is low, and only the very highest summits climb to Everest's 8.8 km
+      alt[i] = 5 * ((h[i] - sea) / (top - sea)) ** 1.7 + 3.8 * Math.max(0, ((h[i] - sea) / (top - sea) - 0.85) / 0.15) ** 2;
+    else {
+      // km below: abyssal plains about 4.5 km down, and only the very deepest sea floor drops into a
+      // trench like the Mariana's 11 km
+      const t = (sea - h[i]) / (sea - sorted[0]);
+      alt[i] = -(4.5 * t ** 0.6 + 6.5 * Math.max(0, (t - 0.9) / 0.1) ** 2);
+    }
   }
 
   // 2. the sea; shallow near the coast, deep further out
@@ -270,6 +277,9 @@ function makeTerrain() {
     } while (t < 200 && (water[idx(x, y)] || rock[idx(x, y)]));
     pit[idx(x, y)] = 1;
   }
+  // caves form where water dissolves limestone or waves and lava hollow rock: here, in stony hill country
+  for (let i = 0; i < n; i++)
+    if (!water[i] && !rock[i] && !pit[i] && ter[i] === 2 && alt[i] > 0.3 && rnd() < 0.07) cave[i] = 1;
   for (let k = 0; k < 10 * area; k++) {
     const bx = rnd() * W,
       by = rnd() * H;

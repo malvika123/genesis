@@ -66,4 +66,5 @@ function updateForest() {
 }
 
 // how thick the trees are where a creature stands (0 if it is in the water)
-const cover = (i) => (water[i] ? 0 : tree[i]);
+// trees give cover; a cave gives more
+const cover = (i) => (water[i] ? 0 : cave[i] ? Math.max(tree[i], 0.9) : tree[i]);

@@ -9,6 +9,7 @@ function sim() {
   updateWeather();
   updateForest();
   updateItems();
+  updateBodies();
   passCalls();
   updateFire();
   for (let i = 0; i < W * H; i++) {
@@ -820,6 +821,7 @@ function sim() {
     if (!c) return true;
     a.gone = true;
     if (a.hand) putDown(a);
+    leaveBody(a, c);
     // an animal killed by fire is cooked where it fell
     if (c === 'burned') COOK[idx(a.x, a.y)] += 0.5 * Math.min(2, a.S.size || 1);
     // those closest to it grieve: its partner, its mother, its young child
