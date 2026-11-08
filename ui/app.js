@@ -357,7 +357,8 @@ function doingHTML(a, S, stage, night) {
       ': ' +
       Math.round(100 * along) +
       '% of the way, due in about ' +
-      (left < 1 ? Math.max(1, Math.round(left * 24)) + ' hours' : left.toFixed(1) + ' days');
+      (left < 1 ? Math.max(1, Math.round(left * 24)) + ' hours' : left.toFixed(1) + ' days') +
+      (along > 0.6 ? ' · heavier now: slower to walk and much slower to run' : '');
   }
   if (a.sp === 0) o += '<br>' + learnerText(a);
   o += '<br>Nearby: ' + (around.length ? around.join(', ') : 'no one in sight');
@@ -1274,6 +1275,18 @@ function drawPerson(g, a, X, Y, k, gr, col) {
   g.lineTo(-h * 0.1, hip + h * 0.04);
   g.closePath();
   g.fill();
+  // a pregnant belly, rounder as the birth nears
+  const pg = a.pgv ?? (a.preg ? clamp(1 - (a.preg.due - tick) / Math.max(1, a.S.gest), 0, 1) : 0);
+  if (pg > 0.3) {
+    const bw = h * (0.1 + 0.07 * pg),
+      by = hip - h * 0.04;
+    g.beginPath();
+    g.ellipse(0, by, bw, bw * 0.85, 0, 0, 7);
+    g.fill();
+    g.strokeStyle = 'rgba(120,70,50,0.35)';
+    g.lineWidth = Math.max(0.5, lw * 0.35);
+    g.stroke();
+  }
   // head and hair
   g.fillStyle = skin;
   g.beginPath();

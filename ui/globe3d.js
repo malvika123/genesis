@@ -465,6 +465,7 @@ const G3D = { ok: false };
         a.hand || 0,
         swf,
         a.face || 1,
+        a.preg ? Math.round(clamp(1 - (a.preg.due - tick) / Math.max(1, a.S.gest), 0, 1) * 3) : 0, // how far along a pregnancy is
       ].join();
     let t = figTex.get(key);
     if (t) return t;
@@ -486,6 +487,7 @@ const G3D = { ok: false };
         swf,
         act: a.act,
         id: 0,
+        pgv: a.preg ? Math.round(clamp(1 - (a.preg.due - tick) / Math.max(1, a.S.gest), 0, 1) * 3) / 3 : 0,
       };
     // draw so that the feet touch the bottom middle of the picture
     if (a.sp === 0) {
