@@ -1085,10 +1085,9 @@ function drawEyeHands(g, a, w, h) {
   if (a.sp !== 0 || a.asleep) return;
   const s = h / 700,
     skin = '#e7b896',
-    t = performance.now(),
     bob = a.moving ? Math.sin(a.ph || 0) * 14 * s : 0,
     act = a.act,
-    sw = Math.sin(t / 130 + a.id);
+    sw = bodySwing(a);
   let rx = w * 0.6,
     ry = h * 0.84 - bob;
   if (act === A_STRIKE) {
@@ -1135,7 +1134,7 @@ function drawPerson(g, a, X, Y, k, gr, col) {
     act = a.asleep ? -1 : a.act,
     crouch = act === A_TAKE || act === A_DROP || act === A_DRINK || act === A_STRIKE ? 1 : 0,
     // the strike: the arm goes up over the head and comes down hard, again and again
-    sw = act === A_STRIKE ? (a.swf ?? Math.sin(performance.now() / 130 + a.id)) : 0;
+    sw = act === A_STRIKE ? (a.swf ?? bodySwing(a)) : 0;
   g.save();
   // standing figures have their feet on their spot; sleepers lie across it
   g.translate(X, a.asleep ? Y : Y - h * 0.35);
@@ -1724,23 +1723,30 @@ $('hud').addEventListener('click', (e) => {
 // the way (its progress in the world, plus how far into the next world step we are), so it moves
 // steadily instead of dashing from square to square. Its legs step in time: about two steps a second
 // of world time, sped up with the world but never faster than three a second on screen.
-let lastGlide = performance.now();
+let lastGlide = performance.now(),
+  bodyT = 0;
+const bodySwing = (a) => Math.sin(bodyT * 2 * Math.PI + a.id);
 function glide() {
   const now = performance.now(),
     dt = Math.min(0.1, (now - lastGlide) / 1000),
     f = running ? clamp(acc, 0, 1) : 0,
-    cadence = Math.min(3, 2 * stepsPerSec() * STEP_S) * 2 * Math.PI;
+    cadence = 3 * 2 * Math.PI;
   lastGlide = now;
+  // the body's clock: hands and arms move at the same pace as walking legs would at this speed of the
+  // world (a stride's worth of a walking person per cycle), and stop when the world is paused
+  if (running) bodyT += dt * Math.min(3, (stepsPerSec() * SP[0].walk) / 0.4);
   for (const a of ag) {
     let tx = a.x,
       ty = a.y;
     const walking = a.mvv > 0 && !a.asleep && !a.dead;
-    if (walking) {
+    // how far it has got toward the next square stays where it is when it stops, lies down or dies:
+    // it doesn't drift back to the middle of its square while lying still
+    if (a.mvd !== undefined && a.acc > 0) {
       const [mx, my] = MV[a.mvd],
-        p = clamp(a.acc + a.mvv * f, 0, 1);
+        p = clamp(a.acc + (walking ? a.mvv * f : 0), 0, 1);
       tx += mx * p;
       ty += my * p;
-      if (mx) a.face = mx > 0 ? 1 : -1;
+      if (walking && mx) a.face = mx > 0 ? 1 : -1;
     }
     if (a.rx === undefined) {
       a.rx = tx;
@@ -1748,20 +1754,25 @@ function glide() {
     }
     const dx = dxw(tx - a.rx),
       dy = ty - a.ry;
-    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+    let moved = 0;
+    // lying down to sleep happens where it is: the body settles on its spot at once, then stays still
+    if (Math.abs(dx) > 3 || Math.abs(dy) > 3 || a.asleep) {
       a.rx = wx(Math.round(tx)) + (tx - Math.round(tx));
       a.ry = ty;
     } else {
       // walk toward where it should be, never faster than a brisk version of its own pace, so a turn
       // or a blocked step is walked out instead of jumped
       const d = Math.hypot(dx, dy),
-        most = Math.max(a.mvv || 0, 0.05) * stepsPerSec() * dt * 1.6;
+        most = Math.max(a.mvv || 0, a.S.walk) * stepsPerSec() * dt * 1.6;
       const k = d > most ? most / d : 1;
       a.rx = (((a.rx + dx * k) % W) + W) % W;
       a.ry += dy * k;
+      moved = d * k;
     }
-    a.moving = walking && running;
-    if (a.moving) a.ph = (a.ph || 0) + dt * cadence;
+    // legs step with the ground they actually cover (a stride is about 0.4 of a square, the size the
+    // body is drawn at), so feet never slide; and never faster than a few steps a second on screen
+    a.moving = moved > 1e-5 && !a.asleep && !a.dead && running;
+    if (a.moving) a.ph = (a.ph || 0) + Math.min((moved / 0.4) * Math.PI, dt * cadence);
   }
 }
 function draw() {

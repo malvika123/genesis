@@ -4,6 +4,11 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- Movement on screen now follows the body: a sleeper lies still on its spot instead of sliding; legs
+  step with the ground actually covered, so feet don't skate; arms (striking, hands in the eye view)
+  keep the same pace as the legs at every speed and stop when the world is paused; looking through a
+  creature's eyes, the head turns smoothly (at most about 90° a second) toward the way the body is really travelling,
+  instead of the view snapping 45° every time the brain flicks between choices.
 - A **Time** button (off by default) shows the fourth dimension: fading trails of where creatures have
   been (the one you picked and its family, all people, or everyone; over 1, 5 or 30 days) and a strip
   of everything that has happened (births, deaths, fire, firsts) as dots along time. It is drawn by

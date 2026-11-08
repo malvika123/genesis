@@ -313,6 +313,7 @@ const G3D = { ok: false };
   // place the camera from the shared view state (GL.lon0, GL.lat0, GL.zoom)
   // through a creature's eyes: stand at its place, at eye height, look the way it faces
   let eyeFilter = '';
+  let lastEye = null;
   function aimEye(a) {
     const la = latOfY(a.ry),
       lo = lonOfX(a.rx);
@@ -323,10 +324,37 @@ const G3D = { ok: false };
     const h0 = 1 + EX * heightAt(la, lo),
       eh = a.sp === 0 ? 0.0055 : a.sp === 3 ? 0.0008 : 0.0035,
       [mx, my] = MV[a.hd],
-      L = Math.hypot(mx, my);
-    camera.position.set(0, 0, h0 + eh);
+      want = Math.atan2(-my, mx),
+      tnow = performance.now(),
+      dt = Math.min(0.1, (tnow - (a.eyeT || tnow)) / 1000);
+    // the head turns toward where it is going over a moment, and the eyes ride smoothly over bumps,
+    // instead of the whole view snapping round or jolting with every square
+    a.eyeT = tnow;
+    if (a.eyeA === undefined || a !== lastEye) (a.eyeA = want), (a.eyeH = h0), (a.eyeVx = a.eyeVy = 0), (a.eyeX = a.rx), (a.eyeY = a.ry);
+    lastEye = a;
+    // it looks the way its body is really travelling (averaged over a moment, so a brain flicking
+    // between choices doesn't whip the view about), and a head turns at most about 90° a second
+    let mx2 = a.rx - a.eyeX;
+    if (mx2 > W / 2) mx2 -= W;
+    if (mx2 < -W / 2) mx2 += W;
+    const k = Math.min(1, dt * 1.5);
+    a.eyeVx += (mx2 - a.eyeVx) * k;
+    a.eyeVy += (a.ry - a.eyeY - a.eyeVy) * k;
+    a.eyeX = a.rx;
+    a.eyeY = a.ry;
+    if (running && Math.hypot(a.eyeVx, a.eyeVy) > 1e-4) {
+      const go = Math.atan2(-a.eyeVy, a.eyeVx),
+        turn = Math.atan2(Math.sin(go - a.eyeA), Math.cos(go - a.eyeA)),
+        most = dt * (Math.PI / 2);
+      a.eyeA += Math.max(-most, Math.min(most, turn));
+    }
+    a.eyeH += (h0 - a.eyeH) * Math.min(1, dt * 4);
+    const ex = Math.cos(a.eyeA),
+      ey = Math.sin(a.eyeA),
+      hh = Math.max(a.eyeH, h0);
+    camera.position.set(0, 0, hh + eh);
     camera.up.set(0, 0, 1);
-    camera.lookAt((mx / L) * 0.05, (-my / L) * 0.05, h0 + eh - 0.003);
+    camera.lookAt(ex * 0.05, ey * 0.05, hh + eh - 0.003);
     // a screen can show at most about 150° without bending the picture
     const hf = (Math.min(a.S.fov, 150) * Math.PI) / 180,
       fov = (2 * Math.atan(Math.tan(hf / 2) / camera.aspect) * 180) / Math.PI;
@@ -422,7 +450,7 @@ const G3D = { ok: false };
     const S = a.S,
       gr = Math.round(clamp(a.age / S.mat, 0.3, 1) * 10) / 10,
       pose = a.moving ? Math.round(Math.sin(a.ph || 0) * 2) : 0,
-      swf = a.act === A_STRIKE && !a.asleep ? Math.round(Math.sin(performance.now() / 130 + a.id)) : 0,
+      swf = a.act === A_STRIKE && !a.asleep ? Math.round(bodySwing(a)) : 0,
       key = [
         a.k,
         a.sex,
