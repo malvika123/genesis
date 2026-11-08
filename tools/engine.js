@@ -36,8 +36,14 @@ return {
 };`;
 
 // Returns a fresh, independent world: every call gets its own copy of all engine state.
-function createEngine() {
-  return new Function(engineSource() + '\n' + API)();
+// opts.brain: the most thinking units a person's brain can grow (64 normally) — for brain-size experiments
+function createEngine(opts = {}) {
+  let src = engineSource();
+  if (opts.brain) {
+    const n = Math.max(16, Math.round(opts.brain));
+    src = src.replace('NH = 64,', 'NH = ' + Math.max(64, n) + ',').replace('hmax: 64,', 'hmax: ' + n + ',');
+  }
+  return new Function(src + '\n' + API)();
 }
 
 module.exports = { createEngine, engineSource, ORDER, ROOT };

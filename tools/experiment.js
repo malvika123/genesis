@@ -9,6 +9,7 @@
 //   --days N         days to run each world (a day is 96 steps of 15 minutes)      [60]
 //   --seeds A-B|A,B  which seeds to run                                              [1-10]
 //   --people N --herbivores N --predators N --fish N    starting numbers             [8 20 6 24]
+//   --brain N        the most thinking units a person's brain can grow (64 normally)
 //   --retina         the raw-vision experiment (no labelled senses)
 //   --no-vicar       people don't learn from seeing others hurt
 //   --old-sound      sound heard within 2.2 squares, fading evenly (no physics)
@@ -89,6 +90,7 @@ function settings(a) {
   const n = (k, d) => (a[k] === undefined ? d : Number(a[k]));
   return {
     days: n('days', 60),
+    brain: n('brain', 64), // the most thinking units a person's brain grows (64 normally)
     cfg: {
       people: n('people', 8),
       herbivores: n('herbivores', 20),
@@ -144,7 +146,7 @@ function csv(rows, S, meta) {
   const lines = [
     '# Genesis experiment',
     '# genesis ' + meta.version + ' commit ' + meta.commit + ', node ' + process.version,
-    '# settings ' + JSON.stringify({ days: S.days, ...S.cfg }),
+    '# settings ' + JSON.stringify({ days: S.days, brain: S.brain, ...S.cfg }),
     '# seeds ' + meta.seeds,
     '# day_X = the day (1 = first) something first happened in that world; empty = never',
     cols.join(','),
@@ -189,7 +191,7 @@ function main() {
     seeds = seedList(a.seeds ?? '1-10');
   if (a.worker) {
     // a helper process: run its share of the seeds and print one JSON line per world
-    const E = createEngine();
+    const E = createEngine({ brain: S.brain });
     for (const sd of seeds) console.log(JSON.stringify(runWorld(E, sd, S)));
     return;
   }
