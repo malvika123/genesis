@@ -38,3 +38,14 @@ test('kinds carry their young as long as the real animals do', () => {
     fish = E.state().ag.find((o) => o.sp === 3).S.gest;
   assert.ok(ppl > fish * 20);
 });
+
+test('no person is born before a whole pregnancy has passed, and the log never says so', () => {
+  const E = createEngine();
+  E.setSeed(4);
+  E.reset({});
+  const first = Math.round(E.state().ag.find((o) => o.sp === 0).S.gest);
+  for (let i = 0; i < first - 1; i++) E.sim();
+  const st = E.state();
+  assert.ok(!st.ag.some((o) => o.sp === 0 && o.mom), 'no babies yet');
+  assert.ok(!st.events.some((e) => /born|had a baby|had twins/.test(e.s)), 'and no birth in the log');
+});

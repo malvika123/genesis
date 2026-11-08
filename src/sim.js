@@ -597,7 +597,7 @@ function sim() {
         } else if (hu > 0.5) a.ev[2] = 'it ate meat after going hungry on day ' + dn;
         if (a.sp === 0 && !firsts.meat) {
           firsts.meat = 1;
-          log(a.name + ' ate meat from a dead ' + (m.sp === 1 ? 'animal' : 'creature') + '. Day ' + dn + '.');
+          log(a.name + ' ate meat from a dead ' + (m.sp === 1 ? 'animal' : 'creature') + '.');
         }
         if (a.sp === 0 && a.hand === 3 && !firsts.butcher) {
           firsts.butcher = 1;
@@ -624,7 +624,7 @@ function sim() {
           if (hu > 0.5) a.ev[2] = 'it dug up roots after going hungry on day ' + dn;
           if (!firsts.root) {
             firsts.root = 1;
-            log(a.name + ' dug up a root and ate it. Day ' + dn + '.');
+            log(a.name + ' dug up a root and ate it.');
           }
           if (a.hand === 2 && !firsts.dig) {
             firsts.dig = 1;
@@ -718,23 +718,6 @@ function sim() {
         a.bonus[5] += pull(a, b);
         b.bonus[5] += pull(b, a);
         a.ev[5] = b.ev[5] = 'it mated on day ' + dn;
-        if (a.sp === 0) {
-          maxGen = Math.max(maxGen, g2);
-          const nm = kids
-            .slice(-n)
-            .map((c) => c.name)
-            .join(' and ');
-          log(
-            fem.name +
-              ' and ' +
-              mal.name +
-              (n > 1 ? ' had twins, ' : ' had a baby, ') +
-              nm +
-              ' (generation ' +
-              g2 +
-              ').'
-          );
-        }
       }
     } else if (act === A_GIVE && a.sp === 0 && a.e > 40) {
       let t = null;
@@ -893,7 +876,7 @@ function sim() {
           else if (t.sp === 1) {
             if (!firsts.hunt) {
               firsts.hunt = 1;
-              log(a.name + ' brought down a ' + T.n.toLowerCase() + '. Nobody taught them. Day ' + dn + '.');
+              log(a.name + ' brought down a ' + T.n.toLowerCase() + '. Nobody taught them.');
             }
           } else {
             fished++;
@@ -1243,7 +1226,10 @@ function pregnancy(a, kids) {
     if (S.pair && P.dad && !P.dad.gone && P.dad.mate === a) P.dad.kid = c;
     countSibs(a.sp, a, P.dad);
     kids.push(c);
-    if (a.sp === 0) log((c.name || 'A baby') + ' was born to ' + (a.name || 'a mother') + '.');
+    if (a.sp === 0) {
+      maxGen = Math.max(maxGen, P.gen);
+      log((c.name || 'A baby') + ' was born to ' + (a.name || 'a mother') + ' (generation ' + P.gen + ').');
+    }
   }
   if (a.sp !== 3) {
     a.painA = Math.min(1, a.painA + (a.sp === 0 ? 0.6 : 0.3)); // labour hurts
