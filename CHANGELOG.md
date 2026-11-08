@@ -4,6 +4,11 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **The brain's layout evolves.** Which region each thinking unit is in (fear, memory, sound and words,
+  general) and what each region listens to are now genes. Children mix their parents' layouts with
+  mutations: units move between regions, regions gain or lose senses, and rarely a region is copied and
+  the copy drifts on its own. Ancestors start ape-like (small sound-and-word areas). Experiment columns
+  brain_general/fear/memory/words/regions; the generations table shows each generation's layout.
 - **Speech starts where our ancestors started.** Vocal control (and with it babbling and copying sounds),
   the urge to point, and the pleasure of shared attention are inherited and start low, as in our
   ape-like ancestors; evolution decides whether they grow. People can point, see others point and

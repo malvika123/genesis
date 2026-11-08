@@ -403,8 +403,12 @@ function doingHTML(a, S, stage, night) {
     const H = a.h.length,
       grown = a.nh,
       max = Math.max(a.S.nh, Math.round(H * (a.g.bs ?? 1))),
-      fear = [...Array(grown).keys()].filter((j) => regionOf(j) === 0).length,
-      memo = [...Array(grown).keys()].filter((j) => regionOf(j) === 1).length;
+      L = layOf(a.g, H),
+      cnt = (k) => [...Array(grown).keys()].filter((j) => L.kind[L.reg[j]] === k).length,
+      fear = cnt(1),
+      memo = cnt(2),
+      words = cnt(3),
+      extra = L.masks.length - 4;
     d +=
       '<br>Brain: ' +
       grown +
@@ -414,7 +418,11 @@ function doingHTML(a, S, stage, night) {
       fear +
       ' in its fear centre, ' +
       memo +
-      ' in its memory centre, the rest general; ' +
+      ' in its memory centre, ' +
+      words +
+      ' for sound and words' +
+      (extra > 0 ? ', across ' + extra + ' extra region' + (extra > 1 ? 's' : '') + ' evolved by copying' : '') +
+      ', the rest general; ' +
       connections(a).toLocaleString() +
       ' connections' +
       (a.pruned ? ', ' + a.pruned.toLocaleString() + ' unused ones pruned' : '');
@@ -1943,6 +1951,10 @@ function gensHTML() {
         '%</td><td>' +
         Math.round((100 * (G.sh || 0)) / G.n) +
         '%</td><td>' +
+        (G.reg ? G.reg.map((v) => Math.round((100 * v) / G.n)).slice(1).join(' / ') + ' / ' + Math.round((100 * G.reg[0]) / G.n) : '–') +
+        '</td><td>' +
+        (G.nreg ? (G.nreg / G.n).toFixed(1) : '–') +
+        '</td><td>' +
         (G.les / G.n).toFixed(1) +
         '</td><td>' +
         (now[g] ? Math.round((100 * now[g].reduce((t, v) => t + v, 0)) / now[g].length) + '%' : '–') +
@@ -1950,7 +1962,7 @@ function gensHTML() {
       : ''
   ).join('');
   return (
-    '<table class="tbl"><tr><th>Gen.</th><th>Born</th><th>Brain size</th><th>Learning speed</th><th>Learns from others</th><th>Copies the successful</th><th>Follows the crowd</th><th>Loners</th><th>Voice control</th><th>Urge to point</th><th>Joy in shared attention</th><th>Lessons each</th><th>Test score now</th></tr>' +
+    '<table class="tbl"><tr><th>Gen.</th><th>Born</th><th>Brain size</th><th>Learning speed</th><th>Learns from others</th><th>Copies the successful</th><th>Follows the crowd</th><th>Loners</th><th>Voice control</th><th>Urge to point</th><th>Joy in shared attention</th><th>Brain: fear / memory / words / general (%)</th><th>Brain regions</th><th>Lessons each</th><th>Test score now</th></tr>' +
     rows +
     '</table>'
   );

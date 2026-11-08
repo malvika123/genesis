@@ -19,20 +19,69 @@ const hOf = (w) => (w.length - OI - NV * NI) / (NI + NA + 1 + NV),
 
 // Brain regions. Real brains are not one uniform network: a fear centre (the amygdala) watches for
 // danger and pain, a memory centre (the hippocampus) holds where things were and what just happened,
-// and the rest is general. Every eighth thinking unit is a fear unit, the next a memory unit, and the
-// rest are general. A region unit is only wired to the senses that region deals with.
-const REGION = ['fear', 'memory'];
-const regionOf = (j) => (j % 8 === 0 ? 0 : j % 8 === 1 ? 1 : 2);
-const FEAR_IN = new Uint8Array(NI),
-  MEM_IN = new Uint8Array(NI);
+// areas for sound and words listen to voices, and the rest is general. A region's units are wired only
+// to the senses that region deals with.
+// The layout is inherited (g.lay): which region each thinking unit belongs to, and what each region
+// listens to. Children get a mix of their parents' layouts, with mutations: a unit can move to another
+// region (regions grow or shrink), a region can start or stop listening to a sense, and — rarely — a
+// region is copied, and the copy is then free to drift and specialise, the way real brains gained new
+// parts. So over many generations, evolution can reshape the brain, and even add parts nobody designed.
+const REGION = ['general', 'fear', 'memory', 'sound and words'],
+  FEAR_IN = new Uint8Array(NI),
+  MEM_IN = new Uint8Array(NI),
+  WORD_IN = new Uint8Array(NI),
+  ALL_IN = new Uint8Array(NI).fill(1);
 for (let s = 0; s < 8; s++) for (const c of [2, 3, 4, 5]) FEAR_IN[s * NCH + c] = 1; // danger and other creatures
 for (const k of [3, 4, 5, 11, 26]) FEAR_IN[IB + k] = 1; // pain, injury, darkness, (always on), anger
 for (const k of [9, 11, 12, 13, 14, 15]) MEM_IN[IB + k] = 1; // loneliness, memories of water and food
 for (let j = 0; j < NM; j++) MEM_IN[IB + 27 + j] = 1; // what it was just thinking
-const wired = (j, i) => {
-  const r = regionOf(j);
-  return r === 2 || (r === 0 ? FEAR_IN[i] : MEM_IN[i]) === 1;
-};
+for (let i = HEAR; i < FIREIN; i++) WORD_IN[i] = 1; // voices, and what words sound like
+for (let i = ACALL; i < NI; i++) WORD_IN[i] = 1; // animals' calls, others pointing and looking
+WORD_IN[IB + 11] = 1;
+// the layout our ape-like ancestors start with: 1 unit in 8 fear, 1 in 8 memory, 1 in 16 sound and
+// words, the rest general
+function firstLayout(H) {
+  const reg = new Uint8Array(H);
+  for (let j = 0; j < H; j++) reg[j] = j % 8 === 0 ? 1 : j % 8 === 1 ? 2 : j % 16 === 2 ? 3 : 0;
+  return { reg, kind: [0, 1, 2, 3], masks: [ALL_IN, FEAR_IN, MEM_IN, WORD_IN].map((m) => Uint8Array.from(m)) };
+}
+const DEFLAY = new Map();
+const layOf = (g, H) => g.lay || DEFLAY.get(H) || (DEFLAY.set(H, firstLayout(H)), DEFLAY.get(H));
+const wiredL = (lay, j, i) => lay.masks[lay.reg[j]][i] === 1;
+// which region a unit is in, by kind (0 general, 1 fear, 2 memory, 3 sound and words)
+const regionOf = (j, lay) => (lay ? lay.kind[lay.reg[j]] : j % 8 === 0 ? 1 : j % 8 === 1 ? 2 : j % 16 === 2 ? 3 : 0);
+const wired = (j, i, lay) => (lay ? wiredL(lay, j, i) : wiredL(firstLayout(Math.max(64, j + 1)), j, i));
+// a child's layout from its parents', with mutations
+function childLayout(p, q, H) {
+  const A = layOf(p, H),
+    Bq = layOf(q, H),
+    n = Math.max(A.masks.length, Bq.masks.length),
+    masks = [],
+    kind = [];
+  for (let r = 0; r < n; r++) {
+    const from = r < A.masks.length && (r >= Bq.masks.length || rnd() < 0.5) ? A : Bq;
+    const m = Uint8Array.from(from.masks[r]);
+    // a region (not the general one) may start or stop listening to a sense
+    if (r > 0) for (let i = 0; i < NI; i++) if (rnd() < 0.0015) m[i] ^= 1;
+    masks.push(m);
+    kind.push(from.kind[r]);
+  }
+  const reg = new Uint8Array(H);
+  for (let j = 0; j < H; j++) {
+    reg[j] = rnd() < 0.5 ? A.reg[j] : Bq.reg[j];
+    if (reg[j] >= n) reg[j] = 0;
+    if (rnd() < 0.01) reg[j] = (rnd() * n) | 0; // a unit moves to another region
+  }
+  // rarely, a region is copied: half its units go to the copy, which can then drift on its own
+  if (n < 8 && rnd() < 0.02) {
+    const r = 1 + ((rnd() * (n - 1)) | 0);
+    masks.push(Uint8Array.from(masks[r]));
+    kind.push(kind[r]);
+    let flip = false;
+    for (let j = 0; j < H; j++) if (reg[j] === r && (flip = !flip)) reg[j] = n;
+  }
+  return { reg, kind, masks };
+}
 
 // ---------- a new brain (the inborn part, from the genes) ----------
 function newW(sp, inst, H = SP[sp].hmax) {
@@ -43,7 +92,7 @@ function newW(sp, inst, H = SP[sp].hmax) {
     OVH = OVHof(H);
   for (let i = 0; i < OI; i++) w[i] = gauss() * 0.05;
   for (let j = 0; j < H; j++)
-    for (let i = 0; i < NI; i++) w[OI + j * NI + i] = wired(j, i) ? gauss() * 0.35 : 0;
+    for (let i = 0; i < NI; i++) w[OI + j * NI + i] = wiredL(layOf({}, H), j, i) ? gauss() * 0.35 : 0;
   for (let i = O2; i < OV; i++) w[i] = gauss() * 0.3;
   for (let i = OVD; i < OVH; i++) w[i] = gauss() * 0.05;
   for (let i = OVH; i < w.length; i++) w[i] = gauss() * 0.2;

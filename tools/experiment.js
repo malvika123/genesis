@@ -139,6 +139,19 @@ function runWorld(E, seed, S) {
     vocal_control: ppl.length ? +(ppl.reduce((t, p) => t + (p.g.vl ?? 1), 0) / ppl.length).toFixed(2) : '',
     point_urge: ppl.length ? +(ppl.reduce((t, p) => t + (p.g.pg ?? 1), 0) / ppl.length).toFixed(2) : '',
     share_joy: ppl.length ? +(ppl.reduce((t, p) => t + (p.g.sh ?? 1), 0) / ppl.length).toFixed(2) : '',
+    ...(() => {
+      // the brain layout of the living: share of units in each kind of region, and how many regions
+      const sh = [0, 0, 0, 0];
+      let nr = 0;
+      for (const p of ppl) {
+        const H = p.h.length,
+          L = p.g.lay;
+        nr += L ? L.masks.length : 4;
+        for (let j = 0; j < H; j++) sh[L ? L.kind[L.reg[j]] : j % 8 === 0 ? 1 : j % 8 === 1 ? 2 : j % 16 === 2 ? 3 : 0] += 1 / H;
+      }
+      const m = (v) => (ppl.length ? +(v / ppl.length).toFixed(3) : '');
+      return { brain_general: m(sh[0]), brain_fear: m(sh[1]), brain_memory: m(sh[2]), brain_words: m(sh[3]), brain_regions: m(nr) };
+    })(),
     words_said: st.WSTAT ? st.WSTAT.size : '',
     words_shared: st.WSTAT ? [...st.WSTAT.values()].filter((s) => s.who && s.who.size >= 3).length : '',
     loners_pct: ppl.length ? Math.round((100 * ppl.filter((p) => (p.g.im ?? 1) < 0.35).length) / ppl.length) : '',
@@ -148,7 +161,7 @@ function runWorld(E, seed, S) {
 }
 
 function csv(rows, S, meta) {
-  const head = ['seed', 'days_run', 'people_alive', 'generations', 'plant_eaters', 'hunters', 'fish', 'best_fire_skill', 'learns_from_others', 'copies_successful', 'follows_crowd', 'loners_pct', 'full_sibling_pct', 'vocal_control', 'point_urge', 'share_joy', 'words_said', 'words_shared'];
+  const head = ['seed', 'days_run', 'people_alive', 'generations', 'plant_eaters', 'hunters', 'fish', 'best_fire_skill', 'learns_from_others', 'copies_successful', 'follows_crowd', 'loners_pct', 'full_sibling_pct', 'vocal_control', 'point_urge', 'share_joy', 'words_said', 'words_shared', 'brain_general', 'brain_fear', 'brain_memory', 'brain_words', 'brain_regions'];
   const cols = [...head, ...CAUSES.map((c) => 'died_' + c.replace(/ /g, '_')), ...MILESTONES.map((m) => 'day_' + m)];
   const lines = [
     '# Genesis experiment',

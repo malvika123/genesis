@@ -117,7 +117,8 @@ function mk(sp, x, y, sex, g, gen, age, k = KDEF[sp]) {
   // its brain's wiring: region units only connect to their region's senses
   const units = a.h.length;
   a.cm = new Uint8Array(units * NI);
-  for (let j = 0; j < units; j++) for (let i = 0; i < NI; i++) a.cm[j * NI + i] = wired(j, i) ? 1 : 0;
+  const lay = layOf(g, units);
+  for (let j = 0; j < units; j++) for (let i = 0; i < NI; i++) a.cm[j * NI + i] = wiredL(lay, j, i) ? 1 : 0;
   a.nh = grownUnits(a);
   if (sp === 0) genRecord(a);
   a.per = sp === 0 ? newPerception(a) : null;
@@ -142,8 +143,9 @@ function child(p, q) {
     w[i] = clamp(v, -6, 6);
   }
   // region units stay wired only to their own senses
-  const units = hOf(w);
-  for (let j = 0; j < units; j++) for (let i = 0; i < NI; i++) if (!wired(j, i)) w[OI + j * NI + i] = 0;
+  const units = hOf(w),
+    lay = childLayout(p.g, q.g, units);
+  for (let j = 0; j < units; j++) for (let i = 0; i < NI; i++) if (!wiredL(lay, j, i)) w[OI + j * NI + i] = 0;
   const pk = (k) => (rnd() < 0.5 ? p.g[k] : q.g[k]);
   return {
     s: mut(pk('s'), 0.4, 2),
@@ -154,6 +156,7 @@ function child(p, q) {
     so: mut(pk('so'), 0.2, 2),
     bs: mut(pk('bs') ?? 0.9, 0.5, 1),
     lr: mut(pk('lr') ?? 1, 0.4, 2),
+    lay,
     im: mut(pk('im') ?? 1, 0.05, 3),
     vl: mutA(pk('vl') ?? 1, 0, 1),
     pg: mutA(pk('pg') ?? 1, 0, 1),
