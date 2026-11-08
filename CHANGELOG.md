@@ -4,6 +4,11 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **No more scripted grief.** A death used to make its partner, mother and child grieve at once, wherever
+  they were, as if told. Now nobody is told: the inborn bond makes a creature miss those it is bonded
+  to when it has not seen them for days (rising over four days, fading over the next two weeks, the
+  same whether they are alive or dead), and it is sharply distressed only when it comes across the
+  body of one of them. The log says "found the body of …, and was distressed" instead of "is grieving".
 - Events and lessons now float over the world in a see-through box at the top left ("What's
   happening"): new ones pop in and glow for a moment; it can be folded away, and then counts what you
   missed. It starts folded on phones. The Stats tab is now just "Stats".

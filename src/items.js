@@ -94,6 +94,7 @@ function leaveBody(a, cause) {
     y: a.y,
     sp: a.sp,
     name: a.name || a.S.n,
+    who: a, // so those bonded to it can recognise it when they come across it
     t: tick,
     cause,
     size: sz,

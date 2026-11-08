@@ -202,6 +202,7 @@ function sim() {
     a.pr = a.kid && !a.kid.gone && a.kid.age < S.mat ? fam : 0;
     if (a.pr > 0.5) a.bonus[7] += a.sex ? 0.01 : 0.005;
     if (young && fam > 0.5) a.bonus[7] += 0.005;
+    if (a.sp !== 3) feelLoss(a, young);
     const hu = 1 - a.e / 100,
       th = 1 - a.w / 100,
       D = [
@@ -212,7 +213,7 @@ function sim() {
         0.5 * a.sl * a.sl,
         0,
         0,
-        S.social * a.g.so * a.lo + 0.8 * a.grief,
+        S.social * a.g.so * a.lo + 0.8 * a.grief + 0.5 * (a.miss || 0),
         1.5 * (a.cold * a.cold + a.heat * a.heat),
       ];
     let r = 0;
@@ -944,14 +945,7 @@ function sim() {
     leaveBody(a, c);
     // an animal killed by fire is cooked where it fell
     if (c === 'burned') COOK[idx(a.x, a.y)] += 0.5 * Math.min(2, a.S.size || 1);
-    // those closest to it grieve: its partner, its mother, its young child
-    if (a.sp !== 3)
-      for (const o of [a.mate, a.mom, a.kid])
-        if (o && !o.gone && !o.dead && (o !== a.kid || o.mom === a)) {
-          o.grief = 1;
-          o.lost = a;
-          if (a.sp === 0 && o.sp === 0) log(o.name + ' is grieving for ' + a.name + '.');
-        }
+    // nobody is told of a death: those bonded to it find out only through their own senses (below)
     const SEEN = { 'killed by a predator': 'killed', burned: 'fire', drowned: 'drowned', 'struck by lightning': 'lightning', 'its wounds': 'wounds' };
     if (SEEN[c]) ouch(a, 1, SEEN[c], true);
     const dk = a.S.n + ': ' + c;
@@ -1086,4 +1080,48 @@ function watchOthers() {
     }
   }
   OUCH.length = 0;
+}
+
+// ---------- losing someone ----------
+// The bond is inborn, as in all mammals: being apart from your partner, your mother (while young) or
+// your young child hurts, the way separation distress does in infants and their mothers. What is NOT
+// given is any knowledge of death. Nobody is told when someone dies. A creature only has its senses:
+//   · missing them: when it has not seen them for a while the ache grows over days, then slowly fades
+//     as it gets used to their absence. It feels the same whether they are alive and far off or dead;
+//     it cannot tell the difference.
+//   · finding them: coming across the body of one it was bonded to is a sharp distress (elephants and
+//     chimpanzee mothers stay with, or carry, their dead).
+// Whether it ever links bodies with the one who is missing is left to its brain.
+function bondsOf(a, young) {
+  const b = [];
+  if (a.mate) b.push(a.mate);
+  if (a.mom && young) b.push(a.mom);
+  if (a.kid && a.kid.mom === a && a.kid.age < a.kid.S.mat) b.push(a.kid);
+  if (a.kid && a.kid.mom !== a && a.kid.mom === a.mate && a.kid.age < a.kid.S.mat) b.push(a.kid);
+  return b;
+}
+function feelLoss(a, young) {
+  const bonds = bondsOf(a, young);
+  if (!bonds.length) {
+    a.miss = (a.miss || 0) * 0.99;
+    return;
+  }
+  const r = Math.max(2, Math.round(a.g.v));
+  let seen = false;
+  for (const o of bonds)
+    if (!o.gone && !o.dead && Math.abs(dxw(o.x - a.x)) <= r && Math.abs(o.y - a.y) <= r) seen = true;
+  if (seen || a.bseen === undefined) a.bseen = tick;
+  const u = (tick - a.bseen) / DAY;
+  a.miss = 0.6 * clamp((u - 0.5) / 4, 0, 1) * clamp(1 - (u - 5) / 15, 0, 1);
+  // coming across the body of one it was bonded to
+  for (const b of BODIES) {
+    if (!b.who || Math.abs(dxw(b.x - a.x)) > 1 || Math.abs(b.y - a.y) > 1 || !bonds.includes(b.who)) continue;
+    if (!b.found) b.found = new Set();
+    if (b.found.has(a.id)) continue;
+    b.found.add(a.id);
+    a.grief = 1;
+    a.lost = b.who;
+    a.ev[7] = 'it found the body of ' + (b.who.name || 'one it was close to') + ' on day ' + dayN();
+    if (a.sp === 0) log(a.name + ' found the body of ' + b.name + ', and was distressed.');
+  }
 }

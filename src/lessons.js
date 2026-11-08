@@ -15,6 +15,7 @@ const PR = [
     act: [A_EAT],
     inv: true,
     why: [0],
+    fits: /berries/,
   },
   {
     sp: [0, 1, 2],
@@ -26,6 +27,7 @@ const PR = [
     act: [7, 0, 1],
     inv: true,
     why: [0, 1],
+    fits: /pit|drown|deep water/,
   },
   {
     sp: [0],
@@ -49,6 +51,7 @@ const PR = [
     },
     act: [3, 4, 5],
     why: [0],
+    fits: /predator|bitten|killed|wolf|big cat|bear/,
   },
   {
     sp: [0, 1, 2],
@@ -207,6 +210,13 @@ function lessons(a) {
     let m = P.why[0];
     for (const q of P.why) if (a.cz[q] > a.cz[m]) m = q;
     if (!a.ev[m] || a.cz[m] < 0.02) return;
+    // only name a memory as what taught it if it is about the same thing; otherwise say we can't tell
+    // (its latest pain may have been something else entirely)
+    let cause = a.ev[m] + ', and ' + WHY[m];
+    if (P.fits && !P.fits.test(a.ev[m])) {
+      const q = P.why.find((q) => a.ev[q] && P.fits.test(a.ev[q]));
+      cause = q === undefined ? null : a.ev[q] + ', and ' + WHY[q];
+    }
     a.lg[key] = 1;
     done = true;
     const lab = d > 0 ? P.pos : P.neg;
@@ -218,7 +228,7 @@ function lessons(a) {
       if (tick - (L[key] ?? -1e9) < DAY) return;
       L[key] = tick;
     }
-    log(who(a) + ' learned to ' + lab + '. What taught it: ' + a.ev[m] + ', and ' + WHY[m] + '.');
+    log(who(a) + ' learned to ' + lab + '. ' + (cause ? 'What taught it: ' + cause + '.' : 'What taught it isn’t clear.'));
   });
 }
 const SYL = [

@@ -63,7 +63,7 @@ picks things up, strikes, gives, calls, hunts, keeps fire. Group effects: herds,
 sounds, copying.
 
 **Adaptation and objectives.** Each creature acts to raise its reward, the sum of changes in its drives:
-pain, drowning pain, hunger, thirst, tiredness, loneliness and grief, and cold or heat, plus small
+pain, drowning pain, hunger, thirst, tiredness, loneliness, missing a bonded one long unseen, distress on finding a bonded one's body (deaths are known only through the senses), and cold or heat, plus small
 bonuses for novelty, play, finding others after being alone, and so on. Nobody is told *which* behaviours
 help.
 

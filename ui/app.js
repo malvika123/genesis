@@ -145,7 +145,7 @@ const PLAIN = {
   'being young': 'it is young',
   'desire to mate': 'it wants a partner',
   curiosity: 'it is curious',
-  'loneliness or grief': 'it is lonely or grieving',
+  'loneliness or grief': 'it is lonely, or missing someone',
   heat: 'it is too hot',
   anger: 'it is angry',
   'being in deep water': 'it is in deep water',
@@ -243,7 +243,8 @@ function feelingsText(a, S) {
   if (raining(idx(a.x, a.y)) && a.sp !== 3) f.push('wet');
   if (a.cold > 0.15) f.push(a.cold > 0.6 ? 'freezing' : 'cold');
   if (a.heat > 0.15) f.push(a.heat > 0.6 ? 'overheating' : 'too hot');
-  if (a.grief > 0.2) f.push('grieving' + (a.lost && a.lost.name ? ' for ' + a.lost.name : ''));
+  if (a.grief > 0.2) f.push('distressed since finding ' + (a.lost && a.lost.name ? a.lost.name + '’s' : 'a') + ' body');
+  else if ((a.miss || 0) > 0.2) f.push('missing someone it is close to');
   if (a.rage > 0.3) f.push('angry');
   if (a.play > 0.3) f.push('playful');
   if (a.bored > 0.6) f.push('bored');
@@ -261,7 +262,8 @@ function feelingsText(a, S) {
     a.heat < 0.1 &&
     a.lo < 0.2 &&
     a.fear < 0.1 &&
-    a.grief < 0.2;
+    a.grief < 0.2 &&
+    (a.miss || 0) < 0.2;
   if (content && !a.asleep) f.unshift('content');
   return f.length ? f.join(', ') : 'calm';
 }
