@@ -4,6 +4,9 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- Carrion birds no longer pop out of nowhere: they glide in from far off, spiral down, feed on the
+  carcass (or wait nearby), and fly away the way they came when the meat is gone or night falls.
+  Carcasses now show on the flat map too.
 - **Pregnancy.** Mating no longer makes a baby on the spot. A mother carries her young for the real
   animal's gestation (people nine months, bison nine and a half, bears seven, deer about six and a half,
   big cats nearly four, wolves two, rabbits one; fish eggs hatch in days), paying part of its energy cost day

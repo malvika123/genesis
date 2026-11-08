@@ -1070,45 +1070,76 @@ function drawGroundItems(g, P) {
 // Carrion birds, seen from far off as people really found carcasses: circling high over a body, or
 // waiting on the ground nearby while a hunter or a person is at it. Vultures (big, brown) where it is
 // warm; ravens (small, black) in cold lands.
+// Each carcass's birds have a story on screen: they come gliding in from far off, spiralling down,
+// feed on the ground at the carcass (or wait nearby while a hunter or a person is at it), and when
+// the meat is gone or night falls they take off and fly away the way they came. (They are still
+// what birds do, not creatures with homes and minds of their own.)
+const BIRDS = new WeakMap(),
+  FLY = 6; // world steps (an hour and a half) to fly in or away
 function drawCarrion(g, P) {
-  const t = performance.now() / 1000;
+  const now = worldT(),
+    t = performance.now() / 1000;
   for (const b of BODIES) {
-    if (!(b.meat > 0.03)) continue;
-    const circling = b.birdT && tick - b.birdT < 8,
-      waiting = b.waitT && tick - b.waitT < 8;
-    if (!circling && !waiting) continue;
-    const Q = P(b.x, b.y);
-    if (!Q) continue;
-    const u = clamp(Q[2] * 0.06, 2.5, 9) * (b.vul ? 1 : 0.65); // a bird's half-wingspan on screen
+    const feeding = b.birdT && tick - b.birdT < 6 && b.meat > 0.03,
+      waiting = b.waitT && tick - b.waitT < 6 && b.meat > 0.03;
+    let st = BIRDS.get(b);
+    if (feeding || waiting) {
+      if (!st || st.leave) {
+        // they arrive from a direction of their own, from about 25 squares away
+        const a = ((b.x * 73 + b.y * 151 + b.t) % 360) * (Math.PI / 180);
+        st = { t0: now, dx: Math.cos(a), dy: Math.sin(a) * 0.6, leave: 0 };
+        BIRDS.set(b, st);
+      }
+    } else if (st && !st.leave) st.leave = now;
+    if (!st) continue;
+    const Q0 = P(b.x, b.y);
+    if (!Q0) continue;
+    const u = clamp(Q0[2] * 0.06, 2.5, 9) * (b.vul ? 1 : 0.65); // a bird's half-wingspan on screen
     g.save();
-    g.translate(Q[0], Q[1]);
     g.strokeStyle = g.fillStyle = b.vul ? '#3b2f25' : '#141414';
     g.lineWidth = Math.max(1, u * 0.22);
     g.lineCap = 'round';
-    if (circling)
-      for (let k = 0; k < 3; k++) {
-        const a = t * 0.5 + (k * 2 * Math.PI) / 3,
-          R = u * (3 + k * 0.8),
-          cx = Math.cos(a) * R,
-          cy = -u * 6 + Math.sin(a) * R * 0.35;
-        g.beginPath();
-        g.moveTo(cx - u, cy - u * 0.3);
-        g.quadraticCurveTo(cx - u * 0.4, cy - u * 0.55, cx, cy);
-        g.quadraticCurveTo(cx + u * 0.4, cy - u * 0.55, cx + u, cy - u * 0.3);
-        g.stroke();
+    const wing = (x, y, flap) => {
+      const f = u * (0.3 + 0.25 * flap);
+      g.beginPath();
+      g.moveTo(x - u, y - f);
+      g.quadraticCurveTo(x - u * 0.4, y - u * 0.55, x, y);
+      g.quadraticCurveTo(x + u * 0.4, y - u * 0.55, x + u, y - f);
+      g.stroke();
+    };
+    const sitting = (x, y) => {
+      g.beginPath();
+      g.ellipse(x, y, u * 0.35, u * 0.5, 0, 0, 7); // hunched body
+      g.fill();
+      g.beginPath();
+      g.arc(x + u * 0.15, y - u * 0.55, u * 0.15, 0, 7); // head
+      g.fill();
+    };
+    const N = 3;
+    let gone = !!st.leave;
+    for (let k = 0; k < N; k++) {
+      // each bird a little behind the one before
+      const lag = k * 1.2,
+        inF = clamp((now - st.t0 - lag) / FLY, 0, 1), // 0 far away … 1 arrived
+        outF = st.leave ? clamp((now - st.leave - lag * 0.5) / FLY, 0, 1) : 0, // 0 here … 1 gone
+        far = Math.max(1 - inF, outF) * 25, // how far out, in squares
+        high = Math.max(1 - inF, outF); // how high, 0 on the ground
+      if (outF < 1) gone = false;
+      if (inF <= 0 || outF >= 1) continue;
+      const ang = t * 0.5 + (k * 2 * Math.PI) / N,
+        ring = 0.6 + 0.8 * high, // they spiral down as they come in
+        Q = P(b.x + st.dx * far + Math.cos(ang) * ring, b.y + st.dy * far + Math.sin(ang) * ring * 0.5);
+      if (!Q) continue;
+      if (high > 0.02) wing(Q[0], Q[1] - u * (2 + 14 * high), Math.sin(t * 6 + k));
+      else {
+        // on the ground: at the carcass if they may feed, a little way off if they must wait
+        const r = waiting && !feeding ? u * 3 : u * 1.4,
+          a = (k * 2 * Math.PI) / N + 0.4;
+        sitting(Q0[0] + Math.cos(a) * r, Q0[1] + Math.sin(a) * r * 0.5 + (feeding ? Math.sin(t * 3 + k) * u * 0.15 : 0));
       }
-    if (waiting)
-      for (let k = 0; k < 4; k++) {
-        const x = (k - 1.5) * u * 1.6 + (k % 2 ? u : -u) * 0.6,
-          y = u * (k % 2 ? 1.6 : -1.4);
-        g.beginPath();
-        g.ellipse(x, y, u * 0.35, u * 0.5, 0, 0, 7); // hunched body
-        g.fill();
-        g.beginPath();
-        g.arc(x + u * 0.15, y - u * 0.55, u * 0.15, 0, 7); // head
-        g.fill();
-      }
+    }
     g.restore();
+    if (gone) BIRDS.delete(b);
   }
 }
 // the dead: a still figure on the ground that darkens and shrinks, then bare bones
@@ -1486,6 +1517,7 @@ function drawFlat(v) {
   for (const a of ag) drawCreature(cx, a, a.rx * C + C / 2, a.ry * C + C / 2, 1, v);
   drawWeatherFx(cx, (x, y) => [x * C + C / 2, y * C + C / 2, C], false);
   drawFire(cx, (x, y) => [x * C + C / 2, y * C + C / 2, C]);
+  drawBodies(cx, (x, y) => [x * C + C / 2, y * C + C / 2, 30]);
   drawCarrion(cx, (x, y) => [x * C + C / 2, y * C + C / 2, C * 12]);
   drawTrails(cx, (x, y) => [x * C + C / 2, y * C + C / 2, C]);
   drawTalk(cx, (a) => [a.rx * C + C / 2, a.ry * C + C / 2, 6], 0.6);
