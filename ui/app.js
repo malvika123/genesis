@@ -265,11 +265,19 @@ function feelingsText(a, S) {
   if (content && !a.asleep) f.unshift('content');
   return f.length ? f.join(', ') : 'calm';
 }
+// "More" sections keep their open/closed state between refreshes of the panel
+const MORE = { think: false, doing: false };
+const more = (key, html) =>
+  html ? '<details class="more" data-k="' + key + '"' + (MORE[key] ? ' open' : '') + '><summary>More</summary>' + html + '</details>' : '';
 function thinkHTML(a, S) {
+  // what matters at a glance: what it is thinking, what it feels, what it has learned
   let o = '<b>' + thoughtText(a) + '</b>';
   o += '<br><br>Feels: ' + feelingsText(a, S);
+  o += '<br>Has learned: ' + (a.les.length ? a.les.join('; ') : 'nothing yet');
+  // the rest, one tap away
+  let d = '';
   if (a.mind && !a.mind.forced)
-    o +=
+    d +=
       '<br>Also considered: ' +
       a.mind.opts
         .filter((q) => q[0] !== actName(a, a.mind.act))
@@ -277,10 +285,10 @@ function thinkHTML(a, S) {
         .map((q) => ING[q[0]] || q[0].replace(/^go /, 'heading ').replace(/^call /, 'calling '))
         .join(' or ');
   // the dopamine-like signal and the mood chemicals, straight from its learning
-  if (a.da > 0.3) o += '<br>Dopamine: a burst — that went better than it expected';
-  else if (a.da < -0.3) o += '<br>Dopamine: a dip — that went worse than it expected';
+  if (a.da > 0.3) d += '<br>Dopamine: a burst — that went better than it expected';
+  else if (a.da < -0.3) d += '<br>Dopamine: a dip — that went worse than it expected';
   if (a.mod > 1.05 || a.mod < 0.95)
-    o +=
+    d +=
       '<br>Learning ' +
       (a.mod > 1 ? 'faster now' : 'slower now') +
       ' (' +
@@ -293,14 +301,13 @@ function thinkHTML(a, S) {
         .join(', ') +
       ')';
   const ex = a.mind ? a.mind.V : 0;
-  o += '<br>Expects things to ' + (ex > 0.3 ? 'get better' : ex < -0.3 ? 'get worse' : 'stay about the same');
+  d += '<br>Expects things to ' + (ex > 0.3 ? 'get better' : ex < -0.3 ? 'get worse' : 'stay about the same');
   const mem = [
     a.mw ? 'water to the ' + dirTo(a, a.mw) : '',
     a.mf ? 'food to the ' + dirTo(a, a.mf) : '',
   ].filter(Boolean);
-  o += '<br>Remembers: ' + (mem.length ? mem.join(', ') : 'nothing useful yet');
-  o += '<br>Has learned: ' + (a.les.length ? a.les.join('; ') : 'nothing yet');
-  return o;
+  d += '<br>Remembers: ' + (mem.length ? mem.join(', ') : 'nothing useful yet');
+  return o + more('think', d);
 }
 function doingHTML(a, S, stage, night) {
   const r = sightRange(a, night),
@@ -313,8 +320,9 @@ function doingHTML(a, S, stage, night) {
       ['fish', 'fish'],
     ],
     around = near.map((n, k) => (n ? n + ' ' + nm[k][n > 1 ? 1 : 0] : '')).filter(Boolean);
-  let o = '<b>' + doingText(a) + '</b>';
-  o +=
+  let o = '<b>' + doingText(a) + '</b>',
+    d = ''; // the less important details, shown under "More"
+  d +=
     '<br>' +
     Math.round(cellTemp(idx(a.x, a.y), night)) +
     ' °C, ' +
@@ -325,7 +333,7 @@ function doingHTML(a, S, stage, night) {
       : Math.abs(lat(a.y)) > 0.75
         ? ' (near the ' + (lat(a.y) < 0 ? 'north' : 'south') + ' pole)'
         : '');
-  o += '<br>' + weatherText(idx(a.x, a.y));
+  d += '<br>' + weatherText(idx(a.x, a.y));
   o += '<br><br>' + (a.sex ? 'Female' : 'Male') + ' ' + stage + ', generation ' + a.gen;
   o += '<br>Energy ' + a.e.toFixed(0) + ' · water ' + a.w.toFixed(0) + ' · health ' + a.hp.toFixed(0);
   if (a.sp === 0) o += '<br>In its hand: ' + HAND[a.hand] + (a.nuts ? ' · nuts cracked: ' + a.nuts : '');
@@ -343,7 +351,7 @@ function doingHTML(a, S, stage, night) {
   if (a.sp === 0) {
     const q = iqTable().get(a);
     if (q)
-      o +=
+      d +=
         '<br>IQ ' +
         q.iq +
         ' — on a test of everyday problems put to its own brain it chose well ' +
@@ -368,7 +376,7 @@ function doingHTML(a, S, stage, night) {
       sk = Object.keys(NM).map((c) => [NM[c], Math.min(a.per[c], cap)]),
       good = sk.filter((q) => q[1] >= 0.7).map((q) => q[0]),
       poor = sk.filter((q) => q[1] < 0.5).map((q) => q[0]);
-    o +=
+    d +=
       '<br>Recognises well: ' +
       (good.length ? good.join(', ') : 'nothing yet') +
       (poor.length
@@ -381,7 +389,7 @@ function doingHTML(a, S, stage, night) {
       max = Math.max(a.S.nh, Math.round(H * (a.g.bs ?? 1))),
       fear = [...Array(grown).keys()].filter((j) => regionOf(j) === 0).length,
       memo = [...Array(grown).keys()].filter((j) => regionOf(j) === 1).length;
-    o +=
+    d +=
       '<br>Brain: ' +
       grown +
       ' thinking units' +
@@ -400,7 +408,7 @@ function doingHTML(a, S, stage, night) {
   if (a.mate && !a.mate.dead && !a.mate.gone) fam.push('partner ' + (a.mate.name || ''));
   if (a.kid && !a.kid.dead && !a.kid.gone) fam.push('child ' + (a.kid.name || ''));
   if (fam.length) o += '<br>Family alive: ' + fam.map((s) => s.trim()).join(', ');
-  return o;
+  return o + more('doing', d);
 }
 // What its eyes are taking in right now, read from its real senses (the same numbers its brain gets).
 function seesText(a) {
@@ -1778,8 +1786,8 @@ function draw() {
             : sel.age < sel.lf * 0.7
               ? 'adult'
               : 'elder';
-    $('ithink').innerHTML = thinkHTML(sel, S);
-    $('idoing').innerHTML = doingHTML(sel, S, stage, night);
+    setHTML($('ithink'), thinkHTML(sel, S));
+    setHTML($('idoing'), doingHTML(sel, S, stage, night));
   }
   const c = [0, 0, 0, 0];
   ag.forEach((a) => c[a.sp]++);
@@ -2163,6 +2171,18 @@ function showTab(name) {
   if (name === 'world') fit();
 }
 document.querySelectorAll('nav button').forEach((b) => (b.onclick = () => showTab(b.dataset.tab)));
+function setHTML(el, h) {
+  if (el._h !== h) el.innerHTML = el._h = h;
+}
+['ithink', 'idoing'].forEach((id) =>
+  $(id).addEventListener(
+    'toggle',
+    (e) => {
+      if (e.target.dataset && e.target.dataset.k) MORE[e.target.dataset.k] = e.target.open;
+    },
+    true
+  )
+);
 function updateDock() {
   const d = $('dock');
   if (GL.eye && (GL.eye !== sel || GL.eye.gone)) setEye(null);
@@ -2172,14 +2192,13 @@ function updateDock() {
   }
   const yrs = sel.age / TY,
     iq = sel.sp === 0 ? iqTable().get(sel) : null,
-    t =
-      (sel.name || sel.S.n) +
-      ', ' +
-      (yrs < 1
-        ? ((m) => m + (m === 1 ? ' month' : ' months'))(Math.max(1, Math.round(yrs * 12)))
-        : yrs.toFixed(1) + ' years') +
-      (iq ? ' · IQ ' + iq.iq : '');
-  if ($('dname').textContent !== t) $('dname').textContent = t;
+    age = yrs < 1
+      ? ((m) => m + (m === 1 ? ' month' : ' months'))(Math.max(1, Math.round(yrs * 12)))
+      : yrs.toFixed(1) + ' years',
+    sub = age + (iq ? ' · IQ ' + iq.iq : '');
+  const nm = sel.name || sel.S.n;
+  if ($('dname').textContent !== nm) $('dname').textContent = nm;
+  if ($('dsub').textContent !== sub) $('dsub').textContent = sub;
   d.hidden = false;
 }
 document.querySelectorAll('[data-dt]').forEach(

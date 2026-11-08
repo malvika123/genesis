@@ -260,11 +260,60 @@
         padding: 8px 10px;
         border-bottom: 1px solid var(--line);
       }
-      #dock .dh b {
-        font-size: 0.95rem;
-        flex: 1;
+      #dock .dh {
+        justify-content: space-between;
+      }
+      #dock .dn {
+        display: flex;
+        flex-direction: column;
         min-width: 0;
+      }
+      #dock .dn b {
+        font-size: 1rem;
         line-height: 1.2;
+      }
+      #dsub {
+        font-size: 0.8rem;
+        color: var(--mute);
+      }
+      #dock .dbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-bottom: 1px solid var(--line);
+      }
+      #dock .dbar > button {
+        border: 1px solid var(--line);
+        background: transparent;
+        color: var(--mute);
+        padding: 3px 10px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+      }
+      #dock .dbar > button[aria-pressed='true'] {
+        color: var(--acc);
+        border-color: var(--acc);
+      }
+      #dock .dbar .dt {
+        margin-right: auto;
+      }
+      details.more {
+        margin-top: 8px;
+        font-size: 0.85rem;
+        color: var(--mute);
+      }
+      details.more summary {
+        cursor: pointer;
+        font-weight: 600;
+        color: var(--acc);
+      }
+      #dock .db {
+        overflow-y: auto;
+        padding: 8px 10px;
+        font-size: 0.9rem;
+        line-height: 1.4;
       }
       #dock .dt {
         display: flex;
@@ -548,7 +597,13 @@
       </svg>
       <div id="dock" hidden>
         <div class="dh">
-          <b id="dname">Creature</b>
+          <div class="dn">
+            <b id="dname">Creature</b>
+            <span id="dsub"></span>
+          </div>
+          <button id="dmin" title="Minimise" aria-label="Minimise">–</button>
+        </div>
+        <div class="dbar">
           <div class="dt" role="tablist">
             <button role="tab" data-dt="think" aria-selected="true">Thinking</button
             ><button role="tab" data-dt="doing" aria-selected="false">Doing</button>
@@ -557,7 +612,6 @@
           <button id="dlisten" aria-pressed="false" title="Hear this creature and those near it">
             Listen
           </button>
-          <button id="dmin" title="Minimise" aria-label="Minimise">–</button>
         </div>
         <div class="db" id="dbody">
           <div class="dp" id="dp-think"><div id="ithink"></div></div>

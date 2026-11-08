@@ -175,6 +175,100 @@ const G3D = { ok: false };
         true;
     treesFor = alt;
   }
+  // Caves: a rocky knoll with a hollow inside and an arched mouth. From outside you see the rock and the
+  // dark opening; step into the cell and you are inside the hollow, looking at dim stone walls and the
+  // bright arch of daylight you came in by. (Simplified: one chamber, no tunnels.)
+  const MAXC = 600,
+    CR = 0.024, // knoll radius
+    CH = 0.03, // and height
+    CI = 0.0225, // the hollow inside it
+    AW = 0.0045, // half the width of the mouth
+    AH = 0.0085, // and its height (a person is about 0.006 tall)
+    domeG = new THREE.SphereGeometry(1, 14, 8, 0, 2 * Math.PI, 0, Math.PI / 2),
+    rockG = domeG.clone(),
+    archS = new THREE.Shape();
+  archS.moveTo(-AW, 0);
+  archS.lineTo(-AW, AH - AW);
+  archS.absarc(0, AH - AW, AW, Math.PI, 0, true);
+  archS.lineTo(AW, 0);
+  archS.lineTo(-AW, 0);
+  // roughen the rock a little, the same for every cave (the mouth must stay clear of it)
+  {
+    const pa = rockG.attributes.position;
+    for (let k = 0; k < pa.count; k++) {
+      const x = pa.getX(k),
+        y = pa.getY(k),
+        z = pa.getZ(k),
+        hsh = Math.sin(x * 91.7 + y * 53.3 + z * 127.1) * 43758.5453,
+        j = 1 + 0.05 * (hsh - Math.floor(hsh) - 0.5) * (y < 0.02 ? 0 : 1);
+      pa.setXYZ(k, x * j, y * j, z * j);
+    }
+    rockG.computeVertexNormals();
+  }
+  // (colours here are read as linear light, so they are chosen darker than they will look)
+  const archG = new THREE.ShapeGeometry(archS),
+    caveRock = new THREE.InstancedMesh(rockG, new THREE.MeshLambertMaterial({ color: 0x28221c, flatShading: true }), MAXC),
+    caveHall = new THREE.InstancedMesh(
+      domeG,
+      new THREE.MeshBasicMaterial({ color: 0x030303, side: THREE.BackSide, fog: false }),
+      MAXC
+    ),
+    caveMouth = new THREE.InstancedMesh(archG, new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide, fog: false }), MAXC),
+    caveLight = new THREE.InstancedMesh(archG, new THREE.MeshBasicMaterial({ color: 0xbcd4ee, side: THREE.DoubleSide, fog: false }), MAXC);
+  for (const m of [caveRock, caveHall, caveMouth, caveLight]) {
+    m.count = 0;
+    globe.add(m);
+  }
+  let cavesFor = null;
+  function plantCaves() {
+    let n = 0;
+    const bas = new THREE.Matrix4(),
+      qq = new THREE.Quaternion(),
+      tw = new THREE.Vector3(),
+      f = new THREE.Vector3(),
+      rt = new THREE.Vector3(),
+      nn = new THREE.Vector3(),
+      c0 = new THREE.Vector3(),
+      one = new THREE.Vector3(1, 1, 1);
+    for (let i = 0; i < W * H && n < MAXC; i++) {
+      if (!cave[i] || water[i]) continue;
+      const gx = (i % W) + 0.5,
+        gy = ((i / W) | 0) + 0.5,
+        lo = (gx / W) * 2 * Math.PI - Math.PI,
+        la = LATMAX * (1 - (2 * gy) / H),
+        r = 1 + EX * heightAt(la, lo);
+      c0.copy(local(la, lo, r));
+      nn.copy(c0).normalize();
+      // the way the mouth faces: a fixed direction for each cave, along the ground
+      tw.set(0, 1, 0);
+      if (Math.abs(nn.y) > 0.95) tw.set(1, 0, 0);
+      const t1 = tw.clone().cross(nn).normalize(),
+        t2 = nn.clone().cross(t1),
+        th = ((i * 2654435761) % 6283) / 1000;
+      f.copy(t1).multiplyScalar(Math.cos(th)).addScaledVector(t2, Math.sin(th)).normalize();
+      rt.copy(nn).cross(f).normalize();
+      // the knoll stands behind the middle of the cell, so the middle of the cell is inside its hollow
+      const M = c0.clone().addScaledVector(f, -0.012).addScaledVector(nn, -0.0008);
+      const place = (mesh, dist, flip, sx, sy, sz) => {
+        bas.makeBasis(flip ? rt.clone().negate() : rt, nn, flip ? f.clone().negate() : f);
+        qq.setFromRotationMatrix(bas);
+        pos.copy(M).addScaledVector(f, dist);
+        scl.set(sx, sy, sz);
+        mtx.compose(pos, qq, scl);
+        mesh.setMatrixAt(n, mtx);
+      };
+      place(caveRock, 0, false, CR, CH, CR);
+      place(caveHall, 0, false, CI, CH * 0.94, CI);
+      place(caveMouth, CR * 1.05, false, 1, 1, 1);
+      place(caveLight, CI - 0.002, true, 1, 1, 1);
+      n++;
+    }
+    for (const m of [caveRock, caveHall, caveMouth, caveLight]) {
+      m.count = n;
+      m.instanceMatrix.needsUpdate = true;
+    }
+    cavesFor = cave;
+  }
   // a point on the surface (local coordinates) for a latitude/longitude
   const local = (la, lo, r) =>
     new THREE.Vector3(Math.cos(lo) * Math.cos(la) * r, Math.sin(la) * r, -Math.sin(lo) * Math.cos(la) * r);
@@ -411,6 +505,7 @@ const G3D = { ok: false };
     }
     if (shapedFor !== alt) shape();
     if (treesFor !== alt || treeFrame++ % 600 === 0) plantTrees();
+    if (cavesFor !== cave || shapedFor !== alt) plantCaves();
     pines.visible = leafy.visible = trunks.visible = GL.zoom > 1.8;
     if (frame++ % 12 === 0) paint(v);
     spinStep();
@@ -431,6 +526,7 @@ const G3D = { ok: false };
     const near = clamp(Math.log(GL.zoom / 6) / Math.log(25 / 6), 0, 1),
       light = clamp(Math.cos(GL.lon0 - ls) * Math.cos(GL.lat0) * 3 + 0.5, 0, 1);
     sky.setRGB(0.04 + 0.5 * light, 0.07 + 0.7 * light, 0.15 + 0.78 * light);
+    caveLight.material.color.setRGB(0.05 + 0.7 * light, 0.08 + 0.78 * light, 0.14 + 0.82 * light); // daylight at the mouth, seen from inside
     renderer.setClearColor(sky, near);
     scene.fog.color.copy(sky);
     const dist = camera.position.length() - 1;

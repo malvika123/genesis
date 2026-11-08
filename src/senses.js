@@ -247,7 +247,9 @@ function sense(a, x, night) {
         cl *
         (0.15 + te);
       if (f > x[b + 1]) x[b + 1] = f;
-      if (tree[i] > 0.1 && x[b + 12] < cl * tree[i]) x[b + 12] = cl * tree[i];
+      // trees, and the dark mouth of a cave, are cover: somewhere to get out of the rain and the wind
+      const cv = cover(i);
+      if (cv > 0.1 && x[b + 12] < cl * cv) x[b + 12] = cl * cv;
       // fire: flames and smoke are hard to miss
       if (FIRE[i] > 0.03 && x[b + 15] < cl) x[b + 15] = cl;
       if (a.sp === 0) {
