@@ -710,6 +710,7 @@ function sim() {
       stick[idx(a.x, a.y)]--;
       a.hand = 4;
       a.brand = 8;
+      a.fh = (a.fh || 0) + 1;
       a.painA = Math.min(1, a.painA + 0.15);
       if (!firsts.brand) {
         firsts.brand = 1;
@@ -728,6 +729,7 @@ function sim() {
         was = a.hand,
         burning = FIRE[i] > 0.03;
       putDown(a);
+      if (was === 4 || (was === 2 && burning)) a.fh = (a.fh || 0) + 1;
       if (was === 4 && ignite(i, 0.12) && !firsts.setfire) {
         firsts.setfire = 1;
         log(a.name + ' dropped a burning stick, and fire took hold where it fell.');
@@ -755,28 +757,29 @@ function sim() {
         // a stick pushed into a fire catches
         a.hand = 4;
         a.brand = 8;
+        a.fh = (a.fh || 0) + 1;
         if (!firsts.brand) {
           firsts.brand = 1;
           log(a.name + ' poked a stick into a fire and it caught, by accident, as far as anyone can tell.');
         }
-      } else if (
-        ((a.hand === 5 && stone[i] + flake[i] > 0) || ((a.hand === 1 || a.hand === 3) && pyrite[i])) &&
-        tinder &&
-        rnd() < 0.008
-      ) {
-        // pyrite struck with a stone throws hot sparks; into dry grass or wood, one may catch
-        if (ignite(i, 0.1) && !firsts.madefire) {
-          firsts.madefire = 1;
-          log(a.name + ' struck a shiny stone and a spark set dry tinder alight. Nobody showed them how.');
-        }
+      } else if ((a.hand === 5 && stone[i] + flake[i] > 0) || ((a.hand === 1 || a.hand === 3) && pyrite[i])) {
+        // pyrite struck with a stone throws hot sparks. Catching one in dry tinder and nursing it into a
+        // flame is a knack: almost never at first, quickly once learned.
+        const sk = a.fsk || 0;
+        a.bonus[6] += 0.02 * (1 - sk); // sparks flying are new and striking to see, until they are familiar
+        if (tinder && rnd() < 0.001 + 0.5 * sk * sk && ignite(i, 0.1)) {
+          fireMade(a, 'spark');
+        } else firePractice(a, tinder ? 0.012 : 0.004);
       } else if (a.hand === 2 && stick[i] > 0 && stickDry(i) > 0.5) {
-        // rubbing dry wood on wood, again and again, heats it until it smoulders
+        // rubbing or drilling dry wood on wood heats it: smoke, then black dust, then perhaps a glowing
+        // ember that must be blown into flame. A skilled hand does it within minutes; a beginner can try
+        // for days and never get there.
         a.rub = a.lastRub === tick - 1 ? (a.rub || 0) + 1 : 1;
         a.lastRub = tick;
-        if (a.rub >= 12 && rnd() < 0.03 && ignite(i, 0.08) && !firsts.rubfire) {
-          firsts.rubfire = 1;
-          log(a.name + ' rubbed dry sticks together until they smouldered and caught fire.');
-        }
+        const sk = a.fsk || 0;
+        if (sk > 0.15 && rnd() < sk) a.bonus[6] += 0.02 * (1 - sk); // smoke rising from the wood
+        if (rnd() < (a.rub >= 4 ? 0.0004 : 0) + 0.6 * sk * sk && ignite(i, 0.08)) fireMade(a, 'rub');
+        else if (a.rub >= 2) firePractice(a, 0.004); // only steady, sustained rubbing teaches anything
       } else if (a.hand === 1 && nut[i] > 0.05) {
         const b = Math.min(nut[i], 0.25);
         nut[i] -= b;
@@ -947,5 +950,42 @@ function sim() {
     ag.forEach((a) => c[a.sp]++);
     hist.push(c);
     if (hist.length > 220) hist.shift();
+  }
+}
+
+// Making fire is a skill, not a gift. Every try is practice; someone used to handling fire learns from
+// it faster, and those close by who watch pick up a little of it too — which is how, as far as we know,
+// fire-making spread: learned by individuals, passed on by watching, never inborn.
+function firePractice(a, gain) {
+  const fam = 0.3 + 0.7 * Math.min(1, (a.fh || 0) / 10);
+  a.fsk = Math.min(1, (a.fsk || 0) + gain * fam * (1 - (a.fsk || 0)));
+  watchFire(a, gain * 0.4);
+}
+function watchFire(a, gain) {
+  for (const o of ag)
+    if (o !== a && o.sp === 0 && !o.dead && !o.asleep && Math.abs(dxw(o.x - a.x)) <= 2 && Math.abs(o.y - a.y) <= 2) {
+      const before = o.fsk || 0;
+      o.fsk = Math.min(1, before + gain * (1 - before) * (o.age < o.S.mat ? 1.5 : 1));
+      if (!o.fTeach && gain > 0.02) o.fTeach = a.name;
+    }
+}
+function fireMade(a, how) {
+  a.fsk = Math.min(1, (a.fsk || 0) + 0.12 * (1 - (a.fsk || 0)));
+  a.made = (a.made || 0) + 1;
+  watchFire(a, 0.06);
+  const key = how === 'spark' ? 'madefire' : 'rubfire';
+  if (!firsts[key]) {
+    firsts[key] = 1;
+    log(
+      a.name +
+        (how === 'spark'
+          ? ' struck a shiny stone and a spark caught in dry tinder: fire, made by hand.'
+          : ' worked dry wood until it smoked, glowed and caught: fire, made by hand.') +
+        (a.fTeach ? ' They had watched ' + a.fTeach + ' try.' : ' Nobody showed them how.') +
+        ' Day ' + (((tick / DAY) | 0) + 1) + '.'
+    );
+  } else if (a.made === 1 && !firsts['made_' + a.id]) {
+    firsts['made_' + a.id] = 1;
+    log(a.name + ' made fire too' + (a.fTeach ? ', after watching ' + a.fTeach : '') + '.');
   }
 }

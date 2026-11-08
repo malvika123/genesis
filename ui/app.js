@@ -329,6 +329,15 @@ function doingHTML(a, S, stage, night) {
   o += '<br><br>' + (a.sex ? 'Female' : 'Male') + ' ' + stage + ', generation ' + a.gen;
   o += '<br>Energy ' + a.e.toFixed(0) + ' · water ' + a.w.toFixed(0) + ' · health ' + a.hp.toFixed(0);
   if (a.sp === 0) o += '<br>In its hand: ' + HAND[a.hand] + (a.nuts ? ' · nuts cracked: ' + a.nuts : '');
+  if (a.sp === 0 && (a.fh || a.fsk > 0.005))
+    o +=
+      '<br>Fire: handled ' +
+      (a.fh || 0) +
+      ' times · fire-making skill ' +
+      Math.round(100 * (a.fsk || 0)) +
+      '%' +
+      (a.made ? ' · has made fire ' + a.made + ' times' : '') +
+      (a.fTeach ? ' · watched ' + a.fTeach : '');
   o += '<br>Nearby: ' + (around.length ? around.join(', ') : 'no one in sight');
   o += '<br>' + seesText(a);
   if (a.sp === 0) {
