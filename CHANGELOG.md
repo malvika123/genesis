@@ -4,6 +4,9 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- Events and lessons now float over the world in a see-through box at the top left ("What's
+  happening"): new ones pop in and glow for a moment; it can be folded away, and then counts what you
+  missed. It starts folded on phones. The Stats tab is now just "Stats".
 - **Learning from others.** A person who sees someone nearby bitten, burned, fall, drown, get sick or
   die feels a weaker share of the pain as its own learning signal, and fear, and turns a little away
   from what it saw lead there. Stronger for family and for children; attacks, fire, falls, drowning

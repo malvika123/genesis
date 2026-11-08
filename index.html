@@ -463,6 +463,82 @@
       .stack {
         position: relative;
       }
+      #feed {
+        position: absolute;
+        left: 16px;
+        top: 52px;
+        width: min(330px, calc(100% - 32px));
+        max-height: 40%;
+        display: flex;
+        flex-direction: column;
+        background: color-mix(in srgb, var(--panel) 62%, transparent);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        box-shadow: 0 6px 22px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        z-index: 3;
+        font-size: 0.82rem;
+      }
+      #feed .fh {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 6px 8px 6px 12px;
+        font-weight: 600;
+        color: var(--ink);
+      }
+      #feed .fh b {
+        font-weight: 600;
+        color: var(--acc);
+        margin-left: 4px;
+      }
+      #fmin {
+        font: inherit;
+        line-height: 1;
+        width: 26px;
+        height: 24px;
+        border: 0;
+        border-radius: 6px;
+        background: transparent;
+        color: var(--ink);
+        font-size: 1.05rem;
+        cursor: pointer;
+      }
+      #fmin:hover {
+        background: color-mix(in srgb, var(--ink) 10%, transparent);
+      }
+      #feed ul {
+        list-style: none;
+        margin: 0;
+        padding: 0 12px 8px;
+        overflow-y: auto;
+        color: var(--ink);
+      }
+      #feed li {
+        padding: 4px 0;
+        border-top: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
+        line-height: 1.35;
+      }
+      #feed li.new {
+        animation: pop 0.6s ease-out, glow 4s ease-out;
+      }
+      @keyframes pop {
+        from { opacity: 0; transform: translateY(-6px); }
+      }
+      @keyframes glow {
+        from { background: color-mix(in srgb, var(--acc) 40%, transparent); }
+      }
+      #feed.min {
+        width: auto;
+      }
+      #feed.min ul {
+        display: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #feed li.new { animation: none; }
+      }
       #hud,
       #ghint,
       #dock,
@@ -567,7 +643,7 @@
       <h1>Genesis</h1>
       <nav role="tablist">
         <button role="tab" data-tab="world" aria-selected="true">World</button>
-        <button role="tab" data-tab="stats" aria-selected="false">Stats &amp; events</button>
+        <button role="tab" data-tab="stats" aria-selected="false">Stats</button>
         <button role="tab" data-tab="setup" aria-selected="false">New world</button>
         <button role="tab" data-tab="about" aria-selected="false">About</button>
       </nav>
@@ -597,6 +673,13 @@
         <div id="tl" aria-label="What happened, and when"><span id="tl-tip">Things that happen show up here as dots, oldest on the left. Hover one.</span><canvas id="tlc" width="800" height="34"></canvas></div>
       </div>
       <div id="hud"></div>
+      <div id="feed" aria-live="polite">
+        <div class="fh">
+          <span>What's happening <b id="fnew" hidden></b></span>
+          <button id="fmin" aria-expanded="true" title="Minimise" aria-label="Minimise what's happening">−</button>
+        </div>
+        <ul id="log"></ul>
+      </div>
       <div id="ghint">Drag to spin · zoom in · tap a creature</div>
       <div id="tip" hidden>
         <div class="tt" role="tablist">
@@ -660,10 +743,6 @@
           <div class="box">
             <h2>Population over time (people, herbivores, predators, fish)</h2>
             <canvas id="ch" width="440" height="120" style="width: 100%; height: auto"></canvas>
-          </div>
-          <div class="box">
-            <h2>Recent events and lessons</h2>
-            <ul id="log"></ul>
           </div>
         </div>
         <div class="two">

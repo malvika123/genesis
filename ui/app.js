@@ -2083,8 +2083,42 @@ const readCfg = () => ({
   fish: +$('fsh').value || 0,
   retina: $('ret').checked,
 });
+// What's happening: the latest events float over the world, newest on top; new ones pop in and glow
+// for a moment. It can be folded away; folded, it counts what you've missed.
+let feedTop = null,
+  feedMissed = 0,
+  feedMin = false;
+try {
+  const s = localStorage.getItem('genesis-feed-min');
+  feedMin = s === null ? innerWidth < 600 : s === '1'; // on a phone it starts folded, to leave room for the world
+} catch (e) {}
+// it sits just under the row of counts, however many lines that row wraps onto
+new ResizeObserver(() => ($('feed').style.top = $('hud').offsetTop + $('hud').offsetHeight + 8 + 'px')).observe($('hud'));
+function setFeedMin(v) {
+  feedMin = v;
+  $('feed').classList.toggle('min', v);
+  $('fmin').textContent = v ? '+' : '−';
+  $('fmin').title = v ? 'Show' : 'Minimise';
+  $('fmin').setAttribute('aria-expanded', !v);
+  if (!v) feedMissed = 0;
+  $('fnew').hidden = !(v && feedMissed);
+  $('fnew').textContent = feedMissed ? '· ' + feedMissed + ' new' : '';
+  try {
+    localStorage.setItem('genesis-feed-min', v ? '1' : '0');
+  } catch (e) {}
+}
+$('fmin').onclick = () => setFeedMin(!feedMin);
+setFeedMin(feedMin);
 function onLog(logs) {
-  $('log').innerHTML = logs.map((l) => '<li>' + l + '</li>').join('');
+  let fresh = logs.indexOf(feedTop);
+  if (fresh < 0) fresh = feedTop === null ? 0 : logs.length;
+  feedTop = logs[0];
+  if (feedMin && fresh) {
+    feedMissed += fresh;
+    $('fnew').hidden = false;
+    $('fnew').textContent = '· ' + feedMissed + ' new';
+  }
+  $('log').innerHTML = logs.map((l, i) => '<li' + (i < fresh ? ' class="new"' : '') + '>' + l + '</li>').join('');
 }
 function onExtinct() {
   running = false;
