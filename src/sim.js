@@ -71,6 +71,11 @@ function sim() {
     if (!a.preg) a.cd = Math.max(0, a.cd - 1);
     a.kcd = Math.max(0, a.kcd - 1);
     if (a.preg) pregnancy(a, kids);
+    if (a.milk) {
+      // nursing costs the mother while her young is alive and still small
+      if (a.kid && !a.kid.gone && !a.kid.dead && a.kid.mom === a && a.milk.left > 0) a.e -= a.milk.cost / a.S.cd;
+      if (--a.milk.left <= 0 || !a.kid || a.kid.gone) a.milk = null;
+    }
     if (tick % DAY === 0) a.fd = 0;
     const young = a.age < S.mat,
       baby = a.age < S.mat * S.wn,
@@ -1210,7 +1215,7 @@ function expecting(k) {
 function pregnancy(a, kids) {
   const P = a.preg,
     S = a.S;
-  a.e -= P.cost / Math.max(1, S.gest); // the cost of growing them, spread over the pregnancy
+  a.e -= (0.4 * P.cost) / Math.max(1, S.gest); // growing them: the smaller part of the cost
   if (a.e < 3) {
     a.preg = null;
     a.cd = Math.round(0.2 * TY);
@@ -1239,6 +1244,7 @@ function pregnancy(a, kids) {
     a.e -= 5;
   }
   a.cd = S.cd; // nursing: not ready to conceive again for a while
+  a.milk = { cost: 0.6 * P.cost, left: S.cd }; // and feeding them milk: the larger part, paid while they live
   a.ev[7] = 'it gave birth on day ' + dayN();
   if (a.sp === 0 && rnd() < 0.01) {
     a.dead = true;
