@@ -139,6 +139,7 @@ const SP = [
     life: 18 * TY,
     cd: 1.3 * TY,
     gest: 0.17 * TY, // about two months
+    yc: 6, // pups and cubs are small at birth
     lit: [1, 4],
     wn: 0.4,
     cap: 24,
@@ -171,6 +172,7 @@ const SP = [
     life: 4 * TY,
     cd: 0.6 * TY,
     gest: 0.01 * TY, // eggs hatch within days
+    yc: 1, // what each young costs its mother: an egg is cheap
     lit: [4, 10],
     wn: 0.2,
     cap: 140,
@@ -220,6 +222,7 @@ const KINDS = [
     life: 6 * TY,
     cd: 0.5 * TY,
     gest: 0.08 * TY, // about a month
+    yc: 5, // newborn rabbits are tiny
     cold: -18,
     hot: 28,
     walk: 0.08,
