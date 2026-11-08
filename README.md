@@ -117,6 +117,7 @@ The tests check that the world is reproducible, that creatures stay within their
 ## Watching and whispering
 
 - **Click any creature** and a bubble over it shows, in plain words, what it is thinking (what pushed its choice, translated straight from its neural network, and how sure it was) and what it is doing. A floating box gives a little more: its feelings, what else it considered, what it expects, remembers and has learned, its body, who is nearby and its family.
+- **Time** (a button, off by default) adds the fourth dimension to what you see: fading trails of where creatures have been over the last day, 5 days or 30 days, and a strip of everything that has happened, births, deaths, fire and firsts, as dots you can hover. The creatures still live in their own 3D present; only you see time laid out.
 - **Whisper an idea** in your own words. It reaches the creature in its sleep or a quiet moment and becomes its own thought. The words are read for ideas the creature can understand (water, food, fish, berries, hunters, pits, sharing, others, sleep, a partner, exploring, a direction) and whether you said do or don't. Each idea is only a small nudge in its brain — it still has to act on it, and the world decides whether it sticks.
 
 ## Honest limitations

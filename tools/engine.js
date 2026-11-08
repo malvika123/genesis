@@ -26,7 +26,7 @@ return {
   setTick: (t) => { tick = t; updateClimate(); },
   whisper: (a, text) => { a.wh = text; },
   watch: (a) => { sel = a; },
-  state: () => ({ firsts, deaths, ag, tick, logs, fished, kills, maxGen, nLessons, over, water, deep, food, pit, cave, poison, rock, salt, river }),
+  state: () => ({ events, firsts, deaths, ag, tick, logs, fished, kills, maxGen, nLessons, over, water, deep, food, pit, cave, poison, rock, salt, river }),
   items: () => ({ bodies: BODIES, ROOT, meatAt, stone, stick, flake, nut, pyrite, lying, nutCap }),
   talk: () => ({ SNDSTAT, BASE, GENSTAT, meaning, SAYN, HEARD, CALLS }),
   fire: () => ({ FIRE, SMOL, BURNT, COOK, fireStats, BURNING, dryness, fuelOf, ignite, pyrite }),

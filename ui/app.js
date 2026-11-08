@@ -1400,6 +1400,7 @@ function drawFlat(v) {
   for (const a of ag) drawCreature(cx, a, a.rx * C + C / 2, a.ry * C + C / 2, 1, v);
   drawWeatherFx(cx, (x, y) => [x * C + C / 2, y * C + C / 2, C], false);
   drawFire(cx, (x, y) => [x * C + C / 2, y * C + C / 2, C]);
+  drawTrails(cx, (x, y) => [x * C + C / 2, y * C + C / 2, C]);
   drawTalk(cx, (a) => [a.rx * C + C / 2, a.ry * C + C / 2, 6], 0.6);
   // night is local: shade the half of the world where the sun is down
   cx.fillStyle = 'rgba(8,16,48,.38)';
@@ -1913,6 +1914,107 @@ function spinStep() {
   GL.vel *= 0.97;
 }
 let lastT = performance.now();
+// ---------- the Time view: where everyone has been, and what happened when ----------
+// Off by default. Each creature's place is noted once an hour (every 4 steps) in the page only; the
+// world itself knows nothing about this, so it can't change what happens.
+let timeOn = false;
+try {
+  timeOn = localStorage.getItem('genesis-time') === '1';
+} catch (e) {}
+const TRAIL = new WeakMap(),
+  TRAIL_MAX = 720; // 30 days of hours
+function recordTrails() {
+  if (!timeOn) return;
+  for (const a of ag) {
+    let t = TRAIL.get(a);
+    if (!t) TRAIL.set(a, (t = []));
+    t.push(a.rx ?? a.x, a.ry ?? a.y);
+    if (t.length > TRAIL_MAX * 2) t.splice(0, 2);
+  }
+}
+function trailSet() {
+  const who = $('tr-who').value;
+  if (who === 'all') return ag;
+  if (who === 'ppl') return ag.filter((a) => a.sp === 0);
+  if (!sel) return [];
+  return [sel, sel.mom, sel.mate, sel.kid].filter((a) => a && !a.dead);
+}
+function drawTrails(g, P) {
+  if (!timeOn) return;
+  const keep = +$('tr-len').value / 4; // how many hourly points to show
+  for (const a of trailSet()) {
+    const t = TRAIL.get(a);
+    if (!t || t.length < 4) continue;
+    const from = Math.max(0, t.length / 2 - keep),
+      n = t.length / 2;
+    g.lineCap = 'round';
+    let prev = null;
+    for (let i = Math.floor(from); i < n; i++) {
+      const x = t[i * 2],
+        y = t[i * 2 + 1];
+      const Q = P(x, y);
+      if (prev && Q && Math.abs(x - prev.x) < W / 2) {
+        const f = (i - from) / Math.max(1, n - from); // older = fainter
+        g.strokeStyle = (a.sp === 0 ? 'rgba(255,214,120,' : a.sp === 2 ? 'rgba(255,120,110,' : 'rgba(150,220,255,') + (0.15 + 0.8 * f) + ')';
+        g.lineWidth = clamp(Q[2] * (a === sel ? 0.3 : 0.2), 1.2, 6);
+        g.beginPath();
+        g.moveTo(prev.q[0], prev.q[1]);
+        g.lineTo(Q[0], Q[1]);
+        g.stroke();
+      }
+      prev = Q ? { x, q: Q } : null;
+    }
+  }
+}
+// the strip: every event ever logged as a dot along the time the world has run
+const EVC = { born: '#8fd18f', died: '#e07a7a', fire: '#ffb347', other: '#9fb4d4' };
+let tlDots = [];
+function eventKind(s) {
+  return /born/.test(s) ? 'born' : /died|killed|starved|drowned|burned|struck/.test(s) ? 'died' : /fire|flame|burning|cook/.test(s) ? 'fire' : 'other';
+}
+function drawTimeline() {
+  if (!timeOn) return;
+  const c = $('tlc'),
+    g = c.getContext('2d'),
+    w = c.width,
+    h = c.height,
+    span = Math.max(tick, 1);
+  g.clearRect(0, 0, w, h);
+  g.strokeStyle = 'rgba(160,170,180,.5)';
+  g.beginPath();
+  g.moveTo(0, h - 8);
+  g.lineTo(w, h - 8);
+  g.stroke();
+  tlDots = [];
+  for (const e of events) {
+    const x = 6 + (e.t / span) * (w - 12),
+      k = eventKind(e.s);
+    g.fillStyle = EVC[k];
+    g.beginPath();
+    g.arc(x, k === 'died' ? 22 : k === 'born' ? 10 : 16, 3, 0, 7);
+    g.fill();
+    tlDots.push([x, e]);
+  }
+}
+$('tlc').onmousemove = (ev) => {
+  const r = $('tlc').getBoundingClientRect(),
+    x = ((ev.clientX - r.left) / r.width) * $('tlc').width;
+  let best = null;
+  for (const d of tlDots) if (Math.abs(d[0] - x) < 6 && (!best || Math.abs(d[0] - x) < Math.abs(best[0] - x))) best = d;
+  $('tl-tip').textContent = best ? 'Day ' + (Math.floor(best[1].t / DAY) + 1) + ': ' + best[1].s : 'Hover a dot. Green: births · orange: fire · red: deaths · blue: other firsts.';
+};
+function setTime(on) {
+  timeOn = on;
+  $('timebtn').setAttribute('aria-pressed', on);
+  $('timebar').hidden = !on;
+  try {
+    localStorage.setItem('genesis-time', on ? '1' : '0');
+  } catch (e) {}
+  if (on) for (const a of ag) if (!TRAIL.has(a)) TRAIL.set(a, [a.rx, a.ry]);
+}
+$('timebtn').onclick = () => setTime(!timeOn);
+setTime(timeOn);
+let tlN = -1;
 function loop() {
   const now = performance.now(),
     dt = Math.min(0.25, (now - lastT) / 1000);
@@ -1922,12 +2024,17 @@ function loop() {
     let n = 0;
     while (acc >= 1 && n < 10) {
       sim();
+      if (tick % 4 === 0) recordTrails();
       acc--;
       n++;
     }
     if (acc > 10) acc = 0;
   }
   draw();
+  if (timeOn && events.length + tick % 16 !== tlN) {
+    tlN = events.length + (tick % 16);
+    drawTimeline();
+  }
   updateDock();
   updateTip();
   requestAnimationFrame(loop);

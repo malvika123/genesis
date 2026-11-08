@@ -17,6 +17,7 @@ function reset(cfg = {}) {
   updateClimate();
   hist = [];
   logs = [];
+  events = [];
   kills = [0, 0, 0, 0];
   fished = 0;
   deaths = {};

@@ -650,6 +650,7 @@ function sim() {
           c.mom = fem;
           fem.kid = mal.kid = c;
           kids.push(c);
+          if (a.sp === 0) log((c.name || 'A baby') + ' was born to ' + (fem.name || 'a mother') + '.');
         }
         fem.mate = mal;
         mal.mate = fem;

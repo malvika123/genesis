@@ -4,6 +4,10 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- A **Time** button (off by default) shows the fourth dimension: fading trails of where creatures have
+  been (the one you picked and its family, all people, or everyone; over 1, 5 or 30 days) and a strip
+  of everything that has happened (births, deaths, fire, firsts) as dots along time. It is drawn by
+  the page only and cannot change the world. Births are now written in the log.
 - Caves are now real hollows in the 3D world: a rocky knoll with an arched mouth that you can see from
   outside; a creature standing in one is inside it, seeing dark stone walls and the bright arch of
   daylight. Creatures see caves as cover (somewhere to shelter) through the same senses as trees.

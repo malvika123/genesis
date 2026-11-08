@@ -57,7 +57,10 @@ const wx = (x) => (x >= 0 && x < W ? x : ((x % W) + W) % W),
     return p < 0.25 || p >= 0.75;
   },
   isNight = () => isNightAt(0);
+let events = []; // everything the log has ever said, with when: for the timeline
 function log(t) {
+  events.push({ t: tick, s: t });
+  if (events.length > 600) events.shift();
   logs.unshift('Day ' + dayN() + ': ' + t);
   logs.length = Math.min(logs.length, 8);
   if (typeof onLog === 'function') onLog(logs);
