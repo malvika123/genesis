@@ -47,6 +47,8 @@ test('nobody is told of a death: a partner far away feels nothing at once, one w
     [p, q] = s.ag.filter((o) => o.sp === 0);
   p.mate = q;
   q.mate = p;
+  p.bonds = [{ o: q, s: 0.9 }];
+  q.bonds = [{ o: p, s: 0.9 }];
   p.y = (q.y + 30) % E.H; // far away
   q.dead = true;
   q.cause = 'test';
@@ -68,6 +70,8 @@ test('a partner long unseen is missed, more after days, then less as time passes
     [p, q] = s.ag.filter((o) => o.sp === 0);
   p.mate = q;
   q.mate = p;
+  p.bonds = [{ o: q, s: 0.9 }];
+  q.bonds = [{ o: p, s: 0.9 }];
   E.sim();
   q.dead = true;
   q.cause = 'test';
@@ -85,4 +89,24 @@ test('a partner long unseen is missed, more after days, then less as time passes
     E.sim();
   }
   assert.ok(p.miss < m3, 'and it fades: ' + p.miss);
+});
+
+test('pair bonds grow with time together and pick the partner; plant-eaters form none', () => {
+  const E = createEngine();
+  E.setSeed(9);
+  E.reset({ predators: 0 });
+  const st = E.state(),
+    adults = st.ag.filter((o) => o.sp === 0 && o.age >= o.S.smat),
+    m = adults.find((o) => !o.sex),
+    [f, g] = adults.filter((o) => o.sex);
+  assert.ok(m && f && g, 'a man and two women');
+  for (let i = 0; i < 2 * E.DAY && !m.gone; i++) E.sim();
+  assert.ok(m.bonds && m.bonds.some((b) => b.s > 0.05), 'time spent near others grows bonds');
+  m.bonds = [
+    { o: g, s: 0.3 },
+    { o: f, s: 0.6 },
+  ];
+  E.sim();
+  assert.ok(m.mate === f, 'the partner is the one it is most bonded to');
+  assert.ok(st.ag.filter((o) => o.sp === 1).every((o) => !o.mate), 'deer, rabbits and bison form no pair bonds');
 });

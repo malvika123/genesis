@@ -202,6 +202,7 @@ function sim() {
     a.pr = a.kid && !a.kid.gone && a.kid.age < S.mat ? fam : 0;
     if (a.pr > 0.5) a.bonus[7] += a.sex ? 0.01 : 0.005;
     if (young && fam > 0.5) a.bonus[7] += 0.005;
+    if (S.pair && a.age >= S.smat) pairBond(a);
     if (a.sp !== 3) feelLoss(a, young);
     const hu = 1 - a.e / 100,
       th = 1 - a.w / 100,
@@ -660,11 +661,19 @@ function sim() {
         followed(a, 'water', 'found the water');
       if (th > 0.5) a.ev[3] = 'it drank after being very thirsty on day ' + dn;
     } else if (act === A_MATE && a.rd && popK[a.k] + kidsOf(a.k) < S.cap) {
-      let b = null;
-      for (let yy = -1; yy <= 1 && !b; yy++)
-        for (let xx = -1; xx <= 1 && !b; xx++) {
+      // of those ready close by, one it is bonded to is the one it goes to (partner preference, as in
+      // pair-bonding mammals); otherwise whoever is there
+      let b = null,
+        bb = -1;
+      for (let yy = -1; yy <= 1; yy++)
+        for (let xx = -1; xx <= 1; xx++) {
           const l = G[idx(a.x + xx, clamp(a.y + yy, 0, H - 1))];
-          if (l) b = l.find((q) => q !== a && q.k === a.k && q.sex !== a.sex && q.rd && !q.dead) || null;
+          if (l)
+            for (const q of l)
+              if (q !== a && q.k === a.k && q.sex !== a.sex && q.rd && !q.dead && bondOf(a, q) > bb) {
+                b = q;
+                bb = bondOf(a, q);
+              }
         }
       if (b) {
         const fem = a.sex ? a : b,
@@ -679,12 +688,17 @@ function sim() {
           c.e = 60;
           c.w = 100;
           c.mom = fem;
-          fem.kid = mal.kid = c;
+          c.dad = mal; // recorded for science (who the father is); nobody in the world is told
+          fem.kid = c;
+          if (S.pair) mal.kid = c; // fathers of pair-bonding kinds help raise the young; others leave
+          countSibs(a.sp, fem, mal);
           kids.push(c);
           if (a.sp === 0) log((c.name || 'A baby') + ' was born to ' + (fem.name || 'a mother') + '.');
         }
-        fem.mate = mal;
-        mal.mate = fem;
+        if (S.pair) {
+          addBond(fem, mal, 0.3);
+          addBond(mal, fem, 0.3);
+        }
         fem.e -= 10 + 12 * n;
         mal.e -= 10;
         fem.cd = mal.cd = S.cd;
@@ -1124,4 +1138,58 @@ function feelLoss(a, young) {
     a.ev[7] = 'it found the body of ' + (b.who.name || 'one it was close to') + ' on day ' + dayN();
     if (a.sp === 0) log(a.name + ' found the body of ' + b.name + ', and was distressed.');
   }
+}
+
+// ---------- pair bonds ----------
+// People (and wolves) are born able to form pair bonds, not with a rule to be faithful. A bond with a
+// particular one grows the more time they spend close together, and with each mating (as oxytocin and
+// vasopressin bond partners in pair-bonding mammals), and fades over weeks apart. The partner is the
+// one it is most strongly bonded to: it is drawn to stay near them (a small comfort), prefers them
+// when mating, and misses them when apart. Nothing stops it mating with others or bonding anew; how
+// they pair up — one partner for life, one after another, or more — is left to how they live. In
+// real people the pair bond is universal, but most societies have allowed more than one wife and
+// serial partners are common (Schacht & Kramer 2019).
+function bondOf(a, o) {
+  const b = a.bonds && a.bonds.find((e) => e.o === o);
+  return b ? b.s : 0;
+}
+function addBond(a, o, k) {
+  if (!a.bonds) a.bonds = [];
+  let b = a.bonds.find((e) => e.o === o);
+  if (!b) {
+    if (a.bonds.length >= 4) a.bonds.splice(a.bonds.indexOf(a.bonds.reduce((m, e) => (e.s < m.s ? e : m))), 1);
+    a.bonds.push((b = { o, s: 0 }));
+  }
+  b.s = Math.min(1, b.s + k * (1 - b.s));
+}
+function pairBond(a) {
+  const near = [];
+  for (let yy = -1; yy <= 1; yy++)
+    for (let xx = -1; xx <= 1; xx++) {
+      const l = G[idx(a.x + xx, clamp(a.y + yy, 0, H - 1))];
+      if (l) for (const q of l) if (q !== a && q.k === a.k && q.sex !== a.sex && !q.dead && q.age >= q.S.smat) near.push(q);
+    }
+  for (const q of near) addBond(a, q, 0.0015);
+  let best = null;
+  if (a.bonds) {
+    for (const e of a.bonds) {
+      if (!near.includes(e.o)) e.s *= 0.9995; // about two weeks to halve, apart
+      if (e.s >= 0.25 && (!best || e.s > best.s)) best = e;
+    }
+    a.bonds = a.bonds.filter((e) => e.s > 0.02);
+  }
+  a.mate = best ? best.o : null;
+  if (best && near.includes(best.o)) a.bonus[7] += 0.01 * best.s;
+}
+// For checking against real life: of every two young with the same mother, how often they also share
+// a father (humans about 66%, chimpanzees 4%, gibbons 64%: Dyble 2026).
+let SIBS = [];
+function countSibs(sp, fem, mal) {
+  const s = SIBS[sp] || (SIBS[sp] = { pairs: 0, full: 0 });
+  if (!fem.dads) fem.dads = new Map();
+  let n = 0;
+  for (const v of fem.dads.values()) n += v;
+  s.pairs += n;
+  s.full += fem.dads.get(mal.id) || 0;
+  fem.dads.set(mal.id, (fem.dads.get(mal.id) || 0) + 1);
 }

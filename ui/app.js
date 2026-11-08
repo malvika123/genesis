@@ -1846,6 +1846,11 @@ function draw() {
     [sc[0] + ' / ' + sc[1] + ' / ' + sc[2], 'Asleep now (people / herbivores / predators)'],
     [kills[0] + ' / ' + kills[1], 'Predator kills (people / herbivores)'],
     [nLessons, 'Lessons learned'],
+    [
+      SIBS[0] && SIBS[0].pairs ? Math.round((100 * SIBS[0].full) / SIBS[0].pairs) + '%' : '–',
+      'Brothers and sisters with the same father too (real people about 66%, chimpanzees 4%)',
+    ],
+    [ag.filter((a) => a.sp === 0 && a.mate && !a.mate.gone).length, 'People with a partner they are bonded to'],
   ];
   $('stats').innerHTML = st
     .map((x) => '<div class="stat"><b>' + x[0] + '</b><span>' + x[1] + '</span></div>')

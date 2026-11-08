@@ -126,6 +126,7 @@ function runWorld(E, seed, S) {
     learns_from_others: ppl.length ? +(ppl.reduce((t, p) => t + (p.g.im ?? 1), 0) / ppl.length).toFixed(2) : '',
     copies_successful: ppl.length ? +(ppl.reduce((t, p) => t + (p.g.pb ?? 0.5), 0) / ppl.length).toFixed(2) : '',
     follows_crowd: ppl.length ? +(ppl.reduce((t, p) => t + (p.g.cf ?? 0.3), 0) / ppl.length).toFixed(2) : '',
+    full_sibling_pct: st.SIBS[0] && st.SIBS[0].pairs ? Math.round((100 * st.SIBS[0].full) / st.SIBS[0].pairs) : '',
     loners_pct: ppl.length ? Math.round((100 * ppl.filter((p) => (p.g.im ?? 1) < 0.35).length) / ppl.length) : '',
     died,
     day,
@@ -133,7 +134,7 @@ function runWorld(E, seed, S) {
 }
 
 function csv(rows, S, meta) {
-  const head = ['seed', 'days_run', 'people_alive', 'generations', 'plant_eaters', 'hunters', 'fish', 'best_fire_skill', 'learns_from_others', 'copies_successful', 'follows_crowd', 'loners_pct'];
+  const head = ['seed', 'days_run', 'people_alive', 'generations', 'plant_eaters', 'hunters', 'fish', 'best_fire_skill', 'learns_from_others', 'copies_successful', 'follows_crowd', 'loners_pct', 'full_sibling_pct'];
   const cols = [...head, ...CAUSES.map((c) => 'died_' + c.replace(/ /g, '_')), ...MILESTONES.map((m) => 'day_' + m)];
   const lines = [
     '# Genesis experiment',

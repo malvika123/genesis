@@ -79,7 +79,7 @@ things are missed or confused. An optional raw-vision mode gives only coloured r
 The brain receives these numbers, not pictures.
 
 **Interaction.** Predation (size ratio, pack help, prey fighting back), sharing food, mating, parental
-care for the young, copying another's chosen action (biased toward the successful, the majority and moments of uncertainty, by inherited traits), feeling a share of another person's pain seen nearby (vicarious learning), sound calls heard by others, grieving, and watching
+care for the young, copying another's chosen action (biased toward the successful, the majority and moments of uncertainty, by inherited traits), feeling a share of another person's pain seen nearby (vicarious learning), pair bonds that grow with time together and mating and fade apart (people and wolves only; partner = strongest bond; no rule of fidelity; the share of full siblings is recorded to compare with real populations), sound calls heard by others, grieving, and watching
 another make fire.
 
 **Stochasticity.** One seeded random-number generator drives all chance events. Same seed, same settings,

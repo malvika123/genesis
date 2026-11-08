@@ -21,6 +21,7 @@ function reset(cfg = {}) {
   hist = [];
   logs = [];
   events = [];
+  SIBS = [];
   kills = [0, 0, 0, 0];
   fished = 0;
   deaths = {};

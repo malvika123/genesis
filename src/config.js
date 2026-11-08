@@ -184,7 +184,9 @@ const SP = [
 // feeds more). cap: how many the world can carry of it. share: its part of the starting numbers for its role. hab: where it starts — the range of
 // yearly mean temperature (°C) and of tree cover it prefers.
 const KINDS = [
-  { sp: 0, n: 'Person', share: 1, size: 1 },
+  // pair: forms lasting pair bonds (people, and wolves, whose breeding pair stays together for years).
+  // Deer, rabbits, bison, big cats and bears don't: their males leave after mating and don't raise young.
+  { sp: 0, n: 'Person', share: 1, size: 1, pair: 1 },
   {
     sp: 1,
     n: 'Deer',
@@ -250,6 +252,7 @@ const KINDS = [
     life: 13 * TY,
     cold: -30,
     pack: 1,
+    pair: 1,
     hab: { t: [-20, 18], tree: [0, 1] },
   },
   {

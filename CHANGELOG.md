@@ -4,6 +4,12 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Pair bonds instead of "last one mated with".** People and wolves form bonds that grow with time
+  spent together and with mating, and fade over weeks apart; the partner is the strongest bond. Bonded
+  partners are preferred when mating and missed when apart; nothing forbids other partners. Deer,
+  rabbits, bison, big cats and bears form no pairs, and their males no longer count as raising young.
+  Each child's father is recorded so the share of full siblings can be compared with real people
+  (Stats tab; experiment column full_sibling_pct).
 - **No more scripted grief.** A death used to make its partner, mother and child grieve at once, wherever
   they were, as if told. Now nobody is told: the inborn bond makes a creature miss those it is bonded
   to when it has not seen them for days (rising over four days, fading over the next two weeks, the
