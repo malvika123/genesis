@@ -41,7 +41,7 @@ function mk(sp, x, y, sex, g, gen, age, k = KDEF[sp]) {
     mod: 1, // how strongly the mood chemicals are turning its learning up or down
     z: new Float32Array(NA),
     zv: new Float32Array(NV), // the voice's options this moment
-    voice: 0, // 0 silent, 1 … 6 one of the six sounds
+    voice: 0, // 0 silent, 1 crying, 2 screaming, 3 speaking (the word itself is in .word)
     e: 80,
     w: 85,
     hp: 100,

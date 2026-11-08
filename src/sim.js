@@ -244,6 +244,9 @@ function sim() {
       // drawn toward the cry of its own young child.
       if (young && (hu > 0.5 || a.painA > 0.3 || a.cold > 0.6)) RFV[1] += 4;
       if (a.painA > 0.5) RFV[2] += 3;
+      // babbling: from about six months, a baby who is fed, warm and calm plays with its voice, and
+      // young children keep talking to themselves and others
+      if (young && a.age > S.mat * 0.04 && hu < 0.5 && a.painA < 0.2 && a.fear < 0.3) RFV[3] += a.age < S.mat * 0.25 ? 2 : 1;
       const o = HEAR;
       if (x[o] > 0 && a.kid && !a.kid.gone && a.kid.age < a.kid.S.mat)
         for (let s = 0; s < 8; s++) {
@@ -344,9 +347,11 @@ function sim() {
     if (a.whO === 'berries' && x[IB + 16] && hu > 0.4 && act !== A_EAT)
       followed(a, 'berries', 'walked past the red berries, hungry as it was');
     // the voice, alongside what the body does (asleep, it is quiet)
-    const voice = a.sp === 0 && !(act === A_SLEEP || a.asleep) ? sampleV(a.zv) : 0;
+    const vc = a.sp === 0 && !(act === A_SLEEP || a.asleep) ? sampleV(a.zv) : null,
+      voice = vc ? vc[0] : 0;
     a.voice = voice;
-    if (act === chosen) trace(a, act, voice);
+    a.vc = vc;
+    if (act === chosen) trace(a, act, vc);
     else fadeTraces(a);
     a.Vp = V;
     a.has = true;
@@ -415,7 +420,7 @@ function sim() {
         let maj = -1;
         for (let k = 0; k < NA; k++) if (seen[k] > nseen / 2 && nseen >= 3 && k !== A_SLEEP) maj = k;
         const cf = SOC.pick && maj >= 0 && maj !== tch.act ? (a.g.cf ?? 0.3) : 0;
-        imitate(a, tch.act, rate * (1 - cf), tch.voice);
+        imitate(a, tch.act, rate * (1 - cf), tch.vc);
         if (cf) imitate(a, maj, rate * cf);
         if (!a.copied && a.sp === 0 && young) {
           a.copied = 1;
@@ -442,8 +447,13 @@ function sim() {
     if (act >= 8) a.mvv = 0; // not walking this step
     // How it responded to the loudest sound it heard: came closer, moved away, or answered. Answering
     // feels good to both — even newborns take turns "talking" with their mothers.
-    if (a.sp === 0 && a.heardK >= 0 && !a.asleep) {
-      const S = SNDSTAT[a.heardK],
+    // Vocal imitation, inborn in humans: hearing a word, the mouth is drawn a little toward making the
+    // same sounds — strongly in babies and children, and more in those born to learn from others.
+    if (a.sp === 0 && a.heardW && !a.asleep)
+      imitateVoice(a, choicesFor(a.heardW), 0.02 * (young ? 3 : 1) * (a.g.im ?? 1) * x[HEAR + 6]);
+    const hs = a.heardK === 2 ? WSTAT.get(a.heardWord) : SNDSTAT[a.heardK];
+    if (a.sp === 0 && a.heardK >= 0 && !a.asleep && hs) {
+      const S = hs,
         o = HEAR + a.heardK * 3;
       S.hear++;
       if (act < 8) {
@@ -461,18 +471,34 @@ function sim() {
     if (a.sp === 1 || a.sp === 2) animalCalls(a, x, seeOwn);
     // making the sound
     if (voice > 0) {
-      const k = voice - 1;
+      const k = voice - 1,
+        w = k === 2 ? wordOf(vc) : null,
+        word = w ? spell(w) : SAYN[k];
       a.said = k;
       a.saidT = tick;
+      a.word = word;
       a.e -= 0.02;
-      CALLS.push({ x: a.x, y: a.y, k, a, t: tick, L: SND.voice[k].L, f: SND.voice[k].f });
-      tally(SNDSTAT[k], context(a));
+      CALLS.push({ x: a.x, y: a.y, k, a, t: tick, L: SND.voice[k].L, f: SND.voice[k].f, w, word, p: pitchOf(a) });
+      let st = k < 2 ? SNDSTAT[k] : WSTAT.get(word);
+      if (!st) {
+        st = { n: 0, pred: 0, food: 0, kin: 0, alone: 0, hungry: 0, hurt: 0, hear: 0, come: 0, flee: 0, answer: 0, who: new Set(), first: tick };
+        WSTAT.set(word, st);
+      }
+      tally(st, context(a));
+      if (st.who) st.who.add(a.id);
       // calling out to others nearby eases loneliness a little (like grooming does for apes)
       if (seeOwn) a.bonus[7] += 0.03 * a.lo;
-      if (typeof onCall === 'function') onCall(a, k);
-      if (!firsts['say' + k] && k > 1) {
-        firsts['say' + k] = 1;
-        log(a.name + ' made the sound “' + SAYN[k] + '” for the first time.');
+      if (typeof onCall === 'function') onCall(a, k, w);
+      if (k === 2 && !firsts.speak) {
+        firsts.speak = 1;
+        log(a.name + ' said something: “' + word + '”.');
+      }
+      if (k === 2 && st.who && st.who.size === 3 && st.n >= 10 && !st.shared) {
+        st.shared = 1;
+        if (!firsts.shared) {
+          firsts.shared = 1;
+          log('Three people now say “' + word + '”: the first word shared by a group.');
+        }
       }
     }
     const sleepy = a.sl;

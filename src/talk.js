@@ -3,15 +3,17 @@
 // Copyright (c) 2026 Malvika Sen. MIT License.
 //
 // Nothing here gives a sound a meaning. Two sounds are inborn in every human: a baby's cry and a scream
-// of pain. The other four mean nothing at first. If a meaning appears — say one sound comes to be used
-// when a predator is near, and those who hear it learn to run — it emerged from their own learning and
-// copying. The statistics below only watch when each sound is actually used, so that the page can say
-// honestly what (if anything) each sound has come to mean.
+// of pain. Everything else people say is made with their own mouths (voice.js) and means nothing at
+// first. If a meaning appears — say one word comes to be used when a predator is near, and those who
+// hear it learn to run — it emerged from their own learning and copying. The statistics below only
+// watch when each word is actually used and how hearers respond, so that the page can say honestly
+// what (if anything) a word has come to mean: the translator.
 
-const SAYN = ['waa', 'aah', 'ka', 'mo', 'ti', 'su'];
+const SAYN = ['waa', 'aah']; // the two inborn calls; words are spelled from how they were said
 let CALLS = [], // the calls made this step: { x, y, k, a }
   HEARD = [], // the calls made last step, which are being heard now
-  SNDSTAT = [], // for each sound: the situations it was used in, and how hearers responded
+  SNDSTAT = [], // for the cry and the scream: the situations they were used in, and how hearers responded
+  WSTAT = new Map(), // the same for every word ever said, by its spelling
   BASE = null, // the same situations, sampled from people at any moment, to compare against
   GENSTAT = []; // per generation of people: inherited brain size, learning and copying, lessons learned
 // ---------- sound, by the physics of air ----------
@@ -29,13 +31,10 @@ let CALLS = [], // the calls made this step: { x, y, k, a }
 // Simplified: a square is 3 km across, so two creatures in the same square are taken to be ~0.5 km
 // apart; footsteps and rustling are far too quiet to cross that.
 const SND = {
-  // people's six sounds: a baby's cry, a scream, and four learned calls at a shouting voice
+  // people: a baby's cry, a scream, and speech at a calling voice
   voice: [
     { L: 95, f: 500 },
     { L: 105, f: 1000 },
-    { L: 100, f: 1000 },
-    { L: 100, f: 1000 },
-    { L: 100, f: 1000 },
     { L: 100, f: 1000 },
   ],
   // animals: wolf howl (heard 6–10 km), lion's roar (up to ~8 km), deer's alarm snort (a few hundred m)
@@ -92,6 +91,7 @@ function initTalk() {
   HEARD = [];
   const blank = () => ({ n: 0, pred: 0, food: 0, kin: 0, alone: 0, hungry: 0, hurt: 0 });
   SNDSTAT = SAYN.map(() => Object.assign(blank(), { hear: 0, come: 0, flee: 0, answer: 0 }));
+  WSTAT = new Map();
   BASE = blank();
   GENSTAT = [];
 }
@@ -104,6 +104,7 @@ function passCalls() {
 // loudest sound of all, to see how the hearer responds to it.
 function hear(a, x) {
   a.heardK = -1;
+  a.heardW = null;
   let best = 0;
   const j = idx(a.x, a.y),
     floor = ambient(j) - (HEARBETTER[a.sp] || 0);
@@ -121,6 +122,13 @@ function hear(a, x) {
       x[o] = q;
       x[o + 1] = d ? dx / d : 0;
       x[o + 2] = d ? dy / d : 0;
+      // a word: what it sounded like, as clearly as it could be heard
+      if (c.k === 2 && a.sp === 0) {
+        const f = hearWord(c.w, c.p, q);
+        for (let i = 0; i < f.length; i++) x[SPEECH + i] = f[i];
+        a.heardW = heardAs(f); // what the listener took it to be
+        a.heardWord = c.word; // what was really said (for the statistics)
+      }
     }
     if (c.an !== undefined) continue; // animals' calls: heard, but not counted as speech
     if (q > best) {
@@ -179,7 +187,7 @@ const CTXN = {
   hurt: 'the caller is hurt',
 };
 function meaning(k) {
-  const S = SNDSTAT[k];
+  const S = typeof k === 'string' ? WSTAT.get(k) : SNDSTAT[k];
   if (!S || S.n < 25 || !BASE || BASE.n < 100) return null;
   let best = null,
     lift = 1.6;

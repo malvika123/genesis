@@ -231,7 +231,7 @@ function thoughtText(a) {
   let t = why.length
     ? cap(joinReasons(why.slice(0, 2).map(plainReason))) + ', so it ' + plainAct(a, m.act) + '. ' + sure
     : 'Nothing clear is guiding it yet, so it tries something: it ' + plainAct(a, m.act) + '.';
-  if (a.voice > 0 && a.saidT === tick) t += ' And it calls out “' + SAYN[a.voice - 1] + '”.';
+  if (a.voice > 0 && a.saidT === tick) t += a.voice === 3 ? ' And it says “' + a.word + '”.' : ' And it calls out “' + a.word + '”.';
   if (a.hunch && tick < a.hunch.until) t += ' A thought stays with it: “' + a.hunch.text + '”';
   return t;
 }
@@ -274,6 +274,7 @@ const more = (key, html) =>
 function thinkHTML(a, S) {
   // what matters at a glance: what it is thinking, what it feels, what it has learned
   let o = '<b>' + thoughtText(a) + '</b>';
+  o += translateHTML(a);
   o += '<br><br>Feels: ' + feelingsText(a, S);
   o += '<br>Has learned: ' + (a.les.length ? a.les.join('; ') : 'nothing yet');
   // the rest, one tap away
@@ -501,7 +502,7 @@ function doingText(a) {
         ? doingWord(a, m.act).replace(/^./, (c) => c.toUpperCase())
         : 'Looking around';
   const i = idx(a.x, a.y);
-  const call = a.voice > 0 && a.saidT === tick ? ', calling “' + SAYN[a.voice - 1] + '”' : '';
+  const call = a.voice > 0 && a.saidT === tick ? (a.voice === 3 ? ', saying “' : ', calling “') + a.word + '”' : '';
   return now + call + ', ' + placeOf(a) + (snowing(i) ? ', in the snow' : raining(i) ? ', in the rain' : '');
 }
 let tipTab = 'think';
@@ -964,7 +965,7 @@ function drawTalk(g, P, scale = 1) {
     if (a.sp !== 0 || a.saidT === undefined || tick - a.saidT > 1 || a.dead) continue;
     const Q = P(a);
     if (!Q) continue;
-    const t = SAYN[a.said] + (a.said === 1 ? '!' : a.said === 0 ? '…' : ''),
+    const t = (a.word || SAYN[a.said]) + (a.said === 1 ? '!' : a.said === 0 ? '…' : ''),
       fs = 11 * scale,
       x = Q[0],
       y = Q[1] - Q[2] - 9 * scale;
@@ -992,70 +993,72 @@ function drawTalk(g, P, scale = 1) {
 let listen = false,
   AC = null,
   lastVoice = 0;
-const VOWEL = { a: [800, 1200], o: [500, 900], i: [300, 2300], u: [350, 800] };
-function speak(a, k) {
+// The voice played back from the mouth that made it: a buzzing source (the vocal folds) shaped by the
+// vowel's two resonances (F1, F2 — the same numbers the listeners hear), with a burst of breath for a
+// p, t or k, a short voiced start for b, d or g. The cry and the scream are inborn sounds.
+function speak(a, k, w) {
   if (!listen) return;
   const now = performance.now();
   if (now - lastVoice < 120) return;
   lastVoice = now;
   try {
     AC = AC || new (window.AudioContext || window.webkitAudioContext)();
-    const t0 = AC.currentTime + 0.01,
-      young = a.age < a.S.mat,
+    const young = a.age < a.S.mat,
       f0 = young ? 330 : a.sex ? 210 : 125,
-      word = SAYN[k],
-      vowel = VOWEL[word[word.length - 1]] || VOWEL.a,
-      len = k === 0 ? 0.7 : k === 1 ? 0.5 : 0.28,
-      out = AC.createGain();
-    out.gain.setValueAtTime(0, t0);
-    out.gain.linearRampToValueAtTime(0.25, t0 + 0.03);
-    out.gain.setValueAtTime(0.25, t0 + len * 0.7);
-    out.gain.linearRampToValueAtTime(0, t0 + len);
-    out.connect(AC.destination);
-    // the voice: a buzzing source shaped by two resonances, like a throat and mouth
-    const src = AC.createOscillator();
-    src.type = 'sawtooth';
-    const p = k === 1 ? f0 * 3.2 : k === 0 ? f0 * 1.3 : f0;
-    src.frequency.setValueAtTime(p, t0);
-    if (k === 0) {
-      src.frequency.linearRampToValueAtTime(p * 1.25, t0 + len * 0.3);
-      src.frequency.linearRampToValueAtTime(p * 0.8, t0 + len);
-    } else src.frequency.linearRampToValueAtTime(p * 0.9, t0 + len);
-    for (const [f, q] of [
-      [vowel[0], 6],
-      [vowel[1], 9],
-    ]) {
-      const bp = AC.createBiquadFilter();
-      bp.type = 'bandpass';
-      bp.frequency.value = f;
-      bp.Q.value = q;
-      src.connect(bp).connect(out);
-    }
-    src.start(t0 + (word[0] === 'm' ? 0 : 0.05));
-    src.stop(t0 + len + 0.05);
-    // the consonant: a short burst of breath noise (k, t, s), or a hum (m)
-    const c = word[0];
-    if ('kts'.includes(c)) {
-      const n = AC.createBuffer(1, AC.sampleRate * 0.08, AC.sampleRate),
-        d = n.getChannelData(0);
-      for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
-      const ns = AC.createBufferSource(),
-        hp = AC.createBiquadFilter(),
-        ng = AC.createGain();
-      ns.buffer = n;
-      hp.type = 'highpass';
-      hp.frequency.value = c === 's' ? 4500 : c === 't' ? 2800 : 1500;
-      ng.gain.value = c === 's' ? 0.35 : 0.25;
-      ns.connect(hp).connect(ng).connect(AC.destination);
-      ns.start(t0);
-      ns.stop(t0 + (c === 's' ? 0.08 : 0.03));
+      syl = w || [[0, 1, k === 0 ? 2 : 2, 1, 0]],
+      sd = k === 0 ? 0.7 : k === 1 ? 0.5 : 0.2; // seconds per syllable
+    let t0 = AC.currentTime + 0.02;
+    for (const [o, v, h, b, r] of syl) {
+      const F1v = [300, 500, 750][h],
+        F2v = [2300, 1500, 900][b] - 250 * r,
+        out = AC.createGain(),
+        vs = o && !v ? 0.06 : 0; // a voiceless consonant: breath first, then the voice
+      out.gain.setValueAtTime(0, t0);
+      out.gain.linearRampToValueAtTime(0.25, t0 + vs + 0.03);
+      out.gain.setValueAtTime(0.25, t0 + sd * 0.75);
+      out.gain.linearRampToValueAtTime(0, t0 + sd);
+      out.connect(AC.destination);
+      const src = AC.createOscillator();
+      src.type = 'sawtooth';
+      const p = k === 1 ? f0 * 3.2 : k === 0 ? f0 * 1.3 : f0;
+      src.frequency.setValueAtTime(p, t0);
+      src.frequency.linearRampToValueAtTime(p * (k === 0 ? 0.8 : 0.92), t0 + sd);
+      for (const [f, q] of [
+        [F1v, 6],
+        [F2v, 9],
+      ]) {
+        const bp = AC.createBiquadFilter();
+        bp.type = 'bandpass';
+        bp.frequency.value = f;
+        bp.Q.value = q;
+        src.connect(bp).connect(out);
+      }
+      src.start(t0 + vs);
+      src.stop(t0 + sd + 0.03);
+      if (o) {
+        // the release of the closure: a burst of noise, lowest for the lips, highest for the tongue tip
+        const n = AC.createBuffer(1, AC.sampleRate * 0.05, AC.sampleRate),
+          d = n.getChannelData(0);
+        for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+        const ns = AC.createBufferSource(),
+          bp = AC.createBiquadFilter(),
+          ng = AC.createGain();
+        ns.buffer = n;
+        bp.type = 'bandpass';
+        bp.frequency.value = [0, 900, 4000, 2000][o];
+        ng.gain.value = v ? 0.12 : 0.3;
+        ns.connect(bp).connect(ng).connect(AC.destination);
+        ns.start(t0);
+        ns.stop(t0 + (v ? 0.02 : 0.05));
+      }
+      t0 += sd;
     }
   } catch (e) {}
 }
 // the world tells the page whenever someone calls; we hear the one we are watching and those near it
-function onCall(a, k) {
+function onCall(a, k, w) {
   if (!listen || !sel || sel.gone) return;
-  if (a === sel || Math.hypot(dxw(a.x - sel.x), a.y - sel.y) <= 2) speak(a, k);
+  if (a === sel || Math.hypot(dxw(a.x - sel.x), a.y - sel.y) <= 1) speak(a, k, w);
 }
 // Things lying on the ground, drawn when you are close enough to see them: stones, fallen sticks,
 // sharp flakes and nuts, scattered about each square. P(x, y) gives where a place is on screen.
@@ -1794,14 +1797,71 @@ function screenPos(a) {
 }
 
 const drawHud = { k: '' };
+// ---------- the translator ----------
+// Two honest ways to say what someone's words mean. From the speaker's own brain: which of the things it
+// sensed pushed it most toward speaking just then (the speak-or-stay-quiet choice traced back through
+// its network). And from how everyone uses the word: the situations it is said in, compared with how
+// often people are in them anyway, and what hearers tend to do. Neither ever makes up a meaning.
+function speakReasons(a) {
+  const H = a.h.length,
+    OVD = OVDof(H),
+    OVH = OVHof(H),
+    w = a.lw,
+    x = a.xl || a.xi,
+    h = a.h,
+    out = [];
+  for (let i = 0; i < NI; i++) {
+    if (!x[i]) continue;
+    let c = w[OVD + 3 * NI + i] - w[OVD + i]; // toward speaking rather than staying quiet
+    for (let j = 0; j < a.nh; j++) {
+      const wi = w[OI + j * NI + i];
+      if (wi) c += (w[OVH + 3 * H + j] - w[OVH + j]) * (1 - h[j] * h[j]) * wi;
+    }
+    c *= x[i];
+    const n = featName(i);
+    if (c > 0.05 && n && !/^the sound of the word/.test(n)) out.push([n, c]);
+  }
+  const seen = new Set();
+  return out
+    .sort((p, q) => q[1] - p[1])
+    .filter(([n]) => !seen.has(n) && seen.add(n))
+    .slice(0, 3)
+    .map(([n]) => n);
+}
+function meaningText(word) {
+  const S = WSTAT.get(word),
+    m = meaning(word);
+  if (!S || S.n < 25) return S && S.n > 1 ? 'Said ' + S.n + ' times so far: too few to tell what it means.' : 'Hardly ever said: no meaning yet.';
+  if (!m.best && !m.resp) return 'Said ' + S.n + ' times, in all kinds of situations: no meaning yet.';
+  let t = '';
+  if (m.best)
+    t += 'Said mostly when ' + CTXN[m.best.c] + ' (' + Math.round(100 * m.best.p) + '% of the time, against ' + Math.round(100 * m.best.q) + '% usually). ';
+  if (m.resp) t += m.resp[0].toUpperCase() + m.resp.slice(1) + '.';
+  return t;
+}
+function translateHTML(a) {
+  if (a.sp !== 0 || a.saidT === undefined || tick - a.saidT > 3 || a.said !== 2) return '';
+  const r = speakReasons(a);
+  return (
+    '<div class="tr"><b>Said “' + a.word + '”.</b> ' +
+    (r.length ? 'What pushed it to speak, in its brain: ' + r.join('; ') + '. ' : 'Nothing clear in its brain pushed it to speak: babbling, or trying out its voice. ') +
+    '<br><i>What “' + a.word + '” means, from how everyone uses it:</i> ' + meaningText(a.word) +
+    '</div>'
+  );
+}
 // What each sound has come to mean, worked out only from when it is really used
 function soundsHTML() {
+  const words = [...WSTAT.entries()].sort((p, q) => q[1].n - p[1].n).slice(0, 12);
   return (
+    '<p class="sub">' + WSTAT.size + ' different words have been said so far' +
+    (WSTAT.size ? ', ' + [...WSTAT.values()].filter((s) => s.who && s.who.size >= 3).length + ' of them by three or more people' : '') +
+    '. Meanings are worked out only from how words are really used.</p>' +
     '<table class="tbl"><tr><th>Sound</th><th>Used</th><th>What it seems to mean</th></tr>' +
-    SAYN.map((n, k) => {
-      const S = SNDSTAT[k],
-        m = meaning(k);
-      let t = k === 0 ? 'Inborn: a baby’s cry. ' : k === 1 ? 'Inborn: a scream of pain. ' : '';
+    SAYN.map((n, k) => [n, SNDSTAT[k], k])
+      .concat(words.map(([w, S]) => [w, S, w]))
+      .map(([n, S, k]) => {
+      const m = meaning(k);
+      let t = k === 0 ? 'Inborn: a baby’s cry. ' : k === 1 ? 'Inborn: a scream of pain. ' : S.who ? 'Said by ' + S.who.size + (S.who.size === 1 ? ' person. ' : ' people. ') : '';
       if (!S || S.n < 25) t += S && S.n ? 'Too few uses to tell yet.' : 'Not used yet.';
       else if (!m.best && !m.resp) t += 'No meaning yet: used in all kinds of situations.';
       else {

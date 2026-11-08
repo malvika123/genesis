@@ -4,6 +4,12 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **A human voice, and a translator.** The four fixed sounds are gone: each person has a simplified
+  vocal tract (closure place, voicing, tongue height and backness, lip rounding; one or two syllables),
+  so they can say over 20,000 words, none with any meaning. Listeners hear acoustic cues (burst, voicing,
+  F1/F2, pitch), blurred when faint. Inborn: cry, scream, babbling, vocal imitation. The translator
+  says what a word means from the speaker's brain and from how everyone uses it; the Stats tab lists
+  the words. Listen plays words from the same mouth positions. Experiment milestones: speak, shared.
 - **Sound by the physics of air, and animal calls.** Each call has a real loudness and pitch and fades
   with distance (6 dB per doubling), air absorption (by pitch and humidity), forest, wind, night and
   heat, and is heard only above the background (rain is loud). A shout now carries a couple of km (it

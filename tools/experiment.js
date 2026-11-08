@@ -49,10 +49,8 @@ const MILESTONES = [
   'rubfire', // makes fire with wood
   'share', // gives food to another
   'vicar', // someone is afraid after seeing another person hurt
-  'say2',
-  'say3',
-  'say4',
-  'say5', // the four learned sounds first used
+  'speak', // someone first says a word of its own making
+  'shared', // three people say the same word: the first shared word
 ];
 const CAUSES = [
   'hunger',

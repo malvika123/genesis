@@ -163,8 +163,6 @@ function forward(w, x, h, z, nh, rf = null, zv = null, rfv = null) {
   if (zv) {
     const OVD = OVDof(H),
       OVH = OVHof(H);
-    let m = -1e9,
-      t = 0;
     for (let v = 0; v < NV; v++) {
       let s = rfv ? rfv[v] : 0,
         o = OVD + v * NI;
@@ -172,10 +170,15 @@ function forward(w, x, h, z, nh, rf = null, zv = null, rfv = null) {
       o = OVH + v * H;
       for (let j = 0; j < nh; j++) s += w[o + j] * h[j];
       zv[v] = s;
-      if (s > m) m = s;
     }
-    for (let v = 0; v < NV; v++) t += zv[v] = Math.exp(zv[v] - m);
-    for (let v = 0; v < NV; v++) zv[v] /= t;
+    // each group of the voice's choices (speak or not; each part of the mouth) is its own choice
+    for (const [o, n] of VG) {
+      let gm = -1e9,
+        gt = 0;
+      for (let v = o; v < o + n; v++) if (zv[v] > gm) gm = zv[v];
+      for (let v = o; v < o + n; v++) gt += zv[v] = Math.exp(zv[v] - gm);
+      for (let v = o; v < o + n; v++) zv[v] /= gt;
+    }
   }
   return V;
 }
@@ -188,7 +191,7 @@ const RFV = new Float32Array(NV), // inborn pushes on the voice: a baby's cry, a
 
 // ---------- learning ----------
 // Eligibility traces: which connections were just used, so that what follows can be credited to them.
-function trace(a, act, voice = 0) {
+function trace(a, act, vc = null) {
   const gl = GAM * LAM,
     h = a.h,
     x = a.xi,
@@ -229,13 +232,16 @@ function trace(a, act, voice = 0) {
   const OVD = OVDof(H),
     OVH = OVHof(H),
     zv = a.zv;
-  for (let v = 0; v < NV; v++) {
-    const g = (v === voice ? 1 : 0) - zv[v];
-    let o = OVD + v * NI;
-    for (let i = 0; i < NI; i++) eP[o + i] = gl * eP[o + i] + g * x[i];
-    o = OVH + v * H;
-    for (let j = 0; j < nh; j++) eP[o + j] = gl * eP[o + j] + g * h[j];
-  }
+  VG.forEach(([o0, n], gi) => {
+    const c = vc ? vc[gi] : gi ? -1 : 0;
+    for (let v = o0; v < o0 + n; v++) {
+      const g = c < 0 ? 0 : (v - o0 === c ? 1 : 0) - zv[v];
+      let o = OVD + v * NI;
+      for (let i = 0; i < NI; i++) eP[o + i] = gl * eP[o + i] + g * x[i];
+      o = OVH + v * H;
+      for (let j = 0; j < nh; j++) eP[o + j] = gl * eP[o + j] + g * h[j];
+    }
+  });
 }
 // fade the traces without adding to them (when the body overrode its choice)
 function fadeTraces(a) {
@@ -365,7 +371,7 @@ function replay(a, rate) {
   a.learn += Math.abs(d) * rate;
   a.dream = m;
 }
-function imitate(a, act, rate, voice = -1) {
+function imitate(a, act, rate, vc = null) {
   const x = a.xi,
     h = a.h,
     z = a.z,
@@ -381,11 +387,24 @@ function imitate(a, act, rate, voice = -1) {
     for (let i = 0; i < NI; i++) w[o + i] += g * x[i];
   }
   // copying how others use their voice: this is how a sound's use can pass from parent to child
-  if (voice >= 0) {
+  if (vc) imitateVoice(a, vc, rate);
+  a.learn += rate;
+}
+// nudging the voice toward given choices (a heard word, or an elder's way of calling); act < 0: voice only
+function imitateVoice(a, vc, rate) {
+  const x = a.xi,
+    h = a.h,
+    w = a.lw,
+    H = h.length;
+  {
     const OVD = OVDof(H),
       OVH = OVHof(H);
     for (let v = 0; v < NV; v++) {
-      const g = rate * ((v === voice ? 1 : 0) - a.zv[v]);
+      let gi = 0;
+      while (gi < VG.length - 1 && v >= VG[gi + 1][0]) gi++;
+      const c = vc[gi];
+      if (c < 0) continue;
+      const g = rate * ((v - VG[gi][0] === c ? 1 : 0) - a.zv[v]);
       let o = OVD + v * NI;
       for (let i = 0; i < NI; i++) w[o + i] += g * x[i];
       o = OVH + v * H;
@@ -394,13 +413,20 @@ function imitate(a, act, rate, voice = -1) {
   }
   a.learn += rate;
 }
+// the voice's choices: whether to make a sound, and if it speaks, how the mouth moves for each part
 function sampleV(zv) {
-  let r = rnd();
-  for (let v = 0; v < NV; v++) {
-    r -= zv[v];
-    if (r <= 0) return v;
-  }
-  return 0;
+  const c = new Array(VG.length).fill(-1);
+  VG.forEach(([o, n], gi) => {
+    if (gi && c[0] !== 3) return;
+    let r = rnd(),
+      k = 0;
+    for (; k < n - 1; k++) {
+      r -= zv[o + k];
+      if (r <= 0) break;
+    }
+    c[gi] = k;
+  });
+  return c;
 }
 function sample(z) {
   let r = rnd();

@@ -1,5 +1,6 @@
 config
 state
+voice
 climate
 weather
 brain
