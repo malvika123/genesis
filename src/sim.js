@@ -383,7 +383,7 @@ function sim() {
               continue;
             seen[o.act]++;
             nseen++;
-            const dd = dx * dx + dy * dy + (o === a.mom ? -30 : 0) - 25 * pb * okay(o);
+            const dd = dx * dx + dy * dy + (o === a.mom ? -30 : 0) - 8 * pb * okay(o); // the successful are preferred among those close enough to watch well
             if (dd < bd) {
               bd = dd;
               tch = o;
@@ -393,13 +393,15 @@ function sim() {
       if (tch && tch.act !== A_SLEEP) {
         let ent = 0;
         for (let k = 0; k < NA; k++) if (a.z[k] > 1e-6) ent -= a.z[k] * Math.log(a.z[k]);
-        const unsure = SOC.pick ? ent / Math.log(NA) : 0.5,
+        const unsure = SOC.pick ? ent / Math.log(NA) : 0.85,
           rate =
             S.imit *
             (young ? 3 : 1) *
             (a.g.im ?? 1) *
             (1 - pb + 2 * pb * okay(tch)) *
-            (0.4 + 1.2 * unsure);
+            // most minds are fairly unsure most of the time (median 0.86 of the most unsure possible),
+            // so that is the usual amount of copying: more when lost, much less when it knows what it wants
+            clamp((unsure - 0.45) / 0.4, 0.2, 1.4);
         let maj = -1;
         for (let k = 0; k < NA; k++) if (seen[k] > nseen / 2 && nseen >= 3 && k !== A_SLEEP) maj = k;
         const cf = SOC.pick && maj >= 0 && maj !== tch.act ? (a.g.cf ?? 0.3) : 0;
