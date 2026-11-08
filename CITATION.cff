@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use Genesis in research, please cite it as below and state the version or commit you used."
+title: "Genesis: an autonomous world of learning creatures"
+abstract: "An open-source simulation of an Earth-like world in which creatures with their own neural networks learn by reinforcement, reproduce and evolve, with nothing about their behaviour scripted. Runs without a browser, is exactly repeatable from a seed, and includes an experiment runner."
+type: software
+authors:
+  - family-names: Sen
+    given-names: Malvika
+version: 0.7.0
+date-released: 2026-11-08
+license: MIT
+repository-code: "https://github.com/malvika123/genesis"
+url: "https://malvika123.github.io/genesis/"
+keywords:
+  - artificial life
+  - agent-based model
+  - reinforcement learning
+  - open-endedness
+  - early human behaviour

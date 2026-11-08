@@ -52,6 +52,25 @@ npm run worlds -- --json      # machine-readable results, e.g. for analysis in P
 npm run build                 # bundle everything into one file: dist/genesis.html
 ```
 
+## For researchers
+
+Genesis runs without a browser and is exactly repeatable, so it can be used as an experiment tool.
+
+```
+node tools/experiment.js --seeds 1-50 --days 90 --workers 4 --out run.csv
+```
+
+This runs 50 seeded worlds and writes one table: for each world, how many people were alive at the end,
+how many generations there were, why people died, and **the day each milestone first happened** (using a
+stone, digging roots, eating meat, hunting, keeping fire, making fire, sharing, sounds…). The top of the
+file records the version, commit, Node version and settings, so the run can be cited and repeated; the
+same command on the same commit gives the same file. A summary is printed as well.
+
+- **How the model works, with the real-world basis for each rule and what is simplified:** [docs/MODEL.md](docs/MODEL.md), written in the standard ODD format for agent-based models.
+- **What is and isn't validated:** section 8 of that document. In short: not yet checked against data. Compare many seeds, never one.
+- **Citing:** see [CITATION.cff](CITATION.cff) (GitHub shows a "Cite this repository" button) and say which version or commit you used. Changes are listed in [CHANGELOG.md](CHANGELOG.md).
+- Runs shorter than about 100 days seldom show a second generation: a person matures at 12 "years" of 3 days each.
+
 Worlds are seeded, so the same command always produces the same world — useful for comparing a change against what came before.
 
 The tests check that the world is reproducible, that creatures stay within their bodies' rules, that children and teenagers can never mate, that herbivores can graze, that loneliness needs someone to miss, that only strong habits are inherited (partly and by chance), that whispers are understood correctly, and that the mind readout matches the network.
