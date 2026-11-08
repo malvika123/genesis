@@ -6,7 +6,8 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 - **The food chain closes.** Bodies are eaten by insects and microbes at a pace set by warmth (most of a
   carcass gone in about three weeks of summer, nothing while frozen), and go bad on the same clock;
-  vultures strip carcasses by day on open warm ground. What rots enriches the soil, and grass there
+  carrion birds take what is left by day on open ground, waiting while a hunter or a person is at the
+  carcass (vultures where it is warm; slower ravens and eagles in cold lands). What rots enriches the soil, and grass there
   grows lusher for months; grazers' dung enriches the ground too. Flies and circling vultures are
   drawn over carcasses up close.
 - **Pair bonds instead of "last one mated with".** People and wolves form bonds that grow with time

@@ -114,6 +114,16 @@ function leaveBody(a, cause) {
 // 0 = fresh body … 1 = bare bones; gone after bones have lain a long time
 const BODY_BONES = 14 * 96,
   BODY_GONE = 120 * 96;
+// someone big enough to keep birds off is at the carcass (or right beside it), awake
+function guarded(b) {
+  if (typeof G === 'undefined' || !G) return false;
+  for (let dy = -1; dy <= 1; dy++)
+    for (let dx = -1; dx <= 1; dx++) {
+      const l = G[idx(wx(b.x + dx), clamp(b.y + dy, 0, H - 1))];
+      if (l) for (const o of l) if (!o.dead && !o.asleep && (o.sp === 2 || o.sp === 0)) return true;
+    }
+  return false;
+}
 function updateBodies() {
   if (tick % 96 === 0) BODIES = BODIES.filter((b) => tick - b.t < BODY_GONE);
   if (tick % 4) return; // once an hour is plenty
@@ -130,13 +140,17 @@ function updateBodies() {
       bugs = b.meat * (1 - Math.exp(-q * dt));
     b.rot = (b.rot || 0) + (T > 0 ? (T / 20) * (dt / 2) : 0); // 1: going bad (about two days at 20 °C)
     if (q > 0.03) b.flyT = tick;
-    // Carrion birds: by day, where the ground is open and warm enough for them to soar on rising air,
-    // vultures find a carcass within hours and strip it fast (in the Serengeti they eat more carrion
-    // than all the meat-eating mammals together: Houston 1979). Simplified: they are not creatures
-    // with minds here, only what they do.
+    // Carrion birds, as they behave on Earth (simplified: what they do, not creatures with minds):
+    //  · they search by day, soaring on rising warm air, so they find carcasses on open ground and within
+    //    a couple of hours, not under thick forest or at night;
+    //  · vultures live where it is warm (Africa, southern Europe and Asia); where the year is cold,
+    //    ravens and eagles take a smaller share, more slowly (Wilmers et al. 2003);
+    //  · they wait their turn: lions, hyenas and wolves feed first and drive them off, and people can
+    //    too, so while a meat-eater or a person is at the carcass the birds hold back.
     let birds = 0;
-    if (!b.w && !night && T > 8 && cover(i) < 0.5) {
-      birds = (b.meat - bugs) * (1 - Math.exp(-1.2 * dt));
+    if (!b.w && !night && T > 3 && cover(i) < 0.5 && tick - b.t > 8 && !guarded(b)) {
+      const vultures = meanTemp(i) > 8;
+      birds = (b.meat - bugs) * (1 - Math.exp(-(vultures ? 1.2 : 0.3) * dt));
       b.birdT = tick;
     }
     b.meat = Math.max(0, b.meat - bugs - birds);
