@@ -703,8 +703,12 @@ function sim() {
         mal.e -= 10;
         fem.cd = mal.cd = S.cd;
         a.rd = b.rd = false;
-        a.bonus[5] += 1;
-        b.bonus[5] += 1;
+        // one already strongly bonded feels less pull toward anyone else: in bonded men, oxytocin made
+        // them keep more distance from an attractive stranger (Scheele et al. 2012), and people in
+        // relationships rate others as less attractive. Less pull, not a rule: it can still happen.
+        const pull = (p, q) => (!p.mate || p.mate === q ? 1 : 1 - 0.7 * bondOf(p, p.mate));
+        a.bonus[5] += pull(a, b);
+        b.bonus[5] += pull(b, a);
         a.ev[5] = b.ev[5] = 'it mated on day ' + dn;
         if (a.sp === 0) {
           maxGen = Math.max(maxGen, g2);
