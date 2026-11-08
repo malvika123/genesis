@@ -643,7 +643,7 @@ function sim() {
       a.painA = Math.min(1, a.painA + 0.15);
       if (!firsts.brand) {
         firsts.brand = 1;
-        log(a.name + ' picked up a burning stick from a fire.');
+        log(a.name + ' grabbed a burning stick out of a fire, and was burned.');
       }
     } else if (act === A_TAKE && a.sp === 0 && !a.asleep) {
       if (pickUp(a)) {
@@ -660,10 +660,20 @@ function sim() {
       putDown(a);
       if (was === 4 && ignite(i, 0.12) && !firsts.setfire) {
         firsts.setfire = 1;
-        log(a.name + ' put a burning stick down, and fire took hold there.');
+        log(a.name + ' dropped a burning stick, and fire took hold where it fell.');
       } else if (was === 2 && burning && !firsts.fed) {
         firsts.fed = 1;
         log(a.name + ' dropped a stick onto a fire, and it burned on.');
+      }
+      // real control: one person feeding the same fire again and again over many hours
+      if (was === 2 && burning) {
+        if (!a.fedT0 || tick - a.fedLast > DAY / 2) (a.fedT0 = tick), (a.fedN = 0);
+        a.fedN++;
+        a.fedLast = tick;
+        if (a.fedN >= 6 && tick - a.fedT0 >= DAY / 4 && !firsts.kept) {
+          firsts.kept = 1;
+          log(a.name + ' kept a fire going for hours, feeding it again and again. Day ' + (((tick / DAY) | 0) + 1) + '.');
+        }
       }
     } else if (act === A_STRIKE && a.sp === 0 && a.hand && !a.asleep) {
       // What a blow does is up to the world, not the creature: a stone breaks a nut's shell; a stone
@@ -677,7 +687,7 @@ function sim() {
         a.brand = 8;
         if (!firsts.brand) {
           firsts.brand = 1;
-          log(a.name + ' held a stick in a fire until it caught.');
+          log(a.name + ' poked a stick into a fire and it caught, by accident, as far as anyone can tell.');
         }
       } else if (
         ((a.hand === 5 && stone[i] + flake[i] > 0) || ((a.hand === 1 || a.hand === 3) && pyrite[i])) &&
