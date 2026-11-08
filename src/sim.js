@@ -1061,7 +1061,7 @@ function fireMade(a, how) {
 //   · How much a person learns from others at all is inherited (gene im), so some are loners who learn
 //     only the hard way, as about one person in five does in experiments (Molleman et al. 2014).
 // What exactly it learns is left to its own brain.
-const SOC = { vic: true, pick: true },
+const SOC = { vic: true, pick: true, sound: true, calls: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {
@@ -1271,6 +1271,7 @@ function packMother(f) {
 // dawn to claim their ground; deer and bison snort an alarm when they see a hunter and are afraid.
 // Hearers are told nothing about what a call means; they hear only how loud it is and from where.
 function animalCalls(a, x, seeOwn) {
+  if (!SOC.calls) return;
   if (a.asleep || a.age < a.S.mat * 0.5) return;
   const dusk = isNightAt(a.x) || isNightAt(wx(a.x + 3)) || isNightAt(wx(a.x - 3)),
     heardHowl = x[ACALL] > 0.05;

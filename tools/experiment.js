@@ -11,6 +11,8 @@
 //   --people N --herbivores N --predators N --fish N    starting numbers             [8 20 6 24]
 //   --retina         the raw-vision experiment (no labelled senses)
 //   --no-vicar       people don't learn from seeing others hurt
+//   --old-sound      sound heard within 2.2 squares, fading evenly (no physics)
+//   --no-calls       animals make no calls
 //   --no-picky       people copy the nearest elder blindly (no success bias, crowd-following or uncertainty)
 //   --workers N      run seeds in parallel in N processes                            [1]
 //   --out FILE       write the CSV there (otherwise it is printed)
@@ -95,6 +97,8 @@ function settings(a) {
       retina: !!a.retina,
       vicar: !a['no-vicar'],
       pickyCopy: !a['no-picky'],
+      soundPhysics: !a['old-sound'],
+      animalCalls: !a['no-calls'],
     },
   };
 }

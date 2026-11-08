@@ -113,9 +113,9 @@ function hear(a, x) {
     const dx = dxw(c.x - a.x),
       dy = c.y - a.y,
       d = Math.hypot(dx, dy),
-      L = received(c, a.x, a.y);
-    if (L <= floor) continue;
-    const q = clamp((L - floor) / 30, 0.05, 1),
+      L = SOC.sound ? received(c, a.x, a.y) : 0;
+    if (SOC.sound ? L <= floor : d > 2.2) continue;
+    const q = SOC.sound ? clamp((L - floor) / 30, 0.05, 1) : 1 - d / 3.2,
       o = c.an !== undefined ? ACALL + c.an * 3 : HEAR + c.k * 3;
     if (q > x[o]) {
       x[o] = q;

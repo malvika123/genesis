@@ -14,6 +14,8 @@ function reset(cfg = {}) {
   // switches for experiments: learning from others' pain, and choosy copying (both on normally)
   SOC.vic = cfg.vicar !== false;
   SOC.pick = cfg.pickyCopy !== false;
+  SOC.sound = cfg.soundPhysics !== false; // off: the old rule (heard within 2.2 squares, fading evenly)
+  SOC.calls = cfg.animalCalls !== false;
   food = new Float32Array(W * H);
   ag = [];
   tick = 0;
