@@ -148,10 +148,13 @@ function updateBodies() {
     //  · they wait their turn: lions, hyenas and wolves feed first and drive them off, and people can
     //    too, so while a meat-eater or a person is at the carcass the birds hold back.
     let birds = 0;
-    if (!b.w && !night && T > 3 && cover(i) < 0.5 && tick - b.t > 8 && !guarded(b)) {
-      const vultures = meanTemp(i) > 8;
-      birds = (b.meat - bugs) * (1 - Math.exp(-(vultures ? 1.2 : 0.3) * dt));
-      b.birdT = tick;
+    if (!b.w && !night && T > 3 && cover(i) < 0.5 && tick - b.t > 8) {
+      b.vul = meanTemp(i) > 8; // vultures here, or ravens and eagles
+      if (guarded(b)) b.waitT = tick; // they gather and wait
+      else {
+        birds = (b.meat - bugs) * (1 - Math.exp(-(b.vul ? 1.2 : 0.3) * dt));
+        b.birdT = tick;
+      }
     }
     b.meat = Math.max(0, b.meat - bugs - birds);
     // what rots goes into the ground, most of it right there

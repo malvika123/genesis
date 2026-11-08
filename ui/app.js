@@ -578,6 +578,12 @@ function drawTerrain(g, v, relief = true) {
         g.globalAlpha = Math.min(0.85, food[i]);
         g.fillStyle = v('--plant');
         g.fillRect(x * C, y * C, C, C);
+        // richer soil (where something rotted, or herds left dung): a deeper green
+        if (soil[i] > 1.1) {
+          g.globalAlpha = Math.min(0.5, (soil[i] - 1) * 0.6);
+          g.fillStyle = '#1f5a1c';
+          g.fillRect(x * C, y * C, C, C);
+        }
         g.globalAlpha = 1;
         if (poison[i]) {
           g.fillStyle = '#c0263d';
@@ -1049,6 +1055,50 @@ function drawGroundItems(g, P) {
   }
   drawBodies(g, P);
 }
+// Carrion birds, seen from far off as people really found carcasses: circling high over a body, or
+// waiting on the ground nearby while a hunter or a person is at it. Vultures (big, brown) where it is
+// warm; ravens (small, black) in cold lands.
+function drawCarrion(g, P) {
+  const t = performance.now() / 1000;
+  for (const b of BODIES) {
+    if (!(b.meat > 0.03)) continue;
+    const circling = b.birdT && tick - b.birdT < 8,
+      waiting = b.waitT && tick - b.waitT < 8;
+    if (!circling && !waiting) continue;
+    const Q = P(b.x, b.y);
+    if (!Q) continue;
+    const u = clamp(Q[2] * 0.06, 2.5, 9) * (b.vul ? 1 : 0.65); // a bird's half-wingspan on screen
+    g.save();
+    g.translate(Q[0], Q[1]);
+    g.strokeStyle = g.fillStyle = b.vul ? '#3b2f25' : '#141414';
+    g.lineWidth = Math.max(1, u * 0.22);
+    g.lineCap = 'round';
+    if (circling)
+      for (let k = 0; k < 3; k++) {
+        const a = t * 0.5 + (k * 2 * Math.PI) / 3,
+          R = u * (3 + k * 0.8),
+          cx = Math.cos(a) * R,
+          cy = -u * 6 + Math.sin(a) * R * 0.35;
+        g.beginPath();
+        g.moveTo(cx - u, cy - u * 0.3);
+        g.quadraticCurveTo(cx - u * 0.4, cy - u * 0.55, cx, cy);
+        g.quadraticCurveTo(cx + u * 0.4, cy - u * 0.55, cx + u, cy - u * 0.3);
+        g.stroke();
+      }
+    if (waiting)
+      for (let k = 0; k < 4; k++) {
+        const x = (k - 1.5) * u * 1.6 + (k % 2 ? u : -u) * 0.6,
+          y = u * (k % 2 ? 1.6 : -1.4);
+        g.beginPath();
+        g.ellipse(x, y, u * 0.35, u * 0.5, 0, 0, 7); // hunched body
+        g.fill();
+        g.beginPath();
+        g.arc(x + u * 0.15, y - u * 0.55, u * 0.15, 0, 7); // head
+        g.fill();
+      }
+    g.restore();
+  }
+}
 // the dead: a still figure on the ground that darkens and shrinks, then bare bones
 function drawBodies(g, P) {
   for (const b of BODIES) {
@@ -1086,23 +1136,6 @@ function drawBodies(g, P) {
       for (let k = 0; k < 7; k++) {
         const a = t * (2 + k * 0.7) + k * 2.1;
         g.fillRect(Math.cos(a) * r * (1.2 + (k % 3) * 0.5), -r * 0.8 + Math.sin(a * 1.3) * r * 0.7, Math.max(1, r * 0.12), Math.max(1, r * 0.12));
-      }
-    }
-    // vultures: circling high above first, then down on the carcass
-    if (b.birdT && tick - b.birdT < 8 && b.meat > 0.03) {
-      g.strokeStyle = '#2a2622';
-      g.lineWidth = Math.max(1, r * 0.18);
-      for (let k = 0; k < 3; k++) {
-        const a = t * 0.6 + (k * 2 * Math.PI) / 3,
-          R = r * (4 + k),
-          cx = Math.cos(a) * R,
-          cy = -r * 6 + Math.sin(a) * R * 0.35,
-          w = r * 0.9;
-        g.beginPath();
-        g.moveTo(cx - w, cy - w * 0.3);
-        g.quadraticCurveTo(cx - w * 0.4, cy - w * 0.5, cx, cy);
-        g.quadraticCurveTo(cx + w * 0.4, cy - w * 0.5, cx + w, cy - w * 0.3);
-        g.stroke();
       }
     }
     g.restore();
@@ -1429,6 +1462,7 @@ function drawFlat(v) {
   for (const a of ag) drawCreature(cx, a, a.rx * C + C / 2, a.ry * C + C / 2, 1, v);
   drawWeatherFx(cx, (x, y) => [x * C + C / 2, y * C + C / 2, C], false);
   drawFire(cx, (x, y) => [x * C + C / 2, y * C + C / 2, C]);
+  drawCarrion(cx, (x, y) => [x * C + C / 2, y * C + C / 2, C * 12]);
   drawTrails(cx, (x, y) => [x * C + C / 2, y * C + C / 2, C]);
   drawTalk(cx, (a) => [a.rx * C + C / 2, a.ry * C + C / 2, 6], 0.6);
   // night is local: shade the half of the world where the sun is down
