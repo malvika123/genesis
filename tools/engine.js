@@ -28,7 +28,7 @@ return {
   watch: (a) => { sel = a; },
   state: () => ({ events, SIBS, firsts, deaths, ag, tick, logs, fished, kills, maxGen, nLessons, over, water, deep, food, pit, cave, poison, rock, salt, river }),
   items: () => ({ soil, rotten, bodies: BODIES, ROOT, meatAt, stone, stick, flake, nut, pyrite, lying, nutCap }),
-  talk: () => ({ SNDSTAT, BASE, GENSTAT, meaning, SAYN, HEARD, CALLS }),
+  talk: () => ({ received, absorb, SND, ambient, SNDSTAT, BASE, GENSTAT, meaning, SAYN, HEARD, CALLS }),
   fire: () => ({ FIRE, SMOL, BURNT, COOK, fireStats, BURNING, dryness, fuelOf, ignite, pyrite }),
   alt: () => alt,
   social: () => ({ ouch, watchOthers, imitate }),

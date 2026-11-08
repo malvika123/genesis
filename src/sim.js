@@ -458,13 +458,14 @@ function sim() {
         a.heardFrom.bonus[7] += 0.02;
       }
     }
+    if (a.sp === 1 || a.sp === 2) animalCalls(a, x, seeOwn);
     // making the sound
     if (voice > 0) {
       const k = voice - 1;
       a.said = k;
       a.saidT = tick;
       a.e -= 0.02;
-      CALLS.push({ x: a.x, y: a.y, k, a });
+      CALLS.push({ x: a.x, y: a.y, k, a, t: tick, L: SND.voice[k].L, f: SND.voice[k].f });
       tally(SNDSTAT[k], context(a));
       // calling out to others nearby eases loneliness a little (like grooming does for apes)
       if (seeOwn) a.bonus[7] += 0.03 * a.lo;
@@ -1262,4 +1263,30 @@ function packMother(f) {
     if (o !== f && o.k === f.k && o.sex && !o.dead && (o.preg || o.milk) && Math.abs(dxw(o.x - f.x)) <= 4 && Math.abs(o.y - f.y) <= 4)
       return true;
   return false;
+}
+
+// ---------- animals' calls ----------
+// Inborn, like a baby's cry: a wolf howls when it has lost sight of its pack, most of all at dusk and
+// at night, and others of its pack who hear it often join in (a chorus); lions roar at night and at
+// dawn to claim their ground; deer and bison snort an alarm when they see a hunter and are afraid.
+// Hearers are told nothing about what a call means; they hear only how loud it is and from where.
+function animalCalls(a, x, seeOwn) {
+  if (a.asleep || a.age < a.S.mat * 0.5) return;
+  const dusk = isNightAt(a.x) || isNightAt(wx(a.x + 3)) || isNightAt(wx(a.x - 3)),
+    heardHowl = x[ACALL] > 0.05;
+  let k = -1;
+  if (a.sp === 2 && a.S.pack) {
+    if ((!seeOwn && rnd() < (dusk ? 0.12 : 0.02)) || (heardHowl && seeOwn && rnd() < 0.3)) k = 0;
+  } else if (a.sp === 2 && a.k === KINDS.findIndex((q) => q.n === 'Big cat')) {
+    if (dusk && rnd() < 0.05) k = 1;
+  } else if (a.sp === 1 && a.fear > 0.4) {
+    let pred = 0;
+    for (let s = 0; s < 8; s++) pred = Math.max(pred, x[s * NCH + 5]);
+    if (pred > 0.2 && rnd() < 0.5) k = 2;
+  }
+  if (k < 0) return;
+  const s = SND.animal[k];
+  CALLS.push({ x: a.x, y: a.y, an: k, a, t: tick, L: s.L, f: s.f });
+  a.callT = tick;
+  a.callK = k;
 }

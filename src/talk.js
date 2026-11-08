@@ -14,7 +14,78 @@ let CALLS = [], // the calls made this step: { x, y, k, a }
   SNDSTAT = [], // for each sound: the situations it was used in, and how hearers responded
   BASE = null, // the same situations, sampled from people at any moment, to compare against
   GENSTAT = []; // per generation of people: inherited brain size, learning and copying, lessons learned
-const HEARR = 2.2; // how far a call carries, in squares
+// ---------- sound, by the physics of air ----------
+// Every call has a loudness where it is made (dB at 1 m) and a pitch. On its way it fades:
+//   · spreading out in all directions: 6 dB weaker each time the distance doubles;
+//   · absorbed by the air, far more for high pitches than low ones, and more in dry air (at 20 °C, a
+//     low 125 Hz roar loses about 0.5–0.8 dB per km, a 1 kHz voice 5–14 dB per km);
+//   · muffled by leaves where the path runs through forest (a few dB per 100 m, at most ~200 m of it);
+//   · carried by the wind: farther downwind, much less upwind (refraction);
+//   · carried farther on still nights, when cool air near the ground bends sound back down, and less
+//     far across hot ground by day, when it bends up and away.
+// It is heard if it is still louder than the background (quiet wild country ~25 dB; rain much louder),
+// helped by the hearer's own ears. Sound travels at about 343 m/s (331 + 0.6 × °C), so even 10 km takes
+// under half a minute — far less than one 15-minute step: it is heard in the same step.
+// Simplified: a square is 3 km across, so two creatures in the same square are taken to be ~0.5 km
+// apart; footsteps and rustling are far too quiet to cross that.
+const SND = {
+  // people's six sounds: a baby's cry, a scream, and four learned calls at a shouting voice
+  voice: [
+    { L: 95, f: 500 },
+    { L: 105, f: 1000 },
+    { L: 100, f: 1000 },
+    { L: 100, f: 1000 },
+    { L: 100, f: 1000 },
+    { L: 100, f: 1000 },
+  ],
+  // animals: wolf howl (heard 6–10 km), lion's roar (up to ~8 km), deer's alarm snort (a few hundred m)
+  animal: [
+    { L: 112, f: 300, n: 'howl' },
+    { L: 106, f: 125, n: 'roar' },
+    { L: 85, f: 1500, n: 'alarm snort' },
+  ],
+};
+// absorption in air, dB per km, by pitch, between dry (10%) and moist (50%) air at 20 °C
+function absorb(f, rh) {
+  const F = [62.5, 125, 250, 500, 1000, 2000, 4000],
+    D = [0.37, 0.775, 1.58, 4.25, 14.1, 45.3, 109],
+    M = [0.123, 0.445, 1.32, 2.73, 4.66, 9.86, 29.4];
+  let k = 0;
+  while (k < F.length - 2 && f > F[k + 1]) k++;
+  const u = clamp(Math.log(f / F[k]) / Math.log(F[k + 1] / F[k]), 0, 1),
+    dry = D[k] + (D[k + 1] - D[k]) * u,
+    moist = M[k] + (M[k + 1] - M[k]) * u,
+    w = clamp((rh - 0.1) / 0.4, 0, 1);
+  return dry + (moist - dry) * w;
+}
+const HEARBETTER = [0, 4, 5, 0]; // how much fainter a sound each role's ears can pick out than people's
+// how loud (dB) a call made at (x, y) is when it reaches a listener at (lx, ly)
+function received(c, lx, ly) {
+  const dx = dxw(lx - c.x) * 3,
+    dy = (ly - c.y) * 3, // km
+    d = Math.max(0.5, Math.hypot(dx, dy)),
+    i = idx(c.x, c.y),
+    j = idx(lx, ly),
+    T = cellTemp(i, isNightAt(c.x)),
+    rh = typeof HUM !== 'undefined' && HUM ? clamp(HUM[i] / capacity(cellT(i)), 0.05, 1) : 0.5;
+  let L = c.L - 20 * Math.log10(d * 1000) - absorb(c.f, rh) * d;
+  // leaves in the way
+  const leaf = (cover(i) + cover(j)) / 2;
+  L -= leaf * Math.min(200, d * 1000) * (c.f < 400 ? 0.03 : 0.05);
+  // wind: along the wind it carries, against it it fades
+  if (d > 1) {
+    const [wu, wv] = windAt(c.y),
+      ws = Math.hypot(wu, wv) || 1,
+      along = (dx * wu + dy * wv) / (d * ws); // +1 downwind, -1 upwind
+    L += along > 0 ? 4 * along : 10 * along;
+    // still nights carry sound; hot days bend it up and away
+    if (isNightAt(c.x)) L += 5;
+    else if (T > 25) L -= 5;
+  }
+  return L;
+}
+// background noise where the listener is: quiet wild country, louder in rain
+const ambient = (j) => 25 + (RAIN[j] > 0.002 ? 15 : 0);
 const CTX = ['pred', 'food', 'kin', 'alone', 'hungry', 'hurt'];
 function initTalk() {
   CALLS = [];
@@ -34,19 +105,24 @@ function passCalls() {
 function hear(a, x) {
   a.heardK = -1;
   let best = 0;
+  const j = idx(a.x, a.y),
+    floor = ambient(j) - (HEARBETTER[a.sp] || 0);
   for (const c of HEARD) {
     if (c.a === a) continue;
+    if (Math.abs(dxw(c.x - a.x)) > 5 || Math.abs(c.y - a.y) > 5) continue; // nothing carries 15 km
     const dx = dxw(c.x - a.x),
       dy = c.y - a.y,
-      d = Math.hypot(dx, dy);
-    if (d > HEARR) continue;
-    const q = 1 - d / (HEARR + 1),
-      o = HEAR + c.k * 3;
+      d = Math.hypot(dx, dy),
+      L = received(c, a.x, a.y);
+    if (L <= floor) continue;
+    const q = clamp((L - floor) / 30, 0.05, 1),
+      o = c.an !== undefined ? ACALL + c.an * 3 : HEAR + c.k * 3;
     if (q > x[o]) {
       x[o] = q;
       x[o + 1] = d ? dx / d : 0;
       x[o + 2] = d ? dy / d : 0;
     }
+    if (c.an !== undefined) continue; // animals' calls: heard, but not counted as speech
     if (q > best) {
       best = q;
       a.heardK = c.k;

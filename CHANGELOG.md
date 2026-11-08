@@ -4,6 +4,12 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Sound by the physics of air, and animal calls.** Each call has a real loudness and pitch and fades
+  with distance (6 dB per doubling), air absorption (by pitch and humidity), forest, wind, night and
+  heat, and is heard only above the background (rain is loud). A shout now carries a couple of km (it
+  used to reach 6–7 km); a howl 6–10 km; a roar up to ~8 km. Wolves howl when they've lost their pack
+  and join each other's howls; big cats roar at night; deer and bison snort an alarm at a hunter.
+  Animals hear fainter sounds than people. Calls show as rings spreading at the real speed of sound.
 - Carrion birds no longer pop out of nowhere: they glide in from far off, spiral down, feed on the
   carcass (or wait nearby), and fly away the way they came when the meat is gone or night falls.
   Carcasses now show on the flat map too.

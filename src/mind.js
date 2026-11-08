@@ -78,6 +78,8 @@ INNER[FOODIN - IB] = 'the leaves of a root plant underfoot';
 INNER[FOODIN + 1 - IB] = 'a dead body with meat on it';
 for (let k = 0; k < NSAY; k++)
   for (let q = 0; q < 3; q++) INNER[HEAR - IB + 3 * k + q] = 'hearing “' + SAYN[k] + '”';
+for (let k = 0; k < NAC; k++)
+  for (let q = 0; q < 3; q++) INNER[ACALL - IB + 3 * k + q] = 'hearing a ' + ['howl', 'roar', 'snort of alarm'][k];
 function featName(i) {
   if (i < NS) return CHN[i % NCH] + ' to the ' + CP[(i / NCH) | 0];
   if (i < IB) return BODY[i - HB];

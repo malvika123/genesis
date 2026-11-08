@@ -599,6 +599,7 @@ const G3D = { ok: false };
     if (!GL.eye) drawWeatherFx(cx, project, GL.zoom >= 2.5);
     drawFire(cx, project);
     if (GL.zoom >= 2.5 || GL.eye) drawCarrion(cx, project);
+    if (GL.zoom >= 2.5 || GL.eye) drawSounds(cx, project);
     drawTrails(cx, project);
     if (GL.zoom >= 5 || GL.eye) drawGroundItems(cx, project);
     drawTalk(

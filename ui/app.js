@@ -912,6 +912,51 @@ function drawFire(g, P) {
 }
 // What people say, drawn as a small speech mark over their heads for a moment after they call.
 // P(a) gives [x, y of the feet, how tall it looks] on the canvas, or null.
+// Sound you can see: each call spreads out as a faint ring at the real speed of sound (about 343 m/s,
+// faster in warm air), fading as it weakens, out to about where it can no longer be heard. At real-time
+// speed a howl takes half a minute to cross 10 km; sped up, a ring flashes out in a blink. Animals'
+// calls get a small word too (howl, roar, snort).
+const RING_KM = { voice: 2.5, 0: 9, 1: 8, 2: 1 };
+function drawSounds(g, P) {
+  const now = worldT();
+  for (const c of [...HEARD, ...CALLS]) {
+    if (c.t === undefined) continue;
+    const Q = P(c.x, c.y);
+    if (!Q) continue;
+    const T = cellT(idx(c.x, c.y)),
+      secs = (now - c.t) * STEP_S,
+      km = ((331.3 + 0.606 * T) * secs) / 1000,
+      maxKm = c.an !== undefined ? RING_KM[c.an] : RING_KM.voice;
+    if (km > maxKm || km <= 0) continue;
+    const r = (km / 3) * Q[2],
+      f = 1 - km / maxKm;
+    g.globalAlpha = 0.45 * f;
+    g.strokeStyle = c.an === undefined ? '#fff6d8' : c.an === 2 ? '#ffe2a8' : '#f4f0ff';
+    g.lineWidth = Math.max(1, Q[2] * 0.04);
+    g.beginPath();
+    g.arc(Q[0], Q[1], r, 0, 7);
+    g.stroke();
+  }
+  g.globalAlpha = 1;
+  // a word for the animal's call, while it is calling
+  g.textAlign = 'center';
+  g.textBaseline = 'middle';
+  for (const c of CALLS.concat(HEARD)) {
+    if (c.an === undefined || !c.a || c.a.dead) continue;
+    const Q = P(c.a.rx ?? c.x, c.a.ry ?? c.y);
+    if (!Q) continue;
+    const fs = clamp(Q[2] * 0.6, 9, 13);
+    g.font = 'italic 600 ' + fs + 'px system-ui, sans-serif';
+    g.globalAlpha = c.t === tick ? 0.9 : 0.45;
+    g.fillStyle = '#fffdf6';
+    g.strokeStyle = 'rgba(0,0,0,.55)';
+    g.lineWidth = 3;
+    const w = ['awoooo', 'ROAR', 'snort!'][c.an];
+    g.strokeText(w, Q[0], Q[1] - Q[2] - fs);
+    g.fillText(w, Q[0], Q[1] - Q[2] - fs);
+  }
+  g.globalAlpha = 1;
+}
 function drawTalk(g, P, scale = 1) {
   g.textAlign = 'center';
   g.textBaseline = 'middle';
@@ -1519,6 +1564,7 @@ function drawFlat(v) {
   drawFire(cx, (x, y) => [x * C + C / 2, y * C + C / 2, C]);
   drawBodies(cx, (x, y) => [x * C + C / 2, y * C + C / 2, 30]);
   drawCarrion(cx, (x, y) => [x * C + C / 2, y * C + C / 2, C * 12]);
+  drawSounds(cx, (x, y) => [x * C + C / 2, y * C + C / 2, C]);
   drawTrails(cx, (x, y) => [x * C + C / 2, y * C + C / 2, C]);
   drawTalk(cx, (a) => [a.rx * C + C / 2, a.ry * C + C / 2, 6], 0.6);
   // night is local: shade the half of the world where the sun is down
