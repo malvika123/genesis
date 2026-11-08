@@ -60,6 +60,7 @@ const CAUSES = [
   'its wounds',
   'old age',
   'struck by lightning',
+  'giving birth',
 ];
 
 function parse(argv) {

@@ -348,6 +348,17 @@ function doingHTML(a, S, stage, night) {
       '%' +
       (a.made ? ' · has made fire ' + a.made + ' times' : '') +
       (a.fTeach ? ' · watched ' + a.fTeach : '');
+  if (a.preg) {
+    const left = (a.preg.due - tick) / DAY,
+      along = 1 - (a.preg.due - tick) / Math.max(1, a.S.gest);
+    o +=
+      '<br>Pregnant' +
+      (a.preg.young.length > 1 ? ' with ' + a.preg.young.length : '') +
+      ': ' +
+      Math.round(100 * along) +
+      '% of the way, due in about ' +
+      (left < 1 ? Math.max(1, Math.round(left * 24)) + ' hours' : left.toFixed(1) + ' days');
+  }
   if (a.sp === 0) o += '<br>' + learnerText(a);
   o += '<br>Nearby: ' + (around.length ? around.join(', ') : 'no one in sight');
   o += '<br>' + seesText(a);

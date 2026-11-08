@@ -73,7 +73,8 @@ const SP = [
     smat: 16 * TY,
     circ: 1,
     life: 120 * TY,
-    cd: 3 * TY,
+    cd: 2.25 * TY, // after a birth: nursing (with a pregnancy of 0.75 years, births come about three years apart, as among foragers)
+    gest: 0.75 * TY, // nine months
     lit: [1, 1],
     wn: 0.25,
     cap: 120,
@@ -104,7 +105,8 @@ const SP = [
     smat: 1.5 * TY,
     circ: 0.4,
     life: 12 * TY,
-    cd: TY,
+    cd: 0.45 * TY,
+    gest: 0.55 * TY,
     lit: [3, 6],
     wn: 0.33,
     cap: 160,
@@ -135,7 +137,8 @@ const SP = [
     smat: 4 * TY,
     circ: -0.6,
     life: 18 * TY,
-    cd: 1.5 * TY,
+    cd: 1.3 * TY,
+    gest: 0.17 * TY, // about two months
     lit: [1, 4],
     wn: 0.4,
     cap: 24,
@@ -167,6 +170,7 @@ const SP = [
     circ: 0,
     life: 4 * TY,
     cd: 0.6 * TY,
+    gest: 0.01 * TY, // eggs hatch within days
     lit: [4, 10],
     wn: 0.2,
     cap: 140,
@@ -215,6 +219,7 @@ const KINDS = [
     smat: 0.5 * TY,
     life: 6 * TY,
     cd: 0.5 * TY,
+    gest: 0.08 * TY, // about a month
     cold: -18,
     hot: 28,
     walk: 0.08,
@@ -233,7 +238,8 @@ const KINDS = [
     mat: 3 * TY,
     smat: 3 * TY,
     life: 20 * TY,
-    cd: 1.5 * TY,
+    cd: 0.72 * TY,
+    gest: 0.78 * TY, // about nine and a half months
     dW: 4,
     cold: -30,
     walk: 0.05,
@@ -267,6 +273,7 @@ const KINDS = [
     mat: 3 * TY,
     smat: 3 * TY,
     life: 15 * TY,
+    gest: 0.3 * TY, // about 110 days
     cold: 2,
     hot: 38, // big cats of warm lands bear heat well
     walk: 0.1,
@@ -284,6 +291,7 @@ const KINDS = [
     mat: 4 * TY,
     smat: 5 * TY,
     life: 25 * TY,
+    gest: 0.6 * TY, // about seven months, born in the winter den
     cold: -35,
     hot: 25,
     omni: 1,

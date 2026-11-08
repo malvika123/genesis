@@ -34,6 +34,7 @@ function sim() {
       !a.asleep &&
       a.age >= S.smat &&
       a.cd === 0 &&
+      !a.preg &&
       a.e > (a.sp === 2 ? 25 : 45) &&
       a.w > 40 &&
       a.age < a.lf * S.fert;
@@ -67,8 +68,9 @@ function sim() {
     const S = a.S,
       night = isNightAt(a.x);
     a.age++;
-    a.cd = Math.max(0, a.cd - 1);
+    if (!a.preg) a.cd = Math.max(0, a.cd - 1);
     a.kcd = Math.max(0, a.kcd - 1);
+    if (a.preg) pregnancy(a, kids);
     if (tick % DAY === 0) a.fd = 0;
     const young = a.age < S.mat,
       baby = a.age < S.mat * S.wn,
@@ -683,27 +685,20 @@ function sim() {
           n = a.sp === 0 ? 1 + (rnd() < 0.02) : S.lit[0] + ((rnd() * (S.lit[1] - S.lit[0] + 1)) | 0),
           inh = true,
           g2 = Math.max(a.gen, b.gen) + 1;
-        for (let q = 0; q < n && popK[a.k] + kidsOf(a.k) < S.cap; q++) {
-          const c = mk(a.sp, fem.x, fem.y, rnd() < 0.5 ? 1 : 0, child(fem, mal, inh), g2, 0, fem.k);
-          c.bond = 0.6;
-          c.metAny = true;
-          c.e = 60;
-          c.w = 100;
-          c.mom = fem;
-          c.dad = mal; // recorded for science (who the father is); nobody in the world is told
-          fem.kid = c;
-          if (S.pair) mal.kid = c; // fathers of pair-bonding kinds help raise the young; others leave
-          countSibs(a.sp, fem, mal);
-          kids.push(c);
-          if (a.sp === 0) log((c.name || 'A baby') + ' was born to ' + (fem.name || 'a mother') + '.');
-        }
+        // she conceives: the young grow inside her for as long as the real animal carries them (see
+        // gest), and are born then, wherever she is (see giveBirth)
+        const room = Math.max(0, S.cap - popK[a.k] - kidsOf(a.k) - expecting(a.k)),
+          gl = [];
+        for (let q = 0; q < Math.min(n, room); q++) gl.push({ sex: rnd() < 0.5 ? 1 : 0, g: child(fem, mal, inh) });
+        if (gl.length) fem.preg = { due: tick + Math.max(1, Math.round(S.gest)), dad: mal, gen: g2, young: gl, cost: 10 + 12 * gl.length };
         if (S.pair) {
           addBond(fem, mal, 0.3);
           addBond(mal, fem, 0.3);
         }
-        fem.e -= 10 + 12 * n;
         mal.e -= 10;
-        fem.cd = mal.cd = S.cd;
+        // he can mate again soon; she will not be ready again until after the birth and nursing
+        mal.cd = Math.round(0.1 * TY);
+        fem.cd = S.cd;
         a.rd = b.rd = false;
         // one already strongly bonded feels less pull toward anyone else: in bonded men, oxytocin made
         // them keep more distance from an attractive stranger (Scheele et al. 2012), and people in
@@ -1198,4 +1193,55 @@ function countSibs(sp, fem, mal) {
   s.pairs += n;
   s.full += fem.dads.get(mal.id) || 0;
   fem.dads.set(mal.id, (fem.dads.get(mal.id) || 0) + 1);
+}
+
+// ---------- pregnancy and birth ----------
+// Young are not made in a moment. After conceiving, a mother carries them for as long as the real
+// animal does (S.gest: about nine months for people, two for wolves, a month for rabbits; a year here
+// is three days, so a person's pregnancy lasts a little over two days). Carrying them costs her energy
+// day by day. If she starves, she can lose the pregnancy. Then she gives birth where she is — it hurts —
+// and for people, as in every society before modern medicine, about one birth in a hundred costs the
+// mother her life. Nursing follows: she is not ready to conceive again for a while (S.cd after birth).
+function expecting(k) {
+  let n = 0;
+  for (const a of ag) if (a.preg && a.k === k && !a.dead) n += a.preg.young.length;
+  return n;
+}
+function pregnancy(a, kids) {
+  const P = a.preg,
+    S = a.S;
+  a.e -= P.cost / Math.max(1, S.gest); // the cost of growing them, spread over the pregnancy
+  if (a.e < 3) {
+    a.preg = null;
+    a.cd = Math.round(0.2 * TY);
+    if (a.sp === 0) log(a.name + ' lost her pregnancy; she was starving.');
+    return;
+  }
+  if (tick < P.due) return;
+  a.preg = null;
+  for (const y of P.young) {
+    const c = mk(a.sp, a.x, a.y, y.sex, y.g, P.gen, 0, a.k);
+    c.bond = 0.6;
+    c.metAny = true;
+    c.e = 60;
+    c.w = 100;
+    c.mom = a;
+    c.dad = P.dad; // recorded for science (who the father is); nobody in the world is told
+    a.kid = c;
+    // fathers of pair-bonding kinds help raise the young (if he is still her partner); others leave
+    if (S.pair && P.dad && !P.dad.gone && P.dad.mate === a) P.dad.kid = c;
+    countSibs(a.sp, a, P.dad);
+    kids.push(c);
+    if (a.sp === 0) log((c.name || 'A baby') + ' was born to ' + (a.name || 'a mother') + '.');
+  }
+  if (a.sp !== 3) {
+    a.painA = Math.min(1, a.painA + (a.sp === 0 ? 0.6 : 0.3)); // labour hurts
+    a.e -= 5;
+  }
+  a.cd = S.cd; // nursing: not ready to conceive again for a while
+  a.ev[7] = 'it gave birth on day ' + dayN();
+  if (a.sp === 0 && rnd() < 0.01) {
+    a.dead = true;
+    a.cause = 'giving birth';
+  }
 }

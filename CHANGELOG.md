@@ -4,6 +4,12 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Pregnancy.** Mating no longer makes a baby on the spot. A mother carries her young for the real
+  animal's gestation (people nine months, bison nine and a half, bears seven, deer about six and a half,
+  big cats nearly four, wolves two, rabbits one; fish eggs hatch in days), paying its energy cost day by
+  day; starving, she can lose it. Birth hurts, and about one human birth in a hundred costs the mother's
+  life. Nursing follows before she can conceive again; fathers can mate again soon. The panel shows how
+  far along a pregnancy is.
 - **The food chain closes.** Bodies are eaten by insects and microbes at a pace set by warmth (most of a
   carcass gone in about three weeks of summer, nothing while frozen), and go bad on the same clock;
   carrion birds take what is left by day on open ground, waiting while a hunter or a person is at the
