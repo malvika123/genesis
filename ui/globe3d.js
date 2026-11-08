@@ -144,12 +144,16 @@ const G3D = { ok: false };
       nl = 0,
       seed = 12345;
     const r01 = () => (seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff;
+    // each square's trees come from that square's own numbers, so when a forest grows or thins in one
+    // place the trees everywhere else stay exactly where they stood (they used to all shift together)
     for (let i = 0; i < W * H && np < MAXT && nl < MAXT; i++) {
       const t = tree[i];
       if (t < 0.2 || water[i]) continue;
       const n = t > 0.65 ? 6 : t > 0.4 ? 4 : 2,
         x = i % W,
         y = (i / W) | 0;
+      seed = (i * 2654435761 + 977) & 0x7fffffff;
+      r01();
       for (let k = 0; k < n; k++) {
         const gx = x + 0.15 + 0.7 * r01(),
           gy = y + 0.15 + 0.7 * r01(),
@@ -548,10 +552,12 @@ const G3D = { ok: false };
     spinStep();
     // gently follow a creature you asked to see
     if (GL.follow && GL.follow === sel && !GL.follow.gone && !GL.held) {
-      let dl = lonOfX(sel.x) - GL.lon0;
+      // follow where it is drawn (its smooth walk), not the square it has just stepped into, so the
+      // land doesn't lurch a whole square past you every time it crosses into the next one
+      let dl = lonOfX(sel.rx) - GL.lon0;
       dl = Math.atan2(Math.sin(dl), Math.cos(dl));
       GL.lon0 += dl * 0.08;
-      GL.lat0 += (latOfY(sel.y) - GL.lat0) * 0.08;
+      GL.lat0 += (latOfY(sel.ry) - GL.lat0) * 0.08;
       GL.vel = 0;
     }
     aim();

@@ -4,6 +4,10 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- Trees on the globe stay where they grew: each square's trees are placed from that square's own
+  numbers, so a forest growing or thinning in one place no longer makes trees everywhere jump. When
+  the view follows a creature it follows its smooth walk, so the land no longer lurches a whole square
+  past you (making everyone standing still seem to slide) each time it steps into the next square.
 - Movement on screen now follows the body: a sleeper lies still on its spot instead of sliding; legs
   step with the ground actually covered, so feet don't skate; arms (striking, hands in the eye view)
   keep the same pace as the legs at every speed and stop when the world is paused; looking through a
