@@ -11,8 +11,12 @@
 // thing at a time; the nut meat is eaten the moment the shell is broken.
 
 // Bodies of the dead. A body does not vanish: it lies where it fell, then wastes to bare bones over a
-// couple of weeks (simplified: no scavengers or insects here yet), and the bones lie for a long time.
+// couple of weeks (hunters, bears and people may eat its meat; no insects or vultures yet), and the bones lie for a long time.
 let BODIES = [];
+// Roots and tubers: starchy food stored underground by many wild plants, most of all in grassland and
+// open woodland with a dry season. A staple of early humans — but hidden, and hard to dig out with
+// bare hands; a stick makes it much easier, as the Hadza still dig them today.
+let ROOT;
 let stone, // loose stones on the ground, a few in each cell
   stick, // fallen branches
   flake, // stones with a sharp edge
@@ -22,6 +26,7 @@ const HAND = ['nothing', 'a stone', 'a stick', 'a sharp stone', 'a burning stick
 
 function initItems() {
   BODIES = [];
+  ROOT = new Float32Array(W * H);
   const n = W * H;
   stone = new Uint8Array(n);
   stick = new Uint8Array(n);
@@ -44,6 +49,7 @@ function initItems() {
     // fallen branches under the trees
     if (tree[i] > 0.2 && rnd() < tree[i] * 0.5) stick[i] = 1 + (rnd() < 0.4);
     nut[i] = nutCap(i) * rnd();
+    ROOT[i] = rootCap(i) * (0.5 + 0.5 * rnd());
     // pyrite is rare, and found in rocky, hilly ground
     if (alt[i] > 0.6 && ter[i] === 2 && rnd() < 0.05) pyrite[i] = 1;
   }
@@ -56,9 +62,16 @@ function nutCap(i) {
   return tree[i] < 0.25 || water[i] ? 0 : tree[i] * (k === 2 ? 0.7 : k === 1 ? 0.35 : k === 3 ? 0.4 : 0);
 }
 
+const rootCap = (i) =>
+  water[i] || rock[i] || cellT(i) < -5 ? 0 : ter[i] === 1 ? 0.12 : 0.5 * (1 - 0.7 * Math.min(1, tree[i]));
 function updateItems() {
   const n = W * H;
   for (let i = 0; i < n; i++) {
+    // roots grow back slowly in the growing season
+    if (tick % 4 === 0) {
+      const rc = rootCap(i);
+      ROOT[i] = Math.min(rc, ROOT[i] + 0.0016 * rc * Math.max(0, growthAt(i)));
+    }
     const c = nutCap(i);
     if (!c) {
       nut[i] = 0;
@@ -74,7 +87,20 @@ function updateItems() {
 
 function leaveBody(a, cause) {
   if (a.sp === 3) return; // fish: not drawn lying about (they sink)
-  BODIES.push({ x: a.x, y: a.y, sp: a.sp, name: a.name || a.S.n, t: tick, cause, size: a.S.size || 1, w: !!water[idx(a.x, a.y)] });
+  const sz = a.S.size || 1,
+    young = a.age < a.S.mat ? 0.4 : 1;
+  BODIES.push({
+    x: a.x,
+    y: a.y,
+    sp: a.sp,
+    name: a.name || a.S.n,
+    t: tick,
+    cause,
+    size: sz,
+    w: !!water[idx(a.x, a.y)],
+    // meat on it: what a hunter already ate is gone; bodies in the water are out of reach
+    meat: water[idx(a.x, a.y)] ? 0 : sz * young * (1 - (a.eaten || 0)),
+  });
   if (BODIES.length > 400) BODIES.shift();
 }
 // 0 = fresh body … 1 = bare bones; gone after bones have lain a long time
@@ -82,6 +108,14 @@ const BODY_BONES = 14 * 96,
   BODY_GONE = 120 * 96;
 function updateBodies() {
   if (tick % 96 === 0) BODIES = BODIES.filter((b) => tick - b.t < BODY_GONE);
+}
+// a body with meat on it lying at (x, y), freshest first; meat older than about two days is rotting
+const FRESH = 2 * 96;
+function meatAt(x, y, notSp = -1) {
+  let best = null;
+  for (const b of BODIES)
+    if (b.x === x && b.y === y && b.meat > 0.05 && b.sp !== notSp && tick - b.t < 6 * 96 && (!best || b.t > best.t)) best = b;
+  return best;
 }
 // the ground at a cell, as the hands meet it
 const lying = (i) => stone[i] + stick[i] + flake[i] + pyrite[i];

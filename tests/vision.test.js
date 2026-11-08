@@ -20,6 +20,7 @@ function setup() {
   a.e = 20;
   a.g.v = 6;
   // clear a flat, treeless, dry patch around it
+  E.items().ROOT.fill(0); // no root plants in view, to keep the test about one thing
   for (let dy = -6; dy <= 6; dy++)
     for (let dx = -6; dx <= 6; dx++) {
       const Y = a.y + dy;

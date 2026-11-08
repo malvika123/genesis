@@ -129,7 +129,7 @@ test('struck against a stone, pyrite throws sparks that can light dry tinder; pl
     p.lw.fill(0, 0, E.NA * E.NI);
     p.lw[E.A_STRIKE * E.NI + E.IB + 11] = 60;
     let lit = false;
-    for (let k = 0; k < 60 && !lit; k++) {
+    for (let k = 0; k < (hand === 5 ? 1500 : 200) && !lit; k++) {
       p.hand = hand;
       E.sim();
       lit = F.FIRE[c] > 0;

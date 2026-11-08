@@ -14,7 +14,7 @@ const edible = (a, o) =>
   !(o.found && o.age < o.S.mat) &&
   (a.sp === 2
     ? o.sp !== 2 || (o.k === a.k && a.e < 15 && o !== a.mom && o !== a.kid && o.mom !== a)
-    : a.sp === 0 && o.sp === 3);
+    : a.sp === 0 && (o.sp === 3 || o.sp === 1));
 // For each place a creature might look at, the cells a line of sight passes through on the way.
 const OFFL = OFF.map(([dx, dy, d]) => {
   const n = Math.ceil(d * 2),
@@ -237,7 +237,9 @@ function sense(a, x, night) {
       // people also see fruit on the trees as food
       // and herbivores can browse the trees
       const f =
-        (a.sp === 0 || a.S.omni
+        (a.sp === 0
+          ? Math.max(0.5 * food[i], fruit[i] * 1.4, COOK[i] * 1.6, 0.6 * ROOT[i])
+          : a.S.omni
           ? Math.max(food[i], fruit[i] * 1.4, COOK[i] * 1.6)
           : a.sp === 1
             ? Math.max(food[i], tree[i] * 0.3)
@@ -328,12 +330,16 @@ function sense(a, x, night) {
   const here = idx(a.x, a.y);
   x[HB] =
     ((a.sp < 2 || a.S.omni) && !water[here]) || (a.sp === 3 && water[here])
-      ? a.sp === 0 || a.S.omni
-        ? Math.max(food[here], fruit[here], COOK[here])
+      ? a.sp === 0
+        ? Math.max(0.5 * food[here], fruit[here], COOK[here], 0.6 * ROOT[here], (meatAt(a.x, a.y, 0) || { meat: 0 }).meat)
+        : a.S.omni
+        ? Math.max(food[here], fruit[here], COOK[here], (meatAt(a.x, a.y) || { meat: 0 }).meat)
         : a.sp === 1
           ? Math.max(food[here], tree[here] > 0.3 ? 0.2 : 0)
           : food[here]
-      : 0;
+      : a.sp === 2
+        ? Math.min(1, (meatAt(a.x, a.y, 2) || { meat: 0 }).meat)
+        : 0;
   let wa = 0,
     pa = 0,
     ma = 0;
@@ -354,6 +360,12 @@ function sense(a, x, night) {
   x[HB + 1] = a.sp === 3 ? 0 : wa;
   x[HB + 2] = pa;
   x[HB + 3] = ma;
+  // what a person finds underfoot, by sight and smell: the leaves of a plant with roots below, and a body
+  x[FOODIN] = a.sp === 0 && !water[here] ? Math.min(1, ROOT[here] * 2) : 0;
+  {
+    const m = a.sp === 0 || a.sp === 2 ? meatAt(a.x, a.y, a.sp === 0 ? 0 : 2) : null;
+    x[FOODIN + 1] = m ? Math.min(1, m.meat) * (tick - m.t > FRESH ? 0.5 : 1) : 0;
+  }
   x[IB + 16] = a.sp < 2 && poison[here] && food[here] > 0.05 ? 1 : 0;
   let hk = 0;
   if (a.sp === 0 && a.e > 40)

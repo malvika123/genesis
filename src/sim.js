@@ -240,7 +240,18 @@ function sim() {
           RF[s] += (3 * x[o] * (MV[s][0] * x[o + 1] + MV[s][1] * x[o + 2])) / L;
         }
     }
-    if (a.sp !== 3 || x[HB] > 0.05) RF[A_EAT] = 4 * hu * (x[HB] > 0.05 ? 1 : 0);
+    if (a.sp === 0) {
+      // Inborn taste, as in newborns: sweet (ripe fruit) and savoury, fatty food (meat, food cooked by
+      // fire) make the mouth want more. Bland grass and earthy roots give no such pull: whether they are
+      // worth eating, a person has to find out.
+      const h = idx(a.x, a.y),
+        m = meatAt(a.x, a.y, 0),
+        taste = Math.max(fruit[h], COOK[h], m && tick - m.t < FRESH ? m.meat : 0);
+      RF[A_EAT] = taste > 0.05 && !water[h] ? 4 * hu : 0;
+      // and hunger alone makes any primate try putting plants in its mouth: a weaker pull, which the
+      // gut then rewards or not
+      if (!RF[A_EAT] && hu > 0.35 && !water[h] && (food[h] > 0.1 || ROOT[h] > 0.05)) RF[A_EAT] = 2.5 * (hu - 0.35);
+    } else if (a.sp !== 3 || x[HB] > 0.05) RF[A_EAT] = 4 * hu * (x[HB] > 0.05 ? 1 : 0);
     if (a.sp !== 3) RF[A_DRINK] = 5 * th * x[HB + 1];
     if (a.sp === 2) RF[A_ATK] = 5 * hu * x[HB + 2];
     // When tired, land animals instinctively look for a safe place to sleep before they drop off —
@@ -485,6 +496,15 @@ function sim() {
         food[i] -= b;
         if (hu > 0.5) a.ev[2] = 'it ate after going hungry on day ' + dn;
       }
+    } else if (act === A_EAT && a.sp === 2 && !a.S.omni && !wade) {
+      const m = meatAt(a.x, a.y, 2);
+      if (m && a.fd < S.hcap) {
+        const b = Math.min(m.meat, 0.3);
+        m.meat -= b;
+        a.fd += b;
+        a.e = Math.min(100, a.e + b * 120);
+        if (hu > 0.5) a.ev[2] = 'it ate from a carcass on day ' + dn;
+      }
     } else if (act === A_EAT && (a.sp < 2 || a.S.omni) && !wade) {
       const i = idx(a.x, a.y),
         f = food[i];
@@ -514,6 +534,32 @@ function sim() {
           firsts['p' + a.sp] = 1;
           log(who(a) + ' ate red berries and got sick.');
         }
+      } else if ((a.sp === 0 || a.S.omni) && meatAt(a.x, a.y, a.sp === 0 ? 0 : -1)) {
+        // meat from a body: torn off slowly with bare hands and teeth, much faster cut with a sharp stone
+        // (stone flakes were used to butcher carcasses 3 million years ago). Fresh, it is the richest food
+        // there is; after a couple of days it is rotting, and often makes you sick.
+        const m = meatAt(a.x, a.y, a.sp === 0 ? 0 : -1),
+          b = Math.min(m.meat, a.sp === 0 ? (a.hand === 3 ? 0.35 : 0.12) : 0.3),
+          rot = tick - m.t > FRESH;
+        m.meat -= b;
+        a.e = Math.min(100, a.e + b * 110);
+        if (rot && rnd() < 0.35) {
+          a.hp -= 15;
+          a.painA = Math.min(1, a.painA + 0.7);
+          a.ev[0] = 'it got sick from rotting meat on day ' + dn;
+          if (a.sp === 0 && !firsts.rotten) {
+            firsts.rotten = 1;
+            log(a.name + ' ate rotting meat and got sick.');
+          }
+        } else if (hu > 0.5) a.ev[2] = 'it ate meat after going hungry on day ' + dn;
+        if (a.sp === 0 && !firsts.meat) {
+          firsts.meat = 1;
+          log(a.name + ' ate meat from a dead ' + (m.sp === 1 ? 'animal' : 'creature') + '. Day ' + dn + '.');
+        }
+        if (a.sp === 0 && a.hand === 3 && !firsts.butcher) {
+          firsts.butcher = 1;
+          log(a.name + ' cut meat from a body with a sharp stone.');
+        }
       } else if ((a.sp === 0 || a.S.omni) && fruit[i] > 0.05) {
         // fruit from the trees: more filling than leaves and roots
         const b = Math.min(fruit[i], 0.4);
@@ -524,7 +570,30 @@ function sim() {
           firsts.fruit = 1;
           log(a.name + ' ate fruit from the trees.');
         }
-      } else if ((a.sp === 0 || a.S.omni) && f > 0.05) {
+      } else if (a.sp === 0 && ROOT[i] > 0.05) {
+        // digging for roots: hard with bare hands, much easier with a stick
+        const pd = a.hand === 2 ? 0.55 : a.hand === 3 ? 0.4 : a.hand === 1 ? 0.3 : 0.15;
+        a.e -= 0.15;
+        if (rnd() < pd) {
+          const b = Math.min(ROOT[i], 0.3);
+          ROOT[i] -= b;
+          a.e = Math.min(100, a.e + b * 80);
+          if (hu > 0.5) a.ev[2] = 'it dug up roots after going hungry on day ' + dn;
+          if (!firsts.root) {
+            firsts.root = 1;
+            log(a.name + ' dug up a root and ate it. Day ' + dn + '.');
+          }
+          if (a.hand === 2 && !firsts.dig) {
+            firsts.dig = 1;
+            log(a.name + ' dug for roots with a stick.');
+          }
+        }
+      } else if (a.sp === 0 && f > 0.05) {
+        // people cannot digest grass: chewing it gives almost nothing
+        const b = Math.min(f, 0.2);
+        a.e = Math.min(100, a.e + b * 1);
+        food[i] -= b * 0.3;
+      } else if (a.S.omni && f > 0.05) {
         const b = Math.min(f, 0.5);
         a.e = Math.min(100, a.e + b * 50);
         food[i] -= b;
@@ -693,7 +762,7 @@ function sim() {
       } else if (
         ((a.hand === 5 && stone[i] + flake[i] > 0) || ((a.hand === 1 || a.hand === 3) && pyrite[i])) &&
         tinder &&
-        rnd() < 0.08
+        rnd() < 0.008
       ) {
         // pyrite struck with a stone throws hot sparks; into dry grass or wood, one may catch
         if (ignite(i, 0.1) && !firsts.madefire) {
@@ -704,7 +773,7 @@ function sim() {
         // rubbing dry wood on wood, again and again, heats it until it smoulders
         a.rub = a.lastRub === tick - 1 ? (a.rub || 0) + 1 : 1;
         a.lastRub = tick;
-        if (a.rub >= 6 && rnd() < 0.12 && ignite(i, 0.08) && !firsts.rubfire) {
+        if (a.rub >= 12 && rnd() < 0.03 && ignite(i, 0.08) && !firsts.rubfire) {
           firsts.rubfire = 1;
           log(a.name + ' rubbed dry sticks together until they smouldered and caught fire.');
         }
@@ -750,17 +819,26 @@ function sim() {
         const odds = clamp(((a.S.size || 1) * (1 + 0.6 * help)) / (T.size || 1), 0.15, 1.3),
           pc =
             a.sp === 0
-              ? 0.25 * (a.hand === 2 ? 1.5 : a.hand === 3 ? 1.25 : 1)
+              ? 0.25 *
+                (a.hand === 2 ? 1.5 : a.hand === 3 ? 1.25 : 1) *
+                // a person alone is slow and weak next to a deer or a bison; a rabbit can be grabbed
+                (t.sp === 3 ? 1 : (t.asleep ? 0.8 : 0.35) * Math.min(1, 0.6 / (T.size || 1)))
               : (t.asleep || t.age < T.mat * T.wn ? 0.9 : 0.6) * Math.min(1, odds);
         if (rnd() < pc) {
           t.dead = true;
           t.cause = a.sp === 0 ? 'caught by a person' : 'killed by a predator';
+          if (a.sp === 2) t.eaten = 0.6;
           if (a.sp === 2) kills[t.sp]++;
-          else {
+          else if (t.sp === 1) {
+            if (!firsts.hunt) {
+              firsts.hunt = 1;
+              log(a.name + ' brought down a ' + T.n.toLowerCase() + '. Nobody taught them. Day ' + dn + '.');
+            }
+          } else {
             fished++;
             followed(a, 'fish', 'caught a fish');
           }
-          a.e = Math.min(
+          if (!(a.sp === 0 && t.sp === 1)) a.e = Math.min(
             100,
             a.e +
               (t.sp === 3
@@ -789,7 +867,13 @@ function sim() {
           if (a.sp === 0 && fished === 1) log('A person caught a fish for the first time.');
           if (t.sp === 2) log('A starving predator ate another predator.');
         } else if (t.sp !== 3) {
-          t.hp -= 25;
+          // big prey fights back: a bison's horns or a deer's hooves can badly hurt a hunter on foot
+          if (a.sp === 0 && (T.size || 1) > 0.8 && rnd() < 0.3) {
+            a.hp -= 10 * (T.size || 1);
+            a.painA = Math.min(1, a.painA + 0.6);
+            a.ev[0] = 'it was hurt by a ' + T.n.toLowerCase() + ' it attacked on day ' + dn;
+          }
+          t.hp -= a.sp === 0 ? 12 : 25;
           t.painA = Math.min(1, t.painA + 0.8);
           t.rage = 1; // attacked, it is angry as well as afraid
           learnSight(t, 5, 0.15); // and now it knows what a hunter looks like
