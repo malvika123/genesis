@@ -1,6 +1,6 @@
 # Genesis
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24050773.svg)](https://doi.org/10.5281/zenodo.24050773)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24050772.svg)](https://doi.org/10.5281/zenodo.24050772)
 
 A small, autonomous world where people, herbivores, predators and fish are born, learn to survive, and raise the next generation — on their own.
 
@@ -70,7 +70,7 @@ same command on the same commit gives the same file. A summary is printed as wel
 
 - **How the model works, with the real-world basis for each rule and what is simplified:** [docs/MODEL.md](docs/MODEL.md), written in the standard ODD format for agent-based models.
 - **What is and isn't validated:** section 8 of that document. In short: not yet checked against data. Compare many seeds, never one.
-- **Citing:** DOI 10.5281/zenodo.24050773 (Zenodo). See [CITATION.cff](CITATION.cff) (GitHub shows a "Cite this repository" button) and say which version or commit you used. Changes are listed in [CHANGELOG.md](CHANGELOG.md).
+- **Citing:** DOI 10.5281/zenodo.24050772 for Genesis in general (always the latest release), or 10.5281/zenodo.24050773 for exactly v0.7.0 (Zenodo). See [CITATION.cff](CITATION.cff) (GitHub shows a "Cite this repository" button) and say which version or commit you used. Changes are listed in [CHANGELOG.md](CHANGELOG.md).
 - Runs shorter than about 100 days seldom show a second generation: a person matures at 12 "years" of 3 days each.
 
 Worlds are seeded, so the same command always produces the same world — useful for comparing a change against what came before.

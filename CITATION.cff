@@ -9,7 +9,14 @@ authors:
 version: 0.7.0
 date-released: 2026-11-08
 license: MIT
-doi: 10.5281/zenodo.24050773
+doi: 10.5281/zenodo.24050772
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.24050773
+    description: "This exact version (v0.7.0)"
+  - type: doi
+    value: 10.5281/zenodo.24050772
+    description: "All versions: always the latest release"
 repository-code: "https://github.com/malvika123/genesis"
 url: "https://malvika123.github.io/genesis/"
 keywords:
