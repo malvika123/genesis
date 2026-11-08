@@ -11,6 +11,9 @@ const plural = (n) =>
         ? 'Wolves'
         : n + 's';
 function reset(cfg = {}) {
+  // switches for experiments: learning from others' pain, and choosy copying (both on normally)
+  SOC.vic = cfg.vicar !== false;
+  SOC.pick = cfg.pickyCopy !== false;
   food = new Float32Array(W * H);
   ag = [];
   tick = 0;

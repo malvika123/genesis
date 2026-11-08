@@ -128,6 +128,7 @@ function sim() {
     if (burn > 0.03 && !fish) {
       a.hp -= 10 * burn;
       a.painA = Math.max(a.painA, 0.9 * burn + 0.2);
+      ouch(a, 0.9 * burn + 0.2, 'fire');
       a.ev[0] = 'it was burned by fire on day ' + dn;
       learnSight(a, 15, 0.2);
       if (a.hp <= 0) {
@@ -351,8 +352,17 @@ function sim() {
       }
     }
     if (S.imit) {
+      // Whom to copy, and how much (social learning strategies, Kendal et al. 2018): it picks an elder
+      // to watch, its mother first; one that inherited a "copy the successful" bias picks those who are
+      // well fed and healthy, and copies a struggling one less. It copies more when it is unsure what
+      // to do itself, and one that inherited a bias to follow the crowd leans toward what most of
+      // those around it are doing.
       let tch = null,
         bd = 37;
+      const pb = SOC.pick ? (a.g.pb ?? 0.5) : 0,
+        okay = (o) => clamp((o.hp + o.e) / 200, 0, 1),
+        seen = new Array(NA).fill(0);
+      let nseen = 0;
       const rr = Math.round(a.g.v);
       for (let dy = -rr; dy <= rr; dy++)
         for (let dx = -rr; dx <= rr; dx++) {
@@ -371,7 +381,9 @@ function sim() {
               o.age <= a.age
             )
               continue;
-            const dd = dx * dx + dy * dy + (o === a.mom ? -30 : 0);
+            seen[o.act]++;
+            nseen++;
+            const dd = dx * dx + dy * dy + (o === a.mom ? -30 : 0) - 25 * pb * okay(o);
             if (dd < bd) {
               bd = dd;
               tch = o;
@@ -379,7 +391,20 @@ function sim() {
           }
         }
       if (tch && tch.act !== A_SLEEP) {
-        imitate(a, tch.act, S.imit * (young ? 3 : 1) * (a.g.im ?? 1), tch.voice);
+        let ent = 0;
+        for (let k = 0; k < NA; k++) if (a.z[k] > 1e-6) ent -= a.z[k] * Math.log(a.z[k]);
+        const unsure = SOC.pick ? ent / Math.log(NA) : 0.5,
+          rate =
+            S.imit *
+            (young ? 3 : 1) *
+            (a.g.im ?? 1) *
+            (1 - pb + 2 * pb * okay(tch)) *
+            (0.4 + 1.2 * unsure);
+        let maj = -1;
+        for (let k = 0; k < NA; k++) if (seen[k] > nseen / 2 && nseen >= 3 && k !== A_SLEEP) maj = k;
+        const cf = SOC.pick && maj >= 0 && maj !== tch.act ? (a.g.cf ?? 0.3) : 0;
+        imitate(a, tch.act, rate * (1 - cf), tch.voice);
+        if (cf) imitate(a, maj, rate * cf);
         if (!a.copied && a.sp === 0 && young) {
           a.copied = 1;
           a.ev[7] = 'it watched an elder on day ' + dn;
@@ -478,6 +503,7 @@ function sim() {
           if (pit[idx(X, Y)]) {
             a.hp -= baby ? 30 : 12;
             a.painA = Math.min(1, a.painA + 0.7);
+            ouch(a, 0.7, 'fall');
             a.trap = 12;
             a.ev[0] = 'it fell into a pit on day ' + dn;
             if (a.sp === 0 && !firsts.pit) {
@@ -528,6 +554,7 @@ function sim() {
         a.e = Math.min(100, a.e + b * 10);
         a.hp -= 22;
         a.painA = Math.min(1, a.painA + 0.8);
+        ouch(a, 0.8, 'berries');
         a.ev[0] = 'it got sick from red berries on day ' + dn;
         learnSight(a, 9, 0.15);
         if (!firsts['p' + a.sp]) {
@@ -546,6 +573,7 @@ function sim() {
         if (rot && rnd() < 0.35) {
           a.hp -= 15;
           a.painA = Math.min(1, a.painA + 0.7);
+          ouch(a, 0.7, 'meat');
           a.ev[0] = 'it got sick from rotting meat on day ' + dn;
           if (a.sp === 0 && !firsts.rotten) {
             firsts.rotten = 1;
@@ -875,10 +903,12 @@ function sim() {
           if (a.sp === 0 && (T.size || 1) > 0.8 && rnd() < 0.3) {
             a.hp -= 10 * (T.size || 1);
             a.painA = Math.min(1, a.painA + 0.6);
+            ouch(a, 0.6, 'prey');
             a.ev[0] = 'it was hurt by a ' + T.n.toLowerCase() + ' it attacked on day ' + dn;
           }
           t.hp -= a.sp === 0 ? 12 : 25;
           t.painA = Math.min(1, t.painA + 0.8);
+          ouch(t, 0.8, 'bitten');
           t.rage = 1; // attacked, it is angry as well as afraid
           learnSight(t, 5, 0.15); // and now it knows what a hunter looks like
           t.ev[0] = 'it was bitten by a predator on day ' + dn;
@@ -920,6 +950,8 @@ function sim() {
           o.lost = a;
           if (a.sp === 0 && o.sp === 0) log(o.name + ' is grieving for ' + a.name + '.');
         }
+    const SEEN = { 'killed by a predator': 'killed', burned: 'fire', drowned: 'drowned', 'struck by lightning': 'lightning', 'its wounds': 'wounds' };
+    if (SEEN[c]) ouch(a, 1, SEEN[c], true);
     const dk = a.S.n + ': ' + c;
     deaths[dk] = (deaths[dk] || 0) + 1;
     if (a.sp === 0)
@@ -940,6 +972,7 @@ function sim() {
     }
     return false;
   });
+  watchOthers();
   ag.push(...kids);
   if (!over && !ag.some((a) => a.sp === 0)) {
     over = true;
@@ -989,4 +1022,66 @@ function fireMade(a, how) {
     firsts['made_' + a.id] = 1;
     log(a.name + ' made fire too' + (a.fTeach ? ', after watching ' + a.fTeach : '') + '.');
   }
+}
+
+// ---------- learning from what happens to others ----------
+// People feel a share of what they see happen to someone near them. Watching another person get
+// shocked makes the watcher's own fear system respond almost as if it were them, and they come to fear
+// what came before it (Olsson & Phelps 2007). Here a person who sees someone close by hurt, sick or
+// killed gets a weaker copy of that pain as its own learning signal, and a jolt of fear, so its brain
+// links the bad outcome to what it is seeing right then. And it turns a little away from doing what it
+// just saw lead to pain (the action the other was doing), applied to its own senses.
+//   · How much it feels depends on who it is (Hein et al. 2010): family most, others of its band less.
+//   · Children learn more from it.
+//   · Some dangers are learned from others far more readily than others (monkeys learn to fear snakes,
+//     not flowers, from the same fearful look: Cook & Mineka 1990): being attacked, burned, falling,
+//     drowning and bad food teach strongly; other hurts much less.
+//   · How much a person learns from others at all is inherited (gene im), so some are loners who learn
+//     only the hard way, as about one person in five does in experiments (Molleman et al. 2014).
+// What exactly it learns is left to its own brain.
+const SOC = { vic: true, pick: true },
+  OUCH = [],
+  PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
+  OUCHW = {
+    bitten: 'get bitten by a predator',
+    killed: 'get killed by a predator',
+    prey: 'get hurt by an animal it attacked',
+    fire: 'get burned',
+    fall: 'fall into a pit',
+    drowned: 'drown',
+    berries: 'get sick from red berries',
+    meat: 'get sick from rotting meat',
+    lightning: 'get struck by lightning',
+    wounds: 'die of its wounds',
+  };
+function ouch(a, amt, kind, died = false) {
+  if (a.sp !== 0) return;
+  OUCH.push({ a, x: a.x, y: a.y, amt, kind, act: died ? -1 : a.act });
+}
+function watchOthers() {
+  if (!SOC.vic) return void (OUCH.length = 0);
+  for (const e of OUCH) {
+    const v = e.a;
+    for (const o of ag) {
+      if (o === v || o.sp !== 0 || o.dead || o.gone || o.asleep || !o.has) continue;
+      const r = Math.min(5, Math.round(o.g.v));
+      if (Math.abs(dxw(o.x - e.x)) > r || Math.abs(o.y - e.y) > r) continue;
+      const fam = v === o.mom || v === o.kid || v === o.mate || (v.mom && v.mom === o.mom) || v.mom === o,
+        young = o.age < o.S.mat,
+        share = Math.min(0.8, 0.3 * (fam ? 1 : 0.5) * (young ? 1.5 : 1) * (PREPARED[e.kind] ?? 0.3) * (o.g.im ?? 1)),
+        hurt = share * e.amt;
+      if (hurt < 0.01) continue;
+      o.bonus[0] -= hurt; // felt as its own pain, in its learning signal
+      o.fear = clamp(o.fear + 0.6 * hurt, 0, 1);
+      // and it turns away from what it saw lead there
+      if (e.act >= 0) imitate(o, e.act, -0.05 * hurt);
+      o.vic = (o.vic || 0) + hurt;
+      if (hurt > 0.12) o.ev[0] = 'it saw ' + (v.name || 'someone') + ' ' + OUCHW[e.kind] + ' on day ' + dayN();
+      if (!firsts.vicar && hurt > 0.12) {
+        firsts.vicar = 1;
+        log(o.name + ' saw ' + (v.name || 'someone') + ' ' + OUCHW[e.kind] + ', and was afraid.');
+      }
+    }
+  }
+  OUCH.length = 0;
 }

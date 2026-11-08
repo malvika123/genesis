@@ -4,6 +4,13 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Learning from others.** A person who sees someone nearby bitten, burned, fall, drown, get sick or
+  die feels a weaker share of the pain as its own learning signal, and fear, and turns a little away
+  from what it saw lead there. Stronger for family and for children; attacks, fire, falls, drowning
+  and bad food teach most. Copying now favours those doing well (by an inherited bias), is stronger
+  when the copier is unsure, and can lean toward what most others do (an inherited bias). How much
+  each person learns from others at all is inherited and starts widely varied, so loners exist.
+  The Stats tab's generation table shows these traits and the share of loners over generations.
 - Trees on the globe stay where they grew: each square's trees are placed from that square's own
   numbers, so a forest growing or thinning in one place no longer makes trees everywhere jump. When
   the view follows a creature it follows its smooth walk, so the land no longer lurches a whole square

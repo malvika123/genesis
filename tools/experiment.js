@@ -10,6 +10,8 @@
 //   --seeds A-B|A,B  which seeds to run                                              [1-10]
 //   --people N --herbivores N --predators N --fish N    starting numbers             [8 20 6 24]
 //   --retina         the raw-vision experiment (no labelled senses)
+//   --no-vicar       people don't learn from seeing others hurt
+//   --no-picky       people copy the nearest elder blindly (no success bias, crowd-following or uncertainty)
 //   --workers N      run seeds in parallel in N processes                            [1]
 //   --out FILE       write the CSV there (otherwise it is printed)
 //
@@ -43,6 +45,7 @@ const MILESTONES = [
   'madefire', // makes fire with sparks
   'rubfire', // makes fire with wood
   'share', // gives food to another
+  'vicar', // someone is afraid after seeing another person hurt
   'say2',
   'say3',
   'say4',
@@ -89,6 +92,8 @@ function settings(a) {
       predators: n('predators', 6),
       fish: n('fish', 24),
       retina: !!a.retina,
+      vicar: !a['no-vicar'],
+      pickyCopy: !a['no-picky'],
     },
   };
 }
@@ -117,13 +122,18 @@ function runWorld(E, seed, S) {
     hunters: count(2),
     fish: count(3),
     best_fire_skill: +Math.max(0, ...ppl.map((p) => p.fsk || 0)).toFixed(2),
+    // what kind of learners the living people are (inherited)
+    learns_from_others: ppl.length ? +(ppl.reduce((t, p) => t + (p.g.im ?? 1), 0) / ppl.length).toFixed(2) : '',
+    copies_successful: ppl.length ? +(ppl.reduce((t, p) => t + (p.g.pb ?? 0.5), 0) / ppl.length).toFixed(2) : '',
+    follows_crowd: ppl.length ? +(ppl.reduce((t, p) => t + (p.g.cf ?? 0.3), 0) / ppl.length).toFixed(2) : '',
+    loners_pct: ppl.length ? Math.round((100 * ppl.filter((p) => (p.g.im ?? 1) < 0.35).length) / ppl.length) : '',
     died,
     day,
   };
 }
 
 function csv(rows, S, meta) {
-  const head = ['seed', 'days_run', 'people_alive', 'generations', 'plant_eaters', 'hunters', 'fish', 'best_fire_skill'];
+  const head = ['seed', 'days_run', 'people_alive', 'generations', 'plant_eaters', 'hunters', 'fish', 'best_fire_skill', 'learns_from_others', 'copies_successful', 'follows_crowd', 'loners_pct'];
   const cols = [...head, ...CAUSES.map((c) => 'died_' + c.replace(/ /g, '_')), ...MILESTONES.map((m) => 'day_' + m)];
   const lines = [
     '# Genesis experiment',

@@ -346,6 +346,7 @@ function doingHTML(a, S, stage, night) {
       '%' +
       (a.made ? ' · has made fire ' + a.made + ' times' : '') +
       (a.fTeach ? ' · watched ' + a.fTeach : '');
+  if (a.sp === 0) o += '<br>' + learnerText(a);
   o += '<br>Nearby: ' + (around.length ? around.join(', ') : 'no one in sight');
   o += '<br>' + seesText(a);
   if (a.sp === 0) {
@@ -1655,6 +1656,21 @@ function soundsHTML() {
     '</table>'
   );
 }
+// What kind of learner it was born as: how much it learns from others, and whom it copies
+function learnerText(a) {
+  const im = a.g.im ?? 1,
+    pb = a.g.pb ?? 0.5,
+    cf = a.g.cf ?? 0.3;
+  let t =
+    'Born a learner who ' +
+    (im < 0.35 ? 'mostly ignores others and learns the hard way' : im < 0.9 ? 'learns a little from others' : im < 1.5 ? 'learns from others' : 'learns a lot from others');
+  if (im >= 0.35)
+    t +=
+      (pb > 0.6 ? ', copying those doing well' : pb < 0.3 ? ', copying whoever is near' : '') +
+      (cf > 0.6 ? ', going with the crowd' : '');
+  if (a.vic > 0.05) t += ' · has learned from others\' pain';
+  return t;
+}
 // Each generation of people: what they were born with, on average, and what they learned
 function gensHTML() {
   const T = iqTable(),
@@ -1673,6 +1689,12 @@ function gensHTML() {
         '</td><td>' +
         (G.im / G.n).toFixed(2) +
         '</td><td>' +
+        Math.round((100 * (G.pb || 0)) / G.n) +
+        '%</td><td>' +
+        Math.round((100 * (G.cf || 0)) / G.n) +
+        '%</td><td>' +
+        Math.round((100 * (G.lone || 0)) / G.n) +
+        '%</td><td>' +
         (G.les / G.n).toFixed(1) +
         '</td><td>' +
         (now[g] ? Math.round((100 * now[g].reduce((t, v) => t + v, 0)) / now[g].length) + '%' : '–') +
@@ -1680,7 +1702,7 @@ function gensHTML() {
       : ''
   ).join('');
   return (
-    '<table class="tbl"><tr><th>Gen.</th><th>Born</th><th>Brain size</th><th>Learning speed</th><th>Copying</th><th>Lessons each</th><th>Test score now</th></tr>' +
+    '<table class="tbl"><tr><th>Gen.</th><th>Born</th><th>Brain size</th><th>Learning speed</th><th>Learns from others</th><th>Copies the successful</th><th>Follows the crowd</th><th>Loners</th><th>Lessons each</th><th>Test score now</th></tr>' +
     rows +
     '</table>'
   );
