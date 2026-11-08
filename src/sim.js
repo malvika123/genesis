@@ -767,7 +767,7 @@ function sim() {
         // flame is a knack: almost never at first, quickly once learned.
         const sk = a.fsk || 0;
         a.bonus[6] += 0.02 * (1 - sk); // sparks flying are new and striking to see, until they are familiar
-        if (tinder && rnd() < 0.001 + 0.5 * sk * sk && ignite(i, 0.1)) {
+        if (tinder && rnd() < 0.0003 + 0.5 * sk * sk && ignite(i, 0.1)) {
           fireMade(a, 'spark');
         } else firePractice(a, tinder ? 0.012 : 0.004);
       } else if (a.hand === 2 && stick[i] > 0 && stickDry(i) > 0.5) {
