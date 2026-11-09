@@ -321,8 +321,15 @@ function sim() {
     if (a.sp === 0 && !a.asleep) {
       const thr = (v) => clamp((v - 0.3) / 0.7, 0, 1),
         wary = (young ? 2.5 : 1.5) * (0.5 + a.fear);
+      // Seeking food and eating it are two phases, as in every animal: once food it likes is in reach (fruit,
+      // fresh meat, cooked food — or, when hungry, roots it has found it can dig), the urge to go looking
+      // elsewhere stops and the urge to eat takes over (appetitive and consummatory behaviour).
+      const hh = idx(a.x, a.y),
+        mh = meatAt(a.x, a.y, 0),
+        atHand = !water[hh] && (fruit[hh] > 0.05 || COOK[hh] > 0.05 || (mh && !rotten(mh) && mh.meat > 0.05) || (hu > 0.35 && ROOT[hh] > 0.05)),
+        seek = atHand ? 0 : 2.5 * thr(hu);
       for (let s = 0; s < 8; s++) {
-        RF[s] += 2.5 * thr(hu) * x[s * NCH + 1] + 2.5 * thr(th) * x[s * NCH];
+        RF[s] += seek * x[s * NCH + 1] + 2.5 * thr(th) * x[s * NCH];
         const p = x[s * NCH + 5];
         if (p > 0.1) {
           RF[s] -= wary * p;
