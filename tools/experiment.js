@@ -8,13 +8,15 @@
 // Settings (each world is built from these, and from its seed, and from nothing else):
 //   --days N         days to run each world (a day is 96 steps of 15 minutes)      [60]
 //   --seeds A-B|A,B  which seeds to run                                              [1-10]
-//   --people N --herbivores N --predators N --fish N    starting numbers             [8 20 6 24]
+//   --people N --herbivores N --predators N --fish N    starting numbers             [25 20 6 24]
 //   --brain N        the most thinking units a person's brain can grow (64 normally)
 //   --retina         the raw-vision experiment (no labelled senses)
 //   --no-vicar       people don't learn from seeing others hurt
 //   --old-sound      sound heard within 2.2 squares, fading evenly (no physics)
 //   --modern-voice   everyone starts with a modern human voice, pointing and shared attention
 //   --no-calls       animals make no calls
+//   --earth          the real Earth's continents as they were 70,000 years ago (not a made-up planet)
+//   --any-start      the band starts anywhere within 36° of the equator near fresh water (the old rule)
 //   --no-picky       people copy the nearest elder blindly (no success bias, crowd-following or uncertainty)
 //   --workers N      run seeds in parallel in N processes                            [1]
 //   --out FILE       write the CSV there (otherwise it is printed)
@@ -104,6 +106,8 @@ function settings(a) {
       soundPhysics: !a['old-sound'],
       animalCalls: !a['no-calls'],
       modernVoice: !!a['modern-voice'],
+      homeland: !a['any-start'],
+      earth: !!a.earth,
     },
   };
 }

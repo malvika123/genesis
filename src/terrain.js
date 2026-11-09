@@ -119,7 +119,15 @@ function makeTerrain() {
   poison = new Uint8Array(n);
   river = new Uint8Array(n);
 
-  // 1. height
+  // 1. height: the real Earth (see earth.js), or a made-up planet from noise
+  if (SOC.earth) {
+    for (let i = 0; i < n; i++) alt[i] = (EARTH_M[i] - EARTH_SEA) / 1000;
+    fractal(3, 5, 0.5), fractal(5, 3, 0.5); // (draw the same random numbers either way)
+  } else makeHeights(n);
+  heightsDone(n);
+}
+
+function makeHeights(n) {
   const cont = fractal(3, 5, 0.5),
     ridgeN = fractal(5, 3, 0.5),
     h = new Float32Array(n);
@@ -143,7 +151,9 @@ function makeTerrain() {
       alt[i] = -(4.5 * t ** 0.6 + 6.5 * Math.max(0, (t - 0.9) / 0.1) ** 2);
     }
   }
+}
 
+function heightsDone(n) {
   // 2. the sea; shallow near the coast, deep further out
   for (let i = 0; i < n; i++) if (alt[i] < 0) water[i] = salt[i] = 1;
   const coastDist = new Uint8Array(n).fill(255);

@@ -99,14 +99,21 @@ creature's weights during sleep or calm. It is never a command.
 
 ## 5. Initialization
 
-A seeded terrain is made (fractal heights, sea share 0.5, rivers by drainage, ground types, rocks,
-pits, caves, poison berries), grass and trees grow in, then creatures are placed as **grown adults** with
+Terrain is either the real Earth (ETOPO1 heights resampled to 128 × 80, sea level −80 m as about
+70,000 years ago; the weather is run for three model years first and its last-year mean soil moisture
+sets desert ground and forest cover) or a seeded made-up planet (fractal heights, sea share 0.5). Then
+rivers by drainage, ground types, rocks, pits, caves, poison berries; grass and trees grow in, then creatures are placed as **grown adults** with
 clean brains and inborn instincts (a simplification, since no real person starts as an adult), people
-in a small band. Defaults: 8 people, 20 plant-eaters, 6 hunters, 24 fish.
+as a band of families of all ages. The band's camp is a random square that is within 25° of the
+equator (on Earth, in Africa), 18–27 °C mean, not desert, with soil moisture ≥ 0.35, fresh water within 3
+squares, and open and wooded ground within 2; hunting groups start ≥ 10 squares away. Defaults: 25
+people, 20 plant-eaters, 6 hunters, 24 fish.
 
 ## 6. Input data
 
-None. No external data are loaded. All constants are inside `src/`.
+On the real Earth: NOAA ETOPO1 global relief (Amante & Eakins 2009, public domain), converted once from
+its published colour-relief image with its own colour scale, calibrated against known plateau heights,
+and stored in `src/earth.js`. Nothing is loaded at run time.
 
 ## 7. Submodels and their real-world basis
 
@@ -114,7 +121,7 @@ None. No external data are loaded. All constants are inside `src/`.
 |---|---|---|---|
 | Climate | Temperature by latitude, season, altitude (−6.5 °C/km) and day/night; stronger swings when dry and clear | Standard lapse rate and radiation balance | No ocean currents; coarse |
 | Water cycle & storms | Evaporation, prevailing winds, uplift (mountains, convection), cloud, rain/snow, puddles, thunderstorms | Hadley-type belts, orographic rain | No pressure fields |
-| Terrain | Heights −11 to +8.8 km; sea 50%; rivers run downhill to the sea | Earth's extremes (Everest, Mariana) | One region; tallest points are single cells |
+| Terrain | Real Earth (ETOPO1) with the sea 80 m lower as ~70,000 years ago, or made-up (sea 50%); rivers run downhill to the sea | ETOPO1; sea level curves (Spratt & Lisiecki 2016) | 2.8° × 2° squares; heights read back from a colour image (± a few hundred m); no ice-age ice sheets or cooler climate |
 | Forests | Trees by warmth and wetness; fruit and nuts in the growing season | Biomes | No species |
 | Fire | Fuel × dryness × ignition; lightning (esp. dry), rare rockfall sparks; spreads with wind and uphill; rain extinguishes; burnt ground, roasted nuts, cooked carcasses | The fire triangle; Pyne and others on wildfire | A square burns as a whole; a strike stands for many flashes |
 | Fire and people | Withdrawal reflex from heat inborn; burns teach fear; picking up a burning stick, feeding a fire, are learnable | The nociceptive withdrawal reflex is spinal and present at birth | The first controlled use is far later in reality than in a 60-day run |

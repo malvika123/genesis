@@ -39,7 +39,7 @@ function initForest() {
     tcap[i] = warm * wet * ground * (0.45 + 0.75 * patch(i % W, y));
     tcap[i] = Math.min(1, tcap[i]);
     fkind[i] = tcap[i] < 0.08 ? 0 : T < 6 ? 1 : T > 20 && wet > 0.6 ? 3 : 2;
-    tree[i] = tcap[i] * (0.75 + 0.25 * rnd());
+    tree[i] = tcap[i] * (0.75 + 0.25 * rnd()) * (MOISTY ? clamp(0.3 + MOISTY[i] * 2.2, 0, 1) : 1);
     if (tree[i] < 0.05) tree[i] = 0;
   }
 }

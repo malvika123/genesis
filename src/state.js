@@ -48,6 +48,7 @@ const wx = (x) => (x >= 0 && x < W ? x : ((x % W) + W) % W),
   dxw = (d) => (d > W / 2 ? d - W : d < -W / 2 ? d + W : d),
   idx = (x, y) => y * W + wx(x),
   inb = (x, y) => y >= 0 && y < H,
+  wrapDist = (x, y, u, v) => Math.hypot(dxw(u - x), v - y),
   dayN = () => Math.floor(tick / DAY) + 1,
   // Day and night are local, like on a real planet: the sun sweeps around the world once a day,
   // so it is noon on one side while it is midnight on the other. Local time goes 0 → 1 over a day.
@@ -57,6 +58,9 @@ const wx = (x) => (x >= 0 && x < W ? x : ((x % W) + W) % W),
     return p < 0.25 || p >= 0.75;
   },
   isNight = () => isNightAt(0);
+let MOISTY = null, // on the real Earth: each square's soil moisture averaged over the year before the world begins
+  DRYLAND = 0.12; // below this the ground is desert
+let BANDAT = null; // where the first band made camp: [x, y]
 let events = []; // everything the log has ever said, with when: for the timeline
 function log(t) {
   events.push({ t: tick, s: t });

@@ -780,6 +780,14 @@
       <div>
         <p class="sub">Choose how many of each to start with, then begin a fresh world.</p>
         <div class="bar">
+          <label
+            title="The real Earth: today's continents with the sea about 80 m lower, as it was about 70,000 years ago, when our species was leaving Africa. Or a planet of made-up continents, different for every world."
+            >Land
+            <select id="land">
+              <option value="earth">Earth, 70,000 years ago</option>
+              <option value="made">A made-up planet</option>
+            </select></label
+          >
           <label>Humans <input id="fnd" type="number" min="2" max="40" value="25" /></label>
           <label>Plant-eaters <input id="hrb" type="number" min="0" max="40" value="20" /></label>
           <label>Hunters <input id="prd" type="number" min="0" max="12" value="6" /></label>
@@ -837,7 +845,15 @@
           to your own kind helps. Nobody is told any of this: they have to learn to stay warm.
         </p>
         <p class="sub">
-          Land and sea: about half the world is ocean, salty and undrinkable, shallow by the coasts and deep
+          The land is the real Earth as it was about 70,000 years ago, when our species was leaving Africa:
+          today's continents, but with the sea about 80 m lower, so Asia and Alaska, Southeast Asia's
+          islands, New Guinea and Australia, and Britain and Europe were joined by dry land. The first band
+          starts where our species lived then: in Africa, in warm country of grass and woodland near fresh
+          water. (Simplified: each square of the map is about 300 km of real Earth; there are no ice-age ice
+          sheets yet, and the climate is today's.) A new world can instead be a made-up planet.
+        </p>
+        <p class="sub">
+          Land and sea: the ocean is salty and undrinkable, shallow by the coasts and deep
           further out. Continents rise into mountains (the very highest summits reach Everest's 8.8 km, the deepest sea floor is 11 km down like the Mariana Trench), with caves in the stony hills for shelter. The dead stay where they fell and become bones, where it is much colder and snow
           stays on the peaks. Rain drains downhill into rivers and fills lakes in the basins. Climbing is
           tiring, and mountains wring the rain out of the wind, leaving dry land behind them.
@@ -933,6 +949,7 @@
     <script src="src/brain.js"></script>
     <script src="src/lessons.js"></script>
     <script src="src/creatures.js"></script>
+    <script src="src/earth.js"></script>
     <script src="src/terrain.js"></script>
     <script src="src/forest.js"></script>
     <script src="src/items.js"></script>

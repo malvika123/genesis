@@ -17,6 +17,8 @@ function reset(cfg = {}) {
   SOC.sound = cfg.soundPhysics !== false; // off: the old rule (heard within 2.2 squares, fading evenly)
   SOC.calls = cfg.animalCalls !== false;
   SOC.modern = !!cfg.modernVoice; // the experiment: give everyone a modern human voice from the start
+  SOC.earth = !!cfg.earth; // the real Earth's land and sea, 70,000 years ago (see earth.js), or a made-up planet
+  SOC.home = cfg.homeland !== false; // off: the band starts anywhere warm enough near fresh water (the old rule)
   food = new Float32Array(W * H);
   ag = [];
   tick = 0;
@@ -47,6 +49,28 @@ function reset(cfg = {}) {
           ? rnd() * 0.5
           : (0.35 + rnd() * 0.5) * TF[ter[i]] * Math.min(1, growthAt(i) + 0.2);
   initWeather();
+  // On the real Earth the rains, not a rule of thumb by latitude, decide where forests and deserts are:
+  // let the weather run for a year first (the Sahara dries, the Congo stays wet), and grow the land
+  // from what that year was like.
+  MOISTY = null;
+  if (SOC.earth) {
+    tree = null;
+    const m = new Float32Array(W * H);
+    for (let k = 0; k < 3 * TY; k++) {
+      tick++;
+      updateClimate();
+      updateWeather();
+      if (k >= 2 * TY) for (let i = 0; i < W * H; i++) m[i] += MOIST[i] / TY;
+    }
+    tick = 0;
+    updateClimate();
+    MOISTY = m;
+    for (let i = 0; i < W * H; i++)
+      if (!water[i] && ter[i] === 0 && m[i] < DRYLAND && alt[i] < 1.2 && meanTemp(i) > 8) {
+        ter[i] = 1; // desert: sand and bare ground
+        food[i] *= 0.3;
+      }
+  }
   initForest();
   initItems();
   initTalk();

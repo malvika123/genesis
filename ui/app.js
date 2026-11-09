@@ -2487,6 +2487,7 @@ const readCfg = () => ({
   predators: +$('prd').value || 0,
   fish: +$('fsh').value || 0,
   retina: $('ret').checked,
+  earth: $('land').value === 'earth',
 });
 // What's happening: the latest events float over the world, newest on top; new ones pop in and glow
 // for a moment. It can be folded away; folded, it counts what you've missed.

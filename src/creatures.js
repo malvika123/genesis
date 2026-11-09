@@ -199,6 +199,9 @@ function spawnKind(sp, k, n, inst) {
   const suits = (i, x, y, t) => {
     if (!land(i) || alt[i] > 0.8) return false;
     if (sp === 0) return Math.abs(lat(y)) <= 0.45 && (t > 3000 || freshNear(x, y));
+    // a hunting group starts at least a home range away from the band's camp (lion and wolf territories
+    // span roughly 20–1,000 km²): they meet the band later, by roaming, not by being placed beside it
+    if (sp === 2 && SOC.home && BANDAT && t < 4000 && wrapDist(x, y, BANDAT[0], BANDAT[1]) < 10) return false;
     const h = K.hab;
     if (!h) return true;
     const T = meanTemp(i),
@@ -211,10 +214,46 @@ function spawnKind(sp, k, n, inst) {
       (sp !== 1 || t > 3000 || freshNear(x, y))
     );
   };
+  // Where our own species lived for most of its first 250,000 years: tropical Africa's mosaic of
+  // grassland and open woodland, close to lakes, rivers and springs — warm, but not desert (fossil and
+  // archaeological sites from Jebel Irhoud to Omo, Olorgesailie and the Kalahari margins; foragers camp
+  // within a few kilometres of fresh water). Every cell of the world is checked, and the band starts at
+  // one of those that fit, picked at random.
+  const near = (x, y, r, f) => {
+    for (let dy = -r; dy <= r; dy++)
+      for (let dx = -r; dx <= r; dx++) if (inb(x, y + dy) && f(idx(x + dx, y + dy))) return true;
+    return false;
+  };
+  const homeland = (i, x, y, strict) =>
+    land(i) &&
+    Math.abs(lat(y)) * 80 <= 25 &&
+    (!SOC.earth || (lonOf(x) > -18 && lonOf(x) < 52)) && // on the real Earth: in Africa
+    ter[i] !== 1 &&
+    meanTemp(i) >= 18 &&
+    meanTemp(i) <= 27 &&
+    (typeof MOIST === 'undefined' || !MOIST || MOIST[i] >= 0.35) &&
+    near(x, y, 3, (j) => water[j] && !salt[j]) &&
+    // grassland and woodland side by side
+    (!strict || (near(x, y, 2, (j) => !water[j] && tree[j] < 0.2) && near(x, y, 2, (j) => tree[j] > 0.35)));
+  const homeSite = () => {
+    for (const strict of [true, false]) {
+      const c = [];
+      for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (homeland(idx(x, y), x, y, strict)) c.push([x, y]);
+      if (c.length) return c[(rnd() * c.length) | 0];
+    }
+    return null;
+  };
   let cx = -1,
     cy = -1;
   const centre = () => {
     cx = cy = -1;
+    if (sp === 0 && SOC.home) {
+      const h = homeSite();
+      if (h) {
+        [cx, cy] = h;
+        return;
+      }
+    }
     for (let t = 0; t < 5000; t++) {
       const x = (rnd() * W) | 0,
         y = (rnd() * H) | 0;
@@ -227,6 +266,7 @@ function spawnKind(sp, k, n, inst) {
   // herds of about five, a single pack of wolves, pairs of solitary hunters, one group of people
   const group = sp === 1 ? 5 : sp === 2 ? (K.pack ? 99 : 2) : 99;
   if (sp !== 3) centre();
+  if (sp === 0) BANDAT = cx >= 0 ? [cx, cy] : null;
   for (let j = 0; j < n; j++) {
     if (sp !== 3 && j > 0 && j % group === 0) centre();
     let x,
