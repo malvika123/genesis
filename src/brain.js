@@ -389,8 +389,18 @@ function remember(a, act, r, vn) {
 }
 const RH = new Float32Array(NH),
   RZ = new Float32Array(NA);
+// Sleep replays the day's striking moments, the most striking most often: the hippocampus replays
+// rewarding experiences more than others (reward makes replay more likely: e.g. Ambrose et al. 2016),
+// which is part of why one big success can be remembered after a single try.
+function pickMemory(a) {
+  let t = 0;
+  for (const m of a.mem) t += 0.1 + Math.abs(m.r);
+  let r = rnd() * t;
+  for (const m of a.mem) if ((r -= 0.1 + Math.abs(m.r)) <= 0) return m;
+  return a.mem[a.mem.length - 1];
+}
 function replay(a, rate) {
-  const m = a.mem[(rnd() * a.mem.length) | 0],
+  const m = pickMemory(a),
     w = a.lw,
     x = m.x,
     H = a.h.length,

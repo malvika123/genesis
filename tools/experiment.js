@@ -93,7 +93,7 @@ function settings(a) {
     days: n('days', 60),
     brain: n('brain', 64), // the most thinking units a person's brain grows (64 normally)
     cfg: {
-      people: n('people', 8),
+      people: n('people', 25),
       herbivores: n('herbivores', 20),
       predators: n('predators', 6),
       fish: n('fish', 24),

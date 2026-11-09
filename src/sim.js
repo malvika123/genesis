@@ -80,7 +80,7 @@ function sim() {
     const young = a.age < S.mat,
       baby = a.age < S.mat * S.wn,
       mom = a.mom && !a.mom.dead && !a.mom.gone ? a.mom : null,
-      care = a.found && young;
+      care = a.found && young && !a.mom; // a founding child with no mother at all (only if a world is set up so)
     const df = (a.asleep ? 0.6 : 1) * (baby ? 1.5 : 1);
     if (baby && mom && dxw(mom.x - a.x) ** 2 + (mom.y - a.y) ** 2 <= 36) {
       a.e = Math.min(100, a.e + 0.12);
@@ -293,6 +293,29 @@ function sim() {
       RF[A_SLEEP] += safe ? 2 * k : 0;
       if (water[here] && !river[here] && !iced(here)) RF[A_SLEEP] -= 6;
     }
+    // Inborn in every mammal, people included: a hungry body is drawn toward food it can see, a thirsty
+    // one toward fresh water, and the sight of a big hunter makes it shy away — all the more in a child,
+    // or when already afraid. (What counts as food, and which way to go about getting it, still has to
+    // be learned.)
+    if (a.sp === 0 && !a.asleep) {
+      const thr = (v) => clamp((v - 0.3) / 0.7, 0, 1),
+        wary = (young ? 2.5 : 1.5) * (0.5 + a.fear);
+      for (let s = 0; s < 8; s++) {
+        RF[s] += 2.5 * thr(hu) * x[s * NCH + 1] + 2.5 * thr(th) * x[s * NCH];
+        const p = x[s * NCH + 5];
+        if (p > 0.1) {
+          RF[s] -= wary * p;
+          RF[(s + 4) % 8] += wary * p;
+        }
+      }
+      // and a parent with food in its belly is moved to feed its own hungry young one close by
+      if (a.e > 45 && !young)
+        for (let yy = -1; yy <= 1; yy++)
+          for (let xx = -1; xx <= 1; xx++) {
+            const l = G[idx(wx(a.x + xx), clamp(a.y + yy, 0, H - 1))];
+            if (l) for (const o of l) if (kinYoung(a, o) && o.e < 50) RF[A_GIVE] = Math.max(RF[A_GIVE], 3 * (1 - o.e / 50));
+          }
+    }
     // The withdrawal reflex: everyone pulls away from painful heat without having to learn it, so the
     // heat of flames close by pushes a creature away from them before it is in them.
     if (a.sp !== 3 && x[FIREIN] > 0.15)
@@ -332,6 +355,8 @@ function sim() {
       let mod = 1;
       if (d < 0) mod *= 1 + 0.5 * a.fear;
       if (tick - (a.novel ?? -9) < 2) mod *= 1.25;
+      // a big, unexpected success — a burst of dopamine — makes that moment stick after one try
+      if (d > 0.5) mod *= 1 + 3 * Math.min(1, (d - 0.5) / 1.5);
       if (a.stress > 0.5) mod *= 0.7;
       a.da = d;
       a.mod = mod;

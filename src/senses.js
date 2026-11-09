@@ -7,7 +7,7 @@ const kinYoung = (a, o) =>
   !o.dead &&
   o.sp === a.sp &&
   o.age < o.S.mat &&
-  (o.mom === a || a.kid === o || (o.mom && o.mom.mate === a));
+  (o.mom === a || a.kid === o || (o.mom && o.mom.mate === a) || (o.mom && o.mom.mom === a)); // a grandmother too
 const edible = (a, o) =>
   o !== a &&
   !o.dead &&

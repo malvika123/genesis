@@ -52,13 +52,14 @@ function reset(cfg = {}) {
   initTalk();
   initFire();
   for (let i = 0; i < W * H; i++) food[i] *= 1 - 0.35 * tree[i]; // little grass grows in the shade of trees
-  const n = clamp(cfg.people ?? 8, 2, 40), // early humans lived in small bands
+  const n = clamp(cfg.people ?? 25, 2, 40), // a band: foragers lived in groups of about 20–40
     nh = clamp(cfg.herbivores ?? 20, 0, 40),
     np = clamp(cfg.predators ?? 6, 0, 12),
     nf = clamp(cfg.fish ?? 24, 0, 60),
     inst = true;
   NID = 0;
   spawn(0, n, inst);
+  if (cfg.band !== false) makeBand();
   spawn(1, nh, inst);
   spawn(2, np, inst);
   spawn(3, nf, inst);
@@ -70,12 +71,63 @@ function reset(cfg = {}) {
   log(
     'The world begins with ' +
       n +
-      ' adults (a small band); ' +
+      (cfg.band !== false ? ' people, a band of families of all ages; ' : ' adults (a small band); ') +
       (tally(1) || 'no plant-eaters') +
       '; ' +
       (tally(2) || 'no hunters') +
       '; and ' +
       nf +
-      ' fish in the seas, lakes and rivers. There are mountains, forests, pits and bushes of red berries, some of them poisonous to eat. Every creature starts grown, with a blank mind and only what its kind is born with.'
+      ' fish in the seas, lakes and rivers. There are mountains, forests, pits and bushes of red berries, some of them poisonous to eat. Every creature starts with a blank mind and only what its kind is born with.'
   );
+}
+
+// The first people are a band, as foragers lived: families of all ages — about a third children, a few
+// teenagers, adults in couples, and a few elders — rather than a handful of young adults alone (Kelly
+// 2013; bands of 20–40, rarely fewer than two or three families). Each child has its mother in the
+// band. Their minds are as blank as everyone's; only their bodies' ages differ.
+function makeBand() {
+  const ppl = ag.filter((a) => a.sp === 0),
+    n = ppl.length,
+    S = ppl[0].S,
+    yr = TY,
+    nE = Math.round(0.12 * n),
+    nC = Math.round(0.32 * n),
+    nT = Math.round(0.12 * n);
+  ppl.forEach((a, j) => {
+    a.age =
+      j < nE
+        ? Math.round((45 + rnd() * 15) * yr)
+        : j < nE + nC
+          ? Math.round((1 + rnd() * 10.5) * yr)
+          : j < nE + nC + nT
+            ? Math.round((12 + rnd() * 5) * yr)
+            : Math.round((18 + rnd() * 22) * yr);
+    a.nh = grownUnits(a);
+    a.found = true;
+  });
+  const women = ppl.filter((a) => a.sex && a.age >= 18 * yr && a.age < 46 * yr),
+    men = ppl.filter((a) => !a.sex && a.age >= 18 * yr && a.age < 60 * yr);
+  // couples
+  for (let k = 0; k < Math.min(women.length, men.length); k++) {
+    const w = women[k],
+      m = men[k];
+    w.bonds = [{ o: m, s: 0.7 }];
+    m.bonds = [{ o: w, s: 0.7 }];
+    w.mate = m;
+    m.mate = w;
+  }
+  // every child and teenager belongs to a mother old enough to be theirs
+  for (const c of ppl.filter((a) => a.age < 18 * yr)) {
+    const ok = women.filter((w) => w.age - c.age >= 15 * yr);
+    const mo = ok.length ? ok[(rnd() * ok.length) | 0] : null;
+    if (!mo) continue;
+    c.mom = mo;
+    if (!mo.kid || mo.kid.age > c.age) mo.kid = c;
+    c.x = mo.x;
+    c.y = mo.y;
+    c.bond = 0.6;
+  }
+  // a few elders are mothers of the adults: grandmothers of the children
+  const grans = ppl.filter((a) => a.sex && a.age >= 45 * yr);
+  for (const w of women) if (grans.length && rnd() < 0.5) w.mom = grans[(rnd() * grans.length) | 0];
 }
