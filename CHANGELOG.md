@@ -4,6 +4,15 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **The real Earth, 70,000 years ago.** New worlds on the page are Earth itself by default: continents,
+  mountains and sea floors from NOAA's ETOPO1 relief, with the sea 80 m lower as in the ice age, so
+  Beringia, Sundaland, Sahul and Doggerland are dry land. Three years of weather run first so the rains
+  decide where deserts and forests are. *New world* can still choose a made-up planet
+  (`tools/experiment.js --earth` for the real one in experiments).
+- **The first band starts where our species lived:** warm (not desert-hot) tropical land with fresh water
+  close by and both open and wooded ground near — in Africa on the real Earth — and no big hunters
+  waiting at the camp. `--any-start` gives the old random start for comparison.
+
 - People look like people: human proportions (a bigger head in children), shoulders and hips, arms and
   legs that bend at elbow and knee, hands, feet, a face, ears and short curled hair. Skin is dark, as it
   was for early humans in sunny lands, varying a little between founders; children take after both
