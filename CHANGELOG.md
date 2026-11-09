@@ -4,7 +4,10 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
-- **Realistic view** (a button beside "Hide clouds"; off by default and remembered on each device, since it
+- A tidier top bar: Pause and the speed slider stay in view; the flat map, clouds, realistic view,
+  turning with the sun and the timeline are in a **View** menu (the gear button).
+
+- **Realistic view** (in the View menu; off by default and remembered on each device, since it
   is slower to draw): water that ripples, glints in the sun, mirrors the sky at a low angle and is clear in
   the shallows and dark where deep; rivers drawn clearly; and near the ground a sky coloured as sunlight
   scatters (blue overhead, pale at the horizon, red at sunrise and sunset, the sun's disc, stars at night),

@@ -155,6 +155,43 @@
         align-items: center;
         margin-left: auto;
       }
+      .menuwrap {
+        position: relative;
+      }
+      #optsbtn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      #optsbtn[aria-expanded='true'] {
+        background: var(--acc);
+        color: var(--bg);
+      }
+      .menu {
+        position: absolute;
+        right: 0;
+        top: calc(100% + 6px);
+        z-index: 50;
+        display: grid;
+        gap: 4px;
+        min-width: 210px;
+        padding: 6px;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
+      }
+      .menu[hidden] {
+        display: none;
+      }
+      .menu button {
+        text-align: left;
+        width: 100%;
+        border-color: transparent;
+      }
+      .menu button[hidden] {
+        display: none;
+      }
       #timebar { padding: 6px 10px; font-size: 12px; color: var(--mut, #9aa); }
       #timebar[hidden] { display: none; }
       #timebar .tb { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; margin-bottom: 4px; }
@@ -642,6 +679,10 @@
         .ctl {
           margin-left: 0;
         }
+        .menu {
+          left: 0;
+          right: auto;
+        }
         .ctl button {
           padding: 6px 9px;
         }
@@ -673,16 +714,24 @@
         <a class="navlink" href="lab.html" title="Run many seeded worlds and compare them">Lab ↗</a>
       </nav>
       <div class="ctl">
-        <button id="view">Flat map</button>
-        <button id="sky">Hide clouds</button>
-        <button id="real" aria-pressed="false" title="Real-looking water and sky, close to the ground (slower on some devices)">Realistic</button>
-        <button id="turn" aria-pressed="false">Turn with the sun</button>
-        <button id="timebtn" aria-pressed="false" title="Show where everyone has been, and what happened when">Time</button>
         <button class="go" id="play">Pause</button>
         <label class="spd"
           >Speed <input type="range" id="spd" min="0" max="100" step="1" value="34" aria-describedby="spdl" />
           <span id="spdl"></span
         ></label>
+        <div class="menuwrap">
+          <button id="optsbtn" aria-expanded="false" aria-controls="opts" title="How the world is shown">
+            <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            View
+          </button>
+          <div id="opts" class="menu" role="group" aria-label="How the world is shown" hidden>
+            <button id="view">Flat map</button>
+            <button id="sky">Hide clouds</button>
+            <button id="real" aria-pressed="false" title="Real-looking water and sky, close to the ground (slower on some devices)">Realistic</button>
+            <button id="turn" aria-pressed="false">Turn with the sun</button>
+            <button id="timebtn" aria-pressed="false" title="Show where everyone has been, and what happened when">Time</button>
+          </div>
+        </div>
       </div>
     </header>
     <section class="view" id="v-world">
@@ -870,7 +919,7 @@
           Researchers can run many seeded worlds at once and compare two setups on the <a href="lab.html">Lab</a> page.
         </p>
         <p class="sub">
-          The <b>Realistic</b> button adds real-looking water (rippling, glinting, mirroring the sky at a low
+          <b>Realistic</b>, in the View menu, adds real-looking water (rippling, glinting, mirroring the sky at a low
           angle) and a real sky near the ground (blue overhead, red toward a low sun, stars at night). It is off
           unless you turn it on, because it is slower to draw, and it changes only the picture, not the world.
         </p>

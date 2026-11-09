@@ -2741,6 +2741,24 @@ else {
   setReal(r0);
 }
 $('real').onclick = () => setReal($('real').getAttribute('aria-pressed') !== 'true');
+// The view options live in a small menu behind the "View" button, so the bar stays tidy
+function showOpts(on) {
+  $('opts').hidden = !on;
+  $('optsbtn').setAttribute('aria-expanded', on ? 'true' : 'false');
+}
+$('optsbtn').onclick = (e) => {
+  e.stopPropagation();
+  showOpts($('opts').hidden);
+};
+document.addEventListener('click', (e) => {
+  if (!$('opts').hidden && !e.target.closest('.menuwrap')) showOpts(false);
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && !$('opts').hidden) {
+    showOpts(false);
+    $('optsbtn').focus();
+  }
+});
 // ---------- full-screen world, tabs ----------
 function fit() {
   const r = $('stage').getBoundingClientRect(),
