@@ -4,6 +4,10 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- People look like people: human proportions (a bigger head in children), shoulders and hips, arms and
+  legs that bend at elbow and knee, hands, feet, a face, ears and short curled hair. Skin is dark, as it
+  was for early humans in sunny lands, varying a little between founders; children take after both
+  parents (drawn only; it changes nothing in the world).
 - Fish look like fish: dark-backed and silver-bellied (countershaded), with a fin, an eye and a
   swaying tail; on the globe they swim at the water's surface (they were drawn on the sea floor, hidden)
   and are no longer seen standing up against the sky at the horizon.

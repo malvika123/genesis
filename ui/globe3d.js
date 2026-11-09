@@ -488,6 +488,7 @@ const G3D = { ok: false };
         a.face || 1,
         a.preg ? Math.round(clamp(1 - (a.preg.due - tick) / Math.max(1, a.S.gest), 0, 1) * 3) : 0, // how far along a pregnancy is
         a.ptT !== undefined && tick - a.ptT <= 1 ? a.pt : -1, // pointing
+        a.sp === 0 ? Math.round(skinOf(a) * 8) : 0, // skin shade
       ].join();
     let t = figTex.get(key);
     if (t) return t;
@@ -510,6 +511,7 @@ const G3D = { ok: false };
         act: a.act,
         id: 0,
         ptv: a.ptT !== undefined && tick - a.ptT <= 1 ? a.pt : -1,
+        skv: a.sp === 0 ? Math.round(skinOf(a) * 8) / 8 : 0,
         pgv: a.preg ? Math.round(clamp(1 - (a.preg.due - tick) / Math.max(1, a.S.gest), 0, 1) * 3) / 3 : 0,
       };
     // draw so that the feet touch the bottom middle of the picture
