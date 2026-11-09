@@ -4,6 +4,9 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- Fish look like fish: dark-backed and silver-bellied (countershaded), with a fin, an eye and a
+  swaying tail; on the globe they swim at the water's surface (they were drawn on the sea floor, hidden)
+  and are no longer seen standing up against the sky at the horizon.
 - The land blends smoothly from square to square (on the globe and the flat map) instead of meeting in
   hard squares; puddles are round; clouds on the flat map are soft. The world underneath is unchanged.
 - Dead bodies can be seen from normal zoom on the globe, not only right up close.
