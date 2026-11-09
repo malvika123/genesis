@@ -70,6 +70,7 @@ file records the version, commit, Node version and settings, so the run can be c
 same command on the same commit gives the same file. A summary is printed as well.
 
 - **How the model works, with the real-world basis for each rule and what is simplified:** [docs/MODEL.md](docs/MODEL.md), written in the standard ODD format for agent-based models.
+- **What keeps a world alive — the research log:** [docs/FINDINGS.md](docs/FINDINGS.md). Each real-world feature we added, how it was tested across seeded worlds, what it did to survival, and how strong the evidence is. So far the must-haves are a band of families of all ages that feed their young, scavengers and predators that behave as real ones do, and learning from others. Bigger brains on their own made things worse.
 - **What is and isn't validated:** section 8 of that document. In short: not yet checked against data. Compare many seeds, never one.
 - **Citing:** DOI 10.5281/zenodo.24050772 for Genesis in general (always the latest release), or 10.5281/zenodo.24050773 for exactly v0.7.0 (Zenodo). See [CITATION.cff](CITATION.cff) (GitHub shows a "Cite this repository" button) and say which version or commit you used. Changes are listed in [CHANGELOG.md](CHANGELOG.md).
 - Runs shorter than about 100 days seldom show a second generation: a person matures at 12 "years" of 3 days each.
