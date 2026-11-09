@@ -4,6 +4,10 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- On the globe, stones, flakes, pyrite, fallen branches and nuts are real objects lying on the ground, so
+  trees and hills hide them (they were painted on top of the picture and showed on the treetops); people
+  and animals are solid again (a mistake made when fish were redrawn left them partly see-through).
+
 - **Many hands feed a child.** A grown person with food is moved to feed a hungry child nearby: their own
   most, their family's next, any child of the band only as far as a new inherited trait (care for others'
   young, recorded in experiments as `cares_for_others`) carries them. **Children stay close** to their

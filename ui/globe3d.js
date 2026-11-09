@@ -443,6 +443,92 @@ const G3D = { ok: false };
   const local = (la, lo, r) =>
     new THREE.Vector3(Math.cos(lo) * Math.cos(la) * r, Math.sin(la) * r, -Math.sin(lo) * Math.cos(la) * r);
 
+
+  // Things lying on the ground — stones, sharp flakes, pyrite, fallen branches, nuts — as real objects on
+  // the land, so trees and hills hide them like anything else (they were painted on top of the picture,
+  // and showed on the treetops). Drawn 2.5 times life size, like the creatures, and only when close.
+  const MAXI = 9000,
+    pebG = new THREE.IcosahedronGeometry(1, 0).scale(1, 0.55, 1),
+    stickG = new THREE.CylinderGeometry(1, 1.3, 1, 5).rotateZ(Math.PI / 2),
+    nutG = new THREE.SphereGeometry(1, 6, 4),
+    mkI = (g, c, n) => {
+      const m = new THREE.InstancedMesh(g, new THREE.MeshLambertMaterial({ color: c }), n);
+      m.count = 0;
+      m.frustumCulled = false;
+      globe.add(m);
+      return m;
+    },
+    stonesI = mkI(pebG, 0x6f6d66, MAXI),
+    flakesI = mkI(pebG, 0xb7bcba, MAXI),
+    pyriteI = mkI(pebG, 0xa8862a, 2000),
+    sticksI = mkI(stickG, 0x4e3420, MAXI),
+    nutsI = mkI(nutG, 0x5a3f22, MAXI);
+  const IQ = new THREE.Quaternion(),
+    IQ2 = new THREE.Quaternion(),
+    IM = new THREE.Matrix4(),
+    IS = new THREE.Vector3(),
+    IP = new THREE.Vector3(),
+    IUP = new THREE.Vector3(0, 1, 0);
+  let itemsFrame = 0;
+  function plantItems() {
+    const k = 2.5,
+      n = { s: 0, f: 0, p: 0, b: 0, u: 0 };
+    const put = (mesh, key, gx, gy, sx, sy, sz, turn) => {
+      if (n[key] >= (key === 'p' ? 2000 : MAXI)) return;
+      const la = latOfY(gy),
+        lo = lonOfX(gx),
+        r = 1 + EX * heightAt(la, lo);
+      IP.copy(local(la, lo, r));
+      IQ.setFromUnitVectors(IUP, IP.clone().normalize());
+      IQ2.setFromAxisAngle(IUP, turn);
+      IQ.multiply(IQ2);
+      IS.set(sx, sy, sz);
+      IM.compose(IP, IQ, IS);
+      mesh.setMatrixAt(n[key]++, IM);
+    };
+    for (let i = 0; i < W * H; i++) {
+      const nn = nut[i] > 0.05 ? Math.min(6, Math.ceil(nut[i] * 8)) : 0;
+      if (!lying(i) && !nn) continue;
+      const x = i % W,
+        y = (i / W) | 0;
+      let c = 0;
+      // the same scattered places every time, as on the flat map
+      const spot = () => {
+        const a = (i * 7919 + c * 104729) % 1000,
+          b = (i * 6271 + c * 15485863) % 1000;
+        c++;
+        return [x + (a / 1000 - 0.5) * 0.7, y + (b / 1000 - 0.5) * 0.7, (a % 360) * (Math.PI / 180)];
+      };
+      for (let j = 0; j < stone[i]; j++) {
+        const [gx, gy, t] = spot();
+        put(stonesI, 's', gx, gy, 0.0006 * k, 0.0006 * k, 0.0007 * k, t);
+      }
+      for (let j = 0; j < flake[i]; j++) {
+        const [gx, gy, t] = spot();
+        put(flakesI, 'f', gx, gy, 0.0004 * k, 0.00015 * k, 0.0003 * k, t);
+      }
+      for (let j = 0; j < pyrite[i]; j++) {
+        const [gx, gy, t] = spot();
+        put(pyriteI, 'p', gx, gy, 0.0004 * k, 0.0004 * k, 0.0004 * k, t);
+      }
+      for (let j = 0; j < stick[i]; j++) {
+        const [gx, gy, t] = spot();
+        // a fallen branch lying along the ground, about as long as a person is tall
+        put(sticksI, 'b', gx, gy, 0.0055 * k, 0.00012 * k, 0.00012 * k, t);
+      }
+      for (let j = 0; j < nn; j++) {
+        const [gx, gy, t] = spot();
+        put(nutsI, 'u', gx, gy, 0.00018 * k, 0.00018 * k, 0.00018 * k, t);
+      }
+    }
+    stonesI.count = n.s;
+    flakesI.count = n.f;
+    pyriteI.count = n.p;
+    sticksI.count = n.b;
+    nutsI.count = n.u;
+    for (const m of [stonesI, flakesI, pyriteI, sticksI, nutsI]) m.instanceMatrix.needsUpdate = true;
+  }
+
   let frame = 0;
   // Blend the land so each square's colour flows smoothly into its neighbours' (shrunk to one pixel a
   // square, then stretched back with smoothing: a gradient, at any zoom), with the detailed picture
@@ -809,6 +895,7 @@ const G3D = { ok: false };
         sp.visible = true;
         sp.material.map = texFor(a, v);
         sp.material.color.setScalar(isNightAt(a.x) ? 0.45 : 1);
+        sp.material.transparent = false; // solid: only the empty background of the picture is cut away
         sp.material.needsUpdate = true;
         const la = latOfY(a.ry),
           lo = lonOfX(a.rx);
@@ -838,6 +925,10 @@ const G3D = { ok: false };
     if (treesFor !== alt || treeFrame++ % 600 === 0) plantTrees();
     if (cavesFor !== cave || shapedFor !== alt) plantCaves();
     pines.visible = leafy.visible = trunks.visible = GL.zoom > 1.8;
+    // things lying on the ground, close up (picked up and put down often, so refreshed every second or so)
+    const itemsOn = GL.zoom >= 5 || !!GL.eye;
+    stonesI.visible = flakesI.visible = pyriteI.visible = sticksI.visible = nutsI.visible = itemsOn;
+    if (itemsOn && itemsFrame++ % 30 === 0) plantItems();
     if (frame++ % 12 === 0) paint(v);
     spinStep();
     // gently follow a creature you asked to see
@@ -917,7 +1008,6 @@ const G3D = { ok: false };
     if (GL.zoom >= 2.5 || GL.eye) drawCarrion(cx, project);
     if (GL.zoom >= 2.5 || GL.eye) drawSounds(cx, project);
     drawTrails(cx, project);
-    if (GL.zoom >= 5 || GL.eye) drawGroundItems(cx, project);
     if (GL.zoom >= 2 || GL.eye) drawBodies(cx, project); // the dead lie where they fell, seen from fairly far
     drawTalk(
       cx,
