@@ -33,6 +33,7 @@ Entries are kept even when the result was "no effect" or "it made things worse" 
 | Starting where our species lived (warm tropical land with fresh water, open and wooded ground; no predators at the camp) | 23.1 vs 15.3 alive, better in 10 of 12 worlds; 0 vs 1 die-outs. Range of the difference still includes zero | weak–moderate |
 | The real Earth 70,000 years ago instead of a made-up planet | Worlds survive about as well (20.3 alive, none died out) | weak (different worlds) |
 | **Not** measurable: hungry people eating the food in reach (fixing a real flaw) | Hunger deaths 170 → 167; survival 23.1 → 24.4 (within noise) | none |
+| Many hands feeding a child (family most), and children staying close to carers | Hunger deaths 13.9 → 11.5 per world, predator deaths 5.3 → 8.3; survival unchanged; ranges include zero | weak |
 | **Not** a must-have: bigger brains on their own | 64 units: 8.2 alive, 256: 6.1, 1,024: 2.2 | strong |
 | **Not** measurable: sound by real physics, animal calls | 7.7 / 6.7 / 7.1 alive (within noise) | none |
 
@@ -288,14 +289,54 @@ deaths point elsewhere: weaned children and orphans left to feed themselves, and
 foragers children are fed by many adults for years — they produce less than they eat until their teens
 (Kaplan et al. 2000) — and bands stay and move together.
 
+### 11. Many hands feed a child, and children stay close — Nov 2026
+
+**Version.** Unreleased (after 0.7.0) · the change: commit `e0e98d9`.
+
+**Data.** Raw tables: [with the change](../data/findings/11-feeding-children/with-cooperative-care.csv) · [before (the same as entry 10)](../data/findings/11-feeding-children/before.csv). No switch turns this change off.
+
+**Added.** (1) A grown person with food in its belly is moved to feed a hungry child close by: its own child
+or grandchild most, its younger brothers, sisters, nephews and nieces less, and any other child of the band
+only as far as a new inherited trait, care for others' young, reaches (it varies, is passed on, and is
+recorded as `cares_for_others`). (2) Children stay close to those who care for them: a small child to its
+mother, or if she is gone or out of sight to the nearest grown person of the band; an older child within
+reach of the band; the pull grows with distance and fear.
+
+**Real-world basis.** Among living foragers many hands feed a child — mothers, grandmothers, fathers,
+siblings, others — with family helping most (cooperative breeding: Hrdy 2009; Kramer 2010); Hadza
+grandmothers' foraging improves grandchildren's growth (Hawkes et al. 1998); children produce less than they
+eat until their late teens (Kaplan et al. 2000); orphans still die more often (Hill & Hurtado 1996, Ache);
+young children's attachment to caregivers is inborn (Bowlby 1969), and older forager children forage near
+camp in groups rather than alone.
+
+**Test.** 12 worlds × 60 days, seeds 1–12, made-up planet, the realistic start, before and after (worlds
+diverge after the first steps, so only averages compare).
+
+| | People alive | Worlds died out | Hunger (per world) | Predators (per world) | Drowned | Burned | Generations |
+|---|---|---|---|---|---|---|---|
+| Before | 24.4 ± 4.4 | 0 | 167 (13.9) | 63 (5.3) | 54 | 34 | 1.75 |
+| After | 24.7 ± 3.0 | 0 | 138 (11.5) | 100 (8.3) | 50 | 38 | 1.83 |
+
+**Result.** Hunger deaths fell by about a sixth (−2.4 per world, likely between −6.3 and +1.5) and predator
+deaths rose (+3.1 per world, likely between −3.2 and +9.4); both ranges include zero. Survival unchanged.
+Worlds varied less (± 3.0 instead of ± 4.4).
+
+**Interpretation.** In the expected direction for hunger, but not yet clear with 12 worlds. One plausible
+reading is that children now survive hunger long enough to meet other dangers, or that the band clusters
+and draws predators; neither is tested.
+
+**Strength.** Weak. Needs 24+ worlds, and a trace of who now dies of hunger and to predators.
+**Lesson:** feeding children may move deaths from hunger to predators rather than prevent them; what
+protected forager children from predators (camps, adults close by, fire) matters too.
+
 ---
 
 ## Open questions (next tests)
 
 - Ablate the bundle in entry 7: which of band size, parental feeding, instincts, one-shot memory and
   swimming carry the effect?
-- Hunger: do children staying near their family, and adults feeding any hungry child in the band
-  (cooperative breeding), cut the deaths of weaned children and orphans?
+- Hunger: does the fall in hunger deaths with cooperative care (entry 11) hold with 24+ worlds, and why
+  did predator deaths rise? What protected forager children from predators — camps, adults close, fire?
 - Where the band starts: does the +8 people hold with 24+ worlds, and is it the water, the food or the
   temperature that carries it? Does fleeing wildfire realistically stop the fire deaths?
 - On the real Earth: what do ice sheets, the colder climate and monsoons change?

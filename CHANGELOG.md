@@ -4,6 +4,13 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Many hands feed a child.** A grown person with food is moved to feed a hungry child nearby: their own
+  most, their family's next, any child of the band only as far as a new inherited trait (care for others'
+  young, recorded in experiments as `cares_for_others`) carries them. **Children stay close** to their
+  mother, or the nearest grown person of the band if she is gone; older children stay within reach of the
+  band. (Research log entry 11: hunger deaths fell by about a sixth, predator deaths rose; both within
+  noise.)
+
 - Hungry people eat the food they are standing on: seeking food stops once liked food is in reach (as in
   every animal), and the inborn pull to eat sweet or fresh food when hungry is stronger. (Research log
   entry 10: it did not reduce hunger deaths; the cause lies elsewhere.)

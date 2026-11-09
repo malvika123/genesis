@@ -150,6 +150,7 @@ function makeBand() {
     c.x = mo.x;
     c.y = mo.y;
     c.bond = 0.6;
+    c.metAny = true; // it has known its mother all its life
   }
   // a few elders are mothers of the adults: grandmothers of the children
   const grans = ppl.filter((a) => a.sex && a.age >= 45 * yr);
