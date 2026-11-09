@@ -191,6 +191,6 @@ function putDown(a) {
   const i = idx(a.x, a.y),
     L = a.hand === 1 ? stone : a.hand === 2 || a.hand === 4 ? stick : a.hand === 5 ? pyrite : flake;
   // branches can be heaped up (a pile of them is a shelter: forest.js); other things only a few to a place
-  if (a.hand && !water[i]) L[i] = Math.min(L === stick ? 16 : 6, L[i] + 1);
+  if (a.hand && !water[i]) L[i] = Math.min(L === stick && SOC.shelter ? 16 : 6, L[i] + 1);
   a.hand = 0;
 }
