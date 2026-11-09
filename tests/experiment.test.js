@@ -20,3 +20,17 @@ test('the experiment runner gives the same table every time, whatever the number
   assert.equal(rows.length, 2);
   assert.equal(rows[0].split(',').length, head.split(',').length);
 });
+
+test('the Lab and the command line agree: settings round-trip through the command the Lab shows', () => {
+  const X = require('../tools/experiment-core');
+  const v = { days: 30, people: 12, predators: 3, brain: 128, earth: true, homeland: false, vicar: false, modernVoice: true };
+  const S = X.build(v);
+  const cmd = X.command(S, '1-5', 1);
+  const argv = cmd.split(' ').slice(2);
+  const a = {};
+  for (let i = 0; i < argv.length; i++)
+    if (argv[i].startsWith('--')) a[argv[i].slice(2)] = argv[i + 1] && !argv[i + 1].startsWith('--') ? argv[++i] : true;
+  assert.equal(a.seeds, '1-5');
+  assert.deepEqual(X.fromArgs(a), S);
+  assert.deepEqual(X.fromArgs({}), X.build({}), 'the same defaults on both sides');
+});

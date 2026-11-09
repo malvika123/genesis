@@ -36,8 +36,9 @@ src/                the simulation engine — no browser code, so it also runs h
   ORDER             the order the engine files load in
 ui/app.js           drawing, panels, controls and the animation loop
 ui/globe3d.js       the planet in 3D (WebGL)
+lab.html, ui/lab.js the Lab: run and compare seeded experiments in the browser (ui/lab-worker.js runs the worlds)
 vendor/three.min.js three.js 0.149 (MIT licence), included so the page works offline
-tools/              headless engine loader, experiment runner, single-file build
+tools/              headless engine loader, experiment runner (and its shared core), single-file build
 tests/              automated tests
 ```
 
@@ -58,7 +59,16 @@ npm run build                 # bundle everything into one file: dist/genesis.ht
 
 ## For researchers
 
-Genesis runs without a browser and is exactly repeatable, so it can be used as an experiment tool.
+Genesis is exactly repeatable, so it can be used as an experiment tool: a seed and the settings fix a
+whole world.
+
+**In the browser:** the [Lab page](https://malvika123.github.io/genesis/lab.html) (`lab.html`) runs many
+seeded worlds in the background, one per core, and compares two setups on the same seeds: people alive
+(with the range the true difference probably lies in), die-outs, causes of death, when each discovery
+first happened, and each world. Results download as the same CSV the command-line runner writes, and the
+page shows the matching command. Both run the same code (`tools/experiment-core.js`), so the rows agree.
+
+**Without a browser** (for hundreds of worlds):
 
 ```
 node tools/experiment.js --seeds 1-50 --days 90 --workers 4 --out run.csv

@@ -131,6 +131,16 @@
         padding: 6px 12px;
         border-radius: 8px;
       }
+      nav .navlink {
+        font-weight: 600;
+        color: var(--mute);
+        padding: 6px 12px;
+        border-radius: 8px;
+        text-decoration: none;
+      }
+      nav .navlink:hover {
+        color: var(--ink);
+      }
       nav button[aria-selected='true'] {
         background: var(--acc);
         color: var(--bg);
@@ -656,6 +666,7 @@
         <button role="tab" data-tab="stats" aria-selected="false">Stats</button>
         <button role="tab" data-tab="setup" aria-selected="false">New world</button>
         <button role="tab" data-tab="about" aria-selected="false">About</button>
+        <a class="navlink" href="lab.html" title="Run many seeded worlds and compare them">Lab</a>
       </nav>
       <div class="ctl">
         <button id="view">Flat map</button>
@@ -851,6 +862,7 @@
           starts where our species lived then: in Africa, in warm country of grass and woodland near fresh
           water. (Simplified: each square of the map is about 300 km of real Earth; there are no ice-age ice
           sheets yet, and the climate is today's.) A new world can instead be a made-up planet.
+          Researchers can run many seeded worlds at once and compare two setups on the <a href="lab.html">Lab</a> page.
         </p>
         <p class="sub">
           Land and sea: the ocean is salty and undrinkable, shallow by the coasts and deep

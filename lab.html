@@ -1,0 +1,396 @@
+<!doctype html>
+<!-- Genesis Lab — run many seeded worlds in the browser and compare them.
+     Copyright (c) 2026 Malvika Sen. Released under the MIT License (see LICENSE). -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Genesis Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #eef2ef;
+        --panel: #fff;
+        --ink: #16231f;
+        --mute: #5b6b65;
+        --line: #d3dcd6;
+        --acc: #2f6b57;
+        --a: #2f7fd6;
+        --b: #d0702a;
+        --bad: #c8372d;
+        --soft: #e3ebe6;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme='light']) {
+          --bg: #0d1511;
+          --panel: #16211b;
+          --ink: #e4efe8;
+          --mute: #93a69c;
+          --line: #263830;
+          --acc: #7fd0b0;
+          --a: #6fb0ff;
+          --b: #f0a060;
+          --bad: #ff6b5e;
+          --soft: #1d2b24;
+        }
+      }
+      :root[data-theme='dark'] {
+        --bg: #0d1511;
+        --panel: #16211b;
+        --ink: #e4efe8;
+        --mute: #93a69c;
+        --line: #263830;
+        --acc: #7fd0b0;
+        --a: #6fb0ff;
+        --b: #f0a060;
+        --bad: #ff6b5e;
+        --soft: #1d2b24;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+        line-height: 1.5;
+      }
+      header {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 14px;
+        align-items: baseline;
+        padding: 10px 16px;
+        border-bottom: 1px solid var(--line);
+        background: var(--panel);
+      }
+      header h1 {
+        font-size: 1.15rem;
+        font-weight: 800;
+        margin: 0;
+        letter-spacing: -0.02em;
+      }
+      header a {
+        color: var(--acc);
+      }
+      main {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 16px;
+        display: grid;
+        gap: 16px;
+      }
+      section {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 14px 16px;
+        min-width: 0;
+      }
+      h2 {
+        font-size: 1rem;
+        margin: 0 0 8px;
+        font-weight: 800;
+      }
+      h3 {
+        font-size: 0.9rem;
+        margin: 14px 0 6px;
+      }
+      p {
+        margin: 0 0 8px;
+      }
+      .mute {
+        color: var(--mute);
+        font-size: 0.88rem;
+      }
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 18px;
+        align-items: end;
+      }
+      label.f {
+        display: grid;
+        gap: 2px;
+        font-size: 0.85rem;
+        color: var(--mute);
+      }
+      input,
+      select,
+      button {
+        font: inherit;
+        color: var(--ink);
+      }
+      input[type='text'],
+      input[type='number'],
+      select {
+        background: var(--bg);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 5px 8px;
+        min-width: 0;
+      }
+      input[type='number'] {
+        width: 90px;
+      }
+      #seeds {
+        width: 130px;
+      }
+      button {
+        border: 1px solid var(--line);
+        background: var(--bg);
+        border-radius: 8px;
+        padding: 6px 14px;
+        cursor: pointer;
+      }
+      button.go {
+        background: var(--acc);
+        color: var(--bg);
+        border-color: var(--acc);
+        font-weight: 600;
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: default;
+      }
+      .setups {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-top: 12px;
+      }
+      .setups.two {
+        grid-template-columns: 1fr 1fr;
+      }
+      @media (max-width: 760px) {
+        .setups.two {
+          grid-template-columns: 1fr;
+        }
+      }
+      .setup {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 10px 12px;
+        border-top: 4px solid var(--a);
+        min-width: 0;
+      }
+      .setup.b {
+        border-top-color: var(--b);
+      }
+      .setup h3 {
+        margin: 0 0 6px;
+      }
+      .opt {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        padding: 3px 4px;
+        border-radius: 6px;
+        font-size: 0.88rem;
+      }
+      .opt input[type='number'] {
+        width: 76px;
+        margin-left: auto;
+      }
+      .opt.diff {
+        background: var(--soft);
+        outline: 1px dashed var(--b);
+      }
+      .bar {
+        height: 8px;
+        background: var(--soft);
+        border-radius: 99px;
+        overflow: hidden;
+      }
+      .bar > i {
+        display: block;
+        height: 100%;
+        width: 0;
+        background: var(--acc);
+        transition: width 0.3s;
+      }
+      #tiles {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+        gap: 6px;
+        margin-top: 10px;
+      }
+      .tile {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 3px 6px 5px;
+        font-size: 0.75rem;
+        position: relative;
+        overflow: hidden;
+        border-left: 4px solid var(--a);
+      }
+      .tile.b {
+        border-left-color: var(--b);
+      }
+      .tile .fill {
+        position: absolute;
+        inset: auto 0 0 0;
+        height: 3px;
+        background: var(--acc);
+        width: 0;
+      }
+      .tile .n {
+        font-weight: 800;
+        font-size: 0.95rem;
+      }
+      .tile.out .n {
+        color: var(--bad);
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 10px;
+      }
+      .card {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 10px 12px;
+      }
+      .card .big {
+        font-size: 1.6rem;
+        font-weight: 800;
+        line-height: 1.1;
+      }
+      .card .k {
+        font-size: 0.8rem;
+        color: var(--mute);
+      }
+      .ca {
+        color: var(--a);
+      }
+      .cb {
+        color: var(--b);
+      }
+      .wrap {
+        overflow-x: auto;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 0.85rem;
+        font-variant-numeric: tabular-nums;
+      }
+      th,
+      td {
+        text-align: right;
+        padding: 3px 8px;
+        border-bottom: 1px solid var(--line);
+        white-space: nowrap;
+      }
+      th:first-child,
+      td:first-child {
+        text-align: left;
+        white-space: normal;
+      }
+      th {
+        color: var(--mute);
+        font-weight: 600;
+      }
+      code,
+      pre {
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.8rem;
+      }
+      pre {
+        background: var(--bg);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 8px 10px;
+        white-space: pre-wrap;
+        word-break: break-all;
+        margin: 4px 0 8px;
+      }
+      .verdict {
+        border-left: 4px solid var(--acc);
+        padding: 6px 10px;
+        background: var(--soft);
+        border-radius: 6px;
+        margin: 10px 0 0;
+      }
+      svg text {
+        fill: var(--mute);
+        font-size: 11px;
+      }
+      [hidden] {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Genesis Lab</h1>
+      <span class="mute">Run many seeded worlds and compare them</span>
+      <a href="./" style="margin-left: auto">← Back to the world</a>
+    </header>
+    <main>
+      <section>
+        <h2>Experiment</h2>
+        <p class="mute">
+          Each world is built from its seed and these settings and nothing else, so the same seed and settings
+          on the same version give the same world. To test one feature, compare two setups that differ only in
+          that feature, on the same seeds. This page runs the same code as the command-line runner
+          (<code>tools/experiment.js</code>), in the background, one world per core.
+        </p>
+        <div class="row">
+          <label class="f">Seeds <input id="seeds" type="text" value="1-12" placeholder="1-12 or 1,4,9" /></label>
+          <label class="f">Days per world <input id="days" type="number" min="1" max="2000" value="60" /></label>
+          <label class="f">Cores to use <select id="workers"></select></label>
+          <label class="opt" style="align-self: center"><input id="compare" type="checkbox" checked /> Compare two setups (A and B)</label>
+        </div>
+        <div id="setups" class="setups two"></div>
+        <div class="row" style="margin-top: 12px">
+          <button id="run" class="go">Run</button>
+          <button id="stop" disabled>Stop</button>
+          <span id="plan" class="mute"></span>
+        </div>
+      </section>
+
+      <section id="progress" hidden>
+        <h2 id="ptitle">Running</h2>
+        <div class="bar"><i id="pbar"></i></div>
+        <p id="pinfo" class="mute" style="margin-top: 6px"></p>
+        <div id="tiles"></div>
+        <p class="mute" style="margin-top: 8px">Keep this tab open; worlds run only while it is open. Each tile is one world: its seed, and how many people are alive when it ends.</p>
+      </section>
+
+      <section id="results" hidden>
+        <h2>Results</h2>
+        <div id="cards" class="cards"></div>
+        <div id="verdict"></div>
+        <h3>People alive at the end, world by world</h3>
+        <div id="dots" class="wrap"></div>
+        <h3>How people died (all worlds together)</h3>
+        <div class="wrap"><table id="deaths"></table></div>
+        <h3>What was discovered: in how many worlds, and the median day it first happened</h3>
+        <div class="wrap"><table id="firsts"></table></div>
+        <h3>Each world</h3>
+        <div class="wrap"><table id="worlds"></table></div>
+        <h3>Take the results away</h3>
+        <div class="row" id="downloads"></div>
+        <p class="mute" style="margin-top: 10px">The same experiment from the command line (for many more worlds, or to check these):</p>
+        <pre id="cmd"></pre>
+      </section>
+
+      <section>
+        <h2>Reading the results</h2>
+        <p class="mute">
+          Worlds differ a lot from seed to seed, so a small difference between A and B can be chance. The
+          range shown with each difference (the mean ± about two standard errors) is where the true difference
+          probably lies; if it includes zero, the setups cannot be told apart with this many worlds. Run more
+          seeds to narrow it. Results from the project's own tests are written up in the
+          <a href="https://github.com/malvika123/genesis/blob/develop/docs/FINDINGS.md">research log</a>.
+        </p>
+      </section>
+    </main>
+    <script src="tools/experiment-core.js"></script>
+    <script src="ui/lab.js"></script>
+  </body>
+</html>

@@ -26,49 +26,15 @@
 // Lines starting with # at the top record exactly what was run, so the file can be cited and the run
 // repeated: the same command on the same version of Genesis gives the same file.
 //
+// The same experiments can be run in a browser on the Lab page (lab.html); both use tools/experiment-core.js.
+//
 // Copyright (c) 2026 Malvika Sen. MIT License.
 
-const fs = require('fs');
 const path = require('path');
+const fs = require('fs');
 const { spawn, execSync } = require('child_process');
 const { createEngine } = require('./engine');
-
-// the things that can happen once, in a world, and that an experiment will want to date
-const MILESTONES = [
-  'take', // first picks something up
-  'nut', // cracks a nut with a stone
-  'flake', // knocks a sharp flake off a stone
-  'root', // digs up a root
-  'dig', // digs with a stick
-  'meat', // eats meat from a body
-  'butcher', // cuts meat with a sharp stone
-  'hunt', // brings down a land animal
-  'cooked', // eats food cooked by a wildfire
-  'brand', // takes up a burning stick
-  'setfire', // drops a burning stick, and fire takes hold
-  'fed', // feeds a fire
-  'kept', // keeps a fire going for hours
-  'madefire', // makes fire with sparks
-  'rubfire', // makes fire with wood
-  'share', // gives food to another
-  'vicar', // someone is afraid after seeing another person hurt
-  'swim', // someone learns to swim
-  'point', // someone points
-  'joint', // someone goes the way another pointed (shared attention)
-  'speak', // someone first says a word of its own making
-  'shared', // three people say the same word: the first shared word
-];
-const CAUSES = [
-  'hunger',
-  'thirst',
-  'killed by a predator',
-  'drowned',
-  'burned',
-  'its wounds',
-  'old age',
-  'struck by lightning',
-  'giving birth',
-];
+const X = require('./experiment-core');
 
 function parse(argv) {
   const a = {};
@@ -79,145 +45,15 @@ function parse(argv) {
     }
   return a;
 }
-function seedList(s) {
-  const out = [];
-  for (const part of String(s).split(',')) {
-    const m = part.match(/^(\d+)-(\d+)$/);
-    if (m) for (let x = +m[1]; x <= +m[2]; x++) out.push(x);
-    else if (/^\d+$/.test(part)) out.push(+part);
-    else throw new Error('Cannot read the seeds: ' + s);
-  }
-  return out;
-}
-
-function settings(a) {
-  const n = (k, d) => (a[k] === undefined ? d : Number(a[k]));
-  return {
-    days: n('days', 60),
-    brain: n('brain', 64), // the most thinking units a person's brain grows (64 normally)
-    cfg: {
-      people: n('people', 25),
-      herbivores: n('herbivores', 20),
-      predators: n('predators', 6),
-      fish: n('fish', 24),
-      retina: !!a.retina,
-      vicar: !a['no-vicar'],
-      pickyCopy: !a['no-picky'],
-      soundPhysics: !a['old-sound'],
-      animalCalls: !a['no-calls'],
-      modernVoice: !!a['modern-voice'],
-      homeland: !a['any-start'],
-      earth: !!a.earth,
-    },
-  };
-}
-
-function runWorld(E, seed, S) {
-  E.setSeed(seed);
-  E.reset(S.cfg);
-  const day = {};
-  for (let t = 0; t < S.days * E.DAY; t++) {
-    E.sim();
-    const st = E.state();
-    for (const k of MILESTONES) if (st.firsts[k] && day[k] === undefined) day[k] = Math.floor(t / E.DAY) + 1;
-    if (st.over) break;
-  }
-  const st = E.state(),
-    ppl = st.ag.filter((a) => a.sp === 0);
-  const died = {};
-  for (const [k, v] of Object.entries(st.deaths)) if (k.startsWith('Person: ')) died[k.slice(8)] = v;
-  const count = (sp) => st.ag.filter((a) => a.sp === sp).length;
-  return {
-    seed,
-    days_run: Math.floor(st.tick / E.DAY),
-    people_alive: ppl.length,
-    generations: st.maxGen,
-    plant_eaters: count(1),
-    hunters: count(2),
-    fish: count(3),
-    best_fire_skill: +Math.max(0, ...ppl.map((p) => p.fsk || 0)).toFixed(2),
-    // what kind of learners the living people are (inherited)
-    learns_from_others: ppl.length ? +(ppl.reduce((t, p) => t + (p.g.im ?? 1), 0) / ppl.length).toFixed(2) : '',
-    copies_successful: ppl.length ? +(ppl.reduce((t, p) => t + (p.g.pb ?? 0.5), 0) / ppl.length).toFixed(2) : '',
-    follows_crowd: ppl.length ? +(ppl.reduce((t, p) => t + (p.g.cf ?? 0.3), 0) / ppl.length).toFixed(2) : '',
-    full_sibling_pct: st.SIBS[0] && st.SIBS[0].pairs ? Math.round((100 * st.SIBS[0].full) / st.SIBS[0].pairs) : '',
-    vocal_control: ppl.length ? +(ppl.reduce((t, p) => t + (p.g.vl ?? 1), 0) / ppl.length).toFixed(2) : '',
-    point_urge: ppl.length ? +(ppl.reduce((t, p) => t + (p.g.pg ?? 1), 0) / ppl.length).toFixed(2) : '',
-    share_joy: ppl.length ? +(ppl.reduce((t, p) => t + (p.g.sh ?? 1), 0) / ppl.length).toFixed(2) : '',
-    ...(() => {
-      // the brain layout of the living: share of units in each kind of region, and how many regions
-      const sh = [0, 0, 0, 0];
-      let nr = 0;
-      for (const p of ppl) {
-        const H = p.h.length,
-          L = p.g.lay;
-        nr += L ? L.masks.length : 4;
-        for (let j = 0; j < H; j++) sh[L ? L.kind[L.reg[j]] : j % 8 === 0 ? 1 : j % 8 === 1 ? 2 : j % 16 === 2 ? 3 : 0] += 1 / H;
-      }
-      const m = (v) => (ppl.length ? +(v / ppl.length).toFixed(3) : '');
-      return { brain_general: m(sh[0]), brain_fear: m(sh[1]), brain_memory: m(sh[2]), brain_words: m(sh[3]), brain_regions: m(nr) };
-    })(),
-    words_said: st.WSTAT ? st.WSTAT.size : '',
-    words_shared: st.WSTAT ? [...st.WSTAT.values()].filter((s) => s.who && s.who.size >= 3).length : '',
-    loners_pct: ppl.length ? Math.round((100 * ppl.filter((p) => (p.g.im ?? 1) < 0.35).length) / ppl.length) : '',
-    died,
-    day,
-  };
-}
-
-function csv(rows, S, meta) {
-  const head = ['seed', 'days_run', 'people_alive', 'generations', 'plant_eaters', 'hunters', 'fish', 'best_fire_skill', 'learns_from_others', 'copies_successful', 'follows_crowd', 'loners_pct', 'full_sibling_pct', 'vocal_control', 'point_urge', 'share_joy', 'words_said', 'words_shared', 'brain_general', 'brain_fear', 'brain_memory', 'brain_words', 'brain_regions'];
-  const cols = [...head, ...CAUSES.map((c) => 'died_' + c.replace(/ /g, '_')), ...MILESTONES.map((m) => 'day_' + m)];
-  const lines = [
-    '# Genesis experiment',
-    '# genesis ' + meta.version + ' commit ' + meta.commit + ', node ' + process.version,
-    '# settings ' + JSON.stringify({ days: S.days, brain: S.brain, ...S.cfg }),
-    '# seeds ' + meta.seeds,
-    '# day_X = the day (1 = first) something first happened in that world; empty = never',
-    cols.join(','),
-  ];
-  for (const r of rows)
-    lines.push(
-      [
-        ...head.map((h) => r[h]),
-        ...CAUSES.map((c) => r.died[c] || 0),
-        ...MILESTONES.map((m) => (r.day[m] === undefined ? '' : r.day[m])),
-      ].join(',')
-    );
-  return lines.join('\n') + '\n';
-}
-
-function summary(rows, S) {
-  const med = (v) => {
-    const s = [...v].sort((x, y) => x - y);
-    return s.length ? (s.length % 2 ? s[(s.length - 1) / 2] : (s[s.length / 2 - 1] + s[s.length / 2]) / 2) : null;
-  };
-  const out = [];
-  const alive = rows.map((r) => r.people_alive);
-  out.push(
-    `${rows.length} worlds, ${S.days} days each. People alive at the end: mean ${(alive.reduce((a, b) => a + b, 0) / rows.length).toFixed(1)}, median ${med(alive)}; ` +
-      `${rows.filter((r) => r.people_alive === 0).length} worlds ended with nobody left.`
-  );
-  const dead = {};
-  for (const r of rows) for (const [k, v] of Object.entries(r.died)) dead[k] = (dead[k] || 0) + v;
-  out.push('Deaths: ' + Object.entries(dead).map(([k, v]) => k + ' ' + v).join(', '));
-  for (const m of MILESTONES) {
-    const d = rows.filter((r) => r.day[m] !== undefined).map((r) => r.day[m]);
-    out.push(
-      m.padEnd(9) + `${String(d.length).padStart(4)} / ${rows.length} worlds` + (d.length ? `, median day ${med(d)}, earliest ${Math.min(...d)}` : '')
-    );
-  }
-  return out.join('\n');
-}
 
 function main() {
   const a = parse(process.argv.slice(2)),
-    S = settings(a),
-    seeds = seedList(a.seeds ?? '1-10');
+    S = X.fromArgs(a),
+    seeds = X.seedList(a.seeds ?? '1-10');
   if (a.worker) {
     // a helper process: run its share of the seeds and print one JSON line per world
     const E = createEngine({ brain: S.brain });
-    for (const sd of seeds) console.log(JSON.stringify(runWorld(E, sd, S)));
+    for (const sd of seeds) console.log(JSON.stringify(X.runWorld(E, sd, S)));
     return;
   }
   let commit = 'unknown';
@@ -230,6 +66,7 @@ function main() {
     version: require('../package.json').version,
     commit,
     seeds: a.seeds ?? '1-10',
+    runtime: 'node ' + process.version,
   };
   const W = Math.max(1, Math.min(Number(a.workers || 1), seeds.length));
   const shares = Array.from({ length: W }, () => []);
@@ -252,10 +89,10 @@ function main() {
       .on('end', () => {
         if (--live) return;
         rows.sort((x, y) => x.seed - y.seed);
-        const text = csv(rows, S, meta);
+        const text = X.csv(rows, S, meta);
         if (typeof a.out === 'string') fs.writeFileSync(a.out, text);
         else process.stdout.write(text);
-        console.error('\n' + summary(rows, S) + (typeof a.out === 'string' ? '\nWrote ' + a.out : ''));
+        console.error('\n' + X.summary(rows, S) + (typeof a.out === 'string' ? '\nWrote ' + a.out : ''));
       });
   }
 }
