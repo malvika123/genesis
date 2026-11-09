@@ -947,6 +947,7 @@ function sim() {
             }
           } else {
             fished++;
+            a.nfish = (a.nfish || 0) + 1;
             followed(a, 'fish', 'caught a fish');
           }
           if (!(a.sp === 0 && t.sp === 1)) a.e = Math.min(
