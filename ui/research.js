@@ -153,7 +153,7 @@
     for (const mm of data.matchAll(/\[([^\]]+)\]\(([^)\s]+)\)/g)) {
       const url = new URL(mm[2], LOG).href;
       if (/lab\.html/.test(url)) links.push(`<a class="btn go" href="${esc(url)}">Re-run in the Lab</a>`);
-      else if (/\.csv$/.test(url)) links.push(`<a class="btn" href="${esc(url)}" download>⬇ ${esc(mm[1])} (CSV)</a>`);
+      else if (/\.(csv|jsonl|json|txt)$/.test(url)) links.push(`<a class="btn" href="${esc(url)}" download>⬇ ${esc(mm[1])} (${url.split('.').pop().toUpperCase()})</a>`);
     }
     const cmd = data.match(/`(node tools\/experiment\.js[^`]*)`/);
     if (cmd) links.push(`<button class="btn" data-copy="${esc(cmd[1])}">Copy command</button>`);
