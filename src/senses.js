@@ -8,6 +8,17 @@ const kinYoung = (a, o) =>
   o.sp === a.sp &&
   o.age < o.S.mat &&
   (o.mom === a || a.kid === o || (o.mom && o.mom.mate === a) || (o.mom && o.mom.mom === a)); // a grandmother too
+// How far a's care reaches a young one o (cooperative breeding: among foragers many hands feed a child,
+// family most — Hrdy 2009, Kramer 2010, Hawkes et al. 1998): its own young and grandchildren fully, its
+// younger brothers and sisters and its nephews and nieces less, and any other child of the band only as far
+// as its inherited care for others' young (g.al) carries it.
+const careFor = (a, o) => {
+  if (o === a || o.dead || o.gone || o.sp !== a.sp || o.age >= o.S.mat) return 0;
+  if (kinYoung(a, o)) return 1;
+  if (a.mom && o.mom === a.mom) return 0.6; // brother or sister
+  if (a.mom && o.mom && o.mom.mom === a.mom) return 0.5; // nephew or niece
+  return 0.35 * (a.g.al ?? 0.5);
+};
 const edible = (a, o) =>
   o !== a &&
   !o.dead &&

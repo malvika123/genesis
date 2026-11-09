@@ -336,13 +336,48 @@ function sim() {
           RF[(s + 4) % 8] += wary * p;
         }
       }
-      // and a parent with food in its belly is moved to feed its own hungry young one close by
+      // and a grown person with food in its belly is moved to feed a hungry child close by: its own young
+      // most, then its family's, and any child of the band only as far as its care for others' young reaches
       if (a.e > 45 && !young)
         for (let yy = -1; yy <= 1; yy++)
           for (let xx = -1; xx <= 1; xx++) {
             const l = G[idx(wx(a.x + xx), clamp(a.y + yy, 0, H - 1))];
-            if (l) for (const o of l) if (kinYoung(a, o) && o.e < 50) RF[A_GIVE] = Math.max(RF[A_GIVE], 3 * (1 - o.e / 50));
+            if (l)
+              for (const o of l) {
+                const c = o.e < 50 ? careFor(a, o) : 0;
+                if (c > 0) RF[A_GIVE] = Math.max(RF[A_GIVE], 3 * (1 - o.e / 50) * c);
+              }
           }
+      // A child stays close to those who care for it (attachment, inborn in human and other primate young:
+      // Bowlby): a small child to its mother — or, if she is gone or out of sight, to the nearest grown person
+      // of its band — and an older child at least within reach of the band. The pull grows with the distance
+      // and with fear. Alone, with nobody near, it is drawn toward any people it can see.
+      if (young && !baby) {
+        const yrs = a.age / TY,
+          m = a.mom && !a.mom.gone && !a.mom.dead ? a.mom : null;
+        let c = null,
+          cd = 8;
+        if (m) {
+          const d = Math.hypot(dxw(m.x - a.x), m.y - a.y);
+          if (d < 8) (c = m), (cd = d);
+        }
+        if (!c)
+          for (const o of ag)
+            if (o.sp === 0 && o !== a && !o.gone && o.age >= o.S.mat) {
+              const d = Math.hypot(dxw(o.x - a.x), o.y - a.y);
+              if (d < cd) (c = o), (cd = d);
+            }
+        if (c) {
+          const close = yrs < 5 ? 1 : 3,
+            k = (yrs < 5 ? 3 : 1.5) * (1 + a.fear) * clamp((cd - close) / 3, 0, 1);
+          if (k > 0) {
+            const dx = dxw(c.x - a.x),
+              dy = c.y - a.y,
+              L = Math.hypot(dx, dy) || 1;
+            for (let s = 0; s < 8; s++) RF[s] += (k * (MV[s][0] * dx + MV[s][1] * dy)) / (L * Math.hypot(MV[s][0], MV[s][1]));
+          }
+        } else for (let s = 0; s < 8; s++) RF[s] += 1.5 * x[s * NCH + 4];
+      }
     }
     // The withdrawal reflex: everyone pulls away from painful heat without having to learn it, so the
     // heat of flames close by pushes a creature away from them before it is in them.
@@ -840,18 +875,26 @@ function sim() {
         a.ev[5] = b.ev[5] = 'it mated on day ' + dn;
       }
     } else if (act === A_GIVE && a.sp === 0 && a.e > 40) {
-      let t = null;
+      let t = null,
+        tv = 0,
+        tc = 0;
       for (let yy = -1; yy <= 1; yy++)
         for (let xx = -1; xx <= 1; xx++) {
           const l = G[idx(a.x + xx, clamp(a.y + yy, 0, H - 1))];
-          if (l) for (const o of l) if (kinYoung(a, o) && (!t || o.e < t.e)) t = o;
+          if (l)
+            for (const o of l) {
+              // the child it cares for most, and the hungriest
+              const c = careFor(a, o),
+                v = c * (1 - o.e / 100);
+              if (c > 0 && (!t || v > tv)) (t = o), (tv = v), (tc = c);
+            }
         }
       if (t) {
         const need = 1 - t.e / 100;
         a.e -= 12;
         t.e = Math.min(100, t.e + 12);
-        a.bonus[7] += 0.6 * need;
-        a.ev[7] = 'it fed a hungry child on day ' + dn;
+        a.bonus[7] += 0.6 * need * Math.max(0.3, tc);
+        a.ev[7] = (tc >= 1 ? 'it fed its hungry child on day ' : 'it fed a hungry child of the band on day ') + dn;
         a.shared++;
         followed(a, 'share', 'fed a hungry child');
         if (!firsts.share) {

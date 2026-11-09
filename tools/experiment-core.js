@@ -175,6 +175,7 @@
       vocal_control: mean((p) => p.g.vl, 1),
       point_urge: mean((p) => p.g.pg, 1),
       share_joy: mean((p) => p.g.sh, 1),
+      cares_for_others: mean((p) => p.g.al, 0.5),
       ...(() => {
         // the brain layout of the living: share of units in each kind of region, and how many regions
         const sh = [0, 0, 0, 0];
@@ -196,7 +197,7 @@
     };
   }
 
-  const HEAD = ['seed', 'days_run', 'people_alive', 'generations', 'plant_eaters', 'hunters', 'fish', 'best_fire_skill', 'learns_from_others', 'copies_successful', 'follows_crowd', 'loners_pct', 'full_sibling_pct', 'vocal_control', 'point_urge', 'share_joy', 'words_said', 'words_shared', 'brain_general', 'brain_fear', 'brain_memory', 'brain_words', 'brain_regions'];
+  const HEAD = ['seed', 'days_run', 'people_alive', 'generations', 'plant_eaters', 'hunters', 'fish', 'best_fire_skill', 'learns_from_others', 'copies_successful', 'follows_crowd', 'loners_pct', 'full_sibling_pct', 'vocal_control', 'point_urge', 'share_joy', 'cares_for_others', 'words_said', 'words_shared', 'brain_general', 'brain_fear', 'brain_memory', 'brain_words', 'brain_regions'];
 
   // meta: { version, commit, runtime, seeds }
   function csv(rows, S, meta) {
