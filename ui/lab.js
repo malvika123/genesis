@@ -75,7 +75,10 @@
     vals[el.dataset.s][s.key] = s.kind === 'num' ? Number(el.value) : el.checked;
     markDiffs();
   });
-  $('compare').addEventListener('change', drawSetups);
+  $('compare').addEventListener('change', () => {
+    drawSetups();
+    if (!run || !run.jobs.some((j) => j.row)) drawDownloads();
+  });
   $('seeds').addEventListener('input', () => markDiffs());
   $('days').addEventListener('input', () => markDiffs());
 
@@ -115,6 +118,7 @@
       .join('');
     $('run').disabled = true;
     $('stop').disabled = false;
+    drawDownloads();
     const n = Math.min(Number($('workers').value) || 1, jobs.length);
     for (let i = 0; i < n; i++) {
       const w = new Worker('ui/lab-worker.js');
@@ -189,6 +193,7 @@
   function finish() {
     $('run').disabled = false;
     $('stop').disabled = true;
+    drawDownloads();
     progress();
     results();
     keep();
@@ -224,22 +229,13 @@
 
     // A against B
     let v = '';
-    if (two) {
-      const a = S.A.alive,
-        b = S.B.alive,
-        d = a.mean - b.mean;
-      if (a.se !== null && b.se !== null) {
-        const se = Math.sqrt(a.se * a.se + b.se * b.se),
-          lo = d - 2 * se,
-          hi = d + 2 * se;
-        const clear = lo > 0 || hi < 0;
-        v = `<p class="verdict"><b>A − B: ${d >= 0 ? '+' : ''}${f1(d)} people</b> (likely between ${f1(lo)} and ${f1(hi)}). ` +
-          (clear
-            ? `With ${Math.min(a.n, b.n)} worlds each, that is a <b>clear difference</b>: ${d > 0 ? 'more' : 'fewer'} people survive in A.`
-            : `With ${Math.min(a.n, b.n)} worlds each, A and B <b>can't be told apart</b> yet; run more seeds to narrow the range.`) +
-          ` Die-outs: ${S.A.diedOut} of ${S.A.worlds} in A, ${S.B.diedOut} of ${S.B.worlds} in B.</p>`;
-      }
-    }
+    const c = two ? compareAB(S) : null;
+    if (c)
+      v = `<p class="verdict"><b>A − B: ${c.d >= 0 ? '+' : ''}${f1(c.d)} people</b> (likely between ${f1(c.lo)} and ${f1(c.hi)}). ` +
+        (c.clear
+          ? `With ${c.n} worlds each, that is a <b>clear difference</b>: ${c.d > 0 ? 'more' : 'fewer'} people survive in A.`
+          : `With ${c.n} worlds each, A and B <b>can't be told apart</b> yet; run more seeds to narrow the range.`) +
+        ` Die-outs: ${S.A.diedOut} of ${S.A.worlds} in A, ${S.B.diedOut} of ${S.B.worlds} in B.</p>`;
     $('verdict').innerHTML = v;
 
     // world by world: each seed's people alive in A and B, joined
@@ -279,7 +275,7 @@
         .join('');
 
     // downloads and the command line
-    $('downloads').innerHTML = sets.map((k) => `<button data-csv="${k}">Download CSV${run.sets.length > 1 ? ' for ' + k : ''}</button>`).join('');
+    drawDownloads();
     $('cmd').textContent = run.sets
       .map((k) => (run.sets.length > 1 ? `# ${k}\n` : '') + X.command(X.build(run.values[k]), run.seedsText, 1) + ` --out ${k === 'A' ? 'a' : 'b'}.csv`)
       .join('\n');
@@ -316,21 +312,113 @@
     return `<svg width="${w}" height="${h}" role="img" aria-label="People alive at the end of each world">${g}</svg><div class="mute">seed →${run.sets.length > 1 ? ' · <span class="ca">●</span> A · <span class="cb">●</span> B, joined when both have run' : ''}</div>`;
   }
 
-  $('downloads').addEventListener('click', (e) => {
-    const k = e.target.dataset && e.target.dataset.csv;
-    if (!k) return;
-    const S = X.build(run.values[k]);
-    const text = X.csv(rowsOf(k), S, {
-      version: run.version,
-      commit: 'unknown',
-      runtime: 'browser (Genesis Lab), ' + (navigator.userAgent.match(/(Firefox|Edg|Chrome|Safari)\/[\d.]+/) || ['browser'])[0],
-      seeds: run.seedsText,
-    });
+  // A minus B in people alive, with the range the true difference probably lies in (± 2 standard errors)
+  function compareAB(S) {
+    const a = S.A.alive,
+      b = S.B.alive;
+    if (a.se === null || b.se === null) return null;
+    const d = a.mean - b.mean,
+      se = Math.sqrt(a.se * a.se + b.se * b.se),
+      lo = d - 2 * se,
+      hi = d + 2 * se;
+    return { d, lo, hi, clear: lo > 0 || hi < 0, n: Math.min(a.n, b.n) };
+  }
+
+  // ---------- downloads: any time, even partway through a run ----------
+  const meta = () => ({
+    version: run.version,
+    commit: 'unknown',
+    runtime: 'browser (Genesis Lab), ' + (navigator.userAgent.match(/(Firefox|Edg|Chrome|Safari)\/[\d.]+/) || ['browser'])[0],
+    seeds: run.seedsText,
+  });
+  const fileBase = () => `genesis-seeds-${run.seedsText.replace(/[^\d-]+/g, '_')}-${run.days}d`;
+  function save(text, name, type) {
     const a = document.createElement('a');
-    a.href = URL.createObjectURL(new Blob([text], { type: 'text/csv' }));
-    a.download = `genesis-${k}-seeds-${run.seedsText.replace(/[^\d-]+/g, '_')}-${run.days}d.csv`;
+    a.href = URL.createObjectURL(new Blob([text], { type }));
+    a.download = name;
+    document.body.appendChild(a);
     a.click();
+    a.remove();
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  }
+  const csvOf = (k) => X.csv(rowsOf(k), X.build(run.values[k]), meta());
+  // both setups in one table, with a column saying which setup each world belongs to
+  function csvBoth() {
+    const a = csvOf('A').trim().split('\n'),
+      b = csvOf('B').trim().split('\n'),
+      ha = a.findIndex((l) => l.startsWith('seed,')),
+      hb = b.findIndex((l) => l.startsWith('seed,'));
+    return (
+      [
+        '# Genesis experiment: two setups, A and B, on the same seeds',
+        a[1],
+        '# A settings ' + a[2].replace('# settings ', ''),
+        '# B settings ' + b[2].replace('# settings ', ''),
+        a[3],
+        a[4],
+        'setup,' + a[ha],
+        ...a.slice(ha + 1).map((l) => 'A,' + l),
+        ...b.slice(hb + 1).map((l) => 'B,' + l),
+      ].join('\n') + '\n'
+    );
+  }
+  // a short report in words, to paste into notes or a paper
+  function report() {
+    const L = [],
+      done = run.jobs.filter((j) => j.row).length,
+      sets = run.sets.filter((k) => rowsOf(k).length),
+      S = Object.fromEntries(sets.map((k) => [k, X.stats(rowsOf(k))]));
+    L.push('Genesis experiment — summary');
+    L.push(`Genesis ${run.version}, run in the browser (Genesis Lab) on ${new Date().toISOString().slice(0, 10)}.`);
+    L.push(`Seeds ${run.seedsText}, ${run.days} days per world. ${done} of ${run.jobs.length} worlds finished${run.stopped ? ' (stopped early)' : ''}.`);
+    L.push('');
+    for (const k of sets) {
+      if (run.sets.length > 1) L.push(`Setup ${k}`);
+      L.push('  Same as: ' + X.command(X.build(run.values[k]), run.seedsText, 1));
+      L.push(
+        X.summary(rowsOf(k), X.build(run.values[k]))
+          .split('\n')
+          .map((l) => '  ' + l)
+          .join('\n')
+      );
+      const a = S[k].alive;
+      if (a.se !== null) L.push(`  People alive: ${a.mean.toFixed(1)} ± ${a.se.toFixed(1)} (mean ± standard error).`);
+      L.push('');
+    }
+    const c = sets.length === 2 ? compareAB(S) : null;
+    if (c) {
+      L.push(`A − B: ${c.d >= 0 ? '+' : ''}${c.d.toFixed(1)} people alive (likely between ${c.lo.toFixed(1)} and ${c.hi.toFixed(1)}, ± two standard errors).`);
+      L.push(c.clear ? `With ${c.n} worlds each this is a clear difference.` : `With ${c.n} worlds each A and B cannot be told apart; more seeds would narrow the range.`);
+      L.push(`Worlds that died out: ${S.A.diedOut} of ${S.A.worlds} in A, ${S.B.diedOut} of ${S.B.worlds} in B.`);
+    }
+    return L.join('\n') + '\n';
+  }
+  function drawDownloads() {
+    const two = run ? run.sets.length > 1 : $('compare').checked,
+      has = (k) => !!run && rowsOf(k).length > 0,
+      any = has('A') || has('B'),
+      dis = (on) => (on ? '' : ' disabled');
+    const b = [];
+    if (two) {
+      b.push(`<button data-dl="A"${dis(has('A'))}>Results for A (CSV)</button>`);
+      b.push(`<button data-dl="B"${dis(has('B'))}>Results for B (CSV)</button>`);
+      b.push(`<button data-dl="AB"${dis(has('A') && has('B'))}>A and B in one file (CSV)</button>`);
+    } else b.push(`<button data-dl="A"${dis(has('A'))}>Results (CSV)</button>`);
+    b.push(`<button data-dl="txt"${dis(any)}>Summary (text)</button>`);
+    $('downloads').innerHTML = b.join('');
+    const busy = run && run.workers.length > 0;
+    $('dlnote').textContent = !any
+      ? 'Ready once the first world has finished. One row per world; it opens in Excel, Google Sheets, R or Python.'
+      : busy
+        ? 'You can download now: you get the worlds finished so far.'
+        : 'One row per world (people alive, generations, deaths by cause, the day of each discovery); opens in Excel, Google Sheets, R or Python. The settings and version are written at the top of each file.';
+  }
+  $('downloads').addEventListener('click', (e) => {
+    const k = e.target.dataset && e.target.dataset.dl;
+    if (!k || !run) return;
+    if (k === 'txt') save(report(), fileBase() + '-summary.txt', 'text/plain');
+    else if (k === 'AB') save(csvBoth(), fileBase() + '-A-and-B.csv', 'text/csv');
+    else save(csvOf(k), fileBase() + `-${k}.csv`, 'text/csv');
   });
 
   // ---------- remember the last experiment in this browser ----------
@@ -355,6 +443,7 @@
 
   restore();
   drawSetups();
+  drawDownloads();
   if (location.protocol === 'file:')
     alertLine('Open this page from a web server (for example run "npx serve" in the Genesis folder): browsers do not let a page opened as a file start background workers.');
 })();

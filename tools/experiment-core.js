@@ -263,7 +263,7 @@
       `${rows.length} worlds, ${S.days} days each. People alive at the end: mean ${s.alive.mean === null ? '-' : s.alive.mean.toFixed(1)}, median ${s.alive.median}; ` +
         `${s.diedOut} worlds ended with nobody left.`
     );
-    out.push('Deaths: ' + Object.entries(s.dead).filter(([, v]) => v).map(([k, v]) => k + ' ' + v).join(', '));
+    out.push('Deaths: ' + (Object.entries(s.dead).filter(([, v]) => v).map(([k, v]) => k + ' ' + v).join(', ') || 'none'));
     for (const m of MILESTONES) {
       const f = s.firsts[m];
       out.push(m.padEnd(9) + `${String(f.worlds).padStart(4)} / ${rows.length} worlds` + (f.worlds ? `, median day ${f.median}, earliest ${f.earliest}` : ''));

@@ -16,8 +16,8 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 - **The Lab page** (`lab.html`, linked from the top of the main page): run many seeded worlds in the
   browser, one per core, and compare two setups on the same seeds — people alive with an uncertainty
-  range, die-outs, causes of death, discoveries, each world — then download the CSV or copy the matching
-  command. The command-line runner and the Lab share `tools/experiment-core.js` and give the same rows.
+  range, die-outs, causes of death, discoveries, each world — then download the results — one CSV per setup, A and B in one file, or a
+  plain-text summary, at any time, even partway — or copy the matching command. The command-line runner and the Lab share `tools/experiment-core.js` and give the same rows.
 
 - **The real Earth, 70,000 years ago.** New worlds on the page are Earth itself by default: continents,
   mountains and sea floors from NOAA's ETOPO1 relief, with the sea 80 m lower as in the ice age, so

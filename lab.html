@@ -351,6 +351,11 @@
           <button id="stop" disabled>Stop</button>
           <span id="plan" class="mute"></span>
         </div>
+        <div class="row" style="margin-top: 12px; align-items: center">
+          <span class="mute">Download:</span>
+          <span id="downloads" class="row" style="gap: 8px"></span>
+        </div>
+        <p id="dlnote" class="mute" style="margin-top: 4px"></p>
       </section>
 
       <section id="progress" hidden>
@@ -373,9 +378,7 @@
         <div class="wrap"><table id="firsts"></table></div>
         <h3>Each world</h3>
         <div class="wrap"><table id="worlds"></table></div>
-        <h3>Take the results away</h3>
-        <div class="row" id="downloads"></div>
-        <p class="mute" style="margin-top: 10px">The same experiment from the command line (for many more worlds, or to check these):</p>
+        <p class="mute" style="margin-top: 14px">The same experiment from the command line (for many more worlds, or to check these):</p>
         <pre id="cmd"></pre>
       </section>
 
