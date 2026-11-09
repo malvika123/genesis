@@ -352,7 +352,7 @@ function sim() {
       // Bowlby): a small child to its mother — or, if she is gone or out of sight, to the nearest grown person
       // of its band — and an older child at least within reach of the band. The pull grows with the distance
       // and with fear. Alone, with nobody near, it is drawn toward any people it can see.
-      if (young && !baby) {
+      if (young && !baby && SOC.care) {
         const yrs = a.age / TY,
           m = a.mom && !a.mom.gone && !a.mom.dead ? a.mom : null;
         let c = null,
@@ -1208,7 +1208,7 @@ function fireMade(a, how) {
 //   · How much a person learns from others at all is inherited (gene im), so some are loners who learn
 //     only the hard way, as about one person in five does in experiments (Molleman et al. 2014).
 // What exactly it learns is left to its own brain.
-const SOC = { vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false },
+const SOC = { vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {

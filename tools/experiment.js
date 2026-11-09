@@ -16,6 +16,7 @@
 //   --modern-voice   everyone starts with a modern human voice, pointing and shared attention
 //   --no-calls       animals make no calls
 //   --earth          the real Earth's continents as they were 70,000 years ago (not a made-up planet)
+//   --no-care        only parents and grandmothers feed a child; children are not drawn to stay close
 //   --any-start      the band starts anywhere within 36° of the equator near fresh water (the old rule)
 //   --no-picky       people copy the nearest elder blindly (no success bias, crowd-following or uncertainty)
 //   --workers N      run seeds in parallel in N processes                            [1]

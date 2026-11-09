@@ -15,6 +15,7 @@ const kinYoung = (a, o) =>
 const careFor = (a, o) => {
   if (o === a || o.dead || o.gone || o.sp !== a.sp || o.age >= o.S.mat) return 0;
   if (kinYoung(a, o)) return 1;
+  if (!SOC.care) return 0; // switched off for experiments: only its own young and grandchildren, as before
   if (a.mom && o.mom === a.mom) return 0.6; // brother or sister
   if (a.mom && o.mom && o.mom.mom === a.mom) return 0.5; // nephew or niece
   return 0.35 * (a.g.al ?? 0.5);
