@@ -133,13 +133,16 @@
       }
       nav .navlink {
         font-weight: 600;
-        color: var(--mute);
-        padding: 6px 12px;
+        color: var(--acc);
+        padding: 5px 12px;
+        border: 1px solid var(--acc);
         border-radius: 8px;
         text-decoration: none;
+        margin-left: 4px;
       }
       nav .navlink:hover {
-        color: var(--ink);
+        background: var(--acc);
+        color: var(--bg);
       }
       nav button[aria-selected='true'] {
         background: var(--acc);
@@ -667,7 +670,7 @@
         <button role="tab" data-tab="stats" aria-selected="false">Stats</button>
         <button role="tab" data-tab="setup" aria-selected="false">New world</button>
         <button role="tab" data-tab="about" aria-selected="false">About</button>
-        <a class="navlink" href="lab.html" title="Run many seeded worlds and compare them">Lab</a>
+        <a class="navlink" href="lab.html" title="Run many seeded worlds and compare them">Lab ↗</a>
       </nav>
       <div class="ctl">
         <button id="view">Flat map</button>
