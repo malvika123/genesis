@@ -11,7 +11,9 @@
   "scripts": {
     "test": "node --test tests/*.test.js",
     "worlds": "node tools/run-worlds.js",
-    "build": "node tools/build.js"
+    "build": "node tools/build.js",
+    "test:quick": "node --test tests/climate.test.js tests/diet.test.js tests/fire.test.js tests/forest.test.js tests/items.test.js tests/minds.test.js tests/social.test.js tests/sound.test.js tests/vision.test.js tests/voice.test.js",
+    "test:slow": "node --test tests/birth.test.js tests/bodies.test.js tests/decay.test.js tests/experiment.test.js tests/feelings.test.js tests/weather.test.js tests/world.test.js"
   },
   "engines": {
     "node": ">=18"
