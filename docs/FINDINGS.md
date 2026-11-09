@@ -44,6 +44,10 @@ beside them).
 
 ### 1. Learning from others: vicarious pain and choosy copying — Nov 2026
 
+**Version.** Unreleased (after 0.7.0) · the change: commit `2260ea9`.
+
+**Data.** Raw tables were not kept for this test. Re-run: [in the Lab](https://malvika123.github.io/genesis/lab.html?seeds=1-12&days=30&A.earth=0&B.earth=0&B.vicar=0&B.pickyCopy=0) or `node tools/experiment.js --seeds 1-12 --days 30 --no-vicar --no-picky` (on today's code; numbers will differ from the original, since the world has changed since).
+
 **Added.** A person who sees someone nearby hurt, sick or killed feels a weaker share of the pain as its
 own learning signal and fear (family and children most; attacks, fire, falls, drowning and bad food
 most). Copying favours those doing well, is stronger when unsure, and can follow the majority; how much
@@ -65,6 +69,10 @@ predator deaths 33 → 16.**
 **Strength.** Moderate (12 worlds). **Lesson:** how much creatures copy matters as much as whom they copy.
 
 ### 2. Closing the food chain: decay, scavengers, soil — Nov 2026
+
+**Version.** Unreleased (after 0.7.0) · the change: commit `3383311`, `2ee8087`.
+
+**Data.** Raw tables were not kept for this test. No switch turns this feature off, so it can only be re-run by comparing commits.
 
 **Added.** Bodies are eaten by insects and microbes at a pace set by warmth (most of a carcass gone in about
 three weeks of summer; none while frozen); carrion birds; soil enriched by rot and dung feeds the grass.
@@ -89,6 +97,10 @@ competition between scavengers and predators is part of what keeps prey (people)
 
 ### 3. Pregnancy, and what really limits wolves — Nov 2026
 
+**Version.** Unreleased (after 0.7.0) · the change: commit `b283830`, `d65cb23`.
+
+**Data.** Raw tables were not kept for this test. No switch turns this feature off, so it can only be re-run by comparing commits.
+
 **Added.** Gestation for each species' real length; part of the cost during pregnancy and most of it as
 milk afterwards; loss when the mother starves; labour pain; ~1% maternal death per human birth.
 
@@ -110,6 +122,10 @@ regulator.
 
 ### 4. Sound by the physics of air, and animal calls — Nov 2026
 
+**Version.** Unreleased (after 0.7.0) · the change: commit `abba6ef`, `36fd2e8`.
+
+**Data.** Raw tables were not kept for this test. Re-run: [in the Lab](https://malvika123.github.io/genesis/lab.html?seeds=1-12&days=40&A.earth=0&B.earth=0&B.soundPhysics=0&B.animalCalls=0) or `node tools/experiment.js --seeds 1-12 --days 40 --old-sound --no-calls` (on today's code; numbers will differ from the original, since the world has changed since).
+
 **Added.** Spherical spreading, air absorption by pitch and humidity, foliage, wind and day/night
 refraction, background noise; wolves howl, big cats roar, plant-eaters snort an alarm.
 
@@ -121,6 +137,10 @@ calls (35) than without (51), but hunger moved the other way. **Strength:** none
 predator-warning effect is a hypothesis worth testing with more worlds.
 
 ### 5. Bigger brains — Nov 2026
+
+**Version.** Unreleased (after 0.7.0) · the change: commit `861bec8`.
+
+**Data.** Raw tables were not kept for this test. Re-run: [in the Lab](https://malvika123.github.io/genesis/lab.html?seeds=1-24&days=40&A.earth=0&B.earth=0&B.brain=256) or `node tools/experiment.js --seeds 1-24 --days 40 --brain 256` (on today's code; numbers will differ from the original, since the world has changed since).
 
 **Test.** 24 worlds × 40 days at each of 64, 256 and 1,024 thinking units per person.
 
@@ -137,6 +157,10 @@ not a must-have; the conditions to learn with it are.
 
 ### 6. Pair bonds and fidelity — Nov 2026
 
+**Version.** Unreleased (after 0.7.0) · the change: commit `e7b30bb`, `80459a4`.
+
+**Data.** Raw tables were not kept for this test. No switch turns this feature off, so it can only be re-run by comparing commits.
+
 **Added.** Bonds that grow with time together and mating, partner preference; later, bonded partners feel
 less pull toward others (oxytocin: Scheele et al. 2012).
 
@@ -146,6 +170,10 @@ gave 40–54%. Survival unchanged within noise. **Strength:** weak–moderate. N
 these runs.
 
 ### 7. Surviving as our ancestors did — Nov 2026
+
+**Version.** Unreleased (after 0.7.0) · the change: commit `420938b`, `5be5d25`.
+
+**Data.** Raw tables were not kept for this test. No switch turns this feature off, so it can only be re-run by comparing commits.
 
 **Problem.** 40-day checks looked fine, but long runs showed slow collapse: 4 worlds × 300 days with 8 young
 founders — 3 died out (days 100, 173, 277), 1 person left in the 4th. A trace of two worlds: bands fell
@@ -168,6 +196,10 @@ are not yet measured — an ablation is needed). **Lesson:** group size, family 
 of children look like must-haves; so does keeping what one success taught.
 
 ### 8. Where the first band starts — Nov 2026
+
+**Version.** Unreleased (after 0.7.0) · the change: commit `6df8325`.
+
+**Data.** Raw tables: [starts where our species lived](../data/findings/08-where-the-band-starts/starts-where-our-species-lived.csv) · [starts anywhere](../data/findings/08-where-the-band-starts/starts-anywhere.csv). Re-run: [in the Lab](https://malvika123.github.io/genesis/lab.html?seeds=1-12&days=60&A.earth=0&B.earth=0&B.homeland=0) or `node tools/experiment.js --seeds 1-12 --days 60 --any-start` (on today's code; numbers will differ from the original, since the world has changed since).
 
 **Added.** The first band starts where our species really lived: within the tropics, in warm country
 (average 18–27 °C, not desert-hot), with fresh water within a few squares, open grassland and woodland
@@ -200,6 +232,10 @@ danger; the expected mechanism (fewer predator deaths) was not what moved.
 
 ### 9. The real Earth, 70,000 years ago — Nov 2026
 
+**Version.** Unreleased (after 0.7.0) · the change: commit `6df8325`.
+
+**Data.** Raw tables: [real Earth](../data/findings/09-real-earth/real-earth.csv) (its header names commit `27649dd`: the run used the working tree that was committed as `6df8325`). Re-run: [in the Lab](https://malvika123.github.io/genesis/lab.html?seeds=1-12&days=60&compare=0&A.earth=1) or `node tools/experiment.js --seeds 1-12 --days 60 --earth` (on today's code; numbers will differ from the original, since the world has changed since).
+
 **Added.** A choice of land: the real Earth's continents, mountains and sea floors (NOAA ETOPO1: Amante &
 Eakins 2009) with the sea about 80 m lower, as it stood about 70,000 years ago (Spratt & Lisiecki 2016;
 Grant et al. 2014), so Beringia, Sundaland, Sahul and Doggerland are dry land; three years of weather run
@@ -228,6 +264,7 @@ invented one, so it can be the default without losing populations.
 
 ## Adding an entry
 
-Copy this outline: **Added** (what, in a sentence or two) · **Real-world basis** (with sources) ·
+Copy this outline: **Version** (release, and the commit of the change) · **Data** (raw tables in
+`data/findings/`, a Lab link, the command) · **Added** (what, in a sentence or two) · **Real-world basis** (with sources) ·
 **Test** (worlds × days, seeds, what was compared, commit) · **Result** (numbers) · **Interpretation** ·
 **Strength** · **Lesson**. Keep results that disappoint.

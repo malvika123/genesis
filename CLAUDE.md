@@ -39,6 +39,9 @@ That means, for example:
   `npm run worlds`, or the 60-day comparison used during development): people should survive and have
   children, herbivores and predators should not routinely die out. Trace causes of death
   (`state().deaths`) before tuning.
+- Log every survival test in `docs/FINDINGS.md` (outline at its end, including the **Version.** and
+  **Data.** lines), keep result tables in `data/findings/`, and keep `CHANGELOG.md` current: the Research
+  page (`research.html`) is built from these files, so it updates itself.
 - Keep the engine (`src/`) free of browser code so it runs headless.
 - Develop on a branch, merge to `develop` when balanced; `develop` is what GitHub Pages serves live.
 - Copyright (c) 2026 Malvika Sen, MIT licence. Commit as the owner with a co-author line for Claude.

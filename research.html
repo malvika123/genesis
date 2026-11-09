@@ -1,0 +1,413 @@
+<!doctype html>
+<!-- Genesis Research — what keeps a world alive, version by version, with the data.
+     Copyright (c) 2026 Malvika Sen. Released under the MIT License (see LICENSE). -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Genesis Research</title>
+    <meta name="description" content="What keeps a population of learning creatures alive: every test of Genesis, version by version, with the raw data and a way to re-run it." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #eef2ef;
+        --panel: #fff;
+        --ink: #16231f;
+        --mute: #5b6b65;
+        --line: #d3dcd6;
+        --acc: #2f6b57;
+        --soft: #e3ebe6;
+        --strong: #1f7a4d;
+        --moderate: #3b6fb6;
+        --weak: #b07a1e;
+        --none: #7b8580;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme='light']) {
+          --bg: #0d1511;
+          --panel: #16211b;
+          --ink: #e4efe8;
+          --mute: #93a69c;
+          --line: #263830;
+          --acc: #7fd0b0;
+          --soft: #1d2b24;
+          --strong: #5fd29a;
+          --moderate: #7fb2ff;
+          --weak: #e6b45a;
+          --none: #9aa59f;
+        }
+      }
+      :root[data-theme='dark'] {
+        --bg: #0d1511;
+        --panel: #16211b;
+        --ink: #e4efe8;
+        --mute: #93a69c;
+        --line: #263830;
+        --acc: #7fd0b0;
+        --soft: #1d2b24;
+        --strong: #5fd29a;
+        --moderate: #7fb2ff;
+        --weak: #e6b45a;
+        --none: #9aa59f;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+        line-height: 1.55;
+      }
+      a {
+        color: var(--acc);
+      }
+      header {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 14px;
+        align-items: center;
+        padding: 10px 16px;
+        border-bottom: 1px solid var(--line);
+        background: var(--panel);
+        position: sticky;
+        top: 0;
+        z-index: 5;
+      }
+      header h1 {
+        font-size: 1.15rem;
+        font-weight: 800;
+        margin: 0;
+        letter-spacing: -0.02em;
+      }
+      header nav {
+        margin-left: auto;
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      header nav a,
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 5px 12px;
+        text-decoration: none;
+        color: var(--ink);
+        background: var(--bg);
+        font: inherit;
+        font-size: 0.9rem;
+        cursor: pointer;
+      }
+      .btn.go {
+        background: var(--acc);
+        border-color: var(--acc);
+        color: var(--bg);
+        font-weight: 600;
+      }
+      main {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 18px 16px 48px;
+        display: grid;
+        gap: 18px;
+      }
+      section {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 16px 18px;
+        min-width: 0;
+      }
+      h2 {
+        font-size: 1.1rem;
+        margin: 0 0 10px;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+      }
+      h3 {
+        font-size: 0.98rem;
+        margin: 16px 0 6px;
+      }
+      p {
+        margin: 0 0 10px;
+      }
+      .mute {
+        color: var(--mute);
+        font-size: 0.9rem;
+      }
+      .hero blockquote {
+        margin: 6px 0 12px;
+        font-size: 1.25rem;
+        font-weight: 600;
+        line-height: 1.35;
+        border-left: 4px solid var(--acc);
+        padding: 2px 0 2px 14px;
+      }
+      .hero blockquote p {
+        margin: 0;
+      }
+      .stats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 22px;
+        margin: 4px 0 12px;
+      }
+      .stats b {
+        font-size: 1.4rem;
+        display: block;
+        line-height: 1.1;
+      }
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+      }
+      .tablewrap {
+        overflow-x: auto;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 0.88rem;
+      }
+      th,
+      td {
+        text-align: left;
+        vertical-align: top;
+        padding: 6px 8px;
+        border-bottom: 1px solid var(--line);
+      }
+      th {
+        color: var(--mute);
+        font-weight: 600;
+      }
+      code,
+      pre {
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.82em;
+      }
+      code {
+        background: var(--soft);
+        padding: 1px 4px;
+        border-radius: 4px;
+        word-break: break-word;
+      }
+      pre {
+        background: var(--bg);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 8px 10px;
+        white-space: pre-wrap;
+        word-break: break-all;
+      }
+      .badge {
+        display: inline-block;
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 1px 9px;
+        border-radius: 99px;
+        border: 1px solid currentColor;
+        white-space: nowrap;
+        text-transform: capitalize;
+      }
+      .b-strong {
+        color: var(--strong);
+      }
+      .b-moderate,
+      .b-weak-moderate {
+        color: var(--moderate);
+      }
+      .b-weak {
+        color: var(--weak);
+      }
+      .b-none {
+        color: var(--none);
+      }
+      .filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin: 0 0 12px;
+      }
+      .filters button[aria-pressed='true'] {
+        background: var(--acc);
+        color: var(--bg);
+        border-color: var(--acc);
+      }
+      .version {
+        border-top: 1px solid var(--line);
+        padding-top: 14px;
+        margin-top: 14px;
+      }
+      .version:first-of-type {
+        border-top: 0;
+        margin-top: 0;
+        padding-top: 0;
+      }
+      .vhead {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 12px;
+        align-items: baseline;
+      }
+      .vhead h3 {
+        margin: 0;
+        font-size: 1.05rem;
+      }
+      details.added {
+        margin: 8px 0 10px;
+      }
+      details.added summary {
+        cursor: pointer;
+        color: var(--acc);
+        font-weight: 600;
+        font-size: 0.92rem;
+      }
+      details.added ul {
+        font-size: 0.9rem;
+        padding-left: 1.2em;
+      }
+      details.added li {
+        margin: 4px 0;
+      }
+      .cards {
+        display: grid;
+        gap: 10px;
+      }
+      .card {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 12px 14px;
+        background: var(--bg);
+      }
+      .card .top {
+        display: flex;
+        gap: 6px 10px;
+        align-items: baseline;
+        flex-wrap: wrap;
+      }
+      .card .num {
+        color: var(--mute);
+        font-weight: 800;
+      }
+      .card h4 {
+        margin: 0;
+        font-size: 1rem;
+        flex: 1 1 260px;
+      }
+      .card .meta {
+        font-size: 0.8rem;
+        color: var(--mute);
+        margin: 2px 0 8px;
+      }
+      .card .result {
+        font-size: 0.92rem;
+      }
+      .card details {
+        margin-top: 6px;
+      }
+      .card details summary {
+        cursor: pointer;
+        color: var(--acc);
+        font-size: 0.88rem;
+        font-weight: 600;
+      }
+      .card .full {
+        font-size: 0.9rem;
+        margin-top: 8px;
+      }
+      .card .actions {
+        margin-top: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .card .actions .btn {
+        font-size: 0.82rem;
+        padding: 4px 10px;
+      }
+      .empty {
+        font-size: 0.9rem;
+        color: var(--mute);
+        font-style: italic;
+      }
+      .open li {
+        margin: 6px 0;
+      }
+      #cite pre {
+        margin: 8px 0;
+      }
+      .err {
+        color: #c8372d;
+      }
+      [hidden] {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Genesis Research</h1>
+      <span class="mute">What keeps a world alive, version by version</span>
+      <nav>
+        <a href="./">← The world</a>
+        <a href="lab.html">Lab ↗</a>
+        <a href="https://github.com/malvika123/genesis" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+    <main>
+      <section class="hero">
+        <div id="question"></div>
+        <div class="stats" id="stats"></div>
+        <p class="mute" id="intro"></p>
+        <div class="row">
+          <a class="btn go" href="#versions">Results by version</a>
+          <a class="btn" href="https://github.com/malvika123/genesis/tree/develop/data" target="_blank" rel="noopener">All raw data</a>
+          <button class="btn" id="citebtn">Cite Genesis</button>
+          <a class="btn" href="https://github.com/malvika123/genesis/blob/develop/docs/FINDINGS.md" target="_blank" rel="noopener">The log as one file</a>
+        </div>
+        <div id="cite" hidden></div>
+      </section>
+
+      <section>
+        <h2>Must-haves so far</h2>
+        <p class="mute">Which real-world features change whether a population of learning creatures lasts, and how sure we are.</p>
+        <div id="summary"></div>
+      </section>
+
+      <section id="versions">
+        <h2>Results by version</h2>
+        <p class="mute">
+          Each version of Genesis, what was added in it, and the tests run on it. Every result says what was
+          compared, on how many worlds, how strong the evidence is, and where to get the raw data or re-run it.
+          Results that disappointed are kept: they are findings too.
+        </p>
+        <div class="filters" id="filters"></div>
+        <div id="vlist"><p class="mute">Loading…</p></div>
+      </section>
+
+      <section>
+        <h2>Open questions: the next tests</h2>
+        <div id="open" class="open"></div>
+      </section>
+
+      <section>
+        <h2>How the tests are run</h2>
+        <div id="method"></div>
+        <p class="mute">
+          Anyone can run their own: the <a href="lab.html">Lab</a> runs seeded worlds in the browser and compares
+          two setups; <code>tools/experiment.js</code> does the same without a browser for hundreds of worlds.
+        </p>
+      </section>
+    </main>
+    <script src="ui/md.js"></script>
+    <script src="ui/research.js"></script>
+  </body>
+</html>

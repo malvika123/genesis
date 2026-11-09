@@ -37,6 +37,8 @@ src/                the simulation engine — no browser code, so it also runs h
 ui/app.js           drawing, panels, controls and the animation loop
 ui/globe3d.js       the planet in 3D (WebGL)
 lab.html, ui/lab.js the Lab: run and compare seeded experiments in the browser (ui/lab-worker.js runs the worlds)
+research.html       the Research page: the research log and changelog, version by version (ui/research.js, ui/md.js)
+data/findings/      the raw tables behind the research log
 vendor/three.min.js three.js 0.149 (MIT licence), included so the page works offline
 tools/              headless engine loader, experiment runner (and its shared core), single-file build
 tests/              automated tests
@@ -61,6 +63,10 @@ npm run build                 # bundle everything into one file: dist/genesis.ht
 
 Genesis is exactly repeatable, so it can be used as an experiment tool: a seed and the settings fix a
 whole world.
+
+**What has been found so far:** the [Research page](https://malvika123.github.io/genesis/research.html)
+(`research.html`) shows every survival test version by version — what was compared, the result, how strong
+the evidence is — with the raw data (`data/findings/`) and a button to re-run each one in the Lab.
 
 **In the browser:** the [Lab page](https://malvika123.github.io/genesis/lab.html) (`lab.html`) runs many
 seeded worlds in the background, one per core, and compares two setups on the same seeds: people alive

@@ -4,6 +4,12 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **The Research page** (`research.html`, linked from the top bar): every survival test from the research
+  log, grouped by the version it was run on, with what was added in each version, the strength of the
+  evidence (filterable), the raw data to download, a "Re-run in the Lab" button that sets the Lab up for
+  that experiment, the commit, and how to cite. It reads `docs/FINDINGS.md` and `CHANGELOG.md` directly,
+  so it stays up to date with them. Raw tables are now kept in `data/findings/`.
+
 - A tidier top bar: Pause and the speed slider stay in view; the flat map, clouds, realistic view,
   turning with the sun and the timeline are in a **View** menu (the gear button).
 

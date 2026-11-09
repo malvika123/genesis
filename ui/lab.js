@@ -63,7 +63,7 @@
     } catch {}
     const two = $('compare').checked,
       worlds = seeds.length * (two ? 2 : 1);
-    let t = `${worlds} world${worlds === 1 ? '' : 's'} × ${$('days').value} days.`;
+    let t = (linked ? 'Set up from a link — press Run. ' : '') + `${worlds} world${worlds === 1 ? '' : 's'} × ${$('days').value} days.`;
     if (two && nDiff === 0) t += ' A and B are the same; change something in B to compare.';
     else if (two && nDiff > 1) t += ` A and B differ in ${nDiff} ways, so a difference can't be put down to one of them.`;
     $('plan').textContent = t;
@@ -441,7 +441,29 @@
     } catch {}
   }
 
-  restore();
+  // A link can set up an experiment (the research page uses this for "Re-run in the Lab"):
+  //   lab.html?seeds=1-12&days=60&compare=1&A.earth=1&B.homeland=0
+  // B starts as a copy of A; A.x and B.x change one setting (1/0 for switches, a number otherwise).
+  function fromLink() {
+    const q = new URLSearchParams(location.search);
+    if (![...q.keys()].length) return false;
+    const set = (o, k, x) => {
+      const s = OPTS.find((t) => t.key === k);
+      if (s) o[k] = s.kind === 'num' ? Number(x) : x === '1' || x === 'true';
+    };
+    const A = defaults();
+    for (const [k, x] of q) if (k.startsWith('A.')) set(A, k.slice(2), x);
+    const B = { ...A };
+    for (const [k, x] of q) if (k.startsWith('B.')) set(B, k.slice(2), x);
+    vals = { A, B };
+    if (q.get('seeds')) $('seeds').value = q.get('seeds');
+    if (q.get('days')) $('days').value = q.get('days');
+    $('compare').checked = q.get('compare') !== '0';
+    linked = true;
+    return true;
+  }
+  let linked = false;
+  if (!fromLink()) restore();
   drawSetups();
   drawDownloads();
   if (location.protocol === 'file:')
