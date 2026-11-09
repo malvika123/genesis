@@ -160,7 +160,8 @@
       #tlc { width: 100%; height: 34px; display: block; }
       #tl-tip { display: block; min-height: 16px; }
       #timebtn[aria-pressed='true'],
-      #turn[aria-pressed='true'] { background: var(--acc); color: var(--bg); }
+      #turn[aria-pressed='true'],
+      #real[aria-pressed='true'] { background: var(--acc); color: var(--bg); }
       .view {
         flex: 1;
         min-height: 0;
@@ -671,6 +672,7 @@
       <div class="ctl">
         <button id="view">Flat map</button>
         <button id="sky">Hide clouds</button>
+        <button id="real" aria-pressed="false" title="Real-looking water and sky, close to the ground (slower on some devices)">Realistic</button>
         <button id="turn" aria-pressed="false">Turn with the sun</button>
         <button id="timebtn" aria-pressed="false" title="Show where everyone has been, and what happened when">Time</button>
         <button class="go" id="play">Pause</button>
@@ -863,6 +865,11 @@
           water. (Simplified: each square of the map is about 300 km of real Earth; there are no ice-age ice
           sheets yet, and the climate is today's.) A new world can instead be a made-up planet.
           Researchers can run many seeded worlds at once and compare two setups on the <a href="lab.html">Lab</a> page.
+        </p>
+        <p class="sub">
+          The <b>Realistic</b> button adds real-looking water (rippling, glinting, mirroring the sky at a low
+          angle) and a real sky near the ground (blue overhead, red toward a low sun, stars at night). It is off
+          unless you turn it on, because it is slower to draw, and it changes only the picture, not the world.
         </p>
         <p class="sub">
           Land and sea: the ocean is salty and undrinkable, shallow by the coasts and deep

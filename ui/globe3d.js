@@ -81,6 +81,163 @@ const G3D = { ok: false };
   scene.add(sun.target);
   scene.add(new THREE.AmbientLight(0x8fa3c8, 0.16));
 
+  // ---- the realistic view (the "Realistic" button): real water and a real sky, drawn only when asked
+  // for, because they cost more to draw. Both change only the picture, never the world. ----
+  const REAL = { on: false };
+  // where the water is, painted in the same places as the land picture: red = open water (and rivers),
+  // green = how deep it is
+  const maskC = mk(),
+    mg = maskC.getContext('2d'),
+    maskB = mk(),
+    mbg = maskB.getContext('2d'),
+    maskTex = new THREE.CanvasTexture(maskB);
+  const waterMat = new THREE.ShaderMaterial({
+    uniforms: {
+      mask: { value: maskTex },
+      time: { value: 0 },
+      sunV: { value: new THREE.Vector3(0, 0, 1) },
+      fogC: { value: new THREE.Color() },
+      fogN: { value: 50 },
+      fogF: { value: 60 },
+      nrmM: { value: new THREE.Matrix3() },
+    },
+    vertexShader: `
+      varying vec2 vUv; varying vec3 vN; varying vec3 vP; varying vec3 vO;
+      void main() {
+        vUv = uv;
+        vO = normalize(position);
+        vN = normalize(normalMatrix * vO); // still water lies level, whatever the ground under it does
+        vec4 p = modelViewMatrix * vec4(position, 1.0);
+        vP = p.xyz;
+        gl_Position = projectionMatrix * p;
+      }`,
+    fragmentShader: `
+      uniform sampler2D mask; uniform float time; uniform vec3 sunV; uniform mat3 nrmM; uniform vec3 fogC; uniform float fogN; uniform float fogF;
+      varying vec2 vUv; varying vec3 vN; varying vec3 vP; varying vec3 vO;
+      // the slope of the water: a few trains of small waves running different ways
+      vec3 wave(vec3 o, vec3 d, float k, float sp, float a) {
+        float ph = dot(o, d) * k;
+        // fade a train of waves out where its crests come closer together on screen than a few pixels
+        // (seen from far off they blur into the water's colour, instead of shimmering in a pattern)
+        float aa = 1.0 - smoothstep(0.35, 1.2, fwidth(ph));
+        return d * a * aa * cos(ph + time * sp);
+      }
+      void main() {
+        vec4 m = texture2D(mask, vUv);
+        if (m.r < 0.03) discard;
+        float dist = length(vP);
+        float near = 1.0 - smoothstep(0.03, 0.5, dist), fine = 1.0 - smoothstep(0.01, 0.12, dist);
+        vec3 g = wave(vO, normalize(vec3(0.8, 0.1, 0.6)), 1900.0, 1.3, 0.10 * near)
+               + wave(vO, normalize(vec3(-0.3, 0.7, 0.65)), 2600.0, 1.7, 0.08 * near)
+               + wave(vO, normalize(vec3(0.5, -0.6, 0.2)), 6100.0, 2.9, 0.05 * fine)
+               + wave(vO, normalize(vec3(-0.7, -0.2, -0.6)), 8300.0, 3.7, 0.04 * fine);
+        g -= dot(g, vO) * vO;
+        vec3 Nf = normalize(vN), N = normalize(Nf - nrmM * g), V = normalize(-vP), L = normalize(sunV);
+        // daylight here: the sun above this place's horizon (the light fades through dusk)
+        float day = smoothstep(-0.12, 0.2, dot(Nf, L)), sunUp = smoothstep(-0.02, 0.06, dot(Nf, L));
+        float depth = m.g;
+        // the water's own colour: light from the bed in the shallows, dark blue where it is deep
+        vec3 body = mix(vec3(0.06, 0.30, 0.30), vec3(0.008, 0.05, 0.13), depth);
+        body *= 0.05 + 0.95 * day;
+        // the sky mirrored in it, most of all when seen at a low angle (Fresnel)
+        float cosV = max(dot(N, V), 0.0), fr = 0.02 + 0.98 * pow(1.0 - cosV, 5.0);
+        vec3 R = reflect(-V, N);
+        float up = clamp(dot(R, Nf), 0.0, 1.0);
+        vec3 sky = mix(vec3(0.5, 0.65, 0.85), vec3(0.08, 0.22, 0.6), up) * day + vec3(0.003, 0.004, 0.012);
+        // and the sun's glint off the waves
+        float spec = pow(max(dot(R, L), 0.0), 400.0) * 3.0 * sunUp + pow(max(dot(R, L), 0.0), 40.0) * 0.12 * sunUp;
+        vec3 col = mix(body, sky, fr) + vec3(1.0, 0.92, 0.8) * spec;
+        col = mix(col, fogC, smoothstep(fogN, fogF, dist));
+        // shallow water is clear enough to see the bed (and fish) through, deep water is not
+        float a = m.r * mix(0.55 + 0.4 * depth, 1.0, fr);
+        gl_FragColor = linearToOutputTexel(vec4(col, a));
+      }`,
+    transparent: true,
+    depthWrite: false,
+    polygonOffset: true,
+    polygonOffsetFactor: -2,
+    polygonOffsetUnits: -8,
+  });
+  const waterSkin = new THREE.Mesh(geo, waterMat);
+  waterSkin.renderOrder = 1;
+  waterSkin.visible = false;
+  globe.add(waterSkin);
+  // the sky seen from near the ground: blue overhead, pale at the horizon, red toward a low sun (light
+  // scattered by the air, as on Earth), the sun's disc, and stars at night
+  const skyMat = new THREE.ShaderMaterial({
+    uniforms: { sunW: { value: new THREE.Vector3() }, upW: { value: new THREE.Vector3(0, 1, 0) }, op: { value: 0 } },
+    vertexShader: `
+      varying vec3 vD;
+      void main() { vD = (modelMatrix * vec4(position, 1.0)).xyz - cameraPosition; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+    fragmentShader: `
+      uniform vec3 sunW; uniform vec3 upW; uniform float op; varying vec3 vD;
+      float hash(vec3 p) { return fract(sin(dot(p, vec3(12.9898, 78.233, 37.719))) * 43758.5453); }
+      void main() {
+        vec3 d = normalize(vD), s = normalize(sunW), u = normalize(upW);
+        float e = dot(d, u), sa = dot(s, u), day = smoothstep(-0.18, 0.12, sa), twi = smoothstep(-0.3, 0.0, sa);
+        vec3 zen = mix(vec3(0.003, 0.005, 0.018), vec3(0.05, 0.18, 0.6), day);
+        vec3 hor = mix(vec3(0.008, 0.012, 0.035), vec3(0.5, 0.66, 0.88), day);
+        float t = pow(1.0 - clamp(e, 0.0, 1.0), 4.0);
+        vec3 col = mix(zen, hor, t);
+        float cs = max(dot(d, s), 0.0), low = 1.0 - smoothstep(0.0, 0.45, sa);
+        col += vec3(1.0, 0.38, 0.1) * pow(cs, 5.0) * t * low * twi * 0.9;
+        col += vec3(0.9, 0.5, 0.3) * t * low * twi * 0.12;
+        col += vec3(1.0, 0.75, 0.45) * pow(cs, 90.0) * 0.6 * twi;
+        col += vec3(6.0, 5.6, 5.0) * smoothstep(0.99955, 0.9997, cs) * step(-0.03, sa);
+        if (e > 0.0 && day < 0.6) {
+          vec3 c = floor(d * 420.0);
+          float h = hash(c);
+          if (h > 0.9965) col += vec3(0.9, 0.92, 1.0) * (h - 0.9965) * 300.0 * (1.0 - day / 0.6) * smoothstep(0.0, 0.1, e);
+        }
+        gl_FragColor = linearToOutputTexel(vec4(col, op));
+      }`,
+    side: THREE.BackSide,
+    transparent: true,
+    depthWrite: false,
+    depthTest: false,
+    fog: false,
+  });
+  const skyDome = new THREE.Mesh(new THREE.SphereGeometry(5, 48, 24), skyMat);
+  skyDome.renderOrder = -1;
+  skyDome.frustumCulled = false;
+  skyDome.visible = false;
+  const skyScene = new THREE.Scene(); // drawn first, behind everything
+  skyScene.add(skyDome);
+  function paintWater(v) {
+    mg.setTransform(1, 0, 0, 1, 0, 0);
+    mg.fillStyle = '#000';
+    mg.fillRect(0, 0, maskC.width, maskC.height);
+    mg.setTransform(TS3 / C, 0, 0, TS3 / C, 0, capH);
+    for (let i = 0; i < W * H; i++) {
+      if (!water[i] || river[i] || iced(i)) continue;
+      const dp = salt[i] ? 0.25 + 0.75 * Math.min(1, -alt[i] / 2) : deep[i] ? 0.55 : 0.15;
+      mg.fillStyle = 'rgb(255,' + Math.round(dp * 255) + ',0)';
+      mg.fillRect((i % W) * C - 0.5, ((i / W) | 0) * C - 0.5, C + 1, C + 1);
+    }
+    drawRivers(mg, v, 'rgb(255,25,0)', 0.32);
+    // soften the shores a little, as the land picture is softened
+    mbg.setTransform(1, 0, 0, 1, 0, 0);
+    mbg.clearRect(0, 0, maskB.width, maskB.height);
+    mbg.filter = 'blur(' + TS3 * 0.45 + 'px)';
+    mbg.drawImage(maskC, 0, 0);
+    mbg.filter = 'none';
+    maskTex.needsUpdate = true;
+  }
+  const sunW = new THREE.Vector3(),
+    camUp = new THREE.Vector3(),
+    WARM = new THREE.Color(1, 0.62, 0.38),
+    WHITE = new THREE.Color(1, 1, 1),
+    MV4 = new THREE.Matrix4();
+  G3D.setReal = (on) => {
+    REAL.on = !!on;
+    waterSkin.visible = REAL.on;
+    if (!REAL.on) {
+      skyDome.visible = false;
+      sun.color.setRGB(1, 1, 1);
+    }
+    frame = 0; // repaint the land (rivers are drawn more clearly in the realistic view)
+  };
+
   // height at any latitude/longitude (radians), smoothly between cells; the sea surface is flat
   function heightAt(la, lo) {
     const deg = (la * 180) / Math.PI,
@@ -318,6 +475,13 @@ const G3D = { ok: false };
     // hard squares (the world underneath is still a grid of 3 km squares): a blurred layer, then the
     // sharp picture half see-through on top, so rivers and trees still show
     smoothInto(lg, rawC, TS3);
+    if (REAL.on) {
+      // rivers drawn clearly over the softened land, then where the water is for the water's surface
+      lg.setTransform(TS3 / C, 0, 0, TS3 / C, 0, capH);
+      drawRivers(lg, v, v('--water'), 0.32);
+      lg.setTransform(1, 0, 0, 1, 0, 0);
+      paintWater(v);
+    }
     // clouds: drawn cell by cell, then blurred into soft shapes
     rg.setTransform(1, 0, 0, 1, 0, 0);
     rg.clearRect(0, 0, rawC.width, rawC.height);
@@ -704,7 +868,35 @@ const G3D = { ok: false };
     // clouds thin out as you come close so you can see the ground; from below they hang overhead
     clouds.material.opacity = GL.zoom < 6 ? clamp(1.25 - 0.22 * GL.zoom, 0.15, 0.9) : 0.15 + 0.35 * near;
     air.visible = GL.zoom < 3;
-    renderer.render(scene, camera);
+    if (REAL.on) {
+      globe.updateMatrixWorld(true);
+      sun.getWorldPosition(sunW).normalize();
+      camUp.copy(camera.position).normalize();
+      const sa = sunW.dot(camUp),
+        dayR = clamp((sa + 0.18) / 0.3, 0, 1);
+      skyDome.visible = near > 0;
+      skyDome.position.copy(camera.position);
+      skyMat.uniforms.sunW.value.copy(sunW);
+      skyMat.uniforms.upW.value.copy(camUp);
+      skyMat.uniforms.op.value = near;
+      // the haze far off takes the colour of the sky at the horizon, and a low sun's light is warm
+      scene.fog.color.setRGB(0.008 + 0.49 * dayR, 0.012 + 0.65 * dayR, 0.035 + 0.85 * dayR);
+      if (near > 0) scene.fog.far = scene.fog.near + 0.18 / near;
+      sun.color.copy(WARM).lerp(WHITE, clamp(sa / 0.35, 0, 1));
+      waterMat.uniforms.time.value = performance.now() / 1000;
+      waterMat.uniforms.nrmM.value.getNormalMatrix(MV4.multiplyMatrices(camera.matrixWorldInverse, waterSkin.matrixWorld));
+      waterMat.uniforms.sunV.value.copy(sunW).transformDirection(camera.matrixWorldInverse);
+      waterMat.uniforms.fogC.value.copy(scene.fog.color);
+      waterMat.uniforms.fogN.value = scene.fog.near;
+      waterMat.uniforms.fogF.value = scene.fog.far;
+    }
+    if (REAL.on && skyDome.visible) {
+      renderer.autoClear = false;
+      renderer.clear();
+      renderer.render(skyScene, camera);
+      renderer.render(scene, camera);
+      renderer.autoClear = true;
+    } else renderer.render(scene, camera);
 
     // creatures and the selection ring on the 2D canvas above
     cx.setTransform(1, 0, 0, 1, 0, 0);

@@ -556,6 +556,41 @@ function sightRange(a, night) {
 }
 // ---------- drawing the world: shared pieces ----------
 // Terrain into any 2D context, in map units (one cell = C units).
+function drawRivers(g, v, colour, width = 0.32) {
+  // Rivers: a square is 3 km across and a river only tens of metres wide, so a river square is land
+  // with a channel running through it, joined to the next stretch of river, the lake or the sea.
+  g.strokeStyle = colour || v('--water');
+  g.lineCap = 'round';
+  g.lineWidth = C * width;
+  g.beginPath();
+  for (let y = 0; y < H; y++)
+    for (let x = 0; x < W; x++) {
+      const i = y * W + x;
+      if (!river[i]) continue;
+      // flow on to the lowest neighbouring water: a lake or the sea if there is one, else the river downhill
+      let to = -1,
+        tx = 0,
+        ty = 0,
+        lo = Infinity;
+      for (const [dx, dy] of MV) {
+        const Y = y + dy;
+        if (Y < 0 || Y >= H) continue;
+        const j = idx(x + dx, Y);
+        if (!water[j]) continue;
+        const h = river[j] ? alt[j] : -99;
+        if (h < lo) {
+          lo = h;
+          to = j;
+          tx = x + dx;
+          ty = Y;
+        }
+      }
+      g.moveTo(x * C + C / 2, y * C + C / 2);
+      if (to >= 0) g.lineTo(tx * C + C / 2, ty * C + C / 2);
+      else g.lineTo(x * C + C / 2 + 0.01, y * C + C / 2);
+    }
+  g.stroke();
+}
 function drawTerrain(g, v, relief = true) {
   g.fillStyle = v('--dirt');
   g.fillRect(0, 0, W * C, H * C);
@@ -621,39 +656,7 @@ function drawTerrain(g, v, relief = true) {
       g.fillStyle = 'rgba(70,64,58,' + (0.6 * BURNT[i]).toFixed(2) + ')'; // grey ash
       g.fillRect((i % W) * C, ((i / W) | 0) * C, C, C);
     }
-  // Rivers: a square is 3 km across and a river only tens of metres wide, so a river square is land
-  // with a channel running through it, joined to the next stretch of river, the lake or the sea.
-  g.strokeStyle = v('--water');
-  g.lineCap = 'round';
-  g.lineWidth = C * 0.32;
-  g.beginPath();
-  for (let y = 0; y < H; y++)
-    for (let x = 0; x < W; x++) {
-      const i = y * W + x;
-      if (!river[i]) continue;
-      // flow on to the lowest neighbouring water: a lake or the sea if there is one, else the river downhill
-      let to = -1,
-        tx = 0,
-        ty = 0,
-        lo = Infinity;
-      for (const [dx, dy] of MV) {
-        const Y = y + dy;
-        if (Y < 0 || Y >= H) continue;
-        const j = idx(x + dx, Y);
-        if (!water[j]) continue;
-        const h = river[j] ? alt[j] : -99;
-        if (h < lo) {
-          lo = h;
-          to = j;
-          tx = x + dx;
-          ty = Y;
-        }
-      }
-      g.moveTo(x * C + C / 2, y * C + C / 2);
-      if (to >= 0) g.lineTo(tx * C + C / 2, ty * C + C / 2);
-      else g.lineTo(x * C + C / 2 + 0.01, y * C + C / 2);
-    }
-  g.stroke();
+  drawRivers(g, v);
   // forests: a canopy of tree crowns, darkest in the rainforest, blue-green for pines; ripe fruit shows
   const FC = ['', '#2d5a45', '#3b7a35', '#1f5e2a'];
   for (let y = 0; y < H; y++)
@@ -2719,6 +2722,25 @@ $('sky').onclick = () => {
   FLAT.n = 0;
   if (G3D.ok) G3D.repaint();
 };
+// The realistic view: real-looking water and sky, for those who want them (it is slower to draw, so it
+// starts off, and each visitor's choice is remembered on their device)
+function setReal(on) {
+  $('real').setAttribute('aria-pressed', on ? 'true' : 'false');
+  $('real').textContent = on ? 'Realistic: on' : 'Realistic';
+  if (G3D.ok && G3D.setReal) G3D.setReal(on);
+  try {
+    localStorage.setItem('genesis-real', on ? '1' : '0');
+  } catch {}
+}
+if (!G3D.ok) $('real').hidden = true;
+else {
+  let r0 = false;
+  try {
+    r0 = localStorage.getItem('genesis-real') === '1';
+  } catch {}
+  setReal(r0);
+}
+$('real').onclick = () => setReal($('real').getAttribute('aria-pressed') !== 'true');
 // ---------- full-screen world, tabs ----------
 function fit() {
   const r = $('stage').getBoundingClientRect(),

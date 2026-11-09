@@ -4,6 +4,12 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Realistic view** (a button beside "Hide clouds"; off by default and remembered on each device, since it
+  is slower to draw): water that ripples, glints in the sun, mirrors the sky at a low angle and is clear in
+  the shallows and dark where deep; rivers drawn clearly; and near the ground a sky coloured as sunlight
+  scatters (blue overhead, pale at the horizon, red at sunrise and sunset, the sun's disc, stars at night),
+  with haze in the distance and a warmer light from a low sun. Picture only: the world is unchanged.
+
 - Fish no longer float in the air: on the globe a fish lies in the water, seen from above as a dark, slim
   shape turned the way it swims, its tail swaying; at a low angle the water's surface hides it, as real
   water does, so from the bank only nearby fish below you can be seen.
