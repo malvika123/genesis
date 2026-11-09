@@ -899,13 +899,21 @@ const G3D = { ok: false };
         sp.material.needsUpdate = true;
         const la = latOfY(a.ry),
           lo = lonOfX(a.rx);
-        const ci = idx(Math.round(a.rx), Math.round(a.ry)),
-          wading = water[ci] && !river[ci] && !iced(ci);
-        sp.position.copy(local(la, lo, 1 + EX * heightAt(la, lo) + (wading ? -0.0025 : 0.0002)));
         // Figures are drawn 2.5 times life size so you can find them among the trees (like the
         // exaggerated mountains), all by the same factor so people and animals keep their true sizes
         // compared with each other (each kind's own size is already in its picture).
         const s = (a.sp === 0 ? 0.0046 : 0.0042 * (18 / 15)) * 2.5;
+        // In water, the body is in it, not standing on it: knee- to thigh-deep in the shallows, only the head
+        // out where it is swimming in deep water. The water surface (flat for the sea, the lake's own level
+        // otherwise) hides what is below it.
+        const ci = idx(Math.round(a.rx), Math.round(a.ry)),
+          inW = water[ci] && !river[ci] && !iced(ci),
+          ground = 1 + EX * heightAt(la, lo);
+        if (inW) {
+          const surface = salt[ci] ? 1 : ground,
+            sink = deep[ci] ? 0.78 : 0.3;
+          sp.position.copy(local(la, lo, surface - sink * s * 0.82));
+        } else sp.position.copy(local(la, lo, ground + 0.0002));
         sp.scale.set(s, s, 1);
       }
     for (let k = n; k < pool.length; k++) pool[k].visible = false;

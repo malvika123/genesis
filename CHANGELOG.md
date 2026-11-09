@@ -4,6 +4,9 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- On the globe, people and animals in water are in it, not standing on it: thigh-deep in the shallows,
+  only the head out when swimming in deep water.
+
 - On the globe, stones, flakes, pyrite, fallen branches and nuts are real objects lying on the ground, so
   trees and hills hide them (they were painted on top of the picture and showed on the treetops); people
   and animals are solid again (a mistake made when fish were redrawn left them partly see-through).
