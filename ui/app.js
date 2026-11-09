@@ -1250,7 +1250,7 @@ function drawBodies(g, P) {
 function drawEyeHands(g, a, w, h) {
   if (a.sp !== 0 || a.asleep) return;
   const s = h / 700,
-    skin = '#e7b896',
+    skin = skinCol(skinOf(a)),
     bob = a.moving ? Math.sin(a.ph || 0) * 14 * s : 0,
     act = a.act,
     sw = bodySwing(a);
@@ -1291,119 +1291,202 @@ function drawEyeHands(g, a, w, h) {
 // A person, seen from the front, in the pose of what they are doing: walking, bending down to pick
 // something up or drink, a hand to the mouth when eating, an arm swinging when striking, an arm held
 // out when sharing — with whatever they hold in their hand.
+// Skin: early humans in warm, sunny lands were dark-skinned (dark pigment protects bare skin from strong
+// sun once body hair was lost). Here each founder's shade varies a little around that, and children
+// take after both parents with a small difference of their own — drawn only; it changes nothing in
+// the world.
+const SKIN_LIGHT = [241, 194, 125],
+  SKIN_DARK = [74, 44, 28];
+function skinOf(a) {
+  if (a.skin !== undefined) return a.skin;
+  const hsh = ((a.id || 0) * 2654435761) % 1000 / 1000;
+  const m = a.mom ? skinOf(a.mom) : null,
+    d = a.dad ? skinOf(a.dad) : null;
+  a.skin = clamp(m !== null ? ((d !== null ? (m + d) / 2 : m) + (hsh - 0.5) * 0.12) : 0.62 + hsh * 0.3, 0, 1);
+  return a.skin;
+}
+const skinCol = (t, dk = 0) =>
+  'rgb(' + SKIN_LIGHT.map((c, i) => Math.round((c + (SKIN_DARK[i] - c) * t) * (1 - dk))).join(',') + ')';
+// A person, seen from the front, with human proportions: a head about an eighth of the height in an
+// adult and much bigger in a child, shoulders and hips (broader shoulders in men, wider hips in women),
+// arms and legs that bend at elbow and knee, hands and feet. Bare, as the first people were. In the
+// pose of what they are doing: walking, bending down to pick something up or drink, a hand to the mouth
+// when eating, an arm swinging when striking, an arm held out when sharing or pointing.
 function drawPerson(g, a, X, Y, k, gr, col) {
   const h = (5.5 + 6 * gr) * k, // full height
-    head = h * (0.2 + 0.1 * (1 - gr)),
-    skin = '#e7b896',
-    hair = '#3b2a20',
-    lw = Math.max(1, h * 0.09),
+    tone = a.skv ?? skinOf(a),
+    skin = skinCol(tone),
+    shade = skinCol(tone, 0.22),
+    hair = '#1e1612',
     act = a.asleep ? -1 : a.act,
     crouch = act === A_TAKE || act === A_DROP || act === A_DRINK || act === A_STRIKE ? 1 : 0,
-    // the strike: the arm goes up over the head and comes down hard, again and again
-    sw = act === A_STRIKE ? (a.swf ?? bodySwing(a)) : 0;
+    sw = act === A_STRIKE ? (a.swf ?? bodySwing(a)) : 0,
+    fem = !!a.sex,
+    adult = gr > 0.85;
   g.save();
-  // standing figures have their feet on their spot; sleepers lie across it
   g.translate(X, a.asleep ? Y : Y - h * 0.35);
-  if (a.asleep) g.rotate(-Math.PI / 2); // lying down
-  const dn = crouch * h * 0.18, // bending the knees lowers the body
+  if (a.asleep) g.rotate(-Math.PI / 2);
+  const dn = crouch * h * 0.16,
     top = -h / 2 + dn,
-    neck = top + head * 2,
-    hip = neck + (h - head * 2) * 0.48,
+    hr = h * (0.062 + 0.07 * (1 - gr)), // head radius: children have big heads
+    hcy = top + hr * 1.1,
+    neckY = top + hr * 2.15,
+    sh = neckY + h * 0.035, // shoulders
+    shW = h * (adult ? (fem ? 0.115 : 0.135) : 0.1),
+    waist = sh + h * 0.17,
+    waW = h * (fem && adult ? 0.068 : 0.078),
+    hip = sh + h * 0.27,
+    hiW = h * (fem && adult ? 0.1 : 0.088),
+    crotch = hip + h * 0.035,
     foot = h / 2,
-    // legs swing while they are actually walking from one spot to the next
-    step = a.asleep || !a.moving || crouch ? 0 : Math.sin(a.ph || 0) * h * 0.16;
+    step = a.asleep || !a.moving || crouch ? 0 : Math.sin(a.ph || 0) * h * 0.14;
   g.lineCap = 'round';
   g.lineJoin = 'round';
-  // legs (knees out when crouching)
-  g.strokeStyle = skin;
-  g.lineWidth = lw * 1.3;
-  g.beginPath();
-  if (crouch) {
-    g.moveTo(-h * 0.05, hip);
-    g.lineTo(-h * 0.17, (hip + foot) / 2);
-    g.lineTo(-h * 0.1, foot);
-    g.moveTo(h * 0.05, hip);
-    g.lineTo(h * 0.17, (hip + foot) / 2);
-    g.lineTo(h * 0.1, foot);
-  } else {
-    g.moveTo(-h * 0.05, hip);
-    g.lineTo(-h * 0.1 - step, foot);
-    g.moveTo(h * 0.05, hip);
-    g.lineTo(h * 0.1 + step, foot);
+  const limb = (pts, w0, w1, c) => {
+    // a limb as two tapered segments
+    g.strokeStyle = c;
+    for (let s = 0; s < pts.length - 1; s++) {
+      g.lineWidth = Math.max(0.6, w0 + (w1 - w0) * (s / Math.max(1, pts.length - 2)));
+      g.beginPath();
+      g.moveTo(pts[s][0], pts[s][1]);
+      g.lineTo(pts[s + 1][0], pts[s + 1][1]);
+      g.stroke();
+    }
+  };
+  // legs: thigh, knee, calf, foot
+  const knee = crotch + (foot - crotch) * 0.5;
+  for (const sd of [-1, 1]) {
+    const hx = sd * h * 0.045,
+      st = sd * step,
+      kx = crouch ? sd * h * 0.15 : hx + st * 0.5 + sd * h * 0.005,
+      ax = crouch ? sd * h * 0.09 : hx + st + sd * h * 0.01;
+    limb([[hx, crotch - h * 0.03], [kx, knee], [ax, foot - h * 0.03]], h * 0.066, h * 0.05, sd < 0 ? shade : skin);
+    g.fillStyle = sd < 0 ? shade : skin;
+    g.beginPath();
+    g.ellipse(ax + sd * h * 0.012, foot - h * 0.012, h * 0.035, h * 0.016, 0, 0, 7);
+    g.fill();
   }
-  g.stroke();
-  // arms: the left swings with walking; the right does the work
-  let rx = h * 0.2 - step * 0.6,
-    ry = hip;
+  // where the working (right) hand goes
+  let rx = shW + h * 0.04 - step * 0.5,
+    ry = hip + h * 0.04;
   if (act === A_STRIKE) {
     rx = h * 0.17;
     ry = top - h * 0.1 + ((1 - sw) / 2) * (foot - top - h * 0.05);
   } else if (crouch) {
     rx = h * 0.14;
-    ry = foot - h * 0.03; // reaching to the ground
+    ry = foot - h * 0.03;
   } else if (act === A_EAT) {
-    rx = h * 0.05;
-    ry = top + head * 1.6; // hand to the mouth
+    rx = h * 0.03;
+    ry = hcy + hr * 0.6;
   } else if (act === A_GIVE) {
     rx = h * 0.38;
-    ry = neck + h * 0.1; // holding it out
+    ry = sh + h * 0.08;
   } else if ((a.ptv ?? (a.ptT !== undefined && tick - a.ptT <= 1 && a.pt >= 0 ? a.pt : -1)) >= 0) {
-    // pointing: the arm held straight out (to the side it points; up for north, lower for south)
     const d = a.ptv ?? a.pt,
       [mx, my] = MV[d];
     rx = h * (mx === 0 ? 0.3 : 0.45) * (mx < 0 ? -1 : 1) * (a.face === -1 ? -1 : 1);
-    ry = neck + h * (0.02 + 0.08 * my);
+    ry = sh + h * (0.0 + 0.08 * my);
   }
-  g.strokeStyle = skin;
-  g.lineWidth = lw;
+  // the resting (left) arm swings with walking, behind the body's edge
+  const lhx = -shW - h * 0.035 + step * 0.5,
+    lhy = crouch ? hip + h * 0.08 : hip + h * 0.05;
+  limb([[-shW + h * 0.03, sh + h * 0.02], [(-shW + lhx) / 2 - h * 0.015, (sh + lhy) / 2], [lhx, lhy]], h * 0.048, h * 0.04, shade);
+  g.fillStyle = shade;
   g.beginPath();
-  g.moveTo(-h * 0.11, neck + h * 0.04);
-  g.lineTo(-h * 0.2 + step * 0.6, crouch ? hip + h * 0.06 : hip);
-  g.moveTo(h * 0.11, neck + h * 0.04);
-  g.lineTo(rx, ry);
-  g.stroke();
-  if (a.hand) drawHeld(g, a.hand, rx, ry, h, lw);
-  // body
-  g.fillStyle = skin;
+  g.arc(lhx, lhy + h * 0.012, h * 0.024, 0, 7);
+  g.fill();
+  // the torso: shoulders, chest, waist, hips
+  const grad = g.createLinearGradient(-shW, 0, shW, 0);
+  grad.addColorStop(0, shade);
+  grad.addColorStop(0.35, skin);
+  grad.addColorStop(0.7, skin);
+  grad.addColorStop(1, shade);
+  g.fillStyle = grad;
   g.beginPath();
-  g.moveTo(-h * 0.13, neck);
-  g.lineTo(h * 0.13, neck);
-  g.lineTo(h * 0.1, hip + h * 0.04);
-  g.lineTo(-h * 0.1, hip + h * 0.04);
+  g.moveTo(-h * 0.028, neckY - h * 0.005);
+  g.lineTo(h * 0.028, neckY - h * 0.005);
+  g.quadraticCurveTo(h * 0.05, sh - h * 0.005, shW, sh + h * 0.02);
+  g.quadraticCurveTo(shW - h * 0.005, sh + h * 0.08, waW, waist);
+  g.quadraticCurveTo(hiW + h * 0.01, hip - h * 0.02, hiW, hip);
+  g.quadraticCurveTo(hiW * 0.6, crotch + h * 0.01, 0, crotch);
+  g.quadraticCurveTo(-hiW * 0.6, crotch + h * 0.01, -hiW, hip);
+  g.quadraticCurveTo(-hiW - h * 0.01, hip - h * 0.02, -waW, waist);
+  g.quadraticCurveTo(-shW + h * 0.005, sh + h * 0.08, -shW, sh + h * 0.02);
+  g.quadraticCurveTo(-h * 0.05, sh - h * 0.005, -h * 0.028, neckY - h * 0.005);
   g.closePath();
   g.fill();
   // a pregnant belly, rounder as the birth nears
   const pg = a.pgv ?? (a.preg ? clamp(1 - (a.preg.due - tick) / Math.max(1, a.S.gest), 0, 1) : 0);
   if (pg > 0.3) {
-    const bw = h * (0.1 + 0.07 * pg),
-      by = hip - h * 0.04;
+    const bw = h * (0.06 + 0.05 * pg);
+    g.fillStyle = skin;
     g.beginPath();
-    g.ellipse(0, by, bw, bw * 0.85, 0, 0, 7);
+    g.ellipse(0, waist + h * 0.03, bw, bw * 0.9, 0, 0, 7);
     g.fill();
-    g.strokeStyle = 'rgba(120,70,50,0.35)';
-    g.lineWidth = Math.max(0.5, lw * 0.35);
+    g.strokeStyle = 'rgba(0,0,0,0.18)';
+    g.lineWidth = Math.max(0.4, h * 0.006);
     g.stroke();
   }
-  // head and hair
+  // the working arm: upper arm, elbow, forearm, hand
+  const ex = (shW + rx) / 2 + h * 0.03,
+    ey = (sh + ry) / 2 + (act === A_STRIKE ? -h * 0.04 : h * 0.01);
+  limb([[shW - h * 0.03, sh + h * 0.02], [ex, ey], [rx, ry]], h * 0.048, h * 0.04, skin);
   g.fillStyle = skin;
   g.beginPath();
-  g.arc(0, top + head, head, 0, 7);
+  g.arc(rx, ry, h * 0.024, 0, 7);
   g.fill();
+  if (a.hand) drawHeld(g, a.hand, rx, ry, h, Math.max(1, h * 0.04));
+  // neck and head
+  g.fillStyle = skin;
+  g.fillRect(-h * 0.025, hcy + hr * 0.7, h * 0.05, neckY - hcy - hr * 0.6);
+  g.beginPath();
+  g.ellipse(0, hcy, hr * 0.84, hr * 1.06, 0, 0, 7);
+  g.fill();
+  // ears
+  g.beginPath();
+  g.ellipse(-hr * 0.84, hcy + hr * 0.05, hr * 0.13, hr * 0.22, 0, 0, 7);
+  g.ellipse(hr * 0.84, hcy + hr * 0.05, hr * 0.13, hr * 0.22, 0, 0, 7);
+  g.fill();
+  // hair: short and tightly curled, a little longer on women
   g.fillStyle = hair;
   g.beginPath();
-  g.arc(0, top + head * 0.9, head, Math.PI, 2 * Math.PI);
+  g.ellipse(0, hcy - hr * 0.2, hr * 0.95, hr * 0.95, 0, Math.PI * 0.95, Math.PI * 2.05);
   g.fill();
-  if (a.sex) g.fillRect(-head, top + head * 0.9, head * 0.35, head * 1.3); // longer hair
-  // a thin pink or blue outline (female or male), which also makes them stand out on any ground
+  for (let q = -3; q <= 3; q++) {
+    g.beginPath();
+    g.arc(q * hr * 0.27, hcy - hr * (1.05 - Math.abs(q) * 0.07), hr * 0.2, 0, 7);
+    g.fill();
+  }
+  if (fem && adult) {
+    g.beginPath();
+    g.ellipse(-hr * 0.82, hcy + hr * 0.1, hr * 0.2, hr * 0.55, 0, 0, 7);
+    g.ellipse(hr * 0.82, hcy + hr * 0.1, hr * 0.2, hr * 0.55, 0, 0, 7);
+    g.fill();
+  }
+  // face: brow, eyes, a nose's shadow, closed when asleep
+  if (h > 9) {
+    g.fillStyle = 'rgba(0,0,0,0.18)';
+    g.fillRect(-hr * 0.55, hcy - hr * 0.22, hr * 1.1, hr * 0.12);
+    g.fillStyle = '#120c09';
+    if (a.asleep) {
+      g.fillRect(-hr * 0.42, hcy, hr * 0.26, hr * 0.06);
+      g.fillRect(hr * 0.16, hcy, hr * 0.26, hr * 0.06);
+    } else {
+      g.beginPath();
+      g.arc(-hr * 0.3, hcy, hr * 0.11, 0, 7);
+      g.arc(hr * 0.3, hcy, hr * 0.11, 0, 7);
+      g.fill();
+    }
+    g.fillStyle = 'rgba(0,0,0,0.15)';
+    g.beginPath();
+    g.ellipse(0, hcy + hr * 0.32, hr * 0.15, hr * 0.1, 0, 0, 7);
+    g.fill();
+  }
+  // a thin pink or blue outline round the head (female or male), so they stand out on any ground
   g.strokeStyle = col;
-  g.lineWidth = Math.max(0.8, lw * 0.45);
+  g.lineWidth = Math.max(0.7, h * 0.02);
   g.beginPath();
-  g.arc(0, top + head, head, 0, 7);
-  g.moveTo(-h * 0.13, neck);
-  g.lineTo(h * 0.13, neck);
-  g.lineTo(h * 0.1, hip + h * 0.04);
-  g.lineTo(-h * 0.1, hip + h * 0.04);
-  g.closePath();
+  g.ellipse(0, hcy, hr * 0.98, hr * 1.2, 0, 0, 7);
   g.stroke();
   g.restore();
 }
