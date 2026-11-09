@@ -32,6 +32,7 @@ Entries are kept even when the result was "no effect" or "it made things worse" 
 | Learning from what happens to others (feeling a share of their pain; choosy copying) | 11.1 vs 9.3 alive; predator deaths 33 → 16 | moderate |
 | Starting where our species lived (warm tropical land with fresh water, open and wooded ground; no predators at the camp) | 23.1 vs 15.3 alive, better in 10 of 12 worlds; 0 vs 1 die-outs. Range of the difference still includes zero | weak–moderate |
 | The real Earth 70,000 years ago instead of a made-up planet | Worlds survive about as well (20.3 alive, none died out) | weak (different worlds) |
+| **Not** measurable: hungry people eating the food in reach (fixing a real flaw) | Hunger deaths 170 → 167; survival 23.1 → 24.4 (within noise) | none |
 | **Not** a must-have: bigger brains on their own | 64 units: 8.2 alive, 256: 6.1, 1,024: 2.2 | strong |
 | **Not** measurable: sound by real physics, animal calls | 7.7 / 6.7 / 7.1 alive (within noise) | none |
 
@@ -250,12 +251,51 @@ this says only that populations survive about as well on the real map, not why t
 **Strength.** Weak (different worlds). **Lesson:** the real geography is no harder to live on than the
 invented one, so it can be the default without losing populations.
 
+### 10. Eating the food in reach — Nov 2026
+
+**Version.** Unreleased (after 0.7.0) · the change: commit `f310b5b`, `78a1437`.
+
+**Data.** Raw tables: [after the change](../data/findings/10-eating-food-in-reach/eating-fix.csv) · [before (the same as entry 8)](../data/findings/10-eating-food-in-reach/before.csv). No switch turns this change off.
+
+**Problem.** Hunger kills more people than anything else, yet a trace of every hunger death (3 worlds × 40
+days, 18 deaths) found food — fruit, nuts, roots — within reach in nearly every case: 10 of the 18 were
+children (7 of them orphans), 12 were alone or nearly so, and some went 6–11 days without eating. Measured
+moment by moment, a hungry person standing on fruit ate it only **7%** of the time (children 4%).
+
+**Cause.** The inborn pull "when hungry, go toward food you can see" kept working when food was already
+underfoot, and grass (which people see as food but cannot digest) is everywhere, so the eight "walk"
+choices together outweighed "eat". Brains had also learned that eating rarely pays (chewing grass and
+digging roots barehanded mostly fail), which drowned out the inborn taste for sweet fruit.
+
+**Added.** Seeking food and eating it as two phases, as in every animal (appetitive and consummatory
+behaviour): once liked food is in reach, the urge to go looking stops; and a stronger inborn pull to eat
+sweet or fresh food when hungry. Eating on fruit rose from 7% to 23% of hungry moments; most of the rest
+was exhausted people going off to find somewhere safe to sleep.
+
+**Test.** 12 worlds × 60 days, seeds 1–12, made-up planet, the realistic start, before and after (worlds
+diverge after the first steps, so only averages compare).
+
+| | People alive | Worlds died out | Hunger | Predators | Drowned | Burned |
+|---|---|---|---|---|---|---|
+| Before | 23.1 ± 4.2 | 0 | 170 | 85 | 62 | 37 |
+| After | 24.4 ± 4.4 | 0 | 167 | 63 | 54 | 34 |
+
+**Result.** **No measurable effect on hunger deaths** (170 → 167); survival within noise. People now eat the
+fruit they stand on, but that was not what was killing them.
+
+**Strength.** None (for survival). **Lesson:** fixing a real flaw is not the same as fixing the cause. The
+deaths point elsewhere: weaned children and orphans left to feed themselves, and people alone. Among real
+foragers children are fed by many adults for years — they produce less than they eat until their teens
+(Kaplan et al. 2000) — and bands stay and move together.
+
 ---
 
 ## Open questions (next tests)
 
 - Ablate the bundle in entry 7: which of band size, parental feeding, instincts, one-shot memory and
   swimming carry the effect?
+- Hunger: do children staying near their family, and adults feeding any hungry child in the band
+  (cooperative breeding), cut the deaths of weaned children and orphans?
 - Where the band starts: does the +8 people hold with 24+ worlds, and is it the water, the food or the
   temperature that carries it? Does fleeing wildfire realistically stop the fire deaths?
 - On the real Earth: what do ice sheets, the colder climate and monsoons change?

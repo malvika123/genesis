@@ -4,6 +4,10 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- Hungry people eat the food they are standing on: seeking food stops once liked food is in reach (as in
+  every animal), and the inborn pull to eat sweet or fresh food when hungry is stronger. (Research log
+  entry 10: it did not reduce hunger deaths; the cause lies elsewhere.)
+
 - **The Research page** (`research.html`, linked from the top bar): every survival test from the research
   log, grouped by the version it was run on, with what was added in each version, the strength of the
   evidence (filterable), the raw data to download, a "Re-run in the Lab" button that sets the Lab up for
