@@ -88,7 +88,7 @@ function updateItems() {
     nut[i] = Math.min(c, nut[i] * 0.9998 + 0.0008 * tree[i] * Math.max(0, growthAt(i) - 0.3));
     // branches fall in the forest and slowly rot
     if (tree[i] > 0.3 && stick[i] < 4 && rnd() < 0.0002 * tree[i]) stick[i]++;
-    else if (stick[i] && rnd() < 0.00003) stick[i]--;
+    else if (stick[i] && rnd() < (stick[i] > 4 ? 0.0003 : 0.00003)) stick[i]--; // a heap settles and rots faster: a shelter needs keeping up
   }
 }
 
@@ -190,6 +190,7 @@ function pickUp(a) {
 function putDown(a) {
   const i = idx(a.x, a.y),
     L = a.hand === 1 ? stone : a.hand === 2 || a.hand === 4 ? stick : a.hand === 5 ? pyrite : flake;
-  if (a.hand && !water[i]) L[i] = Math.min(6, L[i] + 1);
+  // branches can be heaped up (a pile of them is a shelter: forest.js); other things only a few to a place
+  if (a.hand && !water[i]) L[i] = Math.min(L === stick ? 16 : 6, L[i] + 1);
   a.hand = 0;
 }

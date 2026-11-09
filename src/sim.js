@@ -1097,6 +1097,11 @@ function sim() {
       }
     }
     if (a.age % 48 === a.id % 48 && a.age > 48) lessons(a);
+    // the first time someone sleeps inside a heap of branches people carried together
+    if (a.sp === 0 && a.asleep && !firsts.shelter && stick[idx(a.x, a.y)] >= 7) {
+      firsts.shelter = 1;
+      log(a.name + ' slept in a shelter of piled branches. Nobody taught this.');
+    }
   }
   ag = ag.filter((a) => {
     let c = a.dead

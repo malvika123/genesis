@@ -67,4 +67,8 @@ function updateForest() {
 
 // how thick the trees are where a creature stands (0 if it is in the water)
 // trees give cover; a cave gives more
-const cover = (i) => (water[i] ? 0 : cave[i] ? Math.max(tree[i], 0.9) : tree[i]);
+// Branches piled high in one place keep off wind and rain and hide whoever is inside, as a brush shelter
+// or windbreak does; a few lying about do nothing. (Only the possibility is given: nothing tells anyone to
+// build one. More branches than ever fall naturally in one place — four — have to be carried there.)
+const brush = (i) => (typeof stick === 'undefined' || !stick ? 0 : Math.max(0, Math.min(0.8, (stick[i] - 4) / 8)));
+const cover = (i) => (water[i] ? 0 : Math.max(cave[i] ? Math.max(tree[i], 0.9) : tree[i], brush(i)));

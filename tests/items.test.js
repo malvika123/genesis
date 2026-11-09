@@ -72,3 +72,19 @@ test('animals have no hands', () => {
   E.sim();
   assert.equal(d.hand, 0);
 });
+
+test('a heap of branches carried together is a shelter; a few branches lying about are not', () => {
+  const { createEngine } = require('../tools/engine');
+  const E = createEngine();
+  E.setSeed(2);
+  E.reset({});
+  const st = E.state(),
+    it = E.items(),
+    f = E.forest();
+  let i = 0;
+  while (st.water[i] || st.cave[i] || f.tree[i] > 0.05) i++;
+  it.stick[i] = 3;
+  assert.ok(f.cover(i) < 0.1, 'three branches give no cover');
+  it.stick[i] = 12;
+  assert.ok(f.cover(i) >= 0.75, 'a heap of twelve does: ' + f.cover(i));
+});

@@ -462,7 +462,16 @@ const G3D = { ok: false };
     flakesI = mkI(pebG, 0xb7bcba, MAXI),
     pyriteI = mkI(pebG, 0xa8862a, 2000),
     sticksI = mkI(stickG, 0x4e3420, MAXI),
-    nutsI = mkI(nutG, 0x5a3f22, MAXI);
+    nutsI = mkI(nutG, 0x5a3f22, MAXI),
+    // a heap of branches someone carried together, leaned into a rough dome: a brush shelter
+    hutG = new THREE.ConeGeometry(1, 1, 9, 1, true).translate(0, 0.5, 0),
+    hutsI = (() => {
+      const m = new THREE.InstancedMesh(hutG, new THREE.MeshLambertMaterial({ color: 0x5b4128, side: THREE.DoubleSide }), 600);
+      m.count = 0;
+      m.frustumCulled = false;
+      globe.add(m);
+      return m;
+    })();
   const IQ = new THREE.Quaternion(),
     IQ2 = new THREE.Quaternion(),
     IM = new THREE.Matrix4(),
@@ -472,9 +481,9 @@ const G3D = { ok: false };
   let itemsFrame = 0;
   function plantItems() {
     const k = 2.5,
-      n = { s: 0, f: 0, p: 0, b: 0, u: 0 };
+      n = { s: 0, f: 0, p: 0, b: 0, u: 0, h: 0 };
     const put = (mesh, key, gx, gy, sx, sy, sz, turn) => {
-      if (n[key] >= (key === 'p' ? 2000 : MAXI)) return;
+      if (n[key] >= (key === 'p' ? 2000 : key === 'h' ? 600 : MAXI)) return;
       const la = latOfY(gy),
         lo = lonOfX(gx),
         r = 1 + EX * heightAt(la, lo);
@@ -511,6 +520,11 @@ const G3D = { ok: false };
         const [gx, gy, t] = spot();
         put(pyriteI, 'p', gx, gy, 0.0004 * k, 0.0004 * k, 0.0004 * k, t);
       }
+      if (stick[i] >= 7) {
+        // about as tall as a person and two or three paces across
+        const sz = 0.0016 + 0.0001 * stick[i];
+        put(hutsI, 'h', x, y, sz * k, sz * 1.3 * k, sz * k, (i % 360) * (Math.PI / 180));
+      } else
       for (let j = 0; j < stick[i]; j++) {
         const [gx, gy, t] = spot();
         // a fallen branch lying along the ground, about as long as a person is tall
@@ -526,7 +540,8 @@ const G3D = { ok: false };
     pyriteI.count = n.p;
     sticksI.count = n.b;
     nutsI.count = n.u;
-    for (const m of [stonesI, flakesI, pyriteI, sticksI, nutsI]) m.instanceMatrix.needsUpdate = true;
+    hutsI.count = n.h;
+    for (const m of [stonesI, flakesI, pyriteI, sticksI, nutsI, hutsI]) m.instanceMatrix.needsUpdate = true;
   }
 
   let frame = 0;
@@ -936,6 +951,8 @@ const G3D = { ok: false };
     // things lying on the ground, close up (picked up and put down often, so refreshed every second or so)
     const itemsOn = GL.zoom >= 5 || !!GL.eye;
     stonesI.visible = flakesI.visible = pyriteI.visible = sticksI.visible = nutsI.visible = itemsOn;
+    hutsI.visible = GL.zoom >= 3 || !!GL.eye;
+    if (!itemsOn && hutsI.visible && itemsFrame++ % 30 === 0) plantItems();
     if (itemsOn && itemsFrame++ % 30 === 0) plantItems();
     if (frame++ % 12 === 0) paint(v);
     spinStep();

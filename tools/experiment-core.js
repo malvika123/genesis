@@ -33,6 +33,7 @@
     'joint', // someone goes the way another pointed (shared attention)
     'speak', // someone first says a word of its own making
     'shared', // three people say the same word: the first shared word
+    'shelter', // someone sleeps in a heap of branches carried together
   ];
   // the same, in words, for the Lab page
   const MILESTONE_NAMES = {
@@ -58,6 +59,7 @@
     joint: 'goes where another pointed',
     speak: 'says a word of their own',
     shared: 'three people share a word',
+    shelter: 'sleeps in a shelter of piled branches',
   };
   const CAUSES = [
     'hunger',
