@@ -5,13 +5,17 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const { createEngine } = require('../tools/engine');
 
-test('the world begins with a band of grown people', () => {
+test('the world begins with a band of families of all ages, every child with its mother', () => {
   const E = createEngine();
   E.setSeed(2);
   E.reset({});
-  const ppl = E.state().ag.filter((a) => a.sp === 0);
-  assert.equal(ppl.length, 8);
-  for (const a of ppl) assert.ok(a.age >= a.S.smat, 'every founder is grown');
+  const ppl = E.state().ag.filter((a) => a.sp === 0),
+    TY = E.TY;
+  assert.equal(ppl.length, 25);
+  const kids = ppl.filter((a) => a.age < 12 * TY),
+    elders = ppl.filter((a) => a.age >= 45 * TY);
+  assert.ok(kids.length >= 5 && elders.length >= 2, 'children and elders: ' + kids.length + ', ' + elders.length);
+  for (const k of kids) assert.ok(k.mom && k.mom.age - k.age >= 15 * TY, 'each child has a mother old enough');
 });
 
 test('what its brain was just doing is fed back in as short-term memory', () => {
