@@ -47,7 +47,8 @@ The engine never touches the page. That separation is what lets the same world r
 Needs [Node.js](https://nodejs.org) 18 or newer. There are no dependencies to install.
 
 ```
-npm test                      # run the tests (about 30 seconds)
+npm run test:quick            # the fast tests (about 20 seconds): run these while you work
+npm test                      # every test, including small worlds run for weeks (about 10 minutes)
 npm run worlds                # run 5 seeded worlds for 60 days and summarise them
 npm run worlds -- --worlds 20 --days 90 --people 4 --seed 100
 npm run worlds -- --json      # machine-readable results, e.g. for analysis in Python

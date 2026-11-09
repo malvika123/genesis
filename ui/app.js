@@ -582,7 +582,7 @@ function drawTerrain(g, v, relief = true) {
       }
       if (rock[i]) {
         g.fillStyle = v('--rock');
-        g.fillRect(x * C + 1, y * C + 1, C - 2, C - 2);
+        g.fillRect(x * C, y * C, C, C);
       } else if (cave[i]) {
         g.fillStyle = v('--rock');
         g.fillRect(x * C, y * C, C, C);
@@ -714,9 +714,12 @@ function drawTerrain(g, v, relief = true) {
         g.fillRect(x * C, y * C, C, C);
       }
       if (PUD[i]) {
-        g.globalAlpha = 0.85;
+        // a puddle: a soft round pool, not a square
+        g.globalAlpha = 0.7;
         g.fillStyle = v('--water');
-        g.fillRect(x * C + 2, y * C + 3, C - 4, C - 5);
+        g.beginPath();
+        g.ellipse(x * C + C * (0.35 + 0.3 * ((i * 7) % 5) / 5), y * C + C * 0.55, C * 0.3, C * 0.2, 0, 0, 7);
+        g.fill();
       }
     }
   g.globalAlpha = 1;
@@ -1123,7 +1126,6 @@ function drawGroundItems(g, P) {
       g.fill();
     }
   }
-  drawBodies(g, P);
 }
 // Carrion birds, seen from far off as people really found carcasses: circling high over a body, or
 // waiting on the ground nearby while a hunter or a person is at it. Vultures (big, brown) where it is
@@ -1204,10 +1206,10 @@ function drawCarrion(g, P) {
 function drawBodies(g, P) {
   for (const b of BODIES) {
     const Q = P(b.x, b.y);
-    if (!Q || Q[2] < 25) continue;
+    if (!Q || Q[2] < 3) continue;
     const age = tick - b.t,
       bones = clamp((age - 3 * 96) / (BODY_BONES - 3 * 96), 0, 1),
-      r = clamp(Q[2] * 0.02 * (b.sp === 0 ? 1 : 0.8 + 0.2 * b.size), 2, 12);
+      r = clamp(Q[2] * 0.02 * (b.sp === 0 ? 1 : 0.8 + 0.2 * b.size), 2.5, 12);
     g.save();
     g.translate(Q[0], Q[1]);
     if (bones < 1) {
@@ -1568,15 +1570,40 @@ function drawFlat(v) {
     FLAT.c.width = W * C;
     FLAT.c.height = H * C;
     FLAT.g = FLAT.c.getContext('2d');
+    FLAT.s = document.createElement('canvas');
+    FLAT.s.width = W * C;
+    FLAT.s.height = H * C;
+    FLAT.sg = FLAT.s.getContext('2d');
     FLAT.n = 0;
   }
   if (FLAT.n++ % 10 === 0) {
+    // the land blends smoothly from square to square (as on the globe), with its detail laid lightly
+    // over; then the clouds, drawn square by square and blurred into soft shapes
     drawTerrain(FLAT.g, v);
+    const sg = FLAT.sg,
+      t = FLAT.t || (FLAT.t = document.createElement('canvas'));
+    t.width = W;
+    t.height = H;
+    const tg = t.getContext('2d');
+    tg.imageSmoothingEnabled = true;
+    tg.imageSmoothingQuality = 'high';
+    tg.drawImage(FLAT.c, 0, 0, W, H);
+    sg.imageSmoothingEnabled = true;
+    sg.imageSmoothingQuality = 'high';
+    sg.clearRect(0, 0, FLAT.s.width, FLAT.s.height);
+    sg.drawImage(t, 0, 0, FLAT.s.width, FLAT.s.height);
+    sg.globalAlpha = 0.18;
+    sg.drawImage(FLAT.c, 0, 0);
+    sg.globalAlpha = 1;
+    FLAT.g.clearRect(0, 0, FLAT.c.width, FLAT.c.height);
     drawSky(FLAT.g);
+    sg.filter = 'blur(' + C * 0.9 + 'px)';
+    sg.drawImage(FLAT.c, 0, 0);
+    sg.filter = 'none';
   }
   cx.setTransform(1, 0, 0, 1, 0, 0);
   cx.imageSmoothingEnabled = true;
-  cx.drawImage(FLAT.c, 0, 0, cv.width, cv.height);
+  cx.drawImage(FLAT.s, 0, 0, cv.width, cv.height);
   cx.setTransform(cv.width / (W * C), 0, 0, cv.height / (H * C), 0, 0);
   for (const a of ag) drawCreature(cx, a, a.rx * C + C / 2, a.ry * C + C / 2, 1, v);
   drawWeatherFx(cx, (x, y) => [x * C + C / 2, y * C + C / 2, C], false);
@@ -2566,7 +2593,8 @@ $('view').onclick = () => {
 // the sun: the sunlit side stays facing you and the planet turns beneath it.
 function setSpin(v) {
   GL.spin = v;
-  $('turn').textContent = v ? 'Hold still' : 'Turn with the sun';
+  $('turn').textContent = v ? 'Turning with the sun' : 'Turn with the sun';
+  $('turn').title = v ? 'The planet turns with the day, sunlit side toward you. Click to hold it still.' : 'The planet holds still while day and night sweep across it. Click to turn it with the sun.';
   $('turn').setAttribute('aria-pressed', v ? 'true' : 'false');
 }
 $('turn').onclick = () => setSpin(!GL.spin);

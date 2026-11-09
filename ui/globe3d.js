@@ -287,6 +287,24 @@ const G3D = { ok: false };
     new THREE.Vector3(Math.cos(lo) * Math.cos(la) * r, Math.sin(la) * r, -Math.sin(lo) * Math.cos(la) * r);
 
   let frame = 0;
+  // Blend the land so each square's colour flows smoothly into its neighbours' (shrunk to one pixel a
+  // square, then stretched back with smoothing: a gradient, at any zoom), with the detailed picture
+  // laid lightly over it so rivers and trees still show.
+  const tinyC = document.createElement('canvas'),
+    tg = tinyC.getContext('2d');
+  function smoothInto(g, src, per) {
+    tinyC.width = Math.round(src.width / per);
+    tinyC.height = Math.round(src.height / per);
+    tg.imageSmoothingEnabled = true;
+    tg.imageSmoothingQuality = 'high';
+    tg.drawImage(src, 0, 0, tinyC.width, tinyC.height);
+    g.imageSmoothingEnabled = true;
+    g.imageSmoothingQuality = 'high';
+    g.drawImage(tinyC, 0, 0, src.width, src.height);
+    g.globalAlpha = 0.12;
+    g.drawImage(src, 0, 0);
+    g.globalAlpha = 1;
+  }
   function paint(v) {
     // land: the same drawing as the flat map, but without painted shading (the 3D light does that)
     lg.setTransform(1, 0, 0, 1, 0, 0);
@@ -296,7 +314,10 @@ const G3D = { ok: false };
     rg.clearRect(0, 0, rawC.width, rawC.height);
     rg.setTransform(TS3 / C, 0, 0, TS3 / C, 0, capH);
     drawTerrain(rg, v, false);
-    lg.drawImage(rawC, 0, 0);
+    // the land is softened so neighbouring kinds of ground blend into each other instead of meeting in
+    // hard squares (the world underneath is still a grid of 3 km squares): a blurred layer, then the
+    // sharp picture half see-through on top, so rivers and trees still show
+    smoothInto(lg, rawC, TS3);
     // clouds: drawn cell by cell, then blurred into soft shapes
     rg.setTransform(1, 0, 0, 1, 0, 0);
     rg.clearRect(0, 0, rawC.width, rawC.height);
@@ -604,6 +625,7 @@ const G3D = { ok: false };
     if (GL.zoom >= 2.5 || GL.eye) drawSounds(cx, project);
     drawTrails(cx, project);
     if (GL.zoom >= 5 || GL.eye) drawGroundItems(cx, project);
+    if (GL.zoom >= 2 || GL.eye) drawBodies(cx, project); // the dead lie where they fell, seen from fairly far
     drawTalk(
       cx,
       (a) => {

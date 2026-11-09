@@ -4,6 +4,11 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- The land blends smoothly from square to square (on the globe and the flat map) instead of meeting in
+  hard squares; puddles are round; clouds on the flat map are soft. The world underneath is unchanged.
+- Dead bodies can be seen from normal zoom on the globe, not only right up close.
+- The "Turn with the sun" button shows when it is on ("Turning with the sun", highlighted).
+- `npm run test:quick` runs the fast tests in about 20 seconds; `npm test` still runs everything.
 - **The brain's layout evolves.** Which region each thinking unit is in (fear, memory, sound and words,
   general) and what each region listens to are now genes. Children mix their parents' layouts with
   mutations: units move between regions, regions gain or lose senses, and rarely a region is copied and
