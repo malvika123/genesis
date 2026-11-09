@@ -4,6 +4,14 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Swimming.** Animals swim by instinct (each kind as well as the real one); people learn it by practice
+  in the shallows and deep water and by watching others, children fastest but weakest. The panel shows
+  how well someone swims; the log notes the first person to learn.
+- **Surviving as our ancestors did.** Worlds start with a band of 25 people of all ages (children with
+  their mothers, couples, grandmothers); people are born drawn to food and fresh water they can see when
+  hungry or thirsty and shy of big hunters; parents (and grandmothers) are moved to feed their own hungry
+  young; a big unexpected success sticks after one try, and the most striking memories are replayed most
+  in sleep.
 - The land blends smoothly from square to square (on the globe and the flat map) instead of meeting in
   hard squares; puddles are round; clouds on the flat map are soft. The world underneath is unchanged.
 - Dead bodies can be seen from normal zoom on the globe, not only right up close.

@@ -101,11 +101,32 @@ function sim() {
       a.hp -= 20;
       a.painW = 1;
     }
+    // Swimming. Most land mammals swim by instinct — deer, bison, wolves, bears and big cats cross rivers
+    // and lakes; rabbits only poorly. People are not born able to: a baby has a diving reflex but cannot
+    // swim, and swimming has to be learned, by splashing in the shallows and struggling in deep water,
+    // and by watching others. Young children are too weak to keep afloat for long even when they know
+    // how (drowning is still among the commonest deaths of small children). Deep water hurts and tires
+    // whoever cannot swim; a good swimmer only tires.
+    const swim = (a.sp === 0 ? a.swim || 0 : (a.S.swim ?? 0.8)) * (young ? clamp(0.3 + (0.7 * a.age) / S.mat, 0.3, 1) : 1);
     if (inW) {
-      a.hp -= 3;
-      a.painW = Math.min(1, a.painW + 0.35);
-      a.e -= 0.15;
-      if (!a.wasW) a.ev[1] = 'it nearly drowned on day ' + dn;
+      a.hp -= 3 * (1 - 0.92 * swim);
+      a.painW = Math.min(1, a.painW + 0.35 * (1 - swim));
+      a.e -= 0.15 + 0.1 * swim; // swimming is hard work
+      if (!a.wasW && swim < 0.5) a.ev[1] = 'it nearly drowned on day ' + dn;
+    }
+    if (a.sp === 0 && (inW || wade) && !a.asleep) {
+      // practice: a little in the shallows, more in deep water; children learn fastest
+      const before = a.swim || 0;
+      a.swim = Math.min(1, before + (inW ? 0.02 : 0.004) * (young ? 2 : 1) * (1 - before));
+      if (before < 0.5 && a.swim >= 0.5 && !firsts.swim) {
+        firsts.swim = 1;
+        log(a.name + ' can swim now. Nobody taught them.');
+      }
+      // and those watching close by pick a little up
+      if (inW && a.swim > 0.3)
+        for (const o of ag)
+          if (o !== a && o.sp === 0 && !o.asleep && Math.abs(dxw(o.x - a.x)) <= 1 && Math.abs(o.y - a.y) <= 1)
+            o.swim = Math.min(1, (o.swim || 0) + 0.002 * a.swim * (o.g.im ?? 1));
     }
     a.wasW = inW;
     // cold: costs energy, hurts when freezing, and huddling with your own kind helps

@@ -50,6 +50,7 @@ const MILESTONES = [
   'rubfire', // makes fire with wood
   'share', // gives food to another
   'vicar', // someone is afraid after seeing another person hurt
+  'swim', // someone learns to swim
   'point', // someone points
   'joint', // someone goes the way another pointed (shared attention)
   'speak', // someone first says a word of its own making
