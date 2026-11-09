@@ -285,7 +285,7 @@ function sim() {
       const h = idx(a.x, a.y),
         m = meatAt(a.x, a.y, 0),
         taste = Math.max(fruit[h], COOK[h], m && !rotten(m) ? m.meat : 0);
-      RF[A_EAT] = taste > 0.05 && !water[h] ? 4 * hu : 0;
+      RF[A_EAT] = taste > 0.05 && !water[h] ? 8 * hu : 0;
       // and hunger alone makes any primate try putting plants in its mouth: a weaker pull, which the
       // gut then rewards or not
       if (!RF[A_EAT] && hu > 0.35 && !water[h] && (food[h] > 0.1 || ROOT[h] > 0.05)) RF[A_EAT] = 2.5 * (hu - 0.35);
