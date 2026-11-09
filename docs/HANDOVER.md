@@ -1,7 +1,7 @@
 # Genesis — state of the project and open questions
 
 A briefing for anyone picking the work up: a new contributor, a reviewer, or a more capable model asked
-to check the science. Written November 2026 after v0.7.0; updated 9 November 2026. Read `README.md` for what the world contains
+to check the science. Written November 2026 after v0.7.0; updated 10 November 2026. Read `README.md` for what the world contains
 and `docs/MODEL.md` for the formal model description (ODD protocol).
 
 ## The rules the project is held to
@@ -21,12 +21,17 @@ and `docs/MODEL.md` for the formal model description (ODD protocol).
 - Plain JavaScript, no dependencies. Engine in `src/` (headless, deterministic from a seed), page in
   `ui/`, tests in `tests/`, experiment runner `tools/experiment.js` (CSV per world, switches for
   ablations: `--no-vicar`, `--no-picky`, `--old-sound`, `--no-calls`, `--modern-voice`, `--brain N`,
-  `--earth`, `--any-start`). The same experiments run in the browser on the Lab page (`lab.html`), which
+  `--earth`, `--any-start`, `--no-care`, `--no-shelter`). The same experiments run in the browser on the Lab page (`lab.html`), which
   shares `tools/experiment-core.js` with the command line and gives identical rows.
 - Land: the real Earth about 70,000 years ago (ETOPO1 relief, sea 80 m lower; the page's default) or a
   seeded made-up planet (the engine's and experiment runner's default). The first band starts where our
   species lived (warm tropical land near fresh water; in Africa on the real Earth).
-- The research log `docs/FINDINGS.md` records every survival test, including null and negative results.
+- The research log `docs/FINDINGS.md` records every survival test, including null and negative results,
+  with its raw data in `data/findings/`; the Research page (`research.html`) is built from it and from
+  `CHANGELOG.md`. Analysis scripts: `tools/analysis/predators.js` (predator deaths per 1,000 person-days
+  by age, encounters, who the victims were) and `tools/analysis/compare-predators.js` (paired comparison).
+- Several agents may work on the repo (Claude, ChatGPT). Each works on its own branch, one behaviour change
+  at a time across all of them, pulls before pushing, never force-pushes, and logs who ran each test.
 - `npm run test:quick` (≈20 s) while working; `npm test` (≈10 min) before merging.
 - Branches: work on `percept`, merge to `develop` (served live by GitHub Pages) only after a balance check.
 
@@ -48,7 +53,10 @@ and `docs/MODEL.md` for the formal model description (ODD protocol).
    and some die-outs (hunger, then predators, drowning). Evolution, language and culture need a population
    that lasts. Suspects: predator pressure, no mobility as a group, no food storage. (The start location
    has now been made realistic; it seems to help over 60 days, not yet tested over 300.) Hunger is the
-   largest cause of death in every recent run.
+   largest cause of death in every recent run. Traced on 9–10 Nov (entries 10–12): people starved with food
+   around them, mostly weaned children and orphans, alone. Eating food in reach did not help; cooperative
+   care cut hunger deaths by about a sixth (not yet clear); predators kill the isolated (86–94% of victims
+   had no grown person within reach; few were asleep), so isolation, not sleeping sites, is the next lever.
 2. **No formal validation.** Comparisons with real data have been piecemeal. Needed: a reality-check
    suite (see below).
 3. **Fire-making is essentially never discovered** in runs of 120+ days (fire-keeping happens rarely).
