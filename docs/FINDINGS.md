@@ -34,6 +34,7 @@ Entries are kept even when the result was "no effect" or "it made things worse" 
 | The real Earth 70,000 years ago instead of a made-up planet | Worlds survive about as well (20.3 alive, none died out) | weak (different worlds) |
 | **Not** measurable: hungry people eating the food in reach (fixing a real flaw) | Hunger deaths 170 → 167; survival 23.1 → 24.4 (within noise) | none |
 | Many hands feeding a child (family most), and children staying close to carers | Hunger deaths 13.9 → 11.5 per world, predator deaths 5.3 → 8.3; survival unchanged; ranges include zero | weak |
+| (Analysis) Predator risk under cooperative care, per person-day at risk | Exposure unchanged; individual risk not clearly changed; encounters +50% but less often fatal; 86–94% of victims had no grown person in reach | moderate (isolation) / weak (risk) |
 | **Not** a must-have: bigger brains on their own | 64 units: 8.2 alive, 256: 6.1, 1,024: 2.2 | strong |
 | **Not** measurable: sound by real physics, animal calls | 7.7 / 6.7 / 7.1 alive (within noise) | none |
 
@@ -329,14 +330,54 @@ and draws predators; neither is tested.
 **Lesson:** feeding children may move deaths from hunger to predators rather than prevent them; what
 protected forager children from predators (camps, adults close by, fire) matters too.
 
+### 12. Did caring for children put them in more danger from predators? — Nov 2026
+
+**Version.** Unreleased (after 0.7.0) · the change: commit `e0e98d9`; the test: commit `c9a03ab` (the
+`--no-care` switch and `tools/analysis/predators.js`).
+
+**Data.** Raw tables: [with care](../data/findings/12-predator-risk/with-care.jsonl) · [without care](../data/findings/12-predator-risk/without-care.jsonl) · [the comparison](../data/findings/12-predator-risk/comparison.txt). Re-run: `node tools/analysis/predators.js --seeds 1-24 --days 60 --out a.json` and the same with `--no-care`, then `node tools/analysis/compare-predators.js --a a.jsonl --b b.jsonl`.
+
+**Question.** Entry 11 found more predator deaths (63 → 100) after many hands fed children. A reviewer
+(ChatGPT, consulted by the owner) pointed out that a total is not a risk: if fewer people starve, more are
+alive to be caught. So: deaths per person-day at risk, by age; encounters as well as kills; and who the
+victims were.
+
+**Test.** 24 worlds × 60 days, seeds 1–24, made-up planet, the realistic start. With an on/off switch each
+seed starts from the identical world with and without care, so differences are taken seed by seed. An
+encounter is a big hunter within 1.5 squares of a person in a 15-minute step.
+
+| | Person-days | Predator deaths | Per 1,000 person-days (pooled) | Mean of world rates | Encounters per 1,000 person-days | Kills per encounter |
+|---|---|---|---|---|---|---|
+| Without care | 41,799 | 111 | 2.66 | 4.76 | 37 | 0.072 |
+| With care | 41,232 | 139 | 3.37 | 3.84 | 55 | 0.062 |
+
+By age (with care / without): children 3–11, encounters 122 / 80 per 1,000 person-days, kills per encounter
+0.020 / 0.024; babies 0–2, encounters 16 / 6.
+
+**Result.** (1) **Exposure did not change**: the same person-days either way, so more deaths are not
+explained by more people alive. (2) **Individual risk is not clearly higher**: the pooled rate rose (2.66 →
+3.37) but the average of each world's rate fell (4.76 → 3.84; paired difference −0.92 per 1,000 person-days,
+likely between −5.0 and +3.1) — the two measures disagree in direction, a few large worlds carry the
+pooled figure, and neither is beyond noise. (3) **Encounters rose by half, but each was less often fatal** —
+the signature of children staying close to the group: more people near any predator that comes, each
+safer (safety in numbers; Beauchamp et al. 2021). (4) **Victims were almost always alone**: 94% (with care)
+and 86% (without) had no grown person within reach; they died a median 14 and 9 squares from the band's
+centre; only 19% and 30% were asleep; a third were children in both.
+
+**Strength.** Moderate for "exposure did not change" and "victims are isolated"; weak for any change in
+individual risk. **Lesson:** what kills is being alone, not being asleep; the protection real foragers had
+from predators lay in staying with others. The next test should be about isolation (alarm calls that
+bring others close, groups that deter a predator), not about sleeping sites.
+
 ---
 
 ## Open questions (next tests)
 
 - Ablate the bundle in entry 7: which of band size, parental feeding, instincts, one-shot memory and
   swimming carry the effect?
-- Hunger: does the fall in hunger deaths with cooperative care (entry 11) hold with 24+ worlds, and why
-  did predator deaths rise? What protected forager children from predators — camps, adults close, fire?
+- Hunger: does the fall in hunger deaths with cooperative care (entry 11) hold with 24+ worlds?
+- Predators kill the isolated (entry 12): do alarm calls that draw others close, or groups that deter a
+  predator, reduce deaths of people who stray?
 - Where the band starts: does the +8 people hold with 24+ worlds, and is it the water, the food or the
   temperature that carries it? Does fleeing wildfire realistically stop the fire deaths?
 - On the real Earth: what do ice sheets, the colder climate and monsoons change?

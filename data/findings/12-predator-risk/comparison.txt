@@ -1,0 +1,12 @@
+24 worlds in both runs (seeds 1–24). A = data/findings/12-predator-risk/with-care.jsonl; B = data/findings/12-predator-risk/without-care.jsonl.
+
+Age      | person-days A / B | predator deaths A / B | pooled deaths per 1,000 person-days A / B | mean of world rates A / B | A − B (paired, ± 2 SE) | encounters per 1,000 p-d A / B | kills per encounter A / B
+all      | 41232 / 41799 | 139 / 111 | 3.37 / 2.66 | 3.84 / 4.76 | -0.92 (-4.98 to 3.14) | 55 / 37 | 0.0616 / 0.0717
+0-2      | 5868 / 6238 | 11 / 9 | 1.87 / 1.44 | 2.35 / 2.76 | -0.41 (-3.31 to 2.49) | 16 / 6 | 0.1158 / 0.2368
+3-11     | 13631 / 13349 | 33 / 26 | 2.42 / 1.95 | 2.65 / 3.82 | -1.17 (-4.66 to 2.33) | 122 / 80 | 0.0198 / 0.0243
+12-17    | 5390 / 5050 | 32 / 28 | 5.94 / 5.54 | 7.70 / 8.23 | -0.53 (-7.27 to 6.21) | 34 / 19 | 0.1730 / 0.2979
+18+      | 16342 / 17162 | 63 / 48 | 3.85 / 2.80 | 4.37 / 4.81 | -0.44 (-4.73 to 3.86) | 19 / 20 | 0.2039 / 0.1383
+
+Victims A (139): under 12 32%, asleep 19%, no grown person within 1.5 squares 94%, a fire within 6 squares 16%; median distance from the band's centre 13.7 squares, from the nearest grown family member 8.1.
+
+Victims B (111): under 12 32%, asleep 30%, no grown person within 1.5 squares 86%, a fire within 6 squares 13%; median distance from the band's centre 9.4 squares, from the nearest grown family member 7.0.
