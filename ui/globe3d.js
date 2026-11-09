@@ -526,15 +526,114 @@ const G3D = { ok: false };
     figTex.set(key, t);
     return t;
   }
-  const FISHTINT = new THREE.Color(0.6, 0.8, 1),
-    fishW = new THREE.Vector3(),
-    fishN = new THREE.Vector3(),
-    fishE = new THREE.Vector3();
+  // Fish are not figures standing up: a fish lies in the water, seen from above as a dark, slim shape
+  // (its back is darker than the river bed, as real fish are), turned the way it swims. Like real water,
+  // the surface hides it when seen at a low angle (it mirrors the sky instead), so from the bank you only
+  // see fish close by and below you.
+  const fishPool = [],
+    fishG = new THREE.PlaneGeometry(1, 1),
+    fishWay = new WeakMap(), // each fish's smoothed swimming direction (east, north)
+    fishTex = [],
+    FX = new THREE.Vector3(),
+    FY = new THREE.Vector3(),
+    FZ = new THREE.Vector3(),
+    FM = new THREE.Matrix4(),
+    FC = new THREE.Vector3();
+  for (let ph = 0; ph < 4; ph++) {
+    // a fish from above, head to the right, its tail at four points of its sway
+    const c = document.createElement('canvas');
+    c.width = 64;
+    c.height = 32;
+    const g = c.getContext('2d'),
+      sw = Math.sin((ph / 4) * Math.PI * 2) * 3;
+    g.translate(32, 16);
+    const grad = g.createRadialGradient(4, 0, 1, 0, 0, 24);
+    grad.addColorStop(0, '#2c3a33');
+    grad.addColorStop(1, '#4a5a50');
+    g.fillStyle = grad;
+    g.beginPath(); // the body: a spindle, widest behind the head
+    g.moveTo(26, 0);
+    g.bezierCurveTo(20, -6, 4, -7, -14, -2);
+    g.quadraticCurveTo(-18, 0, -14, 2);
+    g.bezierCurveTo(4, 7, 20, 6, 26, 0);
+    g.fill();
+    g.fillStyle = 'rgba(60,75,66,0.85)';
+    g.beginPath(); // the tail
+    g.moveTo(-14, 0);
+    g.lineTo(-26, -7 + sw);
+    g.lineTo(-22, sw);
+    g.lineTo(-26, 7 + sw);
+    g.closePath();
+    g.fill();
+    g.beginPath(); // the two side fins
+    g.moveTo(12, -4);
+    g.lineTo(6, -10);
+    g.lineTo(5, -5);
+    g.moveTo(12, 4);
+    g.lineTo(6, 10);
+    g.lineTo(5, 5);
+    g.fill();
+    const t = new THREE.CanvasTexture(c);
+    t.encoding = THREE.sRGBEncoding;
+    fishTex.push(t);
+  }
+  function fishAt(i, a) {
+    let m = fishPool[i];
+    if (!m) {
+      m = new THREE.Mesh(fishG, new THREE.MeshBasicMaterial({ transparent: true, depthWrite: false, side: THREE.DoubleSide }));
+      m.matrixAutoUpdate = false;
+      globe.add(m);
+      fishPool.push(m);
+    }
+    const la = latOfY(a.ry),
+      lo = lonOfX(a.rx);
+    // which way it swims: from how it has moved lately (grid x is east, grid y is south)
+    let w = fishWay.get(a);
+    if (!w) fishWay.set(a, (w = { x: a.rx, y: a.ry, e: a.face === -1 ? -1 : 1, n: 0 }));
+    let dx = a.rx - w.x;
+    if (dx > W / 2) dx -= W;
+    if (dx < -W / 2) dx += W;
+    const dy = a.ry - w.y;
+    if (Math.abs(dx) + Math.abs(dy) > 1e-4) {
+      w.e = w.e * 0.85 + dx * 0.15 * 40;
+      w.n = w.n * 0.85 - dy * 0.15 * 40;
+    }
+    w.x = a.rx;
+    w.y = a.ry;
+    const up = FZ.set(Math.cos(lo) * Math.cos(la), Math.sin(la), -Math.sin(lo) * Math.cos(la)),
+      east = FC.set(-Math.sin(lo), 0, -Math.cos(lo)),
+      north = FY.set(-Math.cos(lo) * Math.sin(la), Math.cos(la), Math.sin(lo) * Math.sin(la));
+    const len = Math.hypot(w.e, w.n) || 1;
+    FX.copy(east).multiplyScalar(w.e / len).addScaledVector(north, w.n / len).normalize();
+    FY.crossVectors(up, FX);
+    // just under the surface of a river or lake, or the sea (whose surface is flat)
+    const r = 1 + EX * Math.max(0, heightAt(la, lo)) + 0.00008,
+      size = (0.0016 + 0.0016 * clamp(a.age / a.S.mat, 0.3, 1)) * 2.5;
+    FM.makeBasis(FX, FY, up);
+    FM.scale(FC.set(size, size * 0.5, 1));
+    FM.setPosition(up.x * r, up.y * r, up.z * r);
+    m.matrix.copy(FM);
+    m.matrixWorldNeedsUpdate = true;
+    // how steeply we look down at it: at a low angle the water's surface hides what is under it
+    const wp = FC.setFromMatrixPosition(FM).applyMatrix4(globe.matrixWorld),
+      down = up.clone().transformDirection(globe.matrixWorld).dot(FX.copy(camera.position).sub(wp).normalize()),
+      see = clamp((down - 0.15) / 0.45, 0, 1);
+    m.visible = see > 0.02;
+    m.material.map = fishTex[a.asleep ? 0 : Math.floor(performance.now() / 120 + (a.id || 0)) & 3];
+    m.material.opacity = 0.8 * see * (a.asleep ? 0.8 : 1);
+    m.material.color.setScalar(isNightAt(a.x) ? 0.35 : 0.9);
+    m.material.needsUpdate = true;
+  }
   function figures(on, v) {
-    let n = 0;
+    let n = 0,
+      nf = 0;
     if (on)
       for (const a of ag) {
         if (a === GL.eye || !project(a.rx, a.ry, 0)) continue;
+        if (a.sp === 3) {
+          fishAt(nf++, a);
+          continue;
+        }
         let sp = pool[n];
         if (!sp) {
           sp = new THREE.Sprite(new THREE.SpriteMaterial({ alphaTest: 0.4 }));
@@ -546,33 +645,20 @@ const G3D = { ok: false };
         sp.visible = true;
         sp.material.map = texFor(a, v);
         sp.material.color.setScalar(isNightAt(a.x) ? 0.45 : 1);
-        // fish swim under the surface: seen faintly, tinted by the water above them
-        if (a.sp === 3) sp.material.color.multiply(FISHTINT);
-        sp.material.opacity = a.sp === 3 ? 0.75 : 1;
-        sp.material.transparent = a.sp === 3;
         sp.material.needsUpdate = true;
         const la = latOfY(a.ry),
           lo = lonOfX(a.rx);
         const ci = idx(Math.round(a.rx), Math.round(a.ry)),
-          wading = a.sp !== 3 && water[ci] && !river[ci] && !iced(ci);
-        // (fish swim just under the water's surface, not on the sea floor far below it)
-        const hh = a.sp === 3 ? Math.max(0, heightAt(la, lo)) : heightAt(la, lo);
-        sp.position.copy(local(la, lo, 1 + EX * hh + (wading ? -0.0025 : 0.0002)));
+          wading = water[ci] && !river[ci] && !iced(ci);
+        sp.position.copy(local(la, lo, 1 + EX * heightAt(la, lo) + (wading ? -0.0025 : 0.0002)));
         // Figures are drawn 2.5 times life size so you can find them among the trees (like the
         // exaggerated mountains), all by the same factor so people and animals keep their true sizes
-        // compared with each other (each kind's own size is already in its picture). Fish swim at the surface.
-        const s = (a.sp === 0 ? 0.0046 : a.sp === 3 ? 0.0016 : 0.0042 * (18 / 15)) * 2.5;
+        // compared with each other (each kind's own size is already in its picture).
+        const s = (a.sp === 0 ? 0.0046 : 0.0042 * (18 / 15)) * 2.5;
         sp.scale.set(s, s, 1);
-        // a fish is only seen from above, looking down into the water: not standing up against the sky
-        // at the horizon
-        if (a.sp === 3) {
-          const wp = sp.getWorldPosition(fishW),
-            up2 = fishN.copy(wp).normalize(),
-            look = fishE.copy(camera.position).sub(wp).normalize();
-          if (up2.dot(look) < 0.12) sp.visible = false;
-        }
       }
     for (let k = n; k < pool.length; k++) pool[k].visible = false;
+    for (let k = nf; k < fishPool.length; k++) fishPool[k].visible = false;
   }
 
   G3D.draw = function (v) {

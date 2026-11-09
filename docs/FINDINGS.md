@@ -30,11 +30,13 @@ Entries are kept even when the result was "no effect" or "it made things worse" 
 | Big carrion birds behaving as real ones do (they wait while predators feed; vultures only in warm lands) | Unrealistic vultures cut survival from 9.2 to 5.8 people; realistic ones restored it (8.8) | moderate |
 | Pack breeding limited to one female (reproductive suppression, as in wolves) once mothers paid the real cost of young | Without it predators boomed (17.4 vs 13.2) and people fell (7.2); with it back to 8.7 | moderate |
 | Learning from what happens to others (feeling a share of their pain; choosy copying) | 11.1 vs 9.3 alive; predator deaths 33 → 16 | moderate |
+| Starting where our species lived (warm tropical land with fresh water, open and wooded ground; no predators at the camp) | 23.1 vs 15.3 alive, better in 10 of 12 worlds; 0 vs 1 die-outs. Range of the difference still includes zero | weak–moderate |
+| The real Earth 70,000 years ago instead of a made-up planet | Worlds survive about as well (20.3 alive, none died out) | weak (different worlds) |
 | **Not** a must-have: bigger brains on their own | 64 units: 8.2 alive, 256: 6.1, 1,024: 2.2 | strong |
 | **Not** measurable: sound by real physics, animal calls | 7.7 / 6.7 / 7.1 alive (within noise) | none |
 
-What still kills whole bands (open): predators near where the band starts, wildfire (people only react to
-heat beside them), and hunger.
+What still kills whole bands (open): hunger above all, then predators and wildfire (people only react to heat
+beside them).
 
 ---
 
@@ -165,14 +167,62 @@ worlds × 150 days: **3 worlds alive with 9, 34 and 10 people after 3 generation
 are not yet measured — an ablation is needed). **Lesson:** group size, family structure and provisioning
 of children look like must-haves; so does keeping what one success taught.
 
+### 8. Where the first band starts — Nov 2026
+
+**Added.** The first band starts where our species really lived: within the tropics, in warm country
+(average 18–27 °C, not desert-hot), with fresh water within a few squares, open grassland and woodland
+both close by, and — on the real Earth — in Africa; no big hunter is placed near the camp at the start.
+Before, the band started anywhere within 36° of the equator near water, and once (entry 7, world 103)
+started where days reached 42–44 °C.
+
+**Real-world basis.** Homo sapiens arose in Africa about 300,000 years ago (Jebel Irhoud: Hublin et al.
+2017) and lived there, across many regions (Scerri et al. 2018), until groups spread out of Africa about
+70,000–50,000 years ago. Early sites sit in mosaics of grassland and woodland near water (Potts 2013,
+variability selection; Blome et al. 2012, African palaeoenvironments).
+
+**Test.** 12 worlds × 60 days, seeds 1–12, made-up planet, the same code (commit 6df8325) with the new start
+and with `--any-start`. The start changes where everyone is placed, so after the first steps the two worlds
+of a seed diverge; the comparison is fair on average, not world for world.
+
+| | People alive | Worlds died out | Hunger | Predators | Burned | Drowned |
+|---|---|---|---|---|---|---|
+| Starts anywhere (old) | 15.3 ± 2.7 | 1 | 196 | 78 | 43 | 46 |
+| Starts where our species lived | 23.1 ± 4.2 | 0 | 170 | 85 | 37 | 62 |
+
+**Result.** +7.8 people on average, and more people in 10 of the 12 seeds. But the worlds vary a lot (from 2
+to 52 people with the new start), and the range the true difference probably lies in (± two standard
+errors: −2 to +18) still includes zero. Deaths to predators did **not** fall, although keeping hunters
+away from the camp was meant to protect the band; fewer died of hunger and fire.
+
+**Strength.** Weak–moderate: a consistent direction, not yet a clear effect. Needs 24+ worlds.
+**Lesson:** the place a population starts matters at least as much through food and water as through
+danger; the expected mechanism (fewer predator deaths) was not what moved.
+
+### 9. The real Earth, 70,000 years ago — Nov 2026
+
+**Added.** A choice of land: the real Earth's continents, mountains and sea floors (NOAA ETOPO1: Amante &
+Eakins 2009) with the sea about 80 m lower, as it stood about 70,000 years ago (Spratt & Lisiecki 2016;
+Grant et al. 2014), so Beringia, Sundaland, Sahul and Doggerland are dry land; three years of weather run
+first so the rains set the deserts and forests. Not yet: ice sheets, the colder climate, monsoons.
+
+**Test.** 12 worlds × 60 days on the real Earth (`--earth`), seeds 1–12, with the new start (in Africa).
+
+**Result.** 20.3 ± 3.3 people alive, none died out (made-up planet: 23.1). Fewer deaths to predators (50) and
+fire (5) than on the made-up planet (85 and 37); hunger the same (197). The worlds differ completely, so
+this says only that populations survive about as well on the real map, not why the causes shift.
+
+**Strength.** Weak (different worlds). **Lesson:** the real geography is no harder to live on than the
+invented one, so it can be the default without losing populations.
+
 ---
 
 ## Open questions (next tests)
 
 - Ablate the bundle in entry 7: which of band size, parental feeding, instincts, one-shot memory and
   swimming carry the effect?
-- Where the band starts (temperature, nearness of predators) and fleeing wildfire: do realistic versions
-  stop the remaining die-outs?
+- Where the band starts: does the +8 people hold with 24+ worlds, and is it the water, the food or the
+  temperature that carries it? Does fleeing wildfire realistically stop the fire deaths?
+- On the real Earth: what do ice sheets, the colder climate and monsoons change?
 - Do animal calls reduce predator deaths with 24+ worlds?
 - Over 300+ days and many generations, do voice control, pointing and the brain's word area evolve?
 

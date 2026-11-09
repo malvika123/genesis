@@ -4,6 +4,10 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- Fish no longer float in the air: on the globe a fish lies in the water, seen from above as a dark, slim
+  shape turned the way it swims, its tail swaying; at a low angle the water's surface hides it, as real
+  water does, so from the bank only nearby fish below you can be seen.
+
 - **The Lab page** (`lab.html`, linked from the top of the main page): run many seeded worlds in the
   browser, one per core, and compare two setups on the same seeds — people alive with an uncertainty
   range, die-outs, causes of death, discoveries, each world — then download the CSV or copy the matching
