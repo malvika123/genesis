@@ -1545,18 +1545,48 @@ function drawCreature(g, a, X, Y, k, v, dim = 1) {
     g.globalAlpha = (a.asleep ? 0.75 : 1) * dim;
     drawAnimal(g, a, X, Y + 3.5 * k, k);
   } else {
-    // fish are under the water: seen dimly and blue through the surface
-    g.globalAlpha *= 0.55;
-    g.fillStyle = v('--fish');
-    const q = (1.5 + 2 * gr) * k;
+    // A fish seen from the side, just under the surface: dark on the back and silver underneath
+    // (countershading, as real fish are), a forked tail that sways as it swims, a fin and an eye.
+    g.globalAlpha *= 0.8;
+    const q = (1.2 + 1.6 * gr) * k,
+      f = a.face === -1 ? -1 : 1,
+      sw = Math.sin(performance.now() / 160 + (a.id || 0)) * (a.asleep ? 0.1 : 0.35);
+    g.save();
+    g.translate(X, Y);
+    g.scale(f, 1);
+    const grad = g.createLinearGradient(0, -q * 0.7, 0, q * 0.7);
+    grad.addColorStop(0, '#3e5560');
+    grad.addColorStop(0.45, '#7f97a0');
+    grad.addColorStop(1, '#dfe7ea');
+    g.fillStyle = grad;
+    // the body: a spindle, pointed at the head, narrow at the tail
     g.beginPath();
-    g.ellipse(X, Y, q * 1.4, q * 0.7, 0, 0, 7);
+    g.moveTo(q * 1.6, 0);
+    g.quadraticCurveTo(q * 0.6, -q * 0.75, -q * 0.9, -q * 0.22);
+    g.lineTo(-q * 0.9, q * 0.22);
+    g.quadraticCurveTo(q * 0.6, q * 0.75, q * 1.6, 0);
     g.fill();
+    // the tail, swaying
+    g.fillStyle = '#4d6670';
     g.beginPath();
-    g.moveTo(X - q * 1.2, Y);
-    g.lineTo(X - q * 2.2, Y - q * 0.8);
-    g.lineTo(X - q * 2.2, Y + q * 0.8);
+    g.moveTo(-q * 0.85, 0);
+    g.lineTo(-q * 1.7, -q * (0.6 - sw));
+    g.lineTo(-q * 1.4, 0);
+    g.lineTo(-q * 1.7, q * (0.6 + sw));
+    g.closePath();
     g.fill();
+    // a fin on the back
+    g.beginPath();
+    g.moveTo(q * 0.4, -q * 0.55);
+    g.lineTo(-q * 0.1, -q * 0.95);
+    g.lineTo(-q * 0.3, -q * 0.4);
+    g.fill();
+    // the eye
+    g.fillStyle = '#111';
+    g.beginPath();
+    g.arc(q * 1.05, -q * 0.12, Math.max(0.6, q * 0.11), 0, 7);
+    g.fill();
+    g.restore();
   }
   g.globalAlpha = 1;
 }

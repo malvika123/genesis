@@ -524,7 +524,10 @@ const G3D = { ok: false };
     figTex.set(key, t);
     return t;
   }
-  const FISHTINT = new THREE.Color(0.6, 0.8, 1);
+  const FISHTINT = new THREE.Color(0.6, 0.8, 1),
+    fishW = new THREE.Vector3(),
+    fishN = new THREE.Vector3(),
+    fishE = new THREE.Vector3();
   function figures(on, v) {
     let n = 0;
     if (on)
@@ -543,19 +546,29 @@ const G3D = { ok: false };
         sp.material.color.setScalar(isNightAt(a.x) ? 0.45 : 1);
         // fish swim under the surface: seen faintly, tinted by the water above them
         if (a.sp === 3) sp.material.color.multiply(FISHTINT);
-        sp.material.opacity = a.sp === 3 ? 0.7 : 1;
+        sp.material.opacity = a.sp === 3 ? 0.75 : 1;
         sp.material.transparent = a.sp === 3;
         sp.material.needsUpdate = true;
         const la = latOfY(a.ry),
           lo = lonOfX(a.rx);
         const ci = idx(Math.round(a.rx), Math.round(a.ry)),
           wading = a.sp !== 3 && water[ci] && !river[ci] && !iced(ci);
-        sp.position.copy(local(la, lo, 1 + EX * heightAt(la, lo) + (wading ? -0.0025 : 0.0002)));
+        // (fish swim just under the water's surface, not on the sea floor far below it)
+        const hh = a.sp === 3 ? Math.max(0, heightAt(la, lo)) : heightAt(la, lo);
+        sp.position.copy(local(la, lo, 1 + EX * hh + (wading ? -0.0025 : 0.0002)));
         // Figures are drawn 2.5 times life size so you can find them among the trees (like the
         // exaggerated mountains), all by the same factor so people and animals keep their true sizes
         // compared with each other (each kind's own size is already in its picture). Fish swim at the surface.
-        const s = (a.sp === 0 ? 0.0046 : a.sp === 3 ? 0.0022 : 0.0042 * (18 / 15)) * 2.5;
+        const s = (a.sp === 0 ? 0.0046 : a.sp === 3 ? 0.0016 : 0.0042 * (18 / 15)) * 2.5;
         sp.scale.set(s, s, 1);
+        // a fish is only seen from above, looking down into the water: not standing up against the sky
+        // at the horizon
+        if (a.sp === 3) {
+          const wp = sp.getWorldPosition(fishW),
+            up2 = fishN.copy(wp).normalize(),
+            look = fishE.copy(camera.position).sub(wp).normalize();
+          if (up2.dot(look) < 0.12) sp.visible = false;
+        }
       }
     for (let k = n; k < pool.length; k++) pool[k].visible = false;
   }

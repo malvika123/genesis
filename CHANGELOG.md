@@ -4,6 +4,9 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- Fish look like fish: dark-backed and silver-bellied (countershaded), with a fin, an eye and a
+  swaying tail; on the globe they swim at the water's surface (they were drawn on the sea floor, hidden)
+  and are no longer seen standing up against the sky at the horizon.
 - **Swimming.** Animals swim by instinct (each kind as well as the real one); people learn it by practice
   in the shallows and deep water and by watching others, children fastest but weakest. The panel shows
   how well someone swims; the log notes the first person to learn.
