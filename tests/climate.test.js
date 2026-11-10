@@ -26,7 +26,7 @@ test('a creature can see across the east–west seam', () => {
   const s = E.state();
   const a = s.ag[0];
   a.asleep = false;
-  // stand at the east edge and put fresh grass just across the seam, on the west edge
+  // stand at the east edge and put ripe fruit just across the seam, on the west edge
   a.x = E.W - 1;
   a.hd = 0; // facing east, toward the seam
   const j = a.y * E.W + 0;
@@ -34,7 +34,7 @@ test('a creature can see across the east–west seam', () => {
   s.rock[j] = 0;
   s.pit[j] = 0;
   s.poison[j] = 0;
-  s.food[j] = 1;
+  E.forest().fruit[j] = 1;
   a.e = 20;
   E.sense(a, a.xi, false);
   assert.ok(a.xi[0 * E.NCH + 1] > 0, 'food just across the seam should be seen to the east');

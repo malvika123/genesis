@@ -39,7 +39,7 @@ const foodSeen = (E, a, dir) => a.xi[dir * E.NCH + 1];
 
 test('a creature sees in front of it but not behind it', () => {
   const { E, s, a } = setup();
-  s.food[E.idx(a.x - 3, a.y)] = 1; // food 3 cells to the west
+  E.forest().fruit[E.idx(a.x - 3, a.y)] = 1; // fruit 3 cells to the west (grass is not food to a hominin)
   // (learned perception sometimes misses a faint thing in one glance, so look a few times)
   const seenIn = (hd, n = 6) => {
     let seen = 0;
@@ -59,7 +59,7 @@ test('a creature sees in front of it but not behind it', () => {
 test('a hill hides what is behind it', () => {
   const { E, s, a, alt } = setup();
   a.hd = 0;
-  s.food[E.idx(a.x + 4, a.y)] = 1;
+  E.forest().fruit[E.idx(a.x + 4, a.y)] = 1;
   E.sense(a, a.xi, false);
   assert.ok(foodSeen(E, a, 0) > 0, 'on open ground it is seen');
   alt[E.idx(a.x + 2, a.y)] = 1.5; // a hill in between
@@ -71,7 +71,7 @@ test('asleep, eyes are shut, but something right beside it is still heard or sme
   const { E, s, a } = setup();
   a.hd = 0;
   a.asleep = true;
-  s.food[E.idx(a.x + 4, a.y)] = 1;
+  E.forest().fruit[E.idx(a.x + 4, a.y)] = 1;
   E.sense(a, a.xi, false);
   assert.equal(foodSeen(E, a, 0), 0, 'nothing is seen with eyes shut');
 });

@@ -4,6 +4,9 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Hungry hominins no longer see grass as food.** Their eyes counted a meadow as half as good as fruit, a leftover
+  from before people stopped eating grass, which drew hungry ones onto grassland where there is nothing for them.
+  `--grass-looks-like-food` restores it. (Eyesight tests now use fruit.)
 - **A mother who loses a nursing baby can conceive again within months** (74 days; nursing stops, and with it the
   hold on ovulation: Jackson & Glasier 2011), instead of waiting the full four years. `--no-loss-resume` restores
   the old rule.

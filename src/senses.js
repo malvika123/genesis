@@ -178,7 +178,12 @@ function retina(a, x, r, night) {
 function learnSight(a, c, amount = 0.1) {
   if (a.per) a.per[c] = Math.min(1, a.per[c] + amount * (1 - a.per[c]));
 }
+// Grass is not food for people or hominins (their guts get almost nothing from it: sim.js), so they do not see a
+// meadow as food. Until 11 Nov 2026 their eyes counted grass as half as good as fruit — a leftover from before they
+// stopped eating it, which drew hungry ones out onto grassland; SOC.grassEye brings it back for comparison.
+let GRASSEYE = 0;
 function sense(a, x, night) {
+  GRASSEYE = SOC.grassEye ? 0.5 : 0;
   x.fill(0);
   const tw = 1 - a.w / 100,
     te = 1 - a.e / 100;
@@ -250,7 +255,7 @@ function sense(a, x, night) {
       // and herbivores can browse the trees
       const f =
         (a.sp === 0
-          ? Math.max(0.5 * food[i], fruit[i] * 1.4, COOK[i] * 1.6, 0.6 * ROOT[i])
+          ? Math.max(GRASSEYE * food[i], fruit[i] * 1.4, COOK[i] * 1.6, 0.6 * ROOT[i])
           : a.S.omni
           ? Math.max(food[i], fruit[i] * 1.4, COOK[i] * 1.6)
           : a.sp === 1
@@ -345,7 +350,7 @@ function sense(a, x, night) {
   x[HB] =
     ((a.sp < 2 || a.S.omni) && !water[here]) || (a.sp === 3 && water[here])
       ? a.sp === 0
-        ? Math.max(0.5 * food[here], fruit[here], COOK[here], 0.6 * ROOT[here], (meatAt(a.x, a.y, 0) || { meat: 0 }).meat)
+        ? Math.max(GRASSEYE * food[here], fruit[here], COOK[here], 0.6 * ROOT[here], (meatAt(a.x, a.y, 0) || { meat: 0 }).meat)
         : a.S.omni
         ? Math.max(food[here], fruit[here], COOK[here], (meatAt(a.x, a.y) || { meat: 0 }).meat)
         : a.sp === 1

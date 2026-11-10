@@ -77,3 +77,31 @@ test('early hominins get some food from leaves; modern people none', () => {
   assert.ok(hom > sap + 20, 'hominin ' + hom.toFixed(1) + ' vs sapiens ' + sap.toFixed(1));
   assert.ok(hom > off + 20, 'hominin ' + hom.toFixed(1) + ' vs no leaves ' + off.toFixed(1));
 });
+
+// Grass is not food for hominins, so a hungry one does not see a meadow as food (it did until 11 Nov 2026).
+test('hungry hominins do not see grass as food; fruit they do', () => {
+  const seen = (cfg, put) => {
+    const E = createEngine();
+    E.setSeed(9);
+    E.reset(Object.assign({ predators: 0 }, cfg));
+    E.sim(); // builds the map of who is where, which the senses use
+    const p = E.state().ag.find((a) => a.sp === 0);
+    Object.assign(p, { e: 20, asleep: false, act: 8 }); // hungry, awake, has just looked all around
+    for (let dy = -4; dy <= 4; dy++)
+      for (let dx = -4; dx <= 4; dx++) {
+        const i = E.idx((p.x + dx + E.W) % E.W, Math.max(0, Math.min(E.H - 1, p.y + dy)));
+        E.state().food[i] = put === 'grass' ? 1 : 0;
+        E.forest().fruit[i] = put === 'fruit' ? 0.6 : 0;
+        E.items().ROOT[i] = 0;
+      }
+    let m = 0;
+    for (let k = 0; k < 6; k++) {
+      E.sense(p, p.xi, false);
+      for (let s = 0; s < 8; s++) m = Math.max(m, p.xi[s * E.NCH + 1]);
+    }
+    return m;
+  };
+  assert.strictEqual(seen({}, 'grass'), 0, 'a meadow is not seen as food');
+  assert.ok(seen({ grassEye: true }, 'grass') > 0, 'under the old rule it was');
+  assert.ok(seen({}, 'fruit') > 0, 'fruit on the trees still is');
+});
