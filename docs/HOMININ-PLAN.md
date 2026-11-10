@@ -1,6 +1,6 @@
 # Plan: Genesis as early hominins, East Africa, about 2.5 million years ago
 
-Written 10 November 2026 with the owner. Status: **in progress.** Done and tested: patches 1–4 (research log entries 16–17). Patch 5: leaves done (entry 18); sedges and C4 foods, insects still to come. Each is tested on seeded worlds before it goes live.
+Written 10 November 2026 with the owner. Status: **in progress.** Done and tested: patches 1–4 (research log entries 16–17). Patch 5: leaves done (entry 18); sedges and C4 foods, insects still to come. Patch 6: first part (six animals of the time) built. Each is tested on seeded worlds before it goes live.
 
 ## Why
 

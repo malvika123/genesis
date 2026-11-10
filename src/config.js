@@ -288,6 +288,8 @@ const KINDS = [
     gest: 0.3 * TY, // about 110 days
     cold: 2,
     hot: 38, // big cats of warm lands bear heat well
+    climb: 1,
+    roar: 1,
     walk: 0.1,
     run: 0.55,
     hab: { t: [12, 32], tree: [0, 1] },
@@ -308,6 +310,7 @@ const KINDS = [
     cold: -35,
     hot: 25,
     omni: 1,
+    climb: 1,
     dE: 3.5,
     run: 0.35,
     hab: { t: [-15, 15], tree: [0.25, 1] },
@@ -318,7 +321,7 @@ const KINDS = [
 // much they eat and how fast they burn their reserves follow body mass (Kleiber's law): food needed
 // grows with mass^0.75, so a 600 kg bison eats far more grass than a deer and a 2 kg rabbit very
 // little — but the rabbit's small body burns through its reserves faster (mass^-0.25 of its store a day).
-const KBIO = KINDS.map((k) => {
+function bioOf(k) {
   const b = Object.assign({}, SP[k.sp], k),
     r = (k.mass || 70) / 70; // compared with a deer
   b.hcap = HCAP; // grass it can eat in a day
@@ -331,8 +334,34 @@ const KBIO = KINDS.map((k) => {
     b.bite = 0.3 * r ** 0.75;
   }
   return b;
-});
+}
+const KBIO = KINDS.map(bioOf);
 const KDEF = [0, 1, 4, 7]; // the first kind of each role
+
+// The animals of East Africa about 2.5 million years ago (patch 6 of docs/HOMININ-PLAN.md), each in the slot of the
+// ice-age kind it replaces in the early-hominin world (world.js swaps them in). Life histories from the living
+// species, or for the extinct sabre-tooth from a living cat of its size; docs/ASSUMPTIONS.md gives each source and
+// range. look: whose drawing it borrows. climb: can climb a tree after a sleeper. roar: has a big cat's far-carrying
+// call. allBreed: in a group that hunts together, every female breeds (hyena clans), not one (wolf packs).
+const HKINDS = {
+  // impala-like antelope (Aepyceros; bovids dominate the fossil sites): about 50 kg, one calf a year after about
+  // 196–204 days, breeding from about 1.5, living to about 15
+  1: { sp: 1, n: 'Antelope', look: 'Deer', mass: 50, cap: 60, swim: 0.9, share: 0.4, size: 0.85, lit: [1, 1], mat: 1.5 * TY, smat: 1.5 * TY, life: 15 * TY, gest: 0.55 * TY, cd: 0.45 * TY, cold: 5, hot: 38, browse: 1, hab: { t: [16, 32], tree: [0.05, 0.6] } },
+  // scrub hare (Lepus saxatilis): about 2 kg, 1–3 young after about 42 days, two to four litters a year
+  2: { sp: 1, n: 'Hare', look: 'Rabbit', mass: 2, fov: 350, cap: 45, swim: 0.5, share: 0.25, size: 0.35, lit: [1, 3], mat: 0.5 * TY, smat: 0.5 * TY, life: 5 * TY, gest: 0.115 * TY, cd: 0.2 * TY, cold: 0, hot: 36, walk: 0.08, run: 0.5, hab: { t: [12, 32], tree: [0, 0.4] } },
+  // a buffalo-like large bovid (the Pelorovis–Syncerus lineage): about 600 kg, one calf after about 340 days,
+  // first calving at about 5, calves about 13–18 months apart, living to about 20
+  3: { sp: 1, n: 'Buffalo', look: 'Bison', mass: 600, fov: 330, cap: 15, swim: 0.9, share: 0.35, size: 2.3, lit: [1, 1], mat: 4 * TY, smat: 4 * TY, life: 20 * TY, gest: 0.93 * TY, cd: 0.4 * TY, dW: 4, cold: 0, hot: 34, walk: 0.05, run: 0.3, hab: { t: [15, 32], tree: [0, 0.45] } },
+  // spotted hyena (Crocuta): hunts in clans and scavenges, cannot climb; about 110 days' pregnancy, usually twins,
+  // first births at about 3–5, a litter every 11–21 months, living to about 20; every female breeds
+  4: { sp: 2, n: 'Hyena', look: 'Wolf', cap: 10, swim: 0.85, share: 0.5, size: 1.1, lit: [1, 3], mat: 2 * TY, smat: 3.5 * TY, life: 20 * TY, gest: 0.3 * TY, cd: 1 * TY, nv: 1.2, cold: 0, hot: 40, pack: 1, allBreed: 1, hab: { t: [12, 32], tree: [0, 0.6] } },
+  // leopard: climbs, and takes primates (the Swartkrans skull SK 54); about 90–106 days' pregnancy, 1–3 cubs,
+  // first births at about 3, 15–24 months apart, living to about 15 in the wild
+  5: { sp: 2, n: 'Leopard', look: 'Big cat', fov: 200, nv: 1.3, cap: 8, swim: 0.75, share: 0.3, size: 1, lit: [1, 3], mat: 2 * TY, smat: 3 * TY, life: 15 * TY, gest: 0.27 * TY, cd: 1.3 * TY, cold: 2, hot: 38, walk: 0.1, run: 0.55, climb: 1, roar: 1, hab: { t: [10, 32], tree: [0, 1] } },
+  // sabre-toothed cat (Megantereon, about 100 kg; in East Africa about 3.5–1.4 million years ago): extinct, so its
+  // life history is a living cat's of its size (jaguar, lioness); probably a climber (an assumption)
+  6: { sp: 2, n: 'Sabre-tooth', look: 'Big cat', fov: 200, nv: 1.3, cap: 6, swim: 0.75, share: 0.2, size: 1.8, lit: [1, 4], mat: 2.5 * TY, smat: 3.5 * TY, life: 15 * TY, gest: 0.3 * TY, cd: 1.7 * TY, cold: 2, hot: 38, walk: 0.1, run: 0.5, climb: 1, hab: { t: [12, 32], tree: [0.1, 1] } },
+};
 
 // Early hominins of about 2.5 million years ago (late australopiths and the earliest Homo): where their
 // bodies and lives differ from modern people's (the default world; world.js applies it). From the evidence

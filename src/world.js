@@ -21,6 +21,16 @@ function reset(cfg = {}) {
   ERA = cfg.sapiens || cfg.scenario === 'sapiens' ? 'sapiens' : 'hominin'; // which world (state.js)
   // their bodies and lives: modern people's, or early hominins' (config.js)
   Object.assign(KBIO[0], PERSON_BIO, ERA === 'hominin' ? HOMININ : {});
+  // the animals: those of East Africa 2.5 million years ago in the hominin world, the ice-age ones otherwise
+  // (cfg.iceAnimals keeps the ice-age ones among hominins, for comparison)
+  for (let k = 1; k < KINDS.length; k++) {
+    const K = ERA === 'hominin' && !cfg.iceAnimals && HKINDS[k] ? HKINDS[k] : ICE_KINDS[k];
+    for (const key of Object.keys(KINDS[k])) delete KINDS[k][key];
+    Object.assign(KINDS[k], JSON.parse(JSON.stringify(K)));
+    const b = bioOf(KINDS[k]);
+    for (const key of Object.keys(KBIO[k])) delete KBIO[k][key];
+    Object.assign(KBIO[k], b);
+  }
   if (ERA === 'hominin' && cfg.humanFertility) KBIO[0].fert = PERSON_BIO.fert; // the old rule, for comparison: fertility ends at 60% of life, as in people
   if (ERA === 'hominin' && cfg.fertMax !== undefined) KBIO[0].fertMax = Number(cfg.fertMax) * TY; // test the ends of its range (years)
   if (ERA === 'hominin' && cfg.leafValue !== undefined) KBIO[0].leaf = Number(cfg.leafValue); // test the ends of its range
@@ -177,3 +187,5 @@ function makeBand() {
 }
 // modern people's biology as written in config.js, kept to restore it when a world of Homo sapiens is chosen
 const PERSON_BIO = Object.assign({}, KBIO[0]);
+// the ice-age animals as written in config.js, kept to restore them when a world without hominins is chosen
+const ICE_KINDS = KINDS.map((k) => JSON.parse(JSON.stringify(k)));

@@ -4,6 +4,10 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **The animals of East Africa 2.5 million years ago** (patch 6): in the hominin world, antelopes, hares, buffalo,
+  spotted hyenas, leopards and sabre-toothed cats (*Megantereon*) instead of deer, rabbits, bison, wolves, big cats
+  and bears, each with the life history of its living relative. Leopards and sabre-tooths climb, hyenas do not; every
+  hyena female breeds. `--ice-animals` keeps the old ones. Rules that went by an animal's name now go by what it can do.
 - **Smaller bodies need less food** (Kleiber's law, as plant-eaters here already did): hominins, three-quarters of
   a forager's mass, had been eating and burning energy as full-sized foragers. `--no-body-scaling` restores it.
 - **Hungry hominins no longer see grass as food.** Their eyes counted a meadow as half as good as fruit, a leftover

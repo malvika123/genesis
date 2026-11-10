@@ -127,6 +127,12 @@ const LOOKRGB = {
   Wolf: [0.53, 0.55, 0.57],
   'Big cat': [0.79, 0.59, 0.23],
   Bear: [0.36, 0.23, 0.15],
+  Antelope: [0.7, 0.47, 0.25],
+  Hare: [0.62, 0.55, 0.45],
+  Buffalo: [0.18, 0.16, 0.15],
+  Hyena: [0.62, 0.54, 0.38],
+  Leopard: [0.83, 0.65, 0.29],
+  'Sabre-tooth': [0.69, 0.54, 0.32],
 };
 function retina(a, x, r, night) {
   // no labelled view at all: only what is within reach (food underfoot, water to drink, someone
@@ -153,7 +159,7 @@ function retina(a, x, r, night) {
         l = G[i];
       let o = null;
       if (l) for (const q of l) if (q !== a && !q.dead && q.sp !== 3) o = q;
-      if (o) rgb = LOOKRGB[o.S.n] || [0.5, 0.5, 0.5];
+      if (o) rgb = LOOKRGB[o.S.n] || LOOKRGB[o.S.look] || [0.5, 0.5, 0.5];
       else if (FIRE[i] > 0.03) rgb = [1, 0.55, 0.1];
       else if (tree[i] > 0.5) rgb = [0.2, 0.4, 0.2];
       else if (Math.max(0, alt[i]) > h0 + 0.3 * t) rgb = [0.5, 0.48, 0.45];

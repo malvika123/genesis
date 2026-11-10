@@ -1523,8 +1523,18 @@ const LOOK = {
   'Big cat': { col: '#c9963b', w: 4.6, h: 1.6, leg: 1.8, s: 1 },
   Bear: { col: '#5b3b26', w: 4.8, h: 2.9, leg: 1.6, s: 1.3 },
 };
+// East Africa 2.5 million years ago: each drawn with the shape of the kind it borrows (config.js: look), in its own colours
+Object.assign(LOOK, {
+  Antelope: { ...LOOK.Deer, col: '#b47a42', s: 0.9 },
+  Hare: { ...LOOK.Rabbit, col: '#a39079' },
+  Buffalo: { ...LOOK.Bison, col: '#2e2926' },
+  Hyena: { ...LOOK.Wolf, col: '#a08a5c' },
+  Leopard: { ...LOOK['Big cat'], col: '#d6a648' },
+  'Sabre-tooth': { ...LOOK['Big cat'], col: '#b2895a', s: 1.25 },
+});
 function drawAnimal(g, a, X, Y, k) {
-  const L = LOOK[a.S.n] || LOOK.Deer,
+  const L = LOOK[a.S.n] || LOOK[a.S.look] || LOOK.Deer,
+    nm = a.S.look || a.S.n,
     gr = clamp(a.age / a.S.mat, 0.35, 1),
     u = k * L.s * (0.45 + 0.55 * gr) * 1.3,
     f = a.face || 1,
@@ -1539,7 +1549,7 @@ function drawAnimal(g, a, X, Y, k) {
   g.fillStyle = L.col;
   // legs
   if (leg) {
-    g.lineWidth = Math.max(1, u * (a.S.n === 'Bison' || a.S.n === 'Bear' ? 0.75 : 0.45));
+    g.lineWidth = Math.max(1, u * (nm === 'Bison' || nm === 'Bear' ? 0.75 : 0.45));
     g.beginPath();
     for (const [lx, sw] of [
       [-0.32, swing],
@@ -1556,11 +1566,11 @@ function drawAnimal(g, a, X, Y, k) {
   g.lineWidth = Math.max(1, u * 0.4);
   g.beginPath();
   const tx = X - f * bw * 0.5;
-  if (a.S.n === 'Wolf') {
+  if (nm === 'Wolf') {
     g.moveTo(tx, by - bh * 0.1);
     g.quadraticCurveTo(tx - f * bw * 0.25, by + bh * 0.1, tx - f * bw * 0.35, by + bh * 0.4);
     g.lineWidth = Math.max(1.5, u * 0.8);
-  } else if (a.S.n === 'Big cat') {
+  } else if (nm === 'Big cat') {
     g.moveTo(tx, by - bh * 0.1);
     g.quadraticCurveTo(tx - f * bw * 0.45, by + bh * 0.6, tx - f * bw * 0.55, by - bh * 0.3);
   } else {
@@ -1572,20 +1582,20 @@ function drawAnimal(g, a, X, Y, k) {
   g.beginPath();
   g.ellipse(X, by, bw / 2, bh / 2, 0, 0, 7);
   g.fill();
-  if (a.S.n === 'Bison') {
+  if (nm === 'Bison') {
     g.beginPath();
     g.ellipse(X + f * bw * 0.18, by - bh * 0.35, bw * 0.25, bh * 0.45, 0, 0, 7);
     g.fill();
   }
   // head
-  const head = (a.S.n === 'Rabbit' ? 0.7 : a.S.n === 'Bear' || a.S.n === 'Bison' ? 0.95 : 0.75) * bh,
+  const head = (nm === 'Rabbit' ? 0.7 : nm === 'Bear' || nm === 'Bison' ? 0.95 : 0.75) * bh,
     hx = X + f * (bw / 2 + head * 0.35),
-    hy = by - bh * (a.S.n === 'Bison' ? 0.05 : 0.45) + (a.act === A_EAT ? bh * 0.7 : 0);
+    hy = by - bh * (nm === 'Bison' ? 0.05 : 0.45) + (a.act === A_EAT ? bh * 0.7 : 0);
   g.beginPath();
   g.arc(hx, hy, head / 2, 0, 7);
   g.fill();
   // snout
-  if (a.S.n === 'Deer' || a.S.n === 'Wolf') {
+  if (nm === 'Deer' || nm === 'Wolf') {
     g.beginPath();
     g.ellipse(hx + f * head * 0.45, hy + head * 0.1, head * 0.32, head * 0.2, 0, 0, 7);
     g.fill();
@@ -1593,28 +1603,28 @@ function drawAnimal(g, a, X, Y, k) {
   // ears, antlers, horns
   g.lineWidth = Math.max(1, u * 0.35);
   g.beginPath();
-  if (a.S.n === 'Rabbit') {
+  if (nm === 'Rabbit') {
     g.ellipse(hx - f * head * 0.15, hy - head * 1.05, head * 0.16, head * 0.6, -f * 0.2, 0, 7);
     g.ellipse(hx + f * head * 0.1, hy - head * 1.0, head * 0.16, head * 0.6, f * 0.15, 0, 7);
     g.fill();
-  } else if (a.S.n === 'Wolf' || a.S.n === 'Big cat') {
-    const e = a.S.n === 'Wolf' ? 0.55 : 0.3;
+  } else if (nm === 'Wolf' || nm === 'Big cat') {
+    const e = nm === 'Wolf' ? 0.55 : 0.3;
     g.moveTo(hx - head * 0.3, hy - head * 0.3);
     g.lineTo(hx - head * 0.15, hy - head * (0.4 + e));
     g.lineTo(hx + head * 0.05, hy - head * 0.35);
     g.fill();
-  } else if (a.S.n === 'Bear') {
+  } else if (nm === 'Bear') {
     g.arc(hx - head * 0.28, hy - head * 0.42, head * 0.17, 0, 7);
     g.arc(hx + head * 0.2, hy - head * 0.45, head * 0.17, 0, 7);
     g.fill();
-  } else if (a.S.n === 'Deer' && !a.sex && gr > 0.8) {
+  } else if (nm === 'Deer' && !a.sex && gr > 0.8) {
     g.strokeStyle = '#d8c6a0';
     g.moveTo(hx, hy - head * 0.4);
     g.lineTo(hx - f * head * 0.3, hy - head * 1.4);
     g.moveTo(hx - f * head * 0.1, hy - head * 0.9);
     g.lineTo(hx + f * head * 0.25, hy - head * 1.25);
     g.stroke();
-  } else if (a.S.n === 'Bison') {
+  } else if (nm === 'Bison') {
     g.strokeStyle = '#e0d6c0';
     g.moveTo(hx - head * 0.3, hy - head * 0.3);
     g.quadraticCurveTo(hx - head * 0.55, hy - head * 0.75, hx - head * 0.25, hy - head * 0.8);
@@ -1631,7 +1641,7 @@ function drawAnimal(g, a, X, Y, k) {
     g.stroke();
   }
   // a pale tail patch on deer and rabbits
-  if (a.S.n === 'Deer' || a.S.n === 'Rabbit') {
+  if (nm === 'Deer' || nm === 'Rabbit') {
     g.fillStyle = '#f2ece2';
     g.beginPath();
     g.arc(X - f * bw * 0.48, by - bh * 0.15, Math.max(0.8, u * 0.4), 0, 7);

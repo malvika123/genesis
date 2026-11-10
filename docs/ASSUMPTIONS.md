@@ -39,6 +39,26 @@ older parts of the model are still to be audited the same way.
 | Modern people from leaves | nothing | Humans have a short colon and ferment little fibre; foragers eat few leaves as staple food | direction |
 | Hunters that can climb | big cats and bears, not wolves | Leopards climb; lions poorly; wolves not | direction |
 
+## The animals of East Africa about 2.5 million years ago (`HKINDS` in `src/config.js`; patch 6)
+
+Each replaces an ice-age kind in the hominin world (`--ice-animals` keeps the old ones). Life histories from the living
+species; numbers inside the ranges given. Abundance (`cap`, `share`) and the model's own settings (speed, size relative
+to a deer or wolf) are carried over from the kinds they replace: **assumptions**. Temperature limits and habitat ranges
+(warm lands) are **direction**.
+
+| Kind | Stands for | Values | Evidence | Status |
+|---|---|---|---|---|
+| Antelope | impala-like bovids (*Aepyceros*; bovids dominate the fossil sites) | 50 kg; one calf; pregnancy 0.55 y; breeding from 1.5; life 15; a calf a year | 40–76 kg; gestation 194–204 days (Kruger, Mkuzi); maturity 1–2.5 y; 12–15 y in the wild (Ultimate Ungulate fact sheet; Kruger Park) | sourced (living proxy) |
+| Hare | scrub hare (*Lepus saxatilis*) | 2 kg; 1–3 young; pregnancy 42 days; 2–4 litters a year; life 5 | gestation about 42 days (38 in one source), 1–3 young (several compilations) | sourced (living proxy); maturity and life **assumption** |
+| Buffalo | the *Pelorovis*–*Syncerus* lineage | 600 kg; one calf; pregnancy 340 days; first calving about 5; calves 13–18 months apart; life 20 | gestation about 340 days (Behav. Ecol. 2007); first calving at 5; calving interval 395 days in captivity; 425–870 kg; 11–25 y | sourced (living proxy) |
+| Hyena | spotted hyena (*Crocuta*) | hunts in clans, scavenges, cannot climb; 1–3 cubs (usually 2); pregnancy 110 days; first births 3.5; a litter every 11–21 months; life 20; every female breeds | Holekamp et al. 1996 (gestation 110 days, first parturition 3–5 y, rank and intervals); Animal Diversity Web (twins usual, 11–21 months, about 20 y in the wild) | sourced (living proxy) |
+| Leopard | leopard (*Panthera pardus*) | climbs; 1–3 cubs; pregnancy 90–106 days; first births at 3; 15–24 months apart; life 15 | San Diego Zoo fact sheet; Balme et al. 2013; Animal Diversity Web; leopards took hominins (SK 54, Swartkrans: Brain 1981) | sourced |
+| Sabre-tooth | *Megantereon* (in East Africa about 3.5–1.4 million years ago) | about 100 kg (size 1.8 of a hyena); 1–4 cubs; pregnancy 0.3 y; first births 3.5; about 2 y apart; life 15; climbs | body mass 100–110 kg from the skeleton (Christiansen & Adolfssen 2007); life history from living cats of its size (jaguar, lioness): **assumption**; climbing suggested (scansorial like *Promegantereon*), not established | body sourced; life history and climbing **assumption** |
+| (gone) | wolves, bison, bears, deer, rabbits | — | not in East Africa 2.5 million years ago | — |
+
+Not yet included: lions, *Dinofelis*, *Homotherium*, hunting hyenas (*Chasmaporthetes*), crocodiles, crowned eagles (which
+took the Taung child: Berger & Clarke 1995); pigs, horses (*Eurygnathohippus*), giraffids, elephants, hippos, other primates.
+
 ## Mechanisms added in November 2026
 
 | Setting | Value | Evidence | Status |

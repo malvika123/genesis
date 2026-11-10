@@ -910,7 +910,7 @@ function sim() {
         for (let q = 0; q < Math.min(n, room); q++) gl.push({ sex: rnd() < 0.5 ? 1 : 0, g: child(fem, mal, inh) });
         // in a wolf pack only one female breeds: the others' breeding is held back while she is
         // pregnant or nursing close by (reproductive suppression, as in wolves and wild dogs)
-        if (S.pack && packMother(fem)) gl.length = 0;
+        if (S.pack && !S.allBreed && packMother(fem)) gl.length = 0;
         if (gl.length) fem.preg = { due: tick + Math.max(1, Math.round(S.gest)), dad: mal, gen: g2, young: gl, cost: 10 + (S.yc ?? 12) * gl.length };
         if (S.pair) {
           addBond(fem, mal, 0.3);
@@ -1269,8 +1269,8 @@ function fireMade(a, how) {
 //   · How much a person learns from others at all is inherited (gene im), so some are loners who learn
 //     only the hard way, as about one person in five does in experiments (Molleman et al. 2014).
 // What exactly it learns is left to its own brain.
-// which hunters can climb a tree after a sleeper: big cats (leopards do) and bears; wolves cannot
-const climbs = (a) => a.sp === 2 && a.S.n !== 'Wolf';
+// which hunters can climb a tree after a sleeper (config.js: climb): big cats, leopards, bears, sabre-tooths; not wolves or hyenas
+const climbs = (a) => a.sp === 2 && !!a.S.climb;
 // Still of an age to have young: until fert of its own life (people: about 60%, around 50), and for kinds
 // with a fixed upper limit (early hominins, as chimpanzees: fertility approaches zero at about 50; Emery
 // Thompson et al. 2007) not beyond it.
@@ -1504,7 +1504,7 @@ function animalCalls(a, x, seeOwn) {
   let k = -1;
   if (a.sp === 2 && a.S.pack) {
     if ((!seeOwn && rnd() < (dusk ? 0.12 : 0.02)) || (heardHowl && seeOwn && rnd() < 0.3)) k = 0;
-  } else if (a.sp === 2 && a.k === KINDS.findIndex((q) => q.n === 'Big cat')) {
+  } else if (a.sp === 2 && a.S.roar) {
     if (dusk && rnd() < 0.05) k = 1;
   } else if (a.sp === 1 && a.fear > 0.4) {
     let pred = 0;
