@@ -12,7 +12,8 @@ function setup() {
   E.reset({ people: 2, herbivores: 4, predators: 0, fish: 0 });
   E.sim();
   const s = E.state(),
-    a = s.ag.find((o) => o.sp === 0),
+    // a grown person (a small child's learned perception still misses faint, distant things)
+    a = s.ag.find((o) => o.sp === 0 && o.age >= o.S.mat),
     alt = E.alt(),
     f = E.forest();
   a.asleep = false;
@@ -39,16 +40,20 @@ const foodSeen = (E, a, dir) => a.xi[dir * E.NCH + 1];
 test('a creature sees in front of it but not behind it', () => {
   const { E, s, a } = setup();
   s.food[E.idx(a.x - 3, a.y)] = 1; // food 3 cells to the west
-  a.hd = 0; // facing east
-  E.sense(a, a.xi, false);
-  assert.equal(foodSeen(E, a, 4), 0, 'food behind it is not seen');
-  a.hd = 4; // turn to face west
-  E.sense(a, a.xi, false);
-  assert.ok(foodSeen(E, a, 4) > 0, 'facing it, the food is seen');
-  a.hd = 0;
+  // (learned perception sometimes misses a faint thing in one glance, so look a few times)
+  const seenIn = (hd, n = 6) => {
+    let seen = 0;
+    a.hd = hd;
+    for (let k = 0; k < n; k++) {
+      E.sense(a, a.xi, false);
+      seen = Math.max(seen, foodSeen(E, a, 4));
+    }
+    return seen;
+  };
+  assert.equal(seenIn(0), 0, 'food behind it is never seen'); // facing east
+  assert.ok(seenIn(4) > 0, 'facing it, the food is seen'); // facing west
   a.act = E.A_STAY ?? 8; // having stood still, it has looked all around
-  E.sense(a, a.xi, false);
-  assert.ok(foodSeen(E, a, 4) > 0, 'after standing and looking around, it is seen');
+  assert.ok(seenIn(0) > 0, 'after standing and looking around, it is seen');
 });
 
 test('a hill hides what is behind it', () => {
