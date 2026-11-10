@@ -99,3 +99,33 @@ test('early hominins stay fertile for life; people stop at about 60% of theirs',
   };
   assert.strictEqual(at(53), false, 'but not past about 50, as in wild chimpanzees');
 });
+
+// A nursing baby lost: suckling stops and the mother can conceive again within weeks to months (Jackson & Glasier
+// 2011; chimpanzees: much shorter gaps between births after a lost baby, Emery Thompson et al. 2007).
+test('a mother who loses her nursing baby can conceive again within months, not years', () => {
+  const waitAfterLoss = (cfg) => {
+    const E = createEngine();
+    E.setSeed(11);
+    E.reset(Object.assign({ predators: 0 }, cfg));
+    const st = E.state(),
+      mom = st.ag.find((o) => o.sp === 0 && o.sex && o.age >= o.S.smat),
+      dad = st.ag.find((o) => o.sp === 0 && !o.sex && o.age >= o.S.smat);
+    mom.preg = { due: st.tick + 1, dad, gen: 1, young: [{ sex: 1, g: E.child(mom, dad) }], cost: 22 };
+    for (let i = 0; i < 3 && mom.preg; i++) {
+      Object.assign(mom, { e: 90, w: 90, hp: 100 });
+      E.sim();
+    }
+    assert.ok(!mom.preg && mom.milk && mom.kid, 'she has given birth and is nursing');
+    const nursing = mom.cd;
+    mom.kid.dead = true;
+    mom.kid.cause = 'its wounds';
+    Object.assign(mom, { e: 90, w: 90, hp: 100 });
+    E.sim();
+    E.sim();
+    return { nursing, after: mom.cd, TY: E.TY };
+  };
+  const now = waitAfterLoss({}),
+    old = waitAfterLoss({ lossResume: false });
+  assert.ok(now.after <= Math.round((74 / 365) * now.TY), 'about 74 days left after the loss: ' + (now.after / now.TY).toFixed(2) + ' years');
+  assert.ok(old.after > now.TY * 3, 'under the old rule she still waits years: ' + (old.after / old.TY).toFixed(2));
+});

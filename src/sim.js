@@ -74,6 +74,13 @@ function sim() {
     if (a.milk) {
       // nursing costs the mother while her young is alive and still small
       if (a.kid && !a.kid.gone && !a.kid.dead && a.kid.mom === a && a.milk.left > 0) a.e -= a.milk.cost / a.S.cd;
+      // A baby lost while still nursing: suckling stops, and with it the hormones that hold back ovulation, so
+      // the mother can conceive again within weeks to months instead of years (chimpanzees: 26.6 months from
+      // birth to birth after a lost baby against 68.9 after a surviving one, Emery Thompson et al. 2007; women
+      // who do not nurse ovulate again 45–94 days after a birth, Jackson & Glasier 2011). Not if she is still
+      // nursing a twin.
+      if (SOC.loss && a.sp === 0 && a.cd > 0 && (!a.kid || a.kid.gone) && !ag.some((o) => o.mom === a && !o.gone && o.age < a.S.cd))
+        a.cd = Math.min(a.cd, Math.round(SOC.resume * TY));
       if (--a.milk.left <= 0 || !a.kid || a.kid.gone) a.milk = null;
     }
     if (tick % DAY === 0) a.fd = 0;
@@ -1271,7 +1278,7 @@ const fertileAge = (a) => a.age < Math.min(a.lf * a.S.fert, a.S.fertMax ?? Infin
 // Can this creature eat leaves here? Early hominins (S.leaf, config.js), where the trees are thick enough
 // to browse, as plant-eaters do.
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { lust: 0, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { loss: true, resume: 74 / 365, lust: 0, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {

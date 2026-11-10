@@ -4,6 +4,9 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **A mother who loses a nursing baby can conceive again within months** (74 days; nursing stops, and with it the
+  hold on ovulation: Jackson & Glasier 2011), instead of waiting the full four years. `--no-loss-resume` restores
+  the old rule.
 - **Early hominins fertile for life, up to about 50**, as wild chimpanzees are (no menopause; fertility approaches
   zero at about 50: Emery Thompson et al. 2007; `--fert-max` sets the limit). They had
   kept modern people's rule — fertility ending at 60% of life — which, with their shorter lives, ended it at

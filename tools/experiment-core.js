@@ -89,6 +89,8 @@
     { key: 'trees', kind: 'off', def: true, flag: 'no-trees', label: 'Early hominins sleep up in trees (off: on the ground)', cfg: true },
     { key: 'humanFertility', kind: 'on', def: false, flag: 'human-fertility', label: 'Early hominins stop being fertile at 60% of their life, as people do (the old rule; otherwise fertile for life, as chimpanzees)', cfg: true },
     { key: 'fertMax', kind: 'num', def: 50, flag: 'fert-max', label: 'Early hominins: oldest age to conceive, in years (evidence: about 50; range 45–55)', min: 20, max: 80, cfg: true },
+    { key: 'lossResume', kind: 'off', def: true, flag: 'no-loss-resume', label: 'A mother who loses a nursing baby can conceive again soon (off: she waits the full nursing time)', cfg: true },
+    { key: 'resumeDays', kind: 'num', def: 74, flag: 'resume-days', label: 'Days after losing a nursing baby until a mother can conceive (evidence: 45–94)', min: 0, max: 2000, cfg: true },
     { key: 'lust', kind: 'num', def: 0, flag: 'lust', label: 'Inborn pull of a ready adult toward a ready partner (0: none; an assumption, tested at 1 and 3)', min: 0, max: 10, cfg: true },
     { key: 'leaves', kind: 'off', def: true, flag: 'no-leaves', label: 'Early hominins can live on leaves when fruit is short (off: they get nothing from them)', cfg: true },
     { key: 'leafValue', kind: 'num', def: 0.64, flag: 'leaf-value', label: 'Food from leaves a minute, as a share of ripe fruit (evidence: 0.48–0.64)', min: 0, max: 1, cfg: true },

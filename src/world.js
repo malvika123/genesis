@@ -24,6 +24,8 @@ function reset(cfg = {}) {
   if (ERA === 'hominin' && cfg.humanFertility) KBIO[0].fert = PERSON_BIO.fert; // the old rule, for comparison: fertility ends at 60% of life, as in people
   if (ERA === 'hominin' && cfg.fertMax !== undefined) KBIO[0].fertMax = Number(cfg.fertMax) * TY; // test the ends of its range (years)
   if (ERA === 'hominin' && cfg.leafValue !== undefined) KBIO[0].leaf = Number(cfg.leafValue); // test the ends of its range
+  SOC.loss = cfg.lossResume !== false; // off: a mother who loses her baby waits the full nursing time anyway (the old rule)
+  SOC.resume = (cfg.resumeDays === undefined ? 74 : Number(cfg.resumeDays)) / 365; // days until she can conceive again (45–94)
   SOC.lust = cfg.lust === undefined ? 0 : Number(cfg.lust); // inborn pull toward a ready partner (off until tested: research log)
   SOC.leaves = cfg.leaves !== false; // off: early hominins get nothing from leaves, as modern people (for comparison)
   SOC.trees = cfg.trees !== false; // off: early hominins sleep on the ground (for comparison)
