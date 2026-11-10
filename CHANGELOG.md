@@ -4,13 +4,6 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
-- **"As it perceives"** (View menu): with a creature selected, the world dims and the globe shows only what
-  its brain receives at that moment — a symbol for each thing its senses report in each direction (water,
-  food, danger, animals, its own kind, predators, family, trees, fire…), placed at the distance they report
-  and fainter when faint; directions outside its field of view dark; its body's signals as bars; in the
-  raw-vision experiment, only the colours of light it gets. Drawn from the exact numbers its brain gets,
-  mistakes included. Picture only.
-
 - **Early hominins fertile for life, up to about 50**, as wild chimpanzees are (no menopause; fertility approaches
   zero at about 50: Emery Thompson et al. 2007; `--fert-max` sets the limit). They had
   kept modern people's rule — fertility ending at 60% of life — which, with their shorter lives, ended it at
