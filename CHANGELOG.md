@@ -4,6 +4,9 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- *What's happening* has two tabs: **All**, and **Hominins** (People in the Homo sapiens world) — only the
+  news about them: any entry that names one of them or speaks of them, the newest eight.
+
 - On the globe the dead are real objects lying on the ground — the colour of their kind, fading to pale bone
   as they decay — so trees and hills hide them (they were painted on top of the picture and seemed to float
   on the treetops, with their ribs looking like fish).
