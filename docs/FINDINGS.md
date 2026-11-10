@@ -430,6 +430,35 @@ children, many of them founders, so the rule hides how dangerous predators reall
 rule. **Lesson:** measuring what a model does against what the real world does finds hidden protections;
 this one should go, with its own test.
 
+### 15. Removing the hidden protection of founders' children — Nov 2026
+
+**Version.** Unreleased (after 0.7.0) · the change: commit `44334ec` (the old rule kept as `--shield-founders`).
+Run on the modern-human world, before the early-hominin patches.
+
+**Data.** Raw tables: [without the protection](../data/findings/15-founder-protection/without-protection.jsonl) · [with the old protection](../data/findings/15-founder-protection/with-old-protection.jsonl) · [the comparison](../data/findings/15-founder-protection/comparison.txt).
+
+**Question.** Entry 14 found a leftover rule: predators could not take the founding generation's young.
+What changes without it, and does it explain why predators took children less often than chance?
+
+**Test.** 11 worlds × 60 days (seeds 1–11; seed 12 was cut off by a time limit), the same starting world
+each seed with and without the rule.
+
+| | People alive | Worlds died out | Hunger | Predator deaths | Children 3–11 killed by predators |
+|---|---|---|---|---|---|
+| With the old protection | 25.1 ± 3.3 | 0 | 123 | 91 | 21 |
+| Without it | 25.9 ± 3.7 | 1 | 119 | 86 | 22 |
+
+**Result.** **Almost no difference**: nine of the eleven worlds ended exactly the same either way — within
+60 days the rule rarely came into play — and survival, hunger and predator deaths, children's included,
+were unchanged within noise. One world (seed 4) died out without the protection; one did better.
+
+**Interpretation.** The rule was unrealistic and is gone, but it was **not** what made predators take
+children less often than chance in entry 14 — that guess was wrong. Children are probably taken less
+because they now stay close to grown people (entries 11–12), and predators take the isolated.
+
+**Strength.** Moderate for "little effect over 60 days" (paired worlds). **Lesson:** check a plausible
+explanation before believing it — even one you found yourself.
+
 ---
 
 ## Open questions (next tests)
@@ -437,7 +466,8 @@ this one should go, with its own test.
 - Ablate the bundle in entry 7: which of band size, parental feeding, instincts, one-shot memory and
   swimming carry the effect?
 - Hunger: does the fall in hunger deaths with cooperative care (entry 11) hold with 24+ worlds?
-- Founding young are protected from predators by a leftover rule (entry 14): what happens without it?
+- Why do predators take children less often than chance (entry 14), if not because of the old protection
+  (entry 15)? Is it children staying close to grown people?
 - Predators kill the isolated (entries 12, 14): do alarm calls that draw others close, or groups that deter a
   predator, reduce deaths of people who stray?
 - Where the band starts: does the +8 people hold with 24+ worlds, and is it the water, the food or the
