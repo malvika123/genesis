@@ -4,13 +4,17 @@ A briefing for anyone picking the work up: a new contributor, a reviewer, or a m
 to check the science. Written November 2026 after v0.7.0; updated 10 November 2026. Read `README.md` for what the world contains
 and `docs/MODEL.md` for the formal model description (ODD protocol).
 
-## Where things stand (10 November 2026, evening) — start here
+## Where things stand (11 November 2026, night) — start here
 
-- `develop` (live) has everything up to research log entry 17: the first four patches of the early-hominin
-  plan (`docs/HOMININ-PLAN.md`) — hominins as the default world, the `--sapiens` switch, hominin bodies and
-  life history (`docs/ASSUMPTIONS.md`), sleeping in trees (`--no-trees`) — and their tests (entries 16–17:
-  the hominin world still works, 14.5 alive against 25.5 for modern humans, with old age now a main cause of
-  death; tree-sleeping made no measurable difference).
+- `develop` (live) has everything up to research log entry 19: the hominin patches 1–5 and their tests.
+- **Entry 19, the largest result so far:** hominins had kept modern people's fertility rule (ending at 60% of
+  life), which ended theirs at about 26; fixed to the chimpanzee pattern (fertile for life, not past 50: Emery
+  Thompson et al. 2007). Births per world 12.2 → 25.7; 22.9 alive against 14.1. Births now nearly match deaths
+  over 20 years.
+- **Next, in order:** (1) the fertility limit at 45 and 55 (`--fert-max`); (2) entry 20: the inborn pull toward
+  a ready partner (`--lust`, built, off), at 1 and 3; (3) the shorter gap after a baby dies (23 against 67 months
+  at Gombe, Emery Thompson et al. 2007 — recorded as a deviation); (4) long runs, 150–300 days; (5) why starving
+  hominins walk but do not find food; (6) fear reducing exploration; (7) patch 6, the animals of the time.
 - **Patch 5 (diet), first part, live:** early hominins can live on young leaves when fruit is short (0.64 of ripe
   fruit's food a minute, range 0.48–0.64; `--no-leaves`, `--leaf-value`). Entry 18: no measurable effect in 24
   worlds; a rise in fire deaths in the first 12 was chance. Still missing from the diet: sedges and other C4

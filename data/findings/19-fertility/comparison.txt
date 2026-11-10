@@ -1,0 +1,15 @@
+12 paired worlds (seeds 1,2,3,4,5,6,7,8,9,10,11,12)
+per seed alive old-rule 14 10 2 14 29 7 9 26 7 25 1 25 | fertile-to-50 27 11 3 34 30 36 11 41 29 32 1 20
+died out: old-rule 0, fertile-to-50 0
+people_alive                 old-rule: 14.1 ± 9.8     fertile-to-50: 22.9 ± 13.4    diff 8.83 [2.03, 15.64]  fertile-to-50 higher in 10, lower in 1
+generations                  old-rule: 1.8 ± 0.5      fertile-to-50: 1.9 ± 0.3      diff 0.17 [-0.08, 0.41]  fertile-to-50 higher in 2, lower in 0
+plant_eaters                 old-rule: 61.7 ± 28.4    fertile-to-50: 77.0 ± 25.4    diff 15.33 [-5.07, 35.74]  fertile-to-50 higher in 7, lower in 4
+hunters                      old-rule: 15.1 ± 3.0     fertile-to-50: 15.2 ± 4.2     diff 0.08 [-3.05, 3.21]  fertile-to-50 higher in 6, lower in 5
+died_hunger                  old-rule: sum 73         fertile-to-50: sum 94         diff 1.75 [-1.24, 4.74]  fertile-to-50 higher in 9, lower in 3
+died_thirst                  old-rule: sum 2          fertile-to-50: sum 1          diff -0.08 [-0.41, 0.24]  fertile-to-50 higher in 1, lower in 2
+died_killed_by_a_predator    old-rule: sum 61         fertile-to-50: sum 74         diff 1.08 [-2.58, 4.75]  fertile-to-50 higher in 7, lower in 3
+died_drowned                 old-rule: sum 20         fertile-to-50: sum 36         diff 1.33 [-0.49, 3.16]  fertile-to-50 higher in 7, lower in 4
+died_burned                  old-rule: sum 50         fertile-to-50: sum 40         diff -0.83 [-3.22, 1.56]  fertile-to-50 higher in 4, lower in 3
+died_its_wounds              old-rule: sum 5          fertile-to-50: sum 17         diff 1.00 [-0.75, 2.75]  fertile-to-50 higher in 5, lower in 2
+died_old_age                 old-rule: sum 66         fertile-to-50: sum 69         diff 0.25 [-1.05, 1.55]  fertile-to-50 higher in 5, lower in 4
+died_giving_birth            old-rule: sum 0          fertile-to-50: sum 2          diff 0.17 [-0.08, 0.41]  fertile-to-50 higher in 2, lower in 0

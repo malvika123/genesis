@@ -36,6 +36,7 @@ Entries are kept even when the result was "no effect" or "it made things worse" 
 | Many hands feeding a child (family most), and children staying close to carers | Hunger deaths 13.9 → 11.5 per world, predator deaths 5.3 → 8.3; survival unchanged; ranges include zero | weak |
 | (Analysis) Predator risk under cooperative care, per person-day at risk | Exposure unchanged; individual risk not clearly changed; encounters +50% but less often fatal; 86–94% of victims had no grown person in reach | moderate (isolation) / weak (risk) |
 | **Not** measurable: early hominins sleeping in trees (they did, most nights) | 16.2 vs 14.5 alive; predator deaths 75 vs 69 | moderate (no effect) |
+| Hominins fertile until about 50, as wild chimpanzees (they had kept people's rule, which ended it at about 26) | Births per world 12.2 → 25.7; 22.9 vs 14.1 alive, better in 10 of 12 worlds | strong |
 | **Not** measurable: early hominins living on leaves when fruit is short | 14.6 vs 14.8 alive, hunger deaths 168 vs 204 (24 worlds, within noise) | none |
 | (Scenario) Early hominin bodies and lives instead of modern ones | 14.5 vs 25.5 alive, no die-outs; old age a main cause of death (shorter, chimpanzee-like life) | weak–moderate (confounded) |
 | **Not** a must-have: bigger brains on their own | 64 units: 8.2 alive, 256: 6.1, 1,024: 2.2 | strong |
@@ -590,6 +591,49 @@ chimpanzees watch a wildfire and move calmly ahead of it (Pruetz & LaDuke 2010, 
 **Strength.** None (24 worlds): no measurable effect on survival, hunger or fire. **Lesson:** a cause that
 sounds right (leaves → woods → fire) has to be traced; a striking result in 12 worlds can vanish in the next
 12, especially for rare mass deaths.
+
+### 19. Fertility: hominins had kept modern people's menopause — Nov 2026
+
+**Version.** Unreleased (after 0.7.0) · the fix: commits `8dc28f1` and `8398793` (`--human-fertility` restores the old rule, `--fert-max` sets the limit); the test ran on `8398793` (its table header says `8dc28f1`: the run started seconds before the commit, with the same code). The trace: `tools/analysis/life-trace.js`, run on the old rule (`24a1040`). Run by Claude.
+
+**Data.** Raw tables: [old rule](../data/findings/19-fertility/old-rule.csv) (entry 18's leaves run) · [fertile until about 50](../data/findings/19-fertility/fertile-to-50.csv) · [the comparison](../data/findings/19-fertility/comparison.txt) · trace: [seed 1](../data/findings/19-fertility/trace/births-seed-1.json), [seed 2](../data/findings/19-fertility/trace/births-seed-2.json). Re-run: `node tools/experiment.js --seeds 1-12 --days 60 --workers 4 --out fertile.csv` (and `--human-fertility`).
+
+**Question.** Over 20 years a band of 25 had about 12 babies and 23 deaths (entries 16–18). Too many deaths,
+or too few births?
+
+**The trace** (seeds 1 and 2, old rule): women who had babies had them 4.6–6.5 years apart, as wild
+chimpanzees do; but 11 of 24 adult women had **none**, so births per woman came to about one every 10.5 years.
+Looking for why found the cause: a woman could conceive only until 60% of her own lifespan — right for modern
+people (about 50) but carried over unchanged when hominins were given chimpanzee-like lives, which ended their
+fertility at 16–36 years (mean 26), for some before a first birth was possible. Men had the same limit.
+
+**Real-world basis.** Wild chimpanzees have no menopause (Emery Thompson et al. 2007; six populations, 534
+births): fertility falls from 25–35 and approaches zero at about 50, mostly through failing health — healthy
+females lose about 20% after 35; 47% of 34 mothers living past 40 gave birth again; the oldest wild mother was
+about 55. **The fix:** fertile until the end of one's own life, but not past 50 (range 45–55).
+
+**Test.** 12 worlds × 60 days, seeds 1–12, made-up planet, the same starting worlds under the old rule and the fix. The old rule on the new code reproduced entry 18's run row for row ([seeds 1–2](../data/findings/19-fertility/old-rule-check-seeds-1-2.csv)).
+
+| | People alive | Worlds died out | Born per world | Died per world | Hunger | Predators |
+|---|---|---|---|---|---|---|
+| Old rule (fertile to about 26) | 14.1 ± 9.8 | 0 | 12.2 | 23.1 | 73 | 61 |
+| Fertile until about 50 | **22.9 ± 13.4** | 0 | **25.7** | 27.8 | 94 | 74 |
+
+**Result.** **Births more than doubled**, and survival rose by 8.8 (range +2.0 to +15.6; better in 10 of 12
+worlds, worse in 1). Births now nearly keep up with deaths over 20 years (25.7 against 27.8). With more people,
+more died of each cause.
+
+**Also from the trace.** Hungry hominins were rewarded for finding new places 3–7 times *less* often than fed ones
+(they were not wandering for its own sake), but even starving ones ate in only 6–8% of their time, walking about
+75%: they search and do not find. Frightened ones explored as much as calm ones, unlike real animals. A ready woman
+had a ready man beside her only about 16% of her ready time.
+
+**Interpretation.** The largest single reason the band shrank was not a missing piece of nature but a modern-human
+number that should have changed with the hominins' life history. Nothing was tuned: the fix follows the evidence.
+
+**Strength.** Strong for the effect (paired worlds, large, range clear of zero). The limit of 50 is to be tested at
+45 and 55. **Lesson:** when one scenario's numbers are scaled, check every rule that depends on them; and measure
+births as well as deaths.
 
 ---
 

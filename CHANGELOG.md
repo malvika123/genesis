@@ -8,7 +8,8 @@ Genesis follows the version in `package.json`. Experiments should state the vers
   zero at about 50: Emery Thompson et al. 2007; `--fert-max` sets the limit). They had
   kept modern people's rule — fertility ending at 60% of life — which, with their shorter lives, ended it at
   16–36 years (mean 26): a scaling error found while tracing why half the women never had a baby.
-  `--human-fertility` restores the old rule for comparison.
+  `--human-fertility` restores the old rule for comparison. Research log entry 19: births per world 12.2 → 25.7, 22.9 alive
+  against 14.1 (better in 10 of 12 worlds).
 - An inborn pull of a ready adult toward a ready partner (`--lust N`), from the evidence on primate sexual
   motivation; built but off until it has been tested.
 - Lightning is a flash of about a third of a second, and no longer hangs on the screen while the world is
