@@ -1067,6 +1067,7 @@ const G3D = { ok: false };
       Math.max(1, cv.width / cv.getBoundingClientRect().width)
     );
     if (GL.eye) drawEyeHands(cx, GL.eye, w, h);
+    if (typeof PERC !== 'undefined' && PERC.on) drawPerceived(cx, project, w, h);
     // the places its eyes can see right now
     if (sel && sel.view && !GL.eye) {
       cx.fillStyle = 'rgba(255,255,220,.13)';

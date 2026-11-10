@@ -201,7 +201,8 @@
       #tl-tip { display: block; min-height: 16px; }
       #timebtn[aria-pressed='true'],
       #turn[aria-pressed='true'],
-      #real[aria-pressed='true'] { background: var(--acc); color: var(--bg); }
+      #real[aria-pressed='true'],
+      #perc[aria-pressed='true'] { background: var(--acc); color: var(--bg); }
       .view {
         flex: 1;
         min-height: 0;
@@ -731,6 +732,7 @@
             <button id="real" aria-pressed="false" title="Real-looking water and sky, close to the ground (slower on some devices)">Realistic</button>
             <button id="turn" aria-pressed="false">Turn with the sun</button>
             <button id="timebtn" aria-pressed="false" title="Show where everyone has been, and what happened when">Time</button>
+            <button id="perc" aria-pressed="false" title="Show only what the selected creature's brain receives right now">As it perceives</button>
           </div>
         </div>
       </div>
