@@ -89,6 +89,7 @@
     { key: 'trees', kind: 'off', def: true, flag: 'no-trees', label: 'Early hominins sleep up in trees (off: on the ground)', cfg: true },
     { key: 'humanFertility', kind: 'on', def: false, flag: 'human-fertility', label: 'Early hominins stop being fertile at 60% of their life, as people do (the old rule; otherwise fertile for life, as chimpanzees)', cfg: true },
     { key: 'fertMax', kind: 'num', def: 50, flag: 'fert-max', label: 'Early hominins: oldest age to conceive, in years (evidence: about 50; range 45–55)', min: 20, max: 80, cfg: true },
+    { key: 'bodyScaling', kind: 'off', def: true, flag: 'no-body-scaling', label: 'Smaller bodies need less food (Kleiber’s law; off: hominins eat as much as a full-sized forager)', cfg: true },
     { key: 'grassEye', kind: 'on', def: false, flag: 'grass-looks-like-food', label: 'People and hominins see grass as food, though they cannot digest it (the old rule)', cfg: true },
     { key: 'lossResume', kind: 'off', def: true, flag: 'no-loss-resume', label: 'A mother who loses a nursing baby can conceive again soon (off: she waits the full nursing time)', cfg: true },
     { key: 'resumeDays', kind: 'num', def: 74, flag: 'resume-days', label: 'Days after losing a nursing baby until a mother can conceive (evidence: 45–94)', min: 0, max: 2000, cfg: true },

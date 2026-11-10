@@ -4,6 +4,8 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Smaller bodies need less food** (Kleiber's law, as plant-eaters here already did): hominins, three-quarters of
+  a forager's mass, had been eating and burning energy as full-sized foragers. `--no-body-scaling` restores it.
 - **Hungry hominins no longer see grass as food.** Their eyes counted a meadow as half as good as fruit, a leftover
   from before people stopped eating grass, which drew hungry ones onto grassland where there is nothing for them.
   `--grass-looks-like-food` restores it. (Eyesight tests now use fruit.)

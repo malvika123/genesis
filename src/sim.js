@@ -96,7 +96,7 @@ function sim() {
     } else {
       // a big brain is costly to run: a grown human brain burns a large share of the body's energy
       const brain = a.sp === 0 ? 1 + (0.1 * (a.nh - S.nh)) / Math.max(1, S.hmax - S.nh) : 1;
-      a.e -= (S.dE / DAY) * a.g.m * (0.8 + 0.2 * a.g.s + 0.04 * a.g.v) * df * brain;
+      a.e -= (S.dE / DAY) * a.g.m * (0.8 + 0.2 * a.g.s + 0.04 * a.g.v) * df * brain * BURN(a);
       a.w -= (S.dW / DAY) * df;
     }
     const fish = a.sp === 3,
@@ -755,7 +755,7 @@ function sim() {
         // food cooked by fire: soft, easy to chew, and it gives more energy than raw
         const b = Math.min(COOK[i], 0.3);
         COOK[i] -= b;
-        a.e = Math.min(100, a.e + b * 120);
+        a.e = Math.min(100, a.e + b * 120 * MEAL(a));
         if (hu > 0.5) a.ev[2] = 'it ate food cooked by fire after going hungry on day ' + dn;
         if (a.sp === 0 && !firsts.cooked) {
           firsts.cooked = 1;
@@ -764,7 +764,7 @@ function sim() {
       } else if (poison[i] && f > 0.05) {
         const b = Math.min(f, 0.3);
         food[i] -= b;
-        a.e = Math.min(100, a.e + b * 10);
+        a.e = Math.min(100, a.e + b * 10 * MEAL(a));
         a.hp -= 22;
         a.painA = Math.min(1, a.painA + 0.8);
         ouch(a, 0.8, 'berries');
@@ -782,7 +782,7 @@ function sim() {
           b = Math.min(m.meat, a.sp === 0 ? (a.hand === 3 ? 0.35 : 0.12) : 0.3),
           rot = rotten(m);
         m.meat -= b;
-        a.e = Math.min(100, a.e + b * 110);
+        a.e = Math.min(100, a.e + b * 110 * MEAL(a));
         if (rot && rnd() < 0.35) {
           a.hp -= 15;
           a.painA = Math.min(1, a.painA + 0.7);
@@ -805,7 +805,7 @@ function sim() {
         // fruit from the trees: more filling than leaves and roots
         const b = Math.min(fruit[i], 0.4);
         fruit[i] -= b;
-        a.e = Math.min(100, a.e + b * 70);
+        a.e = Math.min(100, a.e + b * 70 * MEAL(a));
         if (hu > 0.5) a.ev[2] = 'it ate fruit after going hungry on day ' + dn;
         if (a.sp === 0 && !firsts.fruit) {
           firsts.fruit = 1;
@@ -818,7 +818,7 @@ function sim() {
         if (rnd() < pd) {
           const b = Math.min(ROOT[i], 0.3);
           ROOT[i] -= b;
-          a.e = Math.min(100, a.e + b * 80);
+          a.e = Math.min(100, a.e + b * 80 * MEAL(a));
           if (hu > 0.5) a.ev[2] = 'it dug up roots after going hungry on day ' + dn;
           if (!firsts.root) {
             firsts.root = 1;
@@ -835,7 +835,7 @@ function sim() {
         // less a minute than ripe fruit (S.leaf of it: Kibale chimpanzees, Uwimbabazi et al. 2016); a band
         // of apes does not strip a forest of its leaves, so the trees are not thinned.
         const b = 0.4;
-        a.e = Math.min(100, a.e + b * 70 * a.S.leaf);
+        a.e = Math.min(100, a.e + b * 70 * a.S.leaf * MEAL(a));
         if (hu > 0.5) a.ev[2] = 'it ate leaves after going hungry on day ' + dn;
         if (!firsts.leaves) {
           firsts.leaves = 1;
@@ -844,7 +844,7 @@ function sim() {
       } else if (a.sp === 0 && f > 0.05) {
         // people cannot digest grass: chewing it gives almost nothing
         const b = Math.min(f, 0.2);
-        a.e = Math.min(100, a.e + b * 1);
+        a.e = Math.min(100, a.e + b * 1 * MEAL(a));
         food[i] -= b * 0.3;
       } else if (a.S.omni && f > 0.05) {
         const b = Math.min(f, 0.5);
@@ -1042,7 +1042,7 @@ function sim() {
       } else if (a.hand === 1 && nut[i] > 0.05) {
         const b = Math.min(nut[i], 0.25);
         nut[i] -= b;
-        a.e = Math.min(100, a.e + b * 110);
+        a.e = Math.min(100, a.e + b * 110 * MEAL(a));
         a.nuts++;
         if (hu > 0.5) a.ev[2] = 'it cracked a nut open with a stone after going hungry on day ' + dn;
         if (!firsts.nut) {
@@ -1123,7 +1123,7 @@ function sim() {
                   for (const o of l)
                     // a kill feeds the young — and, if it is big, the rest of the pack too
                     if (o !== a && o.k === a.k && !o.dead && (o.age < o.S.mat || (T.size || 1) > 1.5)) {
-                      o.e = Math.min(100, o.e + 35 * Math.min(1.5, T.size || 1));
+                      o.e = Math.min(100, o.e + 35 * Math.min(1.5, T.size || 1) * MEAL(o));
                       o.ev[2] = 'it shared a kill on day ' + dn;
                     }
               }
@@ -1275,10 +1275,16 @@ const climbs = (a) => a.sp === 2 && a.S.n !== 'Wolf';
 // with a fixed upper limit (early hominins, as chimpanzees: fertility approaches zero at about 50; Emery
 // Thompson et al. 2007) not beyond it.
 const fertileAge = (a) => a.age < Math.min(a.lf * a.S.fert, a.S.fertMax ?? Infinity);
+// Body size and food (Kleiber's law, as for plant-eaters in config.js): a body's energy store grows with its mass,
+// what it burns with mass^0.75. So a smaller hominin gets a larger share of its store from the same fruit (1/mass)
+// and burns its store a little faster (mass^-0.25); in all it needs about mass^0.75 of a forager's food. Size is
+// relative to a forager (early hominins 0.75: about 40 kg against 52; config.js). Modern people: 1, unchanged.
+const MEAL = (a) => (a.sp === 0 && SOC.kleiber ? 1 / (a.S.size || 1) : 1),
+  BURN = (a) => (a.sp === 0 && SOC.kleiber ? (a.S.size || 1) ** -0.25 : 1);
 // Can this creature eat leaves here? Early hominins (S.leaf, config.js), where the trees are thick enough
 // to browse, as plant-eaters do.
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { grassEye: false, loss: true, resume: 74 / 365, lust: 0, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 0, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {

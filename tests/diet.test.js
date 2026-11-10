@@ -105,3 +105,28 @@ test('hungry hominins do not see grass as food; fruit they do', () => {
   assert.ok(seen({ grassEye: true }, 'grass') > 0, 'under the old rule it was');
   assert.ok(seen({}, 'fruit') > 0, 'fruit on the trees still is');
 });
+
+// Kleiber's law for hominins, as for plant-eaters: a smaller body gets a larger share of its store from the same fruit.
+test('the same fruit is a bigger meal for a smaller hominin than for a full-sized person', () => {
+  const gain = (cfg) => {
+    const E = createEngine();
+    E.setSeed(9);
+    E.reset(Object.assign({ predators: 0 }, cfg));
+    const s = E.state(),
+      p = s.ag.find((a) => a.sp === 0),
+      i = E.idx(p.x, p.y);
+    for (const o of s.ag) if (o !== p && Math.abs(o.x - p.x) < 2 && Math.abs(o.y - p.y) < 2) o.y = (o.y + 20) % E.H;
+    Object.assign(p, { asleep: false, sl: 0, e: 30, w: 90, hand: 0 });
+    E.forest().fruit[i] = 0.4;
+    E.items().ROOT[i] = 0;
+    s.food[i] = 0;
+    p.lw.fill(0, 0, E.NA * E.NI);
+    p.lw[E.A_EAT * E.NI + E.IB + 11] = 60;
+    const e0 = p.e;
+    E.sim();
+    return p.e - e0;
+  };
+  const small = gain({}),
+    old = gain({ bodyScaling: false });
+  assert.ok(small > old * 1.2, 'hominin ' + small.toFixed(1) + ' against the old rule ' + old.toFixed(1));
+});
