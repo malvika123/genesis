@@ -768,12 +768,18 @@ function drawWeatherFx(g, P, rainToo = true) {
       }
       g.stroke();
     }
+  // Lightning is a flash: it shows for about a third of a second of real time after it first appears, so it
+  // does not hang on the screen while the world is paused or running slowly.
+  const nowMs = performance.now();
   for (const b of STRIKES) {
     if (tick - b.t > 1) continue;
+    if (b.seen === undefined) b.seen = nowMs;
+    const age = nowMs - b.seen;
+    if (age > 320) continue;
     const Q = P(b.x, b.y);
     if (!Q) continue;
     const k = Math.max(8, Q[2]);
-    g.globalAlpha = tick === b.t ? 0.95 : 0.4;
+    g.globalAlpha = age < 120 ? 0.95 : 0.4;
     g.strokeStyle = '#fff7c2';
     g.lineWidth = Math.max(1.5, k * 0.06);
     g.beginPath();

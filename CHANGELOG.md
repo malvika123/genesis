@@ -4,6 +4,9 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- Lightning is a flash of about a third of a second, and no longer hangs on the screen while the world is
+  paused; hominins asleep up a tree are drawn in the crown of one of the trees, not in the air between them.
+
 - **Hominin bodies and lives** (patch 3): about three-quarters of a person's size, still hairy (feel the cold
   later and the heat sooner), growth, weaning and births as in chimpanzees, a shorter life, and a brain
   about a third of a person's that is inherited and can evolve larger. The founding band's ages follow it.
