@@ -9,7 +9,7 @@
 })(typeof self !== 'undefined' ? self : this, function () {
   const API = `
 return {
-  setSeed, reset, sim, interpret, mind, child, mk, gene, perceive, newPerception, testScore, iqTable, probe, replay, remember, forward, NM, NA, NH, OI, hOf, grownUnits, prune, connections, regionOf,
+  setSeed, reset, sim, era: () => ERA, word, interpret, mind, child, mk, gene, perceive, newPerception, testScore, iqTable, probe, replay, remember, forward, NM, NA, NH, OI, hOf, grownUnits, prune, connections, regionOf,
   idx, inb, dxw, isNightAt, tempAt, cellTemp, updateClimate, iced, liquid, growth, coldOf, heatOf, W, H,
   forest: () => ({ tree, fruit, fkind, tcap, meanTemp, cover }),
   wx: () => ({ MOISTY, HUM, CLD, RAIN, MOIST, PUD, PW, CONV, THUNDER, STRIKES, capacity, wetness, drinkable }),

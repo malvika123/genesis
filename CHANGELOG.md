@@ -4,6 +4,13 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Early hominins.** The default world is now early hominins of about 2.5 million years ago (plan:
+  `docs/HOMININ-PLAN.md`): called hominins and drawn as small, hairy, upright apes with long arms. So far
+  only the name and look; bodies, climbing, diet, animals and the ancient world follow in patches. *New
+  world* (and `--sapiens`) gives modern Homo sapiens of 70,000 years ago without culture instead.
+- Predators can take the founding generation's young like any other (a leftover rule protected them;
+  `--shield-founders` restores it for comparison).
+
 - **Shelters as a possibility.** Branches can be heaped in one place, and a heap is cover against wind and
   rain (and from being seen), drawn on the globe as a brush shelter; it rots unless kept up. Nothing tells
   anyone to build; the first shelter slept in is a tracked discovery. `--no-shelter` turns it off.

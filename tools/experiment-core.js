@@ -83,6 +83,7 @@
     { key: 'predators', kind: 'num', def: 6, flag: 'predators', label: 'Predators', min: 0, max: 100, cfg: true },
     { key: 'fish', kind: 'num', def: 24, flag: 'fish', label: 'Fish', min: 0, max: 200, cfg: true },
     { key: 'brain', kind: 'num', def: 64, flag: 'brain', label: 'Most thinking units in a person’s brain', min: 16, max: 2048 },
+    { key: 'sapiens', kind: 'on', def: false, flag: 'sapiens', label: 'Homo sapiens 70,000 years ago, without culture (otherwise early hominins, 2.5 million years ago)', cfg: true },
     { key: 'earth', kind: 'on', def: false, flag: 'earth', label: 'The real Earth, 70,000 years ago (otherwise a made-up planet)', cfg: true },
     { key: 'homeland', kind: 'off', def: true, flag: 'any-start', label: 'The band starts where our species lived (off: anywhere warm near water, the old rule)', cfg: true },
     { key: 'shield', kind: 'on', def: false, flag: 'shield-founders', label: "Predators cannot take the founding generation's young (the old rule)", cfg: true },

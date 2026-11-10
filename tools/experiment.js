@@ -15,6 +15,7 @@
 //   --old-sound      sound heard within 2.2 squares, fading evenly (no physics)
 //   --modern-voice   everyone starts with a modern human voice, pointing and shared attention
 //   --no-calls       animals make no calls
+//   --sapiens        Homo sapiens 70,000 years ago without culture (otherwise early hominins, ~2.5 million years ago)
 //   --earth          the real Earth's continents as they were 70,000 years ago (not a made-up planet)
 //   --shield-founders  the old rule: predators cannot take the founding generation's young
 //   --no-shelter     branches cannot be heaped up into a shelter

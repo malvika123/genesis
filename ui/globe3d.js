@@ -754,6 +754,7 @@ const G3D = { ok: false };
         a.preg ? Math.round(clamp(1 - (a.preg.due - tick) / Math.max(1, a.S.gest), 0, 1) * 3) : 0, // how far along a pregnancy is
         a.ptT !== undefined && tick - a.ptT <= 1 ? a.pt : -1, // pointing
         a.sp === 0 ? Math.round(skinOf(a) * 8) : 0, // skin shade
+        a.sp === 0 ? ERA : '', // early hominin or modern person
       ].join();
     let t = figTex.get(key);
     if (t) return t;

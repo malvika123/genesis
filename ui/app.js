@@ -1316,10 +1316,15 @@ const skinCol = (t, dk = 0) =>
 // pose of what they are doing: walking, bending down to pick something up or drink, a hand to the mouth
 // when eating, an arm swinging when striking, an arm held out when sharing or pointing.
 function drawPerson(g, a, X, Y, k, gr, col) {
-  const h = (5.5 + 6 * gr) * k, // full height
+  // Early hominins (the default world): small upright apes — a little shorter, covered in dark hair, a long
+  // body on shorter legs, arms reaching to the knees, no waist, a heavy brow and a projecting lower face
+  // (as australopith and early-Homo skeletons show). Modern people otherwise.
+  const ape = typeof ERA !== 'undefined' && ERA === 'hominin',
+    h = (5.5 + 6 * gr) * k * (ape ? 0.85 : 1), // full height
     tone = a.skv ?? skinOf(a),
-    skin = skinCol(tone),
-    shade = skinCol(tone, 0.22),
+    skin = ape ? '#4a3526' : skinCol(tone),
+    shade = ape ? '#33241a' : skinCol(tone, 0.22),
+    face = ape ? '#7a5a45' : null,
     hair = '#1e1612',
     act = a.asleep ? -1 : a.act,
     crouch = act === A_TAKE || act === A_DROP || act === A_DRINK || act === A_STRIKE ? 1 : 0,
@@ -1336,10 +1341,10 @@ function drawPerson(g, a, X, Y, k, gr, col) {
     neckY = top + hr * 2.15,
     sh = neckY + h * 0.035, // shoulders
     shW = h * (adult ? (fem ? 0.115 : 0.135) : 0.1),
-    waist = sh + h * 0.17,
-    waW = h * (fem && adult ? 0.068 : 0.078),
-    hip = sh + h * 0.27,
-    hiW = h * (fem && adult ? 0.1 : 0.088),
+    waist = sh + h * (ape ? 0.2 : 0.17),
+    waW = ape ? shW * 0.95 : h * (fem && adult ? 0.068 : 0.078),
+    hip = sh + h * (ape ? 0.33 : 0.27),
+    hiW = h * (ape ? 0.1 : fem && adult ? 0.1 : 0.088),
     crotch = hip + h * 0.035,
     foot = h / 2,
     step = a.asleep || !a.moving || crouch ? 0 : Math.sin(a.ph || 0) * h * 0.14;
@@ -1371,7 +1376,7 @@ function drawPerson(g, a, X, Y, k, gr, col) {
   }
   // where the working (right) hand goes
   let rx = shW + h * 0.04 - step * 0.5,
-    ry = hip + h * 0.04;
+    ry = ape ? knee - h * 0.02 : hip + h * 0.04;
   if (act === A_STRIKE) {
     rx = h * 0.17;
     ry = top - h * 0.1 + ((1 - sw) / 2) * (foot - top - h * 0.05);
@@ -1392,7 +1397,7 @@ function drawPerson(g, a, X, Y, k, gr, col) {
   }
   // the resting (left) arm swings with walking, behind the body's edge
   const lhx = -shW - h * 0.035 + step * 0.5,
-    lhy = crouch ? hip + h * 0.08 : hip + h * 0.05;
+    lhy = crouch ? hip + h * 0.08 : ape ? knee - h * 0.02 : hip + h * 0.05;
   limb([[-shW + h * 0.03, sh + h * 0.02], [(-shW + lhx) / 2 - h * 0.015, (sh + lhy) / 2], [lhx, lhy]], h * 0.048, h * 0.04, shade);
   g.fillStyle = shade;
   g.beginPath();
@@ -1450,6 +1455,14 @@ function drawPerson(g, a, X, Y, k, gr, col) {
   g.ellipse(-hr * 0.84, hcy + hr * 0.05, hr * 0.13, hr * 0.22, 0, 0, 7);
   g.ellipse(hr * 0.84, hcy + hr * 0.05, hr * 0.13, hr * 0.22, 0, 0, 7);
   g.fill();
+  if (ape) {
+    // a lighter, bare face with a heavy brow and a jaw that juts forward
+    g.fillStyle = face;
+    g.beginPath();
+    g.ellipse(0, hcy + hr * 0.2, hr * 0.6, hr * 0.62, 0, 0, 7);
+    g.ellipse(0, hcy + hr * 0.55, hr * 0.5, hr * 0.36, 0, 0, 7);
+    g.fill();
+  } else {
   // hair: short and tightly curled, a little longer on women
   g.fillStyle = hair;
   g.beginPath();
@@ -1466,10 +1479,11 @@ function drawPerson(g, a, X, Y, k, gr, col) {
     g.ellipse(hr * 0.82, hcy + hr * 0.1, hr * 0.2, hr * 0.55, 0, 0, 7);
     g.fill();
   }
+  }
   // face: brow, eyes, a nose's shadow, closed when asleep
   if (h > 9) {
-    g.fillStyle = 'rgba(0,0,0,0.18)';
-    g.fillRect(-hr * 0.55, hcy - hr * 0.22, hr * 1.1, hr * 0.12);
+    g.fillStyle = ape ? 'rgba(0,0,0,0.45)' : 'rgba(0,0,0,0.18)';
+    g.fillRect(-hr * 0.55, hcy - hr * 0.22, hr * 1.1, hr * (ape ? 0.2 : 0.12));
     g.fillStyle = '#120c09';
     if (a.asleep) {
       g.fillRect(-hr * 0.42, hcy, hr * 0.26, hr * 0.06);
@@ -2249,12 +2263,12 @@ function draw() {
     [nLessons, 'Lessons learned'],
     [
       SIBS[0] && SIBS[0].pairs ? Math.round((100 * SIBS[0].full) / SIBS[0].pairs) + '%' : '–',
-      'Brothers and sisters with the same father too (real people about 66%, chimpanzees 4%)',
+      'Brothers and sisters with the same father too (living foragers about 66%, chimpanzees 4%)',
     ],
     [ag.filter((a) => a.sp === 0 && a.mate && !a.mate.gone).length, 'People with a partner they are bonded to'],
   ];
   $('stats').innerHTML = st
-    .map((x) => '<div class="stat"><b>' + x[0] + '</b><span>' + x[1] + '</span></div>')
+    .map((x) => '<div class="stat"><b>' + x[0] + '</b><span>' + word(x[1]) + '</span></div>')
     .join('');
   if (tick !== drawHud.talkT && $('v-stats').offsetParent) {
     drawHud.talkT = tick;
@@ -2267,7 +2281,7 @@ function draw() {
     drawHud.k = hudKey;
     $('hud').innerHTML =
       [
-        [0, c[0] + ' people'],
+        [0, c[0] + word(' people')],
         [1, c[1] + ' plant-eaters'],
         [2, c[2] + ' hunters'],
         [3, c[3] + ' fish'],
@@ -2491,6 +2505,7 @@ const readCfg = () => ({
   fish: +$('fsh').value || 0,
   retina: $('ret').checked,
   earth: $('land').value === 'earth',
+  sapiens: $('era').value === 'sapiens',
 });
 // What's happening: the latest events float over the world, newest on top; new ones pop in and glow
 // for a moment. It can be folded away; folded, it counts what you've missed.
@@ -2527,7 +2542,7 @@ function onLog(logs) {
     $('fnew').hidden = false;
     $('fnew').textContent = '· ' + feedMissed + ' new';
   }
-  $('log').innerHTML = logs.map((l, i) => '<li' + (i < fresh ? ' class="new"' : '') + '>' + l + '</li>').join('');
+  $('log').innerHTML = logs.map((l, i) => '<li' + (i < fresh ? ' class="new"' : '') + '>' + word(l) + '</li>').join('');
 }
 function onExtinct() {
   running = false;
@@ -2793,6 +2808,7 @@ function showTab(name) {
 }
 document.querySelectorAll('nav button').forEach((b) => (b.onclick = () => showTab(b.dataset.tab)));
 function setHTML(el, h) {
+  h = word(h); // hominins, not people, in the early-hominin world
   if (el._h !== h) el.innerHTML = el._h = h;
 }
 ['ithink', 'idoing'].forEach((id) =>

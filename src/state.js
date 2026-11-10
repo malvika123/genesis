@@ -62,7 +62,21 @@ let MOISTY = null, // on the real Earth: each square's soil moisture averaged ov
   DRYLAND = 0.12; // below this the ground is desert
 let BANDAT = null; // where the first band made camp: [x, y]
 let events = []; // everything the log has ever said, with when: for the timeline
+// Which world this is: early hominins about 2.5 million years ago (the default), or Homo sapiens 70,000
+// years ago without culture ('sapiens'). In the hominin world the same creatures are called hominins, not
+// people, wherever words are shown (their kind is still 'Person' inside the engine and in experiment data).
+let ERA = 'hominin';
+const word = (t) =>
+  ERA !== 'hominin' || typeof t !== 'string'
+    ? t
+    : t
+        .replace(/\bPeople\b/g, 'Hominins')
+        .replace(/\bpeople\b/g, 'hominins')
+        .replace(/\bPerson\b/g, 'Hominin')
+        .replace(/\bperson\b/g, 'hominin')
+        .replace(/\ba hominin\b/g, 'a hominin');
 function log(t) {
+  t = word(t);
   events.push({ t: tick, s: t });
   if (events.length > 600) events.shift();
   logs.unshift('Day ' + dayN() + ': ' + t);
