@@ -4,6 +4,26 @@ A briefing for anyone picking the work up: a new contributor, a reviewer, or a m
 to check the science. Written November 2026 after v0.7.0; updated 10 November 2026. Read `README.md` for what the world contains
 and `docs/MODEL.md` for the formal model description (ODD protocol).
 
+## Where things stand (10 November 2026, afternoon) — start here
+
+- `develop` (live) has everything up to research log entry 14. `percept` has more, **not yet merged**:
+  research log entry 15, and the first four patches of the early-hominin plan (`docs/HOMININ-PLAN.md`):
+  hominins as the default world (name and look), the `--sapiens` scenario switch, hominin bodies and life
+  history (numbers verified, see `docs/ASSUMPTIONS.md`), and sleeping in trees (`--no-trees`).
+- **Next, in order:**
+  1. Test patch 3 (hominin bodies): the same 12 worlds as hominins without trees and as modern humans —
+     `node tools/experiment.js --seeds 1-12 --days 60 --no-trees --workers 8 --out hnotrees.csv` and
+     `node tools/experiment.js --seeds 1-12 --days 60 --sapiens --workers 8 --out sapiens.csv`.
+     Note: hominins are expected to differ (smaller brains, slower births); the question is whether the
+     world still works (no routine die-outs) and how it differs — not to tune it to match.
+  2. Test patch 4 (sleeping in trees): `--seeds 1-12 --days 60 --workers 8 --out htrees.csv` against
+     `hnotrees.csv` (paired: same starting worlds).
+  3. Log both in `docs/FINDINGS.md` (entries 16 and 17, with data in `data/findings/`), run `npm test`,
+     and merge `percept` into `develop` if the world still works.
+  4. Then continue the plan from patch 5 (diet), checking every number against sources first and
+     recording it in `docs/ASSUMPTIONS.md`.
+- Work on one branch (`percept`), one behaviour change at a time; never tune toward an outcome.
+
 ## The rules the project is held to
 
 1. **As close to real Earth and real early humans as possible.** Every feature is judged against
