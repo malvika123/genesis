@@ -60,6 +60,40 @@ and the Research page will say which parts are evidence and which are reasoned g
 Each patch keeps the rules: nothing scripted; only what real animals are born with is built in; honest
 minds; whispers are only nudges.
 
+## The long-term aim: run down the generations, and compare with what really happened
+
+Start from the 2.5-million-year world as close to reality as the evidence allows, then let the population
+run for many generations, and compare the direction and pace of change with the real record:
+
+| Roughly when | What changed in reality |
+|---|---|
+| 3.3–2.6 million years ago | first stone tools (Lomekwi, then the Oldowan) |
+| about 2 million years ago | early Homo: brain about 600 cm³; meat cut with stone tools |
+| about 1.8 million years ago | Homo erectus: brain about 900 cm³, larger bodies, long legs, probably less hair and more sweating; hand-axes |
+| about 1 million–400,000 years ago | fire, first occasional, then habitual |
+| about 300,000 years ago | Homo sapiens: brain about 1,350 cm³ |
+
+What this needs, after the patches above:
+1. **Speed.** About 125,000 generations separate 2.5 million years ago from now; at present one generation
+   takes about 5 minutes of computing per world. A much faster engine, and long runs of key periods compared
+   by direction and pace of change rather than every generation.
+2. **Population.** Real populations numbered thousands; one band of 25 changes mostly by chance. Several
+   bands that meet and mix.
+3. **A changing world.** The climate swings and spreading grasslands of the time, from the evidence.
+4. **Traits that can evolve** with real costs and benefits instead of fixed values: brain size (already),
+   body size, hair and sweating, climbing.
+5. **Predictions written down before long runs** (for example: more predators → a larger fear centre),
+   then checked.
+
+## Rules for realism
+
+- Every number comes from the evidence, or is recorded as an assumption with the range the evidence
+  allows (`docs/ASSUMPTIONS.md`).
+- **Nothing is tuned toward an outcome.** If hominins die out with realistic numbers, something real is
+  missing: find it; do not turn the knobs.
+- Uncertain numbers are tested at both ends of their range; results that flip are reported as such.
+- Traits change only through inheritance and selection (what a body does in its life is not inherited).
+
 ## Measurement
 
 The same tools as now: `tools/experiment.js`, the Lab, `tools/analysis/*`. New things to track over long

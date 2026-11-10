@@ -33,6 +33,16 @@ That means, for example:
 - **Grow in patches.** Start simple and add realism step by step, checking after each step that the
   world still works.
 
+## Realism rules (the owner, Nov 2026)
+
+- Every number in the model comes from research, or is recorded in `docs/ASSUMPTIONS.md` as an
+  assumption with the range research allows. Do not invent mechanisms of our own.
+- **Never tune a number toward an outcome** (survival, "becoming human"). If realistic numbers fail,
+  something real is missing: find it. Test uncertain numbers at both ends of their range.
+- Traits change only through inheritance and selection, never by use or disuse in a lifetime.
+- The main scenario is early hominins, East Africa, about 2.5 million years ago (`docs/HOMININ-PLAN.md`);
+  the aim is to run down the generations and compare with the real record.
+
 ## How to work on it
 
 - After any change to the world, run `npm test` and check balance across seeded worlds (e.g.
