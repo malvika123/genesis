@@ -364,7 +364,11 @@ const HOMININ = {
   leaf: 0.64,
   // Fertility: wild chimpanzees have no menopause — fertility fades with the body's ageing, about half of
   // the females who live past 40 give birth again, the oldest known wild mother was about 55 (Emery Thompson
-  // et al. 2007). So a hominin can have young until the end of its own life (people: until about 60% of it,
-  // around 50). The gentle fall in fertility after about 35 is not modelled.
+  // et al. 2007, six populations, 534 births). Fertility does fall from 25–35 and approaches zero at about 50,
+  // but mostly through failing health (healthy females: about 20% fewer births after 35). So a hominin can
+  // have young until the end of its own life, but not past about 50 (range 45–55; people: until about 60% of
+  // life, around 50). Ill health stopping conception is partly here (a starving body does not conceive); the
+  // 20% fall after 35 is not modelled.
   fert: 1,
+  fertMax: 50 * TY,
 };

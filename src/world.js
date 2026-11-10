@@ -22,6 +22,7 @@ function reset(cfg = {}) {
   // their bodies and lives: modern people's, or early hominins' (config.js)
   Object.assign(KBIO[0], PERSON_BIO, ERA === 'hominin' ? HOMININ : {});
   if (ERA === 'hominin' && cfg.humanFertility) KBIO[0].fert = PERSON_BIO.fert; // the old rule, for comparison: fertility ends at 60% of life, as in people
+  if (ERA === 'hominin' && cfg.fertMax !== undefined) KBIO[0].fertMax = Number(cfg.fertMax) * TY; // test the ends of its range (years)
   if (ERA === 'hominin' && cfg.leafValue !== undefined) KBIO[0].leaf = Number(cfg.leafValue); // test the ends of its range
   SOC.lust = cfg.lust === undefined ? 0 : Number(cfg.lust); // inborn pull toward a ready partner (off until tested: research log)
   SOC.leaves = cfg.leaves !== false; // off: early hominins get nothing from leaves, as modern people (for comparison)

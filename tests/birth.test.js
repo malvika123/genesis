@@ -88,4 +88,14 @@ test('early hominins stay fertile for life; people stop at about 60% of theirs',
   };
   assert.strictEqual(fertileLate({}), true, 'a hominin of 40, with a life of 50, can still conceive');
   assert.strictEqual(fertileLate({ humanFertility: true }), false, 'under the old rule she could not');
+  const at = (age) => {
+    const E = createEngine();
+    E.setSeed(3);
+    E.reset({ predators: 0 });
+    const w = E.state().ag.find((a) => a.sp === 0 && a.sex);
+    Object.assign(w, { lf: 60 * E.TY, age: age * E.TY, cd: 0, e: 95, w: 95, asleep: false, preg: null });
+    E.sim();
+    return w.rd;
+  };
+  assert.strictEqual(at(53), false, 'but not past about 50, as in wild chimpanzees');
 });

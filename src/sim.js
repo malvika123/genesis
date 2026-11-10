@@ -37,7 +37,7 @@ function sim() {
       !a.preg &&
       a.e > (a.sp === 2 ? 25 : 45) &&
       a.w > 40 &&
-      a.age < a.lf * S.fert;
+      fertileAge(a);
   }
   const kids = [],
     kidsOf = (k) => kids.reduce((t, c) => t + (c.k === k), 0);
@@ -187,7 +187,7 @@ function sim() {
       ? Math.max(0, a.sl - 1 / (S.sleepH * 4))
       : Math.min(1, a.sl + (1 + 0.6 * S.circ * (night ? 1 : -1)) / ((24 - S.sleepH) * 4));
     a.lu =
-      a.age >= S.smat && a.age < a.lf * S.fert
+      a.age >= S.smat && fertileAge(a)
         ? clamp(a.lu + (a.cd === 0 && a.e > 45 ? 0.01 : -0.02), 0, 1)
         : 0;
     const bi = (a.y >> 2) * (W >> 2) + (a.x >> 2);
@@ -1264,6 +1264,10 @@ function fireMade(a, how) {
 // What exactly it learns is left to its own brain.
 // which hunters can climb a tree after a sleeper: big cats (leopards do) and bears; wolves cannot
 const climbs = (a) => a.sp === 2 && a.S.n !== 'Wolf';
+// Still of an age to have young: until fert of its own life (people: about 60%, around 50), and for kinds
+// with a fixed upper limit (early hominins, as chimpanzees: fertility approaches zero at about 50; Emery
+// Thompson et al. 2007) not beyond it.
+const fertileAge = (a) => a.age < Math.min(a.lf * a.S.fert, a.S.fertMax ?? Infinity);
 // Can this creature eat leaves here? Early hominins (S.leaf, config.js), where the trees are thick enough
 // to browse, as plant-eaters do.
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];

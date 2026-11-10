@@ -4,7 +4,8 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
-- **Early hominins fertile for life**, as wild chimpanzees are (no menopause: Emery Thompson et al. 2007). They had
+- **Early hominins fertile for life, up to about 50**, as wild chimpanzees are (no menopause; fertility approaches
+  zero at about 50: Emery Thompson et al. 2007; `--fert-max` sets the limit). They had
   kept modern people's rule — fertility ending at 60% of life — which, with their shorter lives, ended it at
   16–36 years (mean 26): a scaling error found while tracing why half the women never had a baby.
   `--human-fertility` restores the old rule for comparison.
