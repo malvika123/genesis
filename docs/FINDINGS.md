@@ -369,6 +369,35 @@ individual risk. **Lesson:** what kills is being alone, not being asleep; the pr
 from predators lay in staying with others. The next test should be about isolation (alarm calls that
 bring others close, groups that deter a predator), not about sleeping sites.
 
+### 13. Shelters as a possibility — Nov 2026
+
+**Version.** Unreleased (after 0.7.0) · the change: commit `47a6ebe`, `9662925` (the `--no-shelter` switch).
+
+**Data.** Raw tables: [shelters possible](../data/findings/13-shelters/shelters-possible.csv) · [no shelters](../data/findings/13-shelters/no-shelters.csv). Re-run: [in the Lab](https://malvika123.github.io/genesis/lab.html?seeds=1-12&days=60&A.earth=0&B.earth=0&B.shelter=0) or `node tools/experiment.js --seeds 1-12 --days 60 --no-shelter`.
+
+**Added.** Only the possibility, never the knowledge: branches can now be heaped in one place (up to 16, where
+no more than 4 ever fall naturally), and a heap of more than four is cover — against wind and rain, and from
+being seen — growing to as much as a cave's at twelve or more. A heap settles and rots faster than branches
+lying about, so a shelter needs keeping up. Nothing tells anyone to carry branches or to build; the existing
+inborn pull of a tired person toward cover would draw people to a shelter someone made, as it draws them
+to a cave. The first time anyone sleeps in a heap is recorded as a discovery (`day_shelter`), like fire.
+
+**Real-world basis.** Building a shelter is learned, not inborn: even chimpanzees, who build a nest every
+night, learn to build well over years by practice and watching (captive chimpanzees raised without others
+build poorly); human shelters — windbreaks, brush and grass huts — are culture. Choosing a sheltered
+place to sleep is closer to instinct (Anderson 1998).
+
+**Test.** 12 worlds × 60 days, seeds 1–12, made-up planet, with and without the possibility (the same
+starting world each seed).
+
+**Result.** **Nobody built a shelter in any world**, and the worlds were identical with and without the
+possibility, to the last death (24.7 people alive; hunger 138, predators 100). So it changes nothing until
+someone discovers it, and its cost to anyone who never does is nil.
+
+**Strength.** None (no effect, as expected in 60 days). **Lesson:** a possibility that pays off only later
+— carry now, sleep warm days afterwards — is hard for a young learning brain to find; whether anyone ever
+does over many generations is a question for long runs.
+
 ---
 
 ## Open questions (next tests)
@@ -382,7 +411,7 @@ bring others close, groups that deter a predator), not about sleeping sites.
   temperature that carries it? Does fleeing wildfire realistically stop the fire deaths?
 - On the real Earth: what do ice sheets, the colder climate and monsoons change?
 - Do animal calls reduce predator deaths with 24+ worlds?
-- Over 300+ days and many generations, do voice control, pointing and the brain's word area evolve?
+- Over 300+ days and many generations, does anyone discover shelters or fire-making? Do voice control, pointing and the brain's word area evolve?
 
 ## Adding an entry
 

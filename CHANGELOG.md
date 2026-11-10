@@ -4,6 +4,13 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Shelters as a possibility.** Branches can be heaped in one place, and a heap is cover against wind and
+  rain (and from being seen), drawn on the globe as a brush shelter; it rots unless kept up. Nothing tells
+  anyone to build; the first shelter slept in is a tracked discovery. `--no-shelter` turns it off.
+  (Research log entry 13: nobody built one in 12 worlds × 60 days; no side effects.)
+- **Analysis tools:** `tools/analysis/predators.js` and `compare-predators.js` (predator deaths per 1,000
+  person-days by age, encounters, who the victims were; research log entry 12). `--no-care` switch.
+
 - On the globe, people and animals in water are in it, not standing on it: thigh-deep in the shallows,
   only the head out when swimming in deep water.
 
