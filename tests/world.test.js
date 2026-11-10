@@ -239,33 +239,37 @@ test('with --africa-animals, early hominins share their world with antelopes, hy
   if (hyena) assert.ok(!hyena.S.climb && hyena.S.allBreed, 'hyenas do not climb, and every female breeds');
 });
 
-// Flight as primates do: afraid, with a hunter in sight, a hominin under a big tree climbs it (vervets, baboons,
-// chimpanzees); a calm one, or one under the old rule, does not.
-test('an afraid hominin climbs a tree to get away from a hunter in sight', () => {
-  const climbs = (fear, cfg) => {
+// Flight as primates do: afraid, with a hunter in sight, a hominin under a big tree feels a pull to climb it (vervets,
+// baboons, chimpanzees). Climbing is its own choice, so not every one climbs every time; but with the pull they climb
+// more often than without it.
+test('afraid hominins with a hunter in sight climb trees more often with the inborn pull than without', () => {
+  const upRate = (seed, cfg) => {
     const E = createEngine();
-    E.setSeed(7);
+    E.setSeed(seed);
     E.reset(Object.assign({}, cfg));
     const st = E.state(),
-      h = st.ag.find((a) => a.sp === 0 && a.age >= a.S.mat),
+      hs = st.ag.filter((a) => a.sp === 0 && a.age >= a.S.mat).slice(0, 8),
       c = st.ag.find((a) => a.sp === 2);
-    if (!h || !c) return null;
-    for (const o of st.ag) if (o !== h && o !== c && o.sp === 2) o.y = (o.y + 30) % E.H;
-    const i = E.idx(h.x, h.y);
-    E.forest().tree[i] = 0.8;
-    Object.assign(h, { asleep: false, sl: 0, e: 90, w: 90, fear, up: false });
-    let up = false;
-    for (let t = 0; t < 3; t++) {
-      Object.assign(c, { x: (h.x + 1) % E.W, y: h.y, asleep: false, e: 100 }); // close enough to sense whichever way it faces
-      Object.assign(h, { fear, sl: 0, asleep: false });
-      E.forest().tree[E.idx(h.x, h.y)] = 0.8;
-      E.sim();
-      if (h.up && !h.asleep) up = true;
+    let n = 0,
+      k = 0;
+    for (const h of hs) {
+      h.up = false;
+      for (let t = 0; t < 10; t++) {
+        Object.assign(h, { fear: 0.8, sl: 0, asleep: false, e: 90, w: 90 });
+        E.forest().tree[E.idx(h.x, h.y)] = 0.8;
+        Object.assign(c, { x: (h.x + 1) % E.W, y: h.y, asleep: false, e: 100 }); // close enough to sense
+        E.sim();
+        n++;
+        if (h.up) k++;
+      }
     }
-    return up;
+    return k / n;
   };
-  const afraid = climbs(0.8, {});
-  if (afraid === null) return; // no hunter in this world
-  assert.strictEqual(afraid, true, 'afraid, it went up the tree');
-  assert.strictEqual(climbs(0.8, { oldFlight: true }), false, 'under the old rule it did not');
+  let pull = 0,
+    none = 0;
+  for (const seed of [3, 5, 7, 9]) {
+    pull += upRate(seed, {});
+    none += upRate(seed, { oldFlight: true });
+  }
+  assert.ok(pull > none, 'up a tree with the pull ' + (pull / 4).toFixed(2) + ' of the time, without ' + (none / 4).toFixed(2));
 });

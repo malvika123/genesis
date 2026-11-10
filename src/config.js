@@ -37,7 +37,7 @@ const NCH = 16, // per direction: water, food, danger, herbivore, person, predat
   SEEPT = ACALL + 3 * NAC, // seeing others: someone close pointing (how clearly, which way), and where they are looking
   NI = SEEPT + 5, // IB + 18 cold; IB + 19 … 24 its hands and feet; IB + 25 heat; IB + 26 anger; memory; hearing
   NH = 64, // the most thinking units any brain can grow (see each kind's hmax)
-  NA = 18, // what the body does
+  NA = 19, // what the body does
   NV = 43, // (34 for the voice, then 9 for pointing: not at all, or one of the eight ways)
   // and, at the same time, what the voice does: silent, cry, scream or speak, and how the mouth moves (voice.js)
   O3 = 0, // where the direct senses → choices connections start in a brain's array
@@ -52,6 +52,7 @@ const A_STAY = 8,
   A_TAKE = 15, // pick up a stone or stick from the ground
   A_DROP = 16, // put what is in the hand down
   A_STRIKE = 17, // hit something with what is in the hand
+  A_CLIMB = 18, // climb a tree (or, up one, climb down): early hominins only
   GAM = 0.97,
   LAM = 0.8,
   AP = 0.01,

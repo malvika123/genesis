@@ -22,7 +22,7 @@ return {
   fire: () => ({ FIRE, SMOL, BURNT, COOK, fireStats, BURNING, dryness, fuelOf, ignite, pyrite }),
   alt: () => alt,
   social: () => ({ ouch, watchOthers, imitate, imitateVoice }),
-  sense, SP, DAY, TY, IB, HB, NCH, A_STAY, A_EAT, A_SLEEP, A_GIVE, A_TAKE, A_DROP, A_STRIKE, NSAY, NV, HEAR, SPEECH, VG, SEEPT, O3, NI,
+  sense, SP, DAY, TY, IB, HB, NCH, A_STAY, A_EAT, A_SLEEP, A_GIVE, A_TAKE, A_DROP, A_STRIKE, A_CLIMB, NSAY, NV, HEAR, SPEECH, VG, SEEPT, O3, NI,
 };`;
 
   // Returns a fresh, independent world: every call gets its own copy of all engine state.

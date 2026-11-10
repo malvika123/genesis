@@ -184,6 +184,7 @@ function plainAct(a, k) {
     'picks something up',
     'puts it down',
     'strikes with what it holds',
+    a.up ? 'climbs down' : 'climbs a tree',
   ][k - 8];
 }
 function joinReasons(r) {

@@ -55,9 +55,9 @@ test('no person is born before a whole pregnancy has passed, and the log never s
 // An inborn pull toward a ready partner (Wallen 2001): with it, ready adults beside each other conceive
 // sooner than when mating must be found by chance and learned.
 test('ready adults are drawn to mate: conception comes sooner with the inborn pull', () => {
-  const wait = (lust) => {
+  const wait = (lust, seed) => {
     const E = createEngine();
-    E.setSeed(6);
+    E.setSeed(seed);
     E.reset({ predators: 0, people: 60, lust });
     const ad = E.state().ag.filter((a) => a.sp === 0 && a.age >= a.S.smat && a.age < a.lf * a.S.fert),
       women = ad.filter((a) => a.sex),
@@ -69,8 +69,13 @@ test('ready adults are drawn to mate: conception comes sooner with the inborn pu
     }
     return women.reduce((s, w) => s + (when.has(w) ? when.get(w) : E.DAY), 0) / women.length;
   };
-  const without = wait(0),
-    withPull = wait(3);
+  // averaged over several bands: one band's few women are too few to show it reliably
+  let without = 0,
+    withPull = 0;
+  for (const seed of [5, 6, 7, 8]) {
+    without += wait(0, seed) / 4;
+    withPull += wait(3, seed) / 4;
+  }
   assert.ok(withPull < without, 'steps to conception with the pull ' + withPull.toFixed(1) + ', without ' + without.toFixed(1));
 });
 

@@ -4,6 +4,10 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Climbing is a choice, not automatic.** Early hominins have a new action, *climb a tree* (or, up one, *climb
+  down*), which their brains choose and learn like eating; sleepiness under a big tree and fear of a hunter in sight
+  pull toward it, so individuals differ, as real apes do. Only a baby clinging to its mother is automatic (the grasp
+  reflex). (Adding an action changes every brain, so worlds before and after are not the same world.)
 - **Afraid hominins climb away from hunters.** With a hunter in sight, a frightened hominin makes for trees or cover
   and climbs a big enough tree, staying up while the hunter is about, as monkeys and apes do; hyenas cannot follow,
   leopards and sabre-tooths rarely succeed. Not faster running: australopiths ran at a small fraction of a

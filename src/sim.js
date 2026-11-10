@@ -264,9 +264,10 @@ function sim() {
     RFV.fill(0);
     // only people have hands
     if (a.sp !== 0) {
-      RF[A_TAKE] = RF[A_DROP] = RF[A_STRIKE] = -40;
+      RF[A_TAKE] = RF[A_DROP] = RF[A_STRIKE] = RF[A_CLIMB] = -40;
       RFV[0] = 40; // only people have a voice here
     } else if (!a.asleep) {
+      if (ERA !== 'hominin' || !SOC.trees || (!a.up && tree[idx(a.x, a.y)] < 0.4)) RF[A_CLIMB] = -40; // nothing to climb (or not a climber)
       // Two calls are inborn in every human: a baby cries when hungry, hurt or cold, and anyone
       // screams when badly hurt — while still running, since the voice is its own. And a parent is
       // drawn toward the cry of its own young child.
@@ -324,6 +325,8 @@ function sim() {
             0.8 * chill * x[s * NCH + own] -
             1.5 * x[s * NCH + 2]);
       const here = idx(a.x, a.y);
+      // apes settle for the night up a tree: under a big one, a pull to climb it first
+      if (a.sp === 0 && ERA === 'hominin' && SOC.trees && !a.up && tree[here] >= 0.4) RF[A_CLIMB] += 2 * k;
       let safe = cover(here) > 0.4 ? 1 : 0;
       for (let s = 0; s < 8 && !safe; s++) if (x[s * NCH + 7] > 0.6 || x[s * NCH + own] > 0.6) safe = 1;
       RF[A_SLEEP] += safe ? 2 * k : 0;
@@ -358,7 +361,11 @@ function sim() {
       if (SOC.flight && a.fear > 0.25) {
         let pmax = 0;
         for (let s = 0; s < 8; s++) pmax = Math.max(pmax, x[s * NCH + 5]);
-        if (pmax > 0.1) for (let s = 0; s < 8; s++) RF[s] += wary * pmax * x[s * NCH + 12];
+        if (pmax > 0.1) {
+          for (let s = 0; s < 8; s++) RF[s] += wary * pmax * x[s * NCH + 12];
+          // under a big tree, a pull to climb it; up one, a pull to stay (the brain may still choose otherwise)
+          if (ERA === 'hominin' && SOC.trees) RF[A_CLIMB] += (a.up ? -1 : 1) * wary * pmax * (a.up || tree[idx(a.x, a.y)] >= 0.4 ? 1 : 0);
+        }
       }
       // and a grown person with food in its belly is moved to feed a hungry child close by: its own young
       // most, then its family's, and any child of the band only as far as its care for others' young reaches
@@ -657,34 +664,30 @@ function sim() {
     const sleepy = a.sl;
     const wasAsleep = a.asleep;
     a.asleep = act === A_SLEEP;
-    // Early hominins sleep up in the trees, as every great ape does (and as their arms and fingers, still
-    // built for climbing, suggest): settling down to sleep where a tree is big enough, the body climbs into it.
-    // A small child goes up with its mother. Up there, hunters that cannot climb (wolves) cannot reach a
-    // sleeper; those that can (big cats, bears) find it much harder. Waking, it climbs down. Now and then a
-    // sleeper falls (falls are a real danger for apes; one may have killed "Lucy": Kappelman et al. 2016).
+    // Early hominins can climb, as their arms and fingers, still built for it, suggest; all great apes sleep up in
+    // trees. Climbing is a choice the brain makes, like eating: sleepiness under a big tree and fear of a hunter in
+    // sight pull toward it (below), but each one decides, and learns what it is worth. Only a baby's clinging to its
+    // mother is automatic (the grasp reflex). Up there, hunters that cannot climb (hyenas, wolves) cannot reach it;
+    // those that can find it much harder. To go anywhere it climbs down. Now and then a sleeper falls (falls are a
+    // real danger for apes; one may have killed "Lucy": Kappelman et al. 2016).
     if (a.sp === 0 && ERA === 'hominin' && SOC.trees) {
       const here = idx(a.x, a.y);
-      if (a.asleep && !wasAsleep && !a.up) {
-        const climber = !baby || (a.mom && a.mom.up && a.mom.x === a.x && a.mom.y === a.y);
-        if (climber && tree[here] >= 0.4) {
+      if (baby) a.up = !!(a.mom && a.mom.up && a.mom.x === a.x && a.mom.y === a.y && tree[here] >= 0.4);
+      else if (act === A_CLIMB) {
+        if (!a.up && tree[here] >= 0.4) {
           a.up = true;
-          if (!baby) a.e -= 0.2; // climbing is work
+          a.e -= 0.2; // climbing is work
           if (!firsts.tree) {
             firsts.tree = 1;
-            log(a.name + ' climbed a tree to sleep, as apes do.');
+            log(a.name + ' climbed a tree.');
           }
-        }
-      } else if (!a.asleep && SOC.flight && tree[here] >= 0.4 && (a.up || !baby || (a.mom && a.mom.up && a.mom.x === a.x && a.mom.y === a.y)) && (a.up || a.fear > 0.25) && hunterSeen(x)) {
-        // afraid, with a hunter in sight: up the tree, and stay there while it is about
-        if (!a.up) {
-          a.up = true;
-          if (!baby) a.e -= 0.2;
-          if (!firsts.treeflee) {
+          if (hunterSeen(x) && !firsts.treeflee) {
             firsts.treeflee = 1;
-            log(a.name + ' climbed a tree to get away from a hunter.');
+            log(a.name + ' climbed a tree with a hunter in sight.');
           }
-        }
-      } else if (!a.asleep && a.up) a.up = false;
+        } else if (a.up) a.up = false;
+      } else if (a.up && act < 8) a.up = false; // it climbs down to go anywhere
+      if (a.up && tree[here] < 0.4) a.up = false;
       if (a.up && a.asleep && rnd() < 0.00005) {
         a.up = false;
         a.asleep = false;

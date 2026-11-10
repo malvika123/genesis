@@ -69,6 +69,7 @@ function actName(a, k) {
     'pick up',
     'put down',
     'strike',
+    a.up ? 'climb down' : 'climb a tree',
   ][k - 8];
 }
 for (let j = 0; j < NM; j++) INNER[27 + j] = 'what it was just thinking';
