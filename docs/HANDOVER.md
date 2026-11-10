@@ -26,6 +26,7 @@ and `docs/MODEL.md` for the formal model description (ODD protocol).
 - Land: the real Earth about 70,000 years ago (ETOPO1 relief, sea 80 m lower; the page's default) or a
   seeded made-up planet (the engine's and experiment runner's default). The first band starts where our
   species lived (warm tropical land near fresh water; in Africa on the real Earth).
+- **Next direction (owner, 10 Nov 2026):** Genesis becomes early hominins in East Africa ~2.5 million years ago; see `docs/HOMININ-PLAN.md`.
 - The research log `docs/FINDINGS.md` records every survival test, including null and negative results,
   with its raw data in `data/findings/`; the Research page (`research.html`) is built from it and from
   `CHANGELOG.md`. Analysis scripts: `tools/analysis/predators.js` (predator deaths per 1,000 person-days
