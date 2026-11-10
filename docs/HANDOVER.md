@@ -11,11 +11,15 @@ and `docs/MODEL.md` for the formal model description (ODD protocol).
   life history (`docs/ASSUMPTIONS.md`), sleeping in trees (`--no-trees`) — and their tests (entries 16–17:
   the hominin world still works, 14.5 alive against 25.5 for modern humans, with old age now a main cause of
   death; tree-sleeping made no measurable difference).
-- **Patch 5 (diet), in progress:** early hominins can live on young leaves when fruit is short (0.64 of ripe
-  fruit's food a minute, range 0.48–0.64, Kibale chimpanzees; `--no-leaves`, `--leaf-value`). Next: test it
-  paired against `--no-leaves`, and at both ends of the range (`--leaf-value 0.48`), 12 worlds × 60 days,
-  `--workers 8`; log as entry 18. Still missing from the diet: sedges and other C4 foods (early Homo about
-  35% C4), insects; the older food values (fruit, roots, nuts, meat) are not yet audited.
+- **Patch 5 (diet), first part, on `percept` (not merged):** early hominins can live on young leaves when fruit
+  is short (0.64 of ripe fruit's food a minute, range 0.48–0.64; `--no-leaves`, `--leaf-value`). Entry 18: no
+  clear effect in 12 worlds; fire deaths rose (17 → 44–50) in bursts of one wildfire catching a band, and the
+  obvious explanation (more time in the woods) was traced and is wrong. Before merging: 12 more worlds (seeds
+  13–24) to see whether the fire rise is real. Still missing from the diet: sedges and other C4 foods (early
+  Homo about 35% C4), insects; the older food values are not yet audited.
+- Known gap that entry 18 points at: hominins react only to fire beside them; real savanna chimpanzees watch a
+  wildfire and move ahead of it (Pruetz & LaDuke 2010). Check the evidence before adding anything.
+- Run experiments gently on the owner's laptop: `--workers 4` under `nice -n 19` (8 workers overheat it).
 - Then patch 6 (predators and animals of the time). Work on one branch (`percept`), one behaviour change at
   a time; never tune toward an outcome.
 - A 12-world × 60-day set takes about 13 minutes (hominins) to 25 minutes (modern humans) with 8 workers;

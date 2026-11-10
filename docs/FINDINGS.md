@@ -536,6 +536,49 @@ kills them. Tree-sleeping stays because the evidence supports it, not because it
 **Lesson:** a realistic behaviour can be right without mattering in the model; what kills here is
 straying alone by day.
 
+### 18. Leaves as a fallback food — Nov 2026
+
+**Version.** Unreleased (after 0.7.0) · the change and the test: commit `70199ff` (`--no-leaves`, `--leaf-value`). Run by Claude.
+
+**Data.** Raw tables: [no leaves](../data/findings/18-leaves/no-leaves.csv) · [leaves 0.64](../data/findings/18-leaves/leaves-0.64.csv) · [leaves 0.48](../data/findings/18-leaves/leaves-0.48.csv) · [the comparison](../data/findings/18-leaves/comparison.txt) · [fire-death trace](../data/findings/18-leaves/fire-trace.jsonl). Re-run: `node tools/experiment.js --seeds 1-12 --days 60 --workers 4 --out leaves.csv` (with `--no-leaves`, `--leaf-value 0.48`); trace: `node tools/analysis/fire-trace.js 11 leaves`.
+
+**Added.** Early hominins can eat young leaves where tree cover is above 0.3, when there is no fruit, roots or
+meat to eat; leaves give 0.64 of ripe fruit's food a minute. Modern people get nothing from them.
+
+**Real-world basis.** Chimpanzees spend about a fifth of their feeding time on leaves and lean on them when
+fruit is scarce (Budongo 19.7%; Ngogo: Watts et al. 2012); at Kibale young leaves gave 7.8 kcal a minute against
+12.2 for ripe fruit (4.7 against 9.7 if fibre is not fermented: Uwimbabazi et al. 2016), hence 0.48–0.64.
+
+**Test.** 12 worlds × 60 days, seeds 1–12, made-up planet, the same starting worlds without leaves and at both
+ends of the range. The run without leaves reproduced entry 17's tree-sleeping run exactly, row for row.
+
+| | People alive | Worlds died out | Hunger | Predators | Burned | Drowned |
+|---|---|---|---|---|---|---|
+| No leaves | 16.2 ± 10.6 | 1 | 97 | 75 | 17 | 24 |
+| Leaves 0.48 | 12.2 ± 8.6 | 2 | 88 | 52 | 44 | 47 |
+| Leaves 0.64 | 14.1 ± 9.8 | 0 | 73 | 61 | 50 | 20 |
+
+**Result.** **No clear effect.** Hunger deaths fell somewhat at 0.64 (lower in 8 of 12 worlds) and predator
+deaths at both values, but every difference's range includes zero; survival did not rise (at 0.48 it was lower
+in 8 of 12 worlds, range −8.3 to +0.3). Deaths by fire rose at both values, from 17 to 44–50.
+
+**Tracing the fire deaths** (seeds 9 and 11, with and without leaves): the guess that eating leaves keeps
+hominins in the woods, where wildfires burn, was **wrong** — with leaves they spent *less* time under trees
+(57% against 63%; 37% against 43%), ate leaves in under 1% of their time, and none of the 32 victims was
+eating leaves when it died. The deaths came in bursts: one wildfire catching a band (17 deaths on days 6–7 in
+seed 11). In seed 9, six of the fifteen victims were striking with something in the hand as they died — not
+yet understood.
+
+**Interpretation.** Hominins hardly use leaves when other food is about, so the change is small; but any
+change in behaviour makes a world play out differently, and whole-band deaths in one wildfire are rare, large
+events — 12 worlds cannot tell whether the rise in fire deaths is real. The deeper issue is the one already
+known: hominins only react to fire beside them, while real savanna chimpanzees watch a wildfire and move
+calmly ahead of it (Pruetz & LaDuke 2010, Fongoli). Leaves stay, because the evidence supports them.
+
+**Strength.** None for survival and hunger (12 worlds); weak for the rise in fire deaths (heavy-tailed, could be
+chance). **Lesson:** a cause that sounds right (leaves → woods → fire) has to be traced; and rare mass deaths
+need more worlds than 12.
+
 ---
 
 ## Open questions (next tests)
@@ -543,6 +586,8 @@ straying alone by day.
 - Ablate the bundle in entry 7: which of band size, parental feeding, instincts, one-shot memory and
   swimming carry the effect?
 - Hunger: does the fall in hunger deaths with cooperative care (entry 11) hold with 24+ worlds?
+- Fire: are the extra fire deaths with leaves (entry 18) real, with 24+ worlds? How do real apes respond to a
+  wildfire (Pruetz & LaDuke 2010), and does the model lack it? Why were six victims in seed 9 striking as they died?
 - Why do predators take children less often than chance (entry 14), if not because of the old protection
   (entry 15)? Is it children staying close to grown people?
 - Predators kill the isolated (entries 12, 14): do alarm calls that draw others close, or groups that deter a
