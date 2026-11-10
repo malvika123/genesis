@@ -478,6 +478,50 @@ const G3D = { ok: false };
     IS = new THREE.Vector3(),
     IP = new THREE.Vector3(),
     IUP = new THREE.Vector3(0, 1, 0);
+  // The dead lie where they fell, as real objects on the ground (so trees and hills hide them; they were
+  // painted on top of the picture and seemed to float on the treetops): a body the colour of its kind,
+  // fading to pale bone as it decays. Drawn 2.5 times life size, like the living.
+  const MAXB = 420,
+    bodyG = new THREE.SphereGeometry(1, 10, 6),
+    bodiesI = new THREE.InstancedMesh(bodyG, new THREE.MeshLambertMaterial({ color: 0xffffff }), MAXB),
+    BODYCOL = ['#7a5a45', '#8a6a46', '#6f6a62'],
+    BONE = new THREE.Color('#d9d4c4'),
+    BC = new THREE.Color();
+  bodiesI.count = 0;
+  bodiesI.frustumCulled = false;
+  bodiesI.instanceColor = new THREE.InstancedBufferAttribute(new Float32Array(MAXB * 3), 3);
+  globe.add(bodiesI);
+  let bodiesFrame = 0;
+  function layBodies() {
+    let n = 0;
+    for (const b of BODIES) {
+      if (n >= MAXB) break;
+      const bones = clamp((tick - b.t - 3 * 96) / (BODY_BONES - 3 * 96), 0, 1),
+        // a little way from the middle of its square, the same each time
+        hx = ((b.t * 7919 + b.x * 104729) % 1000) / 1000,
+        hy = ((b.t * 6271 + b.y * 15485863) % 1000) / 1000,
+        gx = b.x + 0.5 + (hx - 0.5) * 0.6,
+        gy = b.y + 0.5 + (hy - 0.5) * 0.6,
+        lo = (gx / W) * 2 * Math.PI - Math.PI,
+        la = LATMAX * (1 - (2 * gy) / H),
+        len = (b.sp === 0 ? 0.0024 : 0.0026 * (0.7 + 0.3 * (b.size || 1))) * 2.5 * (1 - 0.35 * bones),
+        r = 1 + EX * Math.max(0, heightAt(la, lo)) + len * 0.12;
+      IP.copy(local(la, lo, r));
+      IQ.setFromUnitVectors(IUP, IP.clone().normalize());
+      IQ2.setFromAxisAngle(IUP, hx * Math.PI * 2);
+      IQ.multiply(IQ2);
+      IS.set(len, len * 0.28 * (1 - 0.5 * bones), len * 0.42);
+      IM.compose(IP, IQ, IS);
+      bodiesI.setMatrixAt(n, IM);
+      BC.set(BODYCOL[b.sp] || '#777').lerp(BONE, bones);
+      bodiesI.setColorAt(n, BC);
+      n++;
+    }
+    bodiesI.count = n;
+    G3D.bodiesShown = n; // (for checks)
+    bodiesI.instanceMatrix.needsUpdate = true;
+    bodiesI.instanceColor.needsUpdate = true;
+  }
   let itemsFrame = 0;
   function plantItems() {
     const k = 2.5,
@@ -975,6 +1019,8 @@ const G3D = { ok: false };
     stonesI.visible = flakesI.visible = pyriteI.visible = sticksI.visible = nutsI.visible = itemsOn;
     hutsI.visible = GL.zoom >= 3 || !!GL.eye;
     if (!itemsOn && hutsI.visible && itemsFrame++ % 30 === 0) plantItems();
+    bodiesI.visible = GL.zoom >= 2 || !!GL.eye;
+    if (bodiesI.visible && bodiesFrame++ % 20 === 0) layBodies();
     if (itemsOn && itemsFrame++ % 30 === 0) plantItems();
     if (frame++ % 12 === 0) paint(v);
     spinStep();
@@ -1045,6 +1091,9 @@ const G3D = { ok: false };
     figures(close, v);
     if (!close)
       for (const a of ag) {
+        // fish live under water: from far off nobody can see them, so they get no marker (they were drawn
+        // side-on over the land, looking like fish in the air); close up they show in the water itself
+        if (a.sp === 3) continue;
         const P = project(a.rx, a.ry);
         if (!P) continue;
         const ks = clamp((P[2] / C) * 0.9, 0.25, 9);
@@ -1055,7 +1104,7 @@ const G3D = { ok: false };
     if (GL.zoom >= 2.5 || GL.eye) drawCarrion(cx, project);
     if (GL.zoom >= 2.5 || GL.eye) drawSounds(cx, project);
     drawTrails(cx, project);
-    if (GL.zoom >= 2 || GL.eye) drawBodies(cx, project); // the dead lie where they fell, seen from fairly far
+    // (the dead are 3D objects on the ground now: layBodies)
     drawTalk(
       cx,
       (a) => {

@@ -20,6 +20,17 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 - **A mother who loses a nursing baby can conceive again within months** (74 days; nursing stops, and with it the
   hold on ovulation: Jackson & Glasier 2011), instead of waiting the full four years. `--no-loss-resume` restores
   the old rule.
+
+- *What's happening* has two tabs: **All**, and **Hominins** (People in the Homo sapiens world) — only the
+  news about them: any entry that names one of them or speaks of them, the newest eight.
+
+- On the globe the dead are real objects lying on the ground — the colour of their kind, fading to pale bone
+  as they decay — so trees and hills hide them (they were painted on top of the picture and seemed to float
+  on the treetops, with their ribs looking like fish).
+
+- On the globe from a distance, fish are no longer drawn as markers over the land (they looked like fish in
+  the air); fish live under water and show only close up, in the water.
+
 - **Early hominins fertile for life, up to about 50**, as wild chimpanzees are (no menopause; fertility approaches
   zero at about 50: Emery Thompson et al. 2007; `--fert-max` sets the limit). They had
   kept modern people's rule — fertility ending at 60% of life — which, with their shorter lives, ended it at

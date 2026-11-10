@@ -555,6 +555,26 @@
         color: var(--acc);
         margin-left: 4px;
       }
+      .ftabs {
+        display: inline-flex;
+        gap: 2px;
+        margin-left: auto;
+        margin-right: 4px;
+      }
+      .ftabs button {
+        font: inherit;
+        font-size: 0.75rem;
+        border: 0;
+        border-radius: 6px;
+        padding: 2px 8px;
+        background: transparent;
+        color: var(--mute);
+        cursor: pointer;
+      }
+      .ftabs button[aria-selected='true'] {
+        background: var(--acc);
+        color: var(--bg);
+      }
       #fmin {
         font: inherit;
         line-height: 1;
@@ -752,6 +772,10 @@
       <div id="feed" aria-live="polite">
         <div class="fh">
           <span>What's happening <b id="fnew" hidden></b></span>
+          <span class="ftabs" role="tablist" aria-label="Whose news">
+            <button role="tab" data-ft="all" aria-selected="true">All</button
+            ><button role="tab" data-ft="hom" aria-selected="false" id="fthom">Hominins</button>
+          </span>
           <button id="fmin" aria-expanded="true" title="Minimise" aria-label="Minimise what's happening">−</button>
         </div>
         <ul id="log"></ul>

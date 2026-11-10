@@ -2549,6 +2549,34 @@ function setFeedMin(v) {
 }
 $('fmin').onclick = () => setFeedMin(!feedMin);
 setFeedMin(feedMin);
+// The news can be all of it, or only what concerns the hominins (or people): an entry about them names one
+// of them, or speaks of them.
+const FEED = { tab: 'all', names: new Set(), logs: [], fresh: 0 };
+function aboutUs(t) {
+  if (/\b(hominins?|people|person|Hominins?|People|Person)\b/.test(t)) return true;
+  for (const n of FEED.names) if (n && t.includes(n)) return true;
+  return false;
+}
+function drawFeed() {
+  let rows;
+  if (FEED.tab === 'hom') {
+    for (const a of ag) if (a.sp === 0 && a.name) FEED.names.add(a.name);
+    rows = [];
+    for (let i = events.length - 1; i >= 0 && rows.length < 8; i--)
+      if (aboutUs(events[i].s)) rows.push('Day ' + (Math.floor(events[i].t / DAY) + 1) + ': ' + events[i].s);
+    if (!rows.length) rows = ['Nothing yet about the ' + word('people') + '.'];
+  } else rows = FEED.logs;
+  $('log').innerHTML = rows.map((l, i) => '<li' + (FEED.tab === 'all' && i < FEED.fresh ? ' class="new"' : '') + '>' + word(l) + '</li>').join('');
+}
+document.querySelectorAll('[data-ft]').forEach(
+  (b) =>
+    (b.onclick = () => {
+      FEED.tab = b.dataset.ft;
+      document.querySelectorAll('[data-ft]').forEach((x) => x.setAttribute('aria-selected', x === b));
+      if (feedMin) setFeedMin(false);
+      drawFeed();
+    })
+);
 function onLog(logs) {
   let fresh = logs.indexOf(feedTop);
   if (fresh < 0) fresh = feedTop === null ? 0 : logs.length;
@@ -2558,7 +2586,10 @@ function onLog(logs) {
     $('fnew').hidden = false;
     $('fnew').textContent = '· ' + feedMissed + ' new';
   }
-  $('log').innerHTML = logs.map((l, i) => '<li' + (i < fresh ? ' class="new"' : '') + '>' + word(l) + '</li>').join('');
+  FEED.logs = logs;
+  FEED.fresh = fresh;
+  $('fthom').textContent = word('People');
+  drawFeed();
 }
 function onExtinct() {
   running = false;
