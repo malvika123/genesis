@@ -50,6 +50,26 @@ older parts of the model are still to be audited the same way.
 | A heap of branches as cover | (branches − 4) / 8, at most 0.8 | Brush shelters and windbreaks keep off wind and rain | **assumption** |
 | Branches in a heap rot | 1 in 3,300 a step per branch | — | **assumption** |
 
+## Audit of the older numbers for people and hominins (11 November 2026)
+
+The per-kind numbers in `SP[0]` (`src/config.js`) and the main food rules (`src/sim.js`), checked for leftovers from
+modern people that should have changed with the hominins, and for numbers without a source. Changed after this audit:
+fertility (entry 19), grass seen as food, food needed for body size, the next birth after a lost baby (entries 20–23).
+
+| Setting | Value | Finding | Status |
+|---|---|---|---|
+| Field of view, colour vision | 200°, three cone types | Human visual field about 200°; catarrhine primates are trichromatic | sourced |
+| Twins | 2% of births | Human twinning about 1–2%; twins rare in chimpanzees too | direction |
+| Sleep | 8 hours | Captive chimpanzees about 8 h; wild ones spend about 12 h in the nest (not all asleep); Samson & Nunn 2015 predict about 9.5 h for a primate of our size and argue short human sleep came after leaving the trees. Mixed evidence; 8 h is inside it | **assumption** (range 8–10), unchanged |
+| Energy and water use | 7 and 4 (% of store a day, before the body-size rule) | No research number in these units; humans burn more than apes of the same size (Pontzer et al. 2016) | **assumption** |
+| Food per bite: fruit 70, roots 80, meat 110, cooked 120, nuts 110 (× bite size) | — | Relative values are plausible in order (cooked and meat richest), but not from measured intake rates; Kibale chimpanzees: ripe fruit 12.2 kcal a minute (Uwimbabazi et al. 2016) is the only rate used so far (for leaves) | **assumption**: to source from intake-rate studies |
+| Digging roots: chance a step 0.15 bare-handed, 0.55 with a stick | — | Hadza dig with sticks; no measured rate | **assumption** |
+| Walking and running | both 0.15 | People and apes run several times faster than they walk in short bursts; equal values mean a hominin cannot outrun anything — possibly deliberate, undocumented | **assumption**, to check |
+| Fleeing a hunter (inborn) | 0.8 | Fear of big predators is inborn in primates; strength not measured | direction; strength **assumption** |
+| Night vision | 0.4 (big cats 1.3) | Primates see poorly in the dark compared with cats | direction |
+| Most of a kind the world can hold | 120 people | A fixed cap stops mating when reached; real populations are limited by food, disease and fertility, not a number. Not reached by hominin bands of about 25 | **deviation**, to remove |
+| Learning settings (plasticity, curiosity, imitation, memory) | — | Properties of the model's networks; no real-world numbers in these units | model settings, not biology |
+
 ## To do
 
 - Audit the older parts of the model the same way (temperatures, energy use, foods, predators, sound…).
