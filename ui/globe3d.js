@@ -929,7 +929,28 @@ const G3D = { ok: false };
           const surface = salt[ci] ? 1 : ground,
             sink = deep[ci] ? 0.78 : 0.3;
           sp.position.copy(local(la, lo, surface - sink * s * 0.82));
-        } else sp.position.copy(local(la, lo, ground + 0.0002 + (a.up ? 0.0065 : 0))); // asleep up a tree: among the branches
+        } else if (a.up) {
+          // asleep up a tree: in the crown of one of the trees actually drawn in its square (the same places
+          // and sizes as plantTrees), not hanging in the air between them
+          const i = idx(a.x, a.y),
+            t = tree[i],
+            n = t > 0.65 ? 6 : t > 0.4 ? 4 : 2;
+          let sd = (i * 2654435761 + 977) & 0x7fffffff;
+          const r = () => (sd = (sd * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff;
+          r();
+          let gx = a.x + 0.5,
+            gy = a.y + 0.5,
+            sz = 1;
+          const pick = (a.id || 0) % n;
+          for (let k = 0; k <= pick; k++) {
+            gx = a.x + 0.15 + 0.7 * r();
+            gy = a.y + 0.15 + 0.7 * r();
+            sz = (0.7 + 0.6 * r()) * (fkind[i] === 3 ? 1.35 : 1);
+          }
+          const tlo = (gx / W) * 2 * Math.PI - Math.PI,
+            tla = LATMAX * (1 - (2 * gy) / H);
+          sp.position.copy(local(tla, tlo, 1 + EX * heightAt(tla, tlo) + 0.0068 * sz));
+        } else sp.position.copy(local(la, lo, ground + 0.0002));
         sp.scale.set(s, s, 1);
       }
     for (let k = n; k < pool.length; k++) pool[k].visible = false;
