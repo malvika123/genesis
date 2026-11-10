@@ -89,6 +89,7 @@
     { key: 'trees', kind: 'off', def: true, flag: 'no-trees', label: 'Early hominins sleep up in trees (off: on the ground)', cfg: true },
     { key: 'humanFertility', kind: 'on', def: false, flag: 'human-fertility', label: 'Early hominins stop being fertile at 60% of their life, as people do (the old rule; otherwise fertile for life, as chimpanzees)', cfg: true },
     { key: 'fertMax', kind: 'num', def: 50, flag: 'fert-max', label: 'Early hominins: oldest age to conceive, in years (evidence: about 50; range 45–55)', min: 20, max: 80, cfg: true },
+    { key: 'oldFlight', kind: 'on', def: false, flag: 'old-flight', label: 'Afraid hominins only walk away from a hunter they see (the old rule): no making for cover, no climbing away', cfg: true },
     { key: 'iceAnimals', kind: 'on', def: false, flag: 'ice-animals', label: 'Early hominins live among the ice-age animals (wolves, bison, bears; the old world) instead of those of East Africa 2.5 million years ago', cfg: true },
     { key: 'bodyScaling', kind: 'off', def: true, flag: 'no-body-scaling', label: 'Smaller bodies need less food (Kleiber’s law; off: hominins eat as much as a full-sized forager)', cfg: true },
     { key: 'grassEye', kind: 'on', def: false, flag: 'grass-looks-like-food', label: 'People and hominins see grass as food, though they cannot digest it (the old rule)', cfg: true },

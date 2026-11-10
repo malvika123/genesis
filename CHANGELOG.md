@@ -4,6 +4,10 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Afraid hominins climb away from hunters.** With a hunter in sight, a frightened hominin makes for trees or cover
+  and climbs a big enough tree, staying up while the hunter is about, as monkeys and apes do; hyenas cannot follow,
+  leopards and sabre-tooths rarely succeed. Not faster running: australopiths ran at a small fraction of a
+  leopard's speed (Bates et al. 2024). `--old-flight` restores the old rule.
 - **The animals of East Africa 2.5 million years ago** (patch 6): in the hominin world, antelopes, hares, buffalo,
   spotted hyenas, leopards and sabre-toothed cats (*Megantereon*) instead of deer, rabbits, bison, wolves, big cats
   and bears, each with the life history of its living relative. Leopards and sabre-tooths climb, hyenas do not; every

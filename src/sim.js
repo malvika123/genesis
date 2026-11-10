@@ -351,6 +351,15 @@ function sim() {
           RF[(s + 4) % 8] += wary * p;
         }
       }
+      // and, afraid, it makes for cover — trees, a cave — when a hunter is in sight: vervet monkeys hearing a leopard
+      // alarm run into the trees (Seyfarth, Cheney & Marler 1980); baboons and chimpanzees climb away from lions. The
+      // escape is inborn, but whom to fear is learned, fast, from pain and from others' fear (monkeys: Mineka, Öhman),
+      // so it goes with its fear. (Climbing up, below, is the hominins' own: a body still built for it.)
+      if (SOC.flight && a.fear > 0.25) {
+        let pmax = 0;
+        for (let s = 0; s < 8; s++) pmax = Math.max(pmax, x[s * NCH + 5]);
+        if (pmax > 0.1) for (let s = 0; s < 8; s++) RF[s] += wary * pmax * x[s * NCH + 12];
+      }
       // and a grown person with food in its belly is moved to feed a hungry child close by: its own young
       // most, then its family's, and any child of the band only as far as its care for others' young reaches
       if (a.e > 45 && !young)
@@ -665,6 +674,16 @@ function sim() {
             log(a.name + ' climbed a tree to sleep, as apes do.');
           }
         }
+      } else if (!a.asleep && SOC.flight && tree[here] >= 0.4 && (a.up || !baby || (a.mom && a.mom.up && a.mom.x === a.x && a.mom.y === a.y)) && (a.up || a.fear > 0.25) && hunterSeen(x)) {
+        // afraid, with a hunter in sight: up the tree, and stay there while it is about
+        if (!a.up) {
+          a.up = true;
+          if (!baby) a.e -= 0.2;
+          if (!firsts.treeflee) {
+            firsts.treeflee = 1;
+            log(a.name + ' climbed a tree to get away from a hunter.');
+          }
+        }
       } else if (!a.asleep && a.up) a.up = false;
       if (a.up && a.asleep && rnd() < 0.00005) {
         a.up = false;
@@ -691,6 +710,7 @@ function sim() {
       // late in pregnancy the body is heavier: a little slower to walk, and much slower to run
       const late = a.preg ? clamp((1 - (a.preg.due - tick) / Math.max(1, S.gest) - 0.6) / 0.4, 0, 1) : 0;
       a.mvv = (fast ? S.run : S.walk) * a.g.s * fe * gr * old * (wade ? 0.5 : 1) * (1 - (fast ? 0.35 : 0.15) * late);
+      if (a.up && !a.asleep) a.mvv = 0; // up a tree: it stays there until it climbs down
       a.mvd = act;
       a.acc += a.mvv;
       if (a.trap > 0) {
@@ -1283,8 +1303,13 @@ const MEAL = (a) => (a.sp === 0 && SOC.kleiber ? 1 / (a.S.size || 1) : 1),
   BURN = (a) => (a.sp === 0 && SOC.kleiber ? (a.S.size || 1) ** -0.25 : 1);
 // Can this creature eat leaves here? Early hominins (S.leaf, config.js), where the trees are thick enough
 // to browse, as plant-eaters do.
+// a hunter in sight (or heard close by), from the senses
+const hunterSeen = (x) => {
+  for (let s = 0; s < 8; s++) if (x[s * NCH + 5] > 0.1) return true;
+  return false;
+};
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 0, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 0, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {

@@ -238,3 +238,34 @@ test('early hominins share their world with antelopes, hyenas, leopards and sabr
   if (leopard) assert.ok(leopard.S.climb, 'leopards climb');
   if (hyena) assert.ok(!hyena.S.climb && hyena.S.allBreed, 'hyenas do not climb, and every female breeds');
 });
+
+// Flight as primates do: afraid, with a hunter in sight, a hominin under a big tree climbs it (vervets, baboons,
+// chimpanzees); a calm one, or one under the old rule, does not.
+test('an afraid hominin climbs a tree to get away from a hunter in sight', () => {
+  const climbs = (fear, cfg) => {
+    const E = createEngine();
+    E.setSeed(7);
+    E.reset(Object.assign({}, cfg));
+    const st = E.state(),
+      h = st.ag.find((a) => a.sp === 0 && a.age >= a.S.mat),
+      c = st.ag.find((a) => a.sp === 2);
+    if (!h || !c) return null;
+    for (const o of st.ag) if (o !== h && o !== c && o.sp === 2) o.y = (o.y + 30) % E.H;
+    const i = E.idx(h.x, h.y);
+    E.forest().tree[i] = 0.8;
+    Object.assign(h, { asleep: false, sl: 0, e: 90, w: 90, fear, up: false });
+    let up = false;
+    for (let t = 0; t < 3; t++) {
+      Object.assign(c, { x: (h.x + 1) % E.W, y: h.y, asleep: false, e: 100 }); // close enough to sense whichever way it faces
+      Object.assign(h, { fear, sl: 0, asleep: false });
+      E.forest().tree[E.idx(h.x, h.y)] = 0.8;
+      E.sim();
+      if (h.up && !h.asleep) up = true;
+    }
+    return up;
+  };
+  const afraid = climbs(0.8, {});
+  if (afraid === null) return; // no hunter in this world
+  assert.strictEqual(afraid, true, 'afraid, it went up the tree');
+  assert.strictEqual(climbs(0.8, { oldFlight: true }), false, 'under the old rule it did not');
+});
