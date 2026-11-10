@@ -1,0 +1,92 @@
+{
+ "settings": {
+  "days": 30,
+  "people": 25,
+  "herbivores": 20,
+  "predators": 6,
+  "fish": 24,
+  "earth": false,
+  "homeland": true,
+  "shelter": true,
+  "care": true,
+  "vicar": true,
+  "pickyCopy": true,
+  "soundPhysics": true,
+  "animalCalls": true,
+  "modernVoice": false,
+  "retina": false
+ },
+ "seeds": "1-6",
+ "totals": {
+  "person": {
+   "steps": 508204,
+   "kills": 38,
+   "youngSteps": 227368,
+   "youngKills": 12,
+   "weakSteps": 31993,
+   "weakKills": 2,
+   "aloneSteps": 118494,
+   "aloneKills": 22,
+   "nightSteps": 254486,
+   "nightKills": 22
+  },
+  "plantEater": {
+   "steps": 1124541,
+   "kills": 96,
+   "youngSteps": 230474,
+   "youngKills": 24,
+   "weakSteps": 132473,
+   "weakKills": 23,
+   "aloneSteps": 152302,
+   "aloneKills": 26,
+   "nightSteps": 562785,
+   "nightKills": 60
+  }
+ },
+ "selectivity": {
+  "person": {
+   "young": {
+    "shareOfTimeAtRisk": 0.447,
+    "shareOfKills": 0.316,
+    "selectivity": 0.71
+   },
+   "weak": {
+    "shareOfTimeAtRisk": 0.063,
+    "shareOfKills": 0.053,
+    "selectivity": 0.84
+   },
+   "alone": {
+    "shareOfTimeAtRisk": 0.233,
+    "shareOfKills": 0.579,
+    "selectivity": 2.48
+   },
+   "night": {
+    "shareOfTimeAtRisk": 0.501,
+    "shareOfKills": 0.579,
+    "selectivity": 1.16
+   }
+  },
+  "plantEater": {
+   "young": {
+    "shareOfTimeAtRisk": 0.205,
+    "shareOfKills": 0.25,
+    "selectivity": 1.22
+   },
+   "weak": {
+    "shareOfTimeAtRisk": 0.118,
+    "shareOfKills": 0.24,
+    "selectivity": 2.03
+   },
+   "alone": {
+    "shareOfTimeAtRisk": 0.135,
+    "shareOfKills": 0.271,
+    "selectivity": 2
+   },
+   "night": {
+    "shareOfTimeAtRisk": 0.5,
+    "shareOfKills": 0.625,
+    "selectivity": 1.25
+   }
+  }
+ }
+}

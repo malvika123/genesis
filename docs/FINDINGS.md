@@ -398,6 +398,38 @@ someone discovers it, and its cost to anyone who never does is nil.
 — carry now, sleep warm days afterwards — is hard for a young learning brain to find; whether anyone ever
 does over many generations is a question for long runs.
 
+### 14. Whom do predators take? — Nov 2026
+
+**Version.** Unreleased (after 0.7.0) · the test: commit `eaa479e` (`tools/analysis/prey-selection.js`).
+
+**Data.** Raw tables: [seeds 1–6](../data/findings/14-prey-selection/seeds-1-6.json) · [seeds 7–12](../data/findings/14-prey-selection/seeds-7-12.json). Re-run: `node tools/analysis/prey-selection.js --seeds 1-12 --days 30 --out sel.json`.
+
+**Question.** Real predators take the young, the weak and the isolated far more often than chance, and big
+cats and wolves hunt mostly at dusk and night (wolves: Mech & Peterson 2003; cheetahs: FitzGibbon 1990;
+raptors: Genovart et al. 2010). Predators in Genesis learn with their own brains; do they hunt like this?
+
+**Test.** 12 worlds × 30 days, seeds 1–12, made-up planet. For every kill, the victim's class (young; weak:
+hurt or starving; alone: no other of its kind within 2 squares; night) against the share of time at risk
+everyone spent in that class. Selectivity = share of kills ÷ share of time; 1 is chance.
+
+| Selectivity (share of kills / share of time) | People (66 killed) | Plant-eaters (167 killed) |
+|---|---|---|
+| Alone | **2.45** (65% / 27%) | **2.39** (35% / 15%) |
+| Weak | 1.09 (6% / 6%) | **1.76** (20% / 11%) |
+| At night | 1.18 (59% / 50%) | 1.16 (58% / 50%) |
+| Young | **0.57** (26% / 45%) | 0.95 (18% / 19%) |
+
+**Result.** As on Earth, predators take the **isolated** (about 2.4 times chance, beyond noise) and
+weak plant-eaters (1.8 times); they kill somewhat more at night (1.2 times; real big cats more so). But
+they take **the young less than chance** — the opposite of real predators. Looking for why found a rule
+from an early version: **the founding generation's young of every kind cannot be taken by predators at
+all** (`edible` in `src/senses.js`). Nearly half of people's time at risk in the first weeks is spent as
+children, many of them founders, so the rule hides how dangerous predators really were for children.
+
+**Strength.** Moderate (isolation, weak plant-eaters); weak (night); the youth result is distorted by the
+rule. **Lesson:** measuring what a model does against what the real world does finds hidden protections;
+this one should go, with its own test.
+
 ---
 
 ## Open questions (next tests)
@@ -405,7 +437,8 @@ does over many generations is a question for long runs.
 - Ablate the bundle in entry 7: which of band size, parental feeding, instincts, one-shot memory and
   swimming carry the effect?
 - Hunger: does the fall in hunger deaths with cooperative care (entry 11) hold with 24+ worlds?
-- Predators kill the isolated (entry 12): do alarm calls that draw others close, or groups that deter a
+- Founding young are protected from predators by a leftover rule (entry 14): what happens without it?
+- Predators kill the isolated (entries 12, 14): do alarm calls that draw others close, or groups that deter a
   predator, reduce deaths of people who stray?
 - Where the band starts: does the +8 people hold with 24+ worlds, and is it the water, the food or the
   temperature that carries it? Does fleeing wildfire realistically stop the fire deaths?
