@@ -631,7 +631,35 @@ function sim() {
       }
     }
     const sleepy = a.sl;
+    const wasAsleep = a.asleep;
     a.asleep = act === A_SLEEP;
+    // Early hominins sleep up in the trees, as every great ape does (and as their arms and fingers, still
+    // built for climbing, suggest): settling down to sleep where a tree is big enough, the body climbs into it.
+    // A small child goes up with its mother. Up there, hunters that cannot climb (wolves) cannot reach a
+    // sleeper; those that can (big cats, bears) find it much harder. Waking, it climbs down. Now and then a
+    // sleeper falls (falls are a real danger for apes; one may have killed "Lucy": Kappelman et al. 2016).
+    if (a.sp === 0 && ERA === 'hominin' && SOC.trees) {
+      const here = idx(a.x, a.y);
+      if (a.asleep && !wasAsleep && !a.up) {
+        const climber = !baby || (a.mom && a.mom.up && a.mom.x === a.x && a.mom.y === a.y);
+        if (climber && tree[here] >= 0.4) {
+          a.up = true;
+          if (!baby) a.e -= 0.2; // climbing is work
+          if (!firsts.tree) {
+            firsts.tree = 1;
+            log(a.name + ' climbed a tree to sleep, as apes do.');
+          }
+        }
+      } else if (!a.asleep && a.up) a.up = false;
+      if (a.up && a.asleep && rnd() < 0.00005) {
+        a.up = false;
+        a.asleep = false;
+        a.hp -= 12;
+        a.painA = Math.min(1, a.painA + 0.7);
+        ouch(a, 0.7, 'fall');
+        a.ev[0] = 'it fell out of a tree in its sleep on day ' + dn;
+      }
+    } else a.up = false;
     if (a.asleep && sleepy > 0.8) a.ev[4] = 'it slept after being exhausted on day ' + dn;
     if (act < 8) {
       a.hd = act; // it turns to face the way it walks
@@ -1008,7 +1036,8 @@ function sim() {
       for (let yy = -1; yy <= 1 && !t; yy++)
         for (let xx = -1; xx <= 1 && !t; xx++) {
           const l = G[idx(a.x + xx, clamp(a.y + yy, 0, H - 1))];
-          if (l) t = l.find((o) => edible(a, o)) || null;
+          // a sleeper up a tree is out of reach of a hunter that cannot climb
+          if (l) t = l.find((o) => edible(a, o) && (!o.up || climbs(a))) || null;
         }
       if (t) {
         a.kcd = 4;
@@ -1030,7 +1059,7 @@ function sim() {
                 (a.hand === 2 ? 1.5 : a.hand === 3 ? 1.25 : 1) *
                 // a person alone is slow and weak next to a deer or a bison; a rabbit can be grabbed
                 (t.sp === 3 ? 1 : (t.asleep ? 0.8 : 0.35) * Math.min(1, 0.6 / (T.size || 1)))
-              : (t.asleep || t.age < T.mat * T.wn ? 0.9 : 0.6) * Math.min(1, odds);
+              : (t.asleep || t.age < T.mat * T.wn ? 0.9 : 0.6) * Math.min(1, odds) * (t.up ? 0.35 : 1);
         if (rnd() < pc) {
           t.dead = true;
           t.cause = a.sp === 0 ? 'caught by a person' : 'killed by a predator';
@@ -1213,7 +1242,9 @@ function fireMade(a, how) {
 //   · How much a person learns from others at all is inherited (gene im), so some are loners who learn
 //     only the hard way, as about one person in five does in experiments (Molleman et al. 2014).
 // What exactly it learns is left to its own brain.
-const SOC = { vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false },
+// which hunters can climb a tree after a sleeper: big cats (leopards do) and bears; wolves cannot
+const climbs = (a) => a.sp === 2 && a.S.n !== 'Wolf';
+const SOC = { vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {

@@ -929,7 +929,7 @@ const G3D = { ok: false };
           const surface = salt[ci] ? 1 : ground,
             sink = deep[ci] ? 0.78 : 0.3;
           sp.position.copy(local(la, lo, surface - sink * s * 0.82));
-        } else sp.position.copy(local(la, lo, ground + 0.0002));
+        } else sp.position.copy(local(la, lo, ground + 0.0002 + (a.up ? 0.0065 : 0))); // asleep up a tree: among the branches
         sp.scale.set(s, s, 1);
       }
     for (let k = n; k < pool.length; k++) pool[k].visible = false;

@@ -17,6 +17,7 @@
 //   --no-calls       animals make no calls
 //   --sapiens        Homo sapiens 70,000 years ago without culture (otherwise early hominins, ~2.5 million years ago)
 //   --earth          the real Earth's continents as they were 70,000 years ago (not a made-up planet)
+//   --no-trees       early hominins sleep on the ground, not up in trees
 //   --shield-founders  the old rule: predators cannot take the founding generation's young
 //   --no-shelter     branches cannot be heaped up into a shelter
 //   --no-care        only parents and grandmothers feed a child; children are not drawn to stay close

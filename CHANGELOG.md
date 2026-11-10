@@ -4,6 +4,13 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Hominin bodies and lives** (patch 3): about three-quarters of a person's size, still hairy (feel the cold
+  later and the heat sooner), growth, weaning and births as in chimpanzees, a shorter life, and a brain
+  about half a person's that is inherited and can evolve larger. The founding band's ages follow it.
+- **Sleeping in trees** (patch 4): settling to sleep where a tree is big enough, a hominin climbs into it (a
+  small child goes up with its mother); wolves cannot reach a sleeper there, big cats and bears find it much
+  harder; now and then a sleeper falls. `--no-trees` turns it off.
+
 - **Early hominins.** The default world is now early hominins of about 2.5 million years ago (plan:
   `docs/HOMININ-PLAN.md`): called hominins and drawn as small, hairy, upright apes with long arms. So far
   only the name and look; bodies, climbing, diet, animals and the ancient world follow in patches. *New

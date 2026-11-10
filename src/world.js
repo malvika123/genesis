@@ -21,6 +21,7 @@ function reset(cfg = {}) {
   ERA = cfg.sapiens || cfg.scenario === 'sapiens' ? 'sapiens' : 'hominin'; // which world (state.js)
   // their bodies and lives: modern people's, or early hominins' (config.js)
   Object.assign(KBIO[0], PERSON_BIO, ERA === 'hominin' ? HOMININ : {});
+  SOC.trees = cfg.trees !== false; // off: early hominins sleep on the ground (for comparison)
   SOC.shield = !!cfg.shield; // on: the old rule that predators cannot take the founding generation's young
   SOC.shelter = cfg.shelter !== false; // off: branches cannot be heaped up into a shelter (the old world)
   SOC.care = cfg.care !== false; // off: only parents and grandmothers feed a child, and children are not drawn to stay close
