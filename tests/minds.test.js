@@ -12,10 +12,12 @@ test('the world begins with a band of families of all ages, every child with its
   const ppl = E.state().ag.filter((a) => a.sp === 0),
     TY = E.TY;
   assert.equal(ppl.length, 25);
-  const kids = ppl.filter((a) => a.age < 12 * TY),
-    elders = ppl.filter((a) => a.age >= 45 * TY);
+  // ages follow the kind's own life history (early hominins grow up and age faster than people)
+  const f = ppl[0].S.mat / (12 * TY),
+    kids = ppl.filter((a) => a.age < 12 * f * TY),
+    elders = ppl.filter((a) => a.age >= 35 * f * TY);
   assert.ok(kids.length >= 5 && elders.length >= 2, 'children and elders: ' + kids.length + ', ' + elders.length);
-  for (const k of kids) assert.ok(k.mom && k.mom.age - k.age >= 15 * TY, 'each child has a mother old enough');
+  for (const k of kids) assert.ok(k.mom && k.mom.age - k.age >= 15 * f * TY, 'each child has a mother old enough');
 });
 
 test('what its brain was just doing is fed back in as short-term memory', () => {
@@ -67,8 +69,19 @@ test('a baby is born with a small brain that grows until adulthood', () => {
   const baby = E.mk(0, p.x, p.y, 1, E.child(p, p), 1, 0, p.k);
   assert.equal(E.grownUnits(baby), baby.S.nh, 'a newborn has only its birth units working');
   baby.age = baby.S.mat;
-  assert.ok(E.grownUnits(baby) > baby.S.nh * 2, 'grown, it has far more');
+  // an early hominin's brain grows to about twice its size at birth (a chimpanzee's about 2.5 times)
+  assert.ok(E.grownUnits(baby) > baby.S.nh * 1.5, 'grown, it has far more');
   assert.ok(E.grownUnits(baby) <= baby.h.length);
+});
+
+test("a modern person's brain grows more after birth than an early hominin's", () => {
+  const E = createEngine();
+  E.setSeed(3);
+  E.reset({ sapiens: true });
+  const p = E.state().ag.find((o) => o.sp === 0);
+  const baby = E.mk(0, p.x, p.y, 1, E.child(p, p), 1, 0, p.k);
+  baby.age = baby.S.mat;
+  assert.ok(E.grownUnits(baby) > baby.S.nh * 2, 'a modern brain grows to well over twice its newborn size');
 });
 
 test('fear and memory units are wired only to their own senses', () => {

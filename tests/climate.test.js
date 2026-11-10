@@ -78,7 +78,8 @@ test('frozen water can be walked on but not drunk from; grass stops growing in d
 test('people feel cold where herbivores and predators do not, and huddling helps', () => {
   const E = createEngine();
   E.setSeed(5);
-  E.reset({ people: 2, herbivores: 1, predators: 1, fish: 0 });
+  // modern people, with bare skin (early hominins were still hairy, and feel the cold later)
+  E.reset({ people: 2, herbivores: 1, predators: 1, fish: 0, sapiens: true });
   const { H, TY } = E;
   E.setTick(TY / 4);
   const ag = E.state().ag;

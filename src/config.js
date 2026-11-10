@@ -332,3 +332,27 @@ const KBIO = KINDS.map((k) => {
   return b;
 });
 const KDEF = [0, 1, 4, 7]; // the first kind of each role
+
+// Early hominins of about 2.5 million years ago (late australopiths and the earliest Homo): where their
+// bodies and lives differ from modern people's (the default world; world.js applies it). Reasoned from the
+// evidence, and uncertain:
+// - body mass about 30–45 kg, and the earliest Homo no bigger than australopiths (Grabowski et al. 2015):
+//   about three-quarters of a forager's size, which also makes them weaker against a hunter;
+// - teeth grew at least as fast as a chimpanzee's (Kelley & Schwartz 2012; Smith et al. 2015), so growth,
+//   weaning and births are set as in chimpanzees: weaned at about 4, grown at about 10, first births at
+//   about 13, births about 4–5 years apart, a shorter life; pregnancy about 8 months, as in chimpanzees;
+// - still hairy (bare skin and heavy sweating are thought to come later, with Homo erectus — the dating is
+//   uncertain), so they feel the cold later and the heat sooner than people;
+// - the brain about a third of ours (roughly 400–600 cm³): founders grow about half the thinking units a
+//   person can, and how many is inherited and can evolve (creatures.js).
+const HOMININ = {
+  size: 0.75,
+  cold: 9,
+  hot: 31,
+  mat: 10 * TY,
+  smat: 13 * TY,
+  life: 70 * TY,
+  gest: 0.65 * TY,
+  cd: 4 * TY,
+  wn: 0.4,
+};

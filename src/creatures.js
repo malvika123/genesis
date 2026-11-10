@@ -9,7 +9,7 @@ const gene = (sp, inst) => ({
   c: 0.2 + rnd() * 0.6,
   b: 0.6 + rnd() * 0.8,
   so: 0.5 + rnd(),
-  bs: 0.75 + rnd() * 0.25, // how big a brain it can grow (inherited)
+  bs: sp === 0 && ERA === 'hominin' ? 0.4 + rnd() * 0.15 : 0.75 + rnd() * 0.25, // how big a brain it can grow (inherited; early hominins about half a person's)
   lr: 0.8 + rnd() * 0.4, // how quickly it learns (inherited)
   im: 0.1 + rnd() * 1.6, // how much it learns from others at all: copying them, and feeling for them (inherited)
   vl: rnd() * 0.3, // vocal control and learning: low, as in our ape-like ancestors (voice.js)
@@ -155,7 +155,7 @@ function child(p, q) {
     c: mut(pk('c'), 0.05, 1),
     b: mut(pk('b'), 0.3, 1.8),
     so: mut(pk('so'), 0.2, 2),
-    bs: mut(pk('bs') ?? 0.9, 0.5, 1),
+    bs: mut(pk('bs') ?? 0.9, ERA === 'hominin' ? 0.25 : 0.5, 1), // can evolve larger, up to a modern brain
     lr: mut(pk('lr') ?? 1, 0.4, 2),
     lay,
     im: mut(pk('im') ?? 1, 0.05, 3),

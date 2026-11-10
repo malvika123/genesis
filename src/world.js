@@ -19,6 +19,8 @@ function reset(cfg = {}) {
   SOC.modern = !!cfg.modernVoice; // the experiment: give everyone a modern human voice from the start
   SOC.earth = !!cfg.earth; // the real Earth's land and sea, 70,000 years ago (see earth.js), or a made-up planet
   ERA = cfg.sapiens || cfg.scenario === 'sapiens' ? 'sapiens' : 'hominin'; // which world (state.js)
+  // their bodies and lives: modern people's, or early hominins' (config.js)
+  Object.assign(KBIO[0], PERSON_BIO, ERA === 'hominin' ? HOMININ : {});
   SOC.shield = !!cfg.shield; // on: the old rule that predators cannot take the founding generation's young
   SOC.shelter = cfg.shelter !== false; // off: branches cannot be heaped up into a shelter (the old world)
   SOC.care = cfg.care !== false; // off: only parents and grandmothers feed a child, and children are not drawn to stay close
@@ -117,7 +119,9 @@ function makeBand() {
   const ppl = ag.filter((a) => a.sp === 0),
     n = ppl.length,
     S = ppl[0].S,
-    yr = TY,
+    // ages are set for modern foragers and scaled to the kind's own life history (early hominins grow up
+    // and age faster), and nobody starts older than its own lifespan
+    yr = TY * (S.mat / (12 * TY)),
     nE = Math.round(0.12 * n),
     nC = Math.round(0.32 * n),
     nT = Math.round(0.12 * n);
@@ -130,6 +134,7 @@ function makeBand() {
           : j < nE + nC + nT
             ? Math.round((12 + rnd() * 5) * yr)
             : Math.round((18 + rnd() * 22) * yr);
+    a.age = Math.min(a.age, Math.round(a.lf - 2 * TY));
     a.nh = grownUnits(a);
     a.found = true;
   });
@@ -160,3 +165,5 @@ function makeBand() {
   const grans = ppl.filter((a) => a.sex && a.age >= 45 * yr);
   for (const w of women) if (grans.length && rnd() < 0.5) w.mom = grans[(rnd() * grans.length) | 0];
 }
+// modern people's biology as written in config.js, kept to restore it when a world of Homo sapiens is chosen
+const PERSON_BIO = Object.assign({}, KBIO[0]);
