@@ -11,12 +11,15 @@ and `docs/MODEL.md` for the formal model description (ODD protocol).
   life history (`docs/ASSUMPTIONS.md`), sleeping in trees (`--no-trees`) — and their tests (entries 16–17:
   the hominin world still works, 14.5 alive against 25.5 for modern humans, with old age now a main cause of
   death; tree-sleeping made no measurable difference).
-- **Patch 5 (diet), first part, on `percept` (not merged):** early hominins can live on young leaves when fruit
-  is short (0.64 of ripe fruit's food a minute, range 0.48–0.64; `--no-leaves`, `--leaf-value`). Entry 18: no
-  clear effect in 12 worlds; fire deaths rose (17 → 44–50) in bursts of one wildfire catching a band, and the
-  obvious explanation (more time in the woods) was traced and is wrong. Before merging: 12 more worlds (seeds
-  13–24) to see whether the fire rise is real. Still missing from the diet: sedges and other C4 foods (early
-  Homo about 35% C4), insects; the older food values are not yet audited.
+- **Patch 5 (diet), first part, live:** early hominins can live on young leaves when fruit is short (0.64 of ripe
+  fruit's food a minute, range 0.48–0.64; `--no-leaves`, `--leaf-value`). Entry 18: no measurable effect in 24
+  worlds; a rise in fire deaths in the first 12 was chance. Still missing from the diet: sedges and other C4
+  foods (early Homo about 35% C4), insects; the older food values are not yet audited.
+- Researched 10 Nov (not yet built; each needs sources checked, then a paired test): curiosity damped by hunger
+  and fear (play and exploration shut down under both: Siviy & Panksepp); a pre-encounter mode (danger possible:
+  stay close, watch — the threat-imminence continuum, Fanselow; Mobbs et al. 2020); stress as a graded curve
+  instead of the 0.5 switch (`src/sim.js`, unsourced); care primed by pregnancy and birth (Numan); and the hard
+  population cap that blocks mating (`popK + kids < S.cap`), which is not biology.
 - Known gap that entry 18 points at: hominins react only to fire beside them; real savanna chimpanzees watch a
   wildfire and move ahead of it (Pruetz & LaDuke 2010). Check the evidence before adding anything.
 - Run experiments gently on the owner's laptop: `--workers 4` under `nice -n 19` (8 workers overheat it).

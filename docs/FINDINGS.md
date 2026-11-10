@@ -36,6 +36,7 @@ Entries are kept even when the result was "no effect" or "it made things worse" 
 | Many hands feeding a child (family most), and children staying close to carers | Hunger deaths 13.9 → 11.5 per world, predator deaths 5.3 → 8.3; survival unchanged; ranges include zero | weak |
 | (Analysis) Predator risk under cooperative care, per person-day at risk | Exposure unchanged; individual risk not clearly changed; encounters +50% but less often fatal; 86–94% of victims had no grown person in reach | moderate (isolation) / weak (risk) |
 | **Not** measurable: early hominins sleeping in trees (they did, most nights) | 16.2 vs 14.5 alive; predator deaths 75 vs 69 | moderate (no effect) |
+| **Not** measurable: early hominins living on leaves when fruit is short | 14.6 vs 14.8 alive, hunger deaths 168 vs 204 (24 worlds, within noise) | none |
 | (Scenario) Early hominin bodies and lives instead of modern ones | 14.5 vs 25.5 alive, no die-outs; old age a main cause of death (shorter, chimpanzee-like life) | weak–moderate (confounded) |
 | **Not** a must-have: bigger brains on their own | 64 units: 8.2 alive, 256: 6.1, 1,024: 2.2 | strong |
 | **Not** measurable: sound by real physics, animal calls | 7.7 / 6.7 / 7.1 alive (within noise) | none |
@@ -540,7 +541,7 @@ straying alone by day.
 
 **Version.** Unreleased (after 0.7.0) · the change and the test: commit `70199ff` (`--no-leaves`, `--leaf-value`). Run by Claude.
 
-**Data.** Raw tables: [no leaves](../data/findings/18-leaves/no-leaves.csv) · [leaves 0.64](../data/findings/18-leaves/leaves-0.64.csv) · [leaves 0.48](../data/findings/18-leaves/leaves-0.48.csv) · [the comparison](../data/findings/18-leaves/comparison.txt) · [fire-death trace](../data/findings/18-leaves/fire-trace.jsonl). Re-run: `node tools/experiment.js --seeds 1-12 --days 60 --workers 4 --out leaves.csv` (with `--no-leaves`, `--leaf-value 0.48`); trace: `node tools/analysis/fire-trace.js 11 leaves`.
+**Data.** Raw tables: [no leaves](../data/findings/18-leaves/no-leaves.csv) · [leaves 0.64](../data/findings/18-leaves/leaves-0.64.csv) · [leaves 0.48](../data/findings/18-leaves/leaves-0.48.csv) · [the comparison](../data/findings/18-leaves/comparison.txt) · [fire-death trace](../data/findings/18-leaves/fire-trace.jsonl) · seeds 13–24: [no leaves](../data/findings/18-leaves/no-leaves-seeds-13-24.csv), [leaves 0.64](../data/findings/18-leaves/leaves-0.64-seeds-13-24.csv). Re-run: `node tools/experiment.js --seeds 1-12 --days 60 --workers 4 --out leaves.csv` (with `--no-leaves`, `--leaf-value 0.48`); trace: `node tools/analysis/fire-trace.js 11 leaves`.
 
 **Added.** Early hominins can eat young leaves where tree cover is above 0.3, when there is no fruit, roots or
 meat to eat; leaves give 0.64 of ripe fruit's food a minute. Modern people get nothing from them.
@@ -558,6 +559,13 @@ ends of the range. The run without leaves reproduced entry 17's tree-sleeping ru
 | Leaves 0.48 | 12.2 ± 8.6 | 2 | 88 | 52 | 44 | 47 |
 | Leaves 0.64 | 14.1 ± 9.8 | 0 | 73 | 61 | 50 | 20 |
 
+**Twelve more worlds** (seeds 13–24, to test whether the rise in fire deaths was real; 4 workers):
+
+| 24 worlds | People alive | Worlds died out | Hunger | Predators | Burned | Drowned |
+|---|---|---|---|---|---|---|
+| No leaves | 14.8 ± 9.0 | 1 | 204 | 107 | 53 | 53 |
+| Leaves 0.64 | 14.6 ± 8.1 | 0 | 168 | 97 | 71 | 50 |
+
 **Result.** **No clear effect.** Hunger deaths fell somewhat at 0.64 (lower in 8 of 12 worlds) and predator
 deaths at both values, but every difference's range includes zero; survival did not rise (at 0.48 it was lower
 in 8 of 12 worlds, range −8.3 to +0.3). Deaths by fire rose at both values, from 17 to 44–50.
@@ -569,15 +577,19 @@ eating leaves when it died. The deaths came in bursts: one wildfire catching a b
 seed 11). In seed 9, six of the fifteen victims were striking with something in the hand as they died — not
 yet understood.
 
-**Interpretation.** Hominins hardly use leaves when other food is about, so the change is small; but any
-change in behaviour makes a world play out differently, and whole-band deaths in one wildfire are rare, large
-events — 12 worlds cannot tell whether the rise in fire deaths is real. The deeper issue is the one already
-known: hominins only react to fire beside them, while real savanna chimpanzees watch a wildfire and move
-calmly ahead of it (Pruetz & LaDuke 2010, Fongoli). Leaves stay, because the evidence supports them.
+**The extra worlds.** In seeds 13–24 fire deaths went the other way (36 without leaves, 21 with). Over all 24
+worlds the difference is within noise (53 against 71; more deaths in 5 worlds, fewer in 9; range −1.3 to +2.8 a
+world). Hunger deaths 204 against 168 (−18%; range includes zero); survival the same (14.8 against 14.6).
 
-**Strength.** None for survival and hunger (12 worlds); weak for the rise in fire deaths (heavy-tailed, could be
-chance). **Lesson:** a cause that sounds right (leaves → woods → fire) has to be traced; and rare mass deaths
-need more worlds than 12.
+**Interpretation.** Hominins hardly use leaves when other food is about, so the change is small. The rise in
+fire deaths in the first 12 worlds was **chance**: any change in behaviour makes a world play out differently,
+and whole-band deaths in one wildfire are rare, large events. Leaves stay, because the evidence supports them.
+The deeper issue is the one already known: hominins only react to fire beside them, while real savanna
+chimpanzees watch a wildfire and move calmly ahead of it (Pruetz & LaDuke 2010, Fongoli).
+
+**Strength.** None (24 worlds): no measurable effect on survival, hunger or fire. **Lesson:** a cause that
+sounds right (leaves → woods → fire) has to be traced; a striking result in 12 worlds can vanish in the next
+12, especially for rare mass deaths.
 
 ---
 
@@ -586,7 +598,7 @@ need more worlds than 12.
 - Ablate the bundle in entry 7: which of band size, parental feeding, instincts, one-shot memory and
   swimming carry the effect?
 - Hunger: does the fall in hunger deaths with cooperative care (entry 11) hold with 24+ worlds?
-- Fire: are the extra fire deaths with leaves (entry 18) real, with 24+ worlds? How do real apes respond to a
+- Fire: how do real apes respond to a
   wildfire (Pruetz & LaDuke 2010), and does the model lack it? Why were six victims in seed 9 striking as they died?
 - Why do predators take children less often than chance (entry 14), if not because of the old protection
   (entry 15)? Is it children staying close to grown people?
