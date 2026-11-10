@@ -4,6 +4,9 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- On the globe from a distance, fish are no longer drawn as markers over the land (they looked like fish in
+  the air); fish live under water and show only close up, in the water.
+
 - **Early hominins fertile for life, up to about 50**, as wild chimpanzees are (no menopause; fertility approaches
   zero at about 50: Emery Thompson et al. 2007; `--fert-max` sets the limit). They had
   kept modern people's rule — fertility ending at 60% of life — which, with their shorter lives, ended it at

@@ -1045,6 +1045,9 @@ const G3D = { ok: false };
     figures(close, v);
     if (!close)
       for (const a of ag) {
+        // fish live under water: from far off nobody can see them, so they get no marker (they were drawn
+        // side-on over the land, looking like fish in the air); close up they show in the water itself
+        if (a.sp === 3) continue;
         const P = project(a.rx, a.ry);
         if (!P) continue;
         const ks = clamp((P[2] / C) * 0.9, 0.25, 9);
