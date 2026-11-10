@@ -4,6 +4,10 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- On the globe the dead are real objects lying on the ground — the colour of their kind, fading to pale bone
+  as they decay — so trees and hills hide them (they were painted on top of the picture and seemed to float
+  on the treetops, with their ribs looking like fish).
+
 - On the globe from a distance, fish are no longer drawn as markers over the land (they looked like fish in
   the air); fish live under water and show only close up, in the water.
 
