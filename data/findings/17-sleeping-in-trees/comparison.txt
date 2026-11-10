@@ -1,0 +1,15 @@
+12 paired worlds (seeds 1,2,3,4,5,6,7,8,9,10,11,12)
+per seed alive ground 6 8 2 23 25 23 6 15 22 29 4 11 | trees 26 3 0 12 27 31 20 28 13 11 4 19
+died out: ground 0, trees 1
+people_alive                 ground: 14.5 ± 9.5     trees: 16.2 ± 10.6    diff 1.67 [-5.55, 8.88]  trees higher in 6, lower in 5
+generations                  ground: 1.6 ± 0.5      trees: 1.7 ± 0.5      diff 0.08 [-0.24, 0.41]  trees higher in 2, lower in 1
+plant_eaters                 ground: 61.8 ± 28.5    trees: 66.9 ± 29.5    diff 5.08 [-9.08, 19.25]  trees higher in 8, lower in 4
+hunters                      ground: 10.1 ± 5.2     trees: 14.8 ± 5.5     diff 4.75 [-0.66, 10.16]  trees higher in 7, lower in 5
+died_hunger                  ground: sum 92         trees: sum 97         diff 0.42 [-3.93, 4.76]  trees higher in 5, lower in 7
+died_thirst                  ground: sum 2          trees: sum 0          diff -0.17 [-0.41, 0.08]  trees higher in 0, lower in 2
+died_killed_by_a_predator    ground: sum 69         trees: sum 75         diff 0.50 [-4.49, 5.49]  trees higher in 5, lower in 4
+died_drowned                 ground: sum 21         trees: sum 24         diff 0.25 [-1.28, 1.78]  trees higher in 4, lower in 4
+died_burned                  ground: sum 22         trees: sum 17         diff -0.42 [-1.58, 0.75]  trees higher in 5, lower in 5
+died_its_wounds              ground: sum 6          trees: sum 5          diff -0.08 [-0.77, 0.60]  trees higher in 4, lower in 3
+died_old_age                 ground: sum 65         trees: sum 65         diff 0.00 [-1.12, 1.12]  trees higher in 3, lower in 5
+died_giving_birth            ground: sum 0          trees: sum 0          diff 0.00 [0.00, 0.00]  trees higher in 0, lower in 0

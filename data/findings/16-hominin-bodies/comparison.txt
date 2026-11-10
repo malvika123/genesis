@@ -1,0 +1,15 @@
+12 paired worlds (seeds 1,2,3,4,5,6,7,8,9,10,11,12)
+per seed alive sapiens 43 33 30 0 38 22 36 26 18 26 13 21 | hominin 6 8 2 23 25 23 6 15 22 29 4 11
+died out: sapiens 1, hominin 0
+people_alive                 sapiens: 25.5 ± 11.9    hominin: 14.5 ± 9.5     diff -11.00 [-21.92, -0.08]  hominin higher in 4, lower in 8
+generations                  sapiens: 1.8 ± 0.5      hominin: 1.6 ± 0.5      diff -0.17 [-0.53, 0.20]  hominin higher in 1, lower in 3
+plant_eaters                 sapiens: 79.3 ± 24.2    hominin: 61.8 ± 28.5    diff -17.50 [-30.02, -4.98]  hominin higher in 3, lower in 9
+hunters                      sapiens: 14.0 ± 5.0     hominin: 10.1 ± 5.2     diff -3.92 [-8.17, 0.33]  hominin higher in 3, lower in 9
+died_hunger                  sapiens: sum 136        hominin: sum 92         diff -3.67 [-8.17, 0.83]  hominin higher in 3, lower in 9
+died_thirst                  sapiens: sum 1          hominin: sum 2          diff 0.08 [-0.10, 0.27]  hominin higher in 1, lower in 0
+died_killed_by_a_predator    sapiens: sum 88         hominin: sum 69         diff -1.58 [-8.61, 5.44]  hominin higher in 3, lower in 7
+died_drowned                 sapiens: sum 51         hominin: sum 21         diff -2.50 [-4.07, -0.93]  hominin higher in 1, lower in 10
+died_burned                  sapiens: sum 32         hominin: sum 22         diff -0.83 [-2.48, 0.81]  hominin higher in 3, lower in 7
+died_its_wounds              sapiens: sum 21         hominin: sum 6          diff -1.25 [-2.34, -0.16]  hominin higher in 1, lower in 8
+died_old_age                 sapiens: sum 3          hominin: sum 65         diff 5.17 [3.50, 6.83]  hominin higher in 12, lower in 0
+died_giving_birth            sapiens: sum 4          hominin: sum 0          diff -0.33 [-0.65, -0.02]  hominin higher in 0, lower in 4

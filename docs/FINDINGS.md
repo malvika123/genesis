@@ -35,6 +35,8 @@ Entries are kept even when the result was "no effect" or "it made things worse" 
 | **Not** measurable: hungry people eating the food in reach (fixing a real flaw) | Hunger deaths 170 → 167; survival 23.1 → 24.4 (within noise) | none |
 | Many hands feeding a child (family most), and children staying close to carers | Hunger deaths 13.9 → 11.5 per world, predator deaths 5.3 → 8.3; survival unchanged; ranges include zero | weak |
 | (Analysis) Predator risk under cooperative care, per person-day at risk | Exposure unchanged; individual risk not clearly changed; encounters +50% but less often fatal; 86–94% of victims had no grown person in reach | moderate (isolation) / weak (risk) |
+| **Not** measurable: early hominins sleeping in trees (they did, most nights) | 16.2 vs 14.5 alive; predator deaths 75 vs 69 | moderate (no effect) |
+| (Scenario) Early hominin bodies and lives instead of modern ones | 14.5 vs 25.5 alive, no die-outs; old age a main cause of death (shorter, chimpanzee-like life) | weak–moderate (confounded) |
 | **Not** a must-have: bigger brains on their own | 64 units: 8.2 alive, 256: 6.1, 1,024: 2.2 | strong |
 | **Not** measurable: sound by real physics, animal calls | 7.7 / 6.7 / 7.1 alive (within noise) | none |
 
@@ -458,6 +460,81 @@ because they now stay close to grown people (entries 11–12), and predators tak
 
 **Strength.** Moderate for "little effect over 60 days" (paired worlds). **Lesson:** check a plausible
 explanation before believing it — even one you found yourself.
+
+### 16. Early hominin bodies and lives, against modern humans — Nov 2026
+
+**Version.** Unreleased (after 0.7.0) · the change: commits `4497669` (patch 3) and `4b1ef6d` (verified numbers); the test: commit `0aa8364`. Run by Claude.
+
+**Data.** Raw tables: [hominins, sleeping on the ground](../data/findings/16-hominin-bodies/hominins-ground.csv) · [modern humans](../data/findings/16-hominin-bodies/sapiens.csv) · [the comparison](../data/findings/16-hominin-bodies/comparison.txt). Re-run: `node tools/experiment.js --seeds 1-12 --days 60 --no-trees --workers 8 --out hnotrees.csv` and the same with `--sapiens`.
+
+**Added.** Early hominins of about 2.5 million years ago in place of modern bodies (patch 3 of `docs/HOMININ-PLAN.md`):
+three-quarters of a forager's size, still hairy, chimpanzee-like growth, pregnancy, weaning and births, a
+shorter life, and a brain about a third of ours (smaller at birth) that is inherited and can evolve.
+
+**Real-world basis.** Each number and its source is in `docs/ASSUMPTIONS.md` (australopith body and brain
+sizes; wild chimpanzee life history as a proxy: Emery Thompson et al. 2007, Wood et al. 2017, Kelley &
+Schwartz 2012).
+
+**Test.** 12 worlds × 60 days, seeds 1–12, made-up planet; hominins with tree-sleeping off (to isolate the
+bodies) against Homo sapiens without culture. **Confounded:** the two scenarios have different bodies and
+founders' ages, so a seed does not give exactly the same world; compare averages, not seeds.
+
+| | People alive | Worlds died out | Hunger | Predators | Drowned | Burned | Old age |
+|---|---|---|---|---|---|---|---|
+| Modern humans | 25.5 ± 11.9 | 1 | 136 | 88 | 51 | 32 | 3 |
+| Early hominins (no trees) | 14.5 ± 9.5 | 0 | 92 | 69 | 21 | 22 | 65 |
+
+**Result.** The hominin world **still works**: no world died out (one modern-human world did), and
+generations were about the same (1.6 against 1.8). Hominins ended with about **11 fewer alive** (range of
+the difference −22 to −0.1, lower in 8 of 12 worlds). Fewer died of hunger, predators, drowning and fire —
+but there were fewer of them to die — while **old age** became a main cause of death: about 5 a world in
+60 days (20 simulated years), against almost none.
+
+**Interpretation.** Most of the gap is the shorter, chimpanzee-like life: founders' ages follow that life
+history (adults 15–33, elders 37–50) and each body's lifespan averages about 43 years (27–60), so many
+founders reach the end of theirs within the 20 years of the run, while births come about 4.6 years apart
+instead of about 3. That matches what the evidence says these lives were like; it is not tuned. Whether
+the smaller brain also cost survival cannot be separated here.
+
+**Strength.** Weak–moderate (confounded worlds; the difference is large but its range nearly touches zero).
+**Lesson:** a realistic ape-like life history alone lowers numbers sharply over 20 years; long runs must
+show whether births keep up with deaths.
+
+### 17. Sleeping in trees — Nov 2026
+
+**Version.** Unreleased (after 0.7.0) · the change: commit `3ead00b` (patch 4; `--no-trees` turns it off); the test: commit `0aa8364`. Run by Claude.
+
+**Data.** Raw tables: [on the ground](../data/findings/17-sleeping-in-trees/ground.csv) · [in trees](../data/findings/17-sleeping-in-trees/trees.csv) · [the comparison](../data/findings/17-sleeping-in-trees/comparison.txt). Re-run: `node tools/experiment.js --seeds 1-12 --days 60 --workers 8 --out htrees.csv` against entry 16's `hnotrees.csv`.
+
+**Added.** Early hominins settling to sleep where tree cover is at least 0.4 climb into the tree (a small
+child goes up with its mother); wolves cannot reach them there, big cats and bears catch them at about a
+third of the usual rate; now and then a sleeper falls.
+
+**Real-world basis.** All great apes sleep in trees or other safe places (Anderson 1998); australopith arms
+and fingers suggest part-time climbing (debated); leopards do take primates from sleeping trees (Busse
+1980); falls injure and kill apes (Kappelman et al. 2016). The 0.4, × 0.35 and fall rate are assumptions
+(`docs/ASSUMPTIONS.md`).
+
+**Test.** 12 worlds × 60 days, seeds 1–12, made-up planet, the same starting world each seed with and
+without tree-sleeping. A check on seeds 1 and 5 over 10 days: 63% and 51% of hominins' sleep was spent up
+a tree (71% and 61% of it was where a tree was big enough).
+
+| | People alive | Worlds died out | Hunger | Predator deaths | Plant-eaters | Hunters |
+|---|---|---|---|---|---|---|
+| On the ground | 14.5 ± 9.5 | 0 | 92 | 69 | 61.8 | 10.1 |
+| In trees | 16.2 ± 10.6 | 1 | 97 | 75 | 66.9 | 14.8 |
+
+**Result.** **No measurable difference.** Survival +1.7 (range −5.6 to +8.9; better in 6 worlds, worse in
+5); predator deaths 69 against 75 — not fewer. One world (seed 3) died out with tree-sleeping (2 left
+without it). Hunters ended somewhat more numerous (range −0.7 to +10.2).
+
+**Interpretation.** Hominins did sleep in trees most nights, yet predator deaths did not fall: as entries 12
+and 14 found, predators take the isolated and awake, rarely sleepers, so a safe bed does not touch what
+kills them. Tree-sleeping stays because the evidence supports it, not because it helps here.
+
+**Strength.** Moderate for "no effect over 60 days" (paired worlds; the range is wide).
+**Lesson:** a realistic behaviour can be right without mattering in the model; what kills here is
+straying alone by day.
 
 ---
 

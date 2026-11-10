@@ -65,8 +65,8 @@ test('children and teenagers can never mate; adults can', () => {
   const E = createEngine();
   E.setSeed(3);
   E.reset({ people: 8, predators: 0 });
-  const smat = E.SP[PEOPLE].smat;
   const people = E.state().ag.filter((a) => a.sp === PEOPLE);
+  const smat = people[0].S.smat; // the mating age of this world's people (early hominins: 14 years)
   people.forEach((a, i) => {
     a.age = smat - E.TY * (1 + (i % 3));
     a.found = false;

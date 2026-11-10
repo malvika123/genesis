@@ -11,7 +11,8 @@ test('a baby is carried for the whole pregnancy and born only when it is due', (
     dad = st.ag.find((o) => o.sp === 0 && !o.sex && o.age >= o.S.smat);
   assert.ok(mom && dad);
   const gest = Math.round(mom.S.gest);
-  assert.ok(gest > E.DAY * 2, 'a person carries a baby for over two days here (nine months of a three-day year)');
+  // early hominins (the default): a chimpanzee's 225–230 days, about 0.62 of a three-day year; people nine months
+  assert.ok(gest > E.DAY * 1.5, 'a pregnancy lasts over a day and a half here (about seven and a half months of a three-day year)');
   mom.preg = { due: st.tick + gest, dad, gen: 1, young: [{ sex: 1, g: E.child(mom, dad) }], cost: 22 };
   const before = st.ag.filter((o) => o.mom === mom).length;
   for (let i = 0; i < gest - 2; i++) {

@@ -4,25 +4,22 @@ A briefing for anyone picking the work up: a new contributor, a reviewer, or a m
 to check the science. Written November 2026 after v0.7.0; updated 10 November 2026. Read `README.md` for what the world contains
 and `docs/MODEL.md` for the formal model description (ODD protocol).
 
-## Where things stand (10 November 2026, afternoon) — start here
+## Where things stand (10 November 2026, evening) — start here
 
-- `develop` (live) has everything up to research log entry 14. `percept` has more, **not yet merged**:
-  research log entry 15, and the first four patches of the early-hominin plan (`docs/HOMININ-PLAN.md`):
-  hominins as the default world (name and look), the `--sapiens` scenario switch, hominin bodies and life
-  history (numbers verified, see `docs/ASSUMPTIONS.md`), and sleeping in trees (`--no-trees`).
-- **Next, in order:**
-  1. Test patch 3 (hominin bodies): the same 12 worlds as hominins without trees and as modern humans —
-     `node tools/experiment.js --seeds 1-12 --days 60 --no-trees --workers 8 --out hnotrees.csv` and
-     `node tools/experiment.js --seeds 1-12 --days 60 --sapiens --workers 8 --out sapiens.csv`.
-     Note: hominins are expected to differ (smaller brains, slower births); the question is whether the
-     world still works (no routine die-outs) and how it differs — not to tune it to match.
-  2. Test patch 4 (sleeping in trees): `--seeds 1-12 --days 60 --workers 8 --out htrees.csv` against
-     `hnotrees.csv` (paired: same starting worlds).
-  3. Log both in `docs/FINDINGS.md` (entries 16 and 17, with data in `data/findings/`), run `npm test`,
-     and merge `percept` into `develop` if the world still works.
-  4. Then continue the plan from patch 5 (diet), checking every number against sources first and
-     recording it in `docs/ASSUMPTIONS.md`.
-- Work on one branch (`percept`), one behaviour change at a time; never tune toward an outcome.
+- `develop` (live) has everything up to research log entry 17: the first four patches of the early-hominin
+  plan (`docs/HOMININ-PLAN.md`) — hominins as the default world, the `--sapiens` switch, hominin bodies and
+  life history (`docs/ASSUMPTIONS.md`), sleeping in trees (`--no-trees`) — and their tests (entries 16–17:
+  the hominin world still works, 14.5 alive against 25.5 for modern humans, with old age now a main cause of
+  death; tree-sleeping made no measurable difference).
+- **Patch 5 (diet), in progress:** early hominins can live on young leaves when fruit is short (0.64 of ripe
+  fruit's food a minute, range 0.48–0.64, Kibale chimpanzees; `--no-leaves`, `--leaf-value`). Next: test it
+  paired against `--no-leaves`, and at both ends of the range (`--leaf-value 0.48`), 12 worlds × 60 days,
+  `--workers 8`; log as entry 18. Still missing from the diet: sedges and other C4 foods (early Homo about
+  35% C4), insects; the older food values (fruit, roots, nuts, meat) are not yet audited.
+- Then patch 6 (predators and animals of the time). Work on one branch (`percept`), one behaviour change at
+  a time; never tune toward an outcome.
+- A 12-world × 60-day set takes about 13 minutes (hominins) to 25 minutes (modern humans) with 8 workers;
+  `npm test` about 70 seconds.
 
 ## The rules the project is held to
 
