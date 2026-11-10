@@ -1213,7 +1213,7 @@ function fireMade(a, how) {
 //   · How much a person learns from others at all is inherited (gene im), so some are loners who learn
 //     only the hard way, as about one person in five does in experiments (Molleman et al. 2014).
 // What exactly it learns is left to its own brain.
-const SOC = { vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true },
+const SOC = { vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {

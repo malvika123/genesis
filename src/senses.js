@@ -23,7 +23,7 @@ const careFor = (a, o) => {
 const edible = (a, o) =>
   o !== a &&
   !o.dead &&
-  !(o.found && o.age < o.S.mat) &&
+  !(SOC.shield && o.found && o.age < o.S.mat) && // (an old rule, off unless switched on for comparison: founders' young could not be taken)
   (a.sp === 2
     ? o.sp !== 2 || (o.k === a.k && a.e < 15 && o !== a.mom && o !== a.kid && o.mom !== a)
     : a.sp === 0 && (o.sp === 3 || o.sp === 1));

@@ -18,6 +18,7 @@ function reset(cfg = {}) {
   SOC.calls = cfg.animalCalls !== false;
   SOC.modern = !!cfg.modernVoice; // the experiment: give everyone a modern human voice from the start
   SOC.earth = !!cfg.earth; // the real Earth's land and sea, 70,000 years ago (see earth.js), or a made-up planet
+  SOC.shield = !!cfg.shield; // on: the old rule that predators cannot take the founding generation's young
   SOC.shelter = cfg.shelter !== false; // off: branches cannot be heaped up into a shelter (the old world)
   SOC.care = cfg.care !== false; // off: only parents and grandmothers feed a child, and children are not drawn to stay close
   SOC.home = cfg.homeland !== false; // off: the band starts anywhere warm enough near fresh water (the old rule)

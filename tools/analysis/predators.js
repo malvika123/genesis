@@ -95,6 +95,11 @@ for (const seed of seeds) {
     }
     if (st0.over) break;
   }
+  // and how the world ended: people alive, and every person's death by cause
+  const st = E.state();
+  W.alive = st.ag.filter((o) => o.sp === 0).length;
+  W.died = {};
+  for (const [k, v] of Object.entries(st.deaths)) if (k.startsWith('Person: ')) W.died[k.slice(8)] = v;
   worlds.push(W);
   console.error(`seed ${seed}: person-days ${(W.steps.reduce((s, v) => s + v, 0) / E.DAY).toFixed(0)}, predator deaths ${W.kills.reduce((s, v) => s + v, 0)}`);
   if (typeof a.out === 'string') fs.appendFileSync(a.out + 'l', JSON.stringify(W) + '\n');

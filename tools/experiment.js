@@ -16,6 +16,7 @@
 //   --modern-voice   everyone starts with a modern human voice, pointing and shared attention
 //   --no-calls       animals make no calls
 //   --earth          the real Earth's continents as they were 70,000 years ago (not a made-up planet)
+//   --shield-founders  the old rule: predators cannot take the founding generation's young
 //   --no-shelter     branches cannot be heaped up into a shelter
 //   --no-care        only parents and grandmothers feed a child; children are not drawn to stay close
 //   --any-start      the band starts anywhere within 36° of the equator near fresh water (the old rule)
