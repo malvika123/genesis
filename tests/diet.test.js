@@ -29,6 +29,7 @@ const eatFor = (E, p, n) => {
 test('people cannot live on grass: chewing it gives almost nothing', () => {
   const { E, s, p, i } = person();
   E.items().ROOT[i] = 0;
+  E.forest().tree[i] = 0; // open grassland: no leaves to browse either
   s.food[i] = 1;
   const e0 = p.e;
   eatFor(E, p, 8);
@@ -43,4 +44,36 @@ test('roots dug up with a stick feed a person', () => {
   const e0 = p.e;
   eatFor(E, p, 24); // digging succeeds by chance, so give it a few hours
   assert.ok(p.e > e0 + 10, 'energy rose: ' + (p.e - e0).toFixed(1));
+});
+
+// Leaves (patch 5 of the hominin plan): early hominins, like chimpanzees, get some food from young leaves
+// when there is no fruit, less than from fruit; modern people get nothing from them.
+function leafEater(cfg) {
+  const E = createEngine();
+  E.setSeed(9);
+  E.reset(Object.assign({ predators: 0 }, cfg));
+  const s = E.state(),
+    p = s.ag.find((a) => a.sp === 0);
+  Object.assign(p, { asleep: false, sl: 0, e: 30, w: 90, hand: 0 });
+  const i = E.idx(p.x, p.y);
+  E.forest().tree[i] = 0.8;
+  E.forest().fruit[i] = 0;
+  E.items().ROOT[i] = 0;
+  E.items().nut[i] = 0;
+  s.food[i] = 0;
+  return { E, s, p, i };
+}
+test('early hominins get some food from leaves; modern people none', () => {
+  const gain = (cfg) => {
+    const { E, p, i } = leafEater(cfg);
+    const e0 = p.e;
+    eatFor(E, p, 6);
+    void i;
+    return p.e - e0;
+  };
+  const hom = gain({}),
+    sap = gain({ sapiens: true }),
+    off = gain({ leaves: false });
+  assert.ok(hom > sap + 20, 'hominin ' + hom.toFixed(1) + ' vs sapiens ' + sap.toFixed(1));
+  assert.ok(hom > off + 20, 'hominin ' + hom.toFixed(1) + ' vs no leaves ' + off.toFixed(1));
 });

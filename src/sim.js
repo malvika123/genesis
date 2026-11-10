@@ -288,7 +288,7 @@ function sim() {
       RF[A_EAT] = taste > 0.05 && !water[h] ? 8 * hu : 0;
       // and hunger alone makes any primate try putting plants in its mouth: a weaker pull, which the
       // gut then rewards or not
-      if (!RF[A_EAT] && hu > 0.35 && !water[h] && (food[h] > 0.1 || ROOT[h] > 0.05)) RF[A_EAT] = 2.5 * (hu - 0.35);
+      if (!RF[A_EAT] && hu > 0.35 && !water[h] && (food[h] > 0.1 || ROOT[h] > 0.05 || leafy(a, h))) RF[A_EAT] = 2.5 * (hu - 0.35);
     } else if (a.sp !== 3 || x[HB] > 0.05) RF[A_EAT] = 4 * hu * (x[HB] > 0.05 ? 1 : 0);
     if (a.sp !== 3) RF[A_DRINK] = 5 * th * x[HB + 1];
     if (a.sp === 2) RF[A_ATK] = 5 * hu * x[HB + 2];
@@ -814,6 +814,18 @@ function sim() {
             log(a.name + ' dug for roots with a stick.');
           }
         }
+      } else if (leafy(a, i)) {
+        // young leaves and shoots off the trees: a fallback when there is no fruit, as for chimpanzees, who
+        // spend about a fifth of their feeding time on leaves and lean on them when fruit is scarce. They give
+        // less a minute than ripe fruit (S.leaf of it: Kibale chimpanzees, Uwimbabazi et al. 2016); a band
+        // of apes does not strip a forest of its leaves, so the trees are not thinned.
+        const b = 0.4;
+        a.e = Math.min(100, a.e + b * 70 * a.S.leaf);
+        if (hu > 0.5) a.ev[2] = 'it ate leaves after going hungry on day ' + dn;
+        if (!firsts.leaves) {
+          firsts.leaves = 1;
+          log(a.name + ' ate leaves from the trees.');
+        }
       } else if (a.sp === 0 && f > 0.05) {
         // people cannot digest grass: chewing it gives almost nothing
         const b = Math.min(f, 0.2);
@@ -1244,7 +1256,10 @@ function fireMade(a, how) {
 // What exactly it learns is left to its own brain.
 // which hunters can climb a tree after a sleeper: big cats (leopards do) and bears; wolves cannot
 const climbs = (a) => a.sp === 2 && a.S.n !== 'Wolf';
-const SOC = { vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+// Can this creature eat leaves here? Early hominins (S.leaf, config.js), where the trees are thick enough
+// to browse, as plant-eaters do.
+const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
+const SOC = { leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {

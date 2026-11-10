@@ -88,6 +88,7 @@ const SP = [
     nv: 0.4,
     social: 0.3,
     fl: 0.8,
+    leaf: 0, // leaves give modern people almost nothing (early hominins: HOMININ.leaf)
   },
   {
     n: 'Herbivore',
@@ -357,4 +358,8 @@ const HOMININ = {
   cd: 4 * TY,
   wn: 0.4,
   nh: 8,
+  // Leaves: like chimpanzees, they can live on young leaves when fruit is short — less food a minute than
+  // ripe fruit (Kibale chimpanzees: 7.8 against 12.2 kcal a minute, Uwimbabazi et al. 2016; 4.7 against 9.7
+  // if fibre is not fermented, so 0.48–0.64). Modern people's shorter colon gets little from leaves.
+  leaf: 0.64,
 };

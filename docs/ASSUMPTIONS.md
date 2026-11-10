@@ -28,6 +28,10 @@ older parts of the model are still to be audited the same way.
 | Sleeping in trees | when settling to sleep where tree cover ≥ 0.4 | Long arms and curved fingers suggest continued part-time climbing, though they may be retained traits (debated); all great apes sleep in trees or safe places (Anderson 1998) | direction (debated); the 0.4 threshold an **assumption** |
 | A sleeper in a tree caught by a climbing hunter | × 0.35 | Leopards do take primates from sleeping trees (Busse 1980) | **assumption** |
 | Falling from a tree while asleep | 1 in 20,000 sleep steps | Falls injure and kill wild apes; one may have killed "Lucy" (Kappelman et al. 2016); no rate | **assumption** |
+| Leaves as food (when there is no fruit, roots or meat) | 0.64 of ripe fruit's food a minute; switch `--no-leaves`, value `--leaf-value` | Kibale chimpanzees: young leaves 7.8 against ripe fruit 12.2 kcal a minute with fibre fermented, 4.7 against 9.7 without (Uwimbabazi et al., PeerJ preprint 2016); chimpanzees spend about a fifth of feeding time on leaves and lean on them when fruit is scarce (Budongo 19.7%; Ngogo: Watts et al. 2012) | sourced (chimpanzee proxy; range 0.48–0.64) |
+| Where leaves can be eaten | tree cover above 0.3 (the same as plant-eaters' browsing) | — | **assumption** |
+| Eating leaves does not thin the trees | — | A band of apes eats a small share of a forest's leaves | **assumption** |
+| Modern people from leaves | nothing | Humans have a short colon and ferment little fibre; foragers eat few leaves as staple food | direction |
 | Hunters that can climb | big cats and bears, not wolves | Leopards climb; lions poorly; wolves not | direction |
 
 ## Mechanisms added in November 2026
@@ -46,3 +50,5 @@ older parts of the model are still to be audited the same way.
 - Audit the older parts of the model the same way (temperatures, energy use, foods, predators, sound…).
 - Test each **assumption** that matters at both ends of its range (sensitivity), starting with the cold and
   heat thresholds, the tree-sleeping numbers and the care weights.
+- Diet, still missing: sedges and other C4 foods (early Homo about 35% C4 by carbon isotopes, Cerling et al. 2013;
+  Paranthropus about 75%), insects, and the energy values of fruit, roots, nuts and meat (older parts, not yet audited).

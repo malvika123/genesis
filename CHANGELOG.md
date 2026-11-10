@@ -10,6 +10,10 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 - **Sleeping in trees** (patch 4): settling to sleep where a tree is big enough, a hominin climbs into it (a
   small child goes up with its mother); wolves cannot reach a sleeper there, big cats and bears find it much
   harder; now and then a sleeper falls. `--no-trees` turns it off.
+- **Leaves as a fallback food** (patch 5, first part): like chimpanzees, early hominins can live on young
+  leaves where the trees are thick enough when there is no fruit, roots or meat — less food a minute than
+  ripe fruit (0.64 of it, from Kibale chimpanzees; the evidence allows 0.48–0.64). Modern people get nothing
+  from them. `--no-leaves` turns it off, `--leaf-value` sets the share.
 - Research log entries 16 and 17: the hominin world still works (14.5 alive against 25.5 for modern humans,
   no die-outs; old age now a main cause of death); sleeping in trees made no measurable difference.
 

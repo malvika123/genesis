@@ -87,6 +87,8 @@
     { key: 'earth', kind: 'on', def: false, flag: 'earth', label: 'The real Earth, 70,000 years ago (otherwise a made-up planet)', cfg: true },
     { key: 'homeland', kind: 'off', def: true, flag: 'any-start', label: 'The band starts where our species lived (off: anywhere warm near water, the old rule)', cfg: true },
     { key: 'trees', kind: 'off', def: true, flag: 'no-trees', label: 'Early hominins sleep up in trees (off: on the ground)', cfg: true },
+    { key: 'leaves', kind: 'off', def: true, flag: 'no-leaves', label: 'Early hominins can live on leaves when fruit is short (off: they get nothing from them)', cfg: true },
+    { key: 'leafValue', kind: 'num', def: 0.64, flag: 'leaf-value', label: 'Food from leaves a minute, as a share of ripe fruit (evidence: 0.48–0.64)', min: 0, max: 1, cfg: true },
     { key: 'shield', kind: 'on', def: false, flag: 'shield-founders', label: "Predators cannot take the founding generation's young (the old rule)", cfg: true },
     { key: 'shelter', kind: 'off', def: true, flag: 'no-shelter', label: 'Branches can be heaped into a shelter (off: no more than a few to a place)', cfg: true },
     { key: 'care', kind: 'off', def: true, flag: 'no-care', label: 'Many hands feed a child; children stay close (off: only parents and grandmothers feed a child)', cfg: true },
