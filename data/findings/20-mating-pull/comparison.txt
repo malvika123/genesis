@@ -1,0 +1,33 @@
+=== pull 1
+12 paired worlds (seeds 1,2,3,4,5,6,7,8,9,10,11,12)
+per seed alive none 27 11 3 34 30 36 11 41 29 32 1 20 | pull1 31 38 0 23 47 21 9 42 6 23 12 44
+died out: none 0, pull1 1
+people_alive                 none: 22.9 ± 13.4    pull1: 24.7 ± 15.9    diff 1.75 [-8.13, 11.63]  pull1 higher in 6, lower in 6
+generations                  none: 1.9 ± 0.3      pull1: 1.8 ± 0.5      diff -0.17 [-0.53, 0.20]  pull1 higher in 1, lower in 3
+plant_eaters                 none: 77.0 ± 25.4    pull1: 65.6 ± 23.4    diff -11.42 [-29.94, 7.11]  pull1 higher in 4, lower in 7
+hunters                      none: 15.2 ± 4.2     pull1: 15.3 ± 3.2     diff 0.17 [-2.54, 2.87]  pull1 higher in 6, lower in 5
+died_hunger                  none: sum 94         pull1: sum 81         diff -1.08 [-2.91, 0.74]  pull1 higher in 5, lower in 6
+died_thirst                  none: sum 1          pull1: sum 6          diff 0.42 [-0.50, 1.33]  pull1 higher in 1, lower in 0
+died_killed_by_a_predator    none: sum 74         pull1: sum 74         diff 0.00 [-4.67, 4.67]  pull1 higher in 4, lower in 6
+died_drowned                 none: sum 36         pull1: sum 40         diff 0.33 [-1.18, 1.85]  pull1 higher in 5, lower in 4
+died_burned                  none: sum 40         pull1: sum 48         diff 0.67 [-2.09, 3.42]  pull1 higher in 3, lower in 4
+died_its_wounds              none: sum 17         pull1: sum 14         diff -0.25 [-1.81, 1.31]  pull1 higher in 6, lower in 5
+died_old_age                 none: sum 69         pull1: sum 61         diff -0.67 [-1.92, 0.58]  pull1 higher in 3, lower in 3
+died_giving_birth            none: sum 2          pull1: sum 1          diff -0.08 [-0.41, 0.24]  pull1 higher in 1, lower in 2
+
+=== pull 3
+12 paired worlds (seeds 1,2,3,4,5,6,7,8,9,10,11,12)
+per seed alive none 27 11 3 34 30 36 11 41 29 32 1 20 | pull3 24 34 1 19 51 16 2 58 23 28 5 45
+died out: none 0, pull3 0
+people_alive                 none: 22.9 ± 13.4    pull3: 25.5 ± 18.8    diff 2.58 [-7.16, 12.33]  pull3 higher in 5, lower in 7
+generations                  none: 1.9 ± 0.3      pull3: 1.8 ± 0.4      diff -0.08 [-0.41, 0.24]  pull3 higher in 1, lower in 2
+plant_eaters                 none: 77.0 ± 25.4    pull3: 72.7 ± 26.8    diff -4.33 [-25.90, 17.23]  pull3 higher in 7, lower in 5
+hunters                      none: 15.2 ± 4.2     pull3: 12.5 ± 4.8     diff -2.67 [-6.25, 0.92]  pull3 higher in 4, lower in 8
+died_hunger                  none: sum 94         pull3: sum 109        diff 1.25 [-3.17, 5.67]  pull3 higher in 7, lower in 4
+died_thirst                  none: sum 1          pull3: sum 2          diff 0.08 [-0.24, 0.41]  pull3 higher in 2, lower in 1
+died_killed_by_a_predator    none: sum 74         pull3: sum 62         diff -1.00 [-4.43, 2.43]  pull3 higher in 5, lower in 3
+died_drowned                 none: sum 36         pull3: sum 37         diff 0.08 [-2.32, 2.48]  pull3 higher in 4, lower in 6
+died_burned                  none: sum 40         pull3: sum 43         diff 0.25 [-2.13, 2.63]  pull3 higher in 4, lower in 4
+died_its_wounds              none: sum 17         pull3: sum 12         diff -0.42 [-2.24, 1.41]  pull3 higher in 4, lower in 3
+died_old_age                 none: sum 69         pull3: sum 62         diff -0.58 [-1.65, 0.48]  pull3 higher in 4, lower in 6
+died_giving_birth            none: sum 2          pull3: sum 3          diff 0.08 [-0.34, 0.51]  pull3 higher in 3, lower in 2

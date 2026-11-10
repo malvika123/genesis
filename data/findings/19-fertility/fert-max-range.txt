@@ -1,0 +1,33 @@
+=== fert-max 45 vs 50
+12 paired worlds (seeds 1,2,3,4,5,6,7,8,9,10,11,12)
+per seed alive 50 27 11 3 34 30 36 11 41 29 32 1 20 | 45 27 15 3 12 48 39 10 50 20 32 1 31
+died out: 50 0, 45 0
+people_alive                 50: 22.9 ± 13.4    45: 24.0 ± 16.5    diff 1.08 [-5.28, 7.44]  45 higher in 5, lower in 3
+generations                  50: 1.9 ± 0.3      45: 1.6 ± 0.5      diff -0.33 [-0.65, -0.02]  45 higher in 0, lower in 4
+plant_eaters                 50: 77.0 ± 25.4    45: 71.0 ± 23.7    diff -6.00 [-16.42, 4.42]  45 higher in 1, lower in 8
+hunters                      50: 15.2 ± 4.2     45: 15.3 ± 5.9     diff 0.08 [-3.83, 3.99]  45 higher in 6, lower in 4
+died_hunger                  50: sum 94         45: sum 83         diff -0.92 [-3.32, 1.48]  45 higher in 2, lower in 5
+died_thirst                  50: sum 1          45: sum 1          diff 0.00 [0.00, 0.00]  45 higher in 0, lower in 0
+died_killed_by_a_predator    50: sum 74         45: sum 80         diff 0.50 [-1.96, 2.96]  45 higher in 3, lower in 4
+died_drowned                 50: sum 36         45: sum 36         diff 0.00 [-1.05, 1.05]  45 higher in 2, lower in 4
+died_burned                  50: sum 40         45: sum 39         diff -0.08 [-0.92, 0.75]  45 higher in 3, lower in 4
+died_its_wounds              50: sum 17         45: sum 20         diff 0.25 [-0.47, 0.97]  45 higher in 3, lower in 3
+died_old_age                 50: sum 69         45: sum 66         diff -0.25 [-1.23, 0.73]  45 higher in 3, lower in 3
+died_giving_birth            50: sum 2          45: sum 4          diff 0.17 [-0.20, 0.53]  45 higher in 3, lower in 1
+
+=== fert-max 55 vs 50
+12 paired worlds (seeds 1,2,3,4,5,6,7,8,9,10,11,12)
+per seed alive 50 27 11 3 34 30 36 11 41 29 32 1 20 | 55 27 11 3 33 27 36 11 41 34 33 1 20
+died out: 50 0, 55 0
+people_alive                 50: 22.9 ± 13.4    55: 23.1 ± 13.6    diff 0.17 [-0.98, 1.31]  55 higher in 2, lower in 2
+generations                  50: 1.9 ± 0.3      55: 1.9 ± 0.3      diff 0.00 [0.00, 0.00]  55 higher in 0, lower in 0
+plant_eaters                 50: 77.0 ± 25.4    55: 76.3 ± 24.9    diff -0.75 [-3.39, 1.89]  55 higher in 2, lower in 2
+hunters                      50: 15.2 ± 4.2     55: 16.1 ± 3.6     diff 0.92 [-0.34, 2.17]  55 higher in 3, lower in 0
+died_hunger                  50: sum 94         55: sum 94         diff 0.00 [-0.54, 0.54]  55 higher in 1, lower in 1
+died_thirst                  50: sum 1          55: sum 0          diff -0.08 [-0.27, 0.10]  55 higher in 0, lower in 1
+died_killed_by_a_predator    50: sum 74         55: sum 73         diff -0.08 [-0.27, 0.10]  55 higher in 0, lower in 1
+died_drowned                 50: sum 36         55: sum 36         diff 0.00 [-0.98, 0.98]  55 higher in 2, lower in 1
+died_burned                  50: sum 40         55: sum 37         diff -0.25 [-0.80, 0.30]  55 higher in 0, lower in 1
+died_its_wounds              50: sum 17         55: sum 17         diff 0.00 [0.00, 0.00]  55 higher in 0, lower in 0
+died_old_age                 50: sum 69         55: sum 71         diff 0.17 [-0.20, 0.53]  55 higher in 1, lower in 0
+died_giving_birth            50: sum 2          55: sum 2          diff 0.00 [0.00, 0.00]  55 higher in 0, lower in 0

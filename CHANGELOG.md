@@ -26,8 +26,8 @@ Genesis follows the version in `package.json`. Experiments should state the vers
   16–36 years (mean 26): a scaling error found while tracing why half the women never had a baby.
   `--human-fertility` restores the old rule for comparison. Research log entry 19: births per world 12.2 → 25.7, 22.9 alive
   against 14.1 (better in 10 of 12 worlds).
-- An inborn pull of a ready adult toward a ready partner (`--lust N`), from the evidence on primate sexual
-  motivation; built but off until it has been tested.
+- **An inborn pull of a ready adult toward a ready partner** (`--lust N`, 2), from the evidence on primate sexual
+  motivation (Wallen 2001). Research log entry 20: births rose a little (25.7 → 26.8 at 1, 28.0 at 3), survival within noise.
 - Lightning is a flash of about a third of a second, and no longer hangs on the screen while the world is
   paused; hominins asleep up a tree are drawn in the crown of one of the trees, not in the air between them.
 

@@ -95,7 +95,7 @@
     { key: 'grassEye', kind: 'on', def: false, flag: 'grass-looks-like-food', label: 'People and hominins see grass as food, though they cannot digest it (the old rule)', cfg: true },
     { key: 'lossResume', kind: 'off', def: true, flag: 'no-loss-resume', label: 'A mother who loses a nursing baby can conceive again soon (off: she waits the full nursing time)', cfg: true },
     { key: 'resumeDays', kind: 'num', def: 74, flag: 'resume-days', label: 'Days after losing a nursing baby until a mother can conceive (evidence: 45–94)', min: 0, max: 2000, cfg: true },
-    { key: 'lust', kind: 'num', def: 0, flag: 'lust', label: 'Inborn pull of a ready adult toward a ready partner (0: none; an assumption, tested at 1 and 3)', min: 0, max: 10, cfg: true },
+    { key: 'lust', kind: 'num', def: 2, flag: 'lust', label: 'Inborn pull of a ready adult toward a ready partner (0: none; an assumption, tested at 1 and 3)', min: 0, max: 10, cfg: true },
     { key: 'leaves', kind: 'off', def: true, flag: 'no-leaves', label: 'Early hominins can live on leaves when fruit is short (off: they get nothing from them)', cfg: true },
     { key: 'leafValue', kind: 'num', def: 0.64, flag: 'leaf-value', label: 'Food from leaves a minute, as a share of ripe fruit (evidence: 0.48–0.64)', min: 0, max: 1, cfg: true },
     { key: 'shield', kind: 'on', def: false, flag: 'shield-founders', label: "Predators cannot take the founding generation's young (the old rule)", cfg: true },

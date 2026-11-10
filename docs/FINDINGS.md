@@ -37,6 +37,7 @@ Entries are kept even when the result was "no effect" or "it made things worse" 
 | (Analysis) Predator risk under cooperative care, per person-day at risk | Exposure unchanged; individual risk not clearly changed; encounters +50% but less often fatal; 86–94% of victims had no grown person in reach | moderate (isolation) / weak (risk) |
 | **Not** measurable: early hominins sleeping in trees (they did, most nights) | 16.2 vs 14.5 alive; predator deaths 75 vs 69 | moderate (no effect) |
 | Hominins fertile until about 50, as wild chimpanzees (they had kept people's rule, which ended it at about 26) | Births per world 12.2 → 25.7; 22.9 vs 14.1 alive, better in 10 of 12 worlds | strong |
+| An inborn pull toward a ready partner | Births 25.7 → 28.0 at the strongest; survival within noise | weak |
 | **Not** measurable: early hominins living on leaves when fruit is short | 14.6 vs 14.8 alive, hunger deaths 168 vs 204 (24 worlds, within noise) | none |
 | (Scenario) Early hominin bodies and lives instead of modern ones | 14.5 vs 25.5 alive, no die-outs; old age a main cause of death (shorter, chimpanzee-like life) | weak–moderate (confounded) |
 | **Not** a must-have: bigger brains on their own | 64 units: 8.2 alive, 256: 6.1, 1,024: 2.2 | strong |
@@ -631,9 +632,44 @@ had a ready man beside her only about 16% of her ready time.
 **Interpretation.** The largest single reason the band shrank was not a missing piece of nature but a modern-human
 number that should have changed with the hominins' life history. Nothing was tuned: the fix follows the evidence.
 
-**Strength.** Strong for the effect (paired worlds, large, range clear of zero). The limit of 50 is to be tested at
-45 and 55. **Lesson:** when one scenario's numbers are scaled, check every rule that depends on them; and measure
+**The limit's range** (`--fert-max`, the same 12 worlds): 45 gave 24.0 alive and 26.4 births a world, 55 gave 23.1
+and 25.6, against 22.9 and 25.7 at 50 — within noise either way ([45](../data/findings/19-fertility/fert-max-45.csv),
+[55](../data/findings/19-fertility/fert-max-55.csv), [comparison](../data/findings/19-fertility/fert-max-range.txt)).
+The result does not depend on where in the evidence's range the limit is set.
+
+**Strength.** Strong for the effect (paired worlds, large, range clear of zero), robust across the limit's range. **Lesson:** when one scenario's numbers are scaled, check every rule that depends on them; and measure
 births as well as deaths.
+
+### 20. An inborn pull toward a ready partner — Nov 2026
+
+**Version.** Unreleased (after 0.7.0) · the change: commit `8dc28f1` (`--lust N`); the test ran on `8398793` with entry 19's fix. Run by Claude.
+
+**Data.** Raw tables: [none](../data/findings/20-mating-pull/none.csv) · [pull 1](../data/findings/20-mating-pull/pull-1.csv) · [pull 3](../data/findings/20-mating-pull/pull-3.csv) · [the comparison](../data/findings/20-mating-pull/comparison.txt). Re-run: `node tools/experiment.js --seeds 1-12 --days 60 --lust 1 --workers 4 --out pull1.csv` (and `--lust 3`, `--lust 0`).
+
+**Added.** A ready adult is drawn toward a ready partner it senses, and to mate when one is beside it. Before, readiness
+could be sensed but nothing pulled toward it: mating had to be found by chance and learned. (The owner's idea, after
+the trace in entry 19 found a ready woman had a ready man beside her only about 16% of her ready time.)
+
+**Real-world basis.** In primates hormones govern the wish to mate more than the ability (Wallen 2001); chimpanzee
+males seek out females in full swelling, and most mating happens then (Deschner et al. 2004). The strength has no
+research number: tested at both ends of a plausible range, 1 and 3; the default is the middle, 2.
+
+**Test.** 12 worlds × 60 days, seeds 1–12, the same starting worlds with no pull, 1 and 3.
+
+| | People alive | Worlds died out | Born per world | Hunger | Predators |
+|---|---|---|---|---|---|
+| No pull | 22.9 ± 13.4 | 0 | 25.7 | 94 | 74 |
+| Pull 1 | 24.7 ± 15.9 | 1 | 26.8 | 81 | 74 |
+| Pull 3 | 25.5 ± 18.8 | 0 | 28.0 | 109 | 62 |
+
+**Result.** Births rose a little with the pull's strength (25.7 → 26.8 → 28.0 a world); survival changed within
+noise at both ends (+1.8 and +2.6; ranges from −8 to +12). The result does not flip across the range.
+
+**Interpretation.** Once fertility was fixed (entry 19), finding a partner was not a large limit; the pull is kept
+because the evidence supports it, not for its effect.
+
+**Strength.** Weak (a small rise in births; survival within noise). **Lesson:** a good idea about one bottleneck
+(meeting partners) can matter less once a bigger one (fertility ending at 26) is gone.
 
 ---
 
