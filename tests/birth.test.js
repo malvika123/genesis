@@ -51,3 +51,41 @@ test('no person is born before a whole pregnancy has passed, and the log never s
   assert.ok(!st.ag.some((o) => o.sp === 0 && o.mom && o.age < first - 1), 'no babies yet');
   assert.ok(!st.events.some((e) => /was born to|had a baby|had twins/.test(e.s)), 'and no birth in the log');
 });
+
+// An inborn pull toward a ready partner (Wallen 2001): with it, ready adults beside each other conceive
+// sooner than when mating must be found by chance and learned.
+test('ready adults are drawn to mate: conception comes sooner with the inborn pull', () => {
+  const wait = (lust) => {
+    const E = createEngine();
+    E.setSeed(6);
+    E.reset({ predators: 0, people: 60, lust });
+    const ad = E.state().ag.filter((a) => a.sp === 0 && a.age >= a.S.smat && a.age < a.lf * a.S.fert),
+      women = ad.filter((a) => a.sex),
+      when = new Map();
+    for (let t = 0; t < E.DAY; t++) {
+      for (const a of ad) if (!a.preg) Object.assign(a, { cd: 0, e: 95, w: 95 });
+      E.sim();
+      for (const w of women) if (w.preg && !when.has(w)) when.set(w, t);
+    }
+    return women.reduce((s, w) => s + (when.has(w) ? when.get(w) : E.DAY), 0) / women.length;
+  };
+  const without = wait(0),
+    withPull = wait(3);
+  assert.ok(withPull < without, 'steps to conception with the pull ' + withPull.toFixed(1) + ', without ' + without.toFixed(1));
+});
+
+// Wild chimpanzees have no menopause (Emery Thompson et al. 2007): an early hominin stays fertile to the end of
+// its life; modern people stop at about 60% of theirs.
+test('early hominins stay fertile for life; people stop at about 60% of theirs', () => {
+  const fertileLate = (cfg) => {
+    const E = createEngine();
+    E.setSeed(3);
+    E.reset(Object.assign({ predators: 0 }, cfg));
+    const w = E.state().ag.find((a) => a.sp === 0 && a.sex);
+    Object.assign(w, { lf: 50 * E.TY, age: 40 * E.TY, cd: 0, e: 95, w: 95, asleep: false, preg: null });
+    E.sim();
+    return w.age < w.lf * w.S.fert;
+  };
+  assert.strictEqual(fertileLate({}), true, 'a hominin of 40, with a life of 50, can still conceive');
+  assert.strictEqual(fertileLate({ humanFertility: true }), false, 'under the old rule she could not');
+});

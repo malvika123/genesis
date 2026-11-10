@@ -21,7 +21,9 @@ function reset(cfg = {}) {
   ERA = cfg.sapiens || cfg.scenario === 'sapiens' ? 'sapiens' : 'hominin'; // which world (state.js)
   // their bodies and lives: modern people's, or early hominins' (config.js)
   Object.assign(KBIO[0], PERSON_BIO, ERA === 'hominin' ? HOMININ : {});
+  if (ERA === 'hominin' && cfg.humanFertility) KBIO[0].fert = PERSON_BIO.fert; // the old rule, for comparison: fertility ends at 60% of life, as in people
   if (ERA === 'hominin' && cfg.leafValue !== undefined) KBIO[0].leaf = Number(cfg.leafValue); // test the ends of its range
+  SOC.lust = cfg.lust === undefined ? 0 : Number(cfg.lust); // inborn pull toward a ready partner (off until tested: research log)
   SOC.leaves = cfg.leaves !== false; // off: early hominins get nothing from leaves, as modern people (for comparison)
   SOC.trees = cfg.trees !== false; // off: early hominins sleep on the ground (for comparison)
   SOC.shield = !!cfg.shield; // on: the old rule that predators cannot take the founding generation's young

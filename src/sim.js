@@ -289,6 +289,14 @@ function sim() {
       // and hunger alone makes any primate try putting plants in its mouth: a weaker pull, which the
       // gut then rewards or not
       if (!RF[A_EAT] && hu > 0.35 && !water[h] && (food[h] > 0.1 || ROOT[h] > 0.05 || leafy(a, h))) RF[A_EAT] = 2.5 * (hu - 0.35);
+      // Sexual motivation is inborn: at maturity, hormones make a partner who is ready too attractive (in
+      // primates hormones govern the wish to mate more than the ability: Wallen 2001; chimpanzee males seek
+      // out females in full swelling, Deschner et al. 2004). A ready adult is drawn toward a ready partner it
+      // senses, and to mate when one is beside it. Whom it mates with, and everything else, is still its own.
+      if (a.rd && SOC.lust > 0) {
+        for (let s = 0; s < 8; s++) RF[s] += SOC.lust * x[s * NCH + 6];
+        if (x[HB + 3]) RF[A_MATE] = Math.max(RF[A_MATE], SOC.lust);
+      }
     } else if (a.sp !== 3 || x[HB] > 0.05) RF[A_EAT] = 4 * hu * (x[HB] > 0.05 ? 1 : 0);
     if (a.sp !== 3) RF[A_DRINK] = 5 * th * x[HB + 1];
     if (a.sp === 2) RF[A_ATK] = 5 * hu * x[HB + 2];
@@ -1259,7 +1267,7 @@ const climbs = (a) => a.sp === 2 && a.S.n !== 'Wolf';
 // Can this creature eat leaves here? Early hominins (S.leaf, config.js), where the trees are thick enough
 // to browse, as plant-eaters do.
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { lust: 0, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {

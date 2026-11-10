@@ -362,4 +362,9 @@ const HOMININ = {
   // ripe fruit (Kibale chimpanzees: 7.8 against 12.2 kcal a minute, Uwimbabazi et al. 2016; 4.7 against 9.7
   // if fibre is not fermented, so 0.48–0.64). Modern people's shorter colon gets little from leaves.
   leaf: 0.64,
+  // Fertility: wild chimpanzees have no menopause — fertility fades with the body's ageing, about half of
+  // the females who live past 40 give birth again, the oldest known wild mother was about 55 (Emery Thompson
+  // et al. 2007). So a hominin can have young until the end of its own life (people: until about 60% of it,
+  // around 50). The gentle fall in fertility after about 35 is not modelled.
+  fert: 1,
 };

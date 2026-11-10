@@ -4,6 +4,12 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Early hominins fertile for life**, as wild chimpanzees are (no menopause: Emery Thompson et al. 2007). They had
+  kept modern people's rule — fertility ending at 60% of life — which, with their shorter lives, ended it at
+  16–36 years (mean 26): a scaling error found while tracing why half the women never had a baby.
+  `--human-fertility` restores the old rule for comparison.
+- An inborn pull of a ready adult toward a ready partner (`--lust N`), from the evidence on primate sexual
+  motivation; built but off until it has been tested.
 - Lightning is a flash of about a third of a second, and no longer hangs on the screen while the world is
   paused; hominins asleep up a tree are drawn in the crown of one of the trees, not in the air between them.
 
