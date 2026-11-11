@@ -242,34 +242,31 @@ test('with --africa-animals, early hominins share their world with antelopes, hy
 // Flight as primates do: afraid, with a hunter in sight, a hominin under a big tree feels a pull to climb it (vervets,
 // baboons, chimpanzees). Climbing is its own choice, so not every one climbs every time; but with the pull they climb
 // more often than without it.
-test('afraid hominins with a hunter in sight climb trees more often with the inborn pull than without', () => {
-  const upRate = (seed, cfg) => {
+test('afraid hominins with a hunter in sight are more likely to choose to climb with the inborn pull than without', () => {
+  // the brain's own chance of choosing to climb (each step's choice is still its own)
+  const chance = (seed, cfg) => {
     const E = createEngine();
     E.setSeed(seed);
     E.reset(Object.assign({}, cfg));
     const st = E.state(),
       hs = st.ag.filter((a) => a.sp === 0 && a.age >= a.S.mat).slice(0, 8),
       c = st.ag.find((a) => a.sp === 2);
-    let n = 0,
-      k = 0;
-    for (const h of hs) {
-      h.up = false;
-      for (let t = 0; t < 10; t++) {
-        Object.assign(h, { fear: 0.8, sl: 0, asleep: false, e: 90, w: 90 });
+    let sum = 0,
+      n = 0;
+    for (const h of hs)
+      for (let t = 0; t < 5; t++) {
+        Object.assign(h, { fear: 0.8, sl: 0, asleep: false, e: 90, w: 90, up: false });
         E.forest().tree[E.idx(h.x, h.y)] = 0.8;
         Object.assign(c, { x: (h.x + 1) % E.W, y: h.y, asleep: false, e: 100 }); // close enough to sense
         E.sim();
+        sum += h.z[E.A_CLIMB];
         n++;
-        if (h.up) k++;
       }
-    }
-    return k / n;
+    return sum / n;
   };
-  let pull = 0,
-    none = 0;
   for (const seed of [3, 5, 7, 9]) {
-    pull += upRate(seed, {});
-    none += upRate(seed, { oldFlight: true });
+    const pull = chance(seed, {}),
+      none = chance(seed, { oldFlight: true });
+    assert.ok(pull > none, 'world ' + seed + ': chance to climb ' + pull.toFixed(3) + ' with the pull, ' + none.toFixed(3) + ' without');
   }
-  assert.ok(pull > none, 'up a tree with the pull ' + (pull / 4).toFixed(2) + ' of the time, without ' + (none / 4).toFixed(2));
 });
