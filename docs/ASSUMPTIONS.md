@@ -69,6 +69,13 @@ took the Taung child: Berger & Clarke 1995); pigs, horses (*Eurygnathohippus*), 
 | Length of the practice | 10 days (about 3 years) for every founder (`--practice-days`) | Young chimpanzees travel with their mothers 4–5 years after weaning; real founders' experience would grow with their age | **assumption** (to test at 5 and 20 days) |
 | During practice nobody dies | — | A device: as children are kept alive by their mothers while they learn | **assumption** |
 
+## Starving (12 November 2026)
+
+| Setting | Value | Evidence | Status |
+|---|---|---|---|
+| How hunger is felt | smoothly, 3 × hunger² (the old sudden extra jolt below 15% energy removed; `--old-starving` restores it) | The hunger hormone ghrelin rises in proportion to time since the last meal and falls after eating (reviews; Siberian hamsters); no evidence of a sudden jump in the feeling | direction |
+| The refeeding signal | below a critical reserve (15%), the urge to search for food doubles | Late in fasting, below a critical body mass, animals sharply increase food seeking: rats about 10× more active (Koubi et al. 1991), emperor penguins abandon their eggs to feed before reserves are lethal (Robin et al. 1998); the signal may come before the metabolic switch in the wild (Adélie penguins, 2016) | direction sourced; the 15% level (range 10–25) and the doubling **assumptions** |
+
 ## Mother's pull, the female cycle, mood (12 November 2026)
 
 | Setting | Value | Evidence | Status |

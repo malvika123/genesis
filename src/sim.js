@@ -246,7 +246,7 @@ function sim() {
       D = [
         a.painA * a.g.b,
         a.painW * a.g.b,
-        3 * hu * hu + (a.e < 15 ? 1 : 0),
+        3 * hu * hu + (SOC.refeed ? 0 : a.e < 15 ? 1 : 0), // hunger is felt smoothly; the old rule added a sudden jolt below 15
         3 * th * th + (a.w < 15 ? 1 : 0),
         0.5 * a.sl * a.sl,
         0,
@@ -379,7 +379,11 @@ function sim() {
       const hh = idx(a.x, a.y),
         mh = meatAt(a.x, a.y, 0),
         atHand = !water[hh] && (fruit[hh] > 0.05 || COOK[hh] > 0.05 || (mh && !rotten(mh) && mh.meat > 0.05) || (hu > 0.35 && ROOT[hh] > 0.05)),
-        seek = atHand ? 0 : 2.5 * thr(hu);
+        // The refeeding signal: late in a fast, below a critical reserve, animals turn sharply to finding food — fasting rats
+        // about ten times more active (Koubi et al. 1991), emperor penguins leave their eggs to go and feed before reserves
+        // are lethal (Robin et al. 1998). Below the critical level the urge to search doubles (the level and the doubling are
+        // assumptions: docs/ASSUMPTIONS.md).
+        seek = atHand ? 0 : 2.5 * thr(hu) * (SOC.refeed && a.e < SOC.refeedAt ? 2 : 1);
       for (let s = 0; s < 8; s++) {
         RF[s] += seek * x[s * NCH + 1] + 2.5 * thr(th) * x[s * NCH];
         const p = x[s * NCH + 5];
@@ -1381,7 +1385,7 @@ const hunterSeen = (x) => {
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { refeed: true, refeedAt: 15, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {

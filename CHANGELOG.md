@@ -4,6 +4,9 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Starving, as animals do:** hunger is felt smoothly (a sudden jolt of discomfort below 15% energy is gone), and
+  below a critical reserve the urge to search for food doubles — the refeeding signal (fasting rats, emperor penguins).
+  `--old-starving` restores the old rule; `--refeed-at` sets the critical reserve.
 - **A mother keeps her nursing child near** (a pull scaled by her inherited care), **females have a cycle** (receptive
   about 13 of 36 days, fertile near ovulation), and **a lasting mood** colours how things feel. `--no-mother-pull`,
   `--no-cycle`, `--no-mood` restore the old rules.
