@@ -95,6 +95,7 @@
     { key: 'grassEye', kind: 'on', def: false, flag: 'grass-looks-like-food', label: 'People and hominins see grass as food, though they cannot digest it (the old rule)', cfg: true },
     { key: 'lossResume', kind: 'off', def: true, flag: 'no-loss-resume', label: 'A mother who loses a nursing baby can conceive again soon (off: she waits the full nursing time)', cfg: true },
     { key: 'resumeDays', kind: 'num', def: 74, flag: 'resume-days', label: 'Days after losing a nursing baby until a mother can conceive (evidence: 45–94)', min: 0, max: 2000, cfg: true },
+    { key: 'peopleCap', kind: 'on', def: false, flag: 'people-cap', label: 'The old fixed cap on the number of people stops mating (not biology)', cfg: true },
     { key: 'humanCare', kind: 'on', def: false, flag: 'human-care', label: 'Early hominins feed others’ children as human foragers do (the old rule); otherwise as apes: only a mother feeds her own', cfg: true },
     { key: 'oldStarving', kind: 'on', def: false, flag: 'old-starving', label: 'Starving: a sudden jolt of discomfort below 15% energy (the old rule); otherwise hunger is felt smoothly and below a critical reserve the urge to search for food doubles (the refeeding signal)', cfg: true },
     { key: 'refeedAt', kind: 'num', def: 20, flag: 'refeed-at', label: 'Critical reserve for the refeeding signal, % of energy (evidence: about 20, range 20–25)', min: 0, max: 60, cfg: true },

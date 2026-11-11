@@ -64,6 +64,7 @@ function buildWorld(cfg) {
   if (ERA === 'hominin' && cfg.leafValue !== undefined) KBIO[0].leaf = Number(cfg.leafValue); // test the ends of its range
   SOC.hungerFirst = cfg.oldHunger !== true; // off: hunger and thirst only add a pull, as other urges do (the old rule)
   SOC.hungerK = cfg.hungerPull === undefined ? 6 : Number(cfg.hungerPull); // how strongly need wins (an assumption; test the ends)
+  SOC.peopleCap = !!cfg.peopleCap; // on: the old fixed cap on people stops mating (not biology: food, disease and fertility limit them)
   SOC.apeCare = cfg.humanCare !== true; // on: early hominins share care for children as human foragers do (the old rule)
   SOC.refeed = cfg.oldStarving !== true; // on: the old rule (a sudden jolt of discomfort below 15% energy, no refeeding signal)
   SOC.refeedAt = cfg.refeedAt === undefined ? 20 : Number(cfg.refeedAt); // the critical reserve, %: about 20 (80% of fat gone; evidence 20–25)
@@ -142,7 +143,7 @@ function buildWorld(cfg) {
   initTalk();
   initFire();
   for (let i = 0; i < W * H; i++) food[i] *= 1 - 0.35 * tree[i]; // little grass grows in the shade of trees
-  const n = clamp(cfg.people ?? 25, 2, 40), // a band: foragers lived in groups of about 20–40
+  const n = clamp(cfg.people ?? 25, 2, 200), // a band or community: foragers' bands 20–40; chimpanzee communities about 30–80, Ngogo near 200
     nh = clamp(cfg.herbivores ?? 20, 0, 40),
     np = clamp(cfg.predators ?? 6, 0, 12),
     nf = clamp(cfg.fish ?? 24, 0, 60),
