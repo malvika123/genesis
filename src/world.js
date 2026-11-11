@@ -64,6 +64,7 @@ function buildWorld(cfg) {
   if (ERA === 'hominin' && cfg.leafValue !== undefined) KBIO[0].leaf = Number(cfg.leafValue); // test the ends of its range
   SOC.hungerFirst = cfg.oldHunger !== true; // off: hunger and thirst only add a pull, as other urges do (the old rule)
   SOC.hungerK = cfg.hungerPull === undefined ? 6 : Number(cfg.hungerPull); // how strongly need wins (an assumption; test the ends)
+  SOC.oneMove = cfg.eightWalks !== true; // on: the eight directions count as eight separate choices (the old rule)
   SOC.temper = cfg.temperament !== false; // off: everyone equally fearful (the old rule)
   SOC.pcare = cfg.parentalCare !== false; // off: every parent equally moved by its own young's hunger (the old rule)
   SOC.flight = cfg.oldFlight !== true; // off: hominins only walk away from a hunter they see (the old rule)

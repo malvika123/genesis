@@ -69,6 +69,12 @@ took the Taung child: Berger & Clarke 1995); pigs, horses (*Eurygnathohippus*), 
 | Length of the practice | 10 days (about 3 years) for every founder (`--practice-days`) | Young chimpanzees travel with their mothers 4–5 years after weaning; real founders' experience would grow with their age | **assumption** (to test at 5 and 20 days) |
 | During practice nobody dies | — | A device: as children are kept alive by their mothers while they learn | **assumption** |
 
+## Moving as one choice (12 November 2026)
+
+| Setting | Value | Evidence | Status |
+|---|---|---|---|
+| How an undecided brain weighs moving | the eight directions together count as one choice (each loses ln 8), then a direction is picked (`--eight-walks`: the old rule) | Not a number from nature but the removal of a design flaw: with eight "walk" choices among nineteen, a fresh brain walked 80% of the time and hominins walked 68–80% of their waking time. Wild chimpanzees travel roughly 15–40% of the day, feed 40–50%, rest 15–30% (Wrangham 1992; Mahale). With the fix, hominins walked 25% in their first five days — a result to check, not a target | (method) |
+
 ## Temperament and parental care (inherited; 12 November 2026)
 
 | Setting | Value | Evidence | Status |

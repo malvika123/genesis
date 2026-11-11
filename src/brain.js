@@ -197,6 +197,10 @@ function forward(w, x, h, z, nh, rf = null, zv = null, rfv = null) {
     o = k * NI;
     for (let i = 0; i < NI; i++) s += w[o + i] * x[i];
     if (rf) s += rf[k];
+    // Moving is one choice, not eight: the eight directions share the weight a single choice would have (each loses
+    // ln 8), so a brain with no preference is as likely to stay, eat or rest as to move, and then picks a way to go.
+    // Without this, eight of the choices being "walk" made an undecided brain walk eight times in nine.
+    if (k < 8 && ONEMOVE()) s -= LN8;
     z[k] = s;
     if (s > mx) mx = s;
   }
@@ -473,6 +477,8 @@ function imitateVoice(a, vc, rate) {
   a.learn += rate;
 }
 // the voice's choices: whether to make a sound, and if it speaks, how the mouth moves for each part
+const LN8 = Math.log(8),
+  ONEMOVE = () => typeof SOC === 'undefined' || SOC.oneMove !== false;
 function sampleV(zv) {
   const c = new Array(VG.length).fill(-1);
   VG.forEach(([o, n], gi) => {

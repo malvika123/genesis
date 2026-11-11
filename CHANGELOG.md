@@ -4,6 +4,10 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Moving is one choice, not eight.** Every creature's brain weighed each of eight directions as a separate choice, so an
+  undecided one walked most of the time (hominins about 70–80% of their waking time; wild chimpanzees travel about
+  15–40%). Now the eight directions share one choice's weight; in a first check hominins walked 25%. `--eight-walks`
+  restores the old rule.
 - **Hominins differ in temperament and in parental care**, both inherited: some are born bolder, some more timid (fear
   rises more or less after a bad surprise); some parents are moved more, some less, by their own young's hunger.
   `--no-temperament`, `--no-parental-care` make everyone the same.

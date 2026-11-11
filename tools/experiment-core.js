@@ -95,6 +95,7 @@
     { key: 'grassEye', kind: 'on', def: false, flag: 'grass-looks-like-food', label: 'People and hominins see grass as food, though they cannot digest it (the old rule)', cfg: true },
     { key: 'lossResume', kind: 'off', def: true, flag: 'no-loss-resume', label: 'A mother who loses a nursing baby can conceive again soon (off: she waits the full nursing time)', cfg: true },
     { key: 'resumeDays', kind: 'num', def: 74, flag: 'resume-days', label: 'Days after losing a nursing baby until a mother can conceive (evidence: 45–94)', min: 0, max: 2000, cfg: true },
+    { key: 'eightWalks', kind: 'on', def: false, flag: 'eight-walks', label: 'The eight directions count as eight separate choices, so an undecided brain mostly walks (the old rule)', cfg: true },
     { key: 'temperament', kind: 'off', def: true, flag: 'no-temperament', label: 'Inborn temperament (bold or timid) differs between individuals and is inherited (off: everyone equally fearful)', cfg: true },
     { key: 'parentalCare', kind: 'off', def: true, flag: 'no-parental-care', label: 'How strongly parents share with their own hungry young differs and is inherited (off: every parent equally)', cfg: true },
     { key: 'oldHunger', kind: 'on', def: false, flag: 'old-hunger', label: 'Hunger and thirst only add a pull, as other urges do (the old rule); otherwise they come first, with food or water in reach, and quieten exploring and copying', cfg: true },
