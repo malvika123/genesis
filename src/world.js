@@ -61,6 +61,8 @@ function buildWorld(cfg) {
   if (ERA === 'hominin' && cfg.humanFertility) KBIO[0].fert = PERSON_BIO.fert; // the old rule, for comparison: fertility ends at 60% of life, as in people
   if (ERA === 'hominin' && cfg.fertMax !== undefined) KBIO[0].fertMax = Number(cfg.fertMax) * TY; // test the ends of its range (years)
   if (ERA === 'hominin' && cfg.leafValue !== undefined) KBIO[0].leaf = Number(cfg.leafValue); // test the ends of its range
+  SOC.hungerFirst = cfg.oldHunger !== true; // off: hunger and thirst only add a pull, as other urges do (the old rule)
+  SOC.hungerK = cfg.hungerPull === undefined ? 6 : Number(cfg.hungerPull); // how strongly need wins (an assumption; test the ends)
   SOC.flight = cfg.oldFlight !== true; // off: hominins only walk away from a hunter they see (the old rule)
   SOC.kleiber = cfg.bodyScaling !== false; // off: hominins need as much food as a full-sized forager (the old rule)
   SOC.grassEye = !!cfg.grassEye; // on: people and hominins see grass as food (the old rule, for comparison)

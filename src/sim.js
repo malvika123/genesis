@@ -205,7 +205,7 @@ function sim() {
       a.bored = 0;
       if (a.age > 5) {
         a.bonus[6] +=
-          0.12 * a.g.c * S.cur * (young ? 1.3 : 1) * (a.cuT > tick ? a.cuX : 1) * (1 + 2 * a.bored);
+          0.12 * a.g.c * S.cur * (young ? 1.3 : 1) * (a.cuT > tick ? a.cuX : 1) * (1 + 2 * a.bored) * needQuiet(a);
         a.ev[6] = 'it found a new place on day ' + dn;
       }
     }
@@ -307,6 +307,21 @@ function sim() {
       }
     } else if (a.sp !== 3 || x[HB] > 0.05) RF[A_EAT] = 4 * hu * (x[HB] > 0.05 ? 1 : 0);
     if (a.sp !== 3) RF[A_DRINK] = 5 * th * x[HB + 1];
+    // Hunger and thirst come first (the owner's principle; mice: hunger overrides thirst, anxiety, fear of predators and
+    // the wish for company, most of all when food is within reach — Burnett et al. 2016). With something it can eat or
+    // drink right here, the urge to eat or drink grows steeply with need and outweighs the rest; a hunter right beside it
+    // still comes first. (Survival drives may be built in, like a brainstem: CLAUDE.md.)
+    if (a.sp === 0 && SOC.hungerFirst && !a.asleep) {
+      const hh = idx(a.x, a.y),
+        mh = meatAt(a.x, a.y, 0),
+        canEat = !water[hh] && (fruit[hh] > 0.05 || COOK[hh] > 0.05 || (mh && !rotten(mh) && mh.meat > 0.05) || ROOT[hh] > 0.05 || leafy(a, hh));
+      let close = 0;
+      for (let s = 0; s < 8; s++) close = Math.max(close, x[s * NCH + 5]);
+      if (close < 0.6) {
+        if (canEat) RF[A_EAT] += SOC.hungerK * clamp((hu - 0.3) / 0.7, 0, 1);
+        if (x[HB + 1]) RF[A_DRINK] += SOC.hungerK * clamp((th - 0.3) / 0.7, 0, 1);
+      }
+    }
     if (a.sp === 2) RF[A_ATK] = 5 * hu * x[HB + 2];
     // When tired, land animals instinctively look for a safe place to sleep before they drop off —
     // chimpanzees build a nest in the trees every evening. A gentle pull toward cover and toward their
@@ -546,6 +561,7 @@ function sim() {
         const unsure = SOC.pick ? ent / Math.log(NA) : 0.85,
           rate =
             S.imit *
+            needQuiet(a) *
             (young ? 3 : 1) *
             (a.g.im ?? 1) *
             (1 - pb + 2 * pb * okay(tch)) *
@@ -1317,13 +1333,16 @@ const MEAL = (a) => (a.sp === 0 && SOC.kleiber ? 1 / (a.S.size || 1) : 1),
   BURN = (a) => (a.sp === 0 && SOC.kleiber ? (a.S.size || 1) ** -0.25 : 1);
 // Can this creature eat leaves here? Early hominins (S.leaf, config.js), where the trees are thick enough
 // to browse, as plant-eaters do.
+// Hunger and thirst quieten the urge to explore and to copy others (hungry young animals stop playing: Siviy & Panksepp),
+// from no effect when fed to none left when starving or parched. 1 when switched off (the old rule).
+const needQuiet = (a) => (a.sp === 0 && SOC.hungerFirst ? 1 - clamp((Math.max(1 - a.e / 100, 1 - a.w / 100) - 0.3) / 0.7, 0, 1) : 1);
 // a hunter in sight (or heard close by), from the senses
 const hunterSeen = (x) => {
   for (let s = 0; s < 8; s++) if (x[s * NCH + 5] > 0.1) return true;
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {

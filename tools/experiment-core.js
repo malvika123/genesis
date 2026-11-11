@@ -95,6 +95,8 @@
     { key: 'grassEye', kind: 'on', def: false, flag: 'grass-looks-like-food', label: 'People and hominins see grass as food, though they cannot digest it (the old rule)', cfg: true },
     { key: 'lossResume', kind: 'off', def: true, flag: 'no-loss-resume', label: 'A mother who loses a nursing baby can conceive again soon (off: she waits the full nursing time)', cfg: true },
     { key: 'resumeDays', kind: 'num', def: 74, flag: 'resume-days', label: 'Days after losing a nursing baby until a mother can conceive (evidence: 45–94)', min: 0, max: 2000, cfg: true },
+    { key: 'oldHunger', kind: 'on', def: false, flag: 'old-hunger', label: 'Hunger and thirst only add a pull, as other urges do (the old rule); otherwise they come first, with food or water in reach, and quieten exploring and copying', cfg: true },
+    { key: 'hungerPull', kind: 'num', def: 6, flag: 'hunger-pull', label: 'How strongly hunger and thirst win when food or water is in reach (an assumption)', min: 0, max: 20, cfg: true },
     { key: 'naive', kind: 'on', def: false, flag: 'naive-founders', label: 'Founders start with blank minds (the old rule); otherwise they practise their kind’s ordinary life for a few years before the world begins', cfg: true },
     { key: 'practiceDays', kind: 'num', def: 10, flag: 'practice-days', label: 'Days of founders’ practice before the world begins (an assumption; 10 days is about 3 years)', min: 0, max: 100, cfg: true },
     { key: 'lust', kind: 'num', def: 2, flag: 'lust', label: 'Inborn pull of a ready adult toward a ready partner (0: none; an assumption, tested at 1 and 3)', min: 0, max: 10, cfg: true },
