@@ -21,10 +21,11 @@ function reset(cfg = {}) {
   ERA = cfg.sapiens || cfg.scenario === 'sapiens' ? 'sapiens' : 'hominin'; // which world (state.js)
   // their bodies and lives: modern people's, or early hominins' (config.js)
   Object.assign(KBIO[0], PERSON_BIO, ERA === 'hominin' ? HOMININ : {});
-  // the animals: those of East Africa 2.5 million years ago in the hominin world, the ice-age ones otherwise
-  // (cfg.iceAnimals keeps the ice-age ones among hominins, for comparison)
+  // the animals: the ice-age ones by default; those of East Africa 2.5 million years ago among hominins when
+  // cfg.africaAnimals is on. Off by default until the balance of hunters to prey follows the evidence (about 90 kg of
+  // each carnivore to 10,000 kg of prey: Carbone & Gittleman 2002); research log entry 24.
   for (let k = 1; k < KINDS.length; k++) {
-    const K = ERA === 'hominin' && !cfg.iceAnimals && HKINDS[k] ? HKINDS[k] : ICE_KINDS[k];
+    const K = ERA === 'hominin' && cfg.africaAnimals && HKINDS[k] ? HKINDS[k] : ICE_KINDS[k];
     for (const key of Object.keys(KINDS[k])) delete KINDS[k][key];
     Object.assign(KINDS[k], JSON.parse(JSON.stringify(K)));
     const b = bioOf(KINDS[k]);

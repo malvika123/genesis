@@ -1,0 +1,9 @@
+day 0 {"Hyena":2,"Leopard":2,"Sabre-tooth":2}
+day 5 {"Hyena":3,"Leopard":5,"Sabre-tooth":4}
+day 10 {"Hyena":4,"Leopard":4,"Sabre-tooth":6}
+day 15 {"Hyena":7,"Leopard":4,"Sabre-tooth":6}
+day 20 {"Hyena":8,"Sabre-tooth":4,"Leopard":4}
+day 25 {"Hyena":8,"Sabre-tooth":5,"Leopard":4}
+day 30 {"Hyena":9,"Sabre-tooth":4,"Leopard":3}
+hunter deaths {"Leopard: killed by a predator":2,"Hyena: killed by a predator":8,"Sabre-tooth: hunger":1,"Sabre-tooth: killed by a predator":4,"Leopard: old age":1,"Leopard: hunger":1,"Sabre-tooth: drowned":1}
+hunter births {"Hyena":15,"Sabre-tooth":8,"Leopard":5} kills by hunters [0,19,14,0] hunter steps starving (e<20) {"Leopard":644,"Hyena":718,"Sabre-tooth":577}

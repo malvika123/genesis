@@ -743,6 +743,39 @@ the same size (Pontzer et al. 2016).
 
 **Strength.** Weak. Kept because the law is well established.
 
+### 24. The animals of East Africa 2.5 million years ago — and too many hunters for the prey — Nov 2026
+
+**Version.** Unreleased (after 0.7.0) · the change: commit `8125bdc` (now `--africa-animals`, off by default); the test ran on `c9ebda9` (then on by default; `--ice-animals` was the old world). The trace: `tools/analysis/hunters-trace.js`. Run by Claude.
+
+**Data.** [Ice-age animals](../data/findings/24-africa-animals/ice-age-animals.csv) · [East African animals](../data/findings/24-africa-animals/africa-animals.csv) · [the comparison](../data/findings/24-africa-animals/comparison.txt) · hunter traces: [seed 2](../data/findings/24-africa-animals/hunters-trace-seed-2.txt), [seed 6](../data/findings/24-africa-animals/hunters-trace-seed-6.txt), [seed 1, 30 days](../data/findings/24-africa-animals/hunters-trace-seed-1-30d.txt), [same, ice-age](../data/findings/24-africa-animals/hunters-trace-seed-1-30d-ice.txt).
+
+**Added.** Patch 6, first part: in the hominin world, antelopes, hares, buffalo, spotted hyenas, leopards and sabre-toothed cats
+(*Megantereon*) in place of deer, rabbits, bison, wolves, big cats and bears, with living relatives' life histories
+(`docs/ASSUMPTIONS.md`). Leopards and sabre-tooths climb, hyenas do not; every hyena female breeds.
+
+**Test.** 12 worlds × 60 days, the same starting worlds with the ice-age and the East African animals.
+
+| | People alive | Plant-eaters | Hunters | Hominins killed by hunters | Hunger |
+|---|---|---|---|---|---|
+| Ice-age animals | 23.6 ± 13.1 | 71.3 | **11.3** | 84 | 93 |
+| East African animals | 19.0 ± 11.5 | 55.4 | **3.2** | 113 | 103 |
+
+**Result.** The hunters **nearly died out**: 3.2 a world at day 60 against 11.3, fewer in all 12 worlds (range −11.0 to −5.3);
+none left in two. Hominins fared somewhat worse (−4.6, within noise).
+
+**Tracing it** (seeds 2 and 6, 60 days): the hunters **starved** — in seed 2 they killed only 2 plant-eaters in 60 days; 16 died
+of hunger; starving ones ate their own kind (an old rule). The ice-age hunters had survived on two things the African ones lack:
+the bear ate plants, and wolves have 3–6 pups from age 2 against the hyena's 1–3 from about 3.5 — both true to life.
+
+**Interpretation.** The new animals exposed an older error: Genesis has far too many hunters for its prey. Across 25 carnivore
+species about 10,000 kg of prey supports about 90 kg of each (Carbone & Gittleman 2002); Genesis starts with about 8 kg of hunter
+per 100 kg of prey — about nine times too many — and its world (about 90,000 km²) holds a few dozen plant-eaters where the
+Serengeti alone holds over a million. **Decision:** the East African animals stay in the code but off by default (`--africa-animals`)
+until abundance follows the evidence; this is not tuning toward an outcome but a known deviation to fix first.
+
+**Strength.** Strong for the collapse (all 12 worlds); the cause traced in 3 worlds. **Lesson:** replacing one unrealistic piece can
+reveal another that the old pieces were hiding.
+
 ---
 
 ## Open questions (next tests)
@@ -752,6 +785,10 @@ the same size (Pontzer et al. 2016).
 - Hunger: does the fall in hunger deaths with cooperative care (entry 11) hold with 24+ worlds?
 - Fire: how do real apes respond to a
   wildfire (Pruetz & LaDuke 2010), and does the model lack it? Why were six victims in seed 9 striking as they died?
+- Abundance: hunters to prey should be about 90 kg per 10,000 kg (Carbone & Gittleman 2002); Genesis is about nine times off.
+  What should one animal stand for (one animal or a herd), and how large should the world be? Then switch on the East African
+  animals (entry 24).
+- Why do starving hominins walk but not find food (entry 22: not grass)?
 - Why do predators take children less often than chance (entry 14), if not because of the old protection
   (entry 15)? Is it children staying close to grown people?
 - Predators kill the isolated (entries 12, 14): do alarm calls that draw others close, or groups that deter a

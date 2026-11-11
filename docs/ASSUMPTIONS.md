@@ -43,7 +43,7 @@ older parts of the model are still to be audited the same way.
 
 ## The animals of East Africa about 2.5 million years ago (`HKINDS` in `src/config.js`; patch 6)
 
-Each replaces an ice-age kind in the hominin world (`--ice-animals` keeps the old ones). Life histories from the living
+Each replaces an ice-age kind in the hominin world with `--africa-animals` — **off by default** until hunters and prey are balanced (research log entry 24). Life histories from the living
 species; numbers inside the ranges given. Abundance (`cap`, `share`) and the model's own settings (speed, size relative
 to a deer or wolf) are carried over from the kinds they replace: **assumptions**. Temperature limits and habitat ranges
 (warm lands) are **direction**.
@@ -71,6 +71,12 @@ took the Taung child: Berger & Clarke 1995); pigs, horses (*Eurygnathohippus*), 
 | Children's pull to stay near carers | strength 3 (under 5) / 1.5, rising with distance and fear | Attachment is inborn (Bowlby 1969) | direction; strengths **assumptions** |
 | A heap of branches as cover | (branches − 4) / 8, at most 0.8 | Brush shelters and windbreaks keep off wind and rain | **assumption** |
 | Branches in a heap rot | 1 in 3,300 a step per branch | — | **assumption** |
+
+## Abundance (all worlds)
+
+| Setting | Value | Evidence | Status |
+|---|---|---|---|
+| Hunters to prey | at the start about 8 kg of hunter per 100 kg of prey (6 hunters, 20 plant-eaters) | About 90 kg of each carnivore species per 10,000 kg of prey, across 25 species (Carbone & Gittleman 2002) — roughly nine times fewer hunters, or more prey. And the world is about 90,000 km² with a few dozen plant-eaters, where the Serengeti (25,000 km²) holds over a million | **deviation**: the next thing to fix (what an animal stands for, the world's size or the numbers) |
 
 ## Audit of the older numbers for people and hominins (11 November 2026)
 

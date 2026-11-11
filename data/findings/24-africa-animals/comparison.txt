@@ -1,0 +1,15 @@
+12 paired worlds (seeds 1,2,3,4,5,6,7,8,9,10,11,12)
+per seed alive ice 34 14 0 21 46 19 27 18 6 32 35 31 | africa 19 5 34 11 28 40 13 22 8 28 15 5
+died out: ice 1, africa 0
+people_alive                 ice: 23.6 ± 13.1    africa: 19.0 ± 11.5    diff -4.58 [-15.72, 6.55]  africa higher in 4, lower in 8
+generations                  ice: 1.8 ± 0.5      africa: 1.6 ± 0.5      diff -0.17 [-0.53, 0.20]  africa higher in 1, lower in 3
+plant_eaters                 ice: 71.3 ± 25.7    africa: 55.4 ± 25.7    diff -15.83 [-40.43, 8.76]  africa higher in 5, lower in 7
+hunters                      ice: 11.3 ± 5.0     africa: 3.2 ± 2.7      diff -8.17 [-11.00, -5.33]  africa higher in 0, lower in 12
+died_hunger                  ice: sum 93         africa: sum 103        diff 0.83 [-2.33, 4.00]  africa higher in 6, lower in 5
+died_thirst                  ice: sum 3          africa: sum 0          diff -0.25 [-0.54, 0.04]  africa higher in 0, lower in 3
+died_killed_by_a_predator    ice: sum 84         africa: sum 113        diff 2.42 [-6.66, 11.50]  africa higher in 7, lower in 3
+died_drowned                 ice: sum 48         africa: sum 32         diff -1.33 [-4.19, 1.52]  africa higher in 4, lower in 7
+died_burned                  ice: sum 40         africa: sum 33         diff -0.58 [-3.94, 2.77]  africa higher in 3, lower in 6
+died_its_wounds              ice: sum 15         africa: sum 20         diff 0.42 [-0.22, 1.05]  africa higher in 5, lower in 2
+died_old_age                 ice: sum 60         africa: sum 56         diff -0.33 [-2.49, 1.82]  africa higher in 5, lower in 6
+died_giving_birth            ice: sum 3          africa: sum 2          diff -0.08 [-0.41, 0.24]  africa higher in 1, lower in 2
