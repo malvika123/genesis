@@ -1,0 +1,15 @@
+12 paired worlds (seeds 1,2,3,4,5,6,7,8,9,10,11,12)
+per seed alive before 31 11 1 14 46 35 19 13 17 34 20 29 | after 26 34 1 14 46 31 22 18 19 34 14 29
+died out: before 0, after 0
+people_alive                 before: 22.5 ± 12.7    after: 24.0 ± 11.9    diff 1.50 [-3.26, 6.26]  after higher in 4, lower in 3
+generations                  before: 1.7 ± 0.5      after: 1.8 ± 0.5      diff 0.08 [-0.10, 0.27]  after higher in 1, lower in 0
+plant_eaters                 before: 68.7 ± 26.1    after: 69.5 ± 28.1    diff 0.83 [-6.11, 7.77]  after higher in 4, lower in 4
+hunters                      before: 13.3 ± 6.3     after: 12.6 ± 6.0     diff -0.67 [-2.21, 0.87]  after higher in 3, lower in 3
+died_hunger                  before: sum 109        after: sum 99         diff -0.83 [-3.67, 2.00]  after higher in 4, lower in 2
+died_thirst                  before: sum 1          after: sum 1          diff 0.00 [0.00, 0.00]  after higher in 0, lower in 0
+died_killed_by_a_predator    before: sum 83         after: sum 87         diff 0.33 [-1.73, 2.40]  after higher in 3, lower in 3
+died_drowned                 before: sum 40         after: sum 45         diff 0.42 [-0.71, 1.55]  after higher in 5, lower in 3
+died_burned                  before: sum 43         after: sum 46         diff 0.25 [-0.80, 1.30]  after higher in 2, lower in 2
+died_its_wounds              before: sum 15         after: sum 12         diff -0.25 [-0.64, 0.14]  after higher in 1, lower in 4
+died_old_age                 before: sum 67         after: sum 67         diff 0.00 [-0.61, 0.61]  after higher in 2, lower in 2
+died_giving_birth            before: sum 0          after: sum 0          diff 0.00 [0.00, 0.00]  after higher in 0, lower in 0

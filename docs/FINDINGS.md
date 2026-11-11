@@ -38,6 +38,8 @@ Entries are kept even when the result was "no effect" or "it made things worse" 
 | **Not** measurable: early hominins sleeping in trees (they did, most nights) | 16.2 vs 14.5 alive; predator deaths 75 vs 69 | moderate (no effect) |
 | Hominins fertile until about 50, as wild chimpanzees (they had kept people's rule, which ended it at about 26) | Births per world 12.2 → 25.7; 22.9 vs 14.1 alive, better in 10 of 12 worlds | strong |
 | An inborn pull toward a ready partner | Births 25.7 → 28.0 at the strongest; survival within noise | weak |
+| Quicker conception after losing a nursing baby; smaller bodies needing less food | Small rises in births; hunger −21% (body size); survival within noise | weak |
+| **Not** what keeps hominins hungry: grass looking like food (a leftover, fixed) | Hunger deaths unchanged | none |
 | **Not** measurable: early hominins living on leaves when fruit is short | 14.6 vs 14.8 alive, hunger deaths 168 vs 204 (24 worlds, within noise) | none |
 | (Scenario) Early hominin bodies and lives instead of modern ones | 14.5 vs 25.5 alive, no die-outs; old age a main cause of death (shorter, chimpanzee-like life) | weak–moderate (confounded) |
 | **Not** a must-have: bigger brains on their own | 64 units: 8.2 alive, 256: 6.1, 1,024: 2.2 | strong |
@@ -670,6 +672,76 @@ because the evidence supports it, not for its effect.
 
 **Strength.** Weak (a small rise in births; survival within noise). **Lesson:** a good idea about one bottleneck
 (meeting partners) can matter less once a bigger one (fertility ending at 26) is gone.
+
+### 21. A mother who loses a nursing baby can conceive again soon — Nov 2026
+
+**Version.** Unreleased (after 0.7.0) · the change: commit `5faec78` (`--no-loss-resume`, `--resume-days`); the test ran on `c9ebda9` (later changes switched off). Run by Claude.
+
+**Data.** [Before](../data/findings/21-baby-loss/before.csv) · [after](../data/findings/21-baby-loss/after.csv) · [the comparison](../data/findings/21-baby-loss/comparison.txt). Re-run: `node tools/experiment.js --seeds 1-12 --days 60 --grass-looks-like-food --no-body-scaling --ice-animals --old-flight --workers 4` against the same with `--no-loss-resume`.
+
+**Added.** When a nursing baby dies, the mother can conceive again after 74 days instead of waiting out the four years of nursing.
+
+**Real-world basis.** Suckling holds back ovulation; women who do not nurse ovulate again 45–94 days after a birth (Jackson & Glasier
+2011). Wild chimpanzees: 26.6 months from birth to birth after a lost baby against 68.9 after a surviving one (Emery Thompson et
+al. 2007, six populations).
+
+**Test.** 12 worlds × 60 days, the same starting worlds with and without.
+
+| | People alive | Born per world | Hunger | Predators |
+|---|---|---|---|---|
+| Before | 22.5 ± 12.7 | 27.3 | 109 | 83 |
+| After | 24.0 ± 11.9 | 28.8 | 99 | 87 |
+
+**Result.** Births rose a little (27.3 → 28.8 a world); survival within noise (+1.5, range −3.3 to +6.3). Most babies who die are
+already 1.5–3.5 years old (entry 19's trace), so most of the wait has passed anyway.
+
+**Strength.** Weak. Kept because the evidence supports it.
+
+### 22. Hungry hominins no longer see grass as food — Nov 2026
+
+**Version.** Unreleased (after 0.7.0) · the change: commit `3a653bc` (`--grass-looks-like-food` restores the old rule); the test ran on `c9ebda9`. Run by Claude.
+
+**Data.** [Before](../data/findings/22-grass-sight/before.csv) · [after](../data/findings/22-grass-sight/after.csv) · [the comparison](../data/findings/22-grass-sight/comparison.txt).
+
+**Added.** Hominins' eyes counted grass as half as good as fruit — a leftover from before they stopped eating grass (8 Nov) — so
+hungry ones were drawn to meadows where there is nothing for them. Now grass is not seen as food.
+
+**Real-world basis.** They cannot digest grass leaves; early hominins ate fruit, leaves, underground storage organs and some meat.
+
+**Question.** Entry 19's trace found starving hominins walking about 75% of their time and eating in only 6–8%. Was grass-sight why?
+
+| | People alive | Worlds died out | Born per world | Hunger |
+|---|---|---|---|---|
+| Before | 24.0 ± 11.9 | 0 | 28.8 | 99 |
+| After | 20.4 ± 14.6 | 1 | 23.9 | 118 |
+
+**Result.** **No** — hunger deaths did not fall (99 → 118, within noise); survival within noise (−3.6, range −10.9 to +3.8). The
+guess was wrong; why starving hominins do not find food is still open.
+
+**Strength.** None. The fix stays because it is right, not because it helped. **Lesson:** a plausible cause found in the code is
+still a guess until a test says so.
+
+### 23. Smaller bodies need less food — Nov 2026
+
+**Version.** Unreleased (after 0.7.0) · the change: commit `5126b94` (`--no-body-scaling`); the test ran on `c9ebda9`. Run by Claude.
+
+**Data.** [Before](../data/findings/23-body-size/before.csv) · [after](../data/findings/23-body-size/after.csv) · [the comparison](../data/findings/23-body-size/comparison.txt).
+
+**Added.** Kleiber's law for hominins, as plant-eaters here already had: at three-quarters of a forager's mass, a hominin gets a
+larger share of its store from the same food (1/0.75) and burns it a little faster (0.75^−0.25) — about 0.81 of the food in all.
+Found by the audit of older numbers: hominins had been eating and burning energy as full-sized foragers.
+
+**Real-world basis.** Energy use grows with mass^0.75 (Kleiber's law). Not included: apes' lower metabolic rate than people's at
+the same size (Pontzer et al. 2016).
+
+| | People alive | Born per world | Hunger | Predators |
+|---|---|---|---|---|
+| Before | 20.4 ± 14.6 | 23.9 | 118 | 85 |
+| After | 23.6 ± 13.1 | 27.4 | 93 | 84 |
+
+**Result.** Hunger deaths fell by about a fifth (118 → 93) and survival rose by 3.2, both within noise (range −7.8 to +14.2).
+
+**Strength.** Weak. Kept because the law is well established.
 
 ---
 
