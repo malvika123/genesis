@@ -4,6 +4,11 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Founders know what their kind has always known** (the owner's idea): before the world begins they practise their
+  kind's ordinary life for about three years, learning only from what their bodies feel, with nobody able to die;
+  then the world is built again, identical, and each founder keeps what it learned. Children are still born knowing
+  nothing. Tools, fire and words are still to be discovered. `--naive-founders` restores blank minds; the bare engine
+  (quick tests) builds blank-minded founders unless asked. Analysis tools: `hunger-trace.js`, `generations.js`.
 - **Climbing is a choice, not automatic.** Early hominins have a new action, *climb a tree* (or, up one, *climb
   down*), which their brains choose and learn like eating; sleepiness under a big tree and fear of a hunter in sight
   pull toward it, so individuals differ, as real apes do. Only a baby clinging to its mother is automatic (the grasp

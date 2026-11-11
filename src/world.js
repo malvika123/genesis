@@ -10,7 +10,33 @@ const plural = (n) =>
       : n === 'Wolf'
         ? 'Wolves'
         : n + 's';
+// A new world. Founders arrive knowing what their kind has always known — what to eat, what hurts, where danger is —
+// but with no memory of where they came from (tools, fire and words are still to be discovered). They learn it the
+// ordinary way, from what their bodies feel, in a practice before the world begins: the world is built from its seed
+// and runs for a few years in which nobody can die (as children are kept alive by their mothers), then it is built
+// again from the same seed, identical, and each founder keeps the brain it trained. Learned knowledge is never
+// inherited, so every child is still born knowing nothing. cfg.practiceDays sets how long (the experiment runner, the
+// Lab and the page ask for 10; the engine on its own, as in quick tests, builds blank-minded founders); cfg.naive skips it.
 function reset(cfg = {}) {
+  const days = cfg.naive ? 0 : cfg.practiceDays ?? 0,
+    seed = SEED;
+  if (days > 0) {
+    buildWorld(cfg);
+    const founders = ag.slice();
+    SOC.practice = true;
+    for (let t = 0; t < days * DAY; t++) sim();
+    SOC.practice = false;
+    const learned = founders.map((a) => a.lw);
+    SEED = seed;
+    buildWorld(cfg);
+    ag.forEach((a, i) => {
+      if (learned[i] && learned[i].length === a.lw.length) a.lw = learned[i];
+    });
+    return;
+  }
+  buildWorld(cfg);
+}
+function buildWorld(cfg) {
   // switches for experiments: learning from others' pain, and choosy copying (both on normally)
   SOC.vic = cfg.vicar !== false;
   SOC.pick = cfg.pickyCopy !== false;

@@ -265,8 +265,29 @@ test('afraid hominins with a hunter in sight are more likely to choose to climb 
     return sum / n;
   };
   for (const seed of [3, 5, 7, 9]) {
+    // on fresh brains (naive founders): what a practised brain has learned can outweigh the nudge, as it should
     const pull = chance(seed, {}),
       none = chance(seed, { oldFlight: true });
     assert.ok(pull > none, 'world ' + seed + ': chance to climb ' + pull.toFixed(3) + ' with the pull, ' + none.toFixed(3) + ' without');
   }
+});
+
+// Founders practise their kind's ordinary life before the world begins (world.js): they arrive with learned knowledge,
+// the world itself is the same as without the practice, and every child is still born knowing nothing.
+test('founders arrive with what they learned in practice; the world is the same; children are born blank', () => {
+  const E1 = createEngine();
+  E1.setSeed(12);
+  E1.reset({ naive: true, predators: 0 });
+  const E2 = createEngine();
+  E2.setSeed(12);
+  E2.reset({ practiceDays: 2, predators: 0 });
+  const a1 = E1.state().ag.filter((a) => a.sp === 0),
+    a2 = E2.state().ag.filter((a) => a.sp === 0);
+  assert.strictEqual(a1.length, a2.length, 'the same founders');
+  assert.deepStrictEqual(a2.map((a) => [a.x, a.y, a.age]), a1.map((a) => [a.x, a.y, a.age]), 'in the same places, of the same ages');
+  const differs = (a) => a.lw.some((v, i) => Math.abs(v - a.g.w[i]) > 1e-6);
+  assert.ok(a2.some(differs), 'practised founders have learned something');
+  assert.ok(!a1.some(differs), 'naive founders have not');
+  const kid = E2.child(a2.find((a) => a.sex), a2.find((a) => !a.sex));
+  assert.ok(kid.w && !('lw' in kid), 'a child inherits only inborn wiring, not what its parents learned');
 });

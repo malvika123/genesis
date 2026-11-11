@@ -61,6 +61,14 @@ to a deer or wolf) are carried over from the kinds they replace: **assumptions**
 Not yet included: lions, *Dinofelis*, *Homotherium*, hunting hyenas (*Chasmaporthetes*), crocodiles, crowned eagles (which
 took the Taung child: Berger & Clarke 1995); pigs, horses (*Eurygnathohippus*), giraffids, elephants, hippos, other primates.
 
+## How a world starts (11 November 2026)
+
+| Setting | Value | Evidence | Status |
+|---|---|---|---|
+| What founders know | what their kind has always known, learned the ordinary way in a **practice before the world begins**: the world is built from its seed and runs with nobody able to die, then is built again identically and each founder keeps its trained brain (`--naive-founders`: the old blank minds). Every child is still born knowing nothing (learned weights are never inherited). Tools, fire and words are still to be discovered | No real population ever started without knowing its diet: young chimpanzees learn much of theirs by watching (366 peering events in 1,000 hours at Budongo, about 60% about food; Schuppli et al., Max Planck 2026). Starting a simulation from a sensible state rather than an impossible one is standard practice (burn-in / warm-up: Kang & Aldstadt 2021). Caveat: hominins of 2.5 million years ago already made stone tools (Lomekwi 3.3 Ma; Oldowan 2.6–2.9 Ma), so "tools must be discovered" is an experiment, not history | direction; the idea is the owner's |
+| Length of the practice | 10 days (about 3 years) for every founder (`--practice-days`) | Young chimpanzees travel with their mothers 4–5 years after weaning; real founders' experience would grow with their age | **assumption** (to test at 5 and 20 days) |
+| During practice nobody dies | — | A device: as children are kept alive by their mothers while they learn | **assumption** |
+
 ## Mechanisms added in November 2026
 
 | Setting | Value | Evidence | Status |

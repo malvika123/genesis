@@ -7,8 +7,8 @@ const run = (...args) =>
   spawnSync(process.execPath, [path.join(__dirname, '..', 'tools', 'experiment.js'), ...args], { encoding: 'utf8' });
 
 test('the experiment runner gives the same table every time, whatever the number of workers', () => {
-  const a = run('--seeds', '3-4', '--days', '1', '--workers', '1');
-  const b = run('--seeds', '3-4', '--days', '1', '--workers', '2');
+  const a = run('--seeds', '3-4', '--days', '1', '--naive-founders', '--workers', '1');
+  const b = run('--seeds', '3-4', '--days', '1', '--naive-founders', '--workers', '2');
   assert.equal(a.status, 0, a.stderr);
   assert.equal(a.stdout, b.stdout);
   const lines = a.stdout.trim().split('\n');

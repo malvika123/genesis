@@ -1182,6 +1182,17 @@ function sim() {
       log(a.name + ' slept in a shelter of piled branches. Nobody taught this.');
     }
   }
+  // In the founders' practice before the world begins (world.js), nobody dies: hunger, thirst and pain are felt and
+  // learned from, but a body is kept alive, as a child is kept alive by its mother.
+  if (SOC.practice)
+    for (const a of ag) {
+      a.dead = false;
+      a.cause = '';
+      a.hp = Math.max(a.hp, 1);
+      a.e = Math.max(a.e, 1);
+      a.w = Math.max(a.w, 1);
+      if (a.age > a.lf) a.age = a.lf;
+    }
   ag = ag.filter((a) => {
     let c = a.dead
       ? a.cause
@@ -1312,7 +1323,7 @@ const hunterSeen = (x) => {
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {
