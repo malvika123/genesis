@@ -37,7 +37,8 @@ function sim() {
       !a.preg &&
       a.e > (a.sp === 2 ? 25 : 45) &&
       a.w > 40 &&
-      fertileAge(a);
+      fertileAge(a) &&
+      receptive(a);
   }
   const kids = [],
     kidsOf = (k) => kids.reduce((t, c) => t + (c.k === k), 0);
@@ -279,6 +280,24 @@ function sim() {
         RFV[3] += (a.age < S.mat * 0.25 ? 2 : 1) * vocalCtl(a);
       // the hand mostly stays down; how often it points is inherited
       RFV[VG[GPT][0]] += 4 + 4 * (1 - pointUrge(a));
+      // A mother keeps her young child near: early on the mother does most of that work, carrying and fetching it, and
+      // the youngster takes it over as it grows (monkeys: the Hinde index; Hinde & Atkinson 1970, reviews). A pull toward
+      // her own child when it is out of reach, strongest while it is nursing and fading as it is weaned, as strong as
+      // her inborn parental care (creatures.js: pc) — a pull, never a command.
+      if (SOC.momPull && a.sex && a.kid && !a.kid.gone && !a.kid.dead && a.kid.mom === a && a.kid.age < a.kid.S.mat * a.kid.S.wn) {
+        const k = a.kid,
+          dx = dxw(k.x - a.x),
+          dy = k.y - a.y,
+          dd = Math.max(Math.abs(dx), Math.abs(dy));
+        if (dd > 1) {
+          const w = 3 * (1 - k.age / (k.S.mat * k.S.wn)) * (SOC.pcare ? a.g.pc ?? 1 : 1) * clamp((dd - 1) / 3, 0, 1),
+            L0 = Math.hypot(dx, dy);
+          for (let s = 0; s < 8; s++) {
+            const L = Math.hypot(MV[s][0], MV[s][1]);
+            RF[s] += (w * (MV[s][0] * dx + MV[s][1] * dy)) / (L * L0);
+          }
+        }
+      }
       const o = HEAR;
       if (x[o] > 0 && a.kid && !a.kid.gone && a.kid.age < a.kid.S.mat)
         for (let s = 0; s < 8; s++) {
@@ -457,7 +476,11 @@ function sim() {
     a.stress = a.stress * 0.99 + 0.01 * clamp(a.fear + a.painA + (a.e < 20) + (a.w < 20), 0, 2);
     if (a.has) {
       // d is the dopamine-like signal: how much better (or worse) things went than it expected
+      // Mood (Eldar et al. 2016): a running average of how recent things went against expectation; a good mood makes
+      // what happens now feel better, a bad one worse. 0 when switched off.
+      if (SOC.mood) r += a.mood || 0;
       const d = clamp(r + GAM * V - a.Vp, -2, 2);
+      if (SOC.mood) a.mood = (a.mood || 0) * MOODKEEP + (1 - MOODKEEP) * d;
       // Mood chemicals change how much it learns from this moment: fear makes a bad experience stick
       // (noradrenaline), something new makes it learn faster (a dopamine burst for novelty), and
       // long, heavy stress makes learning worse (cortisol).
@@ -950,7 +973,7 @@ function sim() {
         // in a wolf pack only one female breeds: the others' breeding is held back while she is
         // pregnant or nursing close by (reproductive suppression, as in wolves and wild dogs)
         if (S.pack && !S.allBreed && packMother(fem)) gl.length = 0;
-        if (gl.length) fem.preg = { due: tick + Math.max(1, Math.round(S.gest)), dad: mal, gen: g2, young: gl, cost: 10 + (S.yc ?? 12) * gl.length };
+        if (gl.length && ovulating(fem)) fem.preg = { due: tick + Math.max(1, Math.round(S.gest)), dad: mal, gen: g2, young: gl, cost: 10 + (S.yc ?? 12) * gl.length };
         if (S.pair) {
           addBond(fem, mal, 0.3);
           addBond(mal, fem, 0.3);
@@ -1338,13 +1361,27 @@ const MEAL = (a) => (a.sp === 0 && SOC.kleiber ? 1 / (a.S.size || 1) : 1),
 const needQuiet = (a) => (a.sp === 0 && SOC.hungerFirst ? 1 - clamp((Math.max(1 - a.e / 100, 1 - a.w / 100) - 0.3) / 0.7, 0, 1) : 1);
 // inborn temperament (creatures.js: tm): 1 for everyone when switched off
 const temper = (a) => (a.sp === 0 && SOC.temper ? a.g.tm ?? 1 : 1);
+// The female cycle (chimpanzees: about 36 days; the swelling, when she is receptive, about 13 of them; ovulation near
+// its end: Deschner et al. 2003, 2004; Emery Thompson 2005). Each female has her own phase (state.js: rnd2). Without the
+// switch, every female is receptive and fertile whenever ready (the old rule). Kinds other than hominins and people: as before.
+const CYC = (36 / 365) * TY,
+  SWELL = (13 / 365) * TY,
+  FERT = (5 / 365) * TY;
+const cyclePos = (a) => {
+  if (a.cyc === undefined) a.cyc = rnd2() * CYC;
+  return (tick + a.cyc) % CYC;
+};
+const receptive = (a) => !(SOC.cycle && a.sp === 0 && a.sex) || cyclePos(a) < SWELL;
+const ovulating = (a) => !(SOC.cycle && a.sp === 0) || (cyclePos(a) >= SWELL - FERT && cyclePos(a) < SWELL);
+// how much of yesterday's mood stays each step: mood follows roughly the last day (96 steps) — an assumption
+const MOODKEEP = 1 - 1 / DAY;
 // a hunter in sight (or heard close by), from the senses
 const hunterSeen = (x) => {
   for (let s = 0; s < 8; s++) if (x[s * NCH + 5] > 0.1) return true;
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {

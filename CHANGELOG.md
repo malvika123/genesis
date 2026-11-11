@@ -4,6 +4,9 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **A mother keeps her nursing child near** (a pull scaled by her inherited care), **females have a cycle** (receptive
+  about 13 of 36 days, fertile near ovulation), and **a lasting mood** colours how things feel. `--no-mother-pull`,
+  `--no-cycle`, `--no-mood` restore the old rules.
 - **Moving is one choice, not eight.** Every creature's brain weighed each of eight directions as a separate choice, so an
   undecided one walked most of the time (hominins about 70–80% of their waking time; wild chimpanzees travel about
   15–40%). Now the eight directions share one choice's weight; in a first check hominins walked 25%. `--eight-walks`

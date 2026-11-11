@@ -69,6 +69,15 @@ took the Taung child: Berger & Clarke 1995); pigs, horses (*Eurygnathohippus*), 
 | Length of the practice | 10 days (about 3 years) for every founder (`--practice-days`) | Young chimpanzees travel with their mothers 4–5 years after weaning; real founders' experience would grow with their age | **assumption** (to test at 5 and 20 days) |
 | During practice nobody dies | — | A device: as children are kept alive by their mothers while they learn | **assumption** |
 
+## Mother's pull, the female cycle, mood (12 November 2026)
+
+| Setting | Value | Evidence | Status |
+|---|---|---|---|
+| A mother keeps her nursing child near | a pull toward her own child when it is more than a square away, 3 × (1 − its age ÷ weaning age) × her inherited parental care (`--no-mother-pull`: only toward its cry) | Early on the mother does most of the work of keeping close (carrying, retrieving, restraining), the infant later (monkeys: Hinde & Atkinson 1970; reviews). Measured in Genesis before: children aged 1–4 out of sight 17% of the time, the child doing most of the work — earlier than in real primates | direction; the strength 3 an **assumption** (as children's own pull) |
+| The female cycle | about 36 days; receptive (swollen) 13 of them; conception only in the last 5 of those; each female her own phase (`--no-cycle`) | Chimpanzees: mean cycle about 36 days (Deschner et al. 2003); maximal swelling mean about 13 days, up to 21 (Emery Thompson 2005); ovulation near its end, mating rises then (Deschner et al. 2004; Emery Thompson & Wrangham 2008) | sourced; the 5-day fertile window and certain conception within it **assumptions** |
+| Mood | a running average of recent surprises (about a day), added to how each new outcome feels (`--no-mood`) | Mood tracks the momentum of recent reward prediction errors and biases how outcomes are perceived (Eldar, Rutledge, Dolan & Niv 2016; people) | direction; its speed and strength **assumptions** |
+| Testosterone | not added | In chimpanzees it rises with males' competition for mates (Muller & Wrangham 2004); Genesis has no male rivalry yet for it to act on | — |
+
 ## Moving as one choice (12 November 2026)
 
 | Setting | Value | Evidence | Status |
