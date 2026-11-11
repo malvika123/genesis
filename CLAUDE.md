@@ -43,6 +43,18 @@ That means, for example:
 - The main scenario is early hominins, East Africa, about 2.5 million years ago (`docs/HOMININ-PLAN.md`);
   the aim is to run down the generations and compare with the real record.
 
+## Principles of the mind (the owner, Nov 2026; checked against evidence)
+
+- **Fear is the teacher.** One painful experience can teach a lifelong fear (single-trial fear learning; monkeys learn
+  to fear snakes from one sight of another's fear: Mineka). Some things are feared far more readily than others.
+- **Help is survival.** Lasting social bonds raise survival: baboon mothers with strong bonds raise more surviving
+  infants (Silk et al. 2003) and live longer (Silk et al. 2010).
+- **Hunger and thirst come first.** A starving or parched body thinks of little else: hunger overrides thirst, anxiety,
+  fear of predators and the wish for company (mice: Burnett et al. 2016), and shuts down play. It wins most when food
+  is within reach; a predator about to strike can still win over it.
+- Only true reflexes are automatic (blinking, a startle, an infant's grip). Running, climbing, hiding are choices with
+  inborn pulls. **Verify every claim online before building it** — the owner's ideas included.
+
 ## How to work on it
 
 - After any change to the world, run `npm test` and check balance across seeded worlds (e.g.
