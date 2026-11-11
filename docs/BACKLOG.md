@@ -50,8 +50,16 @@ test on the same worlds; never tune toward survival.
 | A15 | Sedges and other C4 foods, insects | Early Homo about 35% C4 (Cerling et al. 2013) | diet patch 5, second part |
 | A16 | Audit of food values (fruit 70, roots 80, meat 110…) | Hadza digging rates are in scanned papers (needs text recognition installed) | roots in Genesis are generous, not too hard |
 | A17 | Disease | Not yet researched | |
+| A18 | Sleep that reorganises memories into new insight (not only replays them) | Sleep tripled the chance of discovering a hidden shortcut (Wagner et al. 2004, *Nature*); replay of the day's routes during sleep (Wilson & McNaughton 1994) — Genesis already has replay | how the brain recombines is not well understood: research first, do not invent |
 
 ## 4. Open questions and measurements
+
+- **Are discoveries repeated and passed on, or one-offs?** The counts so far are the *first time* something happened
+  (cracking a nut, a sharp flake, cutting meat, a fire); many happen by chance on day 1. Measure how often each is
+  repeated, by how many hominins, and whether it spreads from one to others — that is what culture is.
+- Why are cutting meat (2 of 12 worlds) and starting fires (6 of 12) rare? Each needs two chance events at once, and a
+  discovery cannot spread by watching (A4). More hominins and longer runs (A1, speed) give more chances — never make them
+  artificially easier.
 
 - Why is learning from others bred out across generations (0.76 → 0.42 and 0.90 → 0.31 in two worlds)? Check again
   with practised founders (results saved, unread) and after A4.
