@@ -4,6 +4,8 @@ A briefing for anyone picking the work up: a new contributor, a reviewer, or a m
 to check the science. Written November 2026 after v0.7.0; updated 10 November 2026. Read `README.md` for what the world contains
 and `docs/MODEL.md` for the formal model description (ODD protocol).
 
+**Everything found but not yet done is in `docs/BACKLOG.md`** (bugs first, then built-but-waiting, then verified-not-built). Keep it current.
+
 ## Where things stand (11 November 2026, midday) — start here
 
 - `develop` (live) has everything up to research log entry 19. `percept` has entries 20–24 and these changes, tested one at

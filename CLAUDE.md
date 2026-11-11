@@ -57,6 +57,9 @@ That means, for example:
 
 ## How to work on it
 
+- Keep `docs/BACKLOG.md` current: every bug, idea or verified fact that is not yet built goes there, so nothing is lost
+  in long discussions (the owner, Nov 2026).
+
 - After any change to the world, run `npm test` and check balance across seeded worlds (e.g.
   `npm run worlds`, or the 60-day comparison used during development): people should survive and have
   children, herbivores and predators should not routinely die out. Trace causes of death
