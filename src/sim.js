@@ -353,7 +353,7 @@ function sim() {
     // be learned.)
     if (a.sp === 0 && !a.asleep) {
       const thr = (v) => clamp((v - 0.3) / 0.7, 0, 1),
-        wary = (young ? 2.5 : 1.5) * (0.5 + a.fear);
+        wary = (young ? 2.5 : 1.5) * (0.5 + a.fear) * temper(a);
       // Seeking food and eating it are two phases, as in every animal: once food it likes is in reach (fruit,
       // fresh meat, cooked food — or, when hungry, roots it has found it can dig), the urge to go looking
       // elsewhere stops and the urge to eat takes over (appetitive and consummatory behaviour).
@@ -470,7 +470,7 @@ function sim() {
       a.da = d;
       a.mod = mod;
       learnStep(a, d, pl * mod * (a.g.lr ?? 1));
-      a.fear = clamp(a.fear * 0.9 + 0.4 * Math.max(0, -d), 0, 1);
+      a.fear = clamp(a.fear * 0.9 + 0.4 * Math.max(0, -d) * temper(a), 0, 1);
       for (let k = 0; k < 9; k++) a.cz[k] = a.cz[k] * 0.995 + Math.abs(a.rk[k]) * Math.abs(d);
     }
     a.V = V;
@@ -1336,13 +1336,15 @@ const MEAL = (a) => (a.sp === 0 && SOC.kleiber ? 1 / (a.S.size || 1) : 1),
 // Hunger and thirst quieten the urge to explore and to copy others (hungry young animals stop playing: Siviy & Panksepp),
 // from no effect when fed to none left when starving or parched. 1 when switched off (the old rule).
 const needQuiet = (a) => (a.sp === 0 && SOC.hungerFirst ? 1 - clamp((Math.max(1 - a.e / 100, 1 - a.w / 100) - 0.3) / 0.7, 0, 1) : 1);
+// inborn temperament (creatures.js: tm): 1 for everyone when switched off
+const temper = (a) => (a.sp === 0 && SOC.temper ? a.g.tm ?? 1 : 1);
 // a hunter in sight (or heard close by), from the senses
 const hunterSeen = (x) => {
   for (let s = 0; s < 8; s++) if (x[s * NCH + 5] > 0.1) return true;
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {

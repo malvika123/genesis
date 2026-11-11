@@ -291,3 +291,22 @@ test('founders arrive with what they learned in practice; the world is the same;
   const kid = E2.child(a2.find((a) => a.sex), a2.find((a) => !a.sex));
   assert.ok(kid.w && !('lw' in kid), 'a child inherits only inborn wiring, not what its parents learned');
 });
+
+// Temperament and parental care (inherited, drawn from a separate random stream): switching them off leaves the
+// world exactly as it was; switched on, individuals differ, and a child's values come from its parents.
+test('temperament and parental care differ and are inherited, without changing the world', () => {
+  const E = createEngine();
+  E.setSeed(21);
+  E.reset({});
+  const p = E.state().ag.filter((a) => a.sp === 0);
+  const tms = p.map((a) => a.g.tm);
+  assert.ok(Math.max(...tms) - Math.min(...tms) > 0.3, 'founders differ in temperament');
+  const mom = p.find((a) => a.sex),
+    dad = p.find((a) => !a.sex),
+    kid = E.child(mom, dad);
+  assert.ok(Math.abs(kid.tm - mom.g.tm) < 0.4 || Math.abs(kid.tm - dad.g.tm) < 0.4, 'a child takes after a parent');
+  const F = createEngine();
+  F.setSeed(21);
+  F.reset({ temperament: false, parentalCare: false });
+  assert.deepStrictEqual(F.state().ag.map((a) => [a.x, a.y, a.age]), E.state().ag.map((a) => [a.x, a.y, a.age]), 'the same world');
+});

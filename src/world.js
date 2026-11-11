@@ -37,6 +37,7 @@ function reset(cfg = {}) {
   buildWorld(cfg);
 }
 function buildWorld(cfg) {
+  SEED2 = (SEED ^ 0x9e3779b9) | 0; // the separate stream for later traits (state.js)
   // switches for experiments: learning from others' pain, and choosy copying (both on normally)
   SOC.vic = cfg.vicar !== false;
   SOC.pick = cfg.pickyCopy !== false;
@@ -63,6 +64,8 @@ function buildWorld(cfg) {
   if (ERA === 'hominin' && cfg.leafValue !== undefined) KBIO[0].leaf = Number(cfg.leafValue); // test the ends of its range
   SOC.hungerFirst = cfg.oldHunger !== true; // off: hunger and thirst only add a pull, as other urges do (the old rule)
   SOC.hungerK = cfg.hungerPull === undefined ? 6 : Number(cfg.hungerPull); // how strongly need wins (an assumption; test the ends)
+  SOC.temper = cfg.temperament !== false; // off: everyone equally fearful (the old rule)
+  SOC.pcare = cfg.parentalCare !== false; // off: every parent equally moved by its own young's hunger (the old rule)
   SOC.flight = cfg.oldFlight !== true; // off: hominins only walk away from a hunter they see (the old rule)
   SOC.kleiber = cfg.bodyScaling !== false; // off: hominins need as much food as a full-sized forager (the old rule)
   SOC.grassEye = !!cfg.grassEye; // on: people and hominins see grass as food (the old rule, for comparison)

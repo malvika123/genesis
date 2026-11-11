@@ -14,7 +14,7 @@ const kinYoung = (a, o) =>
 // as its inherited care for others' young (g.al) carries it.
 const careFor = (a, o) => {
   if (o === a || o.dead || o.gone || o.sp !== a.sp || o.age >= o.S.mat) return 0;
-  if (kinYoung(a, o)) return 1;
+  if (kinYoung(a, o)) return a.sp === 0 && SOC.pcare ? a.g.pc ?? 1 : 1; // its own young and grandchildren: as much as its inborn parental care (creatures.js: pc)
   if (!SOC.care) return 0; // switched off for experiments: only its own young and grandchildren, as before
   if (a.mom && o.mom === a.mom) return 0.6; // brother or sister
   if (a.mom && o.mom && o.mom.mom === a.mom) return 0.5; // nephew or niece

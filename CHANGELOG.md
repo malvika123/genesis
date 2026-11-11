@@ -4,6 +4,9 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Hominins differ in temperament and in parental care**, both inherited: some are born bolder, some more timid (fear
+  rises more or less after a bad surprise); some parents are moved more, some less, by their own young's hunger.
+  `--no-temperament`, `--no-parental-care` make everyone the same.
 - **Founders know what their kind has always known** (the owner's idea): before the world begins they practise their
   kind's ordinary life for about three years, learning only from what their bodies feel, with nobody able to die;
   then the world is built again, identical, and each founder keeps what it learned. Children are still born knowing

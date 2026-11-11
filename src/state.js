@@ -40,6 +40,15 @@ function rnd() {
   t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
   return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
 }
+// A second, separate stream of random numbers for traits added later (temperament, parental care), seeded from the world's
+// seed when a world is built: drawing them leaves every other random number — and so the world — exactly as it was.
+let SEED2 = 1;
+function rnd2() {
+  SEED2 = (SEED2 + 0x6d2b79f5) | 0;
+  let t = Math.imul(SEED2 ^ (SEED2 >>> 15), 1 | SEED2);
+  t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+}
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v)),
   gauss = () => rnd() + rnd() + rnd() - 1.5;
 // The world wraps east–west like a globe: walking off one side brings you back on the other.

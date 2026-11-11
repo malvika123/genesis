@@ -69,6 +69,14 @@ took the Taung child: Berger & Clarke 1995); pigs, horses (*Eurygnathohippus*), 
 | Length of the practice | 10 days (about 3 years) for every founder (`--practice-days`) | Young chimpanzees travel with their mothers 4–5 years after weaning; real founders' experience would grow with their age | **assumption** (to test at 5 and 20 days) |
 | During practice nobody dies | — | A device: as children are kept alive by their mothers while they learn | **assumption** |
 
+## Temperament and parental care (inherited; 12 November 2026)
+
+| Setting | Value | Evidence | Status |
+|---|---|---|---|
+| Timidity (inborn temperament) | each hominin inherits 0.4–1.6 (mean 1): how strongly fear rises after a bad surprise and how strongly it pulls away from a hunter (`--no-temperament`: everyone 1) | Freezing under threat in young rhesus monkeys is stable and about 30–40% heritable; anxious temperament about 30% (Kalin lab); behavioural inhibition in children 20–40% heritable | direction; the spread an **assumption** |
+| Parental care | each inherits 0.4–1.6 (mean 1): how strongly its own young's hunger moves it to share (`--no-parental-care`: everyone 1) | Monkey mothers have consistent individual styles (protective, rejecting) across their infants, shaped by genes and rearing (Fairbanks 1996; reviews) | direction; the spread an **assumption** |
+| Both drawn from a separate random stream | — | So that adding them changes nothing else in a world | (method) |
+
 ## Mechanisms added in November 2026
 
 | Setting | Value | Evidence | Status |

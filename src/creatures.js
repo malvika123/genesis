@@ -19,7 +19,15 @@ const gene = (sp, inst) => ({
   pb: rnd(), // whom it copies: 0 anyone, 1 strongly prefers those doing well (inherited)
   cf: rnd(), // how much it goes with what most others are doing (inherited)
   w: newW(sp, inst),
+  ...laterTraits(),
 });
+// Traits added later, drawn from their own random stream (state.js: rnd2) so worlds stay the same without them.
+// tm: timidity — how strongly fear rises and pulls away from danger; inborn temperament differs and is partly inherited
+// (rhesus monkeys: freezing under threat about 30–40% heritable, Kalin lab). pc: parental care — how strongly its own
+// young's hunger moves it to share food; mothers differ in consistent styles (rhesus: Fairbanks). Both 0.4–1.6 around 1:
+// the spread is an assumption.
+const laterTraits = () => ({ tm: 0.4 + rnd2() * 1.2, pc: 0.4 + rnd2() * 1.2 });
+const mut2 = (v, lo, hi) => clamp(rnd2() < 0.2 ? v + (rnd2() - 0.5) * 0.3 * v : v, lo, hi);
 function mk(sp, x, y, sex, g, gen, age, k = KDEF[sp]) {
   const a = {
     id: NID++,
@@ -165,6 +173,8 @@ function child(p, q) {
     al: mutA(pk('al') ?? 0.5, 0, 1),
     pb: mutA(pk('pb') ?? 0.5, 0, 1),
     cf: mutA(pk('cf') ?? 0.3, 0, 1),
+    tm: mut2((rnd2() < 0.5 ? p.g.tm : q.g.tm) ?? 1, 0.3, 1.8),
+    pc: mut2((rnd2() < 0.5 ? p.g.pc : q.g.pc) ?? 1, 0.3, 1.8),
     w,
   };
 }
