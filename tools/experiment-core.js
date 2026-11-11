@@ -99,7 +99,7 @@
     { key: 'oldStarving', kind: 'on', def: false, flag: 'old-starving', label: 'Starving: a sudden jolt of discomfort below 15% energy (the old rule); otherwise hunger is felt smoothly and below a critical reserve the urge to search for food doubles (the refeeding signal)', cfg: true },
     { key: 'refeedAt', kind: 'num', def: 20, flag: 'refeed-at', label: 'Critical reserve for the refeeding signal, % of energy (evidence: about 20, range 20–25)', min: 0, max: 60, cfg: true },
     { key: 'motherPull', kind: 'off', def: true, flag: 'no-mother-pull', label: 'A mother is drawn to keep her nursing child near, as strongly as her inherited care (off: only to its cry)', cfg: true },
-    { key: 'cycle', kind: 'off', def: true, flag: 'no-cycle', label: 'Females have a cycle: receptive about 13 of 36 days, fertile only near ovulation (off: always, when ready)', cfg: true },
+    { key: 'cycle', kind: 'on', def: false, flag: 'cycle', label: 'Females have a cycle: receptive about 13 of 36 days, fertile only near ovulation — off by default until mating is as frequent as in real chimpanzees', cfg: true },
     { key: 'mood', kind: 'off', def: true, flag: 'no-mood', label: 'A lasting mood (the running average of recent surprises) colours how outcomes feel (off: none)', cfg: true },
     { key: 'eightWalks', kind: 'on', def: false, flag: 'eight-walks', label: 'The eight directions count as eight separate choices, so an undecided brain mostly walks (the old rule)', cfg: true },
     { key: 'temperament', kind: 'off', def: true, flag: 'no-temperament', label: 'Inborn temperament (bold or timid) differs between individuals and is inherited (off: everyone equally fearful)', cfg: true },

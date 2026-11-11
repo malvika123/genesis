@@ -68,7 +68,7 @@ function buildWorld(cfg) {
   SOC.refeed = cfg.oldStarving !== true; // on: the old rule (a sudden jolt of discomfort below 15% energy, no refeeding signal)
   SOC.refeedAt = cfg.refeedAt === undefined ? 20 : Number(cfg.refeedAt); // the critical reserve, %: about 20 (80% of fat gone; evidence 20–25)
   SOC.momPull = cfg.motherPull !== false; // off: a mother goes to her child only when it cries (the old rule)
-  SOC.cycle = cfg.cycle !== false; // off: a ready female is receptive and fertile all the time (the old rule)
+  SOC.cycle = cfg.cycle === true; // off by default: with it, births fell to a third — far below real chimpanzees' (about 5.7 years apart), because mating is not yet as frequent as theirs; research log
   SOC.mood = cfg.mood !== false; // off: no lasting mood (the old rule)
   SOC.oneMove = cfg.eightWalks !== true; // on: the eight directions count as eight separate choices (the old rule)
   SOC.temper = cfg.temperament !== false; // off: everyone equally fearful (the old rule)
