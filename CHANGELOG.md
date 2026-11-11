@@ -4,6 +4,8 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Early hominins care for children as apes do:** only a mother feeds her own young. Others feeding a child is the
+  human forager pattern (kept for modern people); among great apes it is essentially absent. `--human-care` restores it.
 - **Starving, as animals do:** hunger is felt smoothly (a sudden jolt of discomfort below 15% energy is gone), and
   below a critical reserve the urge to search for food doubles — the refeeding signal (fasting rats, emperor penguins).
   `--old-starving` restores the old rule; `--refeed-at` sets the critical reserve.

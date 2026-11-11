@@ -105,7 +105,7 @@ took the Taung child: Berger & Clarke 1995); pigs, horses (*Eurygnathohippus*), 
 |---|---|---|---|
 | Seeking food stops when liked food is in reach | — | Appetitive and consummatory phases of feeding in animals | direction |
 | Pull to eat liked food when hungry | 8 × hunger | — | **assumption** |
-| Care for a hungry child: own / sibling / nephew or niece / other | 1 / 0.6 / 0.5 / 0.35 × inherited trait | Family helps most; others less (Hrdy 2009; Kramer 2010; Hawkes et al. 1998) | direction; the weights are **assumptions** |
+| Care for a hungry child: own / sibling / nephew or niece / other | modern people: 1 / 0.6 / 0.5 / 0.35 × inherited trait (foragers: Hrdy 2009; Kramer 2010; Hawkes et al. 1998). **Early hominins: only a mother feeds her own young** (`--human-care` restores the forager pattern) | Among great apes, care and feeding of infants by others is essentially absent (reviews citing Hrdy 2009); gorilla mothers rarely let others hold theirs; at Ngogo others hold chimpanzee infants but do not feed them (Bădescu et al. 2016); no ape evidence of grandmothers or fathers provisioning. Many hands feeding a child is human | direction |
 | Children's pull to stay near carers | strength 3 (under 5) / 1.5, rising with distance and fear | Attachment is inborn (Bowlby 1969) | direction; strengths **assumptions** |
 | A heap of branches as cover | (branches − 4) / 8, at most 0.8 | Brush shelters and windbreaks keep off wind and rain | **assumption** |
 | Branches in a heap rot | 1 in 3,300 a step per branch | — | **assumption** |

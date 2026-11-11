@@ -12,8 +12,13 @@ const kinYoung = (a, o) =>
 // family most — Hrdy 2009, Kramer 2010, Hawkes et al. 1998): its own young and grandchildren fully, its
 // younger brothers and sisters and its nephews and nieces less, and any other child of the band only as far
 // as its inherited care for others' young (g.al) carries it.
+// Early hominins care as apes do (SOC.apeCare): only a mother feeds her own young. Among great apes, care and feeding
+// of infants by others is essentially absent (reviews citing Hrdy 2009); gorilla mothers rarely let others even hold
+// theirs; at Ngogo others may hold a chimpanzee infant, but not feed it (Bădescu et al. 2016). No ape evidence of
+// grandmothers or fathers provisioning. Many hands feeding a child is the human forager pattern, kept for modern people.
 const careFor = (a, o) => {
   if (o === a || o.dead || o.gone || o.sp !== a.sp || o.age >= o.S.mat) return 0;
+  if (SOC.apeCare && ERA === 'hominin' && a.sp === 0) return o.mom === a ? (SOC.pcare ? a.g.pc ?? 1 : 1) : 0;
   if (kinYoung(a, o)) return a.sp === 0 && SOC.pcare ? a.g.pc ?? 1 : 1; // its own young and grandchildren: as much as its inborn parental care (creatures.js: pc)
   if (!SOC.care) return 0; // switched off for experiments: only its own young and grandchildren, as before
   if (a.mom && o.mom === a.mom) return 0.6; // brother or sister

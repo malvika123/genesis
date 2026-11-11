@@ -64,6 +64,7 @@ function buildWorld(cfg) {
   if (ERA === 'hominin' && cfg.leafValue !== undefined) KBIO[0].leaf = Number(cfg.leafValue); // test the ends of its range
   SOC.hungerFirst = cfg.oldHunger !== true; // off: hunger and thirst only add a pull, as other urges do (the old rule)
   SOC.hungerK = cfg.hungerPull === undefined ? 6 : Number(cfg.hungerPull); // how strongly need wins (an assumption; test the ends)
+  SOC.apeCare = cfg.humanCare !== true; // on: early hominins share care for children as human foragers do (the old rule)
   SOC.refeed = cfg.oldStarving !== true; // on: the old rule (a sudden jolt of discomfort below 15% energy, no refeeding signal)
   SOC.refeedAt = cfg.refeedAt === undefined ? 20 : Number(cfg.refeedAt); // the critical reserve, %: about 20 (80% of fat gone; evidence 20–25)
   SOC.momPull = cfg.motherPull !== false; // off: a mother goes to her child only when it cries (the old rule)
