@@ -4,33 +4,24 @@ A briefing for anyone picking the work up: a new contributor, a reviewer, or a m
 to check the science. Written November 2026 after v0.7.0; updated 10 November 2026. Read `README.md` for what the world contains
 and `docs/MODEL.md` for the formal model description (ODD protocol).
 
-## Where things stand (11 November 2026, night) — start here
+## Where things stand (11 November 2026, midday) — start here
 
-- `develop` (live) has everything up to research log entry 19: the hominin patches 1–5 and their tests.
-- **Entry 19, the largest result so far:** hominins had kept modern people's fertility rule (ending at 60% of
-  life), which ended theirs at about 26; fixed to the chimpanzee pattern (fertile for life, not past 50: Emery
-  Thompson et al. 2007). Births per world 12.2 → 25.7; 22.9 alive against 14.1. Births now nearly match deaths
-  over 20 years.
-- **Next, in order:** (1) the fertility limit at 45 and 55 (`--fert-max`); (2) entry 20: the inborn pull toward
-  a ready partner (`--lust`, built, off), at 1 and 3; (3) the shorter gap after a baby dies (23 against 67 months
-  at Gombe, Emery Thompson et al. 2007 — recorded as a deviation); (4) long runs, 150–300 days; (5) why starving
-  hominins walk but do not find food; (6) fear reducing exploration; (7) patch 6, the animals of the time.
-- **Patch 5 (diet), first part, live:** early hominins can live on young leaves when fruit is short (0.64 of ripe
-  fruit's food a minute, range 0.48–0.64; `--no-leaves`, `--leaf-value`). Entry 18: no measurable effect in 24
-  worlds; a rise in fire deaths in the first 12 was chance. Still missing from the diet: sedges and other C4
-  foods (early Homo about 35% C4), insects; the older food values are not yet audited.
-- Researched 10 Nov (not yet built; each needs sources checked, then a paired test): curiosity damped by hunger
-  and fear (play and exploration shut down under both: Siviy & Panksepp); a pre-encounter mode (danger possible:
-  stay close, watch — the threat-imminence continuum, Fanselow; Mobbs et al. 2020); stress as a graded curve
-  instead of the 0.5 switch (`src/sim.js`, unsourced); care primed by pregnancy and birth (Numan); and the hard
-  population cap that blocks mating (`popK + kids < S.cap`), which is not biology.
-- Known gap that entry 18 points at: hominins react only to fire beside them; real savanna chimpanzees watch a
-  wildfire and move ahead of it (Pruetz & LaDuke 2010). Check the evidence before adding anything.
-- Run experiments gently on the owner's laptop: `--workers 4` under `nice -n 19` (8 workers overheat it).
-- Then patch 6 (predators and animals of the time). Work on one branch (`percept`), one behaviour change at
-  a time; never tune toward an outcome.
-- A 12-world × 60-day set takes about 13 minutes (hominins) to 25 minutes (modern humans) with 8 workers;
-  `npm test` about 70 seconds.
+- `develop` (live) has everything up to research log entry 19. `percept` has entries 20–24 and these changes, tested one at
+  a time on paired worlds (not yet live): an inborn pull toward a ready partner (20); quicker conception after a lost
+  baby (21); grass no longer seen as food (22 — it did not explain hunger); Kleiber's law for hominins' food (23); the
+  animals of East Africa 2.5 million years ago (24 — **off by default**, `--africa-animals`: their hunters starved,
+  because Genesis has about nine times too many hunters for its prey, Carbone & Gittleman 2002); and **climbing as a
+  choice** (a new action with inborn pulls from sleepiness and fear; test running).
+- **The owner's rules from this session:** only true reflexes are automatic (blinking, sneezing, an infant's grip);
+  running, climbing and hiding are choices the brain makes, with inborn pulls. **Verify every claim online before
+  building — the owner's ideas included** — and report where sources contradict the plan. Run experiments gently
+  (`--workers 4`, `nice -n 19`): the owner's laptop overheats at 8.
+- **Next, in order:** (1) finish the climbing test and the long runs (8 worlds × 200 days), the generations check
+  (`tools/analysis/generations.js`: inborn traits by generation, and learned test scores), log them, merge to
+  `develop`; (2) abundance — hunters to prey about nine times off; decide what an animal stands for (one animal or a
+  herd) and the world's size, then switch on the East African animals; (3) why starving hominins walk but do not find
+  food; (4) whether adult women die more than men, and whether alone (group cohesion); (5) weapons as physics (a stick
+  or stone can hit a hunter) and nest building as a learned choice; (6) disease.
 
 ## The rules the project is held to
 
