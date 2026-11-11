@@ -74,7 +74,7 @@ took the Taung child: Berger & Clarke 1995); pigs, horses (*Eurygnathohippus*), 
 | Setting | Value | Evidence | Status |
 |---|---|---|---|
 | How hunger is felt | smoothly, 3 × hunger² (the old sudden extra jolt below 15% energy removed; `--old-starving` restores it) | The hunger hormone ghrelin rises in proportion to time since the last meal and falls after eating (reviews; Siberian hamsters); no evidence of a sudden jump in the feeling | direction |
-| The refeeding signal | below a critical reserve (15%), the urge to search for food doubles | Late in fasting, below a critical body mass, animals sharply increase food seeking: rats about 10× more active (Koubi et al. 1991), emperor penguins abandon their eggs to feed before reserves are lethal (Robin et al. 1998); the signal may come before the metabolic switch in the wild (Adélie penguins, 2016) | direction sourced; the 15% level (range 10–25) and the doubling **assumptions** |
+| The refeeding signal | below a critical reserve (20% of the store), the urge to search for food doubles | Late in fasting, below a critical body mass, animals sharply increase food seeking: rats about 10× more active (Koubi et al. 1991), emperor penguins abandon their eggs to feed before reserves are lethal (Robin et al. 1998); the signal may come before the metabolic switch in the wild (Adélie penguins, 2016). The switch comes once about 80% of initial fat stores are gone, in rats and birds alike (review, Durban symposium); king penguins at about a quarter of their fat; emperor penguins up to 8× more active below the threshold | the 20% level sourced (range 20–25); the doubling an **assumption** |
 
 ## Mother's pull, the female cycle, mood (12 November 2026)
 

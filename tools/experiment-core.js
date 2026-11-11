@@ -96,7 +96,7 @@
     { key: 'lossResume', kind: 'off', def: true, flag: 'no-loss-resume', label: 'A mother who loses a nursing baby can conceive again soon (off: she waits the full nursing time)', cfg: true },
     { key: 'resumeDays', kind: 'num', def: 74, flag: 'resume-days', label: 'Days after losing a nursing baby until a mother can conceive (evidence: 45–94)', min: 0, max: 2000, cfg: true },
     { key: 'oldStarving', kind: 'on', def: false, flag: 'old-starving', label: 'Starving: a sudden jolt of discomfort below 15% energy (the old rule); otherwise hunger is felt smoothly and below a critical reserve the urge to search for food doubles (the refeeding signal)', cfg: true },
-    { key: 'refeedAt', kind: 'num', def: 15, flag: 'refeed-at', label: 'Critical reserve for the refeeding signal, % of energy (an assumption: 10–25)', min: 0, max: 60, cfg: true },
+    { key: 'refeedAt', kind: 'num', def: 20, flag: 'refeed-at', label: 'Critical reserve for the refeeding signal, % of energy (evidence: about 20, range 20–25)', min: 0, max: 60, cfg: true },
     { key: 'motherPull', kind: 'off', def: true, flag: 'no-mother-pull', label: 'A mother is drawn to keep her nursing child near, as strongly as her inherited care (off: only to its cry)', cfg: true },
     { key: 'cycle', kind: 'off', def: true, flag: 'no-cycle', label: 'Females have a cycle: receptive about 13 of 36 days, fertile only near ovulation (off: always, when ready)', cfg: true },
     { key: 'mood', kind: 'off', def: true, flag: 'no-mood', label: 'A lasting mood (the running average of recent surprises) colours how outcomes feel (off: none)', cfg: true },

@@ -65,7 +65,7 @@ function buildWorld(cfg) {
   SOC.hungerFirst = cfg.oldHunger !== true; // off: hunger and thirst only add a pull, as other urges do (the old rule)
   SOC.hungerK = cfg.hungerPull === undefined ? 6 : Number(cfg.hungerPull); // how strongly need wins (an assumption; test the ends)
   SOC.refeed = cfg.oldStarving !== true; // on: the old rule (a sudden jolt of discomfort below 15% energy, no refeeding signal)
-  SOC.refeedAt = cfg.refeedAt === undefined ? 15 : Number(cfg.refeedAt); // the critical reserve, % (an assumption: test 10 and 25)
+  SOC.refeedAt = cfg.refeedAt === undefined ? 20 : Number(cfg.refeedAt); // the critical reserve, %: about 20 (80% of fat gone; evidence 20–25)
   SOC.momPull = cfg.motherPull !== false; // off: a mother goes to her child only when it cries (the old rule)
   SOC.cycle = cfg.cycle !== false; // off: a ready female is receptive and fertile all the time (the old rule)
   SOC.mood = cfg.mood !== false; // off: no lasting mood (the old rule)
