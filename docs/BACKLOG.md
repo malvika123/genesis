@@ -59,7 +59,7 @@ verified online, built with a switch, and tested on its own before the next, in 
 
 | # | What | Why (to verify before building) | Depends on |
 |---|---|---|---|
-| R1 | Wet and dry seasons in the tropics (the hard season is the dry one) | Fallback foods (roots) matter in the dry season | check how Genesis's seasons work in the tropics first |
+| R1 | A hungry season for hominins in the tropics | **Checked 12 Nov:** Genesis has a rain belt that follows the sun, and grass grows with rain, but fruit, roots and nuts grow with warmth only, so in the tropics hominin food barely changes through the year — no hungry season. Real savanna woodland: fruit peaks in the *late dry season*, scarce in the *early wet season* (Ugalla: chimpanzees fall back on fibrous foods, smaller parties); forests: fruit follows rain (Kalinzu); Fongoli: some fruit every month | find month-by-month fruit data for an African savanna woodland, so the lag after the rains is right — do not simply tie fruit to rain |
 | R2 | The real East African landscape: the Rift, lakes that grow and shrink, volcanoes, spreading grassland | Patch 7 of the plan | climate data of the time |
 | R3 | Long climate swings between wetter and drier periods | Plan, patch 7 | R2 |
 | R4 | Crocodiles at rivers and lakes | A major predator of hominins: crocodile bite marks on the Olduvai hominin foot (OH 8) | water ecology |
