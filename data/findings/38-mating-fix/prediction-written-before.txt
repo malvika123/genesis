@@ -1,0 +1,10 @@
+Written 12 Nov 2026 BEFORE the runs (commit in ./commit). 12 worlds x 60 days, seeds 1-12, same worlds.
+Runs: A = --old-mating (cycle off, the old rule); B = new mating, cycle off (default, male wait 1 h);
+      C = new mating + --cycle (1 h); D = new mating + --cycle --male-wait 4.
+Primary outcome: births per world.
+1. B vs A: births about the same (within noise). With no cycle every mating already conceived, so the female fix does
+   nothing; only the male's shorter wait and smaller cost change, and females, not males, limit births.
+2. C vs B: births somewhat lower (waiting for fertile days), but NOT a collapse: at least 70% of B's births
+   (entry 32's cycle with the old rule gave 29%).
+3. D vs C: about the same births (each female is fertile for about 4 steps a cycle; several males can still reach her).
+If C falls below 50% of B, something else still blocks conception.

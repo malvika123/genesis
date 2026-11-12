@@ -44,6 +44,7 @@ Entries are kept even when the result was "no effect" or "it made things worse" 
 | Hunger and thirst come first | Hunger deaths 109 → 69 (−37%); births 27 → 30; but drownings doubled, 11 of 12 drowned were children | weak–moderate |
 | Moving as one choice, not eight (walking 70–80% → 25%) | Predator deaths 60 → 3; drownings 39 → 18; but hunger deaths 80 → 115 | moderate |
 | A mother keeps her nursing child near | 31 alive vs 25, better in 9 of 12; drownings and fire deaths about halved | weak–moderate |
+| Mating fixed (she waits only if she conceived; he can mate again within hours): the female cycle now costs 17% of births, not 71% — all three written predictions held | 12 paired worlds | moderate |
 | **Failure:** the female cycle, added alone | Births 31 → 9 per world: it exposed a hidden bug (4-year lockout after any mating) | strong |
 | **Not** measurable: climbing as a choice; temperament and parental care; mood; the refeeding signal (24 worlds: survival and hunger unchanged, fire deaths up at the edge of noise); ape-like care (hunger −24%, within noise) | Within noise | none–weak |
 | **Not** helpful: founders who practise first (drownings doubled); **not** supported yet: a bigger founding band discovering more (survival per hominin the same at 25, 40 and 80) | Same worlds, 24 and 12 | none / moderate |
@@ -1104,6 +1105,31 @@ Other firsts: making fire by rubbing wood in 7 of 8 worlds, by sparks in 3; cutt
 **Interpretation — and why the boom is not good news.** Real chimpanzee communities change slowly: Gombe fell from about 120–150 in the 1960s to about 100 by 2013; Kanyawara grew modestly over 25 years; Ngogo grew steadily over two decades. Growth from 25 to 606 in 100 years (about 3% a year) is far faster than any of them. Two real causes of death are missing or weak: **disease** — the leading cause of chimpanzee deaths at Gombe (58% of those with a known cause; Williams et al. 2008), absent in Genesis — and **predators**, which died out entirely in 4 of the 8 worlds (hunters left: 0), so those bands lived with no predator at all. Neither is a reason to tune anything; both say what to add next: disease (backlog R9) and a hunter population that cannot vanish from a whole region (backlog A1). Births are fine; the world is too safe — the owner's warning (Genesis must not be a safe world) borne out by data.
 
 **Strength.** Moderate for "bands now last and grow" (5 of 8 over 100 years); weak for the shelters (3 worlds, purpose unknown); weak for the gene (mixed). **Lesson:** success that is faster than reality is a finding about what is missing.
+
+### 38. Mating fixed: the female cycle now works — Nov 2026
+
+**Version.** Unreleased · the change and the test: commit `0834e46` (`--old-mating` restores the old rule — checked: identical worlds; `--male-wait` sets the hours). Run by Claude.
+
+**Data.** [Old rule](../data/findings/38-mating-fix/A-old.csv) · [new rule](../data/findings/38-mating-fix/B-new.csv) · [new rule and the cycle](../data/findings/38-mating-fix/C-cycle.csv) · [the cycle with a 4-hour wait](../data/findings/38-mating-fix/D-cycle-4h.csv) · [the comparisons](../data/findings/38-mating-fix/comparison.txt) · [the prediction, written before](../data/findings/38-mating-fix/prediction-written-before.txt).
+
+**Question.** The female cycle crashed births to a third (entry 32). Two causes were found in the code: after **any** mating the female waited the whole nursing time, even if she had not conceived (B1); and a male could mate again only after a tenth of a year — 28.8 steps, as long as a whole female cycle (B7; found by the review). Fixed for hominins, does the cycle work?
+
+**Added.** She enters the nursing wait only if she conceived. He can mate again after 1 hour (on the day clock); a mating costs him 0.5 energy, not 10. Wild chimpanzee females in full swelling mate from under one to about five times an hour (*Wild Chimpanzees*, Cambridge); the males who mate most show no higher energy costs (urinary C-peptide; Harvard dissertation). No study gives a male's own rest between matings: the 1 hour and the 0.5 are **assumptions**; the wait was tested at 1 and 4 hours.
+
+**Test.** 12 worlds × 60 days, the same seeds. **Primary outcome named before: births per world.** Prediction written before the runs: (1) the new rule alone changes births little (with no cycle every mating already conceived); (2) with the cycle, births fall somewhat but stay at 70% or more of the no-cycle births; (3) a 4-hour wait gives about the same as 1 hour.
+
+| | People alive | Worlds died out | Born per world | Died per world | Hunger | Predators | Drowned | Burned |
+|---|---|---|---|---|---|---|---|---|
+| A: old rule | 33.3 ± 19.0 | 0 | 33.4 | 25.1 | 95 | 20 | 18 | 56 |
+| B: new rule | 31.4 ± 13.6 | 0 | 33.8 | 27.3 | 103 | 17 | 20 | 68 |
+| C: new rule + cycle | 26.7 ± 14.7 | 0 | 28.1 | 26.4 | 93 | 33 | 19 | 72 |
+| D: + cycle, 4-hour wait | 27.3 ± 19.1 | 0 | 26.7 | 24.4 | 95 | 7 | 22 | 70 |
+
+**Result.** **All three predictions held.** (1) B against A: births +0.3 a world (range −6.6 to +7.3). (2) C against B: births **83%** (−5.7 a world, range −10.8 to −0.6; lower in 8 of 12 worlds) — against 29% with the old rule (entry 32). (3) D against C: −1.4 (range −4.9 to +2.0). Survival with the cycle 26.7 against 31.4, within noise.
+
+**Interpretation.** The cycle's collapse was the two bugs, not the cycle. With them fixed, a real feature of ape reproduction costs a little in births, as waiting for fertile days should. One simplification remains: conception within the fertile days is certain, where real females often need several cycles (an assumption already registered).
+
+**Strength.** Moderate (12 paired worlds; the primary outcome and its prediction named first). **Lesson:** a failure traced to its causes and fixed, then predicted and confirmed, is worth more than a success that was never in doubt.
 
 ---
 
