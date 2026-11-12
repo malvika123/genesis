@@ -92,6 +92,10 @@ owner chose that order:
    (`GAM` 0.97 × `LAM` 0.8, `src/config.js`), while a day is 96 steps and a life about 130 nights; the value estimate reaches
    about 33 steps. Then learning by watching what worked (Phase B).
 
+**Order changed (the owner, 12 Nov, after entries 44–46):** speed → **brains** → scale. Hunger causes about 40% of deaths because the
+brains do not take the last step to food (entry 45); disease cannot show its real effect, and the band-size result cannot come, until
+the brains do. Scale follows the brains.
+
 **Exception to the freeze (the owner, 12 Nov, after the reality checks of entry 42):** fix the two causes of the failing checks now —
 conception being certain (births too close) and no disease (babies hardly die; no illness deaths) — each researched first, tested on 24
 worlds and re-checked; then back to speed.
