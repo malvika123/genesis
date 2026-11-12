@@ -44,6 +44,7 @@ Entries are kept even when the result was "no effect" or "it made things worse" 
 | Hunger and thirst come first | Hunger deaths 109 → 69 (−37%); births 27 → 30; but drownings doubled, 11 of 12 drowned were children | weak–moderate |
 | Moving as one choice, not eight (walking 70–80% → 25%) | Predator deaths 60 → 3; drownings 39 → 18; but hunger deaths 80 → 115 | moderate |
 | A mother keeps her nursing child near | 31 alive vs 25, better in 9 of 12; drownings and fire deaths about halved | weak–moderate |
+| Newcomers from the wider population when a hunter kind is rare: hunter kinds alive at 100 days 20 of 36 → 36 of 36 (all 12 worlds keep all three); hominin danger unchanged | 12 paired worlds × 100 days | moderate |
 | Mating fixed (she waits only if she conceived; he can mate again within hours): the female cycle now costs 17% of births, not 71% — all three written predictions held | 12 paired worlds | moderate |
 | **Failure:** the female cycle, added alone | Births 31 → 9 per world: it exposed a hidden bug (4-year lockout after any mating) | strong |
 | **Not** measurable: climbing as a choice; temperament and parental care; mood; the refeeding signal (24 worlds: survival and hunger unchanged, fire deaths up at the edge of noise); ape-like care (hunger −24%, within noise) | Within noise | none–weak |
@@ -1130,6 +1131,40 @@ Other firsts: making fire by rubbing wood in 7 of 8 worlds, by sparks in 3; cutt
 **Interpretation.** The cycle's collapse was the two bugs, not the cycle. With them fixed, a real feature of ape reproduction costs a little in births, as waiting for fertile days should. One simplification remains: conception within the fertile days is certain, where real females often need several cycles (an assumption already registered).
 
 **Strength.** Moderate (12 paired worlds; the primary outcome and its prediction named first). **Lesson:** a failure traced to its causes and fixed, then predicted and confirmed, is worth more than a success that was never in doubt.
+
+### 39. Hunters kept from dying out: newcomers from the wider population — Nov 2026
+
+**Version.** Unreleased · the change and the test: commit `2dd4269` (`--no-rescue` restores the closed world — checked: identical worlds; `--rescue-rate` sets the rate). Run by Claude.
+
+**Data.** [Closed world](../data/findings/39-newcomers/A-closed.csv) · [newcomers about once a year](../data/findings/39-newcomers/B-rescue-1.csv) · [a quarter as often](../data/findings/39-newcomers/C-rescue-025.csv) · [the comparisons](../data/findings/39-newcomers/comparison.txt) · [the prediction, written before](../data/findings/39-newcomers/prediction-written-before.txt) · hunter traces before the change: [seed 2](../data/findings/39-newcomers/hunters-trace-seed-2-before.txt), [4](../data/findings/39-newcomers/hunters-trace-seed-4-before.txt), [5](../data/findings/39-newcomers/hunters-trace-seed-5-before.txt), [6](../data/findings/39-newcomers/hunters-trace-seed-6-before.txt) (`tools/analysis/hunters-trace.js`).
+
+**Question (the owner).** On the live site every hunter in the owner's world died; in entry 37 hunters died out of 4 of 8 worlds. Why, and what real thing is missing?
+
+**The trace** (4 of entry 37's worlds, 100 days): every hunter kind starts as 2 animals. Wolves were gone in **all 4** worlds by day 40–60, big cats in 3 of 4, bears in 1. They died of hunger and old age, and big cats were often "killed by a predator" — by their own starving kind (hunters attack their own kind only when starving). Big cats spent 1,300–3,700 steps a world near starvation. Two causes: **tiny numbers** (a kind of 2–10 animals for the whole world dies out by chance) and **starving** (the review: about 3–10 times too many hunters for the prey).
+
+**Real-world basis.** Real predators are far more numerous: Serengeti leopards about 5.5 per 100 km² (Allen et al. 2020), hyenas 80–200. Small isolated carnivore populations do die out — an isolated puma population of a few dozen has a 16–21% chance in 50 years (Benson et al. 2019) — and are kept going by animals arriving from outside: the rescue effect (Brown & Kodric-Brown 1977); one immigrant a year cut a reintroduced marten population's 100-year extinction risk below 1% (J. Wildl. Manage. 2019).
+
+**Added (fix 1 of 2, the owner's choice).** While a hunter kind has fewer than 4 animals, a young adult of that kind arrives about once a life-year, somewhere that suits it, away from the band, with a blank mind; drawn from the separate random stream. The rate and the threshold are **assumptions**; the rate was tested at 1 and 0.25. A stand-in for the wider population until the scale is decided.
+
+**Test.** 12 worlds × 100 days, the same seeds. **Primary outcome named before: hunter kinds still alive at day 100 (of 36).** Prediction written first: (1) closed: kinds lost in most worlds; (2) newcomers once a year: at least 30 of 36, but hunters stay few and starve; (3) a quarter as often: in between; (4) hominin predator deaths rise.
+
+| | People alive | Worlds died out | Born per world | Died per world | Hunger | Predators | Drowned | Burned |
+|---|---|---|---|---|---|---|---|---|
+| Closed world | 28.0 ± 20.5 | 1 | 46.6 | 43.6 | 206 | 46 | 26 | 88 |
+| Newcomers once a year | 31.2 ± 22.3 | 0 | 49.9 | 43.8 | 219 | 38 | 27 | 83 |
+| Newcomers 0.25 a year | 29.8 ± 21.6 | 0 | 51.7 | 46.8 | 234 | 39 | 39 | 75 |
+
+| Hunters at day 100 | Kinds alive (of 36) | Worlds with all 3 | Hunters per world |
+|---|---|---|---|
+| Closed world | 20 | 1 of 12 | 10.0 |
+| Newcomers once a year | **36** | **12 of 12** | 17.8 (+7.8, range +3.8 to +11.9) |
+| Newcomers 0.25 a year | 34 | 10 of 12 | 12.7 |
+
+**Result.** (1), (2) and (3) **held**: from 20 of 36 kinds alive to all 36, at both rates nearly all. (2)'s second half was **wrong**: hunters did not stay few (17.8 a world). (4) was **wrong**: hominin predator deaths did not rise (46 → 38; −0.7 a world, range −7.2 to +5.9: no change). Hominin survival unchanged (31.2 against 28.0, within noise).
+
+**Interpretation.** A closed world of a few animals per kind loses its hunters by chance; a trickle of newcomers, as real landscapes have, keeps all three kinds. It does not touch the second cause — starving — which fix 2 (more prey per hunter) addresses. Hunters being present did not make the world more dangerous for hominins within 100 days, probably because predators kill the isolated (entry 14) and hominins now stay together (entries 30–31).
+
+**Strength.** Strong for "kinds no longer die out" (36 of 36 against 20, all 12 worlds; a near-certain result) — on the log's scale moderate (12 worlds). **Lesson:** a world too small to hold real populations needs the wider population represented somehow; the real fix is the scale (priority 4).
 
 ---
 

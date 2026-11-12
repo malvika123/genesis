@@ -1,0 +1,9 @@
+Written 12 Nov 2026 BEFORE the runs (commit in ./commit). 12 worlds x 100 days, seeds 1-12, same worlds.
+Runs: A = --no-rescue (closed world); B = newcomers about once a life-year while a kind has fewer than 4 (default);
+      C = --rescue-rate 0.25.
+Primary outcome: hunter kinds still alive at day 100 (of 3), summed over the 12 worlds.
+1. A: kinds are lost in most worlds (the trace: wolves gone in 4 of 4 worlds by day 40-60, big cats in 3 of 4).
+2. B: clearly more kinds alive than A — at least 30 of 36 — but hunters stay few, and many newcomers starve (they meet the
+   same prey shortage: rescue treats the tiny numbers, not the hunger).
+3. C: between A and B.
+4. Secondary: hominin predator deaths rise with B (more hunters about); hominin survival lower or about the same.

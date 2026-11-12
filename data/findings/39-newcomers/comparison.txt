@@ -1,0 +1,31 @@
+12 paired worlds (seeds 1,2,3,4,5,6,7,8,9,10,11,12)
+per seed alive closed 24 24 50 18 47 67 12 38 0 2 15 39 | rescue1 26 35 58 15 52 57 2 21 6 68 18 16
+died out: closed 1, rescue1 0
+people_alive                 closed: 28.0 ± 20.5    rescue1: 31.2 ± 22.3    diff 3.17 [-11.06, 17.40]  rescue1 higher in 7, lower in 5
+generations                  closed: 2.5 ± 0.7      rescue1: 2.6 ± 0.5      diff 0.08 [-0.34, 0.51]  rescue1 higher in 3, lower in 2
+plant_eaters                 closed: 65.5 ± 27.8    rescue1: 59.7 ± 22.7    diff -5.83 [-25.36, 13.69]  rescue1 higher in 3, lower in 9
+hunters                      closed: 10.0 ± 5.3     rescue1: 17.8 ± 2.7     diff 7.83 [3.79, 11.88]  rescue1 higher in 9, lower in 2
+died_hunger                  closed: sum 206        rescue1: sum 219        diff 1.08 [-3.13, 5.30]  rescue1 higher in 6, lower in 4
+died_thirst                  closed: sum 2          rescue1: sum 1          diff -0.08 [-0.41, 0.24]  rescue1 higher in 1, lower in 2
+died_killed_by_a_predator    closed: sum 46         rescue1: sum 38         diff -0.67 [-7.19, 5.86]  rescue1 higher in 6, lower in 2
+died_drowned                 closed: sum 26         rescue1: sum 27         diff 0.08 [-2.00, 2.17]  rescue1 higher in 5, lower in 5
+died_burned                  closed: sum 88         rescue1: sum 83         diff -0.42 [-2.67, 1.84]  rescue1 higher in 5, lower in 4
+died_its_wounds              closed: sum 36         rescue1: sum 32         diff -0.33 [-1.28, 0.62]  rescue1 higher in 2, lower in 5
+died_old_age                 closed: sum 114        rescue1: sum 117        diff 0.25 [-1.44, 1.94]  rescue1 higher in 6, lower in 5
+died_giving_birth            closed: sum 5          rescue1: sum 8          diff 0.25 [-0.65, 1.15]  rescue1 higher in 3, lower in 2
+
+12 paired worlds (seeds 1,2,3,4,5,6,7,8,9,10,11,12)
+per seed alive closed 24 24 50 18 47 67 12 38 0 2 15 39 | rescue025 35 29 29 17 52 29 4 81 5 26 10 41
+died out: closed 1, rescue025 0
+people_alive                 closed: 28.0 ± 20.5    rescue025: 29.8 ± 21.6    diff 1.83 [-11.10, 14.76]  rescue025 higher in 7, lower in 5
+generations                  closed: 2.5 ± 0.7      rescue025: 2.4 ± 0.8      diff -0.08 [-0.41, 0.24]  rescue025 higher in 1, lower in 2
+plant_eaters                 closed: 65.5 ± 27.8    rescue025: 59.3 ± 24.3    diff -6.17 [-29.20, 16.86]  rescue025 higher in 5, lower in 7
+hunters                      closed: 10.0 ± 5.3     rescue025: 12.7 ± 5.3     diff 2.67 [-2.20, 7.53]  rescue025 higher in 8, lower in 4
+died_hunger                  closed: sum 206        rescue025: sum 234        diff 2.33 [-5.24, 9.90]  rescue025 higher in 6, lower in 6
+died_thirst                  closed: sum 2          rescue025: sum 2          diff 0.00 [-0.38, 0.38]  rescue025 higher in 2, lower in 2
+died_killed_by_a_predator    closed: sum 46         rescue025: sum 39         diff -0.58 [-6.06, 4.89]  rescue025 higher in 6, lower in 3
+died_drowned                 closed: sum 26         rescue025: sum 39         diff 1.08 [-0.64, 2.81]  rescue025 higher in 8, lower in 4
+died_burned                  closed: sum 88         rescue025: sum 75         diff -1.08 [-2.81, 0.64]  rescue025 higher in 3, lower in 8
+died_its_wounds              closed: sum 36         rescue025: sum 31         diff -0.42 [-2.89, 2.06]  rescue025 higher in 4, lower in 5
+died_old_age                 closed: sum 114        rescue025: sum 134        diff 1.67 [-0.83, 4.17]  rescue025 higher in 8, lower in 3
+died_giving_birth            closed: sum 5          rescue025: sum 8          diff 0.25 [-0.23, 0.73]  rescue025 higher in 3, lower in 1

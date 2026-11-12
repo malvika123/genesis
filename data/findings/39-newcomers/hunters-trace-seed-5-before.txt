@@ -1,0 +1,23 @@
+day 0 {"Wolf":2,"Big cat":2,"Bear":2}
+day 5 {"Wolf":5,"Big cat":5,"Bear":3}
+day 10 {"Wolf":8,"Big cat":4,"Bear":3}
+day 15 {"Big cat":6,"Bear":4,"Wolf":8}
+day 20 {"Bear":5,"Wolf":8,"Big cat":4}
+day 25 {"Bear":6,"Wolf":7,"Big cat":2}
+day 30 {"Bear":5,"Big cat":2,"Wolf":6}
+day 35 {"Wolf":4,"Bear":5,"Big cat":1}
+day 40 {"Wolf":3,"Bear":6}
+day 45 {"Bear":6}
+day 50 {"Bear":6}
+day 55 {"Bear":6}
+day 60 {"Bear":5}
+day 65 {"Bear":6}
+day 70 {"Bear":6}
+day 75 {"Bear":6}
+day 80 {"Bear":6}
+day 85 {"Bear":5}
+day 90 {"Bear":4}
+day 95 {"Bear":6}
+day 100 {"Bear":6}
+hunter deaths {"Wolf: hunger":6,"Big cat: hunger":3,"Wolf: killed by a predator":4,"Big cat: old age":3,"Bear: drowned":1,"Big cat: killed by a predator":1,"Bear: killed by a predator":1,"Wolf: old age":2,"Bear: old age":7}
+hunter births {"Wolf":10,"Big cat":5,"Bear":13} kills by hunters [0,7,6,1] hunter steps starving (e<20) {"Wolf":3319,"Big cat":1304,"Bear":121}
