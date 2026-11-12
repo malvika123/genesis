@@ -21,6 +21,7 @@ test on the same worlds; never tune toward survival.
 | B8 | The page's translator says a sound "means" something with no test of chance (≥25 uses, ≥25% in one situation, ≥1.6× baseline, over ~1,000 sounds) | Honest-minds rule | Use `talk-detector.js`'s tested result, or word it "used more often when… (not tested)" |
 | B9 | About ten thresholds steer behaviour unregistered (ready to mate if energy > 45 and water > 40; gives food if > 40; feeds a child if > 45; conception cost; labour pain 0.6; 1% maternal death; lifespan draw 0.72 ± 0.2; forced sleep when exhausted) | Register rule | Add them to `ASSUMPTIONS.md` with ranges |
 | B10 | The `im` gene bundles copying others **and** feeling their pain/fear, so "copying is bred out" (entry 25) may really be "caught fear is bred out" | Review finding 10 | Correlate each hominin's `im` with surviving children on saved worlds; split the gene in two |
+| B11 | Crash when a fish learns a lesson (`LG` in `src/state.js` had three slots for four kinds); the runner then wrote the surviving worlds and exited as if all was well | Found in the 100-year run (4 of 8 worlds lost) | **done** (`26a92dd`): fixed; the runner now warns and fails when worlds are missing |
 
 ## 2. Built, tested, waiting (switched off or not merged)
 
