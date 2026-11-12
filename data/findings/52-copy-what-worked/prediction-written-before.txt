@@ -1,0 +1,6 @@
+Written 13 Nov 2026 BEFORE the run. Same 24 seeds x 100 days; baseline entry 51 (identical to --copy-moves on this commit).
+Primary outcome: born who reach age 15 (entry 51: 58.6%).
+1. Survival to 15 rises a little (young learn what pays from elders close by): 59-63%.
+2. Hunger's share of deaths falls a little (30% -> 26-29%).
+3. Population change stays in band; checks passing stay at 5 of 7 or improve.
+Honest uncertainty: in one of two probe worlds young hominins still ate in empty places more than with the old copying.

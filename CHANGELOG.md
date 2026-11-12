@@ -4,6 +4,8 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Learning by watching what worked, up close** (research log entry 52): the young copy an elder's choice by how it turned out
+  for it, and only from an elder in the same square; hunger falls from 30% to 17% of deaths. `--copy-moves`, `--copy-far`.
 - **Backward replay** at a good surprise: the last 4 hours replayed backwards so the steps before a reward are credited
   (research log entry 51; no measurable effect). `--no-back-replay`.
 - **The brains' expectations fixed** (research log entry 50): the estimate of value learns from good and bad surprises alike;

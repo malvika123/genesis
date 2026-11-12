@@ -44,6 +44,7 @@ Entries are kept even when the result was "no effect" or "it made things worse" 
 | Hunger and thirst come first | Hunger deaths 109 → 69 (−37%); births 27 → 30; but drownings doubled, 11 of 12 drowned were children | weak–moderate |
 | Moving as one choice, not eight (walking 70–80% → 25%) | Predator deaths 60 → 3; drownings 39 → 18; but hunger deaths 80 → 115 | moderate |
 | A mother keeps her nursing child near | 31 alive vs 25, better in 9 of 12; drownings and fire deaths about halved | weak–moderate |
+| **Learning by watching what worked, up close** (copy an elder's choice by how it turned out for it, only in the same square): hunger 30% → 17% of deaths; illness 16% (passes); children reaching 15 now just above the band (62%) | 24 worlds | moderate |
 | **Brains' expectations fixed** (good surprises no longer count four times as much in the value estimate): starving hominins on fruit eat 83% (was 1–5%); populations hold steady (−3.1% → −0.3% a year), die-outs 5 → 2, children reaching 15 45% → 59%, life expectancy 15 → 21; **5 of 7 reality checks pass** | 24 worlds | moderate–strong |
 | Disease (outbreaks spread by closeness, deadliest for the young, old and starving): illness 5% of deaths, infant deaths 3.8 → 5.3% — real but small beside hunger (37%); bands shrink more | 24 worlds, two rates | moderate |
 | Not every cycle conceives (1 in 5, as at Gombe and Kanyawara): births 5.3 years apart (real 5.2–6.0), 4 of 7 checks pass — but bands shrink 2.2% a year and 6 of 24 die out: deaths are too many (hunger 41%, fire 11%) | 24 worlds | moderate |
@@ -1516,6 +1517,48 @@ Causes of death after: hunger 30%, old age 23%, predators 15%, illness 14%, fire
 **Interpretation.** Memory for cause and effect is not what keeps starving hominins from food a few kilometres away. Food 3–6 km off is a 2–3 hour walk — an ordinary foraging distance for an ape — and what a hominin can see or remember of food that far away is the more likely limit (not yet measured). Kept: the mechanism is real, it does no harm, and it has a switch.
 
 **Strength.** Moderate for "no effect" (24 worlds). **Lesson:** a measured problem (slow to reach food) can still have a different cause than the one that seemed obvious.
+
+### 52. Learning by watching what worked, up close: hunger falls from 30% to 17% of deaths — Nov 2026
+
+**Version.** Unreleased · the change: commit `d569f83` (`--copy-moves`: the old copying; `--copy-far`: copy what worked from anyone in sight — both checked: identical worlds); tool `tools/analysis/young-eat.js`. Run by Claude. Step 4 of the brains priority.
+
+**Data.** [Reality checks after](../data/findings/52-copy-what-worked/table.txt) · young hominins' eating, seed 1: [old copying](../data/findings/52-copy-what-worked/young-eat-old-copying-seed-1.txt), [copy what worked from afar](../data/findings/52-copy-what-worked/young-eat-worked-far-seed-1.txt), [and only up close](../data/findings/52-copy-what-worked/young-eat-worked-close-seed-1.txt) (seed 3 alongside) · [the prediction, written before](../data/findings/52-copy-what-worked/prediction-written-before.txt).
+
+**Question.** Young hominins copied whatever an elder was doing, however it turned out, in their own place (backlog A4). Real young apes learn their diet by watching: at Budongo young chimpanzees peered closely at experienced group members, mostly their mothers, and about 60% of the peering was about food (Schuppli et al., Max Planck 2026; the study could not show directly that peering caused learning).
+
+**Changed, in two steps.** (1) **Copy what worked:** a youngster copies the elder's last choice in proportion to how it turned out for the elder — better than it expected: copy it; worse: learn to avoid it; as expected: learn little. How others use their voice is copied as before. (2) **Only up close:** a choice is copied only from an elder in the same square (the closest Genesis has; peering is within reach).
+
+**Probe (two worlds, 40 days, weaned young):**
+
+| | Old copying | Copy what worked, from afar | …only up close |
+|---|---|---|---|
+| Chose "eat" (seed 1 / 3) | 5.3% / 2.3% | 17.8% / 6.9% | 6.0% / 2.1% |
+| …with food there | 48% / 80% | 13% / 46% | 28% / 84% |
+| …and it paid | 65% / 81% | 35% / 64% | 54% / 87% |
+| Hunger deaths, all ages | 3 / 4 | 1 / 1 | 0 / 0 |
+
+Step 1 alone made youngsters eat where there was nothing (copying "eat" from elders kilometres away); step 2 repaired most of it.
+
+**Test.** The reality checks, 24 worlds × 100 days; baseline entry 51. Primary outcome: born who reach 15. Prediction written first: (1) survival to 15 rises a little, to 59–63%; (2) hunger's share falls a little, to 26–29%; (3) population stays in band, checks at least 5 of 7.
+
+| | Entry 51 | Learning by watching | Real |
+|---|---|---|---|
+| **Deaths from hunger** | 30% | **17%** | |
+| Born who reach 15 | 58.6% ✓ | 61.8% ✗ (just above) | 35–60% |
+| Deaths from illness | 11.6% ✗ | **16.3% ✓** | 15–60% |
+| Life expectancy at birth | 21.5 ✓ | 21.7 ✓ | 13–33 |
+| Population change a year | +0.1% ✓ | −0.1% ✓ | about stable |
+| Worlds that died out | 2 | 1 | |
+| Babies dying in their first year | 4.4% ✗ | 5.3% ✗ | 11–21% |
+| Checks passing | 5 of 7 | 5 of 7 | |
+
+Causes of death after: old age 24%, fire 19%, hunger 17%, illness 16%, predators 15%, wounds 6%.
+
+**Result.** (1) **Held**: 61.8% — but that is now just above the band (foragers about 60%, chimpanzees about 35%). (2) **Held, and more**: hunger fell from 30% to 17% of deaths, no longer the leading cause. (3) **Held**. Illness now passes its band; survival to 15 fails it from above.
+
+**Interpretation.** Learning by watching what worked, up close, does what it does in real apes: the young learn from their mothers what is worth eating. Too many children now reach 15 because babies and toddlers still die too rarely (infanticide and other real causes missing; backlog R10). **Fire deaths at 19% are too high** for apes and need tracing (wildfires catching whole bands; no moving away from fire, backlog A3).
+
+**Strength.** Moderate (24 worlds; prediction written first; the probe shows the mechanism). **Lesson:** "copy what worked" needs "where it worked": without the second, the first taught the wrong lesson.
 
 ---
 
