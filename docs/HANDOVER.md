@@ -1,29 +1,32 @@
 # Genesis — state of the project and open questions
 
 A briefing for anyone picking the work up: a new contributor, a reviewer, or a more capable model asked
-to check the science. Written November 2026 after v0.7.0; updated 10 November 2026. Read `README.md` for what the world contains
+to check the science. Written November 2026 after v0.7.0; updated 12 November 2026. Read `README.md` for what the world contains
 and `docs/MODEL.md` for the formal model description (ODD protocol).
 
 **Everything found but not yet done is in `docs/BACKLOG.md`** (bugs first, then built-but-waiting, then verified-not-built). Keep it current.
 
-## Where things stand (11 November 2026, midday) — start here
+## Where things stand (12 November 2026) — start here
 
-- `develop` (live) has everything up to research log entry 19. `percept` has entries 20–24 and these changes, tested one at
-  a time on paired worlds (not yet live): an inborn pull toward a ready partner (20); quicker conception after a lost
-  baby (21); grass no longer seen as food (22 — it did not explain hunger); Kleiber's law for hominins' food (23); the
-  animals of East Africa 2.5 million years ago (24 — **off by default**, `--africa-animals`: their hunters starved,
-  because Genesis has about nine times too many hunters for its prey, Carbone & Gittleman 2002); and **climbing as a
-  choice** (a new action with inborn pulls from sleepiness and fear; test running).
-- **The owner's rules from this session:** only true reflexes are automatic (blinking, sneezing, an infant's grip);
-  running, climbing and hiding are choices the brain makes, with inborn pulls. **Verify every claim online before
-  building — the owner's ideas included** — and report where sources contradict the plan. Run experiments gently
-  (`--workers 4`, `nice -n 19`): the owner's laptop overheats at 8.
-- **Next, in order:** (1) finish the climbing test and the long runs (8 worlds × 200 days), the generations check
-  (`tools/analysis/generations.js`: inborn traits by generation, and learned test scores), log them, merge to
-  `develop`; (2) abundance — hunters to prey about nine times off; decide what an animal stands for (one animal or a
-  herd) and the world's size, then switch on the East African animals; (3) why starving hominins walk but do not find
-  food; (4) whether adult women die more than men, and whether alone (group cohesion); (5) weapons as physics (a stick
-  or stone can hit a hunter) and nest building as a learned choice; (6) disease.
+**The whole plan is in `docs/HOMININ-PLAN.md`** (phases A–E, rewritten 12 Nov); what is found but not built is in
+`docs/BACKLOG.md`. A review brief for a stronger model is in `docs/REVIEW-BRIEF.md`.
+
+- `develop` (live) has everything up to research log entry 19. `percept` has the research log through entry 36 and the code for
+  entries 20–33 (the mating pull, quicker conception after a lost baby, grass not seen as food, body-size food, climbing as a
+  choice, hunger and thirst first, temperament and parental care, moving as one choice, the mother's pull, the female cycle, mood).
+  Three **stacked working branches** carry the rest and must be merged into `percept` before anything goes live:
+  `refeed-wip` (smooth hunger and the refeeding signal; the cycle off by default) → `apecare-wip` (only mothers feed their
+  young) → `band-wip` (up to 200 founders, no cap on people, `--extra-people`, the founders' practice off by default).
+- **Off by default:** the African animals (`--africa-animals`: Genesis has about nine times too many hunters for its prey), the
+  female cycle (`--cycle`: it exposed the 4-year nursing lockout after any mating — backlog B1), the founders' practice.
+- **Next, in order (Phase A):** (1) the 100-year run (started 12 Nov 13:25; `runs22` in the scratch folder) → log it;
+  (2) first test of `tools/analysis/talk-detector.js`; (3) fix B1, B2, B4, then retest the cycle; (4) merge the branches, `npm test`,
+  check the page in a browser, merge to `develop`, push; update the README and About tab. Then Phase B (learning by watching).
+- **The owner's rules:** only true reflexes are automatic; **verify every claim online before building — the owner's ideas
+  included**; Genesis must not be a safe world (the real pressures are must-haves); one change at a time with a switch and a paired
+  test; never tune toward survival; log failures. Run experiments gently (`--workers 4`, `nice -n 19`): the laptop overheats at 8.
+- **Fable access:** the owner has it. The review is in `docs/REVIEW-BRIEF.md`; no API key is set on this laptop (an API script
+  would be a standalone tool under `tools/`, never in the dependency-free engine).
 
 ## The rules the project is held to
 
