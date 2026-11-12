@@ -982,10 +982,21 @@ function sim() {
           addBond(fem, mal, 0.3);
           addBond(mal, fem, 0.3);
         }
-        mal.e -= 10;
-        // he can mate again soon; she will not be ready again until after the birth and nursing
-        mal.cd = Math.round(0.1 * TY);
-        fem.cd = S.cd;
+        // Hominins (12 Nov 2026, backlog B1 and B7): she waits only if she conceived (a mating that misses the fertile days
+        // leaves her ready); he can mate again within hours, on the day clock — wild females mate from under one to about
+        // five times an hour in full swelling (Wild Chimpanzees, Cambridge) — and a mating costs him little: the males who
+        // mate most show no higher energy costs (C-peptide; Harvard dissertation). The wait (1 h) and the cost (0.5) are
+        // assumptions. --old-mating: the old rule for everyone (a 36-day wait for him, the nursing wait for her, cost 10).
+        if (a.sp === 0 && SOC.newMating) {
+          mal.e -= 0.5;
+          mal.cd = Math.max(1, Math.round((SOC.maleWaitH * DAY) / 24));
+          if (fem.preg) fem.cd = S.cd;
+        } else {
+          mal.e -= 10;
+          // he can mate again soon; she will not be ready again until after the birth and nursing
+          mal.cd = Math.round(0.1 * TY);
+          fem.cd = S.cd;
+        }
         a.rd = b.rd = false;
         // one already strongly bonded feels less pull toward anyone else: in bonded men, oxytocin made
         // them keep more distance from an attractive stranger (Scheele et al. 2012), and people in
@@ -1390,7 +1401,7 @@ const hunterSeen = (x) => {
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {

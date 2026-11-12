@@ -104,6 +104,8 @@
     { key: 'cycle', kind: 'on', def: false, flag: 'cycle', label: 'Females have a cycle: receptive about 13 of 36 days, fertile only near ovulation — off by default until mating is as frequent as in real chimpanzees', cfg: true },
     { key: 'mood', kind: 'off', def: true, flag: 'no-mood', label: 'A lasting mood (the running average of recent surprises) colours how outcomes feel (off: none)', cfg: true },
     { key: 'eightWalks', kind: 'on', def: false, flag: 'eight-walks', label: 'The eight directions count as eight separate choices, so an undecided brain mostly walks (the old rule)', cfg: true },
+    { key: 'oldMating', kind: 'on', def: false, flag: 'old-mating', label: 'The old mating rule: after any mating she waits the whole nursing time, he waits 36 days and pays 10 energy', cfg: true },
+    { key: 'maleWait', kind: 'num', def: 1, flag: 'male-wait', label: 'Hours before a male hominin can mate again (an assumption; tested at 1 and 4)', min: 0.25, max: 48, cfg: true },
     { key: 'oneSocialGene', kind: 'on', def: false, flag: 'one-social-gene', label: 'One inherited gene for copying others and for feeling their pain and fear (the old rule); otherwise two separate genes', cfg: true },
     { key: 'temperament', kind: 'off', def: true, flag: 'no-temperament', label: 'Inborn temperament (bold or timid) differs between individuals and is inherited (off: everyone equally fearful)', cfg: true },
     { key: 'parentalCare', kind: 'off', def: true, flag: 'no-parental-care', label: 'How strongly parents share with their own hungry young differs and is inherited (off: every parent equally)', cfg: true },
