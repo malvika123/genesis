@@ -59,17 +59,17 @@ verified online, built with a switch, and tested on its own before the next, in 
 
 | # | What | Why (to verify before building) | Depends on |
 |---|---|---|---|
-| R1 | A hungry season for hominins in the tropics | **Checked 12 Nov:** Genesis has a rain belt that follows the sun, and grass grows with rain, but fruit, roots and nuts grow with warmth only, so in the tropics hominin food barely changes through the year — no hungry season. Real savanna woodland: fruit peaks in the *late dry season*, scarce in the *early wet season* (Ugalla: chimpanzees fall back on fibrous foods, smaller parties); forests: fruit follows rain (Kalinzu); Fongoli: some fruit every month | find month-by-month fruit data for an African savanna woodland, so the lag after the rains is right — do not simply tie fruit to rain |
+| R1 | A hungry season for hominins in the tropics | **Checked 12 Nov:** Genesis has a rain belt that follows the sun, and grass grows with rain, but fruit, roots and nuts grow with warmth only, so in the tropics hominin food barely changes through the year — no hungry season. Real savanna woodland: fruit peaks in the *late dry season*, scarce in the *early wet season* (Ugalla: chimpanzees fall back on fibrous foods, smaller parties); forests: fruit follows rain (Kalinzu); Fongoli: some fruit every month | find month-by-month fruit data for an African savanna woodland, so the lag after the rains is right — do not simply tie fruit to rain. **12 Nov:** Issa wet season Nov–Apr, dry May–Oct (Piel et al. 2017); Ugalla studies disagree on the scarcest time (early rains vs dry season); monthly tables are in the full papers — not yet built |
 | R2 | The real East African landscape: the Rift, lakes that grow and shrink, volcanoes, spreading grassland | Patch 7 of the plan | climate data of the time |
 | R3 | Long climate swings between wetter and drier periods | Plan, patch 7 | R2 |
-| R4 | Crocodiles at rivers and lakes | A major predator of hominins: crocodile bite marks on the Olduvai hominin foot (OH 8) | water ecology |
+| R4 | Crocodiles at rivers and lakes | **Researched 12 Nov:** the OH 8 Homo habilis foot (about 1.8 Ma) bears crocodile damage; some Oldowan sites lay near crocodile habitat (Njau); Nile crocodiles live throughout chimpanzee range and can kill one; chimpanzees rarely recorded as their prey; small crocodiles flee. **No attack rate found** | build second, the attack rate an assumption tested at both ends |
 | R5 | Eagles taking small children | The Taung child (Berger & Clarke 1995) | birds as agents |
 | R6 | Lions, and the hunters balanced against prey | | A1 |
 | R7 | Venomous snakes | Primates detect snakes fast (snake detection theory) | |
 | R8 | Dangerous large plant-eaters: elephants, hippos, buffalo | They kill when threatened | A1 |
 | R9 | Disease and parasites | Probably a major killer | research first |
 | R10 | Violence between groups (raids) and infanticide by males | Chimpanzees raid neighbours and kill; males kill infants not theirs | several groups (R14); male rivalry (R13) |
-| R11 | Bone marrow from bones broken with stones | Probably among the first uses of stone tools | |
+| R11 | Bone marrow from bones broken with stones | **Researched 12 Nov:** Oldowan hominins certainly broke bones with hammerstones for marrow; Nyayanga (2.9 Ma) tools used for marrow and roots (Plummer et al. 2023); Dikika (3.4 Ma) disputed; wild chimpanzees break bones or use sticks for marrow; fresh tibia and femur about 664–685 kJ per 100 g of bone | **build first**: bones already lie where animals died; striking one with a stone cracks it for marrow, as with nuts — physics, not scripted |
 | R12 | Termites and other insects, eggs, honey, small animals; sedges and grass seeds | Diet evidence | A15 |
 | R13 | Males competing for rank and mates (and testosterone) | Chimpanzee males; Muller & Wrangham 2004 | B2 |
 | R14 | Several groups, and females moving between them at adolescence | Chimpanzee daughters leave their community; genes mix | the community-size results |
