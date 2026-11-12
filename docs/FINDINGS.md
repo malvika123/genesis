@@ -44,13 +44,14 @@ Entries are kept even when the result was "no effect" or "it made things worse" 
 | Hunger and thirst come first | Hunger deaths 109 → 69 (−37%); births 27 → 30; but drownings doubled, 11 of 12 drowned were children | weak–moderate |
 | Moving as one choice, not eight (walking 70–80% → 25%) | Predator deaths 60 → 3; drownings 39 → 18; but hunger deaths 80 → 115 | moderate |
 | A mother keeps her nursing child near | 31 alive vs 25, better in 9 of 12; drownings and fire deaths about halved | weak–moderate |
+| **Not** building: the first "shelters" were chance — heaps under trees that already gave more cover, from branches dropped by many hominins over months | 3 worlds traced | strong |
 | Hunters placed where their prey lives (not anywhere that suits their climate): plant-eaters −22%, hominins killed by predators about 4× (38 → 149) — the world is no longer too safe | 12 paired worlds × 100 days | weak–moderate |
 | Newcomers from the wider population when a hunter kind is rare: hunter kinds alive at 100 days 20 of 36 → 36 of 36 (all 12 worlds keep all three); hominin danger unchanged | 12 paired worlds × 100 days | moderate |
 | Mating fixed (she waits only if she conceived; he can mate again within hours): the female cycle now costs 17% of births, not 71% — all three written predictions held | 12 paired worlds | moderate |
 | **Failure:** the female cycle, added alone | Births 31 → 9 per world: it exposed a hidden bug (4-year lockout after any mating) | strong |
 | **Not** measurable: climbing as a choice; temperament and parental care; mood; the refeeding signal (24 worlds: survival and hunger unchanged, fire deaths up at the edge of noise); ape-like care (hunger −24%, within noise) | Within noise | none–weak |
 | **Not** helpful: founders who practise first (drownings doubled); **not** supported yet: a bigger founding band discovering more (survival per hominin the same at 25, 40 and 80) | Same worlds, 24 and 12 | none / moderate |
-| Bands boom over 100 years: 5 of 8 last, the largest 25 → 606, births 2× deaths — **faster than any real chimpanzee community**, with no disease and predators gone in 4 worlds; first shelters (3 of 8 worlds, purpose unknown) | 8 worlds × 300 days | moderate (boom) / weak (shelters) |
+| Bands boom over 100 years: 5 of 8 last, the largest 25 → 606, births 2× deaths — **faster than any real chimpanzee community**, with no disease and predators gone in 4 worlds; first "shelters" (3 of 8 worlds — chance, entry 41) | 8 worlds × 300 days | moderate (boom) / weak (shelters) |
 | **Not** measurable: early hominins living on leaves when fruit is short | 14.6 vs 14.8 alive, hunger deaths 168 vs 204 (24 worlds, within noise) | none |
 | (Scenario) Early hominin bodies and lives instead of modern ones | 14.5 vs 25.5 alive, no die-outs; old age a main cause of death (shorter, chimpanzee-like life) | weak–moderate (confounded) |
 | **Not** a must-have: bigger brains on their own | 64 units: 8.2 alive, 256: 6.1, 1,024: 2.2 | strong |
@@ -1200,6 +1201,34 @@ Other firsts: making fire by rubbing wood in 7 of 8 worlds, by sparks in 3; cutt
 **Interpretation.** With hunters where the herds are, predators finally act as predators: they eat plant-eaters, and they meet hominins, who forage in the same places. Entry 37's world was too safe (no disease, predators gone); now one of those two missing pressures is back. Whether a fourfold rise is realistic is for the reality checks (causes of death against wild chimpanzees and foragers) — not a reason to tune.
 
 **Strength.** Moderate for "hunters now reach their prey" (traces; plant-eaters down in 8 of 12 worlds); weak–moderate for the rise in hominin deaths (large, but the range touches zero). **Lesson:** a diagnosis made on paper (too little prey) failed the first look at the data (prey in the wrong place). Trace before building.
+
+### 41. The first shelters were chance, not building — Nov 2026
+
+**Version.** The worlds of entry 37 (commit `26a92dd`), traced read-only with `tools/analysis/shelter-trace.js`. Run by Claude.
+
+**Data.** Traces: [world 8](../data/findings/41-shelters-were-chance/shelter-trace-world-8.txt), [world 4](../data/findings/41-shelters-were-chance/shelter-trace-world-4.txt), [world 1](../data/findings/41-shelters-were-chance/shelter-trace-world-1.txt).
+
+**Question.** In entry 37 a hominin slept on a heap of seven or more branches in 3 of 8 worlds — the first "shelters" in Genesis. Built on purpose, or chance? The cheap check first (suggested by Fable): what was the heap worth? A heap of 7 gives cover 0.375 (`src/forest.js`), below the 0.4 needed to keep dry or feel safe; and cover is the larger of the tree and the heap, so a heap under trees adds nothing.
+
+**Test.** Each world re-run on its own code to 10 days after the first heap sleep, recording every branch dropped (where, by whom, when), and at the first sleep: the branches, the tree cover, rain and temperature.
+
+| | World 8 | World 4 | World 1 |
+|---|---|---|---|
+| Day of the first heap sleep | 169 | 194 | 253 |
+| Branches | 7 | 7 | 7 |
+| Cover from the heap | 0.375 | 0.375 | 0.375 |
+| **Cover from the tree above** | **0.80** | **0.86** | **0.40** |
+| What the heap added | nothing | nothing | nothing |
+| Branches dropped there before | 5, by 5 hominins (one each), days 34–149 | 24, by 10, days 58–194 (at most 7 by one) | 36, by 15+, days 32–253 (at most 4 by one) |
+| The 10 days after | 7 → 8 branches | fell to 4 | fell to 3 |
+
+Busier spots elsewhere had 50–115 branches dropped on them (by 12–28 hominins) and held 0–2: branches rot.
+
+**Result.** **Chance, not building.** In every world the heap lay under trees that already gave as much cover or more, so the heap gave nothing; the hominin slept there because of the tree (the inborn pull toward cover, entry 13). The branches came from many hominins each dropping one or a few over months in a much-used place — no one carried them there repeatedly — and two of the three heaps shrank right after. The planned frozen-brain test is not needed.
+
+**Also found.** The "first shelter" milestone (`day_shelter`: asleep on 7+ branches) counts heaps that do nothing. It should count a heap only where it adds cover beyond what is already there (backlog B16).
+
+**Strength.** Strong for "chance" (all three worlds, the cover arithmetic exact). **Lesson:** a striking first ("they built shelters!") must be traced before it is told; the cheapest check — what it was worth — settled it in an hour.
 
 ---
 

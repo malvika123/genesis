@@ -74,7 +74,7 @@ the scale — wait. Fable (asked for an independent opinion) argued that brains 
 are measurement and must come before a scale change, and that the brain's short memory for cause and effect was missing. The
 owner chose that order:
 
-1. **The shelter, cheaply first.** What was the heap worth? A heap of 7 gives cover 0.375, below the 0.4 needed to keep dry and
+1. **Done 12 Nov — the heaps were chance (entry 41).** **The shelter, cheaply first.** What was the heap worth? A heap of 7 gives cover 0.375, below the 0.4 needed to keep dry and
    to feel safe to sleep (`src/forest.js`, `src/climate.js`, `src/sim.js`); under trees it adds nothing; nights are warm. If it gave
    nothing, the heaps were chance. Only if it helped: the trace (B14) and a frozen-brain test (same inputs, only the cover reading
    changed, against band-mates who never heaped), prediction written first.

@@ -1,0 +1,183 @@
+FIRST HEAP SLEEP {
+ "day": 253,
+ "cell": 5292,
+ "x": 44,
+ "y": 41,
+ "branches": 7,
+ "treeCover": 0.4,
+ "cave": false,
+ "coverHere": 0.4,
+ "heapCover": 0.375,
+ "heapAddsOverTrees": -0.025,
+ "raining": false,
+ "meanTemp": 16.2,
+ "sleeper": {
+  "id": 5239,
+  "name": "Kasa",
+  "ageYears": 4.7
+ },
+ "dropsHereByWhom": [
+  {
+   "id": 631,
+   "name": "(dead)",
+   "drops": 4,
+   "firstDay": 34,
+   "lastDay": 65
+  },
+  {
+   "id": 17,
+   "name": "(dead)",
+   "drops": 4,
+   "firstDay": 35,
+   "lastDay": 35
+  },
+  {
+   "id": 1716,
+   "name": "(dead)",
+   "drops": 4,
+   "firstDay": 82,
+   "lastDay": 83
+  },
+  {
+   "id": 2890,
+   "name": "Maa",
+   "drops": 3,
+   "firstDay": 148,
+   "lastDay": 149
+  },
+  {
+   "id": 3751,
+   "name": "Somi",
+   "drops": 3,
+   "firstDay": 248,
+   "lastDay": 251
+  },
+  {
+   "id": 833,
+   "name": "(dead)",
+   "drops": 2,
+   "firstDay": 64,
+   "lastDay": 64
+  },
+  {
+   "id": 156,
+   "name": "(dead)",
+   "drops": 2,
+   "firstDay": 83,
+   "lastDay": 86
+  },
+  {
+   "id": 1885,
+   "name": "(dead)",
+   "drops": 2,
+   "firstDay": 84,
+   "lastDay": 84
+  },
+  {
+   "id": 1943,
+   "name": "(dead)",
+   "drops": 2,
+   "firstDay": 89,
+   "lastDay": 89
+  },
+  {
+   "id": 4714,
+   "name": "Tovi",
+   "drops": 2,
+   "firstDay": 238,
+   "lastDay": 244
+  },
+  {
+   "id": 5239,
+   "name": "Kasa",
+   "drops": 2,
+   "firstDay": 252,
+   "lastDay": 253
+  },
+  {
+   "id": 24,
+   "name": "(dead)",
+   "drops": 1,
+   "firstDay": 32,
+   "lastDay": 32
+  },
+  {
+   "id": 1096,
+   "name": "(dead)",
+   "drops": 1,
+   "firstDay": 96,
+   "lastDay": 96
+  },
+  {
+   "id": 4107,
+   "name": "Malu",
+   "drops": 1,
+   "firstDay": 220,
+   "lastDay": 220
+  },
+  {
+   "id": 3558,
+   "name": "Tekoa",
+   "drops": 1,
+   "firstDay": 230,
+   "lastDay": 230
+  },
+  {
+   "id": 3801,
+   "name": "Rara",
+   "drops": 1,
+   "firstDay": 232,
+   "lastDay": 232
+  },
+  {
+   "id": 3874,
+   "name": "Lurimi",
+   "drops": 1,
+   "firstDay": 242,
+   "lastDay": 242
+  },
+  {
+   "id": 4505,
+   "name": "Soso",
+   "drops": 1,
+   "firstDay": 246,
+   "lastDay": 246
+  }
+ ],
+ "allStickDropsSoFar": 6142,
+ "hominsWhoEverDroppedSticks": 273,
+ "top5CellsByDrops": [
+  {
+   "cell": 5034,
+   "drops": 91,
+   "droppers": 28,
+   "branchesNow": 1
+  },
+  {
+   "cell": 4905,
+   "drops": 69,
+   "droppers": 29,
+   "branchesNow": 0
+  },
+  {
+   "cell": 5288,
+   "drops": 68,
+   "droppers": 18,
+   "branchesNow": 0
+  },
+  {
+   "cell": 4130,
+   "drops": 67,
+   "droppers": 9,
+   "branchesNow": 1
+  },
+  {
+   "cell": 5162,
+   "drops": 66,
+   "droppers": 21,
+   "branchesNow": 1
+  }
+ ]
+}
+AFTER (daily at that spot) [{"day":254,"branches":6,"dropsHereTotal":38,"sleepersNow":1},{"day":255,"branches":6,"dropsHereTotal":38,"sleepersNow":0},{"day":256,"branches":6,"dropsHereTotal":38,"sleepersNow":1},{"day":257,"branches":6,"dropsHereTotal":39,"sleepersNow":0},{"day":258,"branches":4,"dropsHereTotal":39,"sleepersNow":0},{"day":259,"branches":4,"dropsHereTotal":40,"sleepersNow":0},{"day":260,"branches":4,"dropsHereTotal":40,"sleepersNow":1},{"day":261,"branches":4,"dropsHereTotal":40,"sleepersNow":0},{"day":262,"branches":4,"dropsHereTotal":40,"sleepersNow":1},{"day":263,"branches":3,"dropsHereTotal":40,"sleepersNow":1}]
+drops at the spot after the first sleep, by whom [{"id":24,"after":0,"before":1},{"id":631,"after":0,"before":4},{"id":17,"after":0,"before":4},{"id":833,"after":0,"before":2},{"id":1716,"after":0,"before":4},{"id":156,"after":0,"before":2},{"id":1885,"after":0,"before":2},{"id":1943,"after":0,"before":2},{"id":1096,"after":0,"before":1},{"id":2890,"after":0,"before":3},{"id":4107,"after":0,"before":1},{"id":3558,"after":0,"before":1},{"id":3801,"after":0,"before":1},{"id":4714,"after":0,"before":2},{"id":3874,"after":0,"before":1},{"id":4505,"after":0,"before":1},{"id":3751,"after":0,"before":3},{"id":5239,"after":3,"before":1},{"id":4501,"after":1,"before":0}]

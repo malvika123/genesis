@@ -1,0 +1,92 @@
+FIRST HEAP SLEEP {
+ "day": 169,
+ "cell": 5158,
+ "x": 38,
+ "y": 40,
+ "branches": 7,
+ "treeCover": 0.803,
+ "cave": false,
+ "coverHere": 0.803,
+ "heapCover": 0.375,
+ "heapAddsOverTrees": -0.428,
+ "raining": true,
+ "meanTemp": 17.9,
+ "sleeper": {
+  "id": 3600,
+  "name": "Sonite",
+  "ageYears": 7.4
+ },
+ "dropsHereByWhom": [
+  {
+   "id": 11,
+   "name": "(dead)",
+   "drops": 1,
+   "firstDay": 34,
+   "lastDay": 34
+  },
+  {
+   "id": 1219,
+   "name": "(dead)",
+   "drops": 1,
+   "firstDay": 61,
+   "lastDay": 61
+  },
+  {
+   "id": 1893,
+   "name": "(dead)",
+   "drops": 1,
+   "firstDay": 88,
+   "lastDay": 88
+  },
+  {
+   "id": 2227,
+   "name": "Kodalu",
+   "drops": 1,
+   "firstDay": 116,
+   "lastDay": 116
+  },
+  {
+   "id": 1142,
+   "name": "(dead)",
+   "drops": 1,
+   "firstDay": 149,
+   "lastDay": 149
+  }
+ ],
+ "allStickDropsSoFar": 5308,
+ "hominsWhoEverDroppedSticks": 180,
+ "top5CellsByDrops": [
+  {
+   "cell": 5155,
+   "drops": 115,
+   "droppers": 23,
+   "branchesNow": 1
+  },
+  {
+   "cell": 5154,
+   "drops": 90,
+   "droppers": 21,
+   "branchesNow": 1
+  },
+  {
+   "cell": 5153,
+   "drops": 87,
+   "droppers": 26,
+   "branchesNow": 0
+  },
+  {
+   "cell": 5279,
+   "drops": 80,
+   "droppers": 28,
+   "branchesNow": 0
+  },
+  {
+   "cell": 5666,
+   "drops": 70,
+   "droppers": 17,
+   "branchesNow": 0
+  }
+ ]
+}
+AFTER (daily at that spot) [{"day":170,"branches":7,"dropsHereTotal":5,"sleepersNow":1},{"day":171,"branches":8,"dropsHereTotal":6,"sleepersNow":0},{"day":172,"branches":8,"dropsHereTotal":6,"sleepersNow":0},{"day":173,"branches":8,"dropsHereTotal":6,"sleepersNow":0},{"day":174,"branches":8,"dropsHereTotal":6,"sleepersNow":0},{"day":175,"branches":8,"dropsHereTotal":6,"sleepersNow":0},{"day":176,"branches":8,"dropsHereTotal":6,"sleepersNow":1},{"day":177,"branches":8,"dropsHereTotal":6,"sleepersNow":1},{"day":178,"branches":8,"dropsHereTotal":6,"sleepersNow":1},{"day":179,"branches":8,"dropsHereTotal":6,"sleepersNow":1}]
+drops at the spot after the first sleep, by whom [{"id":11,"after":0,"before":1},{"id":1219,"after":0,"before":1},{"id":1893,"after":0,"before":1},{"id":2227,"after":0,"before":1},{"id":1142,"after":0,"before":1},{"id":1849,"after":1,"before":0}]

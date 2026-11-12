@@ -1,0 +1,127 @@
+FIRST HEAP SLEEP {
+ "day": 194,
+ "cell": 4313,
+ "x": 89,
+ "y": 33,
+ "branches": 7,
+ "treeCover": 0.856,
+ "cave": false,
+ "coverHere": 0.856,
+ "heapCover": 0.375,
+ "heapAddsOverTrees": -0.481,
+ "raining": true,
+ "meanTemp": 16.8,
+ "sleeper": {
+  "id": 2236,
+  "name": "Darani",
+  "ageYears": 33.1
+ },
+ "dropsHereByWhom": [
+  {
+   "id": 1093,
+   "name": "(dead)",
+   "drops": 7,
+   "firstDay": 73,
+   "lastDay": 76
+  },
+  {
+   "id": 2920,
+   "name": "Ari",
+   "drops": 3,
+   "firstDay": 128,
+   "lastDay": 129
+  },
+  {
+   "id": 1159,
+   "name": "(dead)",
+   "drops": 3,
+   "firstDay": 130,
+   "lastDay": 158
+  },
+  {
+   "id": 3595,
+   "name": "Oko",
+   "drops": 3,
+   "firstDay": 162,
+   "lastDay": 173
+  },
+  {
+   "id": 1505,
+   "name": "(dead)",
+   "drops": 3,
+   "firstDay": 182,
+   "lastDay": 183
+  },
+  {
+   "id": 1084,
+   "name": "(dead)",
+   "drops": 2,
+   "firstDay": 58,
+   "lastDay": 59
+  },
+  {
+   "id": 1211,
+   "name": "(dead)",
+   "drops": 1,
+   "firstDay": 60,
+   "lastDay": 60
+  },
+  {
+   "id": 2352,
+   "name": "Kasa",
+   "drops": 1,
+   "firstDay": 136,
+   "lastDay": 136
+  },
+  {
+   "id": 2421,
+   "name": "Kaniso",
+   "drops": 1,
+   "firstDay": 153,
+   "lastDay": 153
+  },
+  {
+   "id": 3423,
+   "name": "Toni",
+   "drops": 1,
+   "firstDay": 194,
+   "lastDay": 194
+  }
+ ],
+ "allStickDropsSoFar": 4258,
+ "hominsWhoEverDroppedSticks": 139,
+ "top5CellsByDrops": [
+  {
+   "cell": 4190,
+   "drops": 76,
+   "droppers": 14,
+   "branchesNow": 2
+  },
+  {
+   "cell": 4187,
+   "drops": 65,
+   "droppers": 24,
+   "branchesNow": 0
+  },
+  {
+   "cell": 4188,
+   "drops": 58,
+   "droppers": 20,
+   "branchesNow": 0
+  },
+  {
+   "cell": 4063,
+   "drops": 52,
+   "droppers": 12,
+   "branchesNow": 2
+  },
+  {
+   "cell": 4819,
+   "drops": 51,
+   "droppers": 8,
+   "branchesNow": 1
+  }
+ ]
+}
+AFTER (daily at that spot) [{"day":195,"branches":4,"dropsHereTotal":28,"sleepersNow":0},{"day":196,"branches":4,"dropsHereTotal":29,"sleepersNow":0},{"day":197,"branches":4,"dropsHereTotal":29,"sleepersNow":0},{"day":198,"branches":4,"dropsHereTotal":29,"sleepersNow":0},{"day":199,"branches":4,"dropsHereTotal":29,"sleepersNow":0},{"day":200,"branches":4,"dropsHereTotal":29,"sleepersNow":0},{"day":201,"branches":5,"dropsHereTotal":30,"sleepersNow":0},{"day":202,"branches":4,"dropsHereTotal":30,"sleepersNow":0},{"day":203,"branches":4,"dropsHereTotal":30,"sleepersNow":0},{"day":204,"branches":4,"dropsHereTotal":30,"sleepersNow":0}]
+drops at the spot after the first sleep, by whom [{"id":1084,"after":0,"before":2},{"id":1211,"after":0,"before":1},{"id":1093,"after":0,"before":7},{"id":2920,"after":0,"before":3},{"id":1159,"after":0,"before":3},{"id":2352,"after":0,"before":1},{"id":2421,"after":0,"before":1},{"id":3595,"after":0,"before":3},{"id":1505,"after":0,"before":3},{"id":3423,"after":1,"before":0},{"id":4285,"after":5,"before":0}]
