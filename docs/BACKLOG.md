@@ -31,7 +31,7 @@ test on the same worlds; never tune toward survival.
 
 | # | What | Result so far | Waits on |
 |---|---|---|---|
-| W1 | Female cycle: 36 days, receptive 13, fertile near ovulation (`--cycle`, off) | Births fell to a third — caused by B1 (and perhaps B2) | B1, B2; then test again |
+| W1 | **on by default since 12 Nov (entry 38)** — Female cycle: 36 days, receptive 13, fertile near ovulation (`--cycle`, off) | Births fell to a third — caused by B1 (and perhaps B2) | B1, B2; then test again |
 | W2 | Animals of East Africa 2.5 million years ago (`--africa-animals`, off) | Hunters starved: Genesis has about 9× too many hunters for its prey | A1 |
 | W3 | **off by default since 12 Nov** — Founders' practice before the world begins (on in the runner) | Did not reduce hunger; drowning doubled | review: learning by watching (A4) may be the real fix |
 | W4 | **merged into `percept` 12 Nov, goes live with Phase A** — Mother's pull to keep her nursing child near | 31 alive vs 25, better in 9 of 12 worlds; fire deaths and drownings halved | log as an entry; merge |

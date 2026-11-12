@@ -4,6 +4,8 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Mating fixed and the female cycle on by default:** a female waits only if she conceived; a male can mate again within hours;
+  the cycle now costs about 17% of births, not 71% (research log entry 38). `--old-mating`, `--male-wait`, `--no-cycle`.
 - **Feeling others' pain and fear is its own inherited gene** (`vf`), separate from copying them (`im`), so that long runs show
   which one selection acts on. `--one-social-gene` restores one gene for both (reproduces earlier worlds exactly).
 - **Fixed:** a crash when a fish learned a lesson; the experiment runner now warns and fails when worlds are missing.
