@@ -1436,7 +1436,7 @@ The brain's learning is doing what it should with this experience: "eat" mostly 
 
 **Result.** The brains' expectations are about **ten times too high**, so on average things go worse than expected (the signal is negative about half the time and on average). Eating fruit when starving does feel better than the alternatives (+0.18 against −0.96), but it is chosen so rarely that little is learned from it, while the steady disappointment pushes down whatever is done often — and the inborn pulls make "eat" one of those, often where there is nothing to eat.
 
-**A likely cause, in the code (to be tested).** "A big, unexpected success sticks after one try": when the signal is above 0.5, learning is up to four times stronger (), and the brain's estimate of value learns from that same boosted signal, while bad surprises get at most 1.5 times (fear). So good surprises count up to four times as much as bad ones, and expectations creep up.
+**A likely cause, in the code (to be tested).** "A big, unexpected success sticks after one try": when the signal is above 0.5, learning is up to four times stronger (`src/sim.js`), and the brain's estimate of value learns from that same boosted signal, while bad surprises get at most 1.5 times (fear). So good surprises count up to four times as much as bad ones, and expectations creep up.
 
 **Interpretation.** This is a fault in the learning machinery, not in the world: one-try learning of a striking event is real (dopamine bursts), but it should not inflate the brain's general expectation of how good things are. Next: let the one-try boost act on what the brain does, not on its estimate of value; check that expectations then match rewards; then measure eating and hunger again.
 
