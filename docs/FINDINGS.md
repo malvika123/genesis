@@ -44,6 +44,7 @@ Entries are kept even when the result was "no effect" or "it made things worse" 
 | Hunger and thirst come first | Hunger deaths 109 → 69 (−37%); births 27 → 30; but drownings doubled, 11 of 12 drowned were children | weak–moderate |
 | Moving as one choice, not eight (walking 70–80% → 25%) | Predator deaths 60 → 3; drownings 39 → 18; but hunger deaths 80 → 115 | moderate |
 | A mother keeps her nursing child near | 31 alive vs 25, better in 9 of 12; drownings and fire deaths about halved | weak–moderate |
+| Not every cycle conceives (1 in 5, as at Gombe and Kanyawara): births 5.3 years apart (real 5.2–6.0), 4 of 7 checks pass — but bands shrink 2.2% a year and 6 of 24 die out: deaths are too many (hunger 41%, fire 11%) | 24 worlds | moderate |
 | (Engine) 1.7 times faster with identical worlds: learning loops written out, display words made once, unused brain parts not faded | 4 worlds, identical | strong |
 | Reality checks (24 worlds): 3 of 7 pass — survival to 15, life expectancy, age at first birth realistic; babies hardly ever die (1% vs 11–21%), births too close (4.7 vs 5.2–6.0 years), no illness | 24 worlds × 100 days | moderate |
 | **Not** building: the first "shelters" were chance — heaps under trees that already gave more cover, from branches dropped by many hominins over months | 3 worlds traced | strong |
@@ -1281,6 +1282,39 @@ Samples: 1,029 babies followed through their first year, 631 to age 15, 601 birt
 **Result. Did it make a difference? Yes: 119 → 71 seconds for the same two worlds × 20 days (1.7 times faster), and every world identical to the last digit.**
 
 **Strength.** Strong (exact identity; timing measured alone on the same laptop). **Lesson:** the slow part was not the hard part — two of the three savings came from work the world never needed (display words, multiplying zeros).
+
+### 44. Not every cycle conceives: births spaced as in real apes — and bands shrink — Nov 2026
+
+**Version.** Unreleased · the change: commit `8f6cb14` (`--certain-conception` restores the old rule — checked: identical worlds; `--conceive` sets the chance). Run by Claude.
+
+**Data.** Tables: [1 cycle in 5](../data/findings/44-conception/table-0.2.txt), [1 in 10](../data/findings/44-conception/table-0.1.txt) · each world: [0.2](../data/findings/44-conception/worlds-0.2/), [0.1](../data/findings/44-conception/worlds-0.1/) · [the prediction, written before](../data/findings/44-conception/prediction-written-before.txt) · before: entry 42.
+
+**Question.** Entry 42 found births 4.7 years apart against a real 5.2–6.0: conception within the fertile days was certain. Real females need several cycles.
+
+**Real-world basis.** Cycles to conception in wild chimpanzees: Gombe 4.7, Kanyawara 5, Mahale 8.9, Taï 11.7–19.4 (Deschner & Boesch 2007); cycles with higher ovarian hormones are likelier to conceive (Emery Thompson).
+
+**Added.** Each cycle of each female can lead to conception with a chance of 0.2 (about 1 in 5, the East African sites), decided per female and cycle; tested at 0.2 and 0.1.
+
+**Test.** The reality checks (entry 42's tool), 24 worlds × 100 days, the same seeds. **Primary outcome: years between births with the earlier baby alive.** Prediction written first: (1) at 0.2 it rises into the real band, to about 5.1–5.3; (2) at 0.1 about 5.5–6.0; (3) births fall, so populations shrink further; (4) the other checks stay in band.
+
+| | Before (entry 42) | 1 cycle in 5 | 1 in 10 |
+|---|---|---|---|
+| Years between births (real 5.2–6.0) | 4.7 ✗ | **5.3 ✓** | 5.7 ✓ |
+| Age at first birth (real 13.3–14.9) | 14.8 ✓ | 15.4 ✓ | 16.3 ✗ |
+| Born who reach 15 | 53.9% ✓ | 52.7% ✓ | 47.9% ✓ |
+| Life expectancy at birth | 20.6 ✓ | 16.2 ✓ | 16.3 ✓ |
+| Babies dying in their first year (real 11–21%) | 1.0% ✗ | 3.8% ✗ | 2.3% ✗ |
+| Population change a year | −1.2% ✗ | −2.2% ✗ | −4.8% ✗ |
+| Worlds that died out (of 24) | 1 | **6** | 4 |
+| Checks passing (of 7) | 3 | **4** | 3 |
+
+Causes of death at 0.2: hunger 41%, old age 20%, predators 14%, fire 11%, drowning 9%, wounds 4%.
+
+**Result.** (1) **held exactly** (5.3); (2) held (5.7); (3) held, more than expected: populations shrink 2.2% a year, and 6 of 24 bands died out within 33 years, against 1; (4) held at 0.2, not at 0.1 (first births too late). The 0.2 stays: it is the East African number.
+
+**Interpretation.** With births now as rare as in real apes, Genesis bands shrink. Real chimpanzee communities with this birth spacing and a life expectancy of 13–33 years hold roughly steady (Gombe declined slowly). So deaths in Genesis are too many, or at the wrong ages: hunger causes 41% of deaths and fire 11% — neither is a leading cause of death in wild apes — while illness causes none. **This matters for the next step:** disease added on top of these deaths would make bands shrink faster. The excess hunger and fire deaths are most likely behaviour the brains have not learned (not moving on when food runs out, backlog A2; not moving away from a wildfire, A3). Small closed bands also die out by chance where real communities exchange females (R14).
+
+**Strength.** Moderate (24 worlds; the primary outcome and prediction named first). **Lesson:** fixing one number to reality can expose another that was hiding behind it — here, too many deaths, hidden by too many births.
 
 ---
 
