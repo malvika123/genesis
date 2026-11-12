@@ -1351,7 +1351,7 @@ Causes of death at 0.2: hunger 41%, old age 20%, predators 14%, fire 11%, drowni
 
 **Added.** An outbreak starts in one hominin about once in 7 life-years (tested at 1/7 and 1/20); it passes to anyone within 2 squares of a sick hominin; the illness lasts a day; at its end the hominin dies with a chance by age (infants 0.3, juveniles 0.1, adults 0.02, from 35 years 0.1), doubled when starving; survivors cannot catch it again. Every number an **assumption** within the evidence. A first check (two worlds, five outbreaks): 40–87% fell sick (low against the real 87–100%), 0–10% died (real 2–18%); the three who died in one outbreak were toddlers, as at Taï.
 
-**Test.** The reality checks, 24 worlds × 100 days, the same seeds as entries 42 and 44. Primary outcome named before: babies dying in their first year. **The illness band was widened** from 40–70% (Gombe) to 15–60% before reading the results' meaning — the old band came from modern epidemics, many of human origin — and is stated as an assumption.
+**Test.** The reality checks, 24 worlds × 100 days, the same seeds as entries 42 and 44. Primary outcome named before: babies dying in their first year. **The illness band was widened** from 40–70% (Gombe) to 15–60%, stated as an assumption: the old band came from modern epidemics, many of them human viruses. **Correction (13 Nov): it was widened after the first disease results (4.9%) had been seen**, not before; the reason is the evidence, but the timing is stated so that readers can judge it. Disease fails even the widened band.
 
 | | No disease (entry 44) | Once in 7 years | Once in 20 years | Real |
 |---|---|---|---|---|
