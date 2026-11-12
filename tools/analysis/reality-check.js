@@ -85,7 +85,17 @@ const seeds = process.argv[2].split(',').map(Number),
   days = Number(process.argv[3]),
   out = process.argv[4];
 const flags = {};
-for (const a of process.argv.slice(5)) if (a.startsWith('--')) flags[a.slice(2)] = true;
+// switches as in tools/experiment.js: --name (on), --name=value or --name value
+{
+  const av = process.argv.slice(5);
+  for (let i = 0; i < av.length; i++) {
+    if (!av[i].startsWith('--')) continue;
+    const [k, v] = av[i].slice(2).split('=');
+    if (v !== undefined) flags[k] = isNaN(+v) ? v : +v;
+    else if (i + 1 < av.length && !av[i + 1].startsWith('--')) flags[k] = isNaN(+av[i + 1]) ? av[i + 1] : +av[++i];
+    else flags[k] = true;
+  }
+}
 fs.mkdirSync(out, { recursive: true });
 for (const seed of seeds) {
   const S = X.fromArgs(flags);
@@ -160,7 +170,7 @@ for (const seed of seeds) {
   }
   const years = end / TY,
     nEnd = alive.size;
-  const res = { seed, days, flags: Object.keys(flags), n0, nEnd, years, growth: nEnd > 0 ? Math.log(nEnd / n0) / years : -1, born, followed1, diedBefore1, followed15, reached15, ibi, afb, py, de, causes };
+  const res = { seed, days, flags, n0, nEnd, years, growth: nEnd > 0 ? Math.log(nEnd / n0) / years : -1, born, followed1, diedBefore1, followed15, reached15, ibi, afb, py, de, causes };
   fs.writeFileSync(path.join(out, 'world-' + seed + '.json'), JSON.stringify(res));
   console.log('world', seed, 'done: start', n0, 'end', nEnd, 'born', born, 'birth intervals', ibi.length);
 }
