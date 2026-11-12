@@ -92,6 +92,10 @@ owner chose that order:
    (`GAM` 0.97 × `LAM` 0.8, `src/config.js`), while a day is 96 steps and a life about 130 nights; the value estimate reaches
    about 33 steps. Then learning by watching what worked (Phase B).
 
+**Exception to the freeze (the owner, 12 Nov, after the reality checks of entry 42):** fix the two causes of the failing checks now —
+conception being certain (births too close) and no disease (babies hardly die; no illness deaths) — each researched first, tested on 24
+worlds and re-checked; then back to speed.
+
 **Freeze (the owner, 12 Nov):** nothing new is added until Phase A, the hunter release and these five priorities are done; new ideas go
 to the backlog only.
 
