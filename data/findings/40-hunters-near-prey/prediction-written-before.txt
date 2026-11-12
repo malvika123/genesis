@@ -1,0 +1,10 @@
+Written 12 Nov 2026 BEFORE the runs (commit in ./commit). 12 worlds x 100 days, seeds 1-12, same worlds.
+Baseline: runs25/B-rescue-1.csv (newcomers on, hunters anywhere) — identical to --hunters-anywhere on this commit (checked).
+Runs: B = hunters start and arrive within 8 squares of prey (default); C = --prey-radius 4.
+Primary outcome: hunters alive at day 100 (per world), and plant-eaters killed by hunters is not in the CSV, so: plant-eaters
+alive at day 100 (should FALL if hunters now eat them).
+1. Hunter kinds alive stay at or near 36 of 36 (newcomers still on).
+2. Plant-eaters at day 100 fall clearly (hunters now reach them): at least 10% fewer than baseline (59.7 a world).
+3. Hominin predator deaths rise somewhat (hunters live where herds are; hominins forage there too) — but within noise is
+   possible, since predators take the isolated.
+4. C (4 squares) about the same as B.

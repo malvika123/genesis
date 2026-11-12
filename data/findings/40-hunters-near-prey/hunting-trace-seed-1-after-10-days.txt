@@ -1,0 +1,2 @@
+{"Wolf":{"steps":5649,"awake":3107,"hungry":282,"preyNear5":1961,"preyAdj":28,"attackAdj":0,"attackAny":0},"Big cat":{"steps":3717,"awake":2547,"hungry":527,"preyNear5":369,"preyAdj":10,"attackAdj":0,"attackAny":0},"Bear":{"steps":2211,"awake":1240,"hungry":0,"preyNear5":733,"preyAdj":17,"attackAdj":0,"attackAny":0}}
+kills by hunters [people, plant-eaters, hunters, fish]: 0 11 1 0

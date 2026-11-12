@@ -44,6 +44,7 @@ Entries are kept even when the result was "no effect" or "it made things worse" 
 | Hunger and thirst come first | Hunger deaths 109 → 69 (−37%); births 27 → 30; but drownings doubled, 11 of 12 drowned were children | weak–moderate |
 | Moving as one choice, not eight (walking 70–80% → 25%) | Predator deaths 60 → 3; drownings 39 → 18; but hunger deaths 80 → 115 | moderate |
 | A mother keeps her nursing child near | 31 alive vs 25, better in 9 of 12; drownings and fire deaths about halved | weak–moderate |
+| Hunters placed where their prey lives (not anywhere that suits their climate): plant-eaters −22%, hominins killed by predators about 4× (38 → 149) — the world is no longer too safe | 12 paired worlds × 100 days | weak–moderate |
 | Newcomers from the wider population when a hunter kind is rare: hunter kinds alive at 100 days 20 of 36 → 36 of 36 (all 12 worlds keep all three); hominin danger unchanged | 12 paired worlds × 100 days | moderate |
 | Mating fixed (she waits only if she conceived; he can mate again within hours): the female cycle now costs 17% of births, not 71% — all three written predictions held | 12 paired worlds | moderate |
 | **Failure:** the female cycle, added alone | Births 31 → 9 per world: it exposed a hidden bug (4-year lockout after any mating) | strong |
@@ -1165,6 +1166,40 @@ Other firsts: making fire by rubbing wood in 7 of 8 worlds, by sparks in 3; cutt
 **Interpretation.** A closed world of a few animals per kind loses its hunters by chance; a trickle of newcomers, as real landscapes have, keeps all three kinds. It does not touch the second cause — starving — which fix 2 (more prey per hunter) addresses. Hunters being present did not make the world more dangerous for hominins within 100 days, probably because predators kill the isolated (entry 14) and hominins now stay together (entries 30–31).
 
 **Strength.** Strong for "kinds no longer die out" (36 of 36 against 20, all 12 worlds; a near-certain result) — on the log's scale moderate (12 worlds). **Lesson:** a world too small to hold real populations needs the wider population represented somehow; the real fix is the scale (priority 4).
+
+### 40. Hunters live where their prey lives — and the world becomes dangerous — Nov 2026
+
+**Version.** Unreleased · the change and the test: commit `d6180d2` (`--hunters-anywhere` restores the old rule — checked: identical worlds; `--prey-radius` sets the distance); traces: `tools/analysis/prey-trace.js`, `hunting-trace.js`. Run by Claude.
+
+**Data.** [Hunters anywhere (entry 39's run, identical to the old rule)](../data/findings/40-hunters-near-prey/hunters-anywhere-baseline.csv) · [near prey, 8 squares](../data/findings/40-hunters-near-prey/B-near-8.csv) · [4 squares](../data/findings/40-hunters-near-prey/C-near-4.csv) · [the comparisons](../data/findings/40-hunters-near-prey/comparison.txt) · [the prediction, written before](../data/findings/40-hunters-near-prey/prediction-written-before.txt) · traces before: prey [seed 1](../data/findings/40-hunters-near-prey/prey-trace-seed-1-before.txt), [seed 3](../data/findings/40-hunters-near-prey/prey-trace-seed-3-before.txt); hunting [seed 1](../data/findings/40-hunters-near-prey/hunting-trace-seed-1-before.txt), [seed 3](../data/findings/40-hunters-near-prey/hunting-trace-seed-3-before.txt); after, 10 days: [seed 1](../data/findings/40-hunters-near-prey/hunting-trace-seed-1-after-10-days.txt).
+
+**Question.** Fix 2 of the hunter release was meant to be "more prey per hunter" (the review: 3–10 times too many hunters for the prey). Before building it, the traces were checked.
+
+**What the traces found — the planned fix was wrong.** Deer and rabbits were already at their caps (about 57 of 60 and 44 of 45) and died mostly of hunger and old age, hardly ever of predators (1 deer killed by a predator in 60 days in one world, none in the other). Once beside prey, a hunter's attack succeeds often (60% on an adult deer). But **big cats were never within 5 squares of any plant-eater in 30 days**, in either world; in one world neither were the wolves. Each kind had been placed anywhere on the planet that suited its climate, regardless of where the herds were — so hunters starved far from prey, not for want of prey. The owner chose to replace "more prey" with placing hunters near prey.
+
+**Real-world basis.** Carnivores live where their prey is: their numbers follow prey biomass (Carbone & Gittleman 2002).
+
+**Added.** A hunter starts, and a newcomer (entry 39) arrives, only with plant-eaters within 8 squares, inside its own habitat. The 8 squares is an **assumption**, tested at 8 and 4. A 10-day trace afterwards: big cats within 5 squares of prey 369 times (none before), 11 plant-eaters killed.
+
+**Test.** 12 worlds × 100 days, the same seeds; newcomers on throughout. Prediction written first: (1) hunter kinds stay near 36 of 36; (2) plant-eaters fall at least 10% (primary); (3) hominin predator deaths rise somewhat; (4) 4 squares about the same as 8.
+
+| | People alive | Worlds died out | Born per world | Died per world | Hunger | Predators | Drowned | Burned |
+|---|---|---|---|---|---|---|---|---|
+| Hunters anywhere | 31.2 ± 22.3 | 0 | 49.9 | 43.8 | 219 | 38 | 27 | 83 |
+| Near prey, 8 squares | 22.5 ± 20.3 | 0 | 45.9 | 48.4 | 186 | **149** | 29 | 55 |
+| Near prey, 4 squares | 25.3 ± 25.7 | 1 | 39.1 | 38.8 | 158 | 92 | 15 | 68 |
+
+| At day 100 | Hunter kinds alive | Hunters per world | Plant-eaters per world |
+|---|---|---|---|
+| Hunters anywhere | 36 of 36 | 17.8 | 59.7 |
+| Near prey, 8 squares | 36 of 36 | 19.3 | 46.3 (−13.4, range −32.9 to +6.1; lower in 8 of 12) |
+| Near prey, 4 squares | 36 of 36 | 19.6 | 36.7 |
+
+**Result.** (1) **held**. (2) **held on average** (−22%), though the range just includes zero. (3) was an **understatement**: hominins killed by predators rose about fourfold, 38 → 149 (+9.3 a world, range −2.1 to +20.6; higher in 6 worlds, lower in 3). Hominin survival fell, within noise (31.2 → 22.5, range −26.9 to +9.6). (4) within noise (4 squares: 92 predator deaths, plant-eaters 36.7).
+
+**Interpretation.** With hunters where the herds are, predators finally act as predators: they eat plant-eaters, and they meet hominins, who forage in the same places. Entry 37's world was too safe (no disease, predators gone); now one of those two missing pressures is back. Whether a fourfold rise is realistic is for the reality checks (causes of death against wild chimpanzees and foragers) — not a reason to tune.
+
+**Strength.** Moderate for "hunters now reach their prey" (traces; plant-eaters down in 8 of 12 worlds); weak–moderate for the rise in hominin deaths (large, but the range touches zero). **Lesson:** a diagnosis made on paper (too little prey) failed the first look at the data (prey in the wrong place). Trace before building.
 
 ---
 

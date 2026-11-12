@@ -1,0 +1,8 @@
+day 10 {"Deer":16,"Bison":6,"Wolf":10,"Big cat":4,"Bear":6,"Rabbit":36}
+day 20 {"Deer":28,"Bison":6,"Big cat":6,"Bear":5,"Wolf":8,"Rabbit":35}
+day 30 {"Bear":5,"Deer":44,"Bison":2,"Big cat":5,"Wolf":10,"Rabbit":41}
+day 40 {"Bear":4,"Bison":1,"Deer":57,"Big cat":3,"Wolf":10,"Rabbit":42}
+day 50 {"Bear":4,"Deer":59,"Big cat":4,"Wolf":9,"Rabbit":44}
+day 60 {"Bear":3,"Deer":37,"Wolf":9,"Big cat":6,"Rabbit":41}
+plant-eater deaths {"Bison: killed by a predator":3,"Rabbit: hunger":114,"Deer: hunger":51,"Deer: killed by a predator":1,"Rabbit: killed by a predator":41,"Rabbit: old age":101,"Deer: old age":29,"Deer: its wounds":4,"Bison: hunger":2,"Bison: thirst":1,"Bison: old age":3,"Deer: caught by a person":7}
+plant-eater days near starving (e<20) {"Deer":323,"Rabbit":217,"Bison":27} of 4930 plant-eater days

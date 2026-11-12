@@ -1,0 +1,18 @@
+# Genesis experiment
+# genesis 0.7.0 commit 2dd4269, node v26.8.1
+# settings {"days":100,"brain":64,"people":25,"herbivores":20,"predators":6,"fish":24,"sapiens":false,"earth":false,"homeland":true,"trees":true,"humanFertility":false,"fertMax":50,"oldFlight":false,"africaAnimals":false,"bodyScaling":true,"grassEye":false,"lossResume":true,"resumeDays":74,"extraPeople":0,"peopleCap":false,"humanCare":false,"oldStarving":false,"refeedAt":20,"motherPull":true,"cycle":true,"mood":true,"eightWalks":false,"rescue":true,"rescueRate":1,"oldMating":false,"maleWait":1,"oneSocialGene":false,"temperament":true,"parentalCare":true,"oldHunger":false,"hungerPull":6,"naive":false,"practiceDays":0,"lust":2,"leaves":true,"leafValue":0.64,"shield":false,"shelter":true,"care":true,"vicar":true,"pickyCopy":true,"soundPhysics":true,"animalCalls":true,"modernVoice":false,"retina":false}
+# seeds 1-12
+# day_X = the day (1 = first) something first happened in that world; empty = never
+seed,days_run,people_alive,generations,plant_eaters,hunters,hunter_kinds_alive,fish,best_fire_skill,learns_from_others,copies_successful,follows_crowd,loners_pct,full_sibling_pct,vocal_control,point_urge,share_joy,cares_for_others,words_said,words_shared,brain_general,brain_fear,brain_memory,brain_words,brain_regions,died_hunger,died_thirst,died_killed_by_a_predator,died_drowned,died_burned,died_its_wounds,died_old_age,died_struck_by_lightning,died_giving_birth,day_take,day_nut,day_flake,day_root,day_dig,day_meat,day_butcher,day_hunt,day_cooked,day_brand,day_setfire,day_fed,day_kept,day_madefire,day_rubfire,day_share,day_vicar,day_swim,day_point,day_joint,day_speak,day_shared,day_shelter
+1,100,26,3,99,15,3,139,0.54,0.82,0.44,0.48,27,18,0.16,0.17,0.16,0.49,1351,125,0.679,0.129,0.129,0.063,4.077,24,0,11,8,1,7,9,0,0,1,1,1,1,1,27,,25,5,97,100,97,,,46,1,3,5,1,1,1,34,
+2,100,35,3,42,19,3,140,0.89,0.63,0.68,0.44,23,17,0.18,0.11,0.12,0.51,2574,141,0.683,0.127,0.124,0.066,4.029,19,1,4,0,10,1,11,0,1,1,1,4,1,1,5,24,4,9,26,26,27,,,56,1,8,8,1,3,1,16,
+3,100,58,3,96,21,3,138,0.18,0.82,0.56,0.59,14,7,0.2,0.15,0.14,0.47,3989,188,0.679,0.126,0.13,0.065,4.069,22,0,0,3,2,0,12,0,0,1,1,2,1,1,16,,15,73,42,42,77,,,72,1,1,12,1,1,1,19,
+4,100,15,2,43,18,3,138,0.7,1,0.56,0.5,0,17,0.08,0.1,0.17,0.51,2019,133,0.678,0.125,0.131,0.066,4.067,25,0,2,2,17,0,10,0,0,1,1,2,1,1,20,,14,29,29,32,29,,72,29,1,12,4,1,1,1,31,
+5,100,52,2,40,19,3,140,0.18,0.81,0.44,0.56,37,11,0.18,0.14,0.18,0.46,2896,149,0.683,0.127,0.124,0.066,4.019,14,0,0,1,1,7,12,0,0,1,1,6,1,1,,,,56,20,56,20,,,56,1,1,6,1,1,1,28,
+6,100,57,3,46,20,3,140,0.18,0.64,0.49,0.35,12,11,0.13,0.16,0.13,0.52,2476,153,0.679,0.127,0.127,0.066,4.053,29,0,1,3,3,2,8,0,4,1,1,1,1,3,67,,72,61,68,68,,,68,75,1,18,17,1,1,1,21,
+7,100,2,2,45,20,3,140,0.06,1.31,0.27,0.25,0,24,0.23,0.26,0.22,0.33,1578,128,0.688,0.125,0.125,0.063,4,13,0,4,1,12,0,9,0,0,1,1,2,1,1,2,,1,14,14,62,,,,62,1,1,14,1,1,1,24,
+8,100,21,2,83,14,3,140,0.13,0.76,0.55,0.76,10,15,0.14,0.19,0.21,0.59,1148,127,0.68,0.125,0.132,0.063,4,19,0,6,0,0,14,8,0,1,1,1,1,1,1,34,,,,,,,,,,1,12,26,1,1,1,29,
+9,100,6,2,68,18,3,138,0.18,1.02,0.41,0.94,50,31,0.2,0.08,0.18,0.41,902,111,0.68,0.13,0.133,0.057,4,6,0,2,5,19,0,6,0,0,1,1,2,1,1,,,,7,7,20,8,,,,1,1,9,1,2,1,43,
+10,100,68,3,44,21,3,140,0.05,0.67,0.46,0.47,26,13,0.12,0.14,0.21,0.46,3418,172,0.68,0.125,0.128,0.067,4.029,8,0,4,0,1,0,14,0,1,1,1,1,1,1,11,,11,,,,,,,,1,8,23,1,1,1,19,
+11,100,18,3,71,15,3,140,0.09,0.92,0.62,0.7,33,12,0.18,0.14,0.19,0.45,1736,129,0.682,0.124,0.13,0.063,4.056,16,0,0,4,13,0,8,0,0,1,1,2,1,1,,,,14,27,27,,,,,1,5,11,1,1,1,20,
+12,100,16,3,39,14,3,139,0.23,0.79,0.34,0.53,19,12,0.13,0.11,0.14,0.65,2115,138,0.677,0.13,0.126,0.067,4,24,0,4,0,4,1,10,0,1,1,1,8,1,1,,,,14,14,14,19,,14,33,1,3,17,1,,1,11,

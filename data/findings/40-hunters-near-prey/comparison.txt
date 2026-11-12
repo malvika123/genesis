@@ -1,0 +1,31 @@
+12 paired worlds (seeds 1,2,3,4,5,6,7,8,9,10,11,12)
+per seed alive anywhere 26 35 58 15 52 57 2 21 6 68 18 16 | near8 53 11 3 25 22 67 5 38 17 4 12 13
+died out: anywhere 0, near8 0
+people_alive                 anywhere: 31.2 ± 22.3    near8: 22.5 ± 20.3    diff -8.67 [-26.92, 9.59]  near8 higher in 6, lower in 6
+generations                  anywhere: 2.6 ± 0.5      near8: 2.3 ± 0.7      diff -0.25 [-0.73, 0.23]  near8 higher in 2, lower in 5
+plant_eaters                 anywhere: 59.7 ± 22.7    near8: 46.3 ± 14.5    diff -13.42 [-32.89, 6.06]  near8 higher in 4, lower in 8
+hunters                      anywhere: 17.8 ± 2.7     near8: 19.3 ± 2.5     diff 1.42 [-0.90, 3.74]  near8 higher in 8, lower in 4
+died_hunger                  anywhere: sum 219        near8: sum 186        diff -2.75 [-7.56, 2.06]  near8 higher in 4, lower in 7
+died_thirst                  anywhere: sum 1          near8: sum 3          diff 0.17 [-0.20, 0.53]  near8 higher in 3, lower in 1
+died_killed_by_a_predator    anywhere: sum 38         near8: sum 149        diff 9.25 [-2.07, 20.57]  near8 higher in 6, lower in 3
+died_drowned                 anywhere: sum 27         near8: sum 29         diff 0.17 [-1.76, 2.10]  near8 higher in 8, lower in 4
+died_burned                  anywhere: sum 83         near8: sum 55         diff -2.33 [-5.91, 1.24]  near8 higher in 3, lower in 8
+died_its_wounds              anywhere: sum 32         near8: sum 25         diff -0.58 [-2.22, 1.05]  near8 higher in 3, lower in 5
+died_old_age                 anywhere: sum 117        near8: sum 123        diff 0.50 [-1.97, 2.97]  near8 higher in 7, lower in 4
+died_giving_birth            anywhere: sum 8          near8: sum 11         diff 0.25 [-0.36, 0.86]  near8 higher in 6, lower in 2
+
+12 paired worlds (seeds 1,2,3,4,5,6,7,8,9,10,11,12)
+per seed alive near8 53 11 3 25 22 67 5 38 17 4 12 13 | near4 48 2 59 1 42 60 11 59 8 3 0 11
+died out: near8 0, near4 1
+people_alive                 near8: 22.5 ± 20.3    near4: 25.3 ± 25.7    diff 2.83 [-10.54, 16.21]  near4 higher in 4, lower in 8
+generations                  near8: 2.3 ± 0.7      near4: 2.2 ± 0.8      diff -0.17 [-0.62, 0.29]  near4 higher in 2, lower in 4
+plant_eaters                 near8: 46.3 ± 14.5    near4: 36.7 ± 24.4    diff -9.58 [-25.74, 6.57]  near4 higher in 3, lower in 9
+hunters                      near8: 19.3 ± 2.5     near4: 19.6 ± 2.6     diff 0.33 [-2.14, 2.81]  near4 higher in 6, lower in 5
+died_hunger                  near8: sum 186        near4: sum 158        diff -2.33 [-7.31, 2.64]  near4 higher in 4, lower in 8
+died_thirst                  near8: sum 3          near4: sum 6          diff 0.25 [-0.23, 0.73]  near4 higher in 3, lower in 1
+died_killed_by_a_predator    near8: sum 149        near4: sum 92         diff -4.75 [-15.12, 5.62]  near4 higher in 4, lower in 6
+died_drowned                 near8: sum 29         near4: sum 15         diff -1.17 [-2.49, 0.16]  near4 higher in 2, lower in 9
+died_burned                  near8: sum 55         near4: sum 68         diff 1.08 [-2.30, 4.47]  near4 higher in 7, lower in 3
+died_its_wounds              near8: sum 25         near4: sum 28         diff 0.25 [-0.93, 1.43]  near4 higher in 5, lower in 2
+died_old_age                 near8: sum 123        near4: sum 96         diff -2.25 [-5.00, 0.50]  near4 higher in 5, lower in 6
+died_giving_birth            near8: sum 11         near4: sum 2          diff -0.75 [-1.14, -0.36]  near4 higher in 0, lower in 8
