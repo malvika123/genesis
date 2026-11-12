@@ -16,6 +16,11 @@ test on the same worlds; never tune toward survival.
 | B3 | A fixed population cap blocks mating (`popK + kids < S.cap`) | Not biology: real populations are limited by food, disease and fertility | remove (audit, 11 Nov) |
 | B4 | A comment above `child()` (`src/creatures.js`) says learned habits can pass on | The code passes on only inborn wiring (correct); the comment is wrong and misleading | correct the comment |
 | B5 | A sudden jolt of discomfort below 15% energy | No source | **done** on branch `refeed-wip` (smooth hunger + refeeding signal at 20%); test running |
+| B6 | **Two clocks** (review finding 1): a day is 96 steps, a year 288 (3 days). Hunger, decay, fire, mood run on the day clock; pregnancy, nursing, life on the year clock — a hominin starves in 14 days = 4.8 life-years; a female cycle lasts 7 hours | Not wrong in itself, but no rule says which process uses which clock, and reality checks "per year" mix them | Assign every duration to a clock, list them in `ASSUMPTIONS.md`, state each reality check with its clock |
+| B7 | The male's wait after mating (0.1 year = 28.8 steps) is as long as a whole female cycle (28.4 steps), so each male can mate about once per cycle; fix with B1 | Chimpanzee males mate several times a day (hours, not weeks) | Put the wait on the day clock (verify a number online first), with B1, then retest the cycle |
+| B8 | The page's translator says a sound "means" something with no test of chance (≥25 uses, ≥25% in one situation, ≥1.6× baseline, over ~1,000 sounds) | Honest-minds rule | Use `talk-detector.js`'s tested result, or word it "used more often when… (not tested)" |
+| B9 | About ten thresholds steer behaviour unregistered (ready to mate if energy > 45 and water > 40; gives food if > 40; feeds a child if > 45; conception cost; labour pain 0.6; 1% maternal death; lifespan draw 0.72 ± 0.2; forced sleep when exhausted) | Register rule | Add them to `ASSUMPTIONS.md` with ranges |
+| B10 | The `im` gene bundles copying others **and** feeling their pain/fear, so "copying is bred out" (entry 25) may really be "caught fear is bred out" | Review finding 10 | Correlate each hominin's `im` with surviving children on saved worlds; split the gene in two |
 
 ## 2. Built, tested, waiting (switched off or not merged)
 
@@ -51,6 +56,11 @@ test on the same worlds; never tune toward survival.
 | A16 | Audit of food values (fruit 70, roots 80, meat 110…) | Hadza digging rates are in scanned papers (needs text recognition installed) | roots in Genesis are generous, not too hard |
 | A17 | Disease | Not yet researched | |
 | A18 | Sleep that reorganises memories into new insight (not only replays them) | Sleep tripled the chance of discovering a hidden shortcut (Wagner et al. 2004, *Nature*); replay of the day's routes during sleep (Wilson & McNaughton 1994) — Genesis already has replay | how the brain recombines is not well understood: research first, do not invent |
+| A19 | Birth spacing at both ends: Genesis minimum 4.6 years (nursing 4 + pregnancy 0.62) vs wild chimpanzees with a surviving infant 5.2–6.0 (Gombe 5.2: Deschner & Boesch 2007; Mahale 5.6–6.0). Measure the actual mean interval first (entry 19's trace gave 4.6–6.5) | Review finding 3 | |
+| A20 | Mothers *tolerate* their young taking food rather than handing it over: captive mothers gave only unpalatable parts, infants initiated (Ueno & Matsuzawa 2004); Mahale mothers shared only when the infant asked | Review, question 1 | replace the push to give with tolerance of taking |
+| A21 | Test the registered assumptions never tried at both ends: hunger-first 6, mother's pull 3, temperament/care spread, mood, leaf threshold 0.3, tree cover 0.4, catch × 0.35, fall rate, cold/heat 9/31 °C | Review finding 9 | |
+| A22 | Fix register attributions: pregnancy (Gombe 225 d, not Emery Thompson 2007); brain at birth (45%/25%, Coqueugniot & Hublin 2007; 40% is DeSilva & Lesnik's australopith estimate); sabre-tooth 100 kg is a European specimen; leaf study is a preprint; Lucy's fall disputed; activity budgets weakly sourced; hunters ~3.4–10× too many, not ~9× | Review finding 6–7 | |
+| A23 | Name one primary outcome before each test (12 outcomes give a chance "beyond noise" in about half of tests); align strength labels with the log's scale (entries 19, 32 → moderate; 25's copying → weak) | Review findings 4–5 | method |
 
 ## 3b. The real world of 2.5 million years ago — must be added (the owner, 12 Nov 2026)
 

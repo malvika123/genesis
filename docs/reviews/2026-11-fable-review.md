@@ -307,3 +307,26 @@ Kelley & Schwartz 2012 (growth rates); Grabowski 2015 species masses; Wrangham 1
 figures; the MC1R 1.2 Ma date against the paper itself; Oler 2010's heritability value; impala, hare and buffalo figures beyond
 fact sheets; Watts et al. 2012 details; Hill et al. 2001 child survival; who compiled the Sear et al. great-ape table; the
 Nature Education body-size source. I also did not open the three working branches' diffs, the page, or the climate code.
+
+---
+
+## 8. Checked afterwards by Claude Opus 5.5 (12 November 2026)
+
+Each code claim re-read in the source, and the two uncertain sources re-searched.
+
+- **Confirmed:** the two clocks (`DAY` 96, `TY` 288); the male wait `0.1 * TY` and the lockout `fem.cd = S.cd` after any mating
+  (`src/sim.js` 987–988); the wariness pull `(0.5 + a.fear)`, so half of it acts with no fear at all (`src/sim.js` 375);
+  illness 58% and aggression 20% of known-cause deaths at Gombe ([Williams et al. 2008](https://experts.umn.edu/en/publications/causes-of-death-in-the-kasekela-chimpanzees-of-gombe-national-par/));
+  ape mothers give only unpalatable parts, infants take ([Ueno & Matsuzawa 2004](https://link.springer.com/doi/10.1007/s10329-004-0085-9)).
+- **Finding 2, number wrong; point stands.** "1 time in 7" divides the fertile window by the whole cycle. But a female mates only
+  while receptive (10.3 steps), and the fertile window is the last 3.9 of those, so a mating lands in it about **38%** of the time —
+  more with several males. The real point holds: a male's wait as long as a cycle limits each male to about one mating per cycle,
+  so B1 and B2 must be fixed together.
+- **Finding 3, weaker than stated.** 4.62 years is the *minimum* interval (the wait is paused in pregnancy and restarted at birth,
+  `src/sim.js` 72 and 1582); entry 19's trace measured 4.6–6.5 years between births, which overlaps the real 5.2–6.0. Measure the
+  mean before calling it generous.
+- **Section 4, question 2:** "life expectancy at birth 13 (Hill 2001)" — the paper says *under 15* across five sites; 13 not found.
+- Silk 1978 still not verified.
+- The review was committed to `percept` (commit `3ba029f`) by the session, not by the reviewer; nothing was pushed.
+
+All other findings stand as written, and are on the backlog as B6–B10 and A19–A23.
