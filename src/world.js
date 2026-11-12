@@ -72,6 +72,7 @@ function buildWorld(cfg) {
   SOC.cycle = cfg.cycle !== false; // on by default since 12 Nov 2026: with mating fixed it costs about 17% of births, as waiting for fertile days should (research log entry 38); --no-cycle turns it off
   SOC.mood = cfg.mood !== false; // off: no lasting mood (the old rule)
   SOC.oneMove = cfg.eightWalks !== true; // on: the eight directions count as eight separate choices (the old rule)
+  SOC.calmValue = cfg.boostedValue !== true; // the value estimate learns from good and bad surprises alike (off: the old rule)
   SOC.grassPull = cfg.oldPlantPull === true; // the hungry pull to try plants fires on grass too (the old rule)
   SOC.disease = cfg.disease !== false; // outbreaks of illness (off: no disease, the old rule)
   SOC.diseaseRate = cfg.diseaseRate ?? 1 / 7; // outbreaks a life-year (an assumption: tested at 1/7 and 1/20)

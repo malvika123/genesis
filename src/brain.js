@@ -328,7 +328,7 @@ function fadeTraces(a) {
 }
 // The dopamine-like signal d ("better or worse than expected") strengthens or weakens the connections
 // that were just used. rate already includes how plastic the brain is and the mood chemicals.
-function learnStep(a, d, rate) {
+function learnStep(a, d, rate, rateV) {
   const w = a.lw,
     eP = a.eP,
     eV = a.eV,
@@ -344,8 +344,10 @@ function learnStep(a, d, rate) {
   // Each connection moves by u = s·rate·(AP·d·eP + AV·d·eV), kept within ±6. Written out loop by loop rather than through
   // a small helper called for every connection (it took about 30% of all computing): the same sums in the same order,
   // so worlds are identical to the last digit (checked, research log entry 43).
+  // rateV: how fast the estimate of value learns, when it should not share the boosts of the actions (research log entry 50):
+  // the value part of each change is rescaled so that it moves at rateV. Not given: the old rule, the same arithmetic as before.
   const apd = AP * d,
-    avd = AV * d,
+    avd = rateV === undefined || rate === 0 ? AV * d : AV * d * (rateV / rate),
     r1 = 1 * rate,
     rk = k * rate,
     upd = (i0, i1, sr) => {

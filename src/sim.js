@@ -501,7 +501,11 @@ function sim() {
       if (a.stress > 0.5) mod *= 0.7;
       a.da = d;
       a.mod = mod;
-      learnStep(a, d, pl * mod * (a.g.lr ?? 1));
+      // The one-try boost and fear make a striking moment shape what the brain does — but its estimate of how good things are
+      // learns from good and bad surprises alike: otherwise good surprises count up to four times as much as bad ones and its
+      // expectations creep far above what it ever gets (research log entry 49). --boosted-value: the old rule.
+      if (SOC.calmValue) learnStep(a, d, pl * mod * (a.g.lr ?? 1), pl * (tick - (a.novel ?? -9) < 2 ? 1.25 : 1) * (a.stress > 0.5 ? 0.7 : 1) * (a.g.lr ?? 1));
+      else learnStep(a, d, pl * mod * (a.g.lr ?? 1));
       a.fear = clamp(a.fear * 0.9 + 0.4 * Math.max(0, -d) * temper(a), 0, 1);
       for (let k = 0; k < 9; k++) a.cz[k] = a.cz[k] * 0.995 + Math.abs(a.rk[k]) * Math.abs(d);
     }
@@ -1418,7 +1422,7 @@ const hunterSeen = (x) => {
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {
