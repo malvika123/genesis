@@ -1399,7 +1399,7 @@ Causes of death at 1 in 7: hunger 37%, old age 20%, fire 14%, predators 10%, dro
 
 **The brains have learned that eating is bad** — below what an untrained brain would choose — even on fruit, where eating always works.
 
-**Test 2 — every time a hominin chose to eat, and what happened** (seed 1, 15 days, all hominins, hungry or not): on fruit 44% of eat choices (energy rose only 23% of the time — mostly because the eater was already full); on grass alone 32% (hominins cannot digest grass); on roots 13% (energy fell 76% of the time: failed digging costs energy); on bare ground 11% (nothing, energy fell). So most of the times a brain chooses "eat", nothing good follows.
+**Test 2 — every time a hominin chose to eat, and what happened** (seed 1, 15 days, all hominins, hungry or not): on fruit 44% of eat choices (energy rose only 23% of the time — mostly because the eater was already full); on cells with grass but no fruit or roots 32% (energy rose 41% of the time — likely leaves where trees stand — and fell 39%; hominins cannot digest grass); on roots 13% (energy fell 76% of the time: failed digging costs energy); on bare ground 11% (nothing, energy fell). So most of the times a brain chooses "eat", nothing good follows.
 
 **Interpretation — three causes found, each a fault of the world's rules, not of evolution:**
 1. **An inborn pull fires on grass.** Besides the sweet taste of fruit, "hunger alone makes any primate try putting plants in its mouth" (`src/sim.js`) fires on `food > 0.1` — grass, which hominins cannot digest (entry 22 took grass out of their sight but not out of this pull). Hungry hominins keep trying grass and get nothing.
