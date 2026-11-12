@@ -44,6 +44,7 @@ Entries are kept even when the result was "no effect" or "it made things worse" 
 | Hunger and thirst come first | Hunger deaths 109 → 69 (−37%); births 27 → 30; but drownings doubled, 11 of 12 drowned were children | weak–moderate |
 | Moving as one choice, not eight (walking 70–80% → 25%) | Predator deaths 60 → 3; drownings 39 → 18; but hunger deaths 80 → 115 | moderate |
 | A mother keeps her nursing child near | 31 alive vs 25, better in 9 of 12; drownings and fire deaths about halved | weak–moderate |
+| **Brains' expectations fixed** (good surprises no longer count four times as much in the value estimate): starving hominins on fruit eat 83% (was 1–5%); populations hold steady (−3.1% → −0.3% a year), die-outs 5 → 2, children reaching 15 45% → 59%, life expectancy 15 → 21; **5 of 7 reality checks pass** | 24 worlds | moderate–strong |
 | Disease (outbreaks spread by closeness, deadliest for the young, old and starving): illness 5% of deaths, infant deaths 3.8 → 5.3% — real but small beside hunger (37%); bands shrink more | 24 worlds, two rates | moderate |
 | Not every cycle conceives (1 in 5, as at Gombe and Kanyawara): births 5.3 years apart (real 5.2–6.0), 4 of 7 checks pass — but bands shrink 2.2% a year and 6 of 24 die out: deaths are too many (hunger 41%, fire 11%) | 24 worlds | moderate |
 | (Engine) 1.7 times faster with identical worlds: learning loops written out, display words made once, unused brain parts not faded | 4 worlds, identical | strong |
@@ -1441,6 +1442,49 @@ The brain's learning is doing what it should with this experience: "eat" mostly 
 **Interpretation.** This is a fault in the learning machinery, not in the world: one-try learning of a striking event is real (dopamine bursts), but it should not inflate the brain's general expectation of how good things are. Next: let the one-try boost act on what the brain does, not on its estimate of value; check that expectations then match rewards; then measure eating and hunger again.
 
 **Strength.** Moderate (two worlds; the measurements are exact; the cause is a reading of the code, not yet tested). **Lesson:** after two wrong guesses, measure the signal the brain learns from.
+
+### 50. Fixing the brains' expectations: hominins eat, live longer, and bands hold steady — Nov 2026
+
+**Version.** Unreleased · the change and the test: commit `4ae1ab4` (`--boosted-value` restores the old rule — checked: identical worlds). Run by Claude. Step 2 of the brains priority.
+
+**Data.** [Reality checks after](../data/findings/50-calm-value/table.txt) · [before (entry 49)](../data/findings/50-calm-value/table-before.txt) · [each world](../data/findings/50-calm-value/worlds/) · brain probes after: [learning signal, seed 1](../data/findings/50-calm-value/learning-signal-after-seed-1.txt), [seed 3](../data/findings/50-calm-value/learning-signal-after-seed-3.txt); [what the brain picks, seed 1](../data/findings/50-calm-value/brain-after-seed-1.txt), [seed 3](../data/findings/50-calm-value/brain-after-seed-3.txt) · [the prediction, written before](../data/findings/50-calm-value/prediction-written-before.txt).
+
+**Question.** Entry 49: brains expected about ten times more than they got, likely because the one-try boost (a big good surprise learned up to four times as strongly) also trained the brain's estimate of value, while bad surprises got at most 1.5 times. Fix that, and do hominins eat — and live?
+
+**Changed.** The one-try boost and fear still shape what a hominin *does* after a striking moment; the brain's estimate of *how good things are* now learns from good and bad surprises alike (only novelty and stress, which do not depend on whether the surprise was good or bad, still change how fast it learns). One-try learning of striking events is real (dopamine bursts); inflating the general expectation of life was not.
+
+**First check (two worlds, 40 days).**
+
+| | Before | After |
+|---|---|---|
+| Brain's value estimate against what rewards are worth | 2.34 vs 0.32; 3.14 vs 0.24 | **0.38 vs 0.39; 0.31 vs 0.30** |
+| Learning signal, average | −0.08; −0.12 | **0.00; +0.01** |
+| Starving on fruit: the brain alone picks "eat" | 0.0–0.3% | **10.5%** (a fresh brain about 5.3%) |
+| Starving on fruit: actually ate | 1–5% | **83%** |
+| Starving moments spent standing on fruit (seed 1) | 141–213 | **12** |
+
+**Test.** The reality checks, 24 worlds × 100 days, the same seeds. Prediction written first: (1) hunger's share of deaths below 25% (primary); (2) populations shrink less, fewer worlds die out; (3) illness, old age and predators take larger shares; (4) at least 4 of 7 checks pass.
+
+| | Before (entry 49) | After | Real |
+|---|---|---|---|
+| **Population change a year** | −3.1% ✗ | **−0.3% ✓** | about stable |
+| Worlds that died out (of 24) | 5 | **2** | |
+| Deaths from hunger | 39% | **30%** | |
+| Deaths from illness | 5.8% ✗ | **14.2%** ✗ (just short) | 15–60% |
+| Born who reach 15 | 44.5% ✓ | **58.5%** ✓ | 35–60% |
+| Life expectancy at birth | 15.3 ✓ | **21.3** ✓ | 13–33 |
+| Years between births | 5.3 ✓ | 5.2 ✓ | 5.2–6.0 |
+| Age at first birth | 15.5 ✓ | 15.5 ✓ | 13.3–14.9 (band to 15.5) |
+| Babies dying in their first year | 6.8% ✗ | 4.9% ✗ | 11–21% |
+| **Checks passing (of 7)** | 4 | **5** | |
+
+Causes of death after: hunger 30%, old age 23%, predators 15%, illness 14%, fire 9%, wounds 6%, drowning 3%.
+
+**Result.** (1) **Partly**: hunger fell from 39% to 30%, not below 25%. (2) **Held**: populations now hold steady (−0.3% a year, inside the real band) and 2 worlds died out instead of 5. (3) **Held**: illness 6% → 14%, old age 19% → 23%, predators 11% → 15%. (4) **Held**: 5 of 7 checks pass — the best yet.
+
+**Interpretation.** A single fault in how the brains learned — good surprises counting up to four times as much as bad ones — had made every hominin chronically disappointed, and taught them that eating does not pay. With it fixed, their expectations match their lives, they eat what is under their feet, more children reach adulthood, and bands hold steady as real chimpanzee communities do. With fewer hominins starving, illness now takes nearly its real share — the effect entry 46 predicted would appear once hunger was fixed. Still failing: babies die too rarely (5% against 11–21%) and illness is just below its band.
+
+**Strength.** Moderate–strong (24 worlds; a large, consistent change; predictions and primary outcome written first; the mechanism measured directly). **Lesson:** when every fix of the world leaves the same symptom, look at how the creatures learn — here, two wrong guesses about the world, then one measurement of the brain, found it.
 
 ---
 

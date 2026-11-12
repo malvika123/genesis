@@ -1,0 +1,7 @@
+Written 13 Nov 2026 BEFORE the run. Same 24 seeds x 100 days as entries 42-49; baseline: entry 49's run (grass fix, old value
+learning), identical to --boosted-value on this commit.
+Primary outcome: share of deaths from hunger (entry 49: 39%).
+1. Hunger's share falls clearly, below 25%.
+2. Populations shrink less (entry 49: -3.1% a year) and fewer worlds die out (entry 49: 5 of 24).
+3. Illness and old age take a larger share; predators perhaps more (hominins live longer and range).
+4. Checks passing: at least 4 of 7 (population change may move into or toward its band).
