@@ -105,6 +105,7 @@
     { key: 'cycle', kind: 'off', def: true, flag: 'no-cycle', label: 'Females have a cycle: receptive about 13 of 36 days, fertile only near ovulation (on since entry 38; off: every mating can conceive)', cfg: true },
     { key: 'mood', kind: 'off', def: true, flag: 'no-mood', label: 'A lasting mood (the running average of recent surprises) colours how outcomes feel (off: none)', cfg: true },
     { key: 'eightWalks', kind: 'on', def: false, flag: 'eight-walks', label: 'The eight directions count as eight separate choices, so an undecided brain mostly walks (the old rule)', cfg: true },
+    { key: 'oldPlantPull', kind: 'on', def: false, flag: 'old-plant-pull', label: 'The hungry pull to try plants fires on grass too, which hominins cannot digest (the old rule)', cfg: true },
     { key: 'disease', kind: 'off', def: true, flag: 'no-disease', label: 'Outbreaks of a contagious illness among hominins (off: no disease)', cfg: true },
     { key: 'diseaseRate', kind: 'num', def: 1 / 7, flag: 'disease-rate', label: 'Outbreaks a year (an assumption: tested at 1/7 and 1/20)', min: 0, max: 2, cfg: true },
     { key: 'certainConception', kind: 'on', def: false, flag: 'certain-conception', label: 'Every cycle can conceive (the old rule); otherwise about 1 cycle in 5, as wild chimpanzees need about 5', cfg: true },

@@ -317,7 +317,10 @@ function sim() {
       RF[A_EAT] = taste > 0.05 && !water[h] ? 8 * hu : 0;
       // and hunger alone makes any primate try putting plants in its mouth: a weaker pull, which the
       // gut then rewards or not
-      if (!RF[A_EAT] && hu > 0.35 && !water[h] && (food[h] > 0.1 || ROOT[h] > 0.05 || leafy(a, h))) RF[A_EAT] = 2.5 * (hu - 0.35);
+      // — but only on plants it could get something from: hominins cannot digest grass (entry 22), so the pull no longer fires
+      // on grass alone; before, it drew hungry hominins to chew grass again and again for nothing, and their brains learned that
+      // eating does not pay, even on fruit (research log entry 48). --old-plant-pull: the old rule (grass too).
+      if (!RF[A_EAT] && hu > 0.35 && !water[h] && ((SOC.grassPull && food[h] > 0.1) || ROOT[h] > 0.05 || leafy(a, h))) RF[A_EAT] = 2.5 * (hu - 0.35);
       // Sexual motivation is inborn: at maturity, hormones make a partner who is ready too attractive (in
       // primates hormones govern the wish to mate more than the ability: Wallen 2001; chimpanzee males seek
       // out females in full swelling, Deschner et al. 2004). A ready adult is drawn toward a ready partner it
@@ -1415,7 +1418,7 @@ const hunterSeen = (x) => {
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {
