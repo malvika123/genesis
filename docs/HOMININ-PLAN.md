@@ -87,7 +87,7 @@ owner chose that order:
    (verify before relying on it); (d) a rented server by the hour for the big runs. If real speed ever needs a tool outside the
    "plain JavaScript, no dependencies" rule, the owner decides, with the trade-off shown first.
 4. **The scale.** What one simulated animal stands for and how big the world is (a whole planet holds a few dozen animals; a
-   year is 3 days; two clocks). The real fix for hunters dying out.
+   year is 3 days; two clocks). The real fix for hunters dying out. **When it is done, switch off the temporary newcomers (`--no-rescue`, entry 39) and test that hunters still last on their own.**
 5. **The brains.** First their short memory for cause and effect: the record of what it just did halves in about 3 steps
    (`GAM` 0.97 × `LAM` 0.8, `src/config.js`), while a day is 96 steps and a life about 130 nights; the value estimate reaches
    about 33 steps. Then learning by watching what worked (Phase B).
