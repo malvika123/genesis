@@ -67,12 +67,12 @@ verified online, built with a switch, and tested on its own before the next, in 
 | R6 | Lions, and the hunters balanced against prey | | A1 |
 | R7 | Venomous snakes | Primates detect snakes fast (snake detection theory) | |
 | R8 | Dangerous large plant-eaters: elephants, hippos, buffalo | They kill when threatened | A1 |
-| R9 | Disease and parasites | Probably a major killer | research first |
+| R9 | Disease and parasites | **Researched 12 Nov:** at Gombe illness caused 58% of chimpanzee deaths with known cause, mostly in respiratory epidemics; aggression 20% (Williams et al. 2008); Kanyawara: respiratory illness the top cause, 27% of deaths over 31 years. Genesis has none — its hunger deaths may stand in for deaths that were mostly disease | **high priority**; research how illness spreads between apes and how deadly it is, then build |
 | R10 | Violence between groups (raids) and infanticide by males | Chimpanzees raid neighbours and kill; males kill infants not theirs | several groups (R14); male rivalry (R13) |
 | R11 | Bone marrow from bones broken with stones | **Researched 12 Nov:** Oldowan hominins certainly broke bones with hammerstones for marrow; Nyayanga (2.9 Ma) tools used for marrow and roots (Plummer et al. 2023); Dikika (3.4 Ma) disputed; wild chimpanzees break bones or use sticks for marrow; fresh tibia and femur about 664–685 kJ per 100 g of bone | **build first**: bones already lie where animals died; striking one with a stone cracks it for marrow, as with nuts — physics, not scripted |
 | R12 | Termites and other insects, eggs, honey, small animals; sedges and grass seeds | Diet evidence | A15 |
 | R13 | Males competing for rank and mates (and testosterone) | Chimpanzee males; Muller & Wrangham 2004 | B2 |
-| R14 | Several groups, and females moving between them at adolescence | Chimpanzee daughters leave their community; genes mix | the community-size results |
+| R14 | Several groups, and females moving between them at adolescence | **Researched 12 Nov:** males stay; many females leave about a year after first full swelling (9–12 years): about half at Gombe's Kasekela, four in five at Mitumba; never seen mature males immigrate at Mahale in 34 years (Pusey & Schroepfer-Walker 2013 and others). Several groups of 25–40 that exchange females make a bigger connected population — the owner's "bigger is the key" | after the community test; the laptop handles 80+ hominins |
 | R15 | Grooming, alliances, making up after fights | Primate social life | |
 | R16 | Specific alarm calls for different dangers | Vervet monkeys' leopard / eagle / snake calls (Seyfarth et al. 1980) | |
 | R17 | Paranthropus: a second hominin species living alongside | Lived at the same time and places as early Homo | R1–R3 |
