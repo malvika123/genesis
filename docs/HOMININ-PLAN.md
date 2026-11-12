@@ -92,6 +92,9 @@ owner chose that order:
    (`GAM` 0.97 × `LAM` 0.8, `src/config.js`), while a day is 96 steps and a life about 130 nights; the value estimate reaches
    about 33 steps. Then learning by watching what worked (Phase B).
 
+**Freeze (the owner, 12 Nov):** nothing new is added until Phase A, the hunter release and these five priorities are done; new ideas go
+to the backlog only.
+
 Paused: the communication detector (B12) — its own check fails, and it is breadth.
 
 **What would make Genesis valuable to others** (Fable's opinion, 12 Nov, adopted by the owner). Fable's summary: *the method is
