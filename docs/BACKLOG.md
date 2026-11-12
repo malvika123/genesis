@@ -66,6 +66,7 @@ test on the same worlds; never tune toward survival.
 | A21 | Test the registered assumptions never tried at both ends: hunger-first 6, mother's pull 3, temperament/care spread, mood, leaf threshold 0.3, tree cover 0.4, catch × 0.35, fall rate, cold/heat 9/31 °C | Review finding 9 | |
 | A22 | **done 12 Nov** — Fix register attributions: pregnancy (Gombe 225 d, not Emery Thompson 2007); brain at birth (45%/25%, Coqueugniot & Hublin 2007; 40% is DeSilva & Lesnik's australopith estimate); sabre-tooth 100 kg is a European specimen; leaf study is a preprint; Lucy's fall disputed; activity budgets weakly sourced; hunters ~3.4–10× too many, not ~9× | Review finding 6–7 | |
 | A23 | Name one primary outcome before each test (12 outcomes give a chance "beyond noise" in about half of tests); align strength labels with the log's scale (entries 19, 32 → moderate; 25's copying → weak) | Review findings 4–5 | method |
+| A24 | A short method guide (`docs/METHOD.md`) and the reality-check table with passes and fails on the Research page | Fable's opinion, adopted by the owner 12 Nov | after the reality-check suite |
 
 ## 3b. The real world of 2.5 million years ago — must be added (the owner, 12 Nov 2026)
 

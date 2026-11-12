@@ -88,6 +88,16 @@ owner chose that order:
 
 Paused: the communication detector (B12) — its own check fails, and it is breadth.
 
+**What would make Genesis valuable to others** (Fable's opinion, 12 Nov, adopted by the owner). Fable's summary: *the method is
+better than the model; the method is already worth sharing; the model's claims should stay small.* Genesis cannot say what
+happened 2.5 million years ago; it can say honestly what appears, and what does not, in a world built from stated rules. So:
+
+- **One small, solid result a stranger can repeat** — the goal of the brains step: for example "does learning by watching make
+  discoveries spread? yes or no, on 24+ worlds, prediction written first". A clear "no" counts.
+- **The reality-check table published with its passes and its fails** (on the Research page) — few simulations show where they fail.
+- **A short method guide** (`docs/METHOD.md`): switches to the old behaviour, paired seeded worlds and the identical-worlds check,
+  the assumptions register, predictions written first, failures logged — usable by others even if the hominins never learn much.
+
 **Ways of working that go with them:** add fewer things and test claims that matter on 24+ worlds (a floor: for die-out rates even 24 worlds leave a wide range), with one primary outcome
 named in advance; go live in smaller, more frequent steps (the live site lagged 18 entries behind and the owner met the
 hunter problem there first); have a fresh session, with no history in the project, repeat the science review.
