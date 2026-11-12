@@ -2025,8 +2025,8 @@ function meaningText(word) {
   if (!m.best && !m.resp) return 'Said ' + S.n + ' times, in all kinds of situations: no meaning yet.';
   let t = '';
   if (m.best)
-    t += 'Said mostly when ' + CTXN[m.best.c] + ' (' + Math.round(100 * m.best.p) + '% of the time, against ' + Math.round(100 * m.best.q) + '% usually). ';
-  if (m.resp) t += m.resp[0].toUpperCase() + m.resp.slice(1) + '.';
+    t += 'Said mostly when ' + CTXN[m.best.c] + ' (' + Math.round(100 * m.best.p) + '% of the time, against ' + Math.round(100 * m.best.q) + '% usually; not tested against chance). ';
+  if (m.resp) t += m.resp[0].toUpperCase() + m.resp.slice(1) + ' (not compared with how often they do so anyway).';
   if (S.npt >= 5) {
     const [c, n] = Object.entries(S.pts).sort((p, q) => q[1] - p[1])[0];
     if (n / S.npt > 0.4) t += ' Often said while pointing at ' + CHN[c] + ' (' + Math.round((100 * n) / S.npt) + '% of the times it was said with a point).';
@@ -2050,7 +2050,7 @@ function soundsHTML() {
     '<p class="sub">' + WSTAT.size + ' different words have been said so far' +
     (WSTAT.size ? ', ' + [...WSTAT.values()].filter((s) => s.who && s.who.size >= 3).length + ' of them by three or more people' : '') +
     '. Meanings are worked out only from how words are really used.</p>' +
-    '<table class="tbl"><tr><th>Sound</th><th>Used</th><th>What it seems to mean</th></tr>' +
+    '<table class="tbl"><tr><th>Sound</th><th>Used</th><th>When it is said (not yet tested against chance)</th></tr>' +
     SAYN.map((n, k) => [n, SNDSTAT[k], k])
       .concat(words.map(([w, S]) => [w, S, w]))
       .map(([n, S, k]) => {
@@ -2067,8 +2067,8 @@ function soundsHTML() {
             Math.round(100 * m.best.p) +
             '% of the time, against ' +
             Math.round(100 * m.best.q) +
-            '% usually). ';
-        if (m.resp) t += m.resp[0].toUpperCase() + m.resp.slice(1) + '.';
+            '% usually; not tested against chance). ';
+        if (m.resp) t += m.resp[0].toUpperCase() + m.resp.slice(1) + ' (not compared with how often they do so anyway).';
       }
       return '<tr><td><b>“' + n + '”</b></td><td>' + (S ? S.n : 0) + '</td><td>' + t + '</td></tr>';
     }).join('') +
