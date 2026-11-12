@@ -1098,7 +1098,7 @@ Worlds where it happened, 25 → 40 founders: fire by dropping a burning stick 1
 
 **Result.** Five of eight bands lasted 100 years and grew, four of them far beyond their 25 founders (the largest to **606**); three died out (two early, one by predators). Over all worlds **2,345 births against 1,182 deaths** (2.0, against 1.09 in entry 25). Deaths: hunger 413 (35%), old age 397 (34%), wounds 133 (11%), predators 116 (10%), fire 76 (6%).
 
-**The first shelters.** For the first time in any Genesis run, a hominin slept on a heap of seven or more branches — more than ever fall in one place by nature, so hominins had carried them there — in **3 of 8 worlds** (days 170–233, about 57–78 years in). Whether anyone heaped them *on purpose* is not known: a heap can also grow from branches dropped again and again in one favourite place. A trace of who carried the branches, and whether the heap was kept up, is needed before calling it building.
+**The first shelters.** For the first time in any Genesis run, a hominin slept on a heap of seven or more branches — more than ever fall in one place by nature, so hominins had carried them there — in **3 of 8 worlds** (days 170, 195 and 254 in worlds 8, 4 and 1 — about 57–85 years in; corrected 12 Nov from "170–233"). Whether anyone heaped them *on purpose* is not known: a heap can also grow from branches dropped again and again in one favourite place. A trace of who carried the branches, and whether the heap was kept up, is needed before calling it building.
 
 Other firsts: making fire by rubbing wood in 7 of 8 worlds, by sparks in 3; cutting meat with a stone in 1; nobody kept a fire going.
 
