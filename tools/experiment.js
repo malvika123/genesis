@@ -98,6 +98,12 @@ function main() {
         if (typeof a.out === 'string') fs.writeFileSync(a.out, text);
         else process.stdout.write(text);
         console.error('\n' + X.summary(rows, S) + (typeof a.out === 'string' ? '\nWrote ' + a.out : ''));
+        // a worker that crashes takes its remaining seeds with it: never let that pass silently
+        const missing = seeds.filter((s) => !rows.some((r) => r.seed === s));
+        if (missing.length) {
+          console.error('\nWARNING: ' + missing.length + ' of ' + seeds.length + ' worlds did not finish (seeds ' + missing.join(',') + '): a worker crashed; see the error above.');
+          process.exitCode = 1;
+        }
       });
   }
 }

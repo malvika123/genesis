@@ -27,7 +27,7 @@ let fished = 0,
   RETINA = false, // the raw-vision experiment: people see only light and colour, no labels
   over = false,
   NID = 0;
-const LG = [{}, {}, {}],
+const LG = [{}, {}, {}, {}], // one per kind: people, plant-eaters, hunters, fish (fish learn some lessons too)
   DL = {};
 // Seedable random numbers, so any world can be replayed exactly (setSeed(n) before reset()).
 let SEED = (Math.random() * 4294967296) >>> 0;
