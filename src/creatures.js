@@ -11,7 +11,7 @@ const gene = (sp, inst) => ({
   so: 0.5 + rnd(),
   bs: sp === 0 && ERA === 'hominin' ? 0.27 + rnd() * 0.09 : 0.75 + rnd() * 0.25, // how big a brain it can grow (inherited; early hominins about a third of a person's)
   lr: 0.8 + rnd() * 0.4, // how quickly it learns (inherited)
-  im: 0.1 + rnd() * 1.6, // how much it learns from others at all: copying them, and feeling for them (inherited)
+  im: 0.1 + rnd() * 1.6, // how much it learns from others: copying them (inherited); feeling their pain and fear is vf (below) unless --one-social-gene
   vl: rnd() * 0.3, // vocal control and learning: low, as in our ape-like ancestors (voice.js)
   pg: rnd() * 0.3, // the urge to point
   sh: rnd() * 0.3, // the pleasure of sharing attention
@@ -26,7 +26,11 @@ const gene = (sp, inst) => ({
 // (rhesus monkeys: freezing under threat about 30–40% heritable, Kalin lab). pc: parental care — how strongly its own
 // young's hunger moves it to share food; mothers differ in consistent styles (rhesus: Fairbanks). Both 0.4–1.6 around 1:
 // the spread is an assumption.
-const laterTraits = () => ({ tm: 0.4 + rnd2() * 1.2, pc: 0.4 + rnd2() * 1.2 });
+// vf: how strongly it feels others' pain and fear (vicarious fear and pain), split from im (copying) on 12 Nov 2026:
+// observational fear learning uses its own brain systems (Olsson & Phelps 2007), and attention to threat and to others
+// are separate, weakly heritable traits in rhesus monkeys (8–14% and 10%); no study shows they are inherited apart, so the
+// split is a way to measure which one selection acts on (`--one-social-gene`: one gene for both, the old rule).
+const laterTraits = () => ({ tm: 0.4 + rnd2() * 1.2, pc: 0.4 + rnd2() * 1.2, ...(SOC.vicarGene ? { vf: 0.1 + rnd2() * 1.6 } : {}) });
 const mut2 = (v, lo, hi) => clamp(rnd2() < 0.2 ? v + (rnd2() - 0.5) * 0.3 * v : v, lo, hi);
 function mk(sp, x, y, sex, g, gen, age, k = KDEF[sp]) {
   const a = {
@@ -175,6 +179,7 @@ function child(p, q) {
     cf: mutA(pk('cf') ?? 0.3, 0, 1),
     tm: mut2((rnd2() < 0.5 ? p.g.tm : q.g.tm) ?? 1, 0.3, 1.8),
     pc: mut2((rnd2() < 0.5 ? p.g.pc : q.g.pc) ?? 1, 0.3, 1.8),
+    ...(SOC.vicarGene ? { vf: mut2((rnd2() < 0.5 ? p.g.vf : q.g.vf) ?? 1, 0.05, 3) } : {}),
     w,
   };
 }

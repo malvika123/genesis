@@ -4,6 +4,9 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Feeling others' pain and fear is its own inherited gene** (`vf`), separate from copying them (`im`), so that long runs show
+  which one selection acts on. `--one-social-gene` restores one gene for both (reproduces earlier worlds exactly).
+- **Fixed:** a crash when a fish learned a lesson; the experiment runner now warns and fails when worlds are missing.
 - **Research log entries 25–36** (long runs and generations; climbing as a choice; founders' practice; hunger and thirst first;
   temperament and care; moving as one choice; the mother's pull; the female cycle failure; mood; the starving fix; ape-like
   care; community size), with data in `data/findings/25-…36-…`; tools `compare-runs.js`, `drowning-trace.js`,

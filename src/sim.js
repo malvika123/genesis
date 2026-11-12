@@ -1365,6 +1365,8 @@ const MEAL = (a) => (a.sp === 0 && SOC.kleiber ? 1 / (a.S.size || 1) : 1),
 const needQuiet = (a) => (a.sp === 0 && SOC.hungerFirst ? 1 - clamp((Math.max(1 - a.e / 100, 1 - a.w / 100) - 0.3) / 0.7, 0, 1) : 1);
 // inborn temperament (creatures.js: tm): 1 for everyone when switched off
 const temper = (a) => (a.sp === 0 && SOC.temper ? a.g.tm ?? 1 : 1);
+// how strongly it feels others' pain and fear: its own gene vf, or the copying gene im with --one-social-gene (the old rule)
+const feelsOthers = (o) => (SOC.vicarGene ? o.g.vf ?? 1 : o.g.im ?? 1);
 // The female cycle (chimpanzees: about 36 days; the swelling, when she is receptive, about 13 of them; ovulation near
 // its end: Deschner et al. 2003, 2004; Emery Thompson 2005). Each female has her own phase (state.js: rnd2). Without the
 // switch, every female is receptive and fertile whenever ready (the old rule). Kinds other than hominins and people: as before.
@@ -1388,7 +1390,7 @@ const hunterSeen = (x) => {
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {
@@ -1417,7 +1419,7 @@ function watchOthers() {
       if (Math.abs(dxw(o.x - e.x)) > r || Math.abs(o.y - e.y) > r) continue;
       const fam = v === o.mom || v === o.kid || v === o.mate || (v.mom && v.mom === o.mom) || v.mom === o,
         young = o.age < o.S.mat,
-        share = Math.min(0.8, 0.3 * (fam ? 1 : 0.5) * (young ? 1.5 : 1) * (PREPARED[e.kind] ?? 0.3) * (o.g.im ?? 1)),
+        share = Math.min(0.8, 0.3 * (fam ? 1 : 0.5) * (young ? 1.5 : 1) * (PREPARED[e.kind] ?? 0.3) * feelsOthers(o)),
         hurt = share * e.amt;
       if (hurt < 0.01) continue;
       o.bonus[0] -= hurt; // felt as its own pain, in its learning signal

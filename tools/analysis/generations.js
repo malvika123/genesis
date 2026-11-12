@@ -16,7 +16,7 @@ E.setSeed(seed);
 E.reset(S.cfg);
 // inborn traits (the genes, g): brain size it can grow, learning rate, curiosity, learning from others, voice control,
 // urge to point, joy in shared attention, care for others' young
-const TRAITS = { bs: 'brain size', lr: 'learning rate', c: 'curiosity', im: 'learns from others', vl: 'voice control', pg: 'urge to point', sh: 'shared attention', al: 'care for others’ young' };
+const TRAITS = { bs: 'brain size', lr: 'learning rate', c: 'curiosity', im: 'learns from others', vf: 'feels others’ pain and fear', vl: 'voice control', pg: 'urge to point', sh: 'shared attention', al: 'care for others’ young' };
 const seen = new Set(),
   byGen = {};
 const note = (a) => {

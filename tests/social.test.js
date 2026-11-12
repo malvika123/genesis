@@ -27,19 +27,19 @@ test('seeing someone hurt is felt as a weaker share of the pain, and as fear', (
   assert.ok(o.fear > 0, 'and fear');
 });
 
-test('a loner by birth learns far less from others, and nobody far away feels it', () => {
+test('one born feeling little for others feels far less of their pain (gene vf), and nobody far away feels it', () => {
   const { E, v, o } = pair();
-  o.g.im = 1;
+  o.g.vf = 1;
   o.bonus[0] = 0;
   E.social().ouch(v, 0.8, 'bitten');
   E.social().watchOthers();
   const social = -o.bonus[0];
-  o.g.im = 0.1;
+  o.g.vf = 0.1;
   o.bonus[0] = 0;
   E.social().ouch(v, 0.8, 'bitten');
   E.social().watchOthers();
-  assert.ok(-o.bonus[0] < social / 5, 'loner ' + -o.bonus[0] + ' vs ' + social);
-  o.g.im = 1;
+  assert.ok(-o.bonus[0] < social / 5, 'unfeeling ' + -o.bonus[0] + ' vs ' + social);
+  o.g.vf = 1;
   o.bonus[0] = 0;
   o.y = (v.y + 30) % E.H;
   E.social().ouch(v, 0.8, 'bitten');
