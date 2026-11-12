@@ -47,6 +47,7 @@ Entries are kept even when the result was "no effect" or "it made things worse" 
 | **Failure:** the female cycle, added alone | Births 31 → 9 per world: it exposed a hidden bug (4-year lockout after any mating) | strong |
 | **Not** measurable: climbing as a choice; temperament and parental care; mood; the refeeding signal (24 worlds: survival and hunger unchanged, fire deaths up at the edge of noise); ape-like care (hunger −24%, within noise) | Within noise | none–weak |
 | **Not** helpful: founders who practise first (drownings doubled); **not** supported yet: a bigger founding band discovering more (survival per hominin the same at 25, 40 and 80) | Same worlds, 24 and 12 | none / moderate |
+| Bands boom over 100 years: 5 of 8 last, the largest 25 → 606, births 2× deaths — **faster than any real chimpanzee community**, with no disease and predators gone in 4 worlds; first shelters (3 of 8 worlds, purpose unknown) | 8 worlds × 300 days | moderate (boom) / weak (shelters) |
 | **Not** measurable: early hominins living on leaves when fruit is short | 14.6 vs 14.8 alive, hunger deaths 168 vs 204 (24 worlds, within noise) | none |
 | (Scenario) Early hominin bodies and lives instead of modern ones | 14.5 vs 25.5 alive, no die-outs; old age a main cause of death (shorter, chimpanzee-like life) | weak–moderate (confounded) |
 | **Not** a must-have: bigger brains on their own | 64 units: 8.2 alive, 256: 6.1, 1,024: 2.2 | strong |
@@ -1066,6 +1067,43 @@ Worlds where it happened, 25 → 40 founders: fire by dropping a burning stick 1
 **Interpretation.** Size alone does not make Genesis hominins discover more. That fits the evidence behind the hypothesis, where size helps when knowledge can be passed on; in Genesis a discovery dies with whoever made it. The hypothesis is **untested, not refuted**: build learning by watching what worked (backlog A4), then repeat this exact comparison with a new written prediction.
 
 **Strength.** Moderate for "survival per founder does not change with size" (24 worlds, range about ±0.2); none for discoveries (ranges include zero). **Lesson:** a hunch confirmed on different worlds is not confirmed: compare the same worlds, and write the prediction down first.
+
+### 37. A hundred years: bands boom, and the first shelters — Nov 2026
+
+**Version.** Unreleased · every change up to entry 36 (`58039e4`; the four re-run worlds on `26a92dd`, which differs only by the crash fix, a log-message table, so the worlds are the same). Run by Claude.
+
+**Data.** [All 8 worlds](../data/findings/37-hundred-years/all-8-worlds.csv) · [first run, seeds 2, 3, 6, 7](../data/findings/37-hundred-years/first-run-seeds-2-3-6-7.csv) · [re-run, seeds 1, 4, 5, 8](../data/findings/37-hundred-years/rerun-seeds-1-4-5-8.csv) · logs: [first run, with the crash](../data/findings/37-hundred-years/first-run-log-with-crash.txt), [re-run](../data/findings/37-hundred-years/rerun-log.txt). Re-run: `node tools/experiment.js --seeds 1-8 --days 300 --naive-founders --workers 4 --out long.csv`.
+
+**Question.** With everything from this round in (hunger first, moving as one choice, the mother's pull, ape-like care, no cap on people), do bands last 100 years (300 days)? And does the inborn tendency to learn from others still fall (entry 25)?
+
+**A crash first.** Four of the eight worlds crashed: a fish learning one of the lessons wrote to a table that had room for three kinds of animal, not four (an old bug, rare enough to show only in long runs), and the runner reported the four survivors as if nothing had happened. Both were fixed (backlog B11) and the four worlds run again on identical code.
+
+| | People alive | Worlds died out | Born per world | Died per world | Hunger | Predators | Drowned | Burned |
+|---|---|---|---|---|---|---|---|---|
+| 8 worlds × 300 days | 170.4 ± 216.8 | 3 | 293.1 | 147.8 | 413 | 116 | 22 | 76 |
+
+| World | Alive at 100 years | Born | Died | Generations | Hunters left | Learns from others (founders about 0.9) |
+|---|---|---|---|---|---|---|
+| 1 | 236 | 451 | 240 | 7 | 10 | 0.40 |
+| 2 | 0 | 29 | 54 | 2 | 0 | — |
+| 3 | 0 | 53 | 78 | 3 | 9 | — |
+| 4 | 348 | 472 | 149 | 6 | 0 | 0.86 |
+| 5 | 121 | 258 | 162 | 7 | 0 | 0.36 |
+| 6 | 52 | 199 | 172 | 7 | 0 | 1.12 |
+| 7 | 0 | 7 | 32 | 1 | 10 | — |
+| 8 | **606** | 876 | 295 | 7 | 2 | 0.59 |
+
+**Result.** Five of eight bands lasted 100 years and grew, four of them far beyond their 25 founders (the largest to **606**); three died out (two early, one by predators). Over all worlds **2,345 births against 1,182 deaths** (2.0, against 1.09 in entry 25). Deaths: hunger 413 (35%), old age 397 (34%), wounds 133 (11%), predators 116 (10%), fire 76 (6%).
+
+**The first shelters.** For the first time in any Genesis run, a hominin slept on a heap of seven or more branches — more than ever fall in one place by nature, so hominins had carried them there — in **3 of 8 worlds** (days 170–233, about 57–78 years in). Whether anyone heaped them *on purpose* is not known: a heap can also grow from branches dropped again and again in one favourite place. A trace of who carried the branches, and whether the heap was kept up, is needed before calling it building.
+
+Other firsts: making fire by rubbing wood in 7 of 8 worlds, by sparks in 3; cutting meat with a stone in 1; nobody kept a fire going.
+
+**Learning from others** ended lower than the founders' mean (about 0.9) in 3 of the 5 surviving worlds (0.40, 0.36, 0.59), about the same in one (0.86) and higher in one (1.12). Mixed: the "bred out" of entry 25 (two worlds, 67 years) is **not** confirmed here.
+
+**Interpretation — and why the boom is not good news.** Real chimpanzee communities change slowly: Gombe fell from about 120–150 in the 1960s to about 100 by 2013; Kanyawara grew modestly over 25 years; Ngogo grew steadily over two decades. Growth from 25 to 606 in 100 years (about 3% a year) is far faster than any of them. Two real causes of death are missing or weak: **disease** — the leading cause of chimpanzee deaths at Gombe (58% of those with a known cause; Williams et al. 2008), absent in Genesis — and **predators**, which died out entirely in 4 of the 8 worlds (hunters left: 0), so those bands lived with no predator at all. Neither is a reason to tune anything; both say what to add next: disease (backlog R9) and a hunter population that cannot vanish from a whole region (backlog A1). Births are fine; the world is too safe — the owner's warning (Genesis must not be a safe world) borne out by data.
+
+**Strength.** Moderate for "bands now last and grow" (5 of 8 over 100 years); weak for the shelters (3 worlds, purpose unknown); weak for the gene (mixed). **Lesson:** success that is faster than reality is a finding about what is missing.
 
 ---
 

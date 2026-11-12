@@ -1,0 +1,61 @@
+<anonymous_script>:1702
+      if (tick - (L[key] ?? -1e9) < DAY) return;
+                   ^
+
+TypeError: Cannot read properties of undefined (reading '17')
+    at eval (eval at build (/Users/malvikasen/genesis-band/tools/engine-api.js:1:1), <anonymous>:1702:20)
+    at Array.forEach (<anonymous>)
+    at lessons (eval at build (/Users/malvikasen/genesis-band/tools/engine-api.js:1:1), <anonymous>:1677:6)
+    at Object.sim (eval at build (/Users/malvikasen/genesis-band/tools/engine-api.js:1:1), <anonymous>:5434:49)
+    at Object.runWorld (/Users/malvikasen/genesis-band/tools/experiment-core.js:182:9)
+    at main (/Users/malvikasen/genesis-band/tools/experiment.js:61:58)
+    at Object.<anonymous> (/Users/malvikasen/genesis-band/tools/experiment.js:104:1)
+    at Module._compile (node:internal/modules/cjs/loader:1934:14)
+    at Object..js (node:internal/modules/cjs/loader:2074:10)
+    at Module.load (node:internal/modules/cjs/loader:1656:32)
+
+Node.js v26.8.1
+<anonymous_script>:1702
+      if (tick - (L[key] ?? -1e9) < DAY) return;
+                   ^
+
+TypeError: Cannot read properties of undefined (reading '17')
+    at eval (eval at build (/Users/malvikasen/genesis-band/tools/engine-api.js:1:1), <anonymous>:1702:20)
+    at Array.forEach (<anonymous>)
+    at lessons (eval at build (/Users/malvikasen/genesis-band/tools/engine-api.js:1:1), <anonymous>:1677:6)
+    at Object.sim (eval at build (/Users/malvikasen/genesis-band/tools/engine-api.js:1:1), <anonymous>:5434:49)
+    at Object.runWorld (/Users/malvikasen/genesis-band/tools/experiment-core.js:182:9)
+    at main (/Users/malvikasen/genesis-band/tools/experiment.js:61:58)
+    at Object.<anonymous> (/Users/malvikasen/genesis-band/tools/experiment.js:104:1)
+    at Module._compile (node:internal/modules/cjs/loader:1934:14)
+    at Object..js (node:internal/modules/cjs/loader:2074:10)
+    at Module.load (node:internal/modules/cjs/loader:1656:32)
+
+Node.js v26.8.1
+
+4 worlds, 300 days each. People alive at the end: mean 13.0, median 0; 3 worlds ended with nobody left.
+Deaths: hunger 99, thirst 4, killed by a predator 114, drowned 8, burned 34, its wounds 9, old age 64, giving birth 4
+take        4 / 4 worlds, median day 1, earliest 1
+nut         4 / 4 worlds, median day 1, earliest 1
+flake       4 / 4 worlds, median day 3, earliest 1
+root        4 / 4 worlds, median day 1, earliest 1
+dig         4 / 4 worlds, median day 1.5, earliest 1
+meat        4 / 4 worlds, median day 25.5, earliest 2
+butcher     1 / 4 worlds, median day 7, earliest 7
+hunt        4 / 4 worlds, median day 25, earliest 4
+cooked      4 / 4 worlds, median day 7, earliest 6
+brand       4 / 4 worlds, median day 13, earliest 7
+setfire     3 / 4 worlds, median day 39, earliest 23
+fed         3 / 4 worlds, median day 23, earliest 7
+kept        0 / 4 worlds
+madefire    1 / 4 worlds, median day 66, earliest 66
+rubfire     3 / 4 worlds, median day 22, earliest 15
+share       4 / 4 worlds, median day 1, earliest 1
+vicar       4 / 4 worlds, median day 2.5, earliest 1
+swim        4 / 4 worlds, median day 12, earliest 3
+point       4 / 4 worlds, median day 1, earliest 1
+joint       4 / 4 worlds, median day 1, earliest 1
+speak       4 / 4 worlds, median day 1, earliest 1
+shared      4 / 4 worlds, median day 21, earliest 15
+shelter     0 / 4 worlds
+Wrote /private/tmp/claude-501/-Users-malvikasen/4db1e032-a873-4bfc-9a18-759e50346fdb/scratchpad/runs22/long-300d.csv

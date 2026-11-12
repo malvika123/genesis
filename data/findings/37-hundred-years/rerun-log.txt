@@ -1,0 +1,27 @@
+
+4 worlds, 300 days each. People alive at the end: mean 327.8, median 292; 0 worlds ended with nobody left.
+Deaths: hunger 314, thirst 4, killed by a predator 2, drowned 14, burned 42, its wounds 124, old age 333, giving birth 13
+take        4 / 4 worlds, median day 1, earliest 1
+nut         4 / 4 worlds, median day 1, earliest 1
+flake       4 / 4 worlds, median day 1.5, earliest 1
+root        4 / 4 worlds, median day 1, earliest 1
+dig         4 / 4 worlds, median day 1, earliest 1
+meat        3 / 4 worlds, median day 24, earliest 11
+butcher     0 / 4 worlds
+hunt        2 / 4 worlds, median day 26, earliest 6
+cooked      4 / 4 worlds, median day 13.5, earliest 8
+brand       4 / 4 worlds, median day 18.5, earliest 15
+setfire     3 / 4 worlds, median day 79, earliest 52
+fed         4 / 4 worlds, median day 81.5, earliest 17
+kept        0 / 4 worlds
+madefire    2 / 4 worlds, median day 67.5, earliest 23
+rubfire     4 / 4 worlds, median day 36, earliest 17
+share       4 / 4 worlds, median day 1, earliest 1
+vicar       4 / 4 worlds, median day 4.5, earliest 3
+swim        4 / 4 worlds, median day 6.5, earliest 3
+point       4 / 4 worlds, median day 1, earliest 1
+joint       4 / 4 worlds, median day 2, earliest 1
+speak       4 / 4 worlds, median day 1, earliest 1
+shared      4 / 4 worlds, median day 16.5, earliest 12
+shelter     3 / 4 worlds, median day 195, earliest 170
+Wrote /private/tmp/claude-501/-Users-malvikasen/4db1e032-a873-4bfc-9a18-759e50346fdb/scratchpad/runs22/rerun-1-4-5-8.csv
