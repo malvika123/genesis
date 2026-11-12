@@ -1381,6 +1381,37 @@ Causes of death at 1 in 7: hunger 37%, old age 20%, fire 14%, predators 10%, dro
 
 **Strength.** Strong (identical worlds). **Lesson:** stop optimising when what is left is the work itself.
 
+### 48. What the brain believes: eating does not pay — so even on fruit it will not eat — Nov 2026
+
+**Version.** Unreleased · the live settings after entry 47; tools `tools/analysis/brain-diag.js`, `eat-outcomes.js`. Run by Claude. Step 1 of the brains priority.
+
+**Data.** [The brain alone, seed 1](../data/findings/48-what-the-brain-believes/brain-alone-seed-1.txt), [seed 3](../data/findings/48-what-the-brain-believes/brain-alone-seed-3.txt) · [every eat choice and what happened, seed 1](../data/findings/48-what-the-brain-believes/eat-outcomes-seed-1.txt).
+
+**Question.** Entry 45: starving hominins stand on food and do not eat. Before changing anything: what does the brain itself expect from eating? Two possibilities need different fixes — it has not learned yet, or it has learned that eating does not pay.
+
+**Test 1 — ask the brain.** For starving hominins standing on fruit or roots, each one's own network was run on what it sensed, *without* the inborn pulls, to read its learned chance of choosing "eat" among the 19 choices.
+
+| Starving, standing on | Brain alone: chance of "eat" | Rank of "eat" (0 = first) | Did eating work? |
+|---|---|---|---|
+| Fruit (seed 1) | 0.3% (a fresh brain: about 5.3%) | 9.6 of 18 | always (+13 energy) |
+| Fruit (seed 3) | 0.1% | 16.8 of 18 | always (+12) |
+| Roots (seeds 1, 3) | 1.5%, 0.0% | 8.6, 9.6 | 19–38% (bare-handed digging) |
+
+**The brains have learned that eating is bad** — below what an untrained brain would choose — even on fruit, where eating always works.
+
+**Test 2 — every time a hominin chose to eat, and what happened** (seed 1, 15 days, all hominins, hungry or not): on fruit 44% of eat choices (energy rose only 23% of the time — mostly because the eater was already full); on grass alone 32% (hominins cannot digest grass); on roots 13% (energy fell 76% of the time: failed digging costs energy); on bare ground 11% (nothing, energy fell). So most of the times a brain chooses "eat", nothing good follows.
+
+**Interpretation — three causes found, each a fault of the world's rules, not of evolution:**
+1. **An inborn pull fires on grass.** Besides the sweet taste of fruit, "hunger alone makes any primate try putting plants in its mouth" (`src/sim.js`) fires on `food > 0.1` — grass, which hominins cannot digest (entry 22 took grass out of their sight but not out of this pull). Hungry hominins keep trying grass and get nothing.
+2. **Digging is hidden inside "eat".** Roots must be dug up (bare hands succeed 15% of the time) but digging is part of the "eat" action and costs energy when it fails; to the brain, "eat" on roots mostly loses energy, and roots and fruit underfoot share one sense.
+3. **Eating when full counts too.** Fruit eaten by a full hominin gives nothing, and those choices are many.
+
+The brain's learning is doing what it should with this experience: "eat" mostly yields nothing, so it stops eating. Inborn pulls raise "eat" while learning pushes it back down. Real primates sample new plants when hungry and learn which ones pay; they do not keep chewing grass, and digging is its own behaviour.
+
+**Next (step 2, to research first).** Correct the rules, not the brain: the "try plants" pull only on plants a hominin can get something from; digging as its own action; then measure again whether brains learn that eating fruit pays. Then the memory for cause and effect, as planned.
+
+**Strength.** Moderate (two worlds; the brain probe is exact). **Lesson:** ask the brain what it believes before changing how it learns — here it learned the truth of a world whose rules were wrong.
+
 ---
 
 ## Open questions (next tests)

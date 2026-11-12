@@ -1,0 +1,4 @@
+fruit            eat choices    754 (44%) | energy rose 23% | pain 1% | nothing 77% | energy fell 0%
+grass only       eat choices    548 (32%) | energy rose 41% | pain 0% | nothing 21% | energy fell 39%
+roots            eat choices    221 (13%) | energy rose 23% | pain 1% | nothing 0% | energy fell 76%
+bare ground      eat choices    180 (11%) | energy rose 0% | pain 0% | nothing 3% | energy fell 97%
