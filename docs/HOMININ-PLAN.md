@@ -80,7 +80,7 @@ owner chose that order:
    changed, against band-mates who never heaped), prediction written first.
 2. **Done 12 Nov — 3 of 7 checks pass (entry 42).** **A small reality-check suite** on worlds already saved (child survival, birth spacing, life expectancy, population change,
    causes of death), each with its clock — measurement, so that a scale change can be judged.
-3. **In progress — 1.7× faster so far, identical worlds (entry 43).** **Next: a short pass only** (the remaining cheap speed-ups with identical worlds, about half a day); the graphics-chip test moves to the scale step's rebuild decision, since it needs the browser or an add-on library and helps little at today's size. **Speed** (the owner, 12 Nov: "far ahead and close to our reality, no matter what"). Realistic scale is impossible at about
+3. **Done for now — 1.7× faster, identical worlds (entries 43, 47); what is left is the brains' own work.** **Next: a short pass only** (the remaining cheap speed-ups with identical worlds, about half a day); the graphics-chip test moves to the scale step's rebuild decision, since it needs the browser or an add-on library and helps little at today's size. **Speed** (the owner, 12 Nov: "far ahead and close to our reality, no matter what"). Realistic scale is impossible at about
    11 s of computing per simulated day, and Genesis chose rich creatures over many creatures. In order: (a) measure where the
    time goes (profile one world); (b) fix the hotspots with **identical results** (the identical-worlds check proves nothing
    changed); (c) move the brains to the graphics card with WebGPU, which keeps the page in the browser with no installation

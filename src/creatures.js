@@ -358,6 +358,8 @@ const DIS = { beta: 0.02, days: 1, cfr: [0.3, 0.1, 0.02, 0.1] };
 let OUTBREAK = 0, // number of the current outbreak (0: none)
   OUTBREAKS = 0;
 function disease() {
+  // with no outbreak nobody is sick, and a new one can only start at the turn of a day: nothing to do in between (same results)
+  if (!OUTBREAK && tick % DAY !== 0) return;
   const H = ag.filter((a) => a.sp === 0 && !a.dead && !a.gone);
   if (!H.length) return;
   USE2 = true;

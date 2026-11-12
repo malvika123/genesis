@@ -285,8 +285,11 @@ function trace(a, act, vc = null) {
   const OVD = OVDof(H),
     OVH = OVHof(H),
     zv = a.zv;
-  VG.forEach(([o0, n], gi) => {
-    const c = vc ? vc[gi] : gi ? -1 : 0;
+  // (a plain loop rather than VG.forEach with a small function: the same arithmetic, about 7% less computing; entry 47)
+  for (let gi = 0; gi < VG.length; gi++) {
+    const o0 = VG[gi][0],
+      n = VG[gi][1],
+      c = vc ? vc[gi] : gi ? -1 : 0;
     for (let v = o0; v < o0 + n; v++) {
       const g = c < 0 ? 0 : (v - o0 === c ? 1 : 0) - zv[v];
       let o = OVD + v * NI;
@@ -294,7 +297,7 @@ function trace(a, act, vc = null) {
       o = OVH + v * H;
       for (let j = 0; j < nh; j++) eP[o + j] = gl * eP[o + j] + g * h[j];
     }
-  });
+  }
 }
 // fade the traces without adding to them (when the body overrode its choice)
 // Only the parts trace() can ever fill are faded: the connections of thinking units not yet grown (j ≥ nh), and the parts of

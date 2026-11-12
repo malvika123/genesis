@@ -1371,6 +1371,16 @@ Causes of death at 1 in 7: hunger 37%, old age 20%, fire 14%, predators 10%, dro
 
 **Strength.** Moderate (24 worlds; predictions and the band change written first). **Lesson:** a real cause of death cannot take its real share while an unreal one takes too much.
 
+### 47. Speed, a second short pass: what is left is real work — Nov 2026
+
+**Version.** Unreleased · two small rewrites (`src/creatures.js`: the disease check does nothing between days when no one is sick; `src/brain.js`: a plain loop for the voice's learning traces). Run by Claude.
+
+**Test.** The same worlds before and after (seeds 3–4 × 40 days): **identical**. All quick tests pass.
+
+**Result. Did it make a difference? A little.** The whole speed work of 12 Nov stands at about 1.7 times faster (seeds 1–2 × 20 days: 119 s with the code before entry 43, 69 s now, disease off for a fair comparison). A new profile: what remains is the brains' own work — moving connections as they learn (23%) and thinking (19%) — which can only shrink by changing how they learn (the brains step) or by moving it to a faster engine (the rebuild decision at the scale step).
+
+**Strength.** Strong (identical worlds). **Lesson:** stop optimising when what is left is the work itself.
+
 ---
 
 ## Open questions (next tests)
