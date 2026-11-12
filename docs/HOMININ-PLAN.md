@@ -87,7 +87,7 @@ owner chose that order:
    (verify before relying on it); (d) a rented server by the hour for the big runs. If real speed ever needs a tool outside the
    "plain JavaScript, no dependencies" rule, the owner decides, with the trade-off shown first.
 4. **The scale.** What one simulated animal stands for and how big the world is (a whole planet holds a few dozen animals; a
-   year is 3 days; two clocks). The real fix for hunters dying out. **When it is done, switch off the temporary newcomers (`--no-rescue`, entry 39) and test that hunters still last on their own.**
+   year is 3 days; two clocks). The real fix for hunters dying out. **Decision point here (the owner asked, 12 Nov): rebuild for speed?** (1) keep JavaScript and keep optimising (perhaps 2–3× more); (2) a core in a fast language (Rust/C++) compiled to run in the browser and the tools (perhaps 3–10×, weeks, a build tool); (3) a separate research engine using the GPU or a server (perhaps 10–100×+, weeks, dependencies, the page becomes a viewer). Decide with measurements once the brains are stable — not before, or it is rebuilt twice. The evidence, tests and log carry over to any language. **When it is done, switch off the temporary newcomers (`--no-rescue`, entry 39) and test that hunters still last on their own.**
 5. **The brains.** First their short memory for cause and effect: the record of what it just did halves in about 3 steps
    (`GAM` 0.97 × `LAM` 0.8, `src/config.js`), while a day is 96 steps and a life about 130 nights; the value estimate reaches
    about 33 steps. Then learning by watching what worked (Phase B).
