@@ -306,3 +306,32 @@ function spawnKind(sp, k, n, inst) {
     ag.push(c);
   }
 }
+
+// Newcomers from the wider population (the rescue effect: Brown & Kodric-Brown 1977). One simulated world holds only a few
+// hunters of each kind, where the real landscape held thousands (Serengeti leopards about 5.5 per 100 km²: Allen et al. 2020),
+// so a kind dies out by chance; real local carnivore populations persist because animals keep arriving from outside (one
+// marten a year cut a population's 100-year extinction risk below 1%: Wisconsin study, J. Wildl. Manage. 2019). So while a
+// hunter kind is rare (fewer than SOC.rescueBelow), a young adult of that kind arrives now and then — SOC.rescueRate a
+// year (an assumption, tested at 1 and 0.25) — somewhere that suits it, away from the band, with a blank mind like the
+// founders. Drawn from the separate random stream, so with `--no-rescue` worlds are exactly as before. Checked once a day.
+function rescue() {
+  const n = [];
+  for (const a of ag) if (a.sp === 2) n[a.k] = (n[a.k] || 0) + 1;
+  USE2 = true;
+  try {
+    for (let k = 0; k < KINDS.length; k++) {
+      if (KINDS[k].sp !== 2 || (n[k] || 0) >= SOC.rescueBelow) continue;
+      if (rnd() >= (SOC.rescueRate * DAY) / TY) continue;
+      const before = ag.length;
+      spawnKind(2, k, 1, true);
+      if (ag.length > before) {
+        const c = ag[ag.length - 1];
+        c.sex = rnd() < 0.5 ? 1 : 0;
+        c.newcomer = true;
+        log('A ' + KINDS[k].n.toLowerCase() + ' came into the land from elsewhere (its kind had become rare here).');
+      }
+    }
+  } finally {
+    USE2 = false;
+  }
+}

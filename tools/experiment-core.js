@@ -104,6 +104,8 @@
     { key: 'cycle', kind: 'off', def: true, flag: 'no-cycle', label: 'Females have a cycle: receptive about 13 of 36 days, fertile only near ovulation (on since entry 38; off: every mating can conceive)', cfg: true },
     { key: 'mood', kind: 'off', def: true, flag: 'no-mood', label: 'A lasting mood (the running average of recent surprises) colours how outcomes feel (off: none)', cfg: true },
     { key: 'eightWalks', kind: 'on', def: false, flag: 'eight-walks', label: 'The eight directions count as eight separate choices, so an undecided brain mostly walks (the old rule)', cfg: true },
+    { key: 'rescue', kind: 'off', def: true, flag: 'no-rescue', label: 'Newcomers from the wider population arrive when a hunter kind is rare (off: a closed world, where a kind can die out for good)', cfg: true },
+    { key: 'rescueRate', kind: 'num', def: 1, flag: 'rescue-rate', label: 'Newcomers a year for a rare hunter kind (an assumption; tested at 1 and 0.25)', min: 0, max: 12, cfg: true },
     { key: 'oldMating', kind: 'on', def: false, flag: 'old-mating', label: 'The old mating rule: after any mating she waits the whole nursing time, he waits 36 days and pays 10 energy', cfg: true },
     { key: 'maleWait', kind: 'num', def: 1, flag: 'male-wait', label: 'Hours before a male hominin can mate again (an assumption; tested at 1 and 4)', min: 0.25, max: 48, cfg: true },
     { key: 'oneSocialGene', kind: 'on', def: false, flag: 'one-social-gene', label: 'One inherited gene for copying others and for feeling their pain and fear (the old rule); otherwise two separate genes', cfg: true },
@@ -201,6 +203,7 @@
       generations: st.maxGen,
       plant_eaters: count(1),
       hunters: count(2),
+      hunter_kinds_alive: new Set(st.ag.filter((a) => a.sp === 2).map((a) => a.k)).size, // how many hunter kinds still live (of 3)
       fish: count(3),
       best_fire_skill: +Math.max(0, ...ppl.map((p) => p.fsk || 0)).toFixed(2),
       // what kind of learners the living people are (inherited)
@@ -233,7 +236,7 @@
     };
   }
 
-  const HEAD = ['seed', 'days_run', 'people_alive', 'generations', 'plant_eaters', 'hunters', 'fish', 'best_fire_skill', 'learns_from_others', 'copies_successful', 'follows_crowd', 'loners_pct', 'full_sibling_pct', 'vocal_control', 'point_urge', 'share_joy', 'cares_for_others', 'words_said', 'words_shared', 'brain_general', 'brain_fear', 'brain_memory', 'brain_words', 'brain_regions'];
+  const HEAD = ['seed', 'days_run', 'people_alive', 'generations', 'plant_eaters', 'hunters', 'hunter_kinds_alive', 'fish', 'best_fire_skill', 'learns_from_others', 'copies_successful', 'follows_crowd', 'loners_pct', 'full_sibling_pct', 'vocal_control', 'point_urge', 'share_joy', 'cares_for_others', 'words_said', 'words_shared', 'brain_general', 'brain_fear', 'brain_memory', 'brain_words', 'brain_regions'];
 
   // meta: { version, commit, runtime, seeds }
   function csv(rows, S, meta) {
