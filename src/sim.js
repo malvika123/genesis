@@ -1390,7 +1390,19 @@ const cyclePos = (a) => {
   return (tick + a.cyc) % CYC;
 };
 const receptive = (a) => !(SOC.cycle && a.sp === 0 && a.sex) || cyclePos(a) < SWELL;
-const ovulating = (a) => !(SOC.cycle && a.sp === 0) || (cyclePos(a) >= SWELL - FERT && cyclePos(a) < SWELL);
+// Not every cycle can lead to conception: wild chimpanzee females need about 5 cycles at Gombe (4.7) and Kanyawara, 8.9 at
+// Mahale and 12–19 at Taï (Deschner & Boesch 2007); cycles with higher ovarian hormones are likelier to conceive (Emery Thompson).
+// So each cycle of each female is conceptive with chance SOC.conceive (0.2: East Africa, about 1 in 5; tested at 0.1),
+// decided by a hash of who she is and which cycle it is — no random numbers drawn, so with the switch off worlds are exactly
+// as before (--certain-conception). Research log entry 44.
+const conceptive = (a) => {
+  if (!SOC.cycleChance || SOC.conceive >= 1) return true;
+  let h = (Math.imul(a.id, 2654435761) ^ Math.imul(Math.floor((tick + a.cyc) / CYC) + 1, 2246822519)) >>> 0;
+  h = Math.imul(h ^ (h >>> 15), 2246822507) >>> 0;
+  h = (h ^ (h >>> 13)) >>> 0;
+  return h / 4294967296 < SOC.conceive;
+};
+const ovulating = (a) => !(SOC.cycle && a.sp === 0) || (cyclePos(a) >= SWELL - FERT && cyclePos(a) < SWELL && conceptive(a));
 // how much of yesterday's mood stays each step: mood follows roughly the last day (96 steps) — an assumption
 const MOODKEEP = 1 - 1 / DAY;
 // People and hominins have no fixed cap on their numbers (a cap is not biology: food, disease and fertility limit a
@@ -1402,7 +1414,7 @@ const hunterSeen = (x) => {
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {

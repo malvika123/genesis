@@ -104,6 +104,8 @@
     { key: 'cycle', kind: 'off', def: true, flag: 'no-cycle', label: 'Females have a cycle: receptive about 13 of 36 days, fertile only near ovulation (on since entry 38; off: every mating can conceive)', cfg: true },
     { key: 'mood', kind: 'off', def: true, flag: 'no-mood', label: 'A lasting mood (the running average of recent surprises) colours how outcomes feel (off: none)', cfg: true },
     { key: 'eightWalks', kind: 'on', def: false, flag: 'eight-walks', label: 'The eight directions count as eight separate choices, so an undecided brain mostly walks (the old rule)', cfg: true },
+    { key: 'certainConception', kind: 'on', def: false, flag: 'certain-conception', label: 'Every cycle can conceive (the old rule); otherwise about 1 cycle in 5, as wild chimpanzees need about 5', cfg: true },
+    { key: 'conceive', kind: 'num', def: 0.2, flag: 'conceive', label: 'Chance a cycle can lead to conception (Gombe and Kanyawara about 0.2, Mahale about 0.11; tested at 0.2 and 0.1)', min: 0.01, max: 1, cfg: true },
     { key: 'huntersAnywhere', kind: 'on', def: false, flag: 'hunters-anywhere', label: 'Hunters start (and newcomers arrive) anywhere that suits them, even far from all prey (the old rule)', cfg: true },
     { key: 'preyRadius', kind: 'num', def: 8, flag: 'prey-radius', label: 'Squares within which plant-eaters must live where a hunter starts or arrives (an assumption; tested at 8 and 4)', min: 1, max: 40, cfg: true },
     { key: 'rescue', kind: 'off', def: true, flag: 'no-rescue', label: 'Newcomers from the wider population arrive when a hunter kind is rare (off: a closed world, where a kind can die out for good)', cfg: true },
