@@ -72,6 +72,8 @@ function buildWorld(cfg) {
   SOC.cycle = cfg.cycle !== false; // on by default since 12 Nov 2026: with mating fixed it costs about 17% of births, as waiting for fertile days should (research log entry 38); --no-cycle turns it off
   SOC.mood = cfg.mood !== false; // off: no lasting mood (the old rule)
   SOC.oneMove = cfg.eightWalks !== true; // on: the eight directions count as eight separate choices (the old rule)
+  SOC.copyClose = cfg.copyFar !== true; // copy a choice only from an elder in the same square (off: from anyone in sight)
+  SOC.copyWorked = cfg.copyMoves !== true; // copy what worked for the elder (off: copy whatever it is doing, the old rule)
   SOC.backReplay = cfg.backReplay !== false; // the path to a good surprise replayed backwards (off: none, the old rule)
   SOC.calmValue = cfg.boostedValue !== true; // the value estimate learns from good and bad surprises alike (off: the old rule)
   SOC.grassPull = cfg.oldPlantPull === true; // the hungry pull to try plants fires on grass too (the old rule)

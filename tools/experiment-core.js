@@ -105,6 +105,8 @@
     { key: 'cycle', kind: 'off', def: true, flag: 'no-cycle', label: 'Females have a cycle: receptive about 13 of 36 days, fertile only near ovulation (on since entry 38; off: every mating can conceive)', cfg: true },
     { key: 'mood', kind: 'off', def: true, flag: 'no-mood', label: 'A lasting mood (the running average of recent surprises) colours how outcomes feel (off: none)', cfg: true },
     { key: 'eightWalks', kind: 'on', def: false, flag: 'eight-walks', label: 'The eight directions count as eight separate choices, so an undecided brain mostly walks (the old rule)', cfg: true },
+    { key: 'copyFar', kind: 'on', def: false, flag: 'copy-far', label: 'Copy what worked from any elder in sight (otherwise only from one in the same square, as peering is close)', cfg: true },
+    { key: 'copyMoves', kind: 'on', def: false, flag: 'copy-moves', label: 'Copy whatever an elder is doing, however it turns out (the old rule); otherwise copy what worked for it and avoid what did not', cfg: true },
     { key: 'backReplay', kind: 'off', def: true, flag: 'no-back-replay', label: 'At a good surprise the path that led to it is replayed backwards, crediting the steps before the reward (off: none)', cfg: true },
     { key: 'boostedValue', kind: 'on', def: false, flag: 'boosted-value', label: 'The estimate of value shares the one-try boost and fear (the old rule): good surprises count up to four times as much', cfg: true },
     { key: 'oldPlantPull', kind: 'on', def: false, flag: 'old-plant-pull', label: 'The hungry pull to try plants fires on grass too, which hominins cannot digest (the old rule)', cfg: true },

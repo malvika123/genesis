@@ -505,6 +505,7 @@ function sim() {
       if (d > 0.5) mod *= 1 + 3 * Math.min(1, (d - 0.5) / 1.5);
       if (a.stress > 0.5) mod *= 0.7;
       a.da = d;
+      a.daAct = lastAct; // which choice this surprise was about (others watching can learn from it: copy what worked)
       a.mod = mod;
       // The one-try boost and fear make a striking moment shape what the brain does — but its estimate of how good things are
       // learns from good and bad surprises alike: otherwise good surprises count up to four times as much as bad ones and its
@@ -612,7 +613,20 @@ function sim() {
         let maj = -1;
         for (let k = 0; k < NA; k++) if (seen[k] > nseen / 2 && nseen >= 3 && k !== A_SLEEP) maj = k;
         const cf = SOC.pick && maj >= 0 && maj !== tch.act ? (a.g.cf ?? 0.3) : 0;
-        imitate(a, tch.act, rate * (1 - cf), tch.vc);
+        if (SOC.copyWorked) {
+          // Copy what worked (research log entry 52): what the elder did last and how it turned out for it — better than it
+          // expected: copy it; worse: learn to avoid it; as expected: learn little. Young chimpanzees peer closely at
+          // experienced group members, mostly their mothers, and about 60% of it is about food (Budongo: Schuppli et al., Max
+          // Planck 2026). Before, it copied whatever the elder was doing, however it turned out, in its own place — so watching
+          // a mother eat fruit taught it to "eat" on bare ground. How others use their voice is copied as before.
+          // Peering is close: young chimpanzees watch from within reach. A choice is copied only from an elder in the same
+          // square (the closest Genesis has), where the youngster's situation is the elder's; from further away, copying "eat"
+          // taught it to eat where there was nothing (entry 52). --copy-far: from anyone in sight.
+          const o = clamp(tch.da ?? 0, -1, 1),
+            close = !SOC.copyClose || (tch.x === a.x && tch.y === a.y);
+          if (o && close && tch.daAct !== undefined && tch.daAct !== A_SLEEP) imitate(a, tch.daAct, rate * (1 - cf) * o);
+          if (tch.vc) imitateVoice(a, tch.vc, rate * (1 - cf));
+        } else imitate(a, tch.act, rate * (1 - cf), tch.vc);
         if (cf) imitate(a, maj, rate * cf);
         if (!a.copied && a.sp === 0 && young) {
           a.copied = 1;
@@ -1427,7 +1441,7 @@ const hunterSeen = (x) => {
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {
