@@ -78,7 +78,7 @@ owner chose that order:
    to feel safe to sleep (`src/forest.js`, `src/climate.js`, `src/sim.js`); under trees it adds nothing; nights are warm. If it gave
    nothing, the heaps were chance. Only if it helped: the trace (B14) and a frozen-brain test (same inputs, only the cover reading
    changed, against band-mates who never heaped), prediction written first.
-2. **A small reality-check suite** on worlds already saved (child survival, birth spacing, life expectancy, population change,
+2. **Done 12 Nov — 3 of 7 checks pass (entry 42).** **A small reality-check suite** on worlds already saved (child survival, birth spacing, life expectancy, population change,
    causes of death), each with its clock — measurement, so that a scale change can be judged.
 3. **Speed** (the owner, 12 Nov: "far ahead and close to our reality, no matter what"). Realistic scale is impossible at about
    11 s of computing per simulated day, and Genesis chose rich creatures over many creatures. In order: (a) measure where the

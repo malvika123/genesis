@@ -42,7 +42,7 @@ if (process.argv[2] === '--summary') {
     reach15 += w.reached15;
     ibi.push(...w.ibi);
     afb.push(...w.afb);
-    growth.push(w.growth);
+    if (w.nEnd > 0) growth.push(w.growth); // worlds that died out are counted separately, not as a rate
     for (const [k, v] of Object.entries(w.causes)) cause[k] = (cause[k] || 0) + v;
   }
   // life table: survivorship from yearly death rates (deaths / person-years at each age), ages 0–60
@@ -72,6 +72,7 @@ if (process.argv[2] === '--summary') {
       ok = !isNaN(v) && v >= REAL[k].lo && v <= REAL[k].hi;
     console.log('| ' + REAL[k].label + ' | ' + fmt(k, v) + ' | ' + fmt(k, REAL[k].lo) + ' to ' + fmt(k, REAL[k].hi) + ' | ' + (isNaN(v) ? 'no data' : ok ? 'pass' : v < REAL[k].lo ? 'FAIL (too low)' : 'FAIL (too high)') + ' | ' + REAL[k].src + ' |');
   }
+  console.log('\nWorlds that died out: ' + W.filter((w) => !w.nEnd).length + ' of ' + W.length + ' (population change is the median of the others).');
   console.log('\nSample sizes: followed to 1 year ' + at1 + ', to 15 years ' + at15 + ', birth intervals ' + ibi.length + ', first births ' + afb.length + ', worlds ' + growth.length);
   const tot = Object.values(cause).reduce((s, v) => s + v, 0);
   console.log('Causes of death (all ages): ' + Object.entries(cause).sort((a, b) => b[1] - a[1]).map(([k, v]) => k + ' ' + ((100 * v) / tot).toFixed(0) + '%').join(', '));

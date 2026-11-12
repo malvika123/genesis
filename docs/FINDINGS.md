@@ -44,6 +44,7 @@ Entries are kept even when the result was "no effect" or "it made things worse" 
 | Hunger and thirst come first | Hunger deaths 109 → 69 (−37%); births 27 → 30; but drownings doubled, 11 of 12 drowned were children | weak–moderate |
 | Moving as one choice, not eight (walking 70–80% → 25%) | Predator deaths 60 → 3; drownings 39 → 18; but hunger deaths 80 → 115 | moderate |
 | A mother keeps her nursing child near | 31 alive vs 25, better in 9 of 12; drownings and fire deaths about halved | weak–moderate |
+| Reality checks (24 worlds): 3 of 7 pass — survival to 15, life expectancy, age at first birth realistic; babies hardly ever die (1% vs 11–21%), births too close (4.7 vs 5.2–6.0 years), no illness | 24 worlds × 100 days | moderate |
 | **Not** building: the first "shelters" were chance — heaps under trees that already gave more cover, from branches dropped by many hominins over months | 3 worlds traced | strong |
 | Hunters placed where their prey lives (not anywhere that suits their climate): plant-eaters −22%, hominins killed by predators about 4× (38 → 149) — the world is no longer too safe | 12 paired worlds × 100 days | weak–moderate |
 | Newcomers from the wider population when a hunter kind is rare: hunter kinds alive at 100 days 20 of 36 → 36 of 36 (all 12 worlds keep all three); hominin danger unchanged | 12 paired worlds × 100 days | moderate |
@@ -1229,6 +1230,38 @@ Busier spots elsewhere had 50–115 branches dropped on them (by 12–28 hominin
 **Also found.** The "first shelter" milestone (`day_shelter`: asleep on 7+ branches) counts heaps that do nothing. It should count a heap only where it adds cover beyond what is already there (backlog B16).
 
 **Strength.** Strong for "chance" (all three worlds, the cover arithmetic exact). **Lesson:** a striking first ("they built shelters!") must be traced before it is told; the cheapest check — what it was worth — settled it in an hour.
+
+### 42. Reality checks: how close is Genesis to real apes? — Nov 2026
+
+**Version.** Unreleased · the live settings of 12 Nov (commit `dcd60b2`: mating fixed, the cycle on, newcomers, hunters near prey); the tool `tools/analysis/reality-check.js`. Run by Claude.
+
+**Data.** [The table](../data/findings/42-reality-checks/table.txt) · [each world](../data/findings/42-reality-checks/worlds/). Re-run: `node tools/analysis/reality-check.js 1,2,3 100 out/` then `--summary out/`.
+
+**Question.** Each change has been tested against the one before it. Is the whole world realistic? Priority 2 of the plan: one table of pass/fail checks against real numbers, each on the life clock (a year = 3 days), on 24 worlds.
+
+**Test.** 24 worlds × 100 days (about 33 life-years); every hominin followed from birth (or, for founders, from the start) to death: 1,042 births. Life expectancy from a life table (deaths per person-year at each age). A check passes when Genesis falls inside a band from wild chimpanzees (the proxy for hominins 2.5 million years ago) to foragers.
+
+| Check | Genesis | Real band | Pass? | Real numbers |
+|---|---|---|---|---|
+| Babies dying in their first year | 1.0% | 10–25% | **fail (far too low)** | chimpanzees 21% (four sites), Kanyawara 11% (Hill et al. 2001) |
+| Born who reach age 15 | 53.9% | 30–60% | pass | chimpanzees about 35%, foragers about 60%, Hadza 55% (Kaplan et al. 2000) |
+| Life expectancy at birth | 20.6 years | 13–33 | pass | chimpanzees about 13 (four sites) to 32.8 (Ngogo, Wood et al. 2017) |
+| Years between births, earlier baby alive | 4.7 | 5.0–6.5 | **fail (too short)** | Gombe 5.2, Mahale 5.6–6.0, composite 5.7 |
+| Age at first birth | 14.8 years | 12.5–15.5 | pass | Gombe 13.3, Taï 13.7, Mahale 14.6, with dispersers 14.9 |
+| Population change a year | −1.2% (median of 23; 1 world died out) | −1% to +1.5% (band an assumption) | **fail, just** | roughly stable: Gombe shrank, Kanyawara grew modestly |
+| Deaths from illness | 0% | 40–70% | **fail** | Gombe 58% of known causes (Williams et al. 2008) |
+
+Samples: 1,029 babies followed through their first year, 631 to age 15, 601 birth intervals, 155 first births. Causes of death (all ages): hunger 35%, old age 21%, predators 17%, fire 12%, wounds 8%, drowning 4%, childbirth 1%, thirst 1%.
+
+**Result. 3 of 7 checks pass:** survival to 15, life expectancy and age at first birth are inside the real range. Four fail:
+- **Babies almost never die in their first year** (1% against 11–21%). Real infant deaths come largely from illness, infanticide and the mother's death; Genesis has no disease and no infanticide, and nursing babies are carried and fed.
+- **Births come too close together** (4.7 years against 5.2–6.0). This confirms the review's finding 3, which the check on it (review section 8) had called "weaker than stated": the measured median is below the real range. Real females usually need several cycles to conceive; here conception within the fertile days is certain (an assumption).
+- **Populations shrink slightly** (median −1.2% a year; worlds range from −9.7% to +3.0%) — just outside a band that is itself an assumption. Entry 37's boom of about +3% a year is gone with predators back.
+- **No illness at all**, where it is the leading cause of death in wild chimpanzees.
+
+**Interpretation.** The life-history numbers (who reaches adulthood, how long they live, when they first give birth) are realistic. What is unrealistic is *why* hominins die: hunger and fire too much, illness never, babies hardly ever. Fire deaths at 12% look far too high for apes (no wild chimpanzee study among those read reports fire as a cause); a check to add when its real number is found. Disease is the missing piece that would bring both infant deaths and the causes into line — it is on the backlog (R9), outside the five priorities under the freeze.
+
+**Strength.** Moderate (24 worlds, 1,042 births; the bands are from sources except population change). **Lesson:** a world can get the totals right for the wrong reasons; the causes of death show it.
 
 ---
 

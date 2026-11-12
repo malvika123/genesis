@@ -322,6 +322,7 @@ Each code claim re-read in the source, and the two uncertain sources re-searched
   while receptive (10.3 steps), and the fertile window is the last 3.9 of those, so a mating lands in it about **38%** of the time —
   more with several males. The real point holds: a male's wait as long as a cycle limits each male to about one mating per cycle,
   so B1 and B2 must be fixed together.
+- **Update, same day (research log entry 42): finding 3 STANDS.** Measured over 24 worlds, the median interval between births with the earlier baby alive is 4.7 years, below the real 5.2–6.0. The correction below was too quick.
 - **Finding 3, weaker than stated.** 4.62 years is the *minimum* interval (the wait is paused in pregnancy and restarted at birth,
   `src/sim.js` 72 and 1582); entry 19's trace measured 4.6–6.5 years between births, which overlaps the real 5.2–6.0. Measure the
   mean before calling it generous.
