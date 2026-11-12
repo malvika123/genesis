@@ -56,21 +56,16 @@ const INNER = {
   23: 'a stick at its feet',
   24: 'a nut at its feet',
 };
+// The words for each action, made once: building a fresh list for every creature on every step took about a sixth of all
+// computing (research log entry 43). Same words as before.
+let GOW = null;
+const ACTW = ['stay put', 'eat', 'drink', 'sleep', 'mate', null, 'give food', 'pick up', 'put down', 'strike', null];
 function actName(a, k) {
-  if (k < 8) return 'go ' + CP[k];
-  return [
-    'stay put',
-    'eat',
-    'drink',
-    'sleep',
-    'mate',
-    a.sp === 2 ? 'attack' : a.sp === 0 ? 'grab' : 'snap',
-    'give food',
-    'pick up',
-    'put down',
-    'strike',
-    a.up ? 'climb down' : 'climb a tree',
-  ][k - 8];
+  if (k < 8) return (GOW || (GOW = CP.map((c) => 'go ' + c)))[k];
+  const j = k - 8;
+  if (j === 5) return a.sp === 2 ? 'attack' : a.sp === 0 ? 'grab' : 'snap';
+  if (j === 10) return a.up ? 'climb down' : 'climb a tree';
+  return ACTW[j];
 }
 for (let j = 0; j < NM; j++) INNER[27 + j] = 'what it was just thinking';
 INNER[FIREIN - IB] = 'the warmth of a fire';

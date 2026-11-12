@@ -297,13 +297,31 @@ function trace(a, act, vc = null) {
   });
 }
 // fade the traces without adding to them (when the body overrode its choice)
+// Only the parts trace() can ever fill are faded: the connections of thinking units not yet grown (j ≥ nh), and the parts of
+// eV that trace() never writes, stay exactly 0 (nh only grows), and 0 × gl = 0 — so this gives the same numbers as fading
+// every entry, at a fraction of the work (it took about a tenth of all computing; research log entry 43).
 function fadeTraces(a) {
   const gl = GAM * LAM,
-    n = a.eP.length;
-  for (let i = 0; i < n; i++) {
-    a.eP[i] *= gl;
-    a.eV[i] *= gl;
+    eP = a.eP,
+    eV = a.eV,
+    H = a.h.length,
+    nh = a.nh,
+    O2 = O2of(H),
+    OV = OVof(H),
+    OVD = OVDof(H),
+    OVH = OVHof(H);
+  for (let i = 0; i < OI; i++) eP[i] *= gl;
+  for (let j = 0; j < nh; j++) {
+    const o = OI + j * NI;
+    for (let i = o; i < o + NI; i++) {
+      eP[i] *= gl;
+      eV[i] *= gl;
+    }
   }
+  for (let k = 0; k < NA; k++) for (let i = O2 + k * H; i < O2 + k * H + nh; i++) eP[i] *= gl;
+  for (let j = 0; j < nh; j++) eV[OV + j] *= gl;
+  for (let i = OVD; i < OVH; i++) eP[i] *= gl;
+  for (let v = 0; v < NV; v++) for (let i = OVH + v * H; i < OVH + v * H + nh; i++) eP[i] *= gl;
 }
 // The dopamine-like signal d ("better or worse than expected") strengthens or weakens the connections
 // that were just used. rate already includes how plastic the brain is and the mood chemicals.
@@ -319,25 +337,43 @@ function learnStep(a, d, rate) {
   let ch = 0;
   // A bigger brain changes more connections at once, so each one changes less: the brain as a whole
   // learns as steadily as a small one instead of overwriting what already works.
-  const k = Math.min(1, a.S.nh / nh),
-    up = (i, s = 1) => {
-      const u = s * rate * (AP * d * eP[i] + AV * d * eV[i]);
-      if (u) {
-        w[i] = clamp(w[i] + u, -6, 6);
-        ch += Math.abs(u);
+  const k = Math.min(1, a.S.nh / nh);
+  // Each connection moves by u = s·rate·(AP·d·eP + AV·d·eV), kept within ±6. Written out loop by loop rather than through
+  // a small helper called for every connection (it took about 30% of all computing): the same sums in the same order,
+  // so worlds are identical to the last digit (checked, research log entry 43).
+  const apd = AP * d,
+    avd = AV * d,
+    r1 = 1 * rate,
+    rk = k * rate,
+    upd = (i0, i1, sr) => {
+      for (let i = i0; i < i1; i++) {
+        const u = sr * (apd * eP[i] + avd * eV[i]);
+        if (u) {
+          w[i] = Math.max(-6, Math.min(6, w[i] + u));
+          ch += Math.abs(u);
+        }
       }
     };
-  for (let i = 0; i < OI; i++) up(i);
+  upd(0, OI, r1);
   for (let j = 0; j < nh; j++) {
-    const o = OI + j * NI;
-    for (let i = 0; i < NI; i++) if (cm[j * NI + i]) up(o + i, k);
+    const o = OI + j * NI,
+      c0 = j * NI;
+    for (let i = 0; i < NI; i++)
+      if (cm[c0 + i]) {
+        const q = o + i,
+          u = rk * (apd * eP[q] + avd * eV[q]);
+        if (u) {
+          w[q] = Math.max(-6, Math.min(6, w[q] + u));
+          ch += Math.abs(u);
+        }
+      }
   }
-  for (let q = 0; q < NA; q++) for (let j = 0; j < nh; j++) up(O2 + q * H + j, k);
-  for (let j = 0; j < nh; j++) up(OV + j, k);
+  for (let q = 0; q < NA; q++) upd(O2 + q * H, O2 + q * H + nh, rk);
+  upd(OV, OV + nh, rk);
   const OVD = OVDof(H),
     OVH = OVHof(H);
-  for (let i = OVD; i < OVH; i++) up(i);
-  for (let v = 0; v < NV; v++) for (let j = 0; j < nh; j++) up(OVH + v * H + j, k);
+  upd(OVD, OVH, r1);
+  for (let v = 0; v < NV; v++) upd(OVH + v * H, OVH + v * H + nh, rk);
   a.learn += ch;
 }
 

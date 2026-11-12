@@ -44,6 +44,7 @@ Entries are kept even when the result was "no effect" or "it made things worse" 
 | Hunger and thirst come first | Hunger deaths 109 → 69 (−37%); births 27 → 30; but drownings doubled, 11 of 12 drowned were children | weak–moderate |
 | Moving as one choice, not eight (walking 70–80% → 25%) | Predator deaths 60 → 3; drownings 39 → 18; but hunger deaths 80 → 115 | moderate |
 | A mother keeps her nursing child near | 31 alive vs 25, better in 9 of 12; drownings and fire deaths about halved | weak–moderate |
+| (Engine) 1.7 times faster with identical worlds: learning loops written out, display words made once, unused brain parts not faded | 4 worlds, identical | strong |
 | Reality checks (24 worlds): 3 of 7 pass — survival to 15, life expectancy, age at first birth realistic; babies hardly ever die (1% vs 11–21%), births too close (4.7 vs 5.2–6.0 years), no illness | 24 worlds × 100 days | moderate |
 | **Not** building: the first "shelters" were chance — heaps under trees that already gave more cover, from branches dropped by many hominins over months | 3 worlds traced | strong |
 | Hunters placed where their prey lives (not anywhere that suits their climate): plant-eaters −22%, hominins killed by predators about 4× (38 → 149) — the world is no longer too safe | 12 paired worlds × 100 days | weak–moderate |
@@ -1262,6 +1263,24 @@ Samples: 1,029 babies followed through their first year, 631 to age 15, 601 birt
 **Interpretation.** The life-history numbers (who reaches adulthood, how long they live, when they first give birth) are realistic. What is unrealistic is *why* hominins die: hunger and fire too much, illness never, babies hardly ever. Fire deaths at 12% look far too high for apes (no wild chimpanzee study among those read reports fire as a cause); a check to add when its real number is found. Disease is the missing piece that would bring both infant deaths and the causes into line — it is on the backlog (R9), outside the five priorities under the freeze.
 
 **Strength.** Moderate (24 worlds, 1,042 births; the bands are from sources except population change). **Lesson:** a world can get the totals right for the wrong reasons; the causes of death show it.
+
+### 43. Speed: 1.7 times faster, identical worlds — Nov 2026
+
+**Version.** Unreleased · the change: three rewrites in `src/brain.js` and `src/mind.js`; tools `tools/analysis/profile-run.js`, `profile-top.js`. Run by Claude.
+
+**Data.** [Profile before](../data/findings/43-speed/profile-before.txt) · same worlds before and after: [seeds 1–2, 20 days, before](../data/findings/43-speed/before-seeds-1-2-20-days.csv), [after](../data/findings/43-speed/after-seeds-1-2-20-days.csv); [seeds 3–4, 40 days, before](../data/findings/43-speed/before-seeds-3-4-40-days.csv), [after](../data/findings/43-speed/after-seeds-3-4-40-days.csv).
+
+**Question.** Priority 3 of the plan: realistic scale is impossible at today's speed. Where does the time go, and can it be cut without changing a single result?
+
+**Measured.** A profile of one world over 20 days: about two thirds of all computing went to the brains learning — a small helper that moves each connection (about 29%), thinking (12%), the learning step (10%), fading the record of recently used connections (7%) — and a fifth to the world step itself, most of it the learning code folded into it.
+
+**Changed (the same arithmetic, the same order):** (1) the helper that moved each connection is written out loop by loop; (2) the words for each action ("eat", "go east"…), which were built afresh for every creature on every step only to be shown on the page, are made once; (3) the fading of recent-use records touches only the connections in use — a brain has room for 64 thinking units but a hominin grows about 17–23, and the rest of its record is always exactly zero.
+
+**Test.** The same worlds before and after, compared row for row: seeds 1–2 × 20 days and seeds 3–4 × 40 days. All 81 tests pass.
+
+**Result. Did it make a difference? Yes: 119 → 71 seconds for the same two worlds × 20 days (1.7 times faster), and every world identical to the last digit.**
+
+**Strength.** Strong (exact identity; timing measured alone on the same laptop). **Lesson:** the slow part was not the hard part — two of the three savings came from work the world never needed (display words, multiplying zeros).
 
 ---
 

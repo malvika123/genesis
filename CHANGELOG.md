@@ -4,6 +4,8 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **1.7 times faster, identical worlds** (research log entry 43): the brain's learning loops written out, action words made once,
+  only the parts of a brain in use faded.
 - **Hunters no longer die out, and live where their prey is:** newcomers from the wider population arrive while a hunter kind is
   rare (entry 39: kinds alive 20 → 36 of 36); hunters start and arrive within reach of plant-eaters (entry 40: predators now eat
   plant-eaters, and hominin predator deaths rose about fourfold). `--no-rescue`, `--rescue-rate`, `--hunters-anywhere`, `--prey-radius`.
