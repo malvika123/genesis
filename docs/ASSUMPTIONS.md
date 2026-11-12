@@ -69,6 +69,13 @@ took the Taung child: Berger & Clarke 1995); pigs, horses (*Eurygnathohippus*), 
 | Length of the practice | 10 days (about 3 years) for every founder (`--practice-days`) | Young chimpanzees travel with their mothers 4–5 years after weaning; real founders' experience would grow with their age | **assumption** (to test at 5 and 20 days) |
 | During practice nobody dies | — | A device: as children are kept alive by their mothers while they learn | **assumption** |
 
+## Starving (12 November 2026)
+
+| Setting | Value | Evidence | Status |
+|---|---|---|---|
+| How hunger is felt | smoothly, 3 × hunger² (the old sudden extra jolt below 15% energy removed; `--old-starving` restores it) | The hunger hormone ghrelin rises in proportion to time since the last meal and falls after eating (reviews; Siberian hamsters); no evidence of a sudden jump in the feeling | direction |
+| The refeeding signal | below a critical reserve (20% of the store), the urge to search for food doubles | Late in fasting, below a critical body mass, animals sharply increase food seeking: rats about 10× more active (Koubi et al. 1991), emperor penguins abandon their eggs to feed before reserves are lethal (Robin et al. 1998); the signal may come before the metabolic switch in the wild (Adélie penguins, 2016). The switch comes once about 80% of initial fat stores are gone, in rats and birds alike (review, Durban symposium); king penguins at about a quarter of their fat; emperor penguins up to 8× more active below the threshold | the 20% level sourced (range 20–25); the doubling an **assumption** |
+
 ## Mother's pull, the female cycle, mood (12 November 2026)
 
 | Setting | Value | Evidence | Status |
@@ -98,7 +105,7 @@ took the Taung child: Berger & Clarke 1995); pigs, horses (*Eurygnathohippus*), 
 |---|---|---|---|
 | Seeking food stops when liked food is in reach | — | Appetitive and consummatory phases of feeding in animals | direction |
 | Pull to eat liked food when hungry | 8 × hunger | — | **assumption** |
-| Care for a hungry child: own / sibling / nephew or niece / other | 1 / 0.6 / 0.5 / 0.35 × inherited trait | Family helps most; others less (Hrdy 2009; Kramer 2010; Hawkes et al. 1998) | direction; the weights are **assumptions** |
+| Care for a hungry child: own / sibling / nephew or niece / other | modern people: 1 / 0.6 / 0.5 / 0.35 × inherited trait (foragers: Hrdy 2009; Kramer 2010; Hawkes et al. 1998). **Early hominins: only a mother feeds her own young** (`--human-care` restores the forager pattern) | Among great apes, care and feeding of infants by others is essentially absent (reviews citing Hrdy 2009); gorilla mothers rarely let others hold theirs; at Ngogo others hold chimpanzee infants but do not feed them (Bădescu et al. 2016); no ape evidence of grandmothers or fathers provisioning. Many hands feeding a child is human | direction |
 | Children's pull to stay near carers | strength 3 (under 5) / 1.5, rising with distance and fear | Attachment is inborn (Bowlby 1969) | direction; strengths **assumptions** |
 | A heap of branches as cover | (branches − 4) / 8, at most 0.8 | Brush shelters and windbreaks keep off wind and rain | **assumption** |
 | Branches in a heap rot | 1 in 3,300 a step per branch | — | **assumption** |

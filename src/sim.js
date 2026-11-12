@@ -246,7 +246,7 @@ function sim() {
       D = [
         a.painA * a.g.b,
         a.painW * a.g.b,
-        3 * hu * hu + (a.e < 15 ? 1 : 0),
+        3 * hu * hu + (SOC.refeed ? 0 : a.e < 15 ? 1 : 0), // hunger is felt smoothly; the old rule added a sudden jolt below 15
         3 * th * th + (a.w < 15 ? 1 : 0),
         0.5 * a.sl * a.sl,
         0,
@@ -379,7 +379,11 @@ function sim() {
       const hh = idx(a.x, a.y),
         mh = meatAt(a.x, a.y, 0),
         atHand = !water[hh] && (fruit[hh] > 0.05 || COOK[hh] > 0.05 || (mh && !rotten(mh) && mh.meat > 0.05) || (hu > 0.35 && ROOT[hh] > 0.05)),
-        seek = atHand ? 0 : 2.5 * thr(hu);
+        // The refeeding signal: late in a fast, below a critical reserve, animals turn sharply to finding food — fasting rats
+        // about ten times more active (Koubi et al. 1991), emperor penguins leave their eggs to go and feed before reserves
+        // are lethal (Robin et al. 1998) — once about 80% of fat reserves are gone, in rats and birds alike (reviews). Below
+        // that level (20% of the store) the urge to search doubles (the doubling is an assumption: docs/ASSUMPTIONS.md).
+        seek = atHand ? 0 : 2.5 * thr(hu) * (SOC.refeed && a.e < SOC.refeedAt ? 2 : 1);
       for (let s = 0; s < 8; s++) {
         RF[s] += seek * x[s * NCH + 1] + 2.5 * thr(th) * x[s * NCH];
         const p = x[s * NCH + 5];
@@ -944,7 +948,7 @@ function sim() {
       if (a.mw && Math.abs(dxw(a.mw.x - a.x)) <= 2 && Math.abs(a.mw.y - a.y) <= 2)
         followed(a, 'water', 'found the water');
       if (th > 0.5) a.ev[3] = 'it drank after being very thirsty on day ' + dn;
-    } else if (act === A_MATE && a.rd && popK[a.k] + kidsOf(a.k) < S.cap) {
+    } else if (act === A_MATE && a.rd && (noCap(a) || popK[a.k] + kidsOf(a.k) < S.cap)) {
       // of those ready close by, one it is bonded to is the one it goes to (partner preference, as in
       // pair-bonding mammals); otherwise whoever is there
       let b = null,
@@ -967,7 +971,7 @@ function sim() {
           g2 = Math.max(a.gen, b.gen) + 1;
         // she conceives: the young grow inside her for as long as the real animal carries them (see
         // gest), and are born then, wherever she is (see giveBirth)
-        const room = Math.max(0, S.cap - popK[a.k] - kidsOf(a.k) - expecting(a.k)),
+        const room = noCap(a) ? 9 : Math.max(0, S.cap - popK[a.k] - kidsOf(a.k) - expecting(a.k)),
           gl = [];
         for (let q = 0; q < Math.min(n, room); q++) gl.push({ sex: rnd() < 0.5 ? 1 : 0, g: child(fem, mal, inh) });
         // in a wolf pack only one female breeds: the others' breeding is held back while she is
@@ -1375,13 +1379,16 @@ const receptive = (a) => !(SOC.cycle && a.sp === 0 && a.sex) || cyclePos(a) < SW
 const ovulating = (a) => !(SOC.cycle && a.sp === 0) || (cyclePos(a) >= SWELL - FERT && cyclePos(a) < SWELL);
 // how much of yesterday's mood stays each step: mood follows roughly the last day (96 steps) — an assumption
 const MOODKEEP = 1 - 1 / DAY;
+// People and hominins have no fixed cap on their numbers (a cap is not biology: food, disease and fertility limit a
+// population). Animals keep theirs for now, until hunters and prey are balanced (docs/BACKLOG.md: A1).
+const noCap = (a) => a.sp === 0 && !SOC.peopleCap;
 // a hunter in sight (or heard close by), from the senses
 const hunterSeen = (x) => {
   for (let s = 0; s < 8; s++) if (x[s * NCH + 5] > 0.1) return true;
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {

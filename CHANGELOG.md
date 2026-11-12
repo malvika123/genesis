@@ -8,6 +8,11 @@ Genesis follows the version in `package.json`. Experiments should state the vers
   temperament and care; moving as one choice; the mother's pull; the female cycle failure; mood; the starving fix; ape-like
   care; community size), with data in `data/findings/25-…36-…`; tools `compare-runs.js`, `drowning-trace.js`,
   `children-near-mothers.js`, `community-compare.js`, `first-times.js`.
+- **Early hominins care for children as apes do:** only a mother feeds her own young. Others feeding a child is the
+  human forager pattern (kept for modern people); among great apes it is essentially absent. `--human-care` restores it.
+- **Starving, as animals do:** hunger is felt smoothly (a sudden jolt of discomfort below 15% energy is gone), and
+  below a critical reserve the urge to search for food doubles — the refeeding signal (fasting rats, emperor penguins).
+  `--old-starving` restores the old rule; `--refeed-at` sets the critical reserve.
 - **A mother keeps her nursing child near** (a pull scaled by her inherited care), **females have a cycle** (receptive
   about 13 of 36 days, fertile near ovulation), and **a lasting mood** colours how things feel. `--no-mother-pull`,
   `--no-cycle`, `--no-mood` restore the old rules.

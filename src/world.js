@@ -15,8 +15,8 @@ const plural = (n) =>
 // ordinary way, from what their bodies feel, in a practice before the world begins: the world is built from its seed
 // and runs for a few years in which nobody can die (as children are kept alive by their mothers), then it is built
 // again from the same seed, identical, and each founder keeps the brain it trained. Learned knowledge is never
-// inherited, so every child is still born knowing nothing. cfg.practiceDays sets how long (the experiment runner, the
-// Lab and the page ask for 10; the engine on its own, as in quick tests, builds blank-minded founders); cfg.naive skips it.
+// inherited, so every child is still born knowing nothing. cfg.practiceDays sets how long; it is 0 (off) by default
+// everywhere — in a test it did not reduce hunger and drowning doubled (the owner, 12 Nov 2026); cfg.naive skips it.
 function reset(cfg = {}) {
   const days = cfg.naive ? 0 : cfg.practiceDays ?? 0,
     seed = SEED;
@@ -64,8 +64,12 @@ function buildWorld(cfg) {
   if (ERA === 'hominin' && cfg.leafValue !== undefined) KBIO[0].leaf = Number(cfg.leafValue); // test the ends of its range
   SOC.hungerFirst = cfg.oldHunger !== true; // off: hunger and thirst only add a pull, as other urges do (the old rule)
   SOC.hungerK = cfg.hungerPull === undefined ? 6 : Number(cfg.hungerPull); // how strongly need wins (an assumption; test the ends)
+  SOC.peopleCap = !!cfg.peopleCap; // on: the old fixed cap on people stops mating (not biology: food, disease and fertility limit them)
+  SOC.apeCare = cfg.humanCare !== true; // on: early hominins share care for children as human foragers do (the old rule)
+  SOC.refeed = cfg.oldStarving !== true; // on: the old rule (a sudden jolt of discomfort below 15% energy, no refeeding signal)
+  SOC.refeedAt = cfg.refeedAt === undefined ? 20 : Number(cfg.refeedAt); // the critical reserve, %: about 20 (80% of fat gone; evidence 20–25)
   SOC.momPull = cfg.motherPull !== false; // off: a mother goes to her child only when it cries (the old rule)
-  SOC.cycle = cfg.cycle !== false; // off: a ready female is receptive and fertile all the time (the old rule)
+  SOC.cycle = cfg.cycle === true; // off by default: with it, births fell to a third — far below real chimpanzees' (about 5.7 years apart), because mating is not yet as frequent as theirs; research log
   SOC.mood = cfg.mood !== false; // off: no lasting mood (the old rule)
   SOC.oneMove = cfg.eightWalks !== true; // on: the eight directions count as eight separate choices (the old rule)
   SOC.temper = cfg.temperament !== false; // off: everyone equally fearful (the old rule)
@@ -139,7 +143,7 @@ function buildWorld(cfg) {
   initTalk();
   initFire();
   for (let i = 0; i < W * H; i++) food[i] *= 1 - 0.35 * tree[i]; // little grass grows in the shade of trees
-  const n = clamp(cfg.people ?? 25, 2, 40), // a band: foragers lived in groups of about 20–40
+  const n = clamp(cfg.people ?? 25, 2, 200), // a band or community: foragers' bands 20–40; chimpanzee communities about 30–80, Ngogo near 200
     nh = clamp(cfg.herbivores ?? 20, 0, 40),
     np = clamp(cfg.predators ?? 6, 0, 12),
     nf = clamp(cfg.fish ?? 24, 0, 60),
@@ -150,6 +154,30 @@ function buildWorld(cfg) {
   spawn(1, nh, inst);
   spawn(2, np, inst);
   spawn(3, nf, inst);
+  // Extra founders for a fair comparison of community sizes (cfg.extraPeople): the world is built exactly as it would be
+  // with the base band, then the extra founders join it from the separate random stream (state.js), beside the others.
+  const extra = clamp(cfg.extraPeople ?? 0, 0, 175);
+  if (extra > 0) {
+    USE2 = true;
+    const before = ag.length;
+    spawn(0, extra, inst);
+    const added = ag.slice(before).filter((a) => a.sp === 0),
+      base = ag.slice(0, before).filter((a) => a.sp === 0),
+      c = base[0] || added[0];
+    for (const a of added) {
+      for (let k = 0; k < 30; k++) {
+        const x = (c.x + Math.round((rnd() - 0.5) * 8) + W) % W,
+          y = clamp(c.y + Math.round((rnd() - 0.5) * 8), 0, H - 1);
+        if (!water[idx(x, y)]) {
+          a.x = x;
+          a.y = y;
+          break;
+        }
+      }
+    }
+    if (cfg.band !== false) makeBand(added);
+    USE2 = false;
+  }
   const tally = (sp) =>
     KINDS.map((K, k) => [K, ag.filter((a) => a.k === k).length])
       .filter(([K, c]) => K.sp === sp && c)
@@ -172,9 +200,8 @@ function buildWorld(cfg) {
 // teenagers, adults in couples, and a few elders — rather than a handful of young adults alone (Kelly
 // 2013; bands of 20–40, rarely fewer than two or three families). Each child has its mother in the
 // band. Their minds are as blank as everyone's; only their bodies' ages differ.
-function makeBand() {
-  const ppl = ag.filter((a) => a.sp === 0),
-    n = ppl.length,
+function makeBand(ppl = ag.filter((a) => a.sp === 0)) {
+  const n = ppl.length,
     S = ppl[0].S,
     // ages are set for modern foragers and scaled to the kind's own life history (early hominins grow up
     // and age faster), and nobody starts older than its own lifespan

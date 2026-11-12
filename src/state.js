@@ -34,7 +34,9 @@ let SEED = (Math.random() * 4294967296) >>> 0;
 function setSeed(s) {
   SEED = s >>> 0;
 }
+let USE2 = false; // while true, every random number comes from the separate stream (world.js: extra founders)
 function rnd() {
+  if (USE2) return rnd2();
   SEED = (SEED + 0x6d2b79f5) | 0;
   let t = Math.imul(SEED ^ (SEED >>> 15), 1 | SEED);
   t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
