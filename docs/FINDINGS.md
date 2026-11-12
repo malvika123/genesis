@@ -44,6 +44,7 @@ Entries are kept even when the result was "no effect" or "it made things worse" 
 | Hunger and thirst come first | Hunger deaths 109 → 69 (−37%); births 27 → 30; but drownings doubled, 11 of 12 drowned were children | weak–moderate |
 | Moving as one choice, not eight (walking 70–80% → 25%) | Predator deaths 60 → 3; drownings 39 → 18; but hunger deaths 80 → 115 | moderate |
 | A mother keeps her nursing child near | 31 alive vs 25, better in 9 of 12; drownings and fire deaths about halved | weak–moderate |
+| **Not** supported again: a bigger band (40, 80) makes no more kinds of discovery even with learning by watching; firsts come ~2 weeks sooner at 80 (numbers alone); survival per founder lower (more hunger). Every band discovers more than before the brains work (25 founders: 4.1 → 5.5 kinds; fire by burning stick 11 → 22 of 24 worlds) | 24 + 12 identical worlds | moderate |
 | **Learning by watching what worked, up close** (copy an elder's choice by how it turned out for it, only in the same square): hunger 30% → 17% of deaths; illness 16% (passes); children reaching 15 now just above the band (62%) | 24 worlds | moderate |
 | **Brains' expectations fixed** (good surprises no longer count four times as much in the value estimate): starving hominins on fruit eat 83% (was 1–5%); populations hold steady (−3.1% → −0.3% a year), die-outs 5 → 2, children reaching 15 45% → 59%, life expectancy 15 → 21; **5 of 7 reality checks pass** | 24 worlds | moderate–strong |
 | Disease (outbreaks spread by closeness, deadliest for the young, old and starving): illness 5% of deaths, infant deaths 3.8 → 5.3% — real but small beside hunger (37%); bands shrink more | 24 worlds, two rates | moderate |
@@ -1559,6 +1560,31 @@ Causes of death after: old age 24%, fire 19%, hunger 17%, illness 16%, predators
 **Interpretation.** Learning by watching what worked, up close, does what it does in real apes: the young learn from their mothers what is worth eating. Too many children now reach 15 because babies and toddlers still die too rarely (infanticide and other real causes missing; backlog R10). **Fire deaths at 19% are too high** for apes and need tracing (wildfires catching whole bands; no moving away from fire, backlog A3).
 
 **Strength.** Moderate (24 worlds; prediction written first; the probe shows the mechanism). **Lesson:** "copy what worked" needs "where it worked": without the second, the first taught the wrong lesson.
+
+### 53. A bigger band, again — now with learning by watching: firsts come sooner, but not more kinds, and more go hungry — Nov 2026
+
+**Version.** Unreleased · commit `f4df84f` (everything through entry 52); tools `tools/analysis/community-compare.js`, `first-times.js`. Run by Claude.
+
+**Data.** [25 founders](../data/findings/53-band-size-again/base25.csv) · [40](../data/findings/53-band-size-again/plus15.csv) · [80](../data/findings/53-band-size-again/plus55.csv) · [the comparison](../data/findings/53-band-size-again/fair-comparison.txt) · [first times](../data/findings/53-band-size-again/first-times.txt) · [the prediction, written before](../data/findings/53-band-size-again/prediction-written-before.txt).
+
+**Question (the owner's hypothesis: a bigger band is the key).** Entry 36 found that, while knowledge could not pass by watching, a bigger founding band did not discover more. Now the young learn by watching what worked (entry 52) and brains' expectations are fixed (entry 50). Repeat the identical design: the same 24 worlds × 60 days with 25 founders and with 15 extra founders joining (40); 12 worlds with 55 extra (80).
+
+**Prediction, written first.** (1) More different hard discoveries per world with 40 founders than 25 (primary), the range clear of zero; (2) firsts sooner with more founders in most worlds; (3) survival per founder about the same.
+
+| 25 vs 40 founders, 24 identical worlds | 25 | 40 | Difference (95% range) |
+|---|---|---|---|
+| **Different hard discoveries per world (of 11)** | 5.46 | 5.79 | +0.33 (−0.55, +1.22) |
+| Alive per founder | 0.97 | 0.84 | −0.13 (−0.32, +0.05) |
+| Hunger deaths per world | 4.1 | 10.2 | +6.1 (+4.3, +7.9) |
+| Fire deaths per world | 5.7 | 8.7 | +3.0 (+0.3, +5.7) |
+
+At 80 founders (12 worlds, against 25): discoveries 5.92 against 6.08; alive per founder 0.82 against 1.15 (−0.33, range −0.64 to −0.02); hunger deaths 24.5 against 3.0 per world. **First times**, 25 against 80: a fire started with a burning stick earlier in 8 of 11 worlds, picking up a burning stick in 10 of 12, eating wildfire-cooked food in 9 of 12, making fire by rubbing in 9 of 12 — about two weeks sooner on average; 25 against 40: weaker (bringing down an animal earlier in 7 of 8, others about even).
+
+**Result.** (1) **Failed again**: no more kinds of discovery with a bigger band. (2) **Held at 80 founders**: firsts come about two weeks sooner in most worlds. (3) **Failed**: survival per founder is *lower* in bigger bands (beyond noise at 80) — more mouths, many more hunger and fire deaths.
+
+**Interpretation.** Firsts coming sooner with more hominins is what sheer numbers do — more individuals trying things — not evidence that knowledge spreads. Bigger bands go hungrier, as larger primate groups face more feeding competition. **In Genesis the hypothesis is still not supported.** But the test is not yet complete: theories of cultural accumulation (e.g. Henrich; Kline & Boyd) say size helps only when discoveries spread and are kept, and that has not been measured (backlog: measure whether discoveries are repeated and spread). **What did change since entry 36:** bands of every size discover more — with 25 founders, 4.13 → 5.46 kinds per world, and a fire started with a burning stick in 11 → 22 of 24 worlds — from the brains work of entries 50–52, not from size.
+
+**Strength.** Moderate (24 + 12 identical worlds; prediction written first). **Lesson:** "sooner" and "more" are different claims; a bigger band gets the first sooner by numbers alone.
 
 ---
 

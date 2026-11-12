@@ -1,0 +1,11 @@
+Written 13 Nov 2026, 03:35, BEFORE the runs (commit in ./commit). The owner's hypothesis: a bigger band is the key.
+Same design as research log entry 36: the same 24 worlds (seeds 1-24, 60 days) with 25 founders, and with 15 extra founders
+joining the identical worlds (40); then 12 worlds with 55 extra (80). What changed since entry 36: the young now learn by watching
+what worked, up close (entry 52), and brains' expectations are fixed (entry 50).
+Primary outcome: different hard discoveries per world (the 11 of entry 36's tool).
+Predictions:
+1. With learning by watching, bigger bands make MORE hard discoveries per world: 40 founders above 25 (entry 36: 4.13 vs 4.58,
+   within noise), with the difference's range clear of zero.
+2. Firsts come earlier with more founders, in most of the worlds where both have them.
+3. Survival per founder is about the same at 25, 40 and 80.
+If (1) fails again, the hypothesis is weakened further: either a discovery still does not spread, or size does not matter here.

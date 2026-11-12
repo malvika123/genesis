@@ -1,0 +1,16 @@
+== first time it happened, 25 vs 40 founders (24 worlds)
+setfire  both have it in 20 worlds: earlier with more founders 11, later 9, same day 0, mean change -2.3 days
+brand    both have it in 21 worlds: earlier with more founders 11, later 9, same day 1, mean change -7.8 days
+cooked   both have it in 20 worlds: earlier with more founders 10, later 10, same day 0, mean change -7.8 days
+meat     both have it in 9  worlds: earlier with more founders 4, later 3, same day 2, mean change -0.9 days
+hunt     both have it in 8  worlds: earlier with more founders 7, later 1, same day 0, mean change -11.4 days
+rubfire  both have it in 18 worlds: earlier with more founders 9, later 5, same day 4, mean change -4.6 days
+butcher  both have it in 2  worlds: earlier with more founders 1, later 1, same day 0, mean change -10.5 days
+== first time it happened, 25 vs 80 founders (12 worlds)
+setfire  both have it in 11 worlds: earlier with more founders 8, later 3, same day 0, mean change -12.6 days
+brand    both have it in 12 worlds: earlier with more founders 10, later 2, same day 0, mean change -16.8 days
+cooked   both have it in 12 worlds: earlier with more founders 9, later 3, same day 0, mean change -16.5 days
+meat     both have it in 5  worlds: earlier with more founders 2, later 3, same day 0, mean change +0.6 days
+hunt     both have it in 4  worlds: earlier with more founders 2, later 1, same day 1, mean change -11.5 days
+rubfire  both have it in 12 worlds: earlier with more founders 9, later 3, same day 0, mean change -14.3 days
+butcher  both have it in 1  worlds: earlier with more founders 1, later 0, same day 0, mean change -18.0 days
