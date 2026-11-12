@@ -1,0 +1,2 @@
+no food here / no hunter close                starving steps   1926 | chose eat 7.1%
+food here / no hunter close                   starving steps    620 | chose eat 10.6%

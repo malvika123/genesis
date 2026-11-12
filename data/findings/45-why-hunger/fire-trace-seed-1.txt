@@ -1,0 +1,1 @@
+{"seed":1,"mode":"leaves","alive":12,"burned":0,"pctStepsUnderTrees":57.7,"pctStepsEatingLeaves":1.3,"pctStepsEating":3.8,"stepsInFire":121,"victims":[]}

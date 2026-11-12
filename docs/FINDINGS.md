@@ -1316,6 +1316,27 @@ Causes of death at 0.2: hunger 41%, old age 20%, predators 14%, fire 11%, drowni
 
 **Strength.** Moderate (24 worlds; the primary outcome and prediction named first). **Lesson:** fixing one number to reality can expose another that was hiding behind it — here, too many deaths, hidden by too many births.
 
+### 45. Why so many die of hunger: food is a step away, and they do not take it — Nov 2026
+
+**Version.** Unreleased · the live settings after entry 44; tools `tools/analysis/hunger-trace.js`, `fire-trace.js`, `hunger-pull.js`. Run by Claude.
+
+**Data.** [Hunger trace, seed 1](../data/findings/45-why-hunger/hunger-trace-seed-1.txt), [seed 3](../data/findings/45-why-hunger/hunger-trace-seed-3.txt) · [hunger pull, seed 1](../data/findings/45-why-hunger/hunger-pull-seed-1.txt), [seed 3](../data/findings/45-why-hunger/hunger-pull-seed-3.txt) · [fire trace, seed 1](../data/findings/45-why-hunger/fire-trace-seed-1.txt), [seed 3](../data/findings/45-why-hunger/fire-trace-seed-3.txt).
+
+**Question.** Entry 44: hunger causes 41% of deaths and fire 11%, against illness 0% — so disease added now would stack on deaths that are already too many. The owner chose to trace hunger and fire first.
+
+**Fire.** No hominin died by fire in either world in 60 days: fire deaths come in rare mass events (one wildfire catching a band; entry 18).
+
+**Hunger** (two worlds, 60 days; 29 hunger deaths, about 8,000 starving moments):
+- Most who starve are **adults** (69–88% of starving moments; 23 of 29 deaths).
+- Food is **close**: within 2 squares in 86–88% of starving moments, under their feet in 18–22%.
+- Even so, starving hominins chose to eat only **5–9%** of the time; they walked (24–49%) or did other things.
+- Standing on fruit or roots, with no hunter close (the hunger pull fully on), they ate **10.6% and 25%** of the time. A hunter close enough to switch the pull off was never the case (0 moments).
+- In about 75–95% of starving moments they were **not** standing on food but one or two squares from it.
+
+**Interpretation.** Hunger deaths are not food shortage and not the hunter rule: starving hominins rarely take the last step to food they could reach, and often do not eat when they stand on it. The inborn pulls (toward visible food; to eat when starving) exist but lose to what the brains have learned. This is the brains priority (learning what is food and moving to it: backlog A2, A4) — not a rule to strengthen until it wins, which would be tuning. Disease, added now, will stack on these excess deaths until the brains step removes them.
+
+**Strength.** Moderate (two worlds; consistent with entries 10 and 28). **Lesson:** the same symptom (hunger with food in reach) keeps returning after each fix of a rule; its cause is learning, not the rules.
+
 ---
 
 ## Open questions (next tests)
