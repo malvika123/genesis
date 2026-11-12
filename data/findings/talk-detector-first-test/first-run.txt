@@ -1,0 +1,30 @@
+{
+ "seed": 1,
+ "days": 20,
+ "flags": [],
+ "utterances": 533,
+ "distinctSounds": 369,
+ "speaker": {
+  "soundsSaidAtLeast25Times": 0,
+  "testsRun": 0,
+  "significantSounds": 0,
+  "hits": [],
+  "soundsTheTranslatorWouldLabel": 0,
+  "ofThoseSurvivingTheTest": 0,
+  "falseAlarmRateWhenSoundsMeanNothing": 0
+ },
+ "hearer": {
+  "hearersTested": 32,
+  "note": "too few living hominins or sounds to test"
+ },
+ "exchange": {
+  "callAndAnswerPairs": 309,
+  "expectedByChance": 242.2,
+  "timesMoreThanChance": 1.28,
+  "p": 0.004975124378109453
+ },
+ "shared": [],
+ "verdict": "Sounds are said, but none is shared or tied to any situation. No call-and-answer exchange beyond chance."
+}
+
+VERDICT: Sounds are said, but none is shared or tied to any situation. No call-and-answer exchange beyond chance.

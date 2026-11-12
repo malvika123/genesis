@@ -187,7 +187,10 @@ function pick(arr, k) {
   return r;
 }
 out.hearer = { hearersTested: living.length };
-const candidates = [...new Set([...hitWords, ...rows.filter((r) => r.s.n >= 10).sort((a, b) => b.s.n - a.s.n).slice(0, 8).map((r) => r.word)])].slice(0, 10);
+// sounds to play back: those tied to a situation, then the most-used (said 10+ times, or 3+ when no sound is that common,
+// so that the planted check can always run)
+const common = rows.filter((r) => r.s.n >= 10).length ? 10 : 3;
+const candidates = [...new Set([...hitWords, ...rows.filter((r) => r.s.n >= common).sort((a, b) => b.s.n - a.s.n).slice(0, 8).map((r) => r.word)])].slice(0, 10);
 let lwOf = null,
   planted = null;
 if (PLANT && candidates.length) {
@@ -275,8 +278,13 @@ if (events.length < 25) verdict = 'No words were said (fewer than 25 utterances)
 else if (!hitWords.length) verdict = spreading ? 'Sounds are spreading (' + spreading + ' said by three or more hominins) but none has come to mean anything: no sound is tied to a situation beyond chance.' : 'Sounds are said, but none is shared or tied to any situation.';
 else if (!out.shared.length) verdict = hitWords.length + ' sound(s) are tied to a situation beyond chance on the speaker side, but hearers do not respond to them beyond random sounds.';
 else verdict = out.shared.length + ' sound(s) are tied to a situation AND hearers act on them: the beginnings of shared meaning.';
-if (out.exchange.p <= 0.01 && out.exchange.timesMoreThanChance >= 1.5) verdict += ' Calls and answers pass back and forth more than chance (' + out.exchange.timesMoreThanChance + '×).';
-else verdict += ' No call-and-answer exchange beyond chance.';
+// The null shifts each hominin's calls in time, which also breaks who stood near whom; so an excess can come from two
+// hominins reacting to the same thing at the same place, not only from answering. Say so.
+const ex = out.exchange,
+  caveat = ' (this test cannot yet tell answering from two hominins calling at the same thing)';
+if (ex.p > 0.01) verdict += ' No more back-to-back calls than chance.';
+else if (ex.timesMoreThanChance < 1.5) verdict += ' Slightly more back-to-back calls than chance (' + ex.timesMoreThanChance + ' times, p = ' + ex.p.toFixed(3) + '): too weak to call an exchange' + caveat + '.';
+else verdict += ' Calls and answers pass back and forth more than chance (' + ex.timesMoreThanChance + ' times, p = ' + ex.p.toFixed(3) + ')' + caveat + '.';
 out.verdict = verdict;
 console.log(JSON.stringify(out, null, 1));
 console.log('\nVERDICT: ' + verdict);

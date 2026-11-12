@@ -1,0 +1,121 @@
+{
+ "seed": 1,
+ "days": 20,
+ "flags": [],
+ "utterances": 533,
+ "distinctSounds": 369,
+ "speaker": {
+  "soundsSaidAtLeast25Times": 0,
+  "testsRun": 0,
+  "significantSounds": 0,
+  "hits": [],
+  "soundsTheTranslatorWouldLabel": 0,
+  "ofThoseSurvivingTheTest": 0,
+  "falseAlarmRateWhenSoundsMeanNothing": 0
+ },
+ "hearer": {
+  "hearersTested": 32,
+  "plantedSound": "ɯ",
+  "sounds": [
+   {
+    "sound": "ɯ",
+    "said": 8,
+    "size": 0.4245,
+    "sizeVsControls": 1,
+    "consistency": 0.975,
+    "consistencyVsControls": 0.7363,
+    "toward": 0.0018,
+    "towardVsControls": 0.005,
+    "respondedTo": false
+   },
+   {
+    "sound": "ɶ",
+    "said": 7,
+    "size": 0.6802,
+    "sizeVsControls": 0.9403,
+    "consistency": 0.984,
+    "consistencyVsControls": 0.005,
+    "toward": 0.0012,
+    "towardVsControls": 0.005,
+    "respondedTo": false
+   },
+   {
+    "sound": "to",
+    "said": 6,
+    "size": 0.8291,
+    "sizeVsControls": 0.6169,
+    "consistency": 0.984,
+    "consistencyVsControls": 0.005,
+    "toward": 0.0003,
+    "towardVsControls": 0.4229,
+    "respondedTo": false
+   },
+   {
+    "sound": "tɶ",
+    "said": 6,
+    "size": 0.8676,
+    "sizeVsControls": 0.3632,
+    "consistency": 0.982,
+    "consistencyVsControls": 0.0647,
+    "toward": 0.0001,
+    "towardVsControls": 0.607,
+    "respondedTo": false
+   },
+   {
+    "sound": "tu",
+    "said": 5,
+    "size": 0.7943,
+    "sizeVsControls": 0.7463,
+    "consistency": 0.984,
+    "consistencyVsControls": 0.005,
+    "toward": 0,
+    "towardVsControls": 0.9254,
+    "respondedTo": false
+   },
+   {
+    "sound": "gi",
+    "said": 5,
+    "size": 0.8658,
+    "sizeVsControls": 0.393,
+    "consistency": 0.982,
+    "consistencyVsControls": 0.0149,
+    "toward": 0,
+    "towardVsControls": 0.7264,
+    "respondedTo": false
+   },
+   {
+    "sound": "kɤ",
+    "said": 5,
+    "size": 0.7941,
+    "sizeVsControls": 0.7363,
+    "consistency": 0.984,
+    "consistencyVsControls": 0.005,
+    "toward": 0.0005,
+    "towardVsControls": 0.2438,
+    "respondedTo": false
+   },
+   {
+    "sound": "gö",
+    "said": 5,
+    "size": 0.8747,
+    "sizeVsControls": 0.2786,
+    "consistency": 0.981,
+    "consistencyVsControls": 0.0796,
+    "toward": 0,
+    "towardVsControls": 0.7861,
+    "respondedTo": false
+   }
+  ],
+  "respondedTo": []
+ },
+ "exchange": {
+  "callAndAnswerPairs": 309,
+  "expectedByChance": 240.9,
+  "timesMoreThanChance": 1.28,
+  "p": 0.004975124378109453
+ },
+ "shared": [],
+ "verdict": "Sounds are said, but none is shared or tied to any situation. Slightly more back-to-back calls than chance (1.28 times, p = 0.005): too weak to call an exchange (this test cannot yet tell answering from two hominins calling at the same thing)."
+}
+
+VERDICT: Sounds are said, but none is shared or tied to any situation. Slightly more back-to-back calls than chance (1.28 times, p = 0.005): too weak to call an exchange (this test cannot yet tell answering from two hominins calling at the same thing).
