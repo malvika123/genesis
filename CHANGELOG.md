@@ -4,6 +4,9 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Disease:** outbreaks of a contagious illness spread by closeness, deadliest for infants, the old and the starving, about once in
+  7 years (research log entry 46). `--no-disease`, `--disease-rate`. The reality-check band for illness widened to 15–60% (modern
+  ape epidemics were partly human viruses).
 - **Not every cycle conceives** (about 1 in 5, as wild chimpanzees need about 5 cycles): births 5.3 years apart, as in real apes
   (research log entry 44). `--certain-conception`, `--conceive`.
 - **1.7 times faster, identical worlds** (research log entry 43): the brain's learning loops written out, action words made once,

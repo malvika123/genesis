@@ -1,0 +1,8 @@
+Written 12 Nov 2026 BEFORE the runs. 24 worlds x 100 days, the reality-check tool, same seeds as entries 42 and 44.
+Runs: disease once in 7 years (default), once in 20 years. Before: entry 44 (no disease).
+Primary outcome: babies dying in their first year (entry 44: 3.8%; real 11-21%).
+1. At 1/7: infant deaths rise, but stay below the real band (outbreaks kill some infants; a few % more): about 5-8%. FAIL likely.
+2. Illness deaths appear: about 5-15% of known causes — below the old 40-70% band. That band was set from modern epidemics,
+   many of human origin; for 2.5 million years ago it should be wider (to be changed in the table, stated openly).
+3. Populations shrink further (entry 44: -2.2% a year; 6 of 24 died out): more die-outs.
+4. At 1/20: in between.

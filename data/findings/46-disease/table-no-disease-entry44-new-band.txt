@@ -1,0 +1,16 @@
+Reality checks: 24 worlds, 451 births followed (life clock: a year = 3 days)
+
+| Check | Genesis | Real band | Pass? | Real numbers |
+|---|---|---|---|---|
+| Babies dying in their first year | 3.8% | 10.0% to 25.0% | FAIL (too low) | wild chimpanzees 21% (four sites), Kanyawara 11% (Hill et al. 2001) |
+| Born who reach age 15 | 52.7% | 30.0% to 60.0% | pass | chimpanzees about 35%, foragers about 60%, Hadza 55% (Kaplan et al. 2000) |
+| Life expectancy at birth (years) | 16.2 | 13.0 to 33.0 | pass | chimpanzees about 13 (four sites, Hill et al. 2001) to 32.8 (Ngogo, Wood et al. 2017) |
+| Years between births, earlier baby alive | 5.3 | 5.0 to 6.5 | pass | Gombe 5.2 (Deschner & Boesch 2007), Mahale 5.6–6.0, composite 5.7 (Emery Thompson et al. 2007) |
+| Age at first birth (years) | 15.4 | 12.5 to 15.5 | pass | Gombe 13.3, Taï 13.7, Mahale 14.6, Gombe with dispersers 14.9 |
+| Population change a year | -2.2% | -1.0% to 1.5% | FAIL (too low) | roughly stable: Gombe shrank over 50 years, Kanyawara grew modestly over 25 (band an assumption) |
+| Deaths from illness (share of known causes) | 0.0% | 15.0% to 60.0% | FAIL (too low) | Gombe 58%, partly human viruses (Williams et al. 2008); Kanyawara respiratory 27%; band for 2.5 Ma an assumption |
+
+Worlds that died out: 6 of 24 (population change is the median of the others).
+
+Sample sizes: followed to 1 year 444, to 15 years 311, birth intervals 166, first births 66, worlds 18
+Causes of death (all ages): hunger 41%, old age 20%, killed by a predator 14%, burned 11%, drowned 9%, its wounds 4%, giving birth 0%, thirst 0%

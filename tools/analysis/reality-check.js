@@ -21,7 +21,8 @@ const REAL = {
   ibi: { label: 'Years between births, earlier baby alive', lo: 5.0, hi: 6.5, unit: 'y', src: 'Gombe 5.2 (Deschner & Boesch 2007), Mahale 5.6–6.0, composite 5.7 (Emery Thompson et al. 2007)' },
   afb: { label: 'Age at first birth (years)', lo: 12.5, hi: 15.5, unit: 'y', src: 'Gombe 13.3, Taï 13.7, Mahale 14.6, Gombe with dispersers 14.9' },
   growth: { label: 'Population change a year', lo: -0.01, hi: 0.015, unit: '%', src: 'roughly stable: Gombe shrank over 50 years, Kanyawara grew modestly over 25 (band an assumption)' },
-  illness: { label: 'Deaths from illness (share of known causes)', lo: 0.4, hi: 0.7, unit: '%', src: 'Gombe 58% (Williams et al. 2008)' },
+  // widened on 12 Nov 2026 (entry 46): many modern ape epidemics were human viruses, so Gombe's 58% overstates illness 2.5 million years ago
+  illness: { label: 'Deaths from illness (share of known causes)', lo: 0.15, hi: 0.6, unit: '%', src: 'Gombe 58%, partly human viruses (Williams et al. 2008); Kanyawara respiratory 27%; band for 2.5 Ma an assumption' },
 };
 
 if (process.argv[2] === '--summary') {

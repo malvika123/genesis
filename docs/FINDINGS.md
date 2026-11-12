@@ -44,6 +44,7 @@ Entries are kept even when the result was "no effect" or "it made things worse" 
 | Hunger and thirst come first | Hunger deaths 109 → 69 (−37%); births 27 → 30; but drownings doubled, 11 of 12 drowned were children | weak–moderate |
 | Moving as one choice, not eight (walking 70–80% → 25%) | Predator deaths 60 → 3; drownings 39 → 18; but hunger deaths 80 → 115 | moderate |
 | A mother keeps her nursing child near | 31 alive vs 25, better in 9 of 12; drownings and fire deaths about halved | weak–moderate |
+| Disease (outbreaks spread by closeness, deadliest for the young, old and starving): illness 5% of deaths, infant deaths 3.8 → 5.3% — real but small beside hunger (37%); bands shrink more | 24 worlds, two rates | moderate |
 | Not every cycle conceives (1 in 5, as at Gombe and Kanyawara): births 5.3 years apart (real 5.2–6.0), 4 of 7 checks pass — but bands shrink 2.2% a year and 6 of 24 die out: deaths are too many (hunger 41%, fire 11%) | 24 worlds | moderate |
 | (Engine) 1.7 times faster with identical worlds: learning loops written out, display words made once, unused brain parts not faded | 4 worlds, identical | strong |
 | Reality checks (24 worlds): 3 of 7 pass — survival to 15, life expectancy, age at first birth realistic; babies hardly ever die (1% vs 11–21%), births too close (4.7 vs 5.2–6.0 years), no illness | 24 worlds × 100 days | moderate |
@@ -1336,6 +1337,39 @@ Causes of death at 0.2: hunger 41%, old age 20%, predators 14%, fire 11%, drowni
 **Interpretation.** Hunger deaths are not food shortage and not the hunter rule: starving hominins rarely take the last step to food they could reach, and often do not eat when they stand on it. The inborn pulls (toward visible food; to eat when starving) exist but lose to what the brains have learned. This is the brains priority (learning what is food and moving to it: backlog A2, A4) — not a rule to strengthen until it wins, which would be tuning. Disease, added now, will stack on these excess deaths until the brains step removes them.
 
 **Strength.** Moderate (two worlds; consistent with entries 10 and 28). **Lesson:** the same symptom (hunger with food in reach) keeps returning after each fix of a rule; its cause is learning, not the rules.
+
+### 46. Disease: outbreaks spread by closeness — real, but small beside hunger — Nov 2026
+
+**Version.** Unreleased · the change: commit `18ec0a9` (`--no-disease` restores none — checked: identical worlds; `--disease-rate` sets how often); tools `tools/analysis/outbreaks.js`, `reality-check.js`. Run by Claude.
+
+**Data.** Tables: [once in 7 years](../data/findings/46-disease/table-1in7.txt), [once in 20](../data/findings/46-disease/table-1in20.txt), [entry 44 without disease, same bands](../data/findings/46-disease/table-no-disease-entry44-new-band.txt) · worlds: [1 in 7](../data/findings/46-disease/worlds-1in7/), [1 in 20](../data/findings/46-disease/worlds-1in20/) · [the prediction, written before](../data/findings/46-disease/prediction-written-before.txt).
+
+**Question.** Entry 42: no hominin ever died of illness, and babies almost never died, where illness is the leading cause of death in wild chimpanzees. The owner chose to add disease after tracing hunger (entry 45).
+
+**Real-world basis.** Illness: 58% of known-cause deaths at Gombe, mostly in epidemics, mostly respiratory (Williams et al. 2008); Kanyawara respiratory illness about 27% over 30 years. In an outbreak 87–100% of a community fall sick and about 2–18% of it dies; some outbreaks kill only the young (Taï 2004: 8 deaths, all infants and juveniles), others adults (review, Primates 2020; Kanyawara 2013). Outbreaks about once in 5–8 years at Gombe and Kanyawara — but many were human viruses brought by researchers and tourists, so outbreaks 2.5 million years ago were probably rarer and milder. Illness spreads by sharing space (2021).
+
+**Added.** An outbreak starts in one hominin about once in 7 life-years (tested at 1/7 and 1/20); it passes to anyone within 2 squares of a sick hominin; the illness lasts a day; at its end the hominin dies with a chance by age (infants 0.3, juveniles 0.1, adults 0.02, from 35 years 0.1), doubled when starving; survivors cannot catch it again. Every number an **assumption** within the evidence. A first check (two worlds, five outbreaks): 40–87% fell sick (low against the real 87–100%), 0–10% died (real 2–18%); the three who died in one outbreak were toddlers, as at Taï.
+
+**Test.** The reality checks, 24 worlds × 100 days, the same seeds as entries 42 and 44. Primary outcome named before: babies dying in their first year. **The illness band was widened** from 40–70% (Gombe) to 15–60% before reading the results' meaning — the old band came from modern epidemics, many of human origin — and is stated as an assumption.
+
+| | No disease (entry 44) | Once in 7 years | Once in 20 years | Real |
+|---|---|---|---|---|
+| Babies dying in their first year | 3.8% | 5.3% | 3.3% | 11–21% ✗ |
+| Deaths from illness | 0% | **4.9%** | 2.8% | 15–60% ✗ |
+| Years between births | 5.3 | 5.2 | 5.2 | 5.2–6.0 ✓ |
+| Born who reach 15 | 52.7% | 49.2% | 52.0% | 35–60% ✓ |
+| Life expectancy at birth | 16.2 | 15.9 | 17.0 | 13–33 ✓ |
+| Age at first birth | 15.4 | 15.7 ✗ | 15.5 ✗ (at the edge) | 13.3–14.9 |
+| Population change a year | −2.2% | −3.1% | −2.0% | about stable ✗ |
+| Worlds that died out (of 24) | 6 | 6 | 4 | |
+
+Causes of death at 1 in 7: hunger 37%, old age 20%, fire 14%, predators 10%, drowning 10%, illness 5%.
+
+**Result.** All four predictions held: infant deaths rose only a little (3.8 → 5.3%), still far below the real range; illness became a cause of death (5%), below even the widened band; populations shrank further (−3.1% a year); 1 in 20 fell in between. **Checks passing: 3 of 7** (age at first birth slipped just over its band).
+
+**Interpretation.** Disease now exists and behaves within the range of real outbreaks, but it is small beside hunger (37–39%), which the brains cause (entry 45). Until the brains step removes the excess hunger deaths, illness cannot take its real share, and adding it makes bands shrink. The 1/7 rate stays the default (the observed rate, tested at both ends with similar results). Babies still die far too rarely: other real causes — infanticide, a mother's death, falls — remain missing or rare (backlog R10).
+
+**Strength.** Moderate (24 worlds; predictions and the band change written first). **Lesson:** a real cause of death cannot take its real share while an unreal one takes too much.
 
 ---
 
