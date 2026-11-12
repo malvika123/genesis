@@ -340,3 +340,59 @@ function rescue() {
     USE2 = false;
   }
 }
+
+// Disease: outbreaks of a contagious illness among hominins (research log entry 46). In wild chimpanzees illness is the leading
+// cause of death — 58% of deaths with a known cause at Gombe, mostly in epidemics, mostly respiratory (Williams et al. 2008);
+// at Kanyawara respiratory illness about 27% over 30 years. In an outbreak most of a community falls sick (87–100%) and about
+// 2–18% of it dies: some outbreaks kill only infants and juveniles (Taï 2004: 8 deaths, all young), others adults (Taï 2006)
+// (review, Primates 2020; Köndgen et al. 2008; Kanyawara 2013). Outbreaks came about once in 5–8 years at Gombe and Kanyawara —
+// but many were human viruses brought by researchers and tourists, so outbreaks 2.5 million years ago were probably rarer:
+// the rate is tested at once in 7 and once in 20 years. Illness spreads by being close (sharing space, not grooming, went with
+// more parasites in wild chimpanzees: 2021). Rainy seasons and hunger make apes more vulnerable.
+// Mechanism: an outbreak starts in one hominin; each sick one passes it, each step, to each well one within 2 squares with
+// chance DIS.beta (set so that most of a band falls sick, as observed); the illness lasts DIS.days days (day clock); at its end
+// the hominin dies with a chance by age (infants 0.3, juveniles 0.1, adults 0.02, old 0.1; twice that when starving) or
+// recovers and cannot catch that outbreak again. All of these are assumptions within the evidence. Drawn from the separate random
+// stream, so with `--no-disease` worlds are exactly as before.
+const DIS = { beta: 0.02, days: 1, cfr: [0.3, 0.1, 0.02, 0.1] };
+let OUTBREAK = 0, // number of the current outbreak (0: none)
+  OUTBREAKS = 0;
+function disease() {
+  const H = ag.filter((a) => a.sp === 0 && !a.dead && !a.gone);
+  if (!H.length) return;
+  USE2 = true;
+  try {
+    const sick = H.filter((a) => a.sick > 0);
+    if (!sick.length) {
+      OUTBREAK = 0;
+      if (tick % DAY === 0 && rnd() < (SOC.diseaseRate * DAY) / TY) {
+        OUTBREAK = ++OUTBREAKS;
+        const p = H[(rnd() * H.length) | 0];
+        p.sick = DIS.days * DAY;
+        p.ill = OUTBREAK;
+        log('An illness has appeared among the hominins.');
+      }
+      return;
+    }
+    // spread to those close by
+    for (const s of sick)
+      for (const o of H)
+        if (o !== s && !(o.sick > 0) && o.ill !== OUTBREAK && Math.abs(dxw(o.x - s.x)) <= 2 && Math.abs(o.y - s.y) <= 2 && rnd() < DIS.beta) {
+          o.sick = DIS.days * DAY;
+          o.ill = OUTBREAK;
+        }
+    // the course of the illness, and its end
+    for (const s of sick) {
+      s.sick--;
+      if (s.sick > 0) continue;
+      const age = s.age / TY,
+        c = age < 1 ? DIS.cfr[0] : age < 10 ? DIS.cfr[1] : age < 35 ? DIS.cfr[2] : DIS.cfr[3];
+      if (rnd() < c * (s.e < 30 ? 2 : 1)) {
+        s.dead = true;
+        s.cause = 'illness';
+      }
+    }
+  } finally {
+    USE2 = false;
+  }
+}
