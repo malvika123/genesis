@@ -72,6 +72,8 @@ function buildWorld(cfg) {
   SOC.cycle = cfg.cycle !== false; // on by default since 12 Nov 2026: with mating fixed it costs about 17% of births, as waiting for fertile days should (research log entry 38); --no-cycle turns it off
   SOC.mood = cfg.mood !== false; // off: no lasting mood (the old rule)
   SOC.oneMove = cfg.eightWalks !== true; // on: the eight directions count as eight separate choices (the old rule)
+  SOC.nearPrey = cfg.huntersAnywhere !== true; // hunters start and arrive where their prey lives (off: anywhere that suits them, the old rule)
+  SOC.preyRadius = cfg.preyRadius ?? 8; // squares within which a hunter's prey must live where it starts (an assumption)
   SOC.rescue = cfg.rescue !== false; // newcomers from the wider population when a hunter kind is rare (off: the old closed world)
   SOC.rescueRate = cfg.rescueRate ?? 1; // newcomers a life-year while rare (an assumption)
   SOC.newMating = cfg.oldMating !== true; // off: the old mating rule (B1, B7)

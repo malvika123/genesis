@@ -219,6 +219,11 @@ function spawnKind(sp, k, n, inst) {
     // a hunting group starts at least a home range away from the band's camp (lion and wolf territories
     // span roughly 20–1,000 km²): they meet the band later, by roaming, not by being placed beside it
     if (sp === 2 && SOC.home && BANDAT && t < 4000 && wrapDist(x, y, BANDAT[0], BANDAT[1]) < 10) return false;
+    // and where its prey lives: carnivores live where their prey is — their numbers follow prey biomass (Carbone &
+    // Gittleman 2002); no leopard population lives hundreds of kilometres from any antelope. A hunter starts (and a
+    // newcomer arrives) only with plant-eaters within 8 squares (an assumption: about the spread of a hunting group; tested at 8 and 4, `--prey-radius`).
+    // Without this, big cats started far from every herd and starved (research log entry 40). --hunters-anywhere: the old rule.
+    if (sp === 2 && SOC.nearPrey && t < 4500 && !ag.some((o) => o.sp === 1 && !o.dead && wrapDist(x, y, o.x, o.y) <= SOC.preyRadius)) return false;
     const h = K.hab;
     if (!h) return true;
     const T = meanTemp(i),
