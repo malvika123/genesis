@@ -1,0 +1,15 @@
+12 paired worlds (seeds 1,2,3,4,5,6,7,8,9,10,11,12)
+per seed alive human-care 42 35 48 6 29 51 6 50 12 11 9 22 | ape-care 41 18 23 34 30 47 1 39 12 35 13 35
+died out: human-care 0, ape-care 0
+people_alive                 human-care: 26.8 ± 18.0    ape-care: 27.3 ± 13.9    diff 0.58 [-9.22, 10.38]  ape-care higher in 5, lower in 6
+generations                  human-care: 1.9 ± 0.3      ape-care: 1.8 ± 0.4      diff -0.08 [-0.41, 0.24]  ape-care higher in 1, lower in 2
+plant_eaters                 human-care: 64.3 ± 23.4    ape-care: 66.2 ± 18.2    diff 1.92 [-18.79, 22.63]  ape-care higher in 6, lower in 6
+hunters                      human-care: 14.3 ± 3.9     ape-care: 14.6 ± 5.1     diff 0.25 [-4.00, 4.50]  ape-care higher in 6, lower in 6
+died_hunger                  human-care: sum 152        ape-care: sum 116        diff -3.00 [-6.45, 0.45]  ape-care higher in 2, lower in 9
+died_thirst                  human-care: sum 3          ape-care: sum 2          diff -0.08 [-0.72, 0.55]  ape-care higher in 2, lower in 1
+died_killed_by_a_predator    human-care: sum 15         ape-care: sum 10         diff -0.42 [-2.07, 1.24]  ape-care higher in 4, lower in 3
+died_drowned                 human-care: sum 14         ape-care: sum 24         diff 0.83 [-0.24, 1.91]  ape-care higher in 6, lower in 4
+died_burned                  human-care: sum 53         ape-care: sum 60         diff 0.58 [-2.55, 3.71]  ape-care higher in 4, lower in 5
+died_its_wounds              human-care: sum 16         ape-care: sum 23         diff 0.58 [-0.16, 1.32]  ape-care higher in 5, lower in 2
+died_old_age                 human-care: sum 73         ape-care: sum 74         diff 0.08 [-0.95, 1.11]  ape-care higher in 4, lower in 5
+died_giving_birth            human-care: sum 3          ape-care: sum 5          diff 0.17 [-0.36, 0.70]  ape-care higher in 3, lower in 2

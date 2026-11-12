@@ -1,0 +1,8 @@
+# Genesis experiment
+# genesis 0.7.0 commit 1e82b31, node v26.8.1
+# settings {"days":60,"brain":64,"people":25,"herbivores":20,"predators":6,"fish":24,"sapiens":false,"earth":false,"homeland":true,"trees":true,"humanFertility":false,"fertMax":50,"oldFlight":false,"africaAnimals":false,"bodyScaling":true,"grassEye":false,"lossResume":true,"resumeDays":74,"temperament":false,"parentalCare":false,"oldHunger":false,"hungerPull":6,"naive":true,"practiceDays":10,"lust":2,"leaves":true,"leafValue":0.64,"shield":false,"shelter":true,"care":true,"vicar":true,"pickyCopy":true,"soundPhysics":true,"animalCalls":true,"modernVoice":false,"retina":false}
+# seeds 1-2
+# day_X = the day (1 = first) something first happened in that world; empty = never
+seed,days_run,people_alive,generations,plant_eaters,hunters,fish,best_fire_skill,learns_from_others,copies_successful,follows_crowd,loners_pct,full_sibling_pct,vocal_control,point_urge,share_joy,cares_for_others,words_said,words_shared,brain_general,brain_fear,brain_memory,brain_words,brain_regions,died_hunger,died_thirst,died_killed_by_a_predator,died_drowned,died_burned,died_its_wounds,died_old_age,died_struck_by_lightning,died_giving_birth,day_take,day_nut,day_flake,day_root,day_dig,day_meat,day_butcher,day_hunt,day_cooked,day_brand,day_setfire,day_fed,day_kept,day_madefire,day_rubfire,day_share,day_vicar,day_swim,day_point,day_joint,day_speak,day_shared,day_shelter
+1,60,28,2,92,6,140,0.04,0.73,0.35,0.53,25,3,0.13,0.12,0.18,0.55,881,107,0.683,0.127,0.126,0.064,4,4,0,2,3,4,3,7,0,0,1,1,5,1,1,24,,23,6,6,6,6,,,,1,4,4,1,1,1,22,
+2,60,38,2,100,20,138,0.01,0.74,0.68,0.45,26,6,0.17,0.12,0.17,0.46,1685,131,0.686,0.126,0.125,0.063,4.026,14,0,0,2,4,0,6,0,1,1,1,5,1,1,3,39,4,27,26,,30,,,,1,7,11,1,1,1,13,

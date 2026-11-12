@@ -1,0 +1,15 @@
+12 paired worlds (seeds 1,2,3,4,5,6,7,8,9,10,11,12)
+per seed alive automatic 30 13 0 30 37 44 11 32 24 33 3 27 | choice 25 23 29 18 31 22 22 8 3 38 45 28
+died out: automatic 1, choice 0
+people_alive                 automatic: 23.7 ± 13.8    choice: 24.3 ± 11.6    diff 0.67 [-12.25, 13.59]  choice higher in 6, lower in 6
+generations                  automatic: 1.8 ± 0.5      choice: 1.8 ± 0.4      diff 0.08 [-0.34, 0.51]  choice higher in 3, lower in 2
+plant_eaters                 automatic: 73.7 ± 24.1    choice: 68.4 ± 20.5    diff -5.25 [-26.24, 15.74]  choice higher in 5, lower in 7
+hunters                      automatic: 14.4 ± 5.4     choice: 14.8 ± 3.9     diff 0.42 [-4.30, 5.13]  choice higher in 7, lower in 4
+died_hunger                  automatic: sum 111        choice: sum 109        diff -0.17 [-5.58, 5.25]  choice higher in 8, lower in 3
+died_thirst                  automatic: sum 0          choice: sum 1          diff 0.08 [-0.10, 0.27]  choice higher in 1, lower in 0
+died_killed_by_a_predator    automatic: sum 81         choice: sum 69         diff -1.00 [-9.97, 7.97]  choice higher in 6, lower in 5
+died_drowned                 automatic: sum 33         choice: sum 23         diff -0.83 [-2.52, 0.85]  choice higher in 3, lower in 5
+died_burned                  automatic: sum 36         choice: sum 21         diff -1.25 [-4.24, 1.74]  choice higher in 4, lower in 6
+died_its_wounds              automatic: sum 16         choice: sum 21         diff 0.42 [-0.84, 1.67]  choice higher in 5, lower in 4
+died_old_age                 automatic: sum 65         choice: sum 82         diff 1.42 [-0.67, 3.50]  choice higher in 7, lower in 2
+died_giving_birth            automatic: sum 4          choice: sum 9          diff 0.42 [-0.27, 1.10]  choice higher in 5, lower in 1

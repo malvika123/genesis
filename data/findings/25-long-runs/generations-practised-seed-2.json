@@ -1,0 +1,68 @@
+{
+ "seed": 2,
+ "days": 200,
+ "flags": {},
+ "generations": {
+  "0": {
+   "born": 25,
+   "brain size": 0.313,
+   "learning rate": 0.998,
+   "curiosity": 0.454,
+   "learns from others": 0.763,
+   "voice control": 0.162,
+   "urge to point": 0.129,
+   "shared attention": 0.143,
+   "care for others’ young": 0.51
+  },
+  "1": {
+   "born": 15,
+   "brain size": 0.323,
+   "learning rate": 0.923,
+   "curiosity": 0.527,
+   "learns from others": 0.519,
+   "voice control": 0.203,
+   "urge to point": 0.127,
+   "shared attention": 0.16,
+   "care for others’ young": 0.467
+  },
+  "2": {
+   "born": 8,
+   "brain size": 0.319,
+   "learning rate": 1.065,
+   "curiosity": 0.551,
+   "learns from others": 0.443,
+   "voice control": 0.292,
+   "urge to point": 0.136,
+   "shared attention": 0.113,
+   "care for others’ young": 0.602
+  },
+  "3": {
+   "born": 3,
+   "brain size": 0.349,
+   "learning rate": 0.847,
+   "curiosity": 0.564,
+   "learns from others": 0.313,
+   "voice control": 0.252,
+   "urge to point": 0.148,
+   "shared attention": 0.331,
+   "care for others’ young": 0.561
+  },
+  "4": {
+   "born": 2,
+   "brain size": 0.337,
+   "learning rate": 0.989,
+   "curiosity": 0.532,
+   "learns from others": 0.292,
+   "voice control": 0.215,
+   "urge to point": 0.245,
+   "shared attention": 0.365,
+   "care for others’ young": 0.666
+  }
+ },
+ "livingTestScoreByGeneration": {
+  "2": {
+   "adults": 1,
+   "meanScore": 0.403
+  }
+ }
+}

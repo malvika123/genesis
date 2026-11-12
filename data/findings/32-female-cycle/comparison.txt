@@ -1,0 +1,15 @@
+12 paired worlds (seeds 1,2,3,4,5,6,7,8,9,10,11,12)
+per seed alive no-cycle 49 17 50 24 35 48 0 32 6 51 31 33 | cycle 16 10 13 18 15 21 2 18 2 32 13 4
+died out: no-cycle 1, cycle 0
+people_alive                 no-cycle: 31.3 ± 17.1    cycle: 13.7 ± 8.6     diff -17.67 [-25.49, -9.84]  cycle higher in 1, lower in 11
+generations                  no-cycle: 1.8 ± 0.4      cycle: 1.4 ± 0.5      diff -0.42 [-0.74, -0.09]  cycle higher in 0, lower in 5
+plant_eaters                 no-cycle: 69.0 ± 22.3    cycle: 61.8 ± 23.8    diff -7.17 [-26.10, 11.76]  cycle higher in 6, lower in 6
+hunters                      no-cycle: 14.3 ± 5.0     cycle: 14.6 ± 5.6     diff 0.33 [-3.04, 3.71]  cycle higher in 7, lower in 4
+died_hunger                  no-cycle: sum 100        cycle: sum 78         diff -1.83 [-4.85, 1.18]  cycle higher in 4, lower in 6
+died_thirst                  no-cycle: sum 1          cycle: sum 0          diff -0.08 [-0.27, 0.10]  cycle higher in 0, lower in 1
+died_killed_by_a_predator    no-cycle: sum 32         cycle: sum 22         diff -0.83 [-7.88, 6.22]  cycle higher in 3, lower in 2
+died_drowned                 no-cycle: sum 9          cycle: sum 7          diff -0.17 [-0.92, 0.59]  cycle higher in 3, lower in 4
+died_burned                  no-cycle: sum 39         cycle: sum 34         diff -0.42 [-3.40, 2.57]  cycle higher in 6, lower in 4
+died_its_wounds              no-cycle: sum 42         cycle: sum 25         diff -1.42 [-3.18, 0.35]  cycle higher in 2, lower in 6
+died_old_age                 no-cycle: sum 69         cycle: sum 77         diff 0.67 [-0.39, 1.73]  cycle higher in 7, lower in 4
+died_giving_birth            no-cycle: sum 3          cycle: sum 0          diff -0.25 [-0.54, 0.04]  cycle higher in 0, lower in 3

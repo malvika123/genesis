@@ -1,0 +1,243 @@
+{
+ "seed": 3,
+ "days": 60,
+ "starvingSteps": 3561,
+ "percentOfStarvingSteps": {
+  "age class": {
+   "adult": 63.9,
+   "weaned child": 30.3,
+   "nursing": 5.8
+  },
+  "nearest food (cells)": {
+   "1-2": 58.5,
+   "here": 31.2,
+   "3-5": 5.3,
+   "6-8": 5
+  },
+  "food kinds nearest": {
+   "roots": 74.8,
+   "roots+nuts+leaves": 7.5,
+   "fruit+roots+nuts+leaves": 5.6,
+   "nuts+leaves": 4,
+   "nuts": 2.4,
+   "meat": 2.1,
+   "leaves": 1.6,
+   "fruit+leaves": 1,
+   "fruit+nuts+leaves": 0.9,
+   "roots+leaves": 0.3,
+   "fruit+roots+nuts+meat+leaves": 0.1
+  },
+  "eyes register food": {
+   "no": 56.3,
+   "yes": 43.7
+  },
+  "grown hominin within 2 cells": {
+   "no": 78.9,
+   "yes": 21.1
+  },
+  "chose": {
+   "walk": 74.1,
+   "take": 6.5,
+   "eat": 6,
+   "strike": 4.4,
+   "grab": 3.8,
+   "stay": 1.3,
+   "give": 1.3,
+   "drop": 1.3,
+   "mate": 0.6,
+   "drink": 0.5,
+   "climb": 0.2
+  },
+  "in its hand": {
+   "nothing": 57.4,
+   "a stone": 30.9,
+   "a stick": 7.5,
+   "pyrite": 2.8,
+   "a sharp stone": 1.5
+  },
+  "chose, with food right here (roots+nuts+leaves)": {
+   "walk": 70,
+   "strike": 5,
+   "take": 5,
+   "eat": 4.2,
+   "drop": 3.3,
+   "give": 3.3,
+   "stay": 2.5,
+   "climb": 2.5,
+   "grab": 2.5,
+   "drink": 0.8,
+   "mate": 0.8
+  },
+  "chose, with food right here (roots)": {
+   "walk": 74.5,
+   "grab": 7.1,
+   "eat": 7,
+   "take": 3.6,
+   "strike": 3,
+   "stay": 1.6,
+   "drop": 1.2,
+   "give": 0.9,
+   "drink": 0.8,
+   "mate": 0.1,
+   "climb": 0.1
+  },
+  "chose, with food right here (nuts+leaves)": {
+   "walk": 82.6,
+   "grab": 6.5,
+   "take": 4.3,
+   "drop": 4.3,
+   "strike": 2.2
+  },
+  "chose, with food right here (leaves)": {
+   "walk": 78.8,
+   "strike": 6.1,
+   "climb": 6.1,
+   "grab": 3,
+   "take": 3,
+   "drop": 3
+  },
+  "chose, with food right here (fruit+roots+nuts+leaves)": {
+   "walk": 100
+  },
+  "chose, with food right here (fruit+nuts+leaves)": {
+   "walk": 100
+  },
+  "chose, with food right here (roots+leaves)": {
+   "walk": 77.8,
+   "drop": 11.1,
+   "eat": 11.1
+  },
+  "chose, with food right here (fruit+roots+nuts+meat+leaves)": {
+   "walk": 50,
+   "take": 50
+  },
+  "chose, with food right here (nuts)": {
+   "walk": 85.2,
+   "drink": 7.4,
+   "eat": 3.7,
+   "grab": 3.7
+  },
+  "chose, with food right here (fruit+leaves)": {
+   "walk": 100
+  }
+ },
+ "hungerDeaths": 11,
+ "deaths": [
+  {
+   "day": 21,
+   "cls": "adult",
+   "foodWithin": 0,
+   "kinds": [
+    "roots"
+   ],
+   "grownNear": false,
+   "momAlive": true
+  },
+  {
+   "day": 23,
+   "cls": "nursing",
+   "foodWithin": 2,
+   "kinds": [
+    "roots"
+   ],
+   "grownNear": false,
+   "momAlive": false
+  },
+  {
+   "day": 31,
+   "cls": "weaned child",
+   "foodWithin": 2,
+   "kinds": [
+    "roots"
+   ],
+   "grownNear": false,
+   "momAlive": true
+  },
+  {
+   "day": 36,
+   "cls": "adult",
+   "foodWithin": 6,
+   "kinds": [
+    "roots"
+   ],
+   "grownNear": false,
+   "momAlive": false
+  },
+  {
+   "day": 37,
+   "cls": "adult",
+   "foodWithin": 2,
+   "kinds": [
+    "nuts"
+   ],
+   "grownNear": false,
+   "momAlive": false
+  },
+  {
+   "day": 38,
+   "cls": "adult",
+   "foodWithin": 1,
+   "kinds": [
+    "roots"
+   ],
+   "grownNear": false,
+   "momAlive": false
+  },
+  {
+   "day": 40,
+   "cls": "adult",
+   "foodWithin": 2,
+   "kinds": [
+    "fruit",
+    "roots",
+    "nuts",
+    "leaves"
+   ],
+   "grownNear": false,
+   "momAlive": false
+  },
+  {
+   "day": 41,
+   "cls": "adult",
+   "foodWithin": 2,
+   "kinds": [
+    "fruit",
+    "roots",
+    "nuts",
+    "leaves"
+   ],
+   "grownNear": false,
+   "momAlive": false
+  },
+  {
+   "day": 47,
+   "cls": "weaned child",
+   "foodWithin": 3,
+   "kinds": [
+    "roots"
+   ],
+   "grownNear": false,
+   "momAlive": false
+  },
+  {
+   "day": 47,
+   "cls": "weaned child",
+   "foodWithin": 3,
+   "kinds": [
+    "roots"
+   ],
+   "grownNear": false,
+   "momAlive": true
+  },
+  {
+   "day": 52,
+   "cls": "adult",
+   "foodWithin": 1,
+   "kinds": [
+    "roots"
+   ],
+   "grownNear": false,
+   "momAlive": true
+  }
+ ]
+}

@@ -1,0 +1,9 @@
+Written before the runs, 12 Nov 2026 (the owner's hypothesis: a bigger band is the key).
+Test: the same 24 worlds (seeds 1-24, 60 days, naive founders) with 25 founders, and with 15 extra founders joining (40).
+Then 12 worlds with 55 extra (80).
+Predictions:
+1. Discoveries happen in more worlds with more founders: starting a fire with a burning stick, eating meat from a body,
+   bringing down an animal, cutting meat with a sharp stone.
+2. Survival per hominin (alive at the end / founders) is about the same: a bigger band gives more chances, not more safety,
+   while knowledge cannot pass by watching.
+3. Discoveries per hominin are about the same (more hominins, not better learners).

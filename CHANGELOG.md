@@ -4,6 +4,10 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Research log entries 25–36** (long runs and generations; climbing as a choice; founders' practice; hunger and thirst first;
+  temperament and care; moving as one choice; the mother's pull; the female cycle failure; mood; the starving fix; ape-like
+  care; community size), with data in `data/findings/25-…36-…`; tools `compare-runs.js`, `drowning-trace.js`,
+  `children-near-mothers.js`, `community-compare.js`, `first-times.js`.
 - **A mother keeps her nursing child near** (a pull scaled by her inherited care), **females have a cycle** (receptive
   about 13 of 36 days, fertile near ovulation), and **a lasting mood** colours how things feel. `--no-mother-pull`,
   `--no-cycle`, `--no-mood` restore the old rules.

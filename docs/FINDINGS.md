@@ -40,6 +40,13 @@ Entries are kept even when the result was "no effect" or "it made things worse" 
 | An inborn pull toward a ready partner | Births 25.7 → 28.0 at the strongest; survival within noise | weak |
 | Quicker conception after losing a nursing baby; smaller bodies needing less food | Small rises in births; hunger −21% (body size); survival within noise | weak |
 | **Not** what keeps hominins hungry: grass looking like food (a leftover, fixed) | Hunger deaths unchanged | none |
+| Bands now last: 6 of 8 worlds alive after 67 years, the best at 112 over 5 generations; 622 births for 573 deaths; learning from others bred out across generations (also with practised founders) | Long runs; the other inborn traits do not move in 4–5 generations | moderate |
+| Hunger and thirst come first | Hunger deaths 109 → 69 (−37%); births 27 → 30; but drownings doubled, 11 of 12 drowned were children | weak–moderate |
+| Moving as one choice, not eight (walking 70–80% → 25%) | Predator deaths 60 → 3; drownings 39 → 18; but hunger deaths 80 → 115 | moderate |
+| A mother keeps her nursing child near | 31 alive vs 25, better in 9 of 12; drownings and fire deaths about halved | weak–moderate |
+| **Failure:** the female cycle, added alone | Births 31 → 9 per world: it exposed a hidden bug (4-year lockout after any mating) | strong |
+| **Not** measurable: climbing as a choice; temperament and parental care; mood; the refeeding signal (24 worlds: survival and hunger unchanged, fire deaths up at the edge of noise); ape-like care (hunger −24%, within noise) | Within noise | none–weak |
+| **Not** helpful: founders who practise first (drownings doubled); **not** supported yet: a bigger founding band discovering more (survival per hominin the same at 25, 40 and 80) | Same worlds, 24 and 12 | none / moderate |
 | **Not** measurable: early hominins living on leaves when fruit is short | 14.6 vs 14.8 alive, hunger deaths 168 vs 204 (24 worlds, within noise) | none |
 | (Scenario) Early hominin bodies and lives instead of modern ones | 14.5 vs 25.5 alive, no die-outs; old age a main cause of death (shorter, chimpanzee-like life) | weak–moderate (confounded) |
 | **Not** a must-have: bigger brains on their own | 64 units: 8.2 alive, 256: 6.1, 1,024: 2.2 | strong |
@@ -776,6 +783,290 @@ until abundance follows the evidence; this is not tuning toward an outcome but a
 **Strength.** Strong for the collapse (all 12 worlds); the cause traced in 3 worlds. **Lesson:** replacing one unrealistic piece can
 reveal another that the old pieces were hiding.
 
+### 25. How long bands last, and what changes across generations — Nov 2026
+
+**Version.** Unreleased (after 0.7.0) · code `e18a90e` (hominin world with the fertility fix, the mating pull, climbing as a choice; before "hunger first"); the tool: `tools/analysis/generations.js` (commit `c650bd7`). Run by Claude.
+
+**Data.** [8 worlds × 200 days](../data/findings/25-long-runs/long-200d.csv) · inborn traits and test scores by generation: [seed 2](../data/findings/25-long-runs/generations-seed-2.json), [seed 5](../data/findings/25-long-runs/generations-seed-5.json) · the same with practised founders (entry 27): [seed 2](../data/findings/25-long-runs/generations-practised-seed-2.json), [seed 5](../data/findings/25-long-runs/generations-practised-seed-5.json). Re-run: `node tools/experiment.js --seeds 1-8 --days 200 --workers 4 --out long.csv`; `node tools/analysis/generations.js 5 200`.
+
+**Question.** The longest earlier run was 67 years. Do bands keep going? And is anything changing from one generation to the next, in what hominins are born with (evolution) or in what the living know (culture)?
+
+**Test.** 8 worlds × 200 days (about 67 simulated years), seeds 1–8, made-up planet.
+
+| | People alive | Worlds died out | Born per world | Died per world | Hunger | Predators | Drowned | Burned |
+|---|---|---|---|---|---|---|---|---|
+| 8 worlds × 200 days | 31.1 ± 39.7 | 2 | 77.8 | 71.6 | 253 | 83 | 48 | 12 |
+
+**Result.** Six of the eight worlds were still alive at the end: the best grew from 25 to **112** hominins over five generations (seeds 5, 2 and 6 reached 112, 52 and 56); two shrank to 12 and 16; one was down to a single hominin; two **died out** (after about 31 and 60 years, mostly killed by predators: 23 of 55 and 24 of 40 deaths). Over all worlds there were **622 births against 573 deaths** (1.09). Deaths: hunger 253 (44%), old age 130 (23%), predators 83 (14%), drowning 48 (8%), wounds 32 (6%), fire 12, childbirth 12, thirst 3. Hunters died out in 2 of 8 worlds.
+
+*Across generations* (seeds 2 and 5, which had enough hominins): the inborn tendency to **learn from others** fell steadily in both worlds, from 0.76 to 0.47 (seed 2, generations 0–4) and from 0.90 to 0.31 (seed 5, 48 born in the last generation) — the same direction in two separate worlds, so probably selection, not chance: hominins who copied less left more surviving children. The inborn brain-size trait hardly moved (0.313 → 0.331 and 0.315 → 0.311); curiosity, learning speed, voice control and pointing moved only by chance. **Learned skill did not rise:** the living adults' test scores were flat across generations (0.39–0.42).
+
+*With practised founders* (entry 27, who arrive knowing their diet) the decline of copying **persisted**: 0.90 → 0.39 in seed 5 (29–54 born per generation); in seed 2 the band shrank to a handful, so its numbers say little. So the guess that copying is bred out because the founders have nothing worth copying is **wrong**.
+
+**Interpretation.** Bands now last, as long as the world is not one of the unlucky ones; reproduction roughly keeps up with deaths. Selection works (a trait changed in the same way twice), but in the direction opposite to human evolution, and the other traits need far more than 4–5 generations (reality took about 125,000). Why copying is selected against is open: what a youngster copies is an elder's *movement*, not what happened to the elder (backlog A4); copying may also draw it after elders into danger.
+
+**Strength.** Moderate for survival (8 worlds, descriptive); moderate for "copying declines" (two worlds in the same direction, with and without practice); none yet for the other traits. **Lesson:** a hypothesis that fits (nothing to copy) can be tested cheaply and found wrong — the data were already on disk.
+
+### 26. Climbing as a choice, not automatic — Nov 2026
+
+**Version.** Unreleased · the change: commit `8b66acd`; the test: `b558c5a` (automatic climbing) against `e18a90e` (a choice). Run by Claude.
+
+**Data.** [Automatic](../data/findings/26-climbing-choice/automatic.csv) · [a choice](../data/findings/26-climbing-choice/choice.csv) · [the comparison](../data/findings/26-climbing-choice/comparison.txt). Re-run: `node tools/analysis/compare-runs.js automatic.csv choice.csv`.
+
+**Added.** The owner's rule: only true reflexes (blinking, a startle, an infant's grip) are automatic; running, climbing and hiding are choices with inborn pulls. Climbing a tree to sleep, and to escape a hunter in sight, had been done by the body automatically. It became a new action, *climb a tree* (or *climb down*), that each brain chooses and learns, with two inborn pulls: sleepiness under a big tree, and fear with a hunter in sight. Only a baby's clinging to its mother stays automatic.
+
+**Real-world basis.** The infant grasp reflex is a spinal reflex; chimpanzee nest building is largely learned (young ones practise by day; captive-reared ones never build full nests: Videan 2006; Ngogo, *Am. J. Primatol.* 2025); fight, flight or freeze differ consistently between individuals (marmosets: Kemp & Kaplan 2011; macaques). Monkeys and apes flee up trees (vervets: Seyfarth et al. 1980; baboons from lions).
+
+**Test.** 12 worlds × 60 days. **Confounded:** an extra action changes every brain, so the same seed is not the same world.
+
+| | People alive | Worlds died out | Born per world | Died per world | Hunger | Predators | Drowned | Burned |
+|---|---|---|---|---|---|---|---|---|
+| Climbing automatic | 23.7 ± 13.8 | 1 | 27.5 | 28.8 | 111 | 81 | 33 | 36 |
+| Climbing a choice | 24.3 ± 11.6 | 0 | 27.3 | 27.9 | 109 | 69 | 23 | 21 |
+
+**Result.** No measurable difference (+0.7 alive, range −12.3 to +13.6). With the pull, a brand-new brain beside a hyena chose to climb 3–6% of the time per step against about 2% without it: a nudge, not a command.
+
+**Strength.** None. Kept because it follows the owner's rule and the evidence, and does no harm. **Lesson:** making a behaviour a choice costs nothing in survival, and lets individuals differ, as real apes do.
+
+### 27. Founders who practise before the world begins — Nov 2026
+
+**Version.** Unreleased · the change: commit `9b51a9e` (`--practice-days`; off by default since `58039e4`); the test on `9b51a9e`. Run by Claude.
+
+**Data.** [Blank-minded founders](../data/findings/27-founders-practice/blank-minded.csv) · [practised](../data/findings/27-founders-practice/practised.csv) · [check: blank-minded founders reproduce the earlier worlds exactly](../data/findings/27-founders-practice/blank-minded-check-seeds-1-2.csv) · [the comparison](../data/findings/27-founders-practice/comparison.txt); generations with practised founders: entry 25.
+
+**Question (the owner's idea).** No real population ever started without knowing its diet: young chimpanzees learn much of theirs by watching their mothers (366 peering events in 1,000 hours at Budongo, about 60% about food: Schuppli et al., Max Planck 2026). Founders who know nothing are like orphans, and the deaths that causes tell us nothing about our ancestors. So: do founders who know what their kind has always known survive better?
+
+**Added.** Before the world begins, the founders live their kind's ordinary life for about 3 years, learning only from what their bodies feel, with nobody able to die (as a child is kept alive by its mother); then the world is built again from the same seed, identical, and each founder keeps its trained brain. Learned weights are never inherited, so children are still born knowing nothing. Tools, fire and words are still to be discovered. (The caveat: hominins of 2.5 million years ago already made stone tools — Lomekwi 3.3 Ma, Oldowan 2.6–2.9 Ma — so "tools must be discovered" is an experiment, not history.)
+
+**Test.** 12 worlds × 60 days, the same seeds with blank-minded and practised founders.
+
+| | People alive | Worlds died out | Born per world | Died per world | Hunger | Predators | Drowned | Burned |
+|---|---|---|---|---|---|---|---|---|
+| Blank-minded founders | 24.3 ± 11.6 | 0 | 27.3 | 27.9 | 109 | 69 | 23 | 21 |
+| Practised founders | 21.0 ± 15.5 | 1 | 23.3 | 27.3 | 117 | 60 | 45 | 25 |
+
+**Result.** **No help.** Hunger deaths did not fall (109 → 117); survival −3.3 (range −16.0 to +9.4); births fell (27.3 → 23.3); **drownings doubled** (23 → 45, more in 8 of 12 worlds). Copying was still selected against (entry 25).
+
+**Interpretation.** Learning alone by trial and error for three years does not teach hominins to eat what is in front of them; real young apes learn their diet by **watching their mothers**, and Genesis has no way yet to learn "that food was good" from seeing someone eat it (backlog A4). So the experiment shows that the *mechanism* is missing, not that the idea is wrong. Switched off by default everywhere (the owner, 12 Nov).
+
+**Strength.** Weak (ranges include zero except the drowning rise). **Lesson:** giving the founders knowledge by a route real animals do not use does not stand in for the route they do use.
+
+### 28. Hunger and thirst come first — Nov 2026
+
+**Version.** Unreleased · the change and the test: commit `18b5a45` (`--old-hunger` restores the old rule; `--hunger-pull` sets the strength, 6, an assumption). Run by Claude.
+
+**Data.** [Before](../data/findings/28-hunger-first/before.csv) · [after](../data/findings/28-hunger-first/after.csv) · [the old rule reproduced exactly](../data/findings/28-hunger-first/old-rule-check-seeds-1-2.csv) · [the comparison](../data/findings/28-hunger-first/comparison.txt) · traces: [hunger, seed 1](../data/findings/28-hunger-first/trace-hunger-seed-1.json), [seed 3](../data/findings/28-hunger-first/trace-hunger-seed-3.json), [drownings, seed 3](../data/findings/28-hunger-first/trace-drownings-seed-3.json) (`tools/analysis/hunger-trace.js`, `drowning-trace.js`).
+
+**Question.** Hunger was the largest killer in every run. Tracing starving hominins (seeds 1 and 3, 60 days) found food within one or two squares in about 92% and 90% of their starving moments (a third of the time under their feet), yet they **chose to walk** 68% and 74% of the time and to eat only 12% and 6%; of 23 hunger deaths, 18 happened with food within two squares. Hunger added a pull to eat but nothing took over, as in real animals.
+
+**Added.** The owner's principle (CLAUDE.md): a starving or parched body thinks of little else. With something it can eat or drink right where it stands, the urge to eat or drink grows steeply with need and outweighs the rest; hunger and thirst quieten exploring and copying; a hunter close beside it still comes first.
+
+**Real-world basis.** In mice hunger overrides thirst, anxiety, fear of predators and the wish for company, most of all when food is in reach (Burnett et al. 2016); hunger shuts down play (Siviy & Panksepp); hungry rats still eat little of a novel food in a strange place at first, and danger signals can stop even a starving rat eating (Greiner & Petrovich 2020). The strength 6 has no research number: an **assumption**.
+
+**Test.** 12 worlds × 60 days, blank-minded founders.
+
+| | People alive | Worlds died out | Born per world | Died per world | Hunger | Predators | Drowned | Burned |
+|---|---|---|---|---|---|---|---|---|
+| Before | 24.3 ± 11.6 | 0 | 27.3 | 27.9 | 109 | 69 | 23 | 21 |
+| Hunger and thirst first | 27.3 ± 14.0 | 0 | 30.0 | 27.8 | 69 | 78 | 45 | 47 |
+
+**Result.** A starving hominin standing on roots chose to eat **77%** of the time, up from 15% (one world, 20 days). Hunger deaths fell **37%** (109 → 69; range −7.8 to +1.1; lower in 8 of 12 worlds), births rose (27.3 → 30.0), survival +2.9 (range −6.6 to +12.5). But **drownings doubled** (23 → 45, beyond noise: +1.8, range +0.04 to +3.6) and fire deaths too (21 → 47).
+
+**Tracing the drownings** (seed 3, 12 drowned): **11 of the 12 were children** aged 1–9, and none was thirsty (thirst 0–0.24): they were not going for water. The likely cause: more children survived, and young children wander into deep water — realistic in kind (drowning is a leading cause of death of young children), but real young apes are carried and kept near the mother, and avoid deep water (backlog A8; not yet researched).
+
+**Strength.** Weak–moderate for hunger and births (ranges include zero); beyond noise for the drowning rise. **Lesson:** a result that looks like a side effect can be a clue: the extra drownings were children, which pointed at keeping children near their mothers (entry 31).
+
+### 29. Temperament and parental care that differ and are inherited — Nov 2026
+
+**Version.** Unreleased · the change and the test: commit `1e82b31` (`--no-temperament`, `--no-parental-care`). Run by Claude.
+
+**Data.** [Before](../data/findings/29-temperament-care/before.csv) · [temperament](../data/findings/29-temperament-care/temperament.csv) · [temperament and care](../data/findings/29-temperament-care/temperament-and-care.csv) · [both off reproduces the earlier worlds exactly](../data/findings/29-temperament-care/both-off-check-seeds-1-2.csv) · [the comparisons](../data/findings/29-temperament-care/comparison.txt).
+
+**Added (the owner's points: pain and courage must vary; not every mother has the same urge).** Each hominin inherits two traits, 0.4–1.6 around 1, drawn from a separate random stream so that adding them changes nothing else in a world: **timidity** (how strongly fear rises after a bad surprise and how strongly it pulls away from a hunter) and **parental care** (how strongly its own young's hunger moves it to share food). A child takes after a parent, with small changes. Pain sensitivity already varied (0.6–1.4).
+
+**Real-world basis.** Freezing under threat in young rhesus monkeys is stable and about 30–40% heritable (Kalin lab); behavioural inhibition in children 20–40%; pain sensitivity 26–60% heritable in twins (Nielsen et al. 2008); monkey mothers have consistent individual styles across infants (Fairbanks 1996). The spread 0.4–1.6 is an **assumption**.
+
+**Test.** 12 worlds × 60 days, the same seeds, adding one trait at a time.
+
+| | People alive | Worlds died out | Born per world | Died per world | Hunger | Predators | Drowned | Burned |
+|---|---|---|---|---|---|---|---|---|
+| Neither | 27.3 ± 14.0 | 0 | 30.0 | 27.8 | 69 | 78 | 45 | 47 |
+| Temperament | 27.1 ± 14.7 | 0 | 29.8 | 27.8 | 76 | 81 | 32 | 31 |
+| Temperament and care | 28.8 ± 13.0 | 0 | 31.4 | 27.6 | 80 | 60 | 39 | 43 |
+
+**Result.** No measurable effect (−0.2 and then +1.8 alive; ranges about ±9). Drownings and fire deaths fell with temperament (45 → 32, 47 → 31), predator deaths with care (81 → 60), all within noise.
+
+**Interpretation.** Over 20 years, with few generations, such differences cannot show their worth: that would come from bolder or more caring families leaving more surviving children, over many generations.
+
+**Strength.** None. Kept because real primates differ in exactly these ways. **Lesson:** a trait added by its own random stream leaves the rest of the world untouched, so each can be tested alone.
+
+### 30. Moving is one choice, not eight — Nov 2026
+
+**Version.** Unreleased · the change and the test: commit `4f73d22` (`--eight-walks` restores the old rule). Run by Claude.
+
+**Data.** [Before](../data/findings/30-moving-one-choice/before.csv) · [after](../data/findings/30-moving-one-choice/after.csv) · [the old rule reproduced exactly](../data/findings/30-moving-one-choice/eight-walks-check-seeds-1-2.csv) · [the comparison](../data/findings/30-moving-one-choice/comparison.txt).
+
+**Question.** Hominins spent 70–80% of their waking time walking; wild chimpanzees spend about 15–40% travelling, 40–50% feeding and 15–30% resting (Wrangham 1992; Mahale). Why?
+
+**Found.** A design flaw, not biology: of the brain's 19 choices, **8 were "walk" (one per direction) and 1 was "stay"**, so a brain with no preference walked 8 times as often as it sat. A brand-new brain chose to walk 80% of the time before learning anything.
+
+**Added.** The eight directions now share the weight of one choice (each loses ln 8): moving competes fairly with staying, eating, resting and the rest, and a direction is picked afterwards. How much they then walk is a result to check, not a target.
+
+**Test.** 12 worlds × 60 days. A fresh brain: walk 80% → 51%, stay 1.3% → 3.0%; hominins' first five days: walking 68% → 25%.
+
+| | People alive | Worlds died out | Born per world | Died per world | Hunger | Predators | Drowned | Burned |
+|---|---|---|---|---|---|---|---|---|
+| Eight walk choices | 28.8 ± 13.0 | 0 | 31.4 | 27.6 | 80 | 60 | 39 | 43 |
+| Moving one choice | 25.3 ± 13.8 | 0 | 27.3 | 26.9 | 115 | 3 | 18 | 72 |
+
+**Result.** **Predator deaths fell from 60 to 3** (range −9.6 to +0.1; lower in 7 of 8 worlds that changed), **drownings halved** (39 → 18, beyond noise, lower in all 10 that changed), old-age deaths fell (86 → 62). But **hunger rose** (80 → 115, +2.9, range +0.06 to +5.8) and so did fire deaths (43 → 72); survival −3.5 (range −12.0 to +5.0).
+
+**Interpretation.** Wandering less means meeting fewer hunters and less deep water. But a hominin that stays where it is no longer leaves when the food around it runs out, and nothing yet tells it to move on or to go to known food (backlog A2); fire deaths rose too (backlog A3: no moving away from a wildfire).
+
+**Strength.** Moderate for predators and drownings (beyond noise or at its edge); weak for survival. **Lesson:** removing an artificial bias makes the problems it was hiding visible.
+
+### 31. A mother keeps her nursing child near — Nov 2026
+
+**Version.** Unreleased · the change and the test: commit `f7b7ee6` (`--no-mother-pull`; the cycle and mood in that commit were off in this test). Run by Claude.
+
+**Data.** [Before](../data/findings/31-mother-pull/before.csv) · [after](../data/findings/31-mother-pull/after.csv) · [everything off reproduces the earlier worlds exactly](../data/findings/31-mother-pull/all-off-check-seeds-1-2.csv) · [the comparison](../data/findings/31-mother-pull/comparison.txt); the measurement: `tools/analysis/children-near-mothers.js`.
+
+**Question (the owner).** Children are pulled to stay near their carers; what about the mother's pull to keep her children safe? Entry 28 had found that most drowned hominins were children out of reach of their mothers.
+
+**Measured first** (one world, 10 years, before the pull): children within sight of their mother 100% of the time under 1 year (the mother closing the gap 9 times, the child 2), 83% at 1–4 years (the child doing most of the closing), 81% at 4–7 and 42% at 7–10. Real infants at 1–4 are carried or almost never out of sight, and the work of staying close shifts from mother to infant only as the infant grows (monkeys: Hinde & Atkinson 1970; reviews).
+
+**Added.** A pull toward her own nursing child when it is more than a square away: 3 × (1 − its age ÷ weaning age) × her **inherited** parental care (entry 29), so it fades as the child is weaned and differs from mother to mother — a pull, never a command.
+
+**Test.** 12 worlds × 60 days.
+
+| | People alive | Worlds died out | Born per world | Died per world | Hunger | Predators | Drowned | Burned |
+|---|---|---|---|---|---|---|---|---|
+| Before | 25.3 ± 13.8 | 0 | 27.3 | 26.9 | 115 | 3 | 18 | 72 |
+| Mother's pull | 31.3 ± 17.1 | 1 | 30.9 | 24.6 | 100 | 32 | 9 | 39 |
+
+**Result.** Survival **+6.0** (25.3 → 31.3; range −1.5 to +13.5; better in 9 of 12 worlds), births up (27.3 → 30.9), deaths down (26.9 → 24.6); **drownings halved** (18 → 9) and **fire deaths nearly halved** (72 → 39, beyond noise: −2.75, range −5.3 to −0.2). One world died out (4 alive before, 0 after); predator deaths rose from 3 to 32, within noise.
+
+**Strength.** Weak–moderate. The best single change since the fertility fix (entry 19), and it follows the owner's reasoning. **Lesson:** the fix for a side effect (children drowning) came from asking what real mothers do.
+
+### 32. The female cycle — and the hidden lockout it exposed — Nov 2026
+
+**Version.** Unreleased · the change and the test: commit `f7b7ee6` (`--cycle`; off by default from `34ee397`). Run by Claude.
+
+**Data.** [Without the cycle](../data/findings/32-female-cycle/before.csv) · [with it](../data/findings/32-female-cycle/with-cycle.csv) · [the comparison](../data/findings/32-female-cycle/comparison.txt).
+
+**Added.** Chimpanzee-like cycles: about 36 days, receptive (swollen) about 13 of them, able to conceive only near ovulation (Deschner et al. 2003, 2004; Emery Thompson 2005); each female with her own phase.
+
+**Test.** 12 worlds × 60 days, the cycle on against off.
+
+| | People alive | Worlds died out | Born per world | Died per world | Hunger | Predators | Drowned | Burned |
+|---|---|---|---|---|---|---|---|---|
+| No cycle | 31.3 ± 17.1 | 1 | 30.9 | 24.6 | 100 | 32 | 9 | 39 |
+| Cycle | 13.7 ± 8.6 | 0 | 8.9 | 20.3 | 78 | 22 | 7 | 34 |
+
+**Result.** A **failure**: births fell to **a third** (30.9 → 8.9), survival fell by 17.7 (range −25.5 to −9.8; lower in 11 of 12 worlds) — far below real chimpanzees, who bear a baby about every 5.7 years.
+
+**Cause (read in the code, not yet re-tested).** After **any** mating the female enters the four-year nursing wait, even if she did not conceive. Before the cycle every mating led to pregnancy, so this never showed; with a cycle most matings miss the fertile days and lock the female out for four years with no baby. A second unsourced number: a male cannot mate again for about 36 days (real males mate several times a day). Both are on the backlog (B1, B2). Real nature has the cycle and frequent mating as a pair; adding one alone broke reproduction.
+
+**Interpretation.** Not "females then had no cycles" (all apes, monkeys and people do) but "a real feature added alone exposes a missing piece". The cycle is off by default until B1 and B2 are fixed and re-tested.
+
+**Strength.** Strong for the failure (beyond noise, 11 of 12 worlds); the cause is a reading of the code. **Lesson:** a failure that points at a hidden bug is worth as much as a success.
+
+### 33. A lasting mood — Nov 2026
+
+**Version.** Unreleased · the change: commit `f7b7ee6` (`--no-mood`); the second test on `34ee397`. Run by Claude.
+
+**Data.** [With the cycle: no mood](../data/findings/33-mood/with-cycle-no-mood.csv), [mood](../data/findings/33-mood/with-cycle-and-mood.csv) · [without the cycle: no mood](../data/findings/33-mood/no-cycle-no-mood.csv), [mood](../data/findings/33-mood/no-cycle-with-mood.csv) · [the comparisons](../data/findings/33-mood/comparison.txt).
+
+**Added.** A running average of how recent things went against expectation (about a day), added to how each new outcome feels: good mood makes things feel better, bad worse. Basis: mood tracks the momentum of recent reward prediction errors and biases how outcomes are perceived (Eldar, Rutledge, Dolan & Niv 2016, in people). Its speed and strength are **assumptions**.
+
+**Test.** 12 worlds × 60 days. First on top of the (faulty) cycle of entry 32, then without the cycle.
+
+| | People alive | Worlds died out | Born per world | Died per world | Hunger | Predators | Drowned | Burned |
+|---|---|---|---|---|---|---|---|---|
+| Cycle, no mood | 13.7 ± 8.6 | 0 | 8.9 | 20.3 | 78 | 22 | 7 | 34 |
+| Cycle and mood | 15.9 ± 8.1 | 0 | 10.1 | 19.2 | 75 | 5 | 6 | 35 |
+| No cycle, no mood | 31.3 ± 17.1 | 1 | 30.9 | 24.6 | 100 | 32 | 9 | 39 |
+| No cycle, mood | 28.8 ± 16.7 | 1 | 27.4 | 23.7 | 115 | 9 | 12 | 54 |
+
+**Result.** No clear effect either way: +2.3 alive with the cycle (range −2.3 to +6.8), −2.6 without it (range −9.8 to +4.6).
+
+**Strength.** None. Kept because the evidence on mood is good; it is not a survival lever by itself. **Lesson:** run the test again once the faulty piece under it is out (here the cycle), rather than trust the first answer.
+
+### 34. Starving: smooth hunger and the refeeding signal — Nov 2026
+
+**Version.** Unreleased · the change: commit `5414b71`, the level set to 20% at `c17fe0e` (`--old-starving` restores the old rule; `--refeed-at` sets the level); the test on `34ee397` (a working branch, merged with the rest before going live). Run by Claude.
+
+**Data.** [Old rule, 24 worlds](../data/findings/34-starving/old-rule-24-worlds.csv) · [refeeding at 20%](../data/findings/34-starving/refeed-20-24-worlds.csv) · [at 25%](../data/findings/34-starving/refeed-25-24-worlds.csv) · [the comparisons, including the first 12 worlds](../data/findings/34-starving/comparison.txt).
+
+**Found and added.** The owner asked whether hunger is felt smoothly. It is — except for a sudden jolt of discomfort added below 15% energy, with **no source**. That was removed. But there *is* a real sudden change in starvation, in behaviour: late in a fast, below a critical reserve, animals turn sharply to finding food — fasting rats about 10 times more active (Koubi et al. 1991), emperor penguins leaving their eggs to feed before reserves are lethal (Robin et al. 1998). So below a critical reserve the urge to search for food doubles (the doubling is an **assumption**). The level: rats and birds switch once about 80% of their fat is gone, so **20%** (evidence 20–25), not picked for its effect — which is why both ends were tested.
+
+**Test.** 24 worlds × 60 days (seeds 1–24), the same worlds with the old rule, 20% and 25%.
+
+| | People alive | Worlds died out | Born per world | Died per world | Hunger | Predators | Drowned | Burned |
+|---|---|---|---|---|---|---|---|---|
+| Old rule | 26.9 ± 15.1 | 1 | 26.9 | 25.0 | 241 | 46 | 25 | 77 |
+| Refeeding at 20% | 24.0 ± 16.9 | 1 | 26.4 | 27.4 | 277 | 36 | 20 | 117 |
+| Refeeding at 25% | 27.5 ± 14.5 | 1 | 28.7 | 26.3 | 230 | 22 | 22 | 116 |
+
+**Result.** **No measurable effect** on survival or hunger at either end: 20% vs old −2.9 alive (range −8.5 to +2.8), 25% vs old +0.6 (−3.9 to +5.0), 25% vs 20% +3.5 (−1.0 to +7.9). In the **first 12 worlds** the two ends had pointed in opposite directions (hunger deaths 115 → 152 at 20%, 115 → 99 at 25%); over 24 worlds the difference was chance.
+
+The one consistent change: **fire deaths rose at both levels** (77 → 117 and 77 → 116; +1.7 a world, ranges −0.7 to +4.0 and −0.1 to +3.3; higher in 14 and 13 of 24 worlds, lower in 5 and 3) — at the edge of noise, in the same direction at both ends. Likely cause (a guess, not tested): desperate searching takes starving hominins onto burning ground, and they do not yet move away from a wildfire (backlog A3).
+
+**Strength.** None. The fix stays because it is more correct, at the level the evidence gives. **Lesson:** do not pick the end of a range that looks better in 12 worlds; test more worlds.
+
+### 35. Care for children as apes give it — Nov 2026
+
+**Version.** Unreleased · the change: commit `260459c` (`--human-care` restores the forager pattern); the test on `d81d0e2` (a working branch, merged with the rest before going live). Run by Claude.
+
+**Data.** [Forager-style care](../data/findings/35-ape-care/before.csv) · [ape-like care](../data/findings/35-ape-care/after.csv) · [the old rule reproduced exactly](../data/findings/35-ape-care/human-care-check-seeds-1-2.csv) · [the comparison](../data/findings/35-ape-care/comparison.txt).
+
+**Found.** Hominins fed any hungry child of the band (own young fully, siblings 0.6, nephews and nieces 0.5, others 0.35 × an inherited trait) — the cooperative-breeding pattern of **modern foragers** (Hrdy 2009; Kramer 2010; Hawkes et al. 1998), another modern-human leftover.
+
+**Real-world basis.** Care and feeding of infants by others is estimated to occur in about 20% of primate species, especially marmosets and humans, and in **no other ape** (reviews citing Hrdy 2009); gorilla mothers rarely let others even hold their infants; at Ngogo others hold chimpanzee infants (linked to faster weaning) but do not feed them (Bădescu et al. 2016); no ape evidence of grandmothers or fathers provisioning.
+
+**Added.** In the hominin world only a mother feeds her own young (strength from her inherited care); modern people keep the forager pattern.
+
+**Test.** 12 worlds × 60 days.
+
+| | People alive | Worlds died out | Born per world | Died per world | Hunger | Predators | Drowned | Burned |
+|---|---|---|---|---|---|---|---|---|
+| Foragers' care | 26.8 ± 18.0 | 0 | 29.2 | 27.4 | 152 | 15 | 14 | 53 |
+| Ape-like care | 27.3 ± 13.9 | 0 | 28.5 | 26.2 | 116 | 10 | 24 | 60 |
+
+**Result.** Survival about the same (+0.6, range −9.2 to +10.4); hunger deaths fell (152 → 116, −3.0, range −6.5 to +0.5; lower in 9 of 12 worlds): adults no longer spend energy on other people's children; births unchanged; drownings rose (14 → 24), within noise.
+
+**Strength.** Weak. Kept: closer to apes, and not worse. **Lesson:** a lovely behaviour can be a modern one: check who really does it.
+
+### 36. Does a bigger founding band make more discoveries? — Nov 2026
+
+**Version.** Unreleased · up to 200 founders and no fixed cap on people (`ef5c244`); extra founders joining the same world from a separate random stream (`b0bf369`, `--extra-people`); the analysis tools `tools/analysis/community-compare.js`, `first-times.js`. Run by Claude.
+
+**Data.** Fair test: [25 founders](../data/findings/36-community-size/base25.csv) · [40](../data/findings/36-community-size/plus15.csv) · [80](../data/findings/36-community-size/plus55.csv) · [the comparison](../data/findings/36-community-size/fair-comparison.txt) · [first times](../data/findings/36-community-size/first-times.txt) · [the prediction, written before](../data/findings/36-community-size/prediction-written-before.txt). The first test, on *different* worlds: [25](../data/findings/36-community-size/first-test-band25.csv), [40](../data/findings/36-community-size/first-test-band40.csv), [80](../data/findings/36-community-size/first-test-band80.csv).
+
+**Question (the owner's hypothesis: "a bigger band is the key").** Real chimpanzee communities are about 30–80 (Ngogo near 200); human forager bands 20–40; across ten Oceanic societies larger populations had more complex tools (Kline & Boyd 2010), a result debated. Do bigger bands survive better or discover more?
+
+**First test (12 worlds each, 25, 40 and 80 founders).** Different founder numbers reshuffle the whole world, so the worlds were not the same. Alive at the end 27.3, 41.8, 77.5 (109%, 104%, 97% of the start); a fire started with a burning stick in 5, 9 and 8 of 12 worlds; meat eaten 7, 10, 9; cutting meat with a stone 2, 2, 4. I told the owner it "looked right so far". **That was mostly chance: different worlds.**
+
+**Fair test.** The extra founders join exactly the same world (animals, land and the first 25 founders identical; checked). A prediction was written before the runs: (1) discoveries in more worlds with more founders; (2) survival per hominin the same; (3) discoveries per hominin the same. 24 worlds for 25 vs 40, 12 for 25 vs 80.
+
+| 25 vs 40 founders, 24 identical worlds | 25 | 40 | Difference (95% range) |
+|---|---|---|---|
+| Alive per founder | 1.14 | 1.17 | +0.03 (−0.19, +0.25) |
+| Born per world | 28.7 | 47.3 | +18.5 (+13.5, +23.6) |
+| Hunger deaths per world | 9.4 | 16.7 | +7.3 (+4.9, +9.6) |
+| Predator deaths per world | 1.3 | 1.0 | −0.3 (−2.1, +1.5) |
+| Different hard discoveries per world (of 11) | 4.13 | 4.58 | +0.46 (−0.41, +1.33) |
+
+Worlds where it happened, 25 → 40 founders: fire by dropping a burning stick 11 → 16 of 24; eating meat from a body 14 → 13; bringing down an animal 13 → 10; cutting meat with a stone 3 → 2; eating wildfire-cooked food 18 → 21; picking up a burning stick 20 → 22; fire made with sparks 1 → 3 and by rubbing wood 8 → 10. **Nobody kept a fire going or built a shelter in any of the 36 worlds.** At 80 founders (12 worlds): alive per founder 1.10 (against 1.09 at 25), discoveries 4.58 (against 4.42).
+
+*First times* (worlds where both had it): at 40 founders a fire by dropping a burning stick came earlier in 6 of 8 worlds (later in 1, same day in 1; about 10 days sooner), eating meat earlier in 8 of 13 (later in 3), hunting earlier in 6 of 10 — but picking up burning sticks and eating wildfire-cooked food showed no pattern (they depend on wildfires, which the band does not cause). No sign test is significant.
+
+**Against the prediction.** (2) **Confirmed**: survival per hominin is the same at every size. (1) **Not supported**: only the fire-by-dropping count rose, others were flat or fell. (3) Cannot be judged: the measure counts kinds of discovery, which saturate. A bigger band is more of everything — births 29, 47, 89 per world; hunger deaths 9, 17, 37 (more mouths) — and 80 founders for 12 worlds ran in 21–34 minutes, so a laptop is enough.
+
+**Interpretation.** Size alone does not make Genesis hominins discover more. That fits the evidence behind the hypothesis, where size helps when knowledge can be passed on; in Genesis a discovery dies with whoever made it. The hypothesis is **untested, not refuted**: build learning by watching what worked (backlog A4), then repeat this exact comparison with a new written prediction.
+
+**Strength.** Moderate for "survival per founder does not change with size" (24 worlds, range about ±0.2); none for discoveries (ranges include zero). **Lesson:** a hunch confirmed on different worlds is not confirmed: compare the same worlds, and write the prediction down first.
+
 ---
 
 ## Open questions (next tests)
@@ -789,6 +1080,10 @@ reveal another that the old pieces were hiding.
   What should one animal stand for (one animal or a herd), and how large should the world be? Then switch on the East African
   animals (entry 24).
 - Why do starving hominins walk but not find food (entry 22: not grass)?
+- Why is learning from others bred out across generations, with and without practised founders (entry 25)? Copying a
+  movement rather than what worked (backlog A4)? Then repeat the community-size comparison (entry 36).
+- Female cycle: fix the nursing lockout after any mating and the male's 36-day wait, then test again (entry 32).
+- Hunger rose when hominins stopped wandering (entry 30): they do not move on when food runs out (backlog A2).
 - Why do predators take children less often than chance (entry 14), if not because of the old protection
   (entry 15)? Is it children staying close to grown people?
 - Predators kill the isolated (entries 12, 14): do alarm calls that draw others close, or groups that deter a

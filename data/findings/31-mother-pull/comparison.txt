@@ -1,0 +1,15 @@
+12 paired worlds (seeds 1,2,3,4,5,6,7,8,9,10,11,12)
+per seed alive before 22 8 38 18 29 41 4 24 28 53 17 22 | mother-pull 49 17 50 24 35 48 0 32 6 51 31 33
+died out: before 0, mother-pull 1
+people_alive                 before: 25.3 ± 13.8    mother-pull: 31.3 ± 17.1    diff 6.00 [-1.49, 13.49]  mother-pull higher in 9, lower in 3
+generations                  before: 1.8 ± 0.4      mother-pull: 1.8 ± 0.4      diff 0.00 [-0.27, 0.27]  mother-pull higher in 1, lower in 1
+plant_eaters                 before: 62.5 ± 19.0    mother-pull: 69.0 ± 22.3    diff 6.50 [-10.76, 23.76]  mother-pull higher in 7, lower in 5
+hunters                      before: 14.3 ± 5.8     mother-pull: 14.3 ± 5.0     diff -0.08 [-4.63, 4.47]  mother-pull higher in 5, lower in 6
+died_hunger                  before: sum 115        mother-pull: sum 100        diff -1.25 [-4.13, 1.63]  mother-pull higher in 5, lower in 7
+died_thirst                  before: sum 4          mother-pull: sum 1          diff -0.25 [-0.80, 0.30]  mother-pull higher in 1, lower in 2
+died_killed_by_a_predator    before: sum 3          mother-pull: sum 32         diff 2.42 [-3.11, 7.94]  mother-pull higher in 2, lower in 2
+died_drowned                 before: sum 18         mother-pull: sum 9          diff -0.75 [-1.87, 0.37]  mother-pull higher in 3, lower in 8
+died_burned                  before: sum 72         mother-pull: sum 39         diff -2.75 [-5.32, -0.18]  mother-pull higher in 2, lower in 7
+died_its_wounds              before: sum 40         mother-pull: sum 42         diff 0.17 [-1.50, 1.83]  mother-pull higher in 5, lower in 4
+died_old_age                 before: sum 62         mother-pull: sum 69         diff 0.58 [-0.48, 1.65]  mother-pull higher in 5, lower in 3
+died_giving_birth            before: sum 9          mother-pull: sum 3          diff -0.50 [-1.14, 0.14]  mother-pull higher in 1, lower in 5

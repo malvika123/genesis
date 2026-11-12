@@ -1,0 +1,31 @@
+12 paired worlds (seeds 1,2,3,4,5,6,7,8,9,10,11,12)
+per seed alive cycle 16 10 13 18 15 21 2 18 2 32 13 4 | +mood 8 5 23 26 12 22 5 15 9 28 18 20
+died out: cycle 0, +mood 0
+people_alive                 cycle: 13.7 ± 8.6     +mood: 15.9 ± 8.1     diff 2.25 [-2.31, 6.81]  +mood higher in 7, lower in 5
+generations                  cycle: 1.4 ± 0.5      +mood: 1.3 ± 0.5      diff -0.08 [-0.41, 0.24]  +mood higher in 1, lower in 2
+plant_eaters                 cycle: 61.8 ± 23.8    +mood: 60.9 ± 15.8    diff -0.92 [-20.02, 18.19]  +mood higher in 7, lower in 5
+hunters                      cycle: 14.6 ± 5.6     +mood: 14.2 ± 5.4     diff -0.42 [-6.67, 5.84]  +mood higher in 4, lower in 7
+died_hunger                  cycle: sum 78         +mood: sum 75         diff -0.25 [-3.08, 2.58]  +mood higher in 6, lower in 5
+died_thirst                  cycle: sum 0          +mood: sum 1          diff 0.08 [-0.10, 0.27]  +mood higher in 1, lower in 0
+died_killed_by_a_predator    cycle: sum 22         +mood: sum 5          diff -1.42 [-4.96, 2.13]  +mood higher in 2, lower in 2
+died_drowned                 cycle: sum 7          +mood: sum 6          diff -0.08 [-0.59, 0.42]  +mood higher in 3, lower in 4
+died_burned                  cycle: sum 34         +mood: sum 35         diff 0.08 [-1.39, 1.55]  +mood higher in 4, lower in 4
+died_its_wounds              cycle: sum 25         +mood: sum 27         diff 0.17 [-0.76, 1.10]  +mood higher in 3, lower in 4
+died_old_age                 cycle: sum 77         +mood: sum 80         diff 0.25 [-1.11, 1.61]  +mood higher in 7, lower in 4
+died_giving_birth            cycle: sum 0          +mood: sum 1          diff 0.08 [-0.10, 0.27]  +mood higher in 1, lower in 0
+
+12 paired worlds (seeds 1,2,3,4,5,6,7,8,9,10,11,12)
+per seed alive no-mood 49 17 50 24 35 48 0 32 6 51 31 33 | mood 45 30 37 39 32 42 5 40 0 49 9 17
+died out: no-mood 1, mood 1
+people_alive                 no-mood: 31.3 ± 17.1    mood: 28.8 ± 16.7    diff -2.58 [-9.78, 4.61]  mood higher in 4, lower in 8
+generations                  no-mood: 1.8 ± 0.4      mood: 1.8 ± 0.4      diff 0.00 [-0.27, 0.27]  mood higher in 1, lower in 1
+plant_eaters                 no-mood: 69.0 ± 22.3    mood: 68.0 ± 21.3    diff -1.00 [-17.07, 15.07]  mood higher in 6, lower in 6
+hunters                      no-mood: 14.3 ± 5.0     mood: 15.8 ± 5.2     diff 1.58 [-2.87, 6.04]  mood higher in 6, lower in 5
+died_hunger                  no-mood: sum 100        mood: sum 115        diff 1.25 [-1.63, 4.13]  mood higher in 7, lower in 4
+died_thirst                  no-mood: sum 1          mood: sum 0          diff -0.08 [-0.27, 0.10]  mood higher in 0, lower in 1
+died_killed_by_a_predator    no-mood: sum 32         mood: sum 9          diff -1.92 [-7.42, 3.59]  mood higher in 2, lower in 2
+died_drowned                 no-mood: sum 9          mood: sum 12         diff 0.25 [-0.61, 1.11]  mood higher in 4, lower in 3
+died_burned                  no-mood: sum 39         mood: sum 54         diff 1.25 [-2.81, 5.31]  mood higher in 3, lower in 4
+died_its_wounds              no-mood: sum 42         mood: sum 24         diff -1.50 [-3.07, 0.07]  mood higher in 2, lower in 6
+died_old_age                 no-mood: sum 69         mood: sum 68         diff -0.08 [-0.87, 0.70]  mood higher in 6, lower in 5
+died_giving_birth            no-mood: sum 3          mood: sum 2          diff -0.08 [-0.41, 0.24]  mood higher in 1, lower in 2
