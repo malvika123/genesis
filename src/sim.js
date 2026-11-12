@@ -479,6 +479,11 @@ function sim() {
         ? S.adl + (1 - S.adl) * Math.max(0, 1 - (a.age - S.mat) / (S.mat * 0.3))
         : S.adl * 0.8;
     if (a.has && a.sp !== 3 && Math.abs(r) > 0.3) remember(a, lastAct, r, V);
+    // the path that led here, replayed backwards at a good surprise (brain.js; research log entry 51; --no-back-replay: none)
+    if (SOC.backReplay && a.sp === 0 && a.has) {
+      notePath(a, a.xl, lastAct, r);
+      if (r > 0.3) backReplay(a, V, pl * 0.5);
+    }
     if (a.asleep && a.mem.length && tick % 2 === 0) replay(a, pl * 0.5);
     else if (!a.asleep) a.dream = null;
     // stress builds up under fear, pain, hunger and thirst, and fades when things are calm
@@ -1422,7 +1427,7 @@ const hunterSeen = (x) => {
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {

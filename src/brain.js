@@ -445,19 +445,24 @@ function pickMemory(a) {
   return a.mem[a.mem.length - 1];
 }
 function replay(a, rate) {
-  const m = pickMemory(a),
-    w = a.lw,
-    x = m.x,
+  const m = pickMemory(a);
+  replayOne(a, m.x, m.act, m.r, m.vn, rate);
+  a.dream = m;
+}
+// Learn once more from one remembered moment: what it sensed (x), what it did (act), what followed (r) and how good the next
+// moment looked (vn). Returns how good this moment looked before the update. Used by sleep replay and by backward replay.
+function replayOne(a, x, act, r, vn, rate) {
+  const w = a.lw,
     H = a.h.length,
     O2 = O2of(H),
     OV = OVof(H),
     nh = a.nh,
     V = forward(w, x, RH, RZ, nh),
-    d = clamp(m.r + GAM * m.vn - V, -2, 2),
+    d = clamp(r + GAM * vn - V, -2, 2),
     k = Math.min(1, a.S.nh / nh); // as in learnStep: a bigger brain changes each connection less
   for (let j = 0; j < nh; j++) {
     let s = 0;
-    for (let k = 0; k < NA; k++) s += w[O2 + k * H + j] * ((k === m.act ? 1 : 0) - RZ[k]);
+    for (let k = 0; k < NA; k++) s += w[O2 + k * H + j] * ((k === act ? 1 : 0) - RZ[k]);
     const dd = 1 - RH[j] * RH[j],
       g = k * rate * d * (AP * s + AV * w[OV + j]) * dd,
       o = OI + j * NI;
@@ -466,14 +471,42 @@ function replay(a, rate) {
     w[OV + j] = clamp(w[OV + j] + k * rate * AV * d * RH[j], -6, 6);
   }
   for (let q = 0; q < NA; q++) {
-    const g = rate * AP * d * ((q === m.act ? 1 : 0) - RZ[q]);
+    const g = rate * AP * d * ((q === act ? 1 : 0) - RZ[q]);
     let o = O2 + q * H;
     for (let j = 0; j < nh; j++) w[o + j] = clamp(w[o + j] + k * g * RH[j], -6, 6);
     o = q * NI;
     for (let i = 0; i < NI; i++) if (x[i]) w[o + i] = clamp(w[o + i] + g * x[i], -6, 6);
   }
   a.learn += Math.abs(d) * rate;
-  a.dream = m;
+  return V;
+}
+// Backward replay (research log entry 51): at a good surprise, the path that led to it is replayed backwards, so that the steps
+// taken before the reward are credited too — as rats replay their path backwards after a reward, and that replay goes with
+// learning which actions were worth it (rodent studies; replay needs dopamine: eLife 2024). Without it, walking a square takes
+// about 7 steps while the record of what was just done halves in about 3, so walking toward food was never credited.
+// a.path holds the last BACKN steps: what it sensed, what it chose, what followed. BACKN and the trigger are assumptions.
+const BACKN = 16;
+function notePath(a, x, act, r) {
+  if (!a.path) a.path = [];
+  let m;
+  if (a.path.length < BACKN) {
+    m = { x: new Float32Array(x.length), act: 0, r: 0 };
+    a.path.push(m);
+  } else {
+    m = a.path.shift();
+    a.path.push(m);
+  }
+  m.x.set(x);
+  m.act = act;
+  m.r = r;
+}
+function backReplay(a, vNow, rate) {
+  let vn = vNow;
+  for (let i = a.path.length - 1; i >= 0; i--) {
+    const m = a.path[i];
+    vn = replayOne(a, m.x, m.act, m.r, vn, rate);
+  }
+  a.path.length = 0; // replayed: what led here has been learned from
 }
 function imitate(a, act, rate, vc = null) {
   const x = a.xi,
