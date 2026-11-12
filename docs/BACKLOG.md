@@ -52,6 +52,35 @@ test on the same worlds; never tune toward survival.
 | A17 | Disease | Not yet researched | |
 | A18 | Sleep that reorganises memories into new insight (not only replays them) | Sleep tripled the chance of discovering a hidden shortcut (Wagner et al. 2004, *Nature*); replay of the day's routes during sleep (Wilson & McNaughton 1994) — Genesis already has replay | how the brain recombines is not well understood: research first, do not invent |
 
+## 3b. The real world of 2.5 million years ago — must be added (the owner, 12 Nov 2026)
+
+Genesis must not be a safe world: the pressures that shaped hominins are what we are trying to understand. Each item is
+verified online, built with a switch, and tested on its own before the next, in roughly this order (dependencies first).
+
+| # | What | Why (to verify before building) | Depends on |
+|---|---|---|---|
+| R1 | Wet and dry seasons in the tropics (the hard season is the dry one) | Fallback foods (roots) matter in the dry season | check how Genesis's seasons work in the tropics first |
+| R2 | The real East African landscape: the Rift, lakes that grow and shrink, volcanoes, spreading grassland | Patch 7 of the plan | climate data of the time |
+| R3 | Long climate swings between wetter and drier periods | Plan, patch 7 | R2 |
+| R4 | Crocodiles at rivers and lakes | A major predator of hominins: crocodile bite marks on the Olduvai hominin foot (OH 8) | water ecology |
+| R5 | Eagles taking small children | The Taung child (Berger & Clarke 1995) | birds as agents |
+| R6 | Lions, and the hunters balanced against prey | | A1 |
+| R7 | Venomous snakes | Primates detect snakes fast (snake detection theory) | |
+| R8 | Dangerous large plant-eaters: elephants, hippos, buffalo | They kill when threatened | A1 |
+| R9 | Disease and parasites | Probably a major killer | research first |
+| R10 | Violence between groups (raids) and infanticide by males | Chimpanzees raid neighbours and kill; males kill infants not theirs | several groups (R14); male rivalry (R13) |
+| R11 | Bone marrow from bones broken with stones | Probably among the first uses of stone tools | |
+| R12 | Termites and other insects, eggs, honey, small animals; sedges and grass seeds | Diet evidence | A15 |
+| R13 | Males competing for rank and mates (and testosterone) | Chimpanzee males; Muller & Wrangham 2004 | B2 |
+| R14 | Several groups, and females moving between them at adolescence | Chimpanzee daughters leave their community; genes mix | the community-size results |
+| R15 | Grooming, alliances, making up after fights | Primate social life | |
+| R16 | Specific alarm calls for different dangers | Vervet monkeys' leopard / eagle / snake calls (Seyfarth et al. 1980) | |
+| R17 | Paranthropus: a second hominin species living alongside | Lived at the same time and places as early Homo | R1–R3 |
+| R18 | Baboons competing for the same foods | | A1 |
+| R19 | Scavenging contests with hyenas at carcasses | | A1, W2 |
+| R20 | Carrying things over long distances (stones carried kilometres to Oldowan sites) | Oldowan sites | |
+| R21 | Stone tools already existing (2.6–3.3 million years ago): say on the Research page that "discover them" is an experiment | Lomekwi, Gona, Nyayanga | — |
+
 ## 4. Open questions and measurements
 
 - **Are discoveries repeated and passed on, or one-offs?** The counts so far are the *first time* something happened
