@@ -26,7 +26,7 @@ test on the same worlds; never tune toward survival.
 | W3 | Founders' practice before the world begins (on in the runner) | Did not reduce hunger; drowning doubled | review: learning by watching (A4) may be the real fix |
 | W4 | Mother's pull to keep her nursing child near | 31 alive vs 25, better in 9 of 12 worlds; fire deaths and drownings halved | log as an entry; merge |
 | W5 | Lasting mood | No clear effect (with the faulty cycle on); retest without the cycle running | results due |
-| W6 | Starving: smooth hunger + refeeding signal at 20% (and 25%) | test running | results due |
+| W6 | Starving: smooth hunger + refeeding signal at 20% (and 25%) | 24 worlds: no measurable effect on survival or hunger at either end; 20% vs 25% within noise — keep, at 20% (evidence) | merge; then **each hominin inherits its own threshold in 20–25%** (the owner's idea: individuals differ; selection may favour one end) |
 | W7 | Ape-like care: only mothers feed their young (`--human-care` restores foragers') | test queued | results due |
 
 ## 3. Verified, not built yet (in a sensible order)
