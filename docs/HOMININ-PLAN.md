@@ -67,9 +67,31 @@ The inborn tendency to learn from others is bred out across generations in two s
 founders; learned skill does not rise; a bigger founding band (25, 40, 80) does not change survival per hominin and has not made
 discoveries more common; nobody has kept a fire going or built a shelter.
 
+## Priorities after Phase A (the owner, 12 November 2026)
+
+Breadth is now the risk, not sloppiness: many small realistic pieces while the two big structural questions — the brains and
+the scale — wait. So, in this order:
+
+1. **The brains.** First the shelter test (backlog B14: did a hominin learn "carry branches, then a better night"? — trace,
+   ask its brain before and after, then replay the same world with the heap giving no shelter), done *before* learning by
+   watching so that copying cannot muddy it. Then learning by watching what worked (Phase B), designed with that answer.
+2. **The scale.** Decide what one simulated animal stands for and how big the world is (a whole planet now holds a few dozen
+   animals; a year is 3 days, and processes run on two clocks — review finding 1). Hunters dying out, the 3%-a-year boom and
+   hunger with food in reach may all trace back to it; the hunter fixes of Phase A treat the symptom.
+3. **The reality checks.** One suite of pass/fail checks against real numbers (child survival, birth spacing, life
+   expectancy, population change, activity budget, causes of death), each with its clock, run on 24+ worlds, so that "is
+   Genesis realistic?" has a number.
+
+**Ways of working that go with them:** add fewer things and test claims that matter on 24+ worlds, with one primary outcome
+named in advance; go live in smaller, more frequent steps (the live site lagged 18 entries behind and the owner met the
+hunter problem there first); have a fresh session, with no history in the project, repeat the science review.
+
 ## The phases
 
-### Phase A — finish this round and put it live (about a day)
+### Phase A — finish this round and put it live (12 November; in progress)
+
+Added 12 Nov: the mating fix (B1, B7), the gene split (B10), the hunter fixes (B15: newcomers from the wider population, then more
+prey per hunter, each tested), before going live.
 
 1. The 100-year run (8 worlds × 300 days, all fixes in; started 12 Nov 13:25) → log as an entry.
 2. First test of the communication detector (`tools/analysis/talk-detector.js`), with its false-alarm and planted-sound checks → log.
@@ -79,6 +101,8 @@ discoveries more common; nobody has kept a fire going or built a shelter.
    README and About tab for everything that changed.
 
 ### Phase B — bands that last, and knowledge that passes on (a few sessions)
+
+0. **The shelter test first** (B14; see the priorities above).
 
 1. **Learning by watching what worked** (A4): a youngster sees an elder eat or do something and what came of it, not only the
    movement. Then copying what worked, and trust (A5). This is the step that can turn rare discoveries into common ones.
