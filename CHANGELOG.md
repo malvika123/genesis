@@ -6,7 +6,7 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 - **Hunters no longer die out, and live where their prey is:** newcomers from the wider population arrive while a hunter kind is
   rare (entry 39: kinds alive 20 → 36 of 36); hunters start and arrive within reach of plant-eaters (entry 40: predators now eat
-  plant-eaters, and hominin predator deaths rose about fourfold). , , , .
+  plant-eaters, and hominin predator deaths rose about fourfold). `--no-rescue`, `--rescue-rate`, `--hunters-anywhere`, `--prey-radius`.
 - **Mating fixed and the female cycle on by default:** a female waits only if she conceived; a male can mate again within hours;
   the cycle now costs about 17% of births, not 71% (research log entry 38). `--old-mating`, `--male-wait`, `--no-cycle`.
 - **Feeling others' pain and fear is its own inherited gene** (`vf`), separate from copying them (`im`), so that long runs show
