@@ -1,0 +1,8 @@
+Written 13 Nov 2026 BEFORE the runs. Same 24 seeds x 100 days as entries 42, 44, 46; baseline = entry 46 at 1/7 (identical to
+--old-plant-pull on this commit). Also the brain probe (brain-diag.js) on seeds 1 and 3 x 40 days, before and after.
+Primary outcome: share of deaths from hunger (entry 46: 37%).
+1. Fewer pointless eats: the brain's own chance of "eat" when starving on fruit rises from 0.1-0.3% toward or above a fresh
+   brain's 5%. (If it does not rise, the other two faults dominate.)
+2. Hunger's share of deaths falls (37% -> about 30% or less); hominins survive somewhat better (population change less
+   negative than -3.1% a year; fewer than 6 of 24 worlds die out).
+3. Illness's share rises a little (fewer hunger deaths to crowd it out).

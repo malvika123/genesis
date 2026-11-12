@@ -1,0 +1,2 @@
+fruit  starving moments on it 275 | brain alone: P(eat) 0.000 (1/19 = 0.053), mean rank of eat 15.1 of 18 | chose eat 1.5% | when it ate, energy rose 100% avg change 20.62
+roots  starving moments on it 37 | brain alone: P(eat) 0.072 (1/19 = 0.053), mean rank of eat 6.2 of 18 | chose eat 83.8% | when it ate, energy rose 16% avg change 2.15

@@ -1412,6 +1412,36 @@ The brain's learning is doing what it should with this experience: "eat" mostly 
 
 **Strength.** Moderate (two worlds; the brain probe is exact). **Lesson:** ask the brain what it believes before changing how it learns — here it learned the truth of a world whose rules were wrong.
 
+### 49. The brains expect ten times too much — so everything disappoints them — Nov 2026
+
+**Version.** Unreleased · the grass fix: commit `83b3e09` (`--old-plant-pull` restores it — checked: identical worlds); tools `tools/analysis/brain-diag.js`, `learning-signal.js`. Run by Claude. Step 2 of the brains priority.
+
+**Data.** [Reality checks with the grass fix](../data/findings/49-inflated-expectations/table-grass-fix.txt) · brain probes [before](../data/findings/49-inflated-expectations/brain-before-grass-fix-seed-1.txt) and [after](../data/findings/49-inflated-expectations/brain-after-grass-fix-seed-1.txt) the grass fix (seed 1; seed 3 alongside) · [with no poisonous berries](../data/findings/49-inflated-expectations/brain-no-poison-probe-seed-1.txt) · learning signal: [seed 1](../data/findings/49-inflated-expectations/learning-signal-seed-1.txt), [seed 3](../data/findings/49-inflated-expectations/learning-signal-seed-3.txt) · [the prediction, written before](../data/findings/49-inflated-expectations/prediction-written-before.txt).
+
+**Question.** Entry 48: brains rate "eat" below a fresh brain's chance, even on fruit that always feeds them. Which fault teaches them that?
+
+**Guess 1 — the grass pull (tested, wrong).** The hungry pull to try plants no longer fires on grass (realistic: hominins cannot digest grass; kept). Prediction written first: the brain's chance of "eat" on fruit rises toward 5%; hunger's share of deaths falls to about 30%. **Result: no change.** Brain alone on fruit 0.0–0.3% before and after; hunger 37% → 39% of deaths; population change −3.1% a year both; worlds died out 6 → 5. Prediction wrong.
+
+**Guess 2 — poisonous berries (probe, wrong).** The same two worlds with every poisonous berry removed after they were built (a probe, not a change): brains still rate "eat" on fruit at 0.0–0.4%.
+
+**Measuring instead of guessing — the learning signal.** The signal a brain learns from (d: how much better or worse things went than it expected), in two worlds over 40 days:
+
+| | World 1 | World 3 |
+|---|---|---|
+| The brain's own estimate of how good its situation is (V, average) | **2.34** | **3.14** |
+| What its rewards are actually worth (average reward ÷ (1 − 0.97)) | about 0.32 | about 0.24 |
+| Learning signal, average over all hominins and steps | −0.08 | −0.12 |
+| Signal right after a starving hominin on fruit ate | −0.99 (2 cases) | **+0.18** (10 cases) |
+| Signal right after it did anything else there | −0.43 | **−0.96** |
+
+**Result.** The brains' expectations are about **ten times too high**, so on average things go worse than expected (the signal is negative about half the time and on average). Eating fruit when starving does feel better than the alternatives (+0.18 against −0.96), but it is chosen so rarely that little is learned from it, while the steady disappointment pushes down whatever is done often — and the inborn pulls make "eat" one of those, often where there is nothing to eat.
+
+**A likely cause, in the code (to be tested).** "A big, unexpected success sticks after one try": when the signal is above 0.5, learning is up to four times stronger (), and the brain's estimate of value learns from that same boosted signal, while bad surprises get at most 1.5 times (fear). So good surprises count up to four times as much as bad ones, and expectations creep up.
+
+**Interpretation.** This is a fault in the learning machinery, not in the world: one-try learning of a striking event is real (dopamine bursts), but it should not inflate the brain's general expectation of how good things are. Next: let the one-try boost act on what the brain does, not on its estimate of value; check that expectations then match rewards; then measure eating and hunger again.
+
+**Strength.** Moderate (two worlds; the measurements are exact; the cause is a reading of the code, not yet tested). **Lesson:** after two wrong guesses, measure the signal the brain learns from.
+
 ---
 
 ## Open questions (next tests)

@@ -1,0 +1,3 @@
+after eat    n 2 | mean d -0.988 | d<0 50%
+after other  n 209 | mean d -0.431 | d<0 58%
+ALL hominins, all steps: mean d -0.081 | d<0 47% | mean reward 0.0096 | mean V 2.34 (if rewards average about 0.0096 the true value is about 0.32)
