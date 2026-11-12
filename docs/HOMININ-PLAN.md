@@ -80,9 +80,15 @@ owner chose that order:
    changed, against band-mates who never heaped), prediction written first.
 2. **A small reality-check suite** on worlds already saved (child survival, birth spacing, life expectancy, population change,
    causes of death), each with its clock — measurement, so that a scale change can be judged.
-3. **The scale.** What one simulated animal stands for and how big the world is (a whole planet holds a few dozen animals; a
+3. **Speed** (the owner, 12 Nov: "far ahead and close to our reality, no matter what"). Realistic scale is impossible at about
+   11 s of computing per simulated day, and Genesis chose rich creatures over many creatures. In order: (a) measure where the
+   time goes (profile one world); (b) fix the hotspots with **identical results** (the identical-worlds check proves nothing
+   changed); (c) move the brains to the graphics card with WebGPU, which keeps the page in the browser with no installation
+   (verify before relying on it); (d) a rented server by the hour for the big runs. If real speed ever needs a tool outside the
+   "plain JavaScript, no dependencies" rule, the owner decides, with the trade-off shown first.
+4. **The scale.** What one simulated animal stands for and how big the world is (a whole planet holds a few dozen animals; a
    year is 3 days; two clocks). The real fix for hunters dying out.
-4. **The brains.** First their short memory for cause and effect: the record of what it just did halves in about 3 steps
+5. **The brains.** First their short memory for cause and effect: the record of what it just did halves in about 3 steps
    (`GAM` 0.97 × `LAM` 0.8, `src/config.js`), while a day is 96 steps and a life about 130 nights; the value estimate reaches
    about 33 steps. Then learning by watching what worked (Phase B).
 

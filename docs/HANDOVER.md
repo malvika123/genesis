@@ -8,7 +8,7 @@ and `docs/MODEL.md` for the formal model description (ODD protocol).
 
 ## Where things stand (12 November 2026) — start here
 
-**Priorities after Phase A (owner, 12 Nov, Fable's order): what the shelter heap was worth; a small reality-check suite; the scale (what one animal stands for; the two clocks); the brains (short memory for cause and effect, then learning by watching). Go live right after the mating tests; hunter fixes are the next release** — see the plan. **The whole plan is in `docs/HOMININ-PLAN.md`** (phases A–E, rewritten 12 Nov); what is found but not built is in
+**Priorities after Phase A (owner, 12 Nov, Fable's order): what the shelter heap was worth; a small reality-check suite; speed (profile, hotspots with identical results, WebGPU brains); the scale (what one animal stands for; the two clocks); the brains (short memory for cause and effect, then learning by watching). Go live right after the mating tests; hunter fixes are the next release** — see the plan. **The whole plan is in `docs/HOMININ-PLAN.md`** (phases A–E, rewritten 12 Nov); what is found but not built is in
 `docs/BACKLOG.md`. A review brief for a stronger model is in `docs/REVIEW-BRIEF.md`.
 
 - `develop` (live) has everything up to research log entry 19. `percept` has the research log through entry 36 and the code for
