@@ -67,22 +67,28 @@ The inborn tendency to learn from others is bred out across generations in two s
 founders; learned skill does not rise; a bigger founding band (25, 40, 80) does not change survival per hominin and has not made
 discoveries more common; nobody has kept a fire going or built a shelter.
 
-## Priorities after Phase A (the owner, 12 November 2026)
+## Priorities after Phase A (the owner, 12 November 2026; reordered after Fable's opinion the same day)
 
 Breadth is now the risk, not sloppiness: many small realistic pieces while the two big structural questions — the brains and
-the scale — wait. So, in this order:
+the scale — wait. Fable (asked for an independent opinion) argued that brains and scale are one problem, that the reality checks
+are measurement and must come before a scale change, and that the brain's short memory for cause and effect was missing. The
+owner chose that order:
 
-1. **The brains.** First the shelter test (backlog B14: did a hominin learn "carry branches, then a better night"? — trace,
-   ask its brain before and after, then replay the same world with the heap giving no shelter), done *before* learning by
-   watching so that copying cannot muddy it. Then learning by watching what worked (Phase B), designed with that answer.
-2. **The scale.** Decide what one simulated animal stands for and how big the world is (a whole planet now holds a few dozen
-   animals; a year is 3 days, and processes run on two clocks — review finding 1). Hunters dying out, the 3%-a-year boom and
-   hunger with food in reach may all trace back to it; the hunter fixes of Phase A treat the symptom.
-3. **The reality checks.** One suite of pass/fail checks against real numbers (child survival, birth spacing, life
-   expectancy, population change, activity budget, causes of death), each with its clock, run on 24+ worlds, so that "is
-   Genesis realistic?" has a number.
+1. **The shelter, cheaply first.** What was the heap worth? A heap of 7 gives cover 0.375, below the 0.4 needed to keep dry and
+   to feel safe to sleep (`src/forest.js`, `src/climate.js`, `src/sim.js`); under trees it adds nothing; nights are warm. If it gave
+   nothing, the heaps were chance. Only if it helped: the trace (B14) and a frozen-brain test (same inputs, only the cover reading
+   changed, against band-mates who never heaped), prediction written first.
+2. **A small reality-check suite** on worlds already saved (child survival, birth spacing, life expectancy, population change,
+   causes of death), each with its clock — measurement, so that a scale change can be judged.
+3. **The scale.** What one simulated animal stands for and how big the world is (a whole planet holds a few dozen animals; a
+   year is 3 days; two clocks). The real fix for hunters dying out.
+4. **The brains.** First their short memory for cause and effect: the record of what it just did halves in about 3 steps
+   (`GAM` 0.97 × `LAM` 0.8, `src/config.js`), while a day is 96 steps and a life about 130 nights; the value estimate reaches
+   about 33 steps. Then learning by watching what worked (Phase B).
 
-**Ways of working that go with them:** add fewer things and test claims that matter on 24+ worlds, with one primary outcome
+Paused: the communication detector (B12) — its own check fails, and it is breadth.
+
+**Ways of working that go with them:** add fewer things and test claims that matter on 24+ worlds (a floor: for die-out rates even 24 worlds leave a wide range), with one primary outcome
 named in advance; go live in smaller, more frequent steps (the live site lagged 18 entries behind and the owner met the
 hunter problem there first); have a fresh session, with no history in the project, repeat the science review.
 
@@ -90,8 +96,9 @@ hunter problem there first); have a fresh session, with no history in the projec
 
 ### Phase A — finish this round and put it live (12 November; in progress)
 
-Added 12 Nov: the mating fix (B1, B7), the gene split (B10), the hunter fixes (B15: newcomers from the wider population, then more
-prey per hunter, each tested), before going live.
+Added 12 Nov: the mating fix (B1, B7), the gene split (B10). **Go live as soon as the mating tests are logged** (the owner, after
+Fable's advice); the hunter fixes (B15: newcomers from the wider population, then more prey per hunter, each tested) are the next
+small release.
 
 1. The 100-year run (8 worlds × 300 days, all fixes in; started 12 Nov 13:25) → log as an entry.
 2. First test of the communication detector (`tools/analysis/talk-detector.js`), with its false-alarm and planted-sound checks → log.
