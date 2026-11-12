@@ -2,7 +2,7 @@
 // (research log entry 48). Usage (from the genesis folder): node tools/analysis/brain-diag.js SEED DAYS
 // Copyright (c) 2026 Malvika Sen. MIT License.
 const path=require('path'),root=process.cwd();const {createEngine}=require(path.join(root,'tools/engine'));const X=require(path.join(root,'tools/experiment-core'));
-const seed=+process.argv[2],days=+process.argv[3];const S=X.fromArgs({});const E=createEngine({brain:S.brain});E.setSeed(seed);E.reset(S.cfg);
+const seed=+process.argv[2],days=+process.argv[3];const fl={};for(const v of process.argv.slice(4))if(v.startsWith("--"))fl[v.slice(2)]=true;const S=X.fromArgs(fl);const E=createEngine({brain:S.brain});E.setSeed(seed);E.reset(S.cfg);
 const fo=E.forest(),it=E.items(),W=E.W,EAT=9,NA=E.NA;const z=new Float32Array(NA);
 const R={};const add=(k)=>R[k]=R[k]||{n:0,pLearned:0,rankEat:0,choseEat:0,ateGained:0,ateTries:0,dE:0};
 for(let t=0;t<days*E.DAY;t++){
