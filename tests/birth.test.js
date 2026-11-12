@@ -58,7 +58,9 @@ test('ready adults are drawn to mate: conception comes sooner with the inborn pu
   const wait = (lust, seed) => {
     const E = createEngine();
     E.setSeed(seed);
-    E.reset({ predators: 0, people: 60, lust });
+    // the female cycle off: this test is about the inborn pull to mate; with the cycle on (since entry 44) whether a woman
+    // conceives within one day depends mostly on her cycle, which hides the pull's effect
+    E.reset({ predators: 0, people: 60, lust, cycle: false });
     const ad = E.state().ag.filter((a) => a.sp === 0 && a.age >= a.S.smat && a.age < a.lf * a.S.fert),
       women = ad.filter((a) => a.sex),
       when = new Map();

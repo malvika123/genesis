@@ -1,0 +1,1 @@
+no-back-replay   starving, food 1-2 squares away: 0 moments | 3 hours later closer NaN% (on food NaN%, energy up NaN%) | same NaN% | farther NaN%

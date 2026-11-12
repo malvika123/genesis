@@ -1,0 +1,1 @@
+no-back-replay   starving, food 1-2 squares away: 311 moments | 3 hours later closer 8% (on food 5%, energy up 11%) | same 91% | farther 2%

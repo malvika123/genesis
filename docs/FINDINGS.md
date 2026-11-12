@@ -1486,6 +1486,37 @@ Causes of death after: hunger 30%, old age 23%, predators 15%, illness 14%, fire
 
 **Strength.** Moderate–strong (24 worlds; a large, consistent change; predictions and primary outcome written first; the mechanism measured directly). **Lesson:** when every fix of the world leaves the same symptom, look at how the creatures learn — here, two wrong guesses about the world, then one measurement of the brain, found it.
 
+### 51. Replaying the path to a reward backwards: no measurable effect — Nov 2026
+
+**Version.** Unreleased · the change: commit `23d54e1` (`--no-back-replay` restores none — checked: identical worlds, including the reorganised sleep replay); tools `tools/analysis/going-to-food.js`, `starving-doing.js`. Run by Claude. Step 3 of the brains priority (memory for cause and effect).
+
+**Data.** [Reality checks with backward replay](../data/findings/51-backward-replay/table.txt) · going to food, seed 1: [old value learning](../data/findings/51-backward-replay/going-to-food-old-value-seed-1.txt), [without](../data/findings/51-backward-replay/going-to-food-without-seed-1.txt) and [with backward replay](../data/findings/51-backward-replay/going-to-food-with-seed-1.txt) (seed 3 alongside) · [the prediction, written before](../data/findings/51-backward-replay/prediction-written-before.txt).
+
+**Question.** After entry 50, do starving hominins go to food a square or two away, and if not, is the brain's short memory for cause and effect the reason? A hominin walks about 0.15 squares a step, so crossing one square (about 3 km) takes about 7 steps, while its record of what it just did halves in about 3.
+
+**Measured first.** Starving hominins with food 1–2 squares (3–6 km) away: three hours later, 5–8% were closer and 91–95% at the same distance, with the old or the new value learning. In one world over 40 days they spent 34% of those moments walking, 28% asleep (31% very sleepy).
+
+**Real-world basis.** After a reward, rats replay the path that led there backwards, and that replay goes with learning which actions were worth it (rodent studies, e.g. PMC7610948); hippocampal replay depends on dopamine (eLife 2024).
+
+**Added.** Each hominin keeps the last 16 steps (about 4 hours: what it sensed, what it did, what followed); at a good surprise (reward above 0.3, the threshold already used for striking memories) that path is replayed backwards, each step credited with how good the next one looked. 16 steps and the threshold are **assumptions**.
+
+**Test.** The reality checks, 24 worlds × 100 days; baseline entry 50. Prediction written first: hunger's share falls a little (to 25–29%), or no measurable change.
+
+| | Entry 50 | With backward replay |
+|---|---|---|
+| Deaths from hunger | 30% | 30% |
+| Population change a year | −0.3% ✓ | +0.1% ✓ |
+| Worlds that died out | 2 | 2 |
+| Born who reach 15 / life expectancy | 58.5% / 21.3 | 58.6% / 21.5 |
+| Deaths from illness | 14.2% | 11.6% |
+| Checks passing | 5 of 7 | 5 of 7 |
+
+**Result. No measurable effect** (the prediction's "no change" end). Two-world probe: 8% closer after three hours with and without.
+
+**Interpretation.** Memory for cause and effect is not what keeps starving hominins from food a few kilometres away. Food 3–6 km off is a 2–3 hour walk — an ordinary foraging distance for an ape — and what a hominin can see or remember of food that far away is the more likely limit (not yet measured). Kept: the mechanism is real, it does no harm, and it has a switch.
+
+**Strength.** Moderate for "no effect" (24 worlds). **Lesson:** a measured problem (slow to reach food) can still have a different cause than the one that seemed obvious.
+
 ---
 
 ## Open questions (next tests)

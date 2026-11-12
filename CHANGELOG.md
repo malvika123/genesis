@@ -4,6 +4,8 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Backward replay** at a good surprise: the last 4 hours replayed backwards so the steps before a reward are credited
+  (research log entry 51; no measurable effect). `--no-back-replay`.
 - **The brains' expectations fixed** (research log entry 50): the estimate of value learns from good and bad surprises alike;
   hominins eat the food under their feet, live longer, and bands hold steady; 5 of 7 reality checks pass. `--boosted-value`.
 - The hungry pull to try plants no longer fires on grass (entry 49). `--old-plant-pull`.

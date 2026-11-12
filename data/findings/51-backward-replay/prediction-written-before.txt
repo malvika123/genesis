@@ -1,0 +1,5 @@
+Written 13 Nov 2026 BEFORE the run. Same 24 seeds x 100 days; baseline entry 50 (identical to --no-back-replay on this commit).
+Primary outcome: share of deaths from hunger (entry 50: 30%).
+Expectation, honestly uncertain: a quick two-world check showed no clear change in going to food 3-6 km away (8% vs 8% closer
+after 3 hours). Prediction: hunger's share falls a little (30% -> 25-29%), or no measurable change. Other checks unchanged (5 of 7).
+If no change: keep or drop decided by the owner's rules (kept only if the mechanism is evidence-based and does no harm).

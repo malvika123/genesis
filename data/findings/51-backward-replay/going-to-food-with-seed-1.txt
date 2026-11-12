@@ -1,0 +1,1 @@
+new rule         starving, food 1-2 squares away: 184 moments | 3 hours later closer 8% (on food 8%, energy up 12%) | same 92% | farther 0%
