@@ -86,6 +86,23 @@ verified online, built with a switch, and tested on its own before the next, in 
 
 ## 4. Open questions and measurements
 
+- **A communication detector (the owner's idea, 12 Nov): did they start to exchange words and understand each other?**
+  Genesis already has a partial one (`src/talk.js`, `meaning()`: a sound counts as meaning something when it is used at
+  least 25 times, at least a quarter of those in one situation, at least 1.6 times as often as people are usually in it;
+  hearers' reactions: come closer, move away, answer). Weaknesses: a fixed threshold with no statistical test and no
+  correction for the thousand sounds tried (chance alone will label some as meaningful); it records hearers' reactions
+  but cannot show that they *use* the sound (Lowe et al. 2019: a signal can carry information without the listener using
+  it); nothing measures exchanges or shared understanding. Build as an analysis tool (no change to the world):
+  (1) speaker side — sound vs situation with a binomial test and a false-discovery correction, plus mutual information;
+  (2) hearer side — a playback experiment as in vervet research: replay the sound into a hominin's brain in a neutral
+  moment against silence and against another equally common sound, read-only, and see whether its action odds change,
+  and consistently across hearers (Macedonia & Evans 1993 criteria: production specificity and perception specificity);
+  (3) exchange — call-and-answer chains within a few steps, against chance; (4) shared code — how many hominins both
+  use and respond consistently to the same sound, and whether children pick it up; (5) controls — it must report
+  nothing on blank brains and shuffled data. Report in plain words, never more than the data support: none / sounds
+  spreading but no meaning / speaker-side meaning / meaning with response / exchange. Expect nothing for a long time:
+  voice control starts ape-like.
+
 - **Are discoveries repeated and passed on, or one-offs?** The counts so far are the *first time* something happened
   (cracking a nut, a sharp flake, cutting meat, a fire); many happen by chance on day 1. Measure how often each is
   repeated, by how many hominins, and whether it spreads from one to others — that is what culture is.
