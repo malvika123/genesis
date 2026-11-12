@@ -12,10 +12,10 @@ test on the same worlds; never tune toward survival.
 | # | What | Why it matters | Status |
 |---|---|---|---|
 | B1 | **built 12 Nov** (`--old-mating`) — After **any** mating the female enters the 4-year nursing wait, even if she did not conceive (`src/sim.js`, mating: `fem.cd = S.cd`) | Harmless while every mating led to pregnancy; with the female cycle, most matings miss the fertile days and lock her out for 4 years with no baby — births fell to a third | to fix: the wait starts only with a pregnancy |
-| B2 | After mating, a male cannot mate again for 0.1 year (about 36 days) | No source; real chimpanzee males mate several times a day | verify online, then fix |
-| B3 | A fixed population cap blocks mating (`popK + kids < S.cap`) | Not biology: real populations are limited by food, disease and fertility | remove (audit, 11 Nov) |
+| B2 | **built 12 Nov as B7** — After mating, a male cannot mate again for 0.1 year (about 36 days) | No source; real chimpanzee males mate several times a day | verify online, then fix |
+| B3 | **done** (merged into `percept` 12 Nov; `--people-cap` restores) — A fixed population cap blocks mating (`popK + kids < S.cap`) | Not biology: real populations are limited by food, disease and fertility | remove (audit, 11 Nov) |
 | B4 | A comment above `child()` (`src/creatures.js`) says learned habits can pass on | The code passes on only inborn wiring (correct); the comment is wrong and misleading | correct the comment |
-| B5 | A sudden jolt of discomfort below 15% energy | No source | **done** on branch `refeed-wip` (smooth hunger + refeeding signal at 20%); test running |
+| B5 | **done** (merged 12 Nov) — A sudden jolt of discomfort below 15% energy | No source | **done** on branch `refeed-wip` (smooth hunger + refeeding signal at 20%); test running |
 | B6 | **Two clocks** (review finding 1): a day is 96 steps, a year 288 (3 days). Hunger, decay, fire, mood run on the day clock; pregnancy, nursing, life on the year clock — a hominin starves in 14 days = 4.8 life-years; a female cycle lasts 7 hours | Not wrong in itself, but no rule says which process uses which clock, and reality checks "per year" mix them | Assign every duration to a clock, list them in `ASSUMPTIONS.md`, state each reality check with its clock |
 | B7 | **built 12 Nov** (`--male-wait`) — The male's wait after mating (0.1 year = 28.8 steps) is as long as a whole female cycle (28.4 steps), so each male can mate about once per cycle; fix with B1 | Chimpanzee males mate several times a day (hours, not weeks) | Put the wait on the day clock (verify a number online first), with B1, then retest the cycle |
 | B8 | **labelled 12 Nov** (page now says "not tested against chance" and "not compared with how often they do so anyway"; the real fix waits for the detector, B12) — The page's translator says a sound "means" something with no test of chance (≥25 uses, ≥25% in one situation, ≥1.6× baseline, over ~1,000 sounds) | Honest-minds rule | Use `talk-detector.js`'s tested result, or word it "used more often when… (not tested)" |
@@ -33,11 +33,11 @@ test on the same worlds; never tune toward survival.
 |---|---|---|---|
 | W1 | Female cycle: 36 days, receptive 13, fertile near ovulation (`--cycle`, off) | Births fell to a third — caused by B1 (and perhaps B2) | B1, B2; then test again |
 | W2 | Animals of East Africa 2.5 million years ago (`--africa-animals`, off) | Hunters starved: Genesis has about 9× too many hunters for its prey | A1 |
-| W3 | Founders' practice before the world begins (on in the runner) | Did not reduce hunger; drowning doubled | review: learning by watching (A4) may be the real fix |
-| W4 | Mother's pull to keep her nursing child near | 31 alive vs 25, better in 9 of 12 worlds; fire deaths and drownings halved | log as an entry; merge |
-| W5 | Lasting mood | No clear effect (with the faulty cycle on); retest without the cycle running | results due |
-| W6 | Starving: smooth hunger + refeeding signal at 20% (and 25%) | 24 worlds: no measurable effect on survival or hunger at either end; 20% vs 25% within noise — keep, at 20% (evidence) | merge; then **each hominin inherits its own threshold in 20–25%** (the owner's idea: individuals differ; selection may favour one end) |
-| W7 | Ape-like care: only mothers feed their young (`--human-care` restores foragers') | test queued | results due |
+| W3 | **off by default since 12 Nov** — Founders' practice before the world begins (on in the runner) | Did not reduce hunger; drowning doubled | review: learning by watching (A4) may be the real fix |
+| W4 | **merged into `percept` 12 Nov, goes live with Phase A** — Mother's pull to keep her nursing child near | 31 alive vs 25, better in 9 of 12 worlds; fire deaths and drownings halved | log as an entry; merge |
+| W5 | **merged into `percept` 12 Nov, goes live with Phase A** — Lasting mood | No clear effect (with the faulty cycle on); retest without the cycle running | results due |
+| W6 | **merged into `percept` 12 Nov, goes live with Phase A** — Starving: smooth hunger + refeeding signal at 20% (and 25%) | 24 worlds: no measurable effect on survival or hunger at either end; 20% vs 25% within noise — keep, at 20% (evidence) | merge; then **each hominin inherits its own threshold in 20–25%** (the owner's idea: individuals differ; selection may favour one end) |
+| W7 | **merged into `percept` 12 Nov, goes live with Phase A** — Ape-like care: only mothers feed their young (`--human-care` restores foragers') | test queued | results due |
 
 ## 3. Verified, not built yet (in a sensible order)
 
