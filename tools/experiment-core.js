@@ -109,7 +109,7 @@
     { key: 'oldHunger', kind: 'on', def: false, flag: 'old-hunger', label: 'Hunger and thirst only add a pull, as other urges do (the old rule); otherwise they come first, with food or water in reach, and quieten exploring and copying', cfg: true },
     { key: 'hungerPull', kind: 'num', def: 6, flag: 'hunger-pull', label: 'How strongly hunger and thirst win when food or water is in reach (an assumption)', min: 0, max: 20, cfg: true },
     { key: 'naive', kind: 'on', def: false, flag: 'naive-founders', label: 'Founders start with blank minds (the old rule); otherwise they practise their kind’s ordinary life for a few years before the world begins', cfg: true },
-    { key: 'practiceDays', kind: 'num', def: 10, flag: 'practice-days', label: 'Days of founders’ practice before the world begins (an assumption; 10 days is about 3 years)', min: 0, max: 100, cfg: true },
+    { key: 'practiceDays', kind: 'num', def: 0, flag: 'practice-days', label: 'Days of founders’ practice before the world begins (off by default: it did not reduce hunger and drowning doubled; 10 is about 3 years)', min: 0, max: 100, cfg: true },
     { key: 'lust', kind: 'num', def: 2, flag: 'lust', label: 'Inborn pull of a ready adult toward a ready partner (0: none; an assumption, tested at 1 and 3)', min: 0, max: 10, cfg: true },
     { key: 'leaves', kind: 'off', def: true, flag: 'no-leaves', label: 'Early hominins can live on leaves when fruit is short (off: they get nothing from them)', cfg: true },
     { key: 'leafValue', kind: 'num', def: 0.64, flag: 'leaf-value', label: 'Food from leaves a minute, as a share of ripe fruit (evidence: 0.48–0.64)', min: 0, max: 1, cfg: true },

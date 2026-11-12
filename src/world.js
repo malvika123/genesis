@@ -15,8 +15,8 @@ const plural = (n) =>
 // ordinary way, from what their bodies feel, in a practice before the world begins: the world is built from its seed
 // and runs for a few years in which nobody can die (as children are kept alive by their mothers), then it is built
 // again from the same seed, identical, and each founder keeps the brain it trained. Learned knowledge is never
-// inherited, so every child is still born knowing nothing. cfg.practiceDays sets how long (the experiment runner, the
-// Lab and the page ask for 10; the engine on its own, as in quick tests, builds blank-minded founders); cfg.naive skips it.
+// inherited, so every child is still born knowing nothing. cfg.practiceDays sets how long; it is 0 (off) by default
+// everywhere — in a test it did not reduce hunger and drowning doubled (the owner, 12 Nov 2026); cfg.naive skips it.
 function reset(cfg = {}) {
   const days = cfg.naive ? 0 : cfg.practiceDays ?? 0,
     seed = SEED;
