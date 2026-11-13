@@ -92,6 +92,7 @@ function buildWorld(cfg) {
   SOC.carryAge = cfg.carryAge ?? 2; // years carried (an assumption: constant contact to about 7 months; tested 0.6-4)
   SOC.walkE = cfg.freeWalking !== true; // walking costs energy by body weight (off: free on the flat, the old rule)
   SOC.walkJ = cfg.walkCost ?? 4; // net J per kg per m (people about 2, chimpanzees about 8: Sockol et al. 2007)
+  SOC.founderElders = cfg.founderElders ?? 0.12; // share of founders who are elders (foragers about 0.12; fewer in early hominins, no number)
   SOC.growBodies = cfg.fixedBodies !== true; // hominin bodies grow with age and differ by sex (off: one body for all, the old rule)
   SOC.massF = cfg.femaleMass ?? 30; // adult female weight, kg (McHenry 1992: 29-30; tested at the ends)
   SOC.massM = cfg.maleMass ?? 42; // adult male weight, kg (McHenry 1992: 41-45; dimorphism 1.2-1.55 tested)
@@ -259,7 +260,7 @@ function makeBand(ppl = ag.filter((a) => a.sp === 0)) {
     // ages are set for modern foragers and scaled to the kind's own life history (early hominins grow up
     // and age faster), and nobody starts older than its own lifespan
     yr = TY * (S.mat / (12 * TY)),
-    nE = Math.round(0.12 * n),
+    nE = Math.round(SOC.founderElders * n), // elders' share (foragers; old adults were rarer among early hominins: realism audit, gap 15)
     nC = Math.round(0.32 * n),
     nT = Math.round(0.12 * n);
   ppl.forEach((a, j) => {
