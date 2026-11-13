@@ -92,6 +92,14 @@ owner chose that order:
    (`GAM` 0.97 × `LAM` 0.8, `src/config.js`), while a day is 96 steps and a life about 130 nights; the value estimate reaches
    about 33 steps. Then learning by watching what worked (Phase B).
 
+**The path to the first eureka (13 Nov, after entries 56–58):** youngsters do not learn nut cracking or stick digging by watching,
+because these skills are so easy that nearly every one finds them alone (entry 58). A tradition can only appear for a skill that is
+hard to find alone. So the eureka attempt is: **make nut cracking realistically hard** (backlog A26: young chimpanzees need 3–7 years;
+nobody is stopped or guided; a strike succeeds with a chance that grows with the hominin's own practice; every number from evidence,
+tested at both ends) → run long enough for two generations (150+ days, 24 worlds, only hominins born in the run) → test with copying
+on against off and the means counted (entry 58's design) → check it outlives its inventor. **Order:** the remaining review fixes
+(fire-rule switch, paired comparisons) → the website (below) → this eureka attempt → the band-size test again.
+
 **Website for visitors (the owner, 13 Nov; freeze exception):** after the review fixes, a Discoveries panel (who discovered what, when, and who learned it from whom) and a short first-visit guide ("What am I looking at?"). Then the band-size test again.
 
 **Next (the owner, 13 Nov, after entries 53–54): making skills spread comes before the scale step** — copying sequences of actions and learning over years, as young apes do; then the band-size test again (a real test of the hypothesis, which needs skills to spread). Freeze lifted for this item only.
