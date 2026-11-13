@@ -826,6 +826,8 @@ function sim() {
           }
           // thick forest is slow going
           if (!fish) a.acc -= 0.25 * cover(idx(X, Y));
+          // walking costs energy (realism audit, gap 8): a hominin pays for the distance it walks
+          if (a.sp === 0 && SOC.walkE && ERA === 'hominin') a.e -= walkCost(a) * Math.hypot(MV[act][0], MV[act][1]);
           a.x = X;
           a.y = Y;
           if (pit[idx(X, Y)]) {
@@ -1462,6 +1464,17 @@ function bodyKg(a) {
 }
 // size relative to a forager of about 52 kg (config.js)
 const bodySize = (a) => (a.sp === 0 && SOC.growBodies && a.S.growF ? bodyKg(a) / 52 : a.S.size || 1);
+// The energy of walking one square (about 3 km) as a share of the store (realism audit, gap 8). Net cost of walking:
+// people about 2 J per kg per m, chimpanzees about 4 times more (human walking about 75% cheaper: Sockol et al. 2007, PNAS);
+// early bipedal hominins likely in between (SOC.walkJ, default 4, tested at 2 and 8). The day's whole budget is Kleiber's
+// resting rate (70 × kg^0.75 kcal) × SOC.pal (1.7, an assumption), and the store drains by S.dE of it a day, so one
+// square costs S.dE × (walking kcal ÷ day's kcal) of the store. --free-walking: walking on the flat costs nothing (old rule).
+function walkCost(a) {
+  const kg = bodyKg(a),
+    kcal = (SOC.walkJ * kg * 3000) / 4184,
+    day = SOC.pal * 70 * kg ** 0.75;
+  return a.S.dE * BURN(a) * (kcal / day);
+}
 const MEAL = (a) => (a.sp === 0 && SOC.kleiber ? 1 / bodySize(a) : 1),
   BURN = (a) => (a.sp === 0 && SOC.kleiber ? bodySize(a) ** -0.25 : 1);
 // Can this creature eat leaves here? Early hominins (S.leaf, config.js), where the trees are thick enough
@@ -1508,7 +1521,7 @@ const hunterSeen = (x) => {
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { growBodies: true, massF: 30, massM: 42, swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { walkE: true, walkJ: 4, pal: 1.7, growBodies: true, massF: 30, massM: 42, swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {

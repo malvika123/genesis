@@ -107,6 +107,8 @@
     { key: 'eightWalks', kind: 'on', def: false, flag: 'eight-walks', label: 'The eight directions count as eight separate choices, so an undecided brain mostly walks (the old rule)', cfg: true },
     { key: 'fireWatching', kind: 'on', def: false, flag: 'fire-watching', label: 'The old built-in rule: watching someone work at fire raises the watcher\'s fire skill (off by default since entry 61)', cfg: true },
     { key: 'noFireWatching', kind: 'on', def: false, flag: 'no-fire-watching', label: 'No fire watching (now the default; kept so older commands still run)', cfg: true },
+    { key: 'freeWalking', kind: 'on', def: false, flag: 'free-walking', label: 'Walking on the flat costs no energy (the old rule)', cfg: true },
+    { key: 'walkCost', kind: 'num', def: 4, flag: 'walk-cost', label: 'Energy to walk, J per kg per metre (people about 2, chimpanzees about 8)', min: 0, max: 12, cfg: true },
     { key: 'fixedBodies', kind: 'on', def: false, flag: 'fixed-bodies', label: 'One body for every hominin, whatever its age or sex (the old rule; otherwise bodies grow, and males are heavier)', cfg: true },
     { key: 'femaleMass', kind: 'num', def: 30, flag: 'female-mass', label: 'Adult female hominin weight, kg (fossils: about 29-30)', min: 15, max: 60, cfg: true },
     { key: 'maleMass', kind: 'num', def: 42, flag: 'male-mass', label: 'Adult male hominin weight, kg (fossils: about 41-45)', min: 15, max: 80, cfg: true },
