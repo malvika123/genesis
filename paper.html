@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Is a Bigger Band the Key? · Genesis</title>
+<meta name="description" content="Research note from Genesis: whether a bigger founding band of simulated early hominins discovers more, and why skills did not spread.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a single reading column (about 68 characters) like a research note; tables and the chart may run a little wider. */
+:root {
+  --ground: #f6f8f5;      /* page: off-white with a faint acacia-green bias */
+  --surface: #ffffff;     /* tables, chart panel */
+  --ink: #1d2420;         /* text */
+  --muted: #5a6660;       /* captions, labels */
+  --rule: #d7dfd9;        /* hairlines */
+  --accent: #2f6b4f;      /* acacia green: links, chart marks */
+  --zero: #a8441f;        /* the zero line in the chart: the line the result must clear */
+  --note-bg: #edf3ef;
+  --display: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --body: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #121614; --surface: #1a201d; --ink: #e5ebe7; --muted: #9aa8a0; --rule: #2e3833;
+    --accent: #7fc4a2; --zero: #f08a5d; --note-bg: #1c2621; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #121614; --surface: #1a201d; --ink: #e5ebe7; --muted: #9aa8a0; --rule: #2e3833;
+  --accent: #7fc4a2; --zero: #f08a5d; --note-bg: #1c2621; color-scheme: dark;
+}
+body {
+  background: var(--ground); color: var(--ink); font-family: var(--body); font-size: 16.5px; line-height: 1.62;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+main { max-width: 44rem; margin: 0 auto; padding-block: 3rem 4rem; display: grid; gap: 1.1rem; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; line-height: 1.2; margin: 0; }
+h1 { font-size: 2.3rem; font-weight: 600; letter-spacing: -0.01em; }
+h2 { font-size: 1.35rem; font-weight: 600; margin-top: 1.6rem; padding-top: 1.2rem; border-top: 1px solid var(--rule); }
+h3 { font-size: 1.05rem; font-weight: 600; margin-top: 0.6rem; }
+p, ul { margin: 0; }
+ul { padding-left: 1.2rem; display: grid; gap: 0.35rem; }
+a { color: var(--accent); text-underline-offset: 2px; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.byline { color: var(--muted); font-size: 0.93rem; }
+.label { font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.note { background: var(--note-bg); border-radius: 6px; padding: 0.8rem 1rem; font-size: 0.93rem; }
+.answer { font-size: 1.12rem; font-weight: 500; }
+.tablewrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; background: var(--surface); font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 0.45rem 0.65rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-weight: 600; color: var(--muted); font-size: 0.82rem; }
+td.n { font-family: var(--mono); font-size: 0.86rem; white-space: nowrap; }
+caption { caption-side: bottom; text-align: left; color: var(--muted); font-size: 0.82rem; padding-top: 0.4rem; }
+.fail { color: var(--zero); }
+figure { margin: 0.4rem 0 0; background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 1rem; }
+figcaption { color: var(--muted); font-size: 0.85rem; margin-top: 0.5rem; }
+svg text { font-family: var(--mono); font-size: 11px; fill: var(--muted); }
+svg .lbl { fill: var(--ink); font-family: var(--body); font-size: 12px; }
+code { font-family: var(--mono); font-size: 0.85em; }
+.refs li { font-size: 0.9rem; }
+@media (max-width: 480px) { h1 { font-size: 1.8rem; } body { font-size: 16px; } }
+.sitenav { display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.9rem; }
+html { color-scheme: light; }
+</style>
+
+</head>
+<body>
+<main>
+  <nav class="sitenav" aria-label="Site">
+    <a href="./">← The world</a>
+    <a href="research.html">Research</a>
+    <a href="lab.html">Lab</a>
+    <a href="https://github.com/malvika123/genesis" target="_blank" rel="noopener">GitHub</a>
+  </nav>
+  <p class="label">Genesis · research note · draft, 13 November 2026</p>
+  <h1>Is a bigger band the key?</h1>
+  <p class="byline">Malvika Sen · tests in Genesis, an open-source simulation of early hominins in East Africa about 2.5 million years ago · <a href="https://github.com/malvika123/genesis">code and data</a> · <a href="https://malvika123.github.io/genesis/">live world</a></p>
+  <p class="note">Built and analysed with AI assistance (Claude). Every number here comes from the project's research log (entries 36 and 42–54) and the raw data saved with it; every claim about the real world is sourced there. Comments are welcome.</p>
+
+  <h2>Summary</h2>
+  <p>Larger populations are thought to keep and build up more culture, because more people make more discoveries and fewer are lost (Henrich 2004; Kline &amp; Boyd 2010). We asked whether this happens in Genesis, where every hominin has its own small neural network, learns only from what its body feels and what it sees others do, and is told nothing. The world is built from published evidence and passes 5 of 7 checks against real demography.</p>
+  <p class="answer">In Genesis, a bigger band did not discover more kinds of things. Some first discoveries came sooner, as numbers alone would make them, and bigger bands went hungrier. The reason, measured directly: skills did not spread from one hominin to another.</p>
+  <p>This does not test the idea for real hominins. It shows the condition the idea needs, and that copying single actions does not supply it.</p>
+
+  <h2>The question</h2>
+  <p>In models, a larger population keeps more of what is learned because there are more learners to copy and less is lost by chance (Henrich 2004). Across ten Oceanic societies, larger populations had more complex fishing tools (Kline &amp; Boyd 2010). We wanted to ask the question of individuals that learn as animals do, in a world as close to the real one as the evidence allows.</p>
+
+  <h2>The world</h2>
+  <p><strong>Built from evidence.</strong> Hominins about three-quarters of a forager's size with a brain about a third of ours; wild-chimpanzee life history (first birth near 14, fertile to about 50, about 5 years between births, conception in about one cycle in five); mothers who keep their nursing young close and feed only their own; leopard-, wolf- and bear-like hunters living where their prey lives; outbreaks of a contagious illness, deadliest for infants, the old and the starving; fruit, roots, leaves, nuts, meat, wildfire and cooked food.</p>
+  <p><strong>Minds.</strong> Each hominin has a small network (about 20 working units) that chooses among 19 actions and learns from a "better or worse than expected" signal, as dopamine learning does. Only inborn pulls real primates have are built in: hunger, thirst, fear of hunters, a baby's cry, a mother's pull to her young, sleepiness toward trees. The young copy an elder close by, in proportion to how the elder's choice turned out for it.</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Reality check (24 worlds, 33 years)</th><th>Genesis</th><th>Real: wild chimpanzees to foragers</th></tr></thead>
+      <tbody>
+        <tr><td>Born who reach age 15</td><td class="n fail">62%</td><td>35–60% (just above)</td></tr>
+        <tr><td>Life expectancy at birth</td><td class="n">21.7 years</td><td>13–33</td></tr>
+        <tr><td>Years between births, earlier baby alive</td><td class="n">5.2</td><td>5.2–6.0</td></tr>
+        <tr><td>Age at first birth</td><td class="n">15.3</td><td>13.3–14.9 (band to 15.5)</td></tr>
+        <tr><td>Population change a year</td><td class="n">−0.1%</td><td>about stable</td></tr>
+        <tr><td>Deaths from illness</td><td class="n">16%</td><td>15–60% (an assumption: modern outbreaks were partly human viruses)</td></tr>
+        <tr><td>Babies dying in their first year</td><td class="n fail">5%</td><td>11–21%</td></tr>
+      </tbody>
+      <caption>Five of seven pass. Sources for every band are in the project's assumptions register.</caption>
+    </table>
+  </div>
+  <p><strong>Simplified or missing.</strong> A world of 128 × 80 squares of about 3 km; a year squeezed into 3 days; one band of a few dozen, not many groups that meet; brains of a few dozen units, not billions of neurons; hunters kept from dying out by occasional newcomers, a stand-in for a wider population; fire deaths too common and infant deaths too rare. Founders start knowing nothing, while real hominins of that time already made stone tools.</p>
+
+  <h2>Method</h2>
+  <ul>
+    <li><strong>Identical worlds.</strong> A seed fixes each world. Extra founders join from a separate stream of random numbers, so the land, the animals and the first 25 founders are exactly the same with 25, 40 or 80 founders.</li>
+    <li><strong>One change at a time</strong>, each with a switch back to the old rule; switching back reproduces earlier worlds to the last digit.</li>
+    <li><strong>Predictions written before each run</strong> and kept with the data, with the main outcome named in advance.</li>
+    <li><strong>Discovery</strong> is counted as kinds of hard discovery per world (11 kinds: eating meat from a body, bringing down an animal, cutting meat with a sharp stone, eating fire-cooked food, picking up a burning stick, starting a fire with it, feeding a fire, keeping a fire, making fire with sparks, making fire by rubbing, sleeping in a heap of branches) and by the day each first happened.</li>
+    <li><strong>Spreading</strong>: for behaviours seen in one hominin, the rate of doing it for the first time among those who had watched it in their square, against those who never had (the logic of network-based diffusion analysis, Franz &amp; Nunn 2009, in a simple form), under two copying rules.</li>
+  </ul>
+
+  <h2>Results</h2>
+  <figure>
+    <svg viewBox="0 0 560 170" role="img" aria-labelledby="chartTitle" style="width:100%;height:auto;display:block">
+      <title id="chartTitle">Difference in kinds of hard discovery per world, 40 founders minus 25, with 95% ranges, before and after learning by watching</title>
+      <!-- scale: x = 300 + 120 * difference; the axis runs from -1.0 (x=180) to +1.5 (x=480) -->
+      <line x1="180" y1="120" x2="480" y2="120" stroke="var(--rule)" stroke-width="1"/>
+      <g text-anchor="middle">
+        <line x1="180" y1="118" x2="180" y2="124" stroke="var(--muted)"/><text x="180" y="138">−1.0</text>
+        <line x1="240" y1="118" x2="240" y2="124" stroke="var(--muted)"/><text x="240" y="138">−0.5</text>
+        <line x1="300" y1="30" x2="300" y2="124" stroke="var(--zero)" stroke-width="1.5" stroke-dasharray="4 3"/><text x="300" y="138">0</text>
+        <line x1="360" y1="118" x2="360" y2="124" stroke="var(--muted)"/><text x="360" y="138">+0.5</text>
+        <line x1="420" y1="118" x2="420" y2="124" stroke="var(--muted)"/><text x="420" y="138">+1.0</text>
+        <line x1="480" y1="118" x2="480" y2="124" stroke="var(--muted)"/><text x="480" y="138">+1.5</text>
+        <text x="330" y="160">40 founders minus 25: kinds of hard discovery per world</text>
+      </g>
+      <!-- before: +0.46 [-0.41, +1.33] -> x 355.2, 250.8, 459.6 -->
+      <text class="lbl" x="10" y="58">Before learning</text>
+      <text class="lbl" x="10" y="73">by watching</text>
+      <line x1="250.8" y1="62" x2="459.6" y2="62" stroke="var(--accent)" stroke-width="2"/>
+      <circle cx="355.2" cy="62" r="5" fill="var(--accent)"/>
+      <!-- after: +0.33 [-0.55, +1.22] -> x 339.6, 234, 446.4 -->
+      <text class="lbl" x="10" y="98">With it</text>
+      <line x1="234" y1="96" x2="446.4" y2="96" stroke="var(--accent)" stroke-width="2"/>
+      <circle cx="339.6" cy="96" r="5" fill="var(--accent)"/>
+    </svg>
+    <figcaption>The same 24 worlds with 25 and 40 founders. Dots: the average difference; lines: the 95% range. Both ranges cross zero, before and after learning by watching (research log entries 36 and 53).</figcaption>
+  </figure>
+
+  <h3>1. Before the young could learn what worked by watching</h3>
+  <p>The young copied whatever an elder did, however it turned out. With 25 against 40 founders, survival per founder was the same (1.14 against 1.17) and kinds of discovery per world were 4.13 against 4.58, within noise. With 80 founders, 4.58 against 4.42. No effect of size.</p>
+
+  <h3>2. With learning by watching what worked</h3>
+  <p>Two changes to how the hominins learn came first. Their expectations were made to match what they actually get: they had expected about ten times more, which taught them that eating did not pay. And the young now copy an elder close by according to how its choice turned out. Hunger fell from 39% to 17% of deaths, and bands of every size discovered more: with 25 founders, 4.13 → 5.46 kinds per world, and a fire started with a burning stick in 11 → 22 of 24 worlds.</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>24 identical worlds × 60 days</th><th>25 founders</th><th>40 founders</th><th>Difference (95% range)</th></tr></thead>
+      <tbody>
+        <tr><td>Kinds of hard discovery per world</td><td class="n">5.46</td><td class="n">5.79</td><td class="n">+0.33 (−0.55, +1.22)</td></tr>
+        <tr><td>Alive per founder</td><td class="n">0.97</td><td class="n">0.84</td><td class="n">−0.13 (−0.32, +0.05)</td></tr>
+        <tr><td>Hunger deaths per world</td><td class="n">4.1</td><td class="n">10.2</td><td class="n">+6.1 (+4.3, +7.9)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>With 80 founders (12 worlds, against 25): 5.92 against 6.08 kinds; alive per founder 0.82 against 1.15 (−0.33; range −0.64 to −0.02); hunger deaths 24.5 against 3.0 per world. First discoveries came about two weeks sooner with 80 founders: picking up a burning stick earlier in 10 of 12 worlds, eating wildfire-cooked food in 9 of 12, making fire by rubbing in 9 of 12, starting a fire with a burning stick in 8 of 11.</p>
+
+  <h3>3. Do discoveries spread?</h3>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>8 worlds × 60 days</th><th>New copying</th><th>Old copying</th></tr></thead>
+      <tbody>
+        <tr><td>Cracking nuts: hominins who did it</td><td class="n">165</td><td class="n">175</td></tr>
+        <tr><td>…first time after watching / never having watched</td><td class="n">70 / 87</td><td class="n">87 / 80</td></tr>
+        <tr><td>…rate ratio, watched ÷ not (worlds 1–4 / 5–8)</td><td class="n">0.74 / 1.50</td><td class="n">0.75 / 1.46</td></tr>
+        <tr><td>Digging with a stick: hominins who did it</td><td class="n">169</td><td class="n">165</td></tr>
+        <tr><td>…rate ratio (worlds 1–4 / 5–8)</td><td class="n">0.83 / 1.74</td><td class="n">0.99 / 1.74</td></tr>
+      </tbody>
+      <caption>Rarer behaviours (fire, meat, cutting meat) had too few first times to judge.</caption>
+    </table>
+  </div>
+  <p>Easy skills were done by most hominins, about half of them without ever having watched anyone. Watching made no consistent difference, and both copying rules gave the same picture.</p>
+
+  <h2>What it means</h2>
+  <p>In Genesis a bigger band is not the key. More hominins produce some firsts sooner, as more individuals trying things would by chance, but no more kinds of discovery, and they go hungrier, as larger primate groups face more competition for food. The mechanism the idea needs, discoveries spreading from one learner to others and being kept, is absent. Skills are reinvented one hominin at a time, and copying a single action such as "strike" or "eat" does not pass on a sequence such as "pick up a stone, then strike the nut". Real young chimpanzees take years of watching to learn nut cracking.</p>
+  <p class="answer">Without spreading, size does nothing for discovery. With it, the idea remains untested here.</p>
+
+  <h2>Limits</h2>
+  <p>One band, not many groups; 60-day runs (20 simulated years); small brains; a coarse map and a squeezed year; founders who start knowing nothing; 24 or 12 worlds per comparison, enough for effects about the size we looked for but not small ones; a simple spreading measure rather than full network-based diffusion analysis; and two of seven realism checks failing.</p>
+
+  <h2>What could change the answer</h2>
+  <ul>
+    <li>Copying sequences of actions rather than single ones.</li>
+    <li>Years of watching rather than moments.</li>
+    <li>Several groups that meet and exchange members.</li>
+    <li>Longer runs over many generations.</li>
+  </ul>
+  <p>Each can be tested the same way: identical worlds, a switch, a prediction written first.</p>
+
+  <h2>Reproduce it</h2>
+  <p>Everything is in the <a href="https://github.com/malvika123/genesis">repository</a>: the commands, the commit and the data for each result are linked from its research-log entry. The comparisons use <code>tools/experiment.js</code> with <code>--extra-people</code>, then <code>tools/analysis/community-compare.js</code> and <code>first-times.js</code>; spreading uses <code>tools/analysis/spread.js</code>; realism uses <code>tools/analysis/reality-check.js</code>. The full write-up is <code>docs/paper/band-size.md</code> and the method guide <code>docs/METHOD.md</code>.</p>
+
+  <h2>References</h2>
+  <ul class="refs">
+    <li>Franz M, Nunn CL (2009). Network-based diffusion analysis: a new method for detecting social learning. <em>Proc R Soc B</em>.</li>
+    <li>Henrich J (2004). Demography and cultural evolution: the Tasmanian case. <em>American Antiquity</em> 69.</li>
+    <li>Kline MA, Boyd R (2010). Population size predicts technological complexity in Oceania. <em>Proc R Soc B</em>.</li>
+    <li>Schuppli C et al. (2026). Peering in wild chimpanzees, Budongo. Max Planck Institute of Animal Behavior.</li>
+    <li>Life-history, predator, disease and diet sources: the project's assumptions register and research log.</li>
+  </ul>
+</main>
+
+</body>
+</html>
