@@ -72,3 +72,35 @@ newcomers off. One change at a time: (1) density map + background predation + ca
 2. Which numbers above are the weakest, and are there better sources (especially for 2.5 Ma rather than today's Serengeti)?
 3. Should the world shrink to the band's region now, before this step?
 4. What could make the result look right for the wrong reasons?
+
+## Revised after review (14 Nov 2026; `docs/reviews/2026-11-14-fable-scale-review.md`; entries 63–64)
+
+- Diagnosis corrected: hunters were mostly far from prey (position, entry 40) and, before entry 64, fed on adult buffalo too big for
+  them; since entry 64 they take only prey their size and are underfed (0.3–2.5 kg a day against 3.5–4.9).
+- **Clock decided (the owner): option A** — daily needs on the day clock (`docs/ASSUMPTIONS.md`, "The two clocks").
+- Measured densities are inputs (leopard 5.4–5.7 per 100 km², hyena 3.5–11 in woodland, up to about 143); Carbone & Gittleman only
+  as a check. Extinct hunters as a registered range (0 to leopard-like). *Chasmaporthetes* added to the missing hunters.
+- No rule for hyena–hominin contests; no free carcasses (a killer present or a registered delay); encounter rates and deaths by
+  hunters are reported, never targets.
+
+## Step 1 in detail — the prey map, and the hard choice (for a second review)
+
+**The map.** Each square holds background prey, in kg, with a carrying capacity that follows the square's own plant growth (which in
+Genesis already follows rainfall and warmth) — the direction is sourced (Coe, Cumming & Phillipson 1976: large-herbivore biomass rises
+with rainfall and primary production; Fritz & Duncan 1994). The equation could not be obtained, so the **level** is an assumption: the
+mean over savanna squares set to 5,000 kg/km², tested at 1,000 and 10,000 (the range across African parks). It regrows toward its
+capacity at a rate from ungulate production (to source: Coe et al. 1976 give production with biomass). No brains; cheap.
+
+**The hard choice: what a visible animal stands for.** Over a band's range of about 65 km² the map holds about 300,000 kg — thousands
+of antelope-sized animals. The world can afford a few dozen visible animals with brains. Two ways:
+
+- **(i) A visible animal is one animal; visible animals are a sample.** Near each band and each hunter, visible animals are kept at a
+  fixed number (drawn from the map out of sight, returned to it when far from everyone). Each visible kill removes its weight from the
+  map. What hominins see is a thin sample of what is there; the sample size is an invented number that sets encounters.
+- **(ii) A visible animal is a herd.** Each visible plant-eater carries a herd's weight and head count (antelope herds of a sourced size,
+  buffalo larger); it moves and flees as one; a kill takes one animal and leaves one carcass; the herd shrinks and is refilled from
+  the map. Hominins and hunters meet herds at about the real rate for the map's density; herd sizes need sources (e.g. impala 6–100,
+  buffalo tens to hundreds).
+
+The step's test (prediction first): switch off gives identical worlds; mass balance within 1%; standing biomass inside the registered
+range; hunter intake and hominin deaths reported, not targeted.
