@@ -67,6 +67,13 @@ function buildWorld(cfg) {
   // --hominin-pair-bonds restores lasting bonds, couples and helping fathers (the old rule). Modern people keep them.
   SOC.homPair = cfg.homininPairBonds === true;
   KBIO[0].pair = ERA === 'hominin' && !SOC.homPair ? 0 : 1;
+  // How long infants nurse (realism audit, gap 9): early Homo about 3-4 years (Tacail et al. 2019); A. africanus mostly milk
+  // for about a year, then on and off with the seasons (Joannes-Boyau et al. 2019); chimpanzees about 4. Default 4 years;
+  // --nursing-years tests the shorter australopith end (nursing, the mother's pause in cycling, and being a "baby" scale together)
+  if (ERA === 'hominin' && cfg.nursingYears !== undefined) {
+    KBIO[0].cd = Number(cfg.nursingYears) * TY;
+    KBIO[0].wn = Number(cfg.nursingYears) / (KBIO[0].mat / TY);
+  }
   if (ERA === 'hominin' && cfg.leafValue !== undefined) KBIO[0].leaf = Number(cfg.leafValue); // test the ends of its range
   SOC.hungerFirst = cfg.oldHunger !== true; // off: hunger and thirst only add a pull, as other urges do (the old rule)
   SOC.hungerK = cfg.hungerPull === undefined ? 6 : Number(cfg.hungerPull); // how strongly need wins (an assumption; test the ends)
