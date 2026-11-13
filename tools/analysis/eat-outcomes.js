@@ -1,11 +1,13 @@
 // Every time a hominin chooses to eat: what was there, and what happened (energy, pain, illness).
 // (research log entry 48). Usage (from the genesis folder): node tools/analysis/eat-outcomes.js SEED DAYS
+// Fixed 13 Nov 2026: reads the current list of creatures each step (Genesis makes a new list as creatures are born and die;
+// before, a list saved at the start was read, so only founders were seen — research log entry 57).
 // Copyright (c) 2026 Malvika Sen. MIT License.
 const path=require('path'),root=process.cwd();const {createEngine}=require(path.join(root,'tools/engine'));const X=require(path.join(root,'tools/experiment-core'));
 const seed=+process.argv[2],days=+process.argv[3];const S=X.fromArgs({});const E=createEngine({brain:S.brain});E.setSeed(seed);E.reset(S.cfg);
 const fo=E.forest(),it=E.items(),st=E.state(),W=E.W,EAT=9;const O={};const add=(k,o)=>{const r=O[k]=O[k]||{n:0,gain:0,pain:0,nothing:0,lostE:0};r.n++;r[o]++};
 for(let t=0;t<days*E.DAY;t++){
-  const prev=new Map();for(const a of st.ag){if(a.sp!==0||a.dead||a.asleep)continue;const h=a.y*W+((a.x%W)+W)%W;
+  const prev=new Map();for(const a of E.state().ag){if(a.sp!==0||a.dead||a.asleep)continue;const h=a.y*W+((a.x%W)+W)%W;
     const k=fo.fruit[h]>0.05?'fruit':it.ROOT[h]>0.05?'roots':it.meatAt(a.x,a.y,0)?'meat':st.food[h]>0.1?'grass only':st.poison[h]>0.05?'poison plant':'bare ground';prev.set(a,{k,e:a.e,p:a.painA})}
   E.sim();
   for(const [a,p] of prev){if(a.act!==EAT)continue;const o=a.painA>p.p+0.02?'pain':a.e>p.e+0.05?'gain':a.e<p.e-0.01?'lostE':'nothing';add(p.k,o)}}

@@ -1387,6 +1387,8 @@ Causes of death at 1 in 7: hunger 37%, old age 20%, fire 14%, predators 10%, dro
 
 ### 48. What the brain believes: eating does not pay — so even on fruit it will not eat — Nov 2026
 
+> **Correction (13 Nov, entry 57):** the tool used here read a list of creatures saved at the start of the run; Genesis makes a new list as creatures are born and die, so **only the founders were measured**, never hominins born later. The eat-outcomes table (test 2) describes founders' meals only; the brain probe (test 1) used the current list and is unaffected.
+
 **Version.** Unreleased · the live settings after entry 47; tools `tools/analysis/brain-diag.js`, `eat-outcomes.js`. Run by Claude. Step 1 of the brains priority.
 
 **Data.** [The brain alone, seed 1](../data/findings/48-what-the-brain-believes/brain-alone-seed-1.txt), [seed 3](../data/findings/48-what-the-brain-believes/brain-alone-seed-3.txt) · [every eat choice and what happened, seed 1](../data/findings/48-what-the-brain-believes/eat-outcomes-seed-1.txt).
@@ -1522,6 +1524,8 @@ Causes of death after: hunger 30%, old age 23%, predators 15%, illness 14%, fire
 
 ### 52. Learning by watching what worked, up close: hunger falls from 30% to 17% of deaths — Nov 2026
 
+> **Correction (13 Nov, entry 57):** the tool used here read a list of creatures saved at the start of the run; Genesis makes a new list as creatures are born and die, so **only the founders were measured**, never hominins born later. The probe of young hominins' eating (first table) covered only children among the founders; the 24-world reality checks are unaffected.
+
 **Version.** Unreleased · the change: commit `d569f83` (`--copy-moves`: the old copying; `--copy-far`: copy what worked from anyone in sight — both checked: identical worlds); tool `tools/analysis/young-eat.js`. Run by Claude. Step 4 of the brains priority.
 
 **Data.** [Reality checks after](../data/findings/52-copy-what-worked/table.txt) · young hominins' eating, seed 1: [old copying](../data/findings/52-copy-what-worked/young-eat-old-copying-seed-1.txt), [copy what worked from afar](../data/findings/52-copy-what-worked/young-eat-worked-far-seed-1.txt), [and only up close](../data/findings/52-copy-what-worked/young-eat-worked-close-seed-1.txt) (seed 3 alongside) · [the prediction, written before](../data/findings/52-copy-what-worked/prediction-written-before.txt).
@@ -1589,6 +1593,8 @@ At 80 founders (12 worlds, against 25): discoveries 5.92 against 6.08; alive per
 
 ### 54. Do discoveries spread by watching? Not measurably — they are reinvented alone — Nov 2026
 
+> **Correction (13 Nov, entry 57):** the tool used here read a list of creatures saved at the start of the run; Genesis makes a new list as creatures are born and die, so **only the founders were measured**, never hominins born later. Every number here is about founders only — who had no one to learn from. Re-measured with everyone in entry 57.
+
 > **Revised 13 Nov after the second independent review** (`docs/reviews/2026-11-13-fable-review-2.md`): this measure was never validated on a case where spreading is known to happen, and has confounds (opportunity, survivorship, founders, pooled rates); and fire-making skill *does* spread by a built-in rule that it did not measure (`watchFire`, backlog B20). Read the result as "no spreading detected for nut cracking and stick digging with an unvalidated measure", not as "skills do not spread". The band-size conclusion drawn here is withdrawn pending the tests in backlog B20–B22.
 
 **Version.** Unreleased · commit `f3e547c`; tool `tools/analysis/spread.js`. Run by Claude.
@@ -1617,6 +1623,8 @@ At 80 founders (12 worlds, against 25): discoveries 5.92 against 6.08; alive per
 
 ### 55. Watching a whole sequence: a hint that skills pass on — with an unvalidated measure — Nov 2026
 
+> **Correction (13 Nov, entry 57):** the tool used here read a list of creatures saved at the start of the run; Genesis makes a new list as creatures are born and die, so **only the founders were measured**, never hominins born later. Founders only; re-measured in entry 57.
+
 **Version.** Unreleased · the change: commit `c0254bc` (`--no-copy-sequence` restores none — checked: identical worlds); tool `tools/analysis/spread.js`. Run by Claude. First step of "making skills spread" (the owner moved it ahead of the scale step).
 
 **Data.** With sequence copying: [worlds 1–4](../data/findings/55-copying-sequences/seq-a.json), [5–8](../data/findings/55-copying-sequences/seq-b.json) · without: [1–4](../data/findings/55-copying-sequences/off-a.json), [5–8](../data/findings/55-copying-sequences/off-b.json) · [the prediction, written before](../data/findings/55-copying-sequences/prediction-written-before.txt).
@@ -1640,6 +1648,8 @@ At 80 founders (12 worlds, against 25): discoveries 5.92 against 6.08; alive per
 **Strength.** Weak–moderate (8 worlds, paired; consistent direction; unvalidated instrument). **Lesson:** a difference between two arms measured the same way can be read before the instrument is trusted for absolute claims — but only as a hint.
 
 ### 56. Checking the spreading tool on a skill whose spread is known: unbiased, but noisy — Nov 2026
+
+> **Correction (13 Nov, entry 57):** the tool used here read a list of creatures saved at the start of the run; Genesis makes a new list as creatures are born and die, so **only the founders were measured**, never hominins born later. The controls ran on founders only; repeated with everyone in entry 57.
 
 **Version.** Unreleased · `tools/analysis/spread.js` with a planted behaviour (`--plant=S:B`). Run by Claude. Second review, finding 2.
 

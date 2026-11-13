@@ -5,6 +5,8 @@
 // Franz & Nunn 2009). Run with the new copying and with --copy-moves: sharing a place raises both alike, so a larger gap with the
 // new copying is the sign that watching itself passes the behaviour on (research log entry 54).
 // Usage (from the genesis folder): node tools/analysis/spread.js SEEDS DAYS OUT.json [switches]
+// Fixed 13 Nov 2026: reads the current list of creatures each step (Genesis makes a new list as creatures are born and die;
+// before, a list saved at the start was read, so only founders were seen — research log entry 57).
 // Copyright (c) 2026 Malvika Sen. MIT License.
 const fs = require('fs'), path = require('path'), root = process.cwd();
 const { createEngine } = require(path.join(root, 'tools/engine'));
@@ -34,13 +36,13 @@ for (const seed of seeds) {
   const did = new Map(), saw = new Map(); // id -> Set of behaviours done / watched
   const W0 = {}; for (const b of B) W0[b] = { sw: 0, sn: 0, fw: 0, fn: 0 };
   const born = new Set(); const holder = new Set(); pr = seed * 7919 + 1;
-  for (const a of st.ag) if (a.sp === 0 && PS !== null && prand() < 0.15) { holder.add(a.id); did.set(a.id, new Set(['planted'])); } // a few start with it (already have it: their first showing is not a new adopter)
+  for (const a of E.state().ag) if (a.sp === 0 && PS !== null && prand() < 0.15) { holder.add(a.id); did.set(a.id, new Set(['planted'])); } // a few start with it (already have it: their first showing is not a new adopter)
   const seenB = new Set(), seenIds = new Set();
-  for (const a of st.ag) if (a.sp === 0) seenIds.add(a.id);
+  for (const a of E.state().ag) if (a.sp === 0) seenIds.add(a.id);
   for (let t = 0; t < days * E.DAY; t++) {
     const pre = new Map();
-    for (const a of st.ag) if (a.sp === 0 && !a.dead && !did.has(a.id) && t > 0 && !saw.has(a.id) && !seenIds.has(a.id)) born.add(a.id);
-    for (const a of st.ag) if (a.sp === 0 && !a.dead) { seenIds.add(a.id); const h = a.y * W + ((a.x % W) + W) % W; pre.set(a, { nuts: a.nuts || 0, hand: a.hand, root: it.ROOT[h] > 0.05, cook: fi.COOK[h] > 0.05, meat: !!it.meatAt(a.x, a.y, 0) }); }
+    for (const a of E.state().ag) if (a.sp === 0 && !a.dead && !did.has(a.id) && t > 0 && !saw.has(a.id) && !seenIds.has(a.id)) born.add(a.id);
+    for (const a of E.state().ag) if (a.sp === 0 && !a.dead) { seenIds.add(a.id); const h = a.y * W + ((a.x % W) + W) % W; pre.set(a, { nuts: a.nuts || 0, hand: a.hand, root: it.ROOT[h] > 0.05, cook: fi.COOK[h] > 0.05, meat: !!it.meatAt(a.x, a.y, 0) }); }
     E.sim();
     // what each one did this step
     const now = [];
