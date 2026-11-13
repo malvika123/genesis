@@ -1,0 +1,8 @@
+Written 13 Nov 2026 BEFORE the runs (commit in ./commit), after fixing the stale creature list (entries 54-56 saw founders only).
+Part 1, validation with everyone (8 worlds x 100 days, --born-only): planted behaviour, positive (--plant=0.002:0.0003) clearly
+above 1 in most worlds; negative (--plant=0:0.0003) about 1, above 1 in about half the worlds.
+Part 2, 12 worlds x 100 days, --born-only: copy by visible result (new) against by surprise (--copy-by-surprise).
+Primary outcome: watched/never ratio for cracking nuts and digging with a stick, per world, among hominins born in the run.
+1. Among the young born in the run, watching raises first times (ratio above 1 in most worlds) with the new copying.
+2. More so than with the old copying.
+Honest uncertainty: the tool is noisy (entry 56); 12 worlds may not separate the two rules.

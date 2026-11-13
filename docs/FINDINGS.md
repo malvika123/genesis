@@ -1670,6 +1670,36 @@ At 80 founders (12 worlds, against 25): discoveries 5.92 against 6.08; alive per
 
 **Strength.** Moderate (8 worlds per control; the known answers recovered). **Lesson:** test the instrument before reading the measurement — and log the failed attempts at testing it too.
 
+### 57. Youngsters born in the run: those who watched start cracking nuts more often — but being near nuts may explain it — Nov 2026
+
+**Version.** Unreleased · commit `88e282f`: copying by what visibly came of the elder's choice (`--copy-by-surprise`: the old rule; checked: identical worlds); three tools fixed (below). Run by Claude. Second review, findings 2–3.
+
+**Data.** Tool check with everyone: [positive](../data/findings/57-youngsters-watching/pos-a.json), [negative](../data/findings/57-youngsters-watching/neg-a.json) (`-b` files alongside) · comparison: [new copying, worlds 1–6](../data/findings/57-youngsters-watching/new-a.json), [7–12](../data/findings/57-youngsters-watching/new-b.json); [old copying](../data/findings/57-youngsters-watching/old-a.json) · [reality checks with copying by visible result](../data/findings/57-youngsters-watching/reality-checks-copy-by-result.txt) · predictions: [spreading](../data/findings/57-youngsters-watching/prediction-written-before.txt), [copying](../data/findings/57-youngsters-watching/prediction-copy-by-result-written-before.txt).
+
+**A bug found first.** Three analysis tools (`spread.js`, `young-eat.js`, `eat-outcomes.js`) read a list of creatures saved at the start of a run; Genesis makes a new list as creatures are born and die, so **only the founders were ever measured**. Entries 48, 52 and 54–56 are marked. Fixed: the tools read the current list each step. The other tools, and every reality check and band-size comparison, read it correctly.
+
+**Changed.** The young copy an elder's choice by what visibly came of it (a reward of about 0.3, a good meal, counts fully; the 0.3 is an assumption), not by the elder's hidden surprise — a skilled elder is rarely surprised (second review, finding 3).
+
+**Test 1 — the tool, with everyone born in the run** (8 worlds × 100 days, `--born-only`, planted behaviour). Positive control (spreads only by watching, true ratio about 8): **11.3 and 13.4**. Negative control (watching does nothing, true ratio 1): **0.85 and 0.75**, above 1 in 2 of 8 worlds. The tool finds real spreading clearly and reads a little low (about 0.8) when there is none.
+
+**Test 2 — do the young who watched start sooner?** 12 worlds × 100 days, only hominins born in the run at risk; new against old copying. Prediction written first: (1) ratio above 1 in most worlds for nuts and stick digging with the new copying; (2) more so than with the old.
+
+| Born in the run | Nuts: ratio (worlds 1–6 / 7–12) | above 1 | Stick digging: ratio | above 1 |
+|---|---|---|---|---|
+| New copying (by visible result) | **1.34 / 1.56** | **9 of 12** | 1.16 / 0.69 | 6 of 11 |
+| Old copying (by surprise) | 1.50 / 1.07 | 8 of 12 | 1.34 / 1.03 | 9 of 12 |
+| No spreading (tool check) | 0.85 / 0.75 | 2 of 8 | | |
+
+Rarer behaviours (picking up a burning stick, eating meat) gave large ratios (2.4–17) under both rules, from few first times.
+
+**Result.** (1) **Held for nuts** (9 of 12 worlds; ratios 1.3–1.6 against about 0.8 with no spreading); **not for stick digging**. (2) **Not supported**: the old copying gives about the same.
+
+**The catch (second review, finding 2.4).** Watching someone crack nuts means being in a square with nuts and stones — the means. The planted control needed no place, so it cannot separate *watching* from *being near nuts*; the same holds for burning sticks (near fires) and meat (near carcasses). Next: count risk time only when a youngster has the means at hand (standing on nuts with a stone), and see whether watching still matters.
+
+**Reality checks with copying by visible result** (24 worlds; tool unaffected by the bug): born who reach 15 back inside the band (58.7%); against the sourced ranges 3 of 7 pass; but hunger 17% → 23% of deaths and 3 worlds died out (1 before). That run also added sequence copying (entry 55) against entry 52's baseline: **unpaired** — which change did what is not yet known (backlog B23).
+
+**Strength.** Weak–moderate: the first sign that young hominins who watched start a skill more often, in most of 12 worlds, with a checked tool — but not yet separated from where they were. **Lesson:** a tool can be valid and still answer a different question than the one asked.
+
 ---
 
 ## Open questions (next tests)

@@ -1,0 +1,147 @@
+{
+ "seeds": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6
+ ],
+ "days": 100,
+ "flags": {
+  "copy-by-surprise": true
+ },
+ "options": {
+  "born-only": true
+ },
+ "rows": [
+  {
+   "behaviour": "nuts",
+   "worlds": 6,
+   "doers": 293,
+   "firstAfterWatching": 80,
+   "firstNeverWatched": 85,
+   "ratePer1000StepsWatched": 0.536,
+   "ratePer1000StepsNot": 0.358,
+   "ratio": 1.5
+  },
+  {
+   "behaviour": "stick digging",
+   "worlds": 6,
+   "doers": 368,
+   "firstAfterWatching": 76,
+   "firstNeverWatched": 162,
+   "ratePer1000StepsWatched": 1.284,
+   "ratePer1000StepsNot": 0.955,
+   "ratio": 1.34
+  },
+  {
+   "behaviour": "cooked food",
+   "worlds": 6,
+   "doers": 106,
+   "firstAfterWatching": 7,
+   "firstNeverWatched": 63,
+   "ratePer1000StepsWatched": 0.246,
+   "ratePer1000StepsNot": 0.111,
+   "ratio": 2.21
+  },
+  {
+   "behaviour": "burning stick",
+   "worlds": 6,
+   "doers": 152,
+   "firstAfterWatching": 19,
+   "firstNeverWatched": 98,
+   "ratePer1000StepsWatched": 0.741,
+   "ratePer1000StepsNot": 0.208,
+   "ratio": 3.56
+  },
+  {
+   "behaviour": "meat",
+   "worlds": 4,
+   "doers": 73,
+   "firstAfterWatching": 9,
+   "firstNeverWatched": 29,
+   "ratePer1000StepsWatched": 1.706,
+   "ratePer1000StepsNot": 0.097,
+   "ratio": 17.53
+  },
+  {
+   "behaviour": "cutting meat",
+   "worlds": 2,
+   "doers": 16,
+   "firstAfterWatching": 3,
+   "firstNeverWatched": 7,
+   "ratePer1000StepsWatched": 0.438,
+   "ratePer1000StepsNot": 0.037,
+   "ratio": 11.95
+  },
+  {
+   "behaviour": "planted",
+   "worlds": 0,
+   "doers": 0,
+   "firstAfterWatching": 0,
+   "firstNeverWatched": 0,
+   "ratePer1000StepsWatched": 0,
+   "ratePer1000StepsNot": 0,
+   "ratio": null
+  }
+ ],
+ "perWorld": {
+  "nuts": [
+   1.47,
+   1.19,
+   1.53,
+   2.48,
+   0.63,
+   1.72
+  ],
+  "stick digging": [
+   1.84,
+   0.75,
+   1.3,
+   1.65,
+   1.2,
+   1.53
+  ],
+  "cooked food": [
+   0,
+   7.68,
+   14.69,
+   0,
+   0.94,
+   2.48
+  ],
+  "burning stick": [
+   0,
+   2.06,
+   0.98,
+   3.39,
+   2.78,
+   6.03
+  ],
+  "meat": [
+   null,
+   9.78,
+   null,
+   19.79,
+   null,
+   null
+  ],
+  "cutting meat": [
+   null,
+   7.37,
+   null,
+   null,
+   null,
+   null
+  ],
+  "planted": [
+   null,
+   null,
+   null,
+   null,
+   null,
+   null
+  ]
+ }
+}

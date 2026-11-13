@@ -1,0 +1,9 @@
+Written 13 Nov 2026 BEFORE the runs (commit in ./commit). Copying by what visibly came of the elder's choice (new) against
+copying by its hidden surprise (--copy-by-surprise).
+A. Spreading: 8 worlds x 100 days, spread.js --born-only (only hominins born in the run at risk; entry 56: the tool is unbiased
+   but noisy). Primary outcome: watched/never ratio for cracking nuts and digging with a stick, per world.
+   1. With the new copying, the ratio is above 1 in more worlds than with the old, for both skills.
+   2. Honest uncertainty: the measure is noisy (entry 56: 0.4-2 per world with no spreading); a clear difference is unlikely
+      with 8 worlds unless the effect is large.
+B. Reality checks, 24 worlds x 100 days, against entry 52's run (copying by surprise, without sequence copying): hunger's share of
+   deaths about the same or a little lower (17% in entry 52); checks passing unchanged (2 of 7 sourced, 5 of 7 ours).
