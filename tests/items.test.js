@@ -54,13 +54,35 @@ test('a stone hit against a nut breaks the shell and feeds the person; bare hand
   const bare = it.nut[cell];
   E.sim();
   assert.ok(it.nut[cell] > bare - 1e-3, 'empty hands cannot open a nut');
+  // an expert's hands (cracking is a learned skill: backlog A26); even an expert fails sometimes
   p.hand = 1;
-  p.e = 40;
-  const e0 = p.e;
-  E.sim();
+  p.nsk = 1;
+  let tries = 0;
+  while (p.nuts === 0 && tries < 20) {
+    p.hand = 1;
+    p.e = 40;
+    E.sim();
+    tries++;
+  }
+  assert.equal(p.nuts, 1, 'an expert opens a nut within a few strikes');
   assert.ok(it.nut[cell] < bare, 'the nut is used up');
-  assert.ok(p.e > e0 + 10, 'the nut meat gives energy');
-  assert.equal(p.nuts, 1);
+  assert.ok(p.e > 50, 'the nut meat gives energy');
+});
+
+test('cracking nuts is learned by one\'s own strikes: a young child never succeeds, and practice raises the skill', () => {
+  const { E, it, p, cell, will } = setup((i, it) => it.nut[i] > 0.3);
+  will(E.A_STRIKE);
+  p.age = 2 * E.TY; // two years old: too young to crack a nut (chimpanzees start at about 3.5)
+  const before = it.nut[cell];
+  for (let k = 0; k < 30; k++) {
+    p.hand = 1;
+    p.e = p.w = 90;
+    E.sim();
+  }
+  assert.equal(p.nuts, 0, 'a two-year-old never opens a nut');
+  assert.ok(it.nut[cell] > before - 1e-3, 'and the nuts stay');
+  assert.equal(p.nutTry, 30, 'every strike on a nut is counted');
+  assert.ok(p.nsk > 0.05 && p.nsk < 0.2, 'practice raises its skill a little: ' + p.nsk);
 });
 
 test('animals have no hands', () => {

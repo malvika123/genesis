@@ -73,6 +73,11 @@ function buildWorld(cfg) {
   SOC.mood = cfg.mood !== false; // off: no lasting mood (the old rule)
   SOC.oneMove = cfg.eightWalks !== true; // on: the eight directions count as eight separate choices (the old rule)
   SOC.fireWatch = cfg.fireWatching === true && cfg.noFireWatching !== true; // off by default (the owner, after entry 59): fire skill only from one's own practice; --fire-watching restores the built-in rule that watching fire work raises it
+  SOC.hardNuts = cfg.easyNuts !== true; // a strike on a nut succeeds with a chance grown by own practice (off: every strike works, the old rule)
+  SOC.nutP0 = cfg.nutBeginner ?? 0.02; // a beginner's chance a strike opens a nut (an assumption: tested at 0.005 and 0.10)
+  SOC.nutCeil = 0.83; // an expert's chance (sourced per nut, applied per strike: Berdugo et al. 2024)
+  SOC.nutG = 1 - Math.pow(0.2, 1 / (cfg.nutSessions ?? 500)); // strikes on nuts to reach 80% of the way to expert (an assumption: 150-1500)
+  SOC.copyNuts = cfg.noNutCopying !== true; // a test switch: copying on, but nothing copied from a strike on a nut
   SOC.copying = cfg.noCopying !== true; // a test switch: with it, nobody copies anyone (no learning by watching at all)
   SOC.copyByResult = cfg.copyBySurprise !== true; // copy by what visibly came of the elder's choice (off: by its hidden surprise)
   SOC.copySeq = cfg.copySequence !== false; // youngsters watching learn from an elder's whole path to a good result (off: none)

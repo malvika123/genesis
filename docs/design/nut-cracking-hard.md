@@ -63,3 +63,20 @@ the separate random stream.
    a youngster practise more — and so learn faster — or is the test bound to find nothing?
 4. What would make a positive result convincing to a primatologist, and what would be a false positive?
 5. Anything missing or wrong in the evidence?
+
+## Revised after the checkpoint-1 review (13 Nov 2026; `docs/reviews/2026-11-13-fable-review-3-nut-design.md`)
+
+- **`g` fixed in practice units**: 500 strikes on nuts to get 80% of the way to expert (range 150–1,500), from about 3.5 years of
+  practice, never calibrated from simulated behaviour. Years to skill will be reported as a result, not a target. (Finding 1.)
+- **Main outcome changed** to strikes on nuts per 1,000 steps with the means at hand, ages 3.5–10, born in the run; an attempts
+  counter `nutTry` added. Skilled = 0.5, fixed. (Finding 2.)
+- **A nut-specific arm**: `--no-nut-copying` keeps all copying but copies nothing from a strike on a nut (neither the single act
+  nor the sequence that led to it). The claim rests on "on" against this arm. (Finding 3.)
+- **Ages**: no success before 3.5 years; strikes before then count as practice (the separate actions develop by 2.5). Infants
+  getting kernels from others (real: Inoue-Nakamura & Matsuzawa 1997) is **not** built in this step — one change at a time; it is
+  the next step if this one finds nothing. (Finding 4.)
+- **Burn-in**: the main outcome counts only hominins born after the first one in the world reached skill 0.5. (Finding 5.)
+- **Units and registration**: 0.83 registered as sourced per nut, applied per strike; every number in `docs/ASSUMPTIONS.md`;
+  skill 0 at birth, never inherited; the first-nut log line no longer claims "nobody showed them how". (Findings 6–7.)
+- **Evidence corrected**: 3,882 bouts by 21 chimpanzees (not 3,672), 83.2% / 8.2% / 8.7% (checked in the preprint); Koops et al.
+  2022 added.

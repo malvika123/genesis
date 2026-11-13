@@ -484,7 +484,7 @@ function sim() {
       notePath(a, a.xl, lastAct, r);
       if (r > 0.3) {
         // youngsters watching in the same square learn from the whole sequence that led to it (brain.js: copySequence)
-        if (SOC.copySeq && S.imit && SOC.copying)
+        if (SOC.copySeq && S.imit && SOC.copying && (SOC.copyNuts || !(lastAct === A_STRIKE && a.nutT === tick - 1)))
           for (const o of G[idx(a.x, a.y)] || [])
             if (o !== a && o.sp === 0 && !o.asleep && !o.dead && o.has && o.age < o.S.mat && o.age >= o.S.mat * o.S.wn * 0.5)
               copySequence(o, a.path, S.imit * 3 * (o.g.im ?? 1) * Math.min(1, r));
@@ -513,6 +513,7 @@ function sim() {
       if (a.stress > 0.5) mod *= 0.7;
       a.da = d;
       a.daAct = lastAct; // which choice this surprise was about (others watching can learn from it: copy what worked)
+      a.daNut = lastAct === A_STRIKE && a.nutT === tick - 1; // it was a strike on a nut (for the --no-nut-copying test arm)
       a.lastR = r; // and what visibly came of it (a meal, a hurt): what others can see
       a.mod = mod;
       // The one-try boost and fear make a striking moment shape what the brain does — but its estimate of how good things are
@@ -636,7 +637,8 @@ function sim() {
           // --copy-by-surprise: the old rule.
           const o = SOC.copyByResult ? clamp((tch.lastR ?? 0) / 0.3, -1, 1) : clamp(tch.da ?? 0, -1, 1),
             close = !SOC.copyClose || (tch.x === a.x && tch.y === a.y);
-          if (o && close && tch.daAct !== undefined && tch.daAct !== A_SLEEP) imitate(a, tch.daAct, rate * (1 - cf) * o);
+          if (o && close && tch.daAct !== undefined && tch.daAct !== A_SLEEP && (SOC.copyNuts || !tch.daNut))
+            imitate(a, tch.daAct, rate * (1 - cf) * o);
           if (tch.vc) imitateVoice(a, tch.vc, rate * (1 - cf));
         } else imitate(a, tch.act, rate * (1 - cf), tch.vc);
         if (cf) imitate(a, maj, rate * cf);
@@ -1156,7 +1158,8 @@ function sim() {
         if (sk > 0.15 && rnd() < sk) a.bonus[6] += 0.02 * (1 - sk); // smoke rising from the wood
         if (rnd() < (a.rub >= 4 ? 0.0004 : 0) + 0.6 * sk * sk && ignite(i, 0.08)) fireMade(a, 'rub');
         else if (a.rub >= 2) firePractice(a, 0.004); // only steady, sustained rubbing teaches anything
-      } else if (a.hand === 1 && nut[i] > 0.05) {
+      } else if (a.hand === 1 && nut[i] > 0.05 && !SOC.hardNuts) {
+        // the old rule (--easy-nuts): every strike on a nut opens it
         const b = Math.min(nut[i], 0.25);
         nut[i] -= b;
         a.e = Math.min(100, a.e + b * 110 * MEAL(a));
@@ -1165,6 +1168,29 @@ function sim() {
         if (!firsts.nut) {
           firsts.nut = 1;
           log(a.name + ' cracked a nut open with a stone. Nobody showed them how.');
+        }
+      } else if (a.hand === 1 && nut[i] > 0.05) {
+        // Cracking a nut is hard (backlog A26; docs/design/nut-cracking-hard.md). Experienced Bossou chimpanzees open a
+        // whole kernel in 83% of bouts (Berdugo et al. 2024); young ones start at about 3.5 years and take years to learn
+        // (Inoue-Nakamura & Matsuzawa 1997; Biro et al. 2003); naive wild chimpanzees given nuts and stones never cracked
+        // them (Koops et al. 2022). Here a strike succeeds with a chance that grows only with the hominin's OWN strikes
+        // on nuts (its hands learning), from a beginner's SOC.nutP0 toward 0.83; before 3.5 years it never succeeds.
+        // Nothing is learned by watching here: whatever is copied goes through the brains.
+        a.nutTry = (a.nutTry || 0) + 1;
+        a.nutT = tick;
+        const sk = a.nsk || 0,
+          p = a.age >= 3.5 * TY ? SOC.nutP0 + (SOC.nutCeil - SOC.nutP0) * sk : 0;
+        a.nsk = sk + SOC.nutG * (1 - sk);
+        if (rnd() < p) {
+          const b = Math.min(nut[i], 0.25);
+          nut[i] -= b;
+          a.e = Math.min(100, a.e + b * 110 * MEAL(a));
+          a.nuts++;
+          if (hu > 0.5) a.ev[2] = 'it cracked a nut open with a stone after going hungry on day ' + dn;
+          if (!firsts.nut) {
+            firsts.nut = 1;
+            log(a.name + ' cracked a nut open with a stone, the first in this world.');
+          }
         }
       } else if (a.hand === 1 && stone[i] > 0 && rnd() < 0.05) {
         stone[i]--;
@@ -1456,7 +1482,7 @@ const hunterSeen = (x) => {
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {
