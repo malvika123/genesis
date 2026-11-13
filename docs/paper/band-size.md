@@ -14,6 +14,8 @@ https://malvika123.github.io/genesis/
 > **Update:** the spreading measure was then checked on a skill whose spread is known, a bug limiting it to the founders was fixed,
 > and with everyone born in the run, the means at hand counted and copying switched on and off, no learning by watching was found
 > for nut cracking or stick digging: they are so easy that nearly every youngster finds them alone (entries 56–58).
+> With the built-in fire rule switched off, bigger bands lost their head start on fire-related firsts: it came from that rule (entry 59);
+> without it, bigger bands still made fire by rubbing in more worlds (10 of 12 against 5).
 > **Safe claim: in these tests a bigger band did not make more kinds of first discovery within 20 simulated years, within about one
 > kind. Why, and whether skills spread, is not yet shown.**
 

@@ -1,0 +1,9 @@
+Written 13 Nov 2026 BEFORE the runs (commit in ./commit). Second review, finding 1: is the built-in fire-watching rule why
+fire-related firsts came about two weeks sooner with 80 founders than with 25 (entry 53)?
+12 identical worlds x 60 days, 25 and 80 founders, with fire watching on (default) and off (--no-fire-watching).
+Primary outcome: for fire-related firsts (picking up a burning stick, eating wildfire-cooked food, making fire by rubbing, starting
+a fire with a burning stick), in how many worlds the 80-founder band was first, and by how many days.
+1. With fire watching ON: firsts sooner with 80 founders in most worlds (as entry 53).
+2. With it OFF: still sooner with 80, but less so for making fire by rubbing (the skill the rule spreads); picking up a burning stick
+   and eating cooked food depend on wildfires and numbers, so stay about as before.
+3. Fewer worlds make fire by rubbing with it off.

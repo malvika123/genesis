@@ -1722,6 +1722,32 @@ Rarer behaviours (picking up a burning stick, eating meat) gave large ratios (2.
 
 **Strength.** Moderate (12 worlds per arm; a checked tool; a true negative control; prediction written first). **Lesson:** a measured effect can vanish when the obvious alternative is counted; count it before believing the effect.
 
+### 59. The built-in fire rule, switched off: bigger bands lose their head start — but still make fire in more worlds — Nov 2026
+
+**Version.** Unreleased · commit `9224774`: `--no-fire-watching` turns off the rule that raises every nearby hominin's fire skill when someone works at fire (second review, finding 1); every fire-skill number registered in `docs/ASSUMPTIONS.md`. Run by Claude.
+
+**Data.** Fire watching on: [25 founders](../data/findings/59-fire-watching-rule/on/base25.csv), [80](../data/findings/59-fire-watching-rule/on/plus55.csv) · off: [25](../data/findings/59-fire-watching-rule/off/base25.csv), [80](../data/findings/59-fire-watching-rule/off/plus55.csv) · [the prediction, written before](../data/findings/59-fire-watching-rule/prediction-written-before.txt).
+
+**Question.** Entry 53: fire-related firsts came about two weeks sooner with 80 founders than with 25, read as "numbers alone". The second review found a built-in rule outside the brains that spreads fire skill to everyone within about 6 km of someone working at fire. Is the rule the reason?
+
+**Test.** 12 identical worlds × 60 days, 25 and 80 founders, the rule on and off. Prediction written first: (1) with it on, firsts sooner with 80 in most worlds; (2) with it off, still sooner, but less so for making fire by rubbing; picking up a burning stick and eating cooked food about as before; (3) fewer worlds make fire by rubbing with it off.
+
+| 25 vs 80 founders | Fire watching on | Fire watching off |
+|---|---|---|
+| Picking up a burning stick: sooner with 80 | 8 of 11 worlds, about 11 days | 5 of 9, about 4 days |
+| Eating cooked food | 5 of 9, about 7 days | 2 of 7; **later** on average (+4 days) |
+| Making fire by rubbing | 6 of 9, about 9 days | 2 of 4, about 7 days |
+| Starting a fire with a burning stick | 7 of 11, about 5 days | 3 of 7; **later** on average (+11 days) |
+| Worlds that made fire by rubbing (25 / 80 founders) | 10 / 11 | **5 / 10** |
+
+(Counts of worlds where only one size had the first are left out; "of n" counts worlds where both had it and the day differed.)
+
+**Result.** (1) **Held.** (2) **Partly wrong**: with the rule off the head start vanished for all four, not only for fire by rubbing — made fires supply burning sticks and cooked food too. (3) **Held at 25 founders** (10 → 5 worlds), barely at 80 (11 → 10).
+
+**Interpretation.** The "sooner with a bigger band" of entry 53 came mostly from the built-in fire rule, not from numbers alone; the second review was right, and the write-up is corrected. One effect of size survives without the rule: **bigger bands make fire by rubbing in more worlds** (10 against 5 of 12), because more hominins practise and one of them succeeds — about *whether*, not *when*. The rule also makes fire-making far easier than the real record suggests (no accepted fire-making for over two million years after 2.5 million years ago). Whether to keep it on by default is the owner's decision.
+
+**Strength.** Weak–moderate (12 worlds per arm; counts of days are noisy). **Lesson:** look for the rule before crediting the crowd.
+
 ---
 
 ## Open questions (next tests)
