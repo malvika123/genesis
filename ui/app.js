@@ -96,7 +96,7 @@ function placeOf(a) {
   if (fireNear(a.x, a.y) > 0.03) return 'by a fire';
   if (iced(i)) return salt[i] ? 'on the sea ice' : 'on frozen water';
   if (salt[i]) return deep[i] ? 'out in the deep sea' : 'in the shallow sea';
-  if (river[i]) return 'in a river';
+  if (river[i]) return 'by a river'; // a river square is 3 km of land with a channel tens of metres wide through it
   if (tree[i] > 0.35) return 'in the ' + FOREST[fkind[i] || 2];
   if (!water[i] && cellT(i) < -2) return 'in the snow';
   return water[i]
