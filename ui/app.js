@@ -2881,7 +2881,8 @@ function updateDock() {
       ? ((m) => m + (m === 1 ? ' month' : ' months'))(Math.max(1, Math.round(yrs * 12)))
       : yrs.toFixed(1) + ' years',
     kg = sel.sp === 0 && SOC.growBodies && sel.S.growF ? ' · ' + Math.round(bodyKg(sel)) + ' kg' : '',
-    sub = age + kg + (iq ? ' · IQ ' + iq.iq : '');
+    sx = sel.sp === 3 ? '' : sel.sex ? ' · female' : ' · male',
+    sub = age + sx + kg + (iq ? ' · IQ ' + iq.iq : '');
   const nm = sel.name || sel.S.n;
   if ($('dname').textContent !== nm) $('dname').textContent = nm;
   if ($('dsub').textContent !== sub) $('dsub').textContent = sub;
