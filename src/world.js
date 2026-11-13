@@ -61,6 +61,12 @@ function buildWorld(cfg) {
   }
   if (ERA === 'hominin' && cfg.humanFertility) KBIO[0].fert = PERSON_BIO.fert; // the old rule, for comparison: fertility ends at 60% of life, as in people
   if (ERA === 'hominin' && cfg.fertMax !== undefined) KBIO[0].fertMax = Number(cfg.fertMax) * TY; // test the ends of its range (years)
+  // Pair bonds (realism audit, gap 3): contested for 2.5 Ma hominins — body-size dimorphism read as human-like and pair-bonded
+  // (Reno et al. 2003; Reno & Lovejoy 2015) or as ape-like (Gordon et al. 2008; Plavcan); females, not males, left their birth
+  // group (Copeland et al. 2011), as in chimpanzees. Default: the chimpanzee stand-in, no pair bonds and no founding couples;
+  // --hominin-pair-bonds restores lasting bonds, couples and helping fathers (the old rule). Modern people keep them.
+  SOC.homPair = cfg.homininPairBonds === true;
+  KBIO[0].pair = ERA === 'hominin' && !SOC.homPair ? 0 : 1;
   if (ERA === 'hominin' && cfg.leafValue !== undefined) KBIO[0].leaf = Number(cfg.leafValue); // test the ends of its range
   SOC.hungerFirst = cfg.oldHunger !== true; // off: hunger and thirst only add a pull, as other urges do (the old rule)
   SOC.hungerK = cfg.hungerPull === undefined ? 6 : Number(cfg.hungerPull); // how strongly need wins (an assumption; test the ends)
@@ -255,8 +261,8 @@ function makeBand(ppl = ag.filter((a) => a.sp === 0)) {
   });
   const women = ppl.filter((a) => a.sex && a.age >= 18 * yr && a.age < 46 * yr),
     men = ppl.filter((a) => !a.sex && a.age >= 18 * yr && a.age < 60 * yr);
-  // couples
-  for (let k = 0; k < Math.min(women.length, men.length); k++) {
+  // couples (only for kinds that form pair bonds)
+  for (let k = 0; k < (S.pair ? Math.min(women.length, men.length) : 0); k++) {
     const w = women[k],
       m = men[k];
     w.bonds = [{ o: m, s: 0.7 }];

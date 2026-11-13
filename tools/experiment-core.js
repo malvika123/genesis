@@ -107,6 +107,7 @@
     { key: 'eightWalks', kind: 'on', def: false, flag: 'eight-walks', label: 'The eight directions count as eight separate choices, so an undecided brain mostly walks (the old rule)', cfg: true },
     { key: 'fireWatching', kind: 'on', def: false, flag: 'fire-watching', label: 'The old built-in rule: watching someone work at fire raises the watcher\'s fire skill (off by default since entry 61)', cfg: true },
     { key: 'noFireWatching', kind: 'on', def: false, flag: 'no-fire-watching', label: 'No fire watching (now the default; kept so older commands still run)', cfg: true },
+    { key: 'homininPairBonds', kind: 'on', def: false, flag: 'hominin-pair-bonds', label: 'Early hominins form lasting pair bonds, start in couples, and fathers help (the old rule; contested for 2.5 million years ago)', cfg: true },
     { key: 'noHomininSwimming', kind: 'on', def: false, flag: 'no-hominin-swimming', label: 'Hominins can never learn to swim (apes generally cannot)', cfg: true },
     { key: 'swimWatching', kind: 'on', def: false, flag: 'swim-watching', label: 'The old built-in rule: being near a swimmer teaches swimming (off by default since the realism audit)', cfg: true },
     { key: 'homininFishing', kind: 'on', def: false, flag: 'hominin-fishing', label: 'Hominins catch fish (the old rule; the first evidence of fish in hominin diets is 1.95 million years ago)', cfg: true },

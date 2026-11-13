@@ -93,10 +93,19 @@ test('a partner long unseen is missed, more after days, then less as time passes
   assert.ok(p.miss < m3, 'and it fades: ' + p.miss);
 });
 
-test('pair bonds grow with time together and pick the partner; plant-eaters form none', () => {
+test('hominins start with no couples by default (pair bonds contested for 2.5 Ma: the chimpanzee stand-in)', () => {
   const E = createEngine();
   E.setSeed(9);
   E.reset({ predators: 0 });
+  const ppl = E.state().ag.filter((o) => o.sp === 0);
+  assert.equal(ppl.filter((o) => o.mate).length, 0, 'nobody starts with a partner');
+  assert.equal(ppl[0].S.pair, 0, 'hominins are not a pair-bonding kind by default');
+});
+
+test('with pair bonds switched on, bonds grow with time together and pick the partner; plant-eaters form none', () => {
+  const E = createEngine();
+  E.setSeed(9);
+  E.reset({ predators: 0, homininPairBonds: true });
   const st = E.state(),
     adults = st.ag.filter((o) => o.sp === 0 && o.age >= o.S.smat),
     m = adults.find((o) => !o.sex),
