@@ -482,7 +482,14 @@ function sim() {
     // the path that led here, replayed backwards at a good surprise (brain.js; research log entry 51; --no-back-replay: none)
     if (SOC.backReplay && a.sp === 0 && a.has) {
       notePath(a, a.xl, lastAct, r);
-      if (r > 0.3) backReplay(a, V, pl * 0.5);
+      if (r > 0.3) {
+        // youngsters watching in the same square learn from the whole sequence that led to it (brain.js: copySequence)
+        if (SOC.copySeq && S.imit)
+          for (const o of G[idx(a.x, a.y)] || [])
+            if (o !== a && o.sp === 0 && !o.asleep && !o.dead && o.has && o.age < o.S.mat && o.age >= o.S.mat * o.S.wn * 0.5)
+              copySequence(o, a.path, S.imit * 3 * (o.g.im ?? 1) * Math.min(1, r));
+        backReplay(a, V, pl * 0.5);
+      }
     }
     if (a.asleep && a.mem.length && tick % 2 === 0) replay(a, pl * 0.5);
     else if (!a.asleep) a.dream = null;
@@ -1441,7 +1448,7 @@ const hunterSeen = (x) => {
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {

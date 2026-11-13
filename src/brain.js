@@ -500,6 +500,29 @@ function notePath(a, x, act, r) {
   m.act = act;
   m.r = r;
 }
+// Watching a whole sequence (research log entry 55): when an elder's path ends in a good surprise, a youngster watching in the
+// same square learns from the whole path, each earlier step a little less — as young chimpanzees learn nut cracking at about 3-5
+// years by long, repeated watching of skilled adults, with almost no teaching (Bossou, 16-year record; Matsuzawa's
+// master-apprenticeship). It sees the same scene, so the elder's own record of each moment stands for what it saw.
+function imitateAt(o, x, act, rate) {
+  const w = o.lw,
+    H = o.h.length,
+    O2 = O2of(H);
+  forward(w, x, RH, RZ, o.nh);
+  for (let k = 0; k < NA; k++) {
+    const g = rate * ((k === act ? 1 : 0) - RZ[k]);
+    if (!g) continue;
+    let q = O2 + k * H;
+    for (let j = 0; j < o.nh; j++) w[q + j] += g * RH[j];
+    q = k * NI;
+    for (let i = 0; i < NI; i++) w[q + i] += g * x[i];
+  }
+  o.learn += Math.abs(rate);
+}
+function copySequence(o, path, rate) {
+  let f = 1;
+  for (let i = path.length - 1; i >= 0; i--, f *= 0.85) if (path[i].act !== A_SLEEP) imitateAt(o, path[i].x, path[i].act, rate * f);
+}
 function backReplay(a, vNow, rate) {
   let vn = vNow;
   for (let i = a.path.length - 1; i >= 0; i--) {
