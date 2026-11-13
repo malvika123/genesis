@@ -505,6 +505,8 @@ function doingText(a) {
   const m = a.mind;
   let now = a.asleep
     ? 'Sleeping'
+    : typeof carried === 'function' && carried(a)
+      ? 'Riding on its mother' + (m && m.act < 8 ? ' (it wants to go ' + CP[m.act] + ')' : '')
     : a.trap > 0
       ? 'Stuck in a pit, climbing out'
       : m
@@ -514,7 +516,14 @@ function doingText(a) {
   const call =
     (a.voice > 0 && a.saidT === tick ? (a.voice === 3 ? ', saying “' : ', calling “') + a.word + '”' : '') +
     (a.ptT !== undefined && tick - a.ptT <= 1 && a.pt >= 0 ? ', pointing ' + CP[a.pt] : '');
-  return now + call + ', ' + placeOf(a) + (snowing(i) ? ', in the snow' : raining(i) ? ', in the rain' : '');
+  return (
+    now +
+    call +
+    (a.up ? ', up a tree' : '') +
+    ', ' +
+    placeOf(a) +
+    (snowing(i) ? ', in the snow' : raining(i) ? (cover(i) >= 0.4 ? ', in the rain, sheltered by the trees' : ', in the rain, getting wet') : '')
+  );
 }
 let tipTab = 'think';
 function updateTip() {
@@ -2196,7 +2205,20 @@ function glide() {
   // the body's clock: hands and arms move at the same pace as walking legs would at this speed of the
   // world (a stride's worth of a walking person per cycle), and stop when the world is paused
   if (running) bodyT += dt * Math.min(3, (stepsPerSec() * SP[0].walk) / 0.4);
+  // paused: nothing moves on screen (before, bodies kept gliding to catch up with frozen legs: the owner, 14 Nov 2026)
+  if (!running) {
+    for (const a of ag) a.moving = false;
+    return;
+  }
   for (const a of ag) {
+    // a carried infant rides on its mother: drawn on her, moving with her, never walking or jumping on its own
+    if (typeof carried === 'function' && carried(a) && a.mom.rx !== undefined) {
+      a.rx = a.mom.rx + 0.07 * (a.mom.face || 1);
+      a.ry = a.mom.ry + 0.04;
+      a.face = a.mom.face;
+      a.moving = false;
+      continue;
+    }
     let tx = a.x,
       ty = a.y;
     const walking = a.mvv > 0 && !a.asleep && !a.dead;
@@ -2216,8 +2238,8 @@ function glide() {
     const dx = dxw(tx - a.rx),
       dy = ty - a.ry;
     let moved = 0;
-    // lying down to sleep happens where it is: the body settles on its spot at once, then stays still
-    if (Math.abs(dx) > 3 || Math.abs(dy) > 3 || a.asleep) {
+    // only a big gap (a very fast world, or a new world) is jumped; one falling asleep walks the last bit, then lies down
+    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
       a.rx = wx(Math.round(tx)) + (tx - Math.round(tx));
       a.ry = ty;
     } else {
@@ -2232,7 +2254,7 @@ function glide() {
     }
     // legs step with the ground they actually cover (a stride is about 0.4 of a square, the size the
     // body is drawn at), so feet never slide; and never faster than a few steps a second on screen
-    a.moving = moved > 1e-5 && !a.asleep && !a.dead && running;
+    a.moving = moved > 1e-5 && !a.dead && running;
     if (a.moving) a.ph = (a.ph || 0) + Math.min((moved / 0.4) * Math.PI, dt * cadence);
   }
 }
@@ -2499,13 +2521,15 @@ function loop() {
   if (running) {
     acc += stepsPerSec() * dt;
     let n = 0;
-    while (acc >= 1 && n < 10) {
+    // a time budget per frame (about 25 ms): at high speeds the world runs as fast as the computer can while the
+    // picture stays smooth; before, up to 10 steps a frame took half a second and creatures jumped (the owner, 14 Nov)
+    while (acc >= 1 && n < 10 && (n === 0 || performance.now() - now < 25)) {
       sim();
       if (tick % 4 === 0) recordTrails();
       acc--;
       n++;
     }
-    if (acc > 10) acc = 0;
+    if (acc > 3) acc = 3; // what the computer could not keep up with is dropped, not saved up
   }
   draw();
   if (timeOn && events.length + tick % 16 !== tlN) {
