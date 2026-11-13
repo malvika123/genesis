@@ -5,6 +5,8 @@
 // Franz & Nunn 2009). Run with the new copying and with --copy-moves: sharing a place raises both alike, so a larger gap with the
 // new copying is the sign that watching itself passes the behaviour on (research log entry 54).
 // Usage (from the genesis folder): node tools/analysis/spread.js SEEDS DAYS OUT.json [switches]
+// --means: for nuts and stick digging, count a hominin at risk only in steps when it has the means at hand (nuts and a stone;
+// roots and a stick), so that being near the means is not mistaken for watching (second review, finding 2.4; entry 58).
 // Fixed 13 Nov 2026: reads the current list of creatures each step (Genesis makes a new list as creatures are born and die;
 // before, a list saved at the start was read, so only founders were seen — research log entry 57).
 // Copyright (c) 2026 Malvika Sen. MIT License.
@@ -16,7 +18,7 @@ const fl = {}, opt = {};
 for (const v of process.argv.slice(5)) {
   if (!v.startsWith('--')) continue;
   const [k, val] = v.slice(2).split('=');
-  if (k === 'plant' || k === 'born-only') opt[k] = val === undefined ? true : val; // options of this tool, not of the world
+  if (k === 'plant' || k === 'born-only' || k === 'means') opt[k] = val === undefined ? true : val; // options of this tool, not of the world
   else fl[k] = true;
 }
 // A planted pretend behaviour (validation, second review finding 2): it lives alongside the real world and moves with the real
@@ -42,7 +44,7 @@ for (const seed of seeds) {
   for (let t = 0; t < days * E.DAY; t++) {
     const pre = new Map();
     for (const a of E.state().ag) if (a.sp === 0 && !a.dead && !did.has(a.id) && t > 0 && !saw.has(a.id) && !seenIds.has(a.id)) born.add(a.id);
-    for (const a of E.state().ag) if (a.sp === 0 && !a.dead) { seenIds.add(a.id); const h = a.y * W + ((a.x % W) + W) % W; pre.set(a, { nuts: a.nuts || 0, hand: a.hand, root: it.ROOT[h] > 0.05, cook: fi.COOK[h] > 0.05, meat: !!it.meatAt(a.x, a.y, 0) }); }
+    for (const a of E.state().ag) if (a.sp === 0 && !a.dead) { seenIds.add(a.id); const h = a.y * W + ((a.x % W) + W) % W; pre.set(a, { can: { nuts: it.nut[h] > 0.05 && (a.hand === 1 || it.stone[h] > 0), 'stick digging': it.ROOT[h] > 0.05 && (a.hand === 2 || it.stick[h] > 0) }, nuts: a.nuts || 0, hand: a.hand, root: it.ROOT[h] > 0.05, cook: fi.COOK[h] > 0.05, meat: !!it.meatAt(a.x, a.y, 0) }); }
     E.sim();
     // what each one did this step
     const now = [];
@@ -65,7 +67,8 @@ for (const seed of seeds) {
     for (const [a] of now) {
       const d = did.get(a.id) || new Set(), s = saw.get(a.id) || new Set();
       if (opt['born-only'] && !born.has(a.id)) continue;
-      for (const b of B) { if (d.has(b) || !seenB.has(b)) continue; if (s.has(b)) { T[b].stepsWatched++; W0[b].sw++; } else { T[b].stepsNot++; W0[b].sn++; } }
+      const p0 = pre.get(a);
+      for (const b of B) { if (d.has(b) || !seenB.has(b)) continue; if (opt.means && p0 && p0.can[b] === false) continue; if (s.has(b)) { T[b].stepsWatched++; W0[b].sw++; } else { T[b].stepsNot++; W0[b].sn++; } }
     }
     // first times
     for (const [a, doing] of now) {
