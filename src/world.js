@@ -73,6 +73,7 @@ function buildWorld(cfg) {
   SOC.mood = cfg.mood !== false; // off: no lasting mood (the old rule)
   SOC.oneMove = cfg.eightWalks !== true; // on: the eight directions count as eight separate choices (the old rule)
   SOC.fireWatch = cfg.fireWatching === true && cfg.noFireWatching !== true; // off by default (the owner, after entry 59): fire skill only from one's own practice; --fire-watching restores the built-in rule that watching fire work raises it
+  SOC.hairy = cfg.furlessHominins !== true; // hominins of 2.5 Ma were still hairy: rain and heat as for furred animals (off: as for people, the old rule)
   SOC.hardNuts = cfg.easyNuts !== true; // a strike on a nut succeeds with a chance grown by own practice (off: every strike works, the old rule)
   SOC.nutP0 = cfg.nutBeginner ?? 0.02; // a beginner's chance a strike opens a nut (an assumption: tested at 0.005 and 0.10)
   SOC.nutCeil = 0.83; // an expert's chance (sourced per nut, applied per strike: Berdugo et al. 2024)

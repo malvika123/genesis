@@ -157,7 +157,10 @@ function sim() {
     // heat: sweating and panting cost water, and it is dangerous when extreme
     a.heat = heatOf(a, night);
     if (a.heat > 0) {
-      a.w -= 0.05 * a.heat * (a.sp === 0 ? 1.5 : 1);
+      // people sweat far more than hairy apes (about ten times the sweat glands of chimpanzees); hominins of 2.5 Ma were still
+      // hairy (hair loss about 1.2 Ma: Rogers et al. 2004), so they lose water to heat as other furred animals do (SOC.hairy;
+      // --furless-hominins: the old rule, sweating like people)
+      a.w -= 0.05 * a.heat * (a.sp === 0 && !(SOC.hairy && ERA === 'hominin') ? 1.5 : 1);
       if (a.heat > 0.7) a.hp -= (0.12 * (a.heat - 0.7)) / 0.3;
       if (a.heat > 0.6 && !a.wasHot) a.ev[8] = 'it was overheating on day ' + dn;
     }
@@ -353,8 +356,9 @@ function sim() {
     if (a.sp !== 3 && !a.asleep && a.sl > 0.45) {
       const k = (a.sl - 0.45) * 3,
         own = a.sp === 1 ? 3 : a.sp === 0 ? 4 : 5,
-        // in the rain or the cold, cover and company matter much more (people have no fur)
-        wet = RAIN[idx(a.x, a.y)] > 0.002 ? (a.sp === 0 ? 2.5 : 1.6) : 1,
+        // in the rain or the cold, cover and company matter much more (people have no fur; hairy hominins feel it as
+        // other furred animals do: SOC.hairy)
+        wet = RAIN[idx(a.x, a.y)] > 0.002 ? (a.sp === 0 && !(SOC.hairy && ERA === 'hominin') ? 2.5 : 1.6) : 1,
         chill = 1 + a.cold;
       for (let s = 0; s < 8; s++)
         RF[s] +=
@@ -1482,7 +1486,7 @@ const hunterSeen = (x) => {
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {
