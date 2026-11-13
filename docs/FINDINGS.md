@@ -1797,6 +1797,25 @@ unpaired before-and-afters adds up to a story; one paired run of all the arms te
 
 ---
 
+### 61. The built-in fire rule goes off by default — Nov 2026
+
+**Version.** Released · this commit. Run by Claude.
+
+**Change.** The owner's decision after entry 59: the rule that raised the fire skill of everyone near someone working at fire is
+**off by default**. Fire skill now grows only from each hominin's own practice ("nothing scripted": social learning must come
+through the brains). `--fire-watching` restores the rule; `--no-fire-watching` is still accepted.
+
+**Check.** Two worlds × 20 days: the new code with `--fire-watching` reproduces the old default worlds exactly, and the new default
+reproduces the old `--no-fire-watching` worlds exactly (data rows identical). All 81 tests pass.
+
+**What it changes.** From entry 59, with the rule off: fewer worlds make fire by rubbing at 25 founders (about 5 of 12 instead of 10),
+and bigger bands lose their head start on fire firsts. Results before this entry were made with the rule on; entries that mention fire
+should be read with that in mind.
+
+**Lesson.** A rule that helps the outcome is easy to keep; the test is whether it is in the evidence or in the brains.
+
+---
+
 ## Open questions (next tests)
 
 - Ablate the bundle in entry 7: which of band size, parental feeding, instincts, one-shot memory and

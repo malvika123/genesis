@@ -92,7 +92,7 @@ owner chose that order:
    (`GAM` 0.97 × `LAM` 0.8, `src/config.js`), while a day is 96 steps and a life about 130 nights; the value estimate reaches
    about 33 steps. Then learning by watching what worked (Phase B).
 
-**Decided (the owner, 13 Nov, after entry 59):** the built-in fire-watching rule goes OFF by default — fire skill only from each hominin's own practice ("nothing scripted"); `--fire-watching` will restore it. Switched as soon as the running comparison (entry 60) ends.
+**Decided (the owner, 13 Nov, after entry 59):** the built-in fire-watching rule goes OFF by default — fire skill only from each hominin's own practice ("nothing scripted"); `--fire-watching` will restore it. **Done 13 Nov (entry 61)**: off by default; `--fire-watching` reproduces the old worlds exactly.
 
 **Independent review checkpoints (Fable; 13 Nov):** (1) the eureka attempt's design and numbers, *before* building it — the step
 with the greatest risk of tuning; (2) its results, before anything is celebrated or published; (3) the whole write-up, before a human
