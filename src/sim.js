@@ -513,6 +513,7 @@ function sim() {
       if (a.stress > 0.5) mod *= 0.7;
       a.da = d;
       a.daAct = lastAct; // which choice this surprise was about (others watching can learn from it: copy what worked)
+      a.lastR = r; // and what visibly came of it (a meal, a hurt): what others can see
       a.mod = mod;
       // The one-try boost and fear make a striking moment shape what the brain does — but its estimate of how good things are
       // learns from good and bad surprises alike: otherwise good surprises count up to four times as much as bad ones and its
@@ -629,7 +630,11 @@ function sim() {
           // Peering is close: young chimpanzees watch from within reach. A choice is copied only from an elder in the same
           // square (the closest Genesis has), where the youngster's situation is the elder's; from further away, copying "eat"
           // taught it to eat where there was nothing (entry 52). --copy-far: from anyone in sight.
-          const o = clamp(tch.da ?? 0, -1, 1),
+          // By what visibly came of it for the elder — a meal, a hurt — not by its hidden surprise: a skilled elder is rarely
+          // surprised, so copying by surprise passed on almost nothing it knew well (second review, finding 3; entry 57). A good
+          // meal (a reward of about 0.3, the level of a striking memory) counts fully; the 0.3 is an assumption.
+          // --copy-by-surprise: the old rule.
+          const o = SOC.copyByResult ? clamp((tch.lastR ?? 0) / 0.3, -1, 1) : clamp(tch.da ?? 0, -1, 1),
             close = !SOC.copyClose || (tch.x === a.x && tch.y === a.y);
           if (o && close && tch.daAct !== undefined && tch.daAct !== A_SLEEP) imitate(a, tch.daAct, rate * (1 - cf) * o);
           if (tch.vc) imitateVoice(a, tch.vc, rate * (1 - cf));
@@ -1448,7 +1453,7 @@ const hunterSeen = (x) => {
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {
