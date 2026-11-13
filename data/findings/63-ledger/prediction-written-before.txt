@@ -1,0 +1,7 @@
+Written 14 Nov 2026 BEFORE running the ledger (step 0 of the scale step; Fable review). Today's defaults: African animals,
+hunters near prey, newcomers on. 4 worlds x 30 days.
+1. Hunters kill far below their need: prey killed per hunter per real day well under the leopard 3.5-4.9 kg / hyena 3.8-4.0 kg
+   (counting the simulated day as a real day), most likely under 1 kg.
+2. Carcasses in sight of a hominin: near zero on most hominin-days.
+3. Hunters are usually more than 5 squares from the nearest prey (position, as entry 40 found).
+The tool must change nothing: a world run with it gives the same result as without (checked with the people count).

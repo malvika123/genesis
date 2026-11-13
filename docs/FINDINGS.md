@@ -1843,6 +1843,40 @@ whether the skill spreads.
 
 ---
 
+### 63. The ledger: hunters killed no prey at all — they ate only hominins — Nov 2026
+
+**Version.** Unreleased · commit after `8ba094c` (no change to the world; the tool `tools/analysis/ledger.js`). Run by Claude.
+
+**Data.** [4 worlds and the prediction written before](../data/findings/63-ledger/).
+
+**Question.** Step 0 of the scale step (Fable's review of `docs/design/scale-step.md`): before building anything, what does today's
+default world offer its hunters and hominins?
+
+**Test.** 4 worlds × 30 days, today's defaults (African animals, hunters placed near prey, newcomers on). Sampled every 3 hours. The
+tool changes nothing: people alive at the end were identical with and without it (29, 13, 38, 14).
+
+| Per world | 1 | 2 | 3 | 4 |
+|---|---|---|---|---|
+| Prey killed by hunters, kg per hunter per day (need: leopard 3.5–4.9, hyena 3.8–4.0) | **0** | **0** | **0** | **0** |
+| Hunter samples more than 5 squares (15 km) from any prey | 70% | 63% | 76% | 65% |
+| Mean distance from a hunter to the nearest prey, squares | 11.8 | 9.1 | 8.7 | 9.0 |
+| Hominin samples with no carcass within 3 squares | 90% | 94% | 100% | 92% |
+| Prey within 3 squares of a hominin (mean) | 0.48 | 0.04 | 0 | 0.03 |
+
+**Result.** All three predictions held, the first more starkly than expected: **in 30 days hunters killed no prey at all**; the only
+animals they killed were hominins (14 hominin deaths by hunters in world 2). Hunters are mostly far from prey (position, as entry 40
+found), carcasses are nearly absent, and hominins rarely see prey.
+
+**Interpretation.** The hunters in today's default world live on hominins and on newcomers replacing the dead — not on prey. So the
+predation hominins face is not a faithful stand-in for 2.5 Ma, and every hominin death by a hunter since the African animals became
+the default (gap 1) should be read with that in mind. This is the measured starting point for the scale step; its pieces will be
+judged against it as reported numbers, never as targets.
+
+**Strength.** Strong for "no prey killed" (4 of 4 worlds, 30 days each); the rest descriptive. **Lesson:** measure what the world
+offers before redesigning it — the design's own diagnosis (scarcity) was wrong.
+
+---
+
 ## Open questions (next tests)
 
 - Ablate the bundle in entry 7: which of band size, parental feeding, instincts, one-shot memory and
