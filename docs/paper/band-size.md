@@ -11,6 +11,9 @@ https://malvika123.github.io/genesis/
 > skill. It was not measured, and the firsts that came sooner in bigger bands were all fire events. (2) The spreading measure (4.3)
 > was never validated on a case where spreading is known to happen. (3) The copying rule passes on what surprised the elder, so a
 > skilled elder teaches almost nothing. (4) "5 of 7 checks" uses bands wider than their sources; against the sourced ranges, 2 of 7 (and 2 more pass bands that are assumptions).
+> **Update:** the spreading measure was then checked on a skill whose spread is known, a bug limiting it to the founders was fixed,
+> and with everyone born in the run, the means at hand counted and copying switched on and off, no learning by watching was found
+> for nut cracking or stick digging: they are so easy that nearly every youngster finds them alone (entries 56–58).
 > **Safe claim: in these tests a bigger band did not make more kinds of first discovery within 20 simulated years, within about one
 > kind. Why, and whether skills spread, is not yet shown.**
 

@@ -44,6 +44,7 @@ Entries are kept even when the result was "no effect" or "it made things worse" 
 | Hunger and thirst come first | Hunger deaths 109 → 69 (−37%); births 27 → 30; but drownings doubled, 11 of 12 drowned were children | weak–moderate |
 | Moving as one choice, not eight (walking 70–80% → 25%) | Predator deaths 60 → 3; drownings 39 → 18; but hunger deaths 80 → 115 | moderate |
 | A mother keeps her nursing child near | 31 alive vs 25, better in 9 of 12; drownings and fire deaths about halved | weak–moderate |
+| **Learning by watching not detected** for easy skills, once being near the means is counted (copying on vs off, born in the run, 12 worlds, a checked tool): nut cracking is found alone; a tradition needs a hard skill | 12 worlds per arm | moderate |
 | **Discoveries do not spread by watching** (yet): nut cracking and stick digging are reinvented alone by most hominins; watching makes no consistent difference under old or new copying — so a bigger band has no mechanism to help | 8 worlds, two rules | moderate |
 | **Not** supported again: a bigger band (40, 80) makes no more kinds of discovery even with learning by watching; firsts come ~2 weeks sooner at 80 (numbers alone); survival per founder lower (more hunger). Every band discovers more than before the brains work (25 founders: 4.1 → 5.5 kinds; fire by burning stick 11 → 22 of 24 worlds) | 24 + 12 identical worlds | moderate |
 | **Learning by watching what worked, up close** (copy an elder's choice by how it turned out for it, only in the same square): hunger 30% → 17% of deaths; illness 16% (passes); children reaching 15 now just above the band (62%) | 24 worlds | moderate |
@@ -1699,6 +1700,27 @@ Rarer behaviours (picking up a burning stick, eating meat) gave large ratios (2.
 **Reality checks with copying by visible result** (24 worlds; tool unaffected by the bug): born who reach 15 back inside the band (58.7%); against the sourced ranges 3 of 7 pass; but hunger 17% → 23% of deaths and 3 worlds died out (1 before). That run also added sequence copying (entry 55) against entry 52's baseline: **unpaired** — which change did what is not yet known (backlog B23).
 
 **Strength.** Weak–moderate: the first sign that young hominins who watched start a skill more often, in most of 12 worlds, with a checked tool — but not yet separated from where they were. **Lesson:** a tool can be valid and still answer a different question than the one asked.
+
+### 58. Watching, or being near nuts? With the means counted, watching does not help — easy skills are found alone — Nov 2026
+
+**Version.** Unreleased · commit `35878ea`: a no-copying test switch (`--no-copying`) and `spread.js --means` (count a hominin at risk only when it has the means at hand: nuts and a stone, roots and a stick). Run by Claude. Second review, finding 2.4.
+
+**Data.** [Copying on, worlds 1–6](../data/findings/58-watching-or-being-near/on-a.json), [7–12](../data/findings/58-watching-or-being-near/on-b.json) · [copying off, 1–6](../data/findings/58-watching-or-being-near/off-a.json), [7–12](../data/findings/58-watching-or-being-near/off-b.json) · [the prediction, written before](../data/findings/58-watching-or-being-near/prediction-written-before.txt).
+
+**Question.** Entry 57: young hominins who had watched someone crack nuts started more often. But watching means being where nuts and stones are. Does watching itself matter?
+
+**Test.** 12 worlds × 100 days, only hominins born in the run, at risk only when they have the means at hand; nobody copying anyone (`--no-copying`, where watching cannot teach) against copying as usual. Prediction written first: (1) with copying on, the watched/never ratio for nuts is higher than with copying off, in most worlds; (2) with copying off, about 0.8–1.
+
+| Born in the run, means at hand | Nuts: ratio (1–6 / 7–12) | above 1 | Stick digging: ratio | above 1 |
+|---|---|---|---|---|
+| Copying on | 0.76 / 0.30 | 6 of 11 | 0.89 / 0.75 | 6 of 11 |
+| Copying off | 0.68 / 1.05 | 6 of 12 | 1.45 / 1.15 | 7 of 11 |
+
+**Result. (1) failed**: with the means counted, watchers do not start nut cracking or stick digging more often when copying is on than when nobody copies. (2) about held. The same worlds with copying on gave a nut ratio of 1.34 in entry 57 and 0.76 here: only the counting changed. **Entry 57's sign came from being near nuts, not from watching.**
+
+**Interpretation.** Nut cracking and stick digging are so easy in Genesis — one strike with a stone on a nut always cracks it — that nearly every youngster with the means finds them alone; watching adds nothing. That is what the second review predicted (easy skills need no culture). The way to a tradition is to make a skill realistically hard (backlog A26: young chimpanzees need 3–7 years; practice improves the hands), then test again the same way.
+
+**Strength.** Moderate (12 worlds per arm; a checked tool; a true negative control; prediction written first). **Lesson:** a measured effect can vanish when the obvious alternative is counted; count it before believing the effect.
 
 ---
 

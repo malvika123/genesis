@@ -1,0 +1,12 @@
+no-copying   nuts           worlds 6 | doers 305 | first after watching 79 never watched 96 | rate ratio (watched/not) 0.68
+no-copying   stick digging  worlds 6 | doers 351 | first after watching 74 never watched 152 | rate ratio (watched/not) 1.45
+no-copying   cooked food    worlds 5 | doers 66 | first after watching 5 never watched 29 | rate ratio (watched/not) 7.85
+no-copying   burning stick  worlds 6 | doers 110 | first after watching 11 never watched 54 | rate ratio (watched/not) 5.11
+no-copying   meat           worlds 3 | doers 53 | first after watching 4 never watched 20 | rate ratio (watched/not) 13.63
+no-copying   cutting meat   worlds 1 | doers 14 | first after watching 1 never watched 6 | rate ratio (watched/not) 1.57
+  per world nuts           [0.6,1.13,0.34,0.5,0.68,0.72] | above 1 in 1 of 6 worlds with a ratio
+  per world stick digging  [1.53,1.6,0.75,8.79,0.95,2.61] | above 1 in 4 of 6 worlds with a ratio
+  per world cooked food    [0,13.6,2.73,0,null,0] | above 1 in 2 of 5 worlds with a ratio
+  per world burning stick  [4.7,3.39,2.48,null,19.27,14.82] | above 1 in 5 of 5 worlds with a ratio
+  per world meat           [null,3.87,null,0,null,null] | above 1 in 1 of 2 worlds with a ratio
+  per world cutting meat   [null,1.57,null,null,null,null] | above 1 in 1 of 1 worlds with a ratio

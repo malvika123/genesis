@@ -1,0 +1,8 @@
+Written 13 Nov 2026 BEFORE the runs (commit in ./commit). The decisive test of learning by watching (second review, finding 2.4).
+12 worlds (seeds 1-12) x 100 days; only hominins born in the run at risk; and for nuts and stick digging only in steps when they have
+the means at hand (nuts and a stone; roots and a stick: --means). Copying on (default) against --no-copying (nobody copies anyone).
+With --no-copying, watching cannot teach: any ratio above about 0.8 there comes from place or timing, not learning.
+Primary outcome: the watched/never ratio for cracking nuts, copying on against off, per world.
+1. With copying on, the ratio is higher than with copying off, in most worlds (learning by watching is real).
+2. With copying off, the ratio is about 0.8-1 (place no longer explains it once the means are counted).
+If (1) fails, the "young who watched start more often" of entry 57 was being near nuts, not watching.
