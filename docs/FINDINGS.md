@@ -1843,38 +1843,41 @@ whether the skill spreads.
 
 ---
 
-### 63. The ledger: hunters killed no prey at all — they ate only hominins — Nov 2026
+### 63. The ledger: hunters are fed — mostly by buffalo — but far from prey, and carcasses rarely reach the hominins — Nov 2026
 
 **Version.** Unreleased · commit after `8ba094c` (no change to the world; the tool `tools/analysis/ledger.js`). Run by Claude.
 
-**Data.** [4 worlds and the prediction written before](../data/findings/63-ledger/).
+**Data.** [4 worlds, the world's own death tally, and the prediction written before](../data/findings/63-ledger/).
 
 **Question.** Step 0 of the scale step (Fable's review of `docs/design/scale-step.md`): before building anything, what does today's
 default world offer its hunters and hominins?
 
-**Test.** 4 worlds × 30 days, today's defaults (African animals, hunters placed near prey, newcomers on). Sampled every 3 hours. The
+**Test.** 4 worlds × 30 days, today's defaults (African animals, hunters placed near prey, newcomers on), sampled every 3 hours. The
 tool changes nothing: people alive at the end were identical with and without it (29, 13, 38, 14).
+
+> **Corrected the same day.** The first version reported that hunters killed **no prey at all**. That was a bug in the tool: the world
+> removes the dead at the end of each step, so the tool never saw a killed animal. The world's own tally showed 34 and 29 plant-eaters
+> killed by hunters in worlds 1 and 2. The tool now follows each animal from one step to the next; the numbers below are corrected.
 
 | Per world | 1 | 2 | 3 | 4 |
 |---|---|---|---|---|
-| Prey killed by hunters, kg per hunter per day (need: leopard 3.5–4.9, hyena 3.8–4.0) | **0** | **0** | **0** | **0** |
+| Prey killed by hunters, kg per hunter per day (need: leopard 3.5–4.9, hyena 3.8–4.0) | 7.2 | 7.3 | 5.5 | 0.65 |
 | Hunter samples more than 5 squares (15 km) from any prey | 70% | 63% | 76% | 65% |
 | Mean distance from a hunter to the nearest prey, squares | 11.8 | 9.1 | 8.7 | 9.0 |
 | Hominin samples with no carcass within 3 squares | 90% | 94% | 100% | 92% |
-| Prey within 3 squares of a hominin (mean) | 0.48 | 0.04 | 0 | 0.03 |
 
-**Result.** All three predictions held, the first more starkly than expected: **in 30 days hunters killed no prey at all**; the only
-animals they killed were hominins (14 hominin deaths by hunters in world 2). Hunters are mostly far from prey (position, as entry 40
-found), carcasses are nearly absent, and hominins rarely see prey.
+**Result.** Prediction 1 (hunters kill far below need) **failed**: in 3 of 4 worlds they kill more than a real leopard or hyena needs,
+counting a simulated day as a real day. Much of that weight is **buffalo** — 7 and 8 adult buffalo (about 600 kg each) killed by
+leopards, hyenas or sabre-tooths in 30 days in worlds 1 and 2, which a leopard would not do. Predictions 2 and 3 **held**: hunters are
+mostly far from prey, and hominins rarely have a carcass in reach.
 
-**Interpretation.** The hunters in today's default world live on hominins and on newcomers replacing the dead — not on prey. So the
-predation hominins face is not a faithful stand-in for 2.5 Ma, and every hominin death by a hunter since the African animals became
-the default (gap 1) should be read with that in mind. This is the measured starting point for the scale step; its pieces will be
-judged against it as reported numbers, never as targets.
+**Interpretation.** Hunters are not starving by weight, but they kill animals too big for them, and the kills happen away from the
+hominins, so scavenging hardly exists for them. Two numbers matter next: which prey each hunter can take (by size, as for hominins),
+and the clock — a year is 3 simulated days, so whether a hunter's need is per simulated day or per real day changes everything
+(Fable's finding 3). These are the measured starting point, reported, never targets.
 
-**Strength.** Strong for "no prey killed" (4 of 4 worlds, 30 days each); the rest descriptive. **Lesson:** measure what the world
-offers before redesigning it — the design's own diagnosis (scarcity) was wrong.
-
+**Strength.** Moderate (4 worlds); the buffalo kills from the world's own tally (2 worlds). **Lesson:** check a new tool against the
+world's own counts before believing it.
 ---
 
 ## Open questions (next tests)

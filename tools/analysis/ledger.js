@@ -42,17 +42,16 @@ for (const seed of seeds) {
     distSum = 0,
     killedKg = 0,
     huntDays = 0;
-  const seenDead = new Set();
+  // the world removes the dead at the end of each step, so prey are followed from one step to the next: one that is gone (or
+  // dead) with the cause 'killed by a predator' was killed by a hunter (the first version missed them all: entry 63, corrected)
+  let prevPrey = [];
   for (let t = 0; t < days * D; t++) {
     E.sim();
     const st = E.state(),
       bodies = E.items().bodies;
-    // prey killed by hunters this step (counted once each), by weight
-    for (const o of st.ag)
-      if (o.sp === 1 && o.dead && o.cause === 'killed by a predator' && !seenDead.has(o)) {
-        seenDead.add(o);
-        killedKg += (o.S.mass || 0) * (o.age < o.S.mat ? Math.min(1, 0.1 + (0.9 * o.age) / o.S.mat) : 1);
-      }
+    for (const o of prevPrey)
+      if (o.dead && o.cause === 'killed by a predator') killedKg += (o.S.mass || 0) * (o.age < o.S.mat ? Math.min(1, 0.1 + (0.9 * o.age) / o.S.mat) : 1);
+    prevPrey = st.ag.filter((o) => o.sp === 1 && !o.dead);
     if (t % 12) continue; // sample every 3 hours
     const live = st.ag.filter((o) => !o.dead),
       prey = live.filter((o) => o.sp === 1),
