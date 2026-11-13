@@ -4,8 +4,20 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **The built-in fire-watching rule is off by default** (the owner's decision; research log entries 59, 61): fire skill grows only
+  from each hominin's own practice. `--fire-watching` restores the rule (identical worlds).
+- **The learning changes measured together on the same worlds** (research log entry 60): hunger 39% → 23% of deaths, about half
+  from the expectations fix, half from the rest; entries 52 and 57 corrected.
+- **Copying by what visibly came of the elder's choice** (a meal, a hurt), not its hidden surprise (entry 57). `--copy-by-surprise`.
+- **Copying whole sequences**: youngsters in the same square learn from an elder's whole path to a good result (entry 55).
+  `--no-copy-sequence`.
+- **A no-copying switch** (`--no-copying`) and checked measuring tools: the spreading measure validated with a planted behaviour,
+  and a bug fixed that limited three tools to the founders (entries 56–58).
+- **Band size** tested again with 25, 40 and 80 founders; the write-up (`paper.html`) revised after an independent review
+  (entries 53–54, 59–60).
+- **Fixed:** newcomer hunters could kill the hominin in a test set up with no predators; the test now switches them off (backlog B25).
 - **Learning by watching what worked, up close** (research log entry 52): the young copy an elder's choice by how it turned out
-  for it, and only from an elder in the same square; hunger falls from 30% to 17% of deaths. `--copy-moves`, `--copy-far`.
+  for it, and only from an elder in the same square; hunger fell (entry 60: the later learning changes together cut it by about 7 points). `--copy-moves`, `--copy-far`.
 - **Backward replay** at a good surprise: the last 4 hours replayed backwards so the steps before a reward are credited
   (research log entry 51; no measurable effect). `--no-back-replay`.
 - **The brains' expectations fixed** (research log entry 50): the estimate of value learns from good and bad surprises alike;
