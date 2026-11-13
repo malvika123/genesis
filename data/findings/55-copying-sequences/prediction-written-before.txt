@@ -1,0 +1,7 @@
+Written 13 Nov 2026 BEFORE the runs (commit in ./commit). 8 worlds (seeds 1-8) x 60 days, with sequence copying and with
+--no-copy-sequence (entry 54's tool, spread.js).
+Primary outcome: the rate ratio (first time after watching / never watched) for cracking nuts and for digging with a stick.
+1. With sequence copying the ratio is clearly above 1 for both, in both halves of the worlds (entry 54: it fell either side of 1).
+2. It is higher than with --no-copy-sequence in both halves.
+3. More first times come after watching (entry 54: nuts 70 after watching, 87 never watched).
+If (1)-(2) fail, watching whole sequences still does not pass skills on in Genesis.

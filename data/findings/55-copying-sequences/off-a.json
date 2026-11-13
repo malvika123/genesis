@@ -1,0 +1,74 @@
+{
+ "seeds": [
+  1,
+  2,
+  3,
+  4
+ ],
+ "days": 60,
+ "flags": {
+  "no-copy-sequence": true
+ },
+ "rows": [
+  {
+   "behaviour": "nuts",
+   "worlds": 4,
+   "doers": 86,
+   "firstAfterWatching": 35,
+   "firstNeverWatched": 47,
+   "ratePer1000StepsWatched": 1.617,
+   "ratePer1000StepsNot": 2.191,
+   "ratio": 0.74
+  },
+  {
+   "behaviour": "stick digging",
+   "worlds": 4,
+   "doers": 89,
+   "firstAfterWatching": 22,
+   "firstNeverWatched": 63,
+   "ratePer1000StepsWatched": 1.367,
+   "ratePer1000StepsNot": 1.65,
+   "ratio": 0.83
+  },
+  {
+   "behaviour": "cooked food",
+   "worlds": 3,
+   "doers": 13,
+   "firstAfterWatching": 0,
+   "firstNeverWatched": 10,
+   "ratePer1000StepsWatched": 0,
+   "ratePer1000StepsNot": 0.229,
+   "ratio": 0
+  },
+  {
+   "behaviour": "burning stick",
+   "worlds": 3,
+   "doers": 16,
+   "firstAfterWatching": 0,
+   "firstNeverWatched": 13,
+   "ratePer1000StepsWatched": 0,
+   "ratePer1000StepsNot": 0.232,
+   "ratio": 0
+  },
+  {
+   "behaviour": "meat",
+   "worlds": 3,
+   "doers": 34,
+   "firstAfterWatching": 4,
+   "firstNeverWatched": 27,
+   "ratePer1000StepsWatched": 5.398,
+   "ratePer1000StepsNot": 0.406,
+   "ratio": 13.28
+  },
+  {
+   "behaviour": "cutting meat",
+   "worlds": 2,
+   "doers": 2,
+   "firstAfterWatching": 0,
+   "firstNeverWatched": 0,
+   "ratePer1000StepsWatched": 0,
+   "ratePer1000StepsNot": 0,
+   "ratio": null
+  }
+ ]
+}

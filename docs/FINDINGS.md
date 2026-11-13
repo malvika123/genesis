@@ -1615,6 +1615,30 @@ At 80 founders (12 worlds, against 25): discoveries 5.92 against 6.08; alive per
 
 **Strength.** Moderate (8 worlds, two copying rules; hundreds of first times for the common skills). **Lesson:** to test whether size helps culture, first check that there is culture to help.
 
+### 55. Watching a whole sequence: a hint that skills pass on — with an unvalidated measure — Nov 2026
+
+**Version.** Unreleased · the change: commit `c0254bc` (`--no-copy-sequence` restores none — checked: identical worlds); tool `tools/analysis/spread.js`. Run by Claude. First step of "making skills spread" (the owner moved it ahead of the scale step).
+
+**Data.** With sequence copying: [worlds 1–4](../data/findings/55-copying-sequences/seq-a.json), [5–8](../data/findings/55-copying-sequences/seq-b.json) · without: [1–4](../data/findings/55-copying-sequences/off-a.json), [5–8](../data/findings/55-copying-sequences/off-b.json) · [the prediction, written before](../data/findings/55-copying-sequences/prediction-written-before.txt).
+
+**Question.** Entry 54 found no sign that nut cracking or stick digging pass on by watching. Copying single actions cannot pass on a sequence (pick up a stone, go to the nuts, strike). Real young chimpanzees learn nut cracking at about 3–5 years by long, repeated watching of skilled adults, with almost no teaching (Bossou, 16-year record; Matsuzawa's master–apprenticeship; Taï mothers leave nuts and stones and share nuts).
+
+**Added.** When an elder's recent path (the last 16 steps, kept for backward replay, entry 51) ends in a good surprise, a weaned youngster watching in the same square learns from the whole path, each earlier step a little less (×0.85 a step), scaled by how good the result was.
+
+**Test.** 8 worlds × 60 days, with and without, entry 54's tool. Prediction written first: (1) the rate ratio (first time after watching ÷ never watched) clearly above 1 for nuts and stick digging in both halves of the worlds; (2) higher than without, in both halves; (3) more first times after watching.
+
+| | Without | With sequence copying |
+|---|---|---|
+| Nut cracking: ratio (worlds 1–4 / 5–8) | 0.74 / 1.50 | **0.96 / 1.77** |
+| Stick digging: ratio | 0.83 / 1.74 | **1.33 / 2.62** |
+| First times right after watching (nuts / digging) | 70 / 48 | **86 / 58** |
+
+**Result.** (2) and (3) **held**: higher for both skills in both halves, and more first times after watching. (1) **almost**: nuts in worlds 1–4 is 0.96.
+
+**Caution.** The measure has not been validated (second review, finding 2; backlog B21): no positive or negative control, and several confounds. Because both versions ran on identical worlds with the same tool, its biases apply to both, so the consistent *difference* is more trustworthy than either number — **a hint that watching whole sequences passes skills on, not proof.** Next: validate the tool (a planted behaviour learnable only by watching; a no-copying switch).
+
+**Strength.** Weak–moderate (8 worlds, paired; consistent direction; unvalidated instrument). **Lesson:** a difference between two arms measured the same way can be read before the instrument is trusted for absolute claims — but only as a hint.
+
 ---
 
 ## Open questions (next tests)
