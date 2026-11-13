@@ -379,6 +379,9 @@ const HKINDS = {
 //   adult in chimpanzees, under 30% in people): how big is inherited and can evolve (creatures.js).
 const HOMININ = {
   size: 0.75,
+  // growth: [age in years, share of adult weight, ...] — the wild-chimpanzee shape (a stand-in; Pusey et al. 2005)
+  growF: [0, 0.06, 5, 0.32, 10, 0.68, 13, 1],
+  growM: [0, 0.05, 5, 0.26, 10, 0.62, 15, 1],
   cold: 9,
   hot: 31,
   mat: 10 * TY,

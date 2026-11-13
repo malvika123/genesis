@@ -1229,7 +1229,7 @@ function sim() {
                 for (const o of l)
                   if (o !== a && o.k === a.k && !o.dead && !o.asleep && o.age >= o.S.mat) help++;
             }
-        const odds = clamp(((a.S.size || 1) * (1 + 0.6 * help)) / (T.size || 1), 0.15, 1.3),
+        const odds = clamp((bodySize(a) * (1 + 0.6 * help)) / (t.sp === 0 ? bodySize(t) : T.size || 1), 0.15, 1.3),
           pc =
             a.sp === 0
               ? (t.sp === 3 && ERA === 'hominin' && !SOC.homFish ? 0 : SOC.huntP) * // no fish before about 1.95 Ma (Braun et al. 2010)
@@ -1443,8 +1443,27 @@ const fertileAge = (a) => a.age < Math.min(a.lf * a.S.fert, a.S.fertMax ?? Infin
 // what it burns with mass^0.75. So a smaller hominin gets a larger share of its store from the same fruit (1/mass)
 // and burns its store a little faster (mass^-0.25); in all it needs about mass^0.75 of a forager's food. Size is
 // relative to a forager (early hominins 0.75: about 40 kg against 52; config.js). Modern people: 1, unchanged.
-const MEAL = (a) => (a.sp === 0 && SOC.kleiber ? 1 / (a.S.size || 1) : 1),
-  BURN = (a) => (a.sp === 0 && SOC.kleiber ? (a.S.size || 1) ** -0.25 : 1);
+// Bodies that grow (realism audit, gap 2): an early hominin's weight follows its age and sex — adults about 30 kg (female)
+// and 42 kg (male) (McHenry 1992: A. afarensis 29 / 45, A. africanus 30 / 41; lower in Grabowski et al. 2015), growing as wild
+// chimpanzees do (a stand-in: Gombe, Pusey et al. 2005: about 10 kg at 5, growth slowing at 10 in females and 13 in males).
+// Weight sets how much a meal fills it and how fast it burns (Kleiber, below) and how hard it is to bring down.
+// --fixed-bodies: one body for every age and sex (the old rule). Modern people keep one size.
+function bodyKg(a) {
+  const S = a.S,
+    pts = a.sex ? S.growF : S.growM,
+    y = a.age / TY;
+  let f = pts[pts.length - 1];
+  for (let i = 2; i < pts.length; i += 2)
+    if (y < pts[i]) {
+      f = pts[i - 1] + ((pts[i + 1] - pts[i - 1]) * (y - pts[i - 2])) / (pts[i] - pts[i - 2]);
+      break;
+    }
+  return f * (a.sex ? SOC.massF : SOC.massM);
+}
+// size relative to a forager of about 52 kg (config.js)
+const bodySize = (a) => (a.sp === 0 && SOC.growBodies && a.S.growF ? bodyKg(a) / 52 : a.S.size || 1);
+const MEAL = (a) => (a.sp === 0 && SOC.kleiber ? 1 / bodySize(a) : 1),
+  BURN = (a) => (a.sp === 0 && SOC.kleiber ? bodySize(a) ** -0.25 : 1);
 // Can this creature eat leaves here? Early hominins (S.leaf, config.js), where the trees are thick enough
 // to browse, as plant-eaters do.
 // Hunger and thirst quieten the urge to explore and to copy others (hungry young animals stop playing: Siviy & Panksepp),
@@ -1489,7 +1508,7 @@ const hunterSeen = (x) => {
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { growBodies: true, massF: 30, massM: 42, swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {
