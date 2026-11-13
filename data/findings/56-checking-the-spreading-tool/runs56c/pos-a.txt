@@ -1,0 +1,14 @@
+new copying  nuts           worlds 4 | doers 88 | first after watching 44 never watched 40 | rate ratio (watched/not) 0.96
+new copying  stick digging  worlds 4 | doers 89 | first after watching 31 never watched 53 | rate ratio (watched/not) 1.33
+new copying  cooked food    worlds 4 | doers 26 | first after watching 0 never watched 22 | rate ratio (watched/not) 0
+new copying  burning stick  worlds 4 | doers 21 | first after watching 2 never watched 14 | rate ratio (watched/not) 9.02
+new copying  meat           worlds 2 | doers 33 | first after watching 2 never watched 29 | rate ratio (watched/not) 3.47
+new copying  cutting meat   worlds 1 | doers 4 | first after watching 0 never watched 3 | rate ratio (watched/not) 0
+new copying  planted        worlds 4 | doers 74 | first after watching 70 never watched 3 | rate ratio (watched/not) 10.14
+  per world nuts           [0.65,0.57,1.7,1.61] | above 1 in 2 of 4 worlds with a ratio
+  per world stick digging  [1.17,2.41,0.79,1.01] | above 1 in 3 of 4 worlds with a ratio
+  per world cooked food    [null,null,0,null] | above 1 in 0 of 1 worlds with a ratio
+  per world burning stick  [null,null,9.83,null] | above 1 in 1 of 1 worlds with a ratio
+  per world meat           [null,236.28,null,2.16] | above 1 in 2 of 2 worlds with a ratio
+  per world cutting meat   [null,0,null,null] | above 1 in 0 of 1 worlds with a ratio
+  per world planted        [5.16,null,7.76,null] | above 1 in 2 of 2 worlds with a ratio

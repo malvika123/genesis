@@ -1,0 +1,129 @@
+{
+ "seeds": [
+  5,
+  6,
+  7,
+  8
+ ],
+ "days": 60,
+ "flags": {},
+ "options": {
+  "plant": "0"
+ },
+ "rows": [
+  {
+   "behaviour": "nuts",
+   "worlds": 4,
+   "doers": 87,
+   "firstAfterWatching": 42,
+   "firstNeverWatched": 41,
+   "ratePer1000StepsWatched": 2.191,
+   "ratePer1000StepsNot": 1.235,
+   "ratio": 1.77
+  },
+  {
+   "behaviour": "stick digging",
+   "worlds": 4,
+   "doers": 86,
+   "firstAfterWatching": 27,
+   "firstNeverWatched": 55,
+   "ratePer1000StepsWatched": 2.612,
+   "ratePer1000StepsNot": 0.997,
+   "ratio": 2.62
+  },
+  {
+   "behaviour": "cooked food",
+   "worlds": 3,
+   "doers": 12,
+   "firstAfterWatching": 0,
+   "firstNeverWatched": 9,
+   "ratePer1000StepsWatched": 0,
+   "ratePer1000StepsNot": 0.135,
+   "ratio": 0
+  },
+  {
+   "behaviour": "burning stick",
+   "worlds": 4,
+   "doers": 11,
+   "firstAfterWatching": 1,
+   "firstNeverWatched": 6,
+   "ratePer1000StepsWatched": 0.749,
+   "ratePer1000StepsNot": 0.091,
+   "ratio": 8.24
+  },
+  {
+   "behaviour": "meat",
+   "worlds": 1,
+   "doers": 13,
+   "firstAfterWatching": 0,
+   "firstNeverWatched": 12,
+   "ratePer1000StepsWatched": 0,
+   "ratePer1000StepsNot": 0.502,
+   "ratio": 0
+  },
+  {
+   "behaviour": "cutting meat",
+   "worlds": 1,
+   "doers": 2,
+   "firstAfterWatching": 0,
+   "firstNeverWatched": 1,
+   "ratePer1000StepsWatched": 0,
+   "ratePer1000StepsNot": 0.031,
+   "ratio": 0
+  },
+  {
+   "behaviour": "planted",
+   "worlds": 4,
+   "doers": 21,
+   "firstAfterWatching": 4,
+   "firstNeverWatched": 13,
+   "ratePer1000StepsWatched": 0.023,
+   "ratePer1000StepsNot": 0.457,
+   "ratio": 0.05
+  }
+ ],
+ "perWorld": {
+  "nuts": [
+   2.56,
+   2.76,
+   1.18,
+   0.78
+  ],
+  "stick digging": [
+   1.71,
+   2.82,
+   3.88,
+   2.4
+  ],
+  "cooked food": [
+   null,
+   null,
+   null,
+   null
+  ],
+  "burning stick": [
+   null,
+   null,
+   null,
+   6.78
+  ],
+  "meat": [
+   null,
+   null,
+   null,
+   null
+  ],
+  "cutting meat": [
+   null,
+   null,
+   null,
+   null
+  ],
+  "planted": [
+   0,
+   0.02,
+   0.07,
+   0
+  ]
+ }
+}

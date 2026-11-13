@@ -1,0 +1,9 @@
+Written 13 Nov 2026 BEFORE the runs (commit in ./commit). Validation of tools/analysis/spread.js (second review, finding 2).
+A planted pretend behaviour moves with the real hominins in 8 worlds x 60 days: picked up alone with chance 0.00002 a step, and
+- POSITIVE control (--plant=0.002): an extra 0.002 a step once a hominin has watched a holder do it (spreads by watching);
+- NEGATIVE control (--plant=0): watching does nothing.
+What the tool must show if it is sound:
+1. Positive: rate ratio (watched / never watched) clearly above 1 overall and in most worlds (expected far above: about 100x).
+2. Negative: ratio about 1 overall, and above 1 in about half the worlds. A ratio clearly below or above 1 here measures the
+   tool's bias (survivorship, place, founders), which then must be allowed for when reading nuts and stick digging.
+Also recorded: the same real behaviours with --born-only (only hominins born during the run at risk).

@@ -1,0 +1,129 @@
+{
+ "seeds": [
+  1,
+  2,
+  3,
+  4
+ ],
+ "days": 60,
+ "flags": {},
+ "options": {
+  "plant": "0:0.0003"
+ },
+ "rows": [
+  {
+   "behaviour": "nuts",
+   "worlds": 4,
+   "doers": 88,
+   "firstAfterWatching": 44,
+   "firstNeverWatched": 40,
+   "ratePer1000StepsWatched": 2.101,
+   "ratePer1000StepsNot": 2.186,
+   "ratio": 0.96
+  },
+  {
+   "behaviour": "stick digging",
+   "worlds": 4,
+   "doers": 89,
+   "firstAfterWatching": 31,
+   "firstNeverWatched": 53,
+   "ratePer1000StepsWatched": 1.85,
+   "ratePer1000StepsNot": 1.392,
+   "ratio": 1.33
+  },
+  {
+   "behaviour": "cooked food",
+   "worlds": 4,
+   "doers": 26,
+   "firstAfterWatching": 0,
+   "firstNeverWatched": 22,
+   "ratePer1000StepsWatched": 0,
+   "ratePer1000StepsNot": 0.205,
+   "ratio": 0
+  },
+  {
+   "behaviour": "burning stick",
+   "worlds": 4,
+   "doers": 21,
+   "firstAfterWatching": 2,
+   "firstNeverWatched": 14,
+   "ratePer1000StepsWatched": 1.097,
+   "ratePer1000StepsNot": 0.122,
+   "ratio": 9.02
+  },
+  {
+   "behaviour": "meat",
+   "worlds": 2,
+   "doers": 33,
+   "firstAfterWatching": 2,
+   "firstNeverWatched": 29,
+   "ratePer1000StepsWatched": 2.033,
+   "ratePer1000StepsNot": 0.586,
+   "ratio": 3.47
+  },
+  {
+   "behaviour": "cutting meat",
+   "worlds": 1,
+   "doers": 4,
+   "firstAfterWatching": 0,
+   "firstNeverWatched": 3,
+   "ratePer1000StepsWatched": 0,
+   "ratePer1000StepsNot": 0.058,
+   "ratio": 0
+  },
+  {
+   "behaviour": "planted",
+   "worlds": 4,
+   "doers": 46,
+   "firstAfterWatching": 41,
+   "firstNeverWatched": 4,
+   "ratePer1000StepsWatched": 0.32,
+   "ratePer1000StepsNot": 0.165,
+   "ratio": 1.94
+  }
+ ],
+ "perWorld": {
+  "nuts": [
+   0.65,
+   0.57,
+   1.7,
+   1.61
+  ],
+  "stick digging": [
+   1.17,
+   2.41,
+   0.79,
+   1.01
+  ],
+  "cooked food": [
+   null,
+   null,
+   0,
+   null
+  ],
+  "burning stick": [
+   null,
+   null,
+   9.83,
+   null
+  ],
+  "meat": [
+   null,
+   236.28,
+   null,
+   2.16
+  ],
+  "cutting meat": [
+   null,
+   0,
+   null,
+   null
+  ],
+  "planted": [
+   1.33,
+   1.69,
+   0.87,
+   null
+  ]
+ }
+}

@@ -1639,6 +1639,27 @@ At 80 founders (12 worlds, against 25): discoveries 5.92 against 6.08; alive per
 
 **Strength.** Weak–moderate (8 worlds, paired; consistent direction; unvalidated instrument). **Lesson:** a difference between two arms measured the same way can be read before the instrument is trusted for absolute claims — but only as a hint.
 
+### 56. Checking the spreading tool on a skill whose spread is known: unbiased, but noisy — Nov 2026
+
+**Version.** Unreleased · `tools/analysis/spread.js` with a planted behaviour (`--plant=S:B`). Run by Claude. Second review, finding 2.
+
+**Data.** First run (a bug in the control: starting holders counted as new learners): [runs56](../data/findings/56-checking-the-spreading-tool/runs56/) · after the fix, too few cases in the negative control: [runs56b](../data/findings/56-checking-the-spreading-tool/runs56b/) · final: [runs56c](../data/findings/56-checking-the-spreading-tool/runs56c/) · [the prediction, written before](../data/findings/56-checking-the-spreading-tool/prediction-written-before.txt).
+
+**Question.** Entries 54–55 read "spreading" from a measure never tested on a case where the answer is known (second review, finding 2). Is it sound?
+
+**Test.** A pretend behaviour moves with the real hominins in 8 worlds × 60 days (its own random numbers; the world is untouched). Each hominin without it picks it up alone with chance 0.0003 a step; in the **positive control** an extra 0.002 a step once it has watched a holder do it (so watching raises the chance about 7.7 times); in the **negative control** watching does nothing. About 15% start with it. Prediction written first: positive clearly above 1 in most worlds; negative about 1, above 1 in about half the worlds.
+
+| | True answer | Ratio (worlds 1–4 / 5–8) | Above 1, per world |
+|---|---|---|---|
+| Positive control | about 7.7 | **10.1 / 5.2** | 5 of 5 worlds with a ratio |
+| Negative control | 1 | **1.9 / 0.9** | 3 of 6 |
+
+**Result.** Both held. Two earlier attempts failed for reasons in the control itself, logged: starting holders were counted as new learners (both ratios pulled down), then the chance of picking it up alone was too small to give enough cases.
+
+**Interpretation.** The tool is **not biased**: it finds spreading when there is spreading and does not invent it when there is none. But it is **noisy**: with no spreading at all a single half of the worlds can read anywhere from about 0.4 to 2 per world, because most hominins watch someone early and few "never watched" cases remain. So the nut and stick-digging ratios of entries 54–55 (0.7–2.6) lie mostly inside that noise: entry 54's "no spreading" and entry 55's "hint of spreading" are both too weak to stand alone. Clear answers need many more worlds, or only hominins born in the run (`--born-only`), as the review suggested.
+
+**Strength.** Moderate (8 worlds per control; the known answers recovered). **Lesson:** test the instrument before reading the measurement — and log the failed attempts at testing it too.
+
 ---
 
 ## Open questions (next tests)
