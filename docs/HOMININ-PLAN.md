@@ -98,6 +98,8 @@ owner chose that order:
 with the greatest risk of tuning; (2) its results, before anything is celebrated or published; (3) the whole write-up, before a human
 expert reads it.
 
+**The two clocks (the owner, 14 Nov 2026): option A** — daily needs (food, walking, sleep, carcass decay, ranging) on the day clock; growth, breeding and lifespans on the life clock (`docs/ASSUMPTIONS.md`, "The two clocks").
+
 **THE AIM (the owner, 13 Nov 2026, evening): "I don't care about eureka if it's all wrong and based on wrong — it will make an
 ivory tower. I want them to be mini copies of our hominins, and then do something."** Faithfulness to the real hominins of East
 Africa about 2.5 million years ago comes first; any discovery counts only on top of it. Order: (1) finish and log the running nut

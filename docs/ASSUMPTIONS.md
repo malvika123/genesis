@@ -11,6 +11,15 @@ or a range; the number is our choice within it), **assumption** (no research num
 Started 10 November 2026; covers the early-hominin world and the mechanisms added in November 2026. The
 older parts of the model are still to be audited the same way.
 
+## The two clocks (decided by the owner, 14 Nov 2026; Fable's scale review, finding 3)
+
+A year is squeezed into 3 simulated days (`TY` = 288 steps), but each day keeps a real day's 24 hours (`DAY` = 96 steps of 15
+minutes). **Everything a body does in a day is on the day clock, as in real life**: walking, eating and drinking, sleeping, a hunter's
+daily food need (leopard 3.5–4.9 kg, hyena 3.8–4.0 kg a real day), how fast a carcass rots, how far animals range. **Everything about
+a life is on the life clock**: growing up, ageing, pregnancy, nursing, breeding, lifespans. The cost, said plainly: a year holds only
+3 days of food, births and deaths, so whether food over a year can support a population is not true to life (the squeezed year is
+listed among the simplifications). Rejected: putting daily needs on the life clock (a hunter would need about 490 kg a simulated day).
+
 ## Early hominins, about 2.5 million years ago (`HOMININ` in `src/config.js`)
 
 **Which hominin Genesis stands for** (realism audit, gap 9; written 14 Nov 2026): not one species but **a generic early hominin of
