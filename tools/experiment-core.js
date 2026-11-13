@@ -107,6 +107,7 @@
     { key: 'eightWalks', kind: 'on', def: false, flag: 'eight-walks', label: 'The eight directions count as eight separate choices, so an undecided brain mostly walks (the old rule)', cfg: true },
     { key: 'fireWatching', kind: 'on', def: false, flag: 'fire-watching', label: 'The old built-in rule: watching someone work at fire raises the watcher\'s fire skill (off by default since entry 61)', cfg: true },
     { key: 'noFireWatching', kind: 'on', def: false, flag: 'no-fire-watching', label: 'No fire watching (now the default; kept so older commands still run)', cfg: true },
+    { key: 'noFireMaking', kind: 'on', def: false, flag: 'no-fire-making', label: 'Nobody can make fire, only use wildfire (the record: no fire-making until about 400,000 years ago)', cfg: true },
     { key: 'founderElders', kind: 'num', def: 0.12, flag: 'founder-elders', label: 'Share of the founding band who are elders (foragers about 0.12; old adults were rarer among early hominins)', min: 0, max: 0.3, cfg: true },
     { key: 'nursingYears', kind: 'num', def: 4, flag: 'nursing-years', label: 'Years an infant nurses (early Homo about 3-4; Australopithecus mostly milk for about one)', min: 0.5, max: 6, cfg: true },
     { key: 'cheapBrain', kind: 'on', def: false, flag: 'cheap-brain', label: 'The brain costs almost nothing (the old rule)', cfg: true },

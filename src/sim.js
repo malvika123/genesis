@@ -1169,7 +1169,9 @@ function sim() {
         // flame is a knack: almost never at first, quickly once learned.
         const sk = a.fsk || 0;
         a.bonus[6] += 0.02 * (1 - sk); // sparks flying are new and striking to see, until they are familiar
-        if (tinder && rnd() < 0.0003 + 0.5 * sk * sk && ignite(i, 0.1)) {
+        // making fire is an experiment against the record: the earliest known fire-making is about 400,000 years ago
+        // (Barnham, with pyrite; Nature 2025), none at 2.5 Ma (realism audit, gap 4). --no-fire-making: it never catches
+        if (tinder && rnd() < 0.0003 + 0.5 * sk * sk && SOC.fireMaking && ignite(i, 0.1)) {
           fireMade(a, 'spark');
         } else firePractice(a, tinder ? 0.012 : 0.004);
       } else if (a.hand === 2 && stick[i] > 0 && stickDry(i) > 0.5) {
@@ -1180,7 +1182,7 @@ function sim() {
         a.lastRub = tick;
         const sk = a.fsk || 0;
         if (sk > 0.15 && rnd() < sk) a.bonus[6] += 0.02 * (1 - sk); // smoke rising from the wood
-        if (rnd() < (a.rub >= 4 ? 0.0004 : 0) + 0.6 * sk * sk && ignite(i, 0.08)) fireMade(a, 'rub');
+        if (rnd() < (a.rub >= 4 ? 0.0004 : 0) + 0.6 * sk * sk && SOC.fireMaking && ignite(i, 0.08)) fireMade(a, 'rub');
         else if (a.rub >= 2) firePractice(a, 0.004); // only steady, sustained rubbing teaches anything
       } else if (a.hand === 1 && nut[i] > 0.05 && !SOC.hardNuts) {
         // the old rule (--easy-nuts): every strike on a nut opens it
@@ -1542,7 +1544,7 @@ const hunterSeen = (x) => {
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { founderElders: 0.12, brainCost: true, brainF: 0.1, carry: true, carryAge: 2, walkE: true, walkJ: 4, pal: 1.7, growBodies: true, massF: 30, massM: 42, swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { fireMaking: true, founderElders: 0.12, brainCost: true, brainF: 0.1, carry: true, carryAge: 2, walkE: true, walkJ: 4, pal: 1.7, growBodies: true, massF: 30, massM: 42, swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {

@@ -132,6 +132,11 @@ took the Taung child: Berger & Clarke 1995); pigs, horses (*Eurygnathohippus*), 
 
 ## Fire skill (registered 13 Nov 2026 after the second review, finding 1)
 
+**Making fire is an experiment against the record** (realism audit, gap 4): the earliest known fire-making is about 400,000 years
+ago (Barnham, England, with pyrite; *Nature* 2025, checked through news coverage), and there is no evidence of fire use by
+hominins at 2.5 million years ago. It stays possible because the owner's design asks whether hominins could discover it;
+`--no-fire-making` (only wildfire) is the faithful setting, and results about fire must say which was used.
+
 | Setting | Value | Evidence | Status |
 |---|---|---|---|
 | Fire skill (`fsk`) | a number 0–1 for each hominin, outside its brain, raised only by practice and (below) by watching | Making fire by friction or sparks is a learned knack: a beginner can try for days, a skilled hand succeeds in minutes | **assumption** (a body skill, like a practised hand) |
