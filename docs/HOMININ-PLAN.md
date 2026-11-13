@@ -105,7 +105,7 @@ to the backlog only.
 
 Paused: the communication detector (B12) — its own check fails, and it is breadth.
 
-**What would make Genesis valuable to others** (Fable's opinion, 12 Nov, adopted by the owner). Fable's summary: *the method is
+**Status 13 Nov: the band-size result is written up (`docs/paper/band-size.md`, draft), with a method guide (`docs/METHOD.md`); next, one human expert reads it.** **What would make Genesis valuable to others** (Fable's opinion, 12 Nov, adopted by the owner). Fable's summary: *the method is
 better than the model; the method is already worth sharing; the model's claims should stay small.* Genesis cannot say what
 happened 2.5 million years ago; it can say honestly what appears, and what does not, in a world built from stated rules. So:
 
