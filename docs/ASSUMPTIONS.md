@@ -114,6 +114,15 @@ took the Taung child: Berger & Clarke 1995); pigs, horses (*Eurygnathohippus*), 
 | A heap of branches as cover | (branches − 4) / 8, at most 0.8 | Brush shelters and windbreaks keep off wind and rain | **assumption** |
 | Branches in a heap rot | 1 in 3,300 a step per branch | — | **assumption** |
 
+## Fire skill (registered 13 Nov 2026 after the second review, finding 1)
+
+| Setting | Value | Evidence | Status |
+|---|---|---|---|
+| Fire skill (`fsk`) | a number 0–1 for each hominin, outside its brain, raised only by practice and (below) by watching | Making fire by friction or sparks is a learned knack: a beginner can try for days, a skilled hand succeeds in minutes | **assumption** (a body skill, like a practised hand) |
+| Chance of fire per step | striking sparks into dry tinder: 0.0003 + 0.5 × skill²; rubbing dry wood (after 4 steady steps): 0.0004 + 0.6 × skill² | no measured rate for early hominins (who are not known to have made fire) | **assumption** |
+| Practice | each step of sparks into tinder +0.012, sparks without tinder or steady rubbing +0.004, scaled by familiarity with fire (0.3 + 0.7 × handled-fire count ÷ 10) and by what is left to learn; a fire made +0.12 | none | **assumption** |
+| Watching fire work (`watchFire`) | every awake hominin within 2 squares (about 6 km) gains 40% of the practiser's gain, 1.5× if young; +0.06 when someone makes fire (`--no-fire-watching`: none) | none — social learning built in as a rule, outside the brains; it may conflict with "nothing scripted" (tested in research log entry 59) | **assumption**, under review |
+
 ## Abundance (all worlds)
 
 | Setting | Value | Evidence | Status |

@@ -98,9 +98,9 @@ hard to find alone. So the eureka attempt is: **make nut cracking realistically 
 nobody is stopped or guided; a strike succeeds with a chance that grows with the hominin's own practice; every number from evidence,
 tested at both ends) → run long enough for two generations (150+ days, 24 worlds, only hominins born in the run) → test with copying
 on against off and the means counted (entry 58's design) → check it outlives its inventor. **Order:** the remaining review fixes
-(fire-rule switch, paired comparisons) → the website (below) → this eureka attempt → the band-size test again.
+(fire-rule switch, paired comparisons) → this eureka attempt → the band-size test again. (The website work is postponed: the owner, 13 Nov.)
 
-**Website for visitors (the owner, 13 Nov; freeze exception):** after the review fixes, a Discoveries panel (who discovered what, when, and who learned it from whom) and a short first-visit guide ("What am I looking at?"). Then the band-size test again.
+**Website for visitors — POSTPONED (the owner, 13 Nov), kept in the backlog (A25):** after the review fixes, a Discoveries panel (who discovered what, when, and who learned it from whom) and a short first-visit guide ("What am I looking at?"). Then the band-size test again.
 
 **Next (the owner, 13 Nov, after entries 53–54): making skills spread comes before the scale step** — copying sequences of actions and learning over years, as young apes do; then the band-size test again (a real test of the hypothesis, which needs skills to spread). Freeze lifted for this item only.
 

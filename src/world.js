@@ -72,6 +72,7 @@ function buildWorld(cfg) {
   SOC.cycle = cfg.cycle !== false; // on by default since 12 Nov 2026: with mating fixed it costs about 17% of births, as waiting for fertile days should (research log entry 38); --no-cycle turns it off
   SOC.mood = cfg.mood !== false; // off: no lasting mood (the old rule)
   SOC.oneMove = cfg.eightWalks !== true; // on: the eight directions count as eight separate choices (the old rule)
+  SOC.fireWatch = cfg.noFireWatching !== true; // watching fire work raises the watcher's fire skill (off: only one's own practice)
   SOC.copying = cfg.noCopying !== true; // a test switch: with it, nobody copies anyone (no learning by watching at all)
   SOC.copyByResult = cfg.copyBySurprise !== true; // copy by what visibly came of the elder's choice (off: by its hidden surprise)
   SOC.copySeq = cfg.copySequence !== false; // youngsters watching learn from an elder's whole path to a good result (off: none)
