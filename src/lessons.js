@@ -258,5 +258,5 @@ function nameIt() {
   return n[0].toUpperCase() + n.slice(1);
 }
 function who(a) {
-  return a.sp === 0 ? a.name : 'A ' + a.S.n.toLowerCase();
+  return a.sp === 0 ? a.name : (/^[aeiou]/i.test(a.S.n) ? 'An ' : 'A ') + a.S.n.toLowerCase();
 }

@@ -86,12 +86,17 @@ const word = (t) =>
         .replace(/\bPerson\b/g, 'Hominin')
         .replace(/\bperson\b/g, 'hominin')
         .replace(/\ba hominin\b/g, 'a hominin');
+// whose turn it is while the world steps: each piece of news remembers the creature it came from, so the page can show it
+let LOGWHO = null;
+const LOGW = [];
 function log(t) {
   t = word(t);
-  events.push({ t: tick, s: t });
+  events.push({ t: tick, s: t, who: LOGWHO });
   if (events.length > 600) events.shift();
   logs.unshift('Day ' + dayN() + ': ' + t);
   logs.length = Math.min(logs.length, 8);
+  LOGW.unshift(LOGWHO);
+  LOGW.length = logs.length;
   if (typeof onLog === 'function') onLog(logs);
 }
 const OFF = [];

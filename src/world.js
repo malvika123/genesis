@@ -156,6 +156,8 @@ function buildWorld(cfg) {
   updateClimate();
   hist = [];
   logs = [];
+  LOGW.length = 0;
+  LOGWHO = null;
   events = [];
   SIBS = [];
   kills = [0, 0, 0, 0];

@@ -1662,6 +1662,7 @@ function drawAnimal(g, a, X, Y, k) {
 }
 // One creature at (X, Y); k scales its size (1 = flat-map size).
 function drawCreature(g, a, X, Y, k, v, dim = 1) {
+  if (!isFinite(X) || !isFinite(Y) || !isFinite(k) || k <= 0) return; // a bad screen position for one frame (seen once mid-flight): skip, never crash
   const S = a.S,
     gr = clamp(a.age / S.mat, 0.3, 1);
   g.globalAlpha = (a.asleep ? 0.45 : 1) * dim;
@@ -2224,7 +2225,9 @@ function glide() {
     const walking = a.mvv > 0 && !a.asleep && !a.dead;
     // how far it has got toward the next square stays where it is when it stops, lies down or dies:
     // it doesn't drift back to the middle of its square while lying still
-    if (a.mvd !== undefined && a.acc > 0) {
+    // a sleeper lies in the middle of its own square: before, one that had been walking toward the water's edge was drawn
+    // on the shoreline, under the softened water, and looked as if it slept in the water (the owner, 14 Nov 2026)
+    if (a.mvd !== undefined && a.acc > 0 && !a.asleep) {
       const [mx, my] = MV[a.mvd],
         p = clamp(a.acc + (walking ? a.mvv * f : 0), 0, 1);
       tx += mx * p;
@@ -2581,7 +2584,7 @@ $('fmin').onclick = () => setFeedMin(!feedMin);
 setFeedMin(feedMin);
 // The news can be all of it, or only what concerns the hominins (or people): an entry about them names one
 // of them, or speaks of them.
-const FEED = { tab: 'all', names: new Set(), logs: [], fresh: 0 };
+const FEED = { tab: 'all', names: new Set(), logs: [], fresh: 0, who: [] };
 function aboutUs(t) {
   if (/\b(hominins?|people|person|Hominins?|People|Person)\b/.test(t)) return true;
   for (const n of FEED.names) if (n && t.includes(n)) return true;
@@ -2592,14 +2595,44 @@ function drawFeed() {
   if (FEED.tab === 'hom') {
     for (const a of ag) if (a.sp === 0 && a.name) FEED.names.add(a.name);
     rows = [];
+    FEED.who = [];
     for (let i = events.length - 1; i >= 0 && rows.length < 8; i--)
-      if (aboutUs(events[i].s)) rows.push('Day ' + (Math.floor(events[i].t / DAY) + 1) + ': ' + events[i].s);
+      if (aboutUs(events[i].s)) {
+        rows.push('Day ' + (Math.floor(events[i].t / DAY) + 1) + ': ' + events[i].s);
+        FEED.who.push(events[i].who);
+      }
     if (!rows.length) rows = ['Nothing yet about the ' + word('people') + '.'];
-  } else rows = FEED.logs;
-  $('log').innerHTML = rows.map((l, i) => '<li' + (FEED.tab === 'all' && i < FEED.fresh ? ' class="new"' : '') + '>' + linkNames(word(l)) + '</li>').join('');
+  } else {
+    rows = FEED.logs;
+    FEED.who = LOGW.slice();
+  }
+  // a whole row can be clicked: it shows the first living creature it names, or else the one the news came from (the owner,
+  // 14 Nov 2026)
+  FEED.who = rows.map((l, i) => firstNamed(l) || FEED.who[i] || null);
+  $('log').innerHTML = rows
+    .map((l, i) => {
+      const w = FEED.who[i],
+        cls = (FEED.tab === 'all' && i < FEED.fresh ? 'new ' : '') + (w && !w.gone && !w.dead ? 'row-who' : '');
+      return '<li data-row="' + i + '"' + (cls ? ' class="' + cls.trim() + '"' : '') + (w && !w.gone && !w.dead ? ' title="Show ' + (w.name || 'this ' + w.S.n.toLowerCase()) + '"' : '') + '>' + linkNames(word(l)) + '</li>';
+    })
+    .join('');
 }
 // Names in the news are links: clicking one selects that creature and shows it (the owner, 14 Nov 2026). Those who have
 // died are shown faded and cannot be followed.
+// the first living creature named in a piece of news (or null)
+function firstNamed(t) {
+  let best = null,
+    at = Infinity;
+  for (const a of ag)
+    if (a.name && !a.dead && !a.gone) {
+      const m = new RegExp('\\b' + a.name + '\\b').exec(t);
+      if (m && m.index < at) {
+        at = m.index;
+        best = a;
+      }
+    }
+  return best;
+}
 function linkNames(t) {
   const who = new Map();
   for (const a of ag) if (a.name && (!who.has(a.name) || !a.gone)) who.set(a.name, a);
@@ -2614,9 +2647,14 @@ function linkNames(t) {
 }
 $('log').addEventListener('click', (e) => {
   const b = e.target.closest('button.who');
-  if (!b) return;
-  const a = ag.find((o) => String(o.id) === b.dataset.who && !o.gone);
-  if (a) focusOn(a);
+  if (b) {
+    const a = ag.find((o) => String(o.id) === b.dataset.who && !o.gone);
+    if (a) focusOn(a);
+    return;
+  }
+  const li = e.target.closest('li[data-row]'),
+    w = li && FEED.who && FEED.who[+li.dataset.row];
+  if (w && !w.gone && !w.dead) focusOn(w);
 });
 document.querySelectorAll('[data-ft]').forEach(
   (b) =>

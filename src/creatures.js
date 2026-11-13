@@ -333,7 +333,10 @@ function rescue() {
         const c = ag[ag.length - 1];
         c.sex = rnd() < 0.5 ? 1 : 0;
         c.newcomer = true;
-        log('A ' + KINDS[k].n.toLowerCase() + ' came into the land from elsewhere (its kind had become rare here).');
+        const was = LOGWHO;
+        LOGWHO = c; // the news is about the newcomer
+        log((/^[aeiou]/i.test(KINDS[k].n) ? 'An ' : 'A ') + KINDS[k].n.toLowerCase() + ' came into the land from elsewhere (its kind had become rare here).');
+        LOGWHO = was;
       }
     }
   } finally {

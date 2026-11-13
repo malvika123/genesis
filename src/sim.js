@@ -68,6 +68,7 @@ function sim() {
       }
   for (const a of ag) {
     if (a.dead) continue;
+    LOGWHO = a; // news from this creature's turn is about it
     const S = a.S,
       night = isNightAt(a.x);
     a.age++;
@@ -1393,6 +1394,7 @@ function sim() {
     }
     return false;
   });
+  LOGWHO = null;
   watchOthers();
   ag.push(...kids);
   if (!over && !ag.some((a) => a.sp === 0)) {
