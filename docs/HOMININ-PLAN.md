@@ -108,6 +108,12 @@ shells that break under real force; (4) Oldowan stone toolmaking and butchery â€
 realistically hard; nuts kept as a side food with biting for weak shells, labelled as inference; (5) only then: does anything spread
 or last?
 
+**Order of work (the owner, 13 Nov, late): fill ALL the gaps of the realism audit first (backlog A28,
+`docs/reviews/2026-11-13-fable-realism-audit.md`), then the reality tests, then run the simulation to see what changed.** Each gap
+is still one change with a switch, the switch-back check, `npm test` and a two-world smoke run (to catch a broken world at the change
+that broke it); thin evidence is filled with a switch and a two-ended range, never an invented number; every citation checked before
+building. Layer 1 of the reality tests (every number registered) is built first, as registering unsourced numbers is itself a gap.
+
 **Decided (the owner, 13 Nov, evening): physics before any discovery is claimed.** Hominin bodies that grow with age, strikes
 whose energy depends on body and stone, and shells that take real force and can break over several strikes (backlog A27) are
 built next, after the running nut test (entry 62), using hominin evidence first and chimpanzee or capuchin numbers only as
