@@ -123,8 +123,10 @@ function choicesFor(w) {
 //   pg — the urge to point;
 //   sh — the pleasure of sharing attention: when someone looks where you pointed (in us, a drive that
 //        appears in babies around their first birthday and that apes barely have).
-const vocalCtl = (a) => (SOC.modern ? 1 : (a.g.vl ?? 1)),
-  pointUrge = (a) => (SOC.modern ? 1 : (a.g.pg ?? 1)),
-  shareJoy = (a) => (SOC.modern ? 1 : (a.g.sh ?? 1));
+// --no-voice-genes (realism audit, gap 12): vocal learning, the urge to point and the joy of shared attention are human
+// traits; hominins start ape-low (0-0.3) and may evolve them. The switch fixes them at 0, to test what depends on them.
+const vocalCtl = (a) => (SOC.modern ? 1 : SOC.voiceGenes ? (a.g.vl ?? 1) : 0),
+  pointUrge = (a) => (SOC.modern ? 1 : SOC.voiceGenes ? (a.g.pg ?? 1) : 0),
+  shareJoy = (a) => (SOC.modern ? 1 : SOC.voiceGenes ? (a.g.sh ?? 1) : 0);
 // a speaker's pitch, 0 … 1: children highest, then women, then men
 const pitchOf = (a) => (a.age < a.S.mat ? 0.9 : a.sex ? 0.6 : 0.3);

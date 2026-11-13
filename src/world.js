@@ -92,6 +92,7 @@ function buildWorld(cfg) {
   SOC.carryAge = cfg.carryAge ?? 2; // years carried (an assumption: constant contact to about 7 months; tested 0.6-4)
   SOC.walkE = cfg.freeWalking !== true; // walking costs energy by body weight (off: free on the flat, the old rule)
   SOC.walkJ = cfg.walkCost ?? 4; // net J per kg per m (people about 2, chimpanzees about 8: Sockol et al. 2007)
+  SOC.voiceGenes = cfg.noVoiceGenes !== true; // vocal learning, pointing, shared-attention joy can evolve from ape-low (off: fixed at 0)
   SOC.fireMaking = cfg.noFireMaking !== true; // making fire is possible (an experiment against the record; off: only wildfire)
   SOC.founderElders = cfg.founderElders ?? 0.12; // share of founders who are elders (foragers about 0.12; fewer in early hominins, no number)
   SOC.growBodies = cfg.fixedBodies !== true; // hominin bodies grow with age and differ by sex (off: one body for all, the old rule)
