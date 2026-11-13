@@ -1,0 +1,21 @@
+Written 13 Nov 2026 BEFORE any run with hard nuts (no outcome looked at; only a 15-day smoke test of the tool, in which nobody
+was yet skilled). Code: hard nut cracking (backlog A26), design revised after the checkpoint-1 review.
+
+Numbers fixed now: beginner 0.02 per strike, expert 0.83, 500 strikes to 80% of the way, no success before 3.5 years; ends
+tested: hard (beginner 0.005, 1500 strikes) and easy (0.10, 150 strikes). Skilled = skill 0.5.
+
+Runs: 24 identical worlds x 150 days, nut-practice.js.
+ central: copying on | --no-nut-copying | --no-copying
+ hard end: on | --no-nut-copying        easy end: on | --no-nut-copying
+
+MAIN OUTCOME (one): strikes on nuts per 1,000 steps with the means at hand, ages 3.5-10, hominins born after the first hominin
+in the world reached skill 0.5; paired by world, "on" against "--no-nut-copying".
+PASS (the reviewer's criterion): "on" higher in at least 18 of the worlds where both arms have data (scaled: 75%), median ratio
+at least 1.5, and the same sign at both ends. Anything else is a clear no and will be published as one.
+
+Predictions:
+1. Main: FAIL. Ratio 1.0-1.3, higher in about half the worlds (agreeing with the reviewer).
+2. Copying off: lone learners still appear (some born-in-run hominins skilled by 10) - nut cracking will still be learnable
+   alone, unlike Koops et al. 2022, because every strike is practice whatever happens.
+3. In some worlds nobody reaches skill 0.5 in 150 days at the hard end; there the main outcome is missing, not zero.
+4. Skilled hominins born in the run will be alive after every founder has died in at least some worlds at the central setting.

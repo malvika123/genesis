@@ -1816,6 +1816,33 @@ should be read with that in mind.
 
 ---
 
+### 62. Hard nut cracking: watching made no difference — stopped early, superseded by the realism audit — Nov 2026
+
+**Version.** Unreleased · commit `1d41850` (hard nut cracking, backlog A26). Run by Claude.
+
+**Data.** [24 worlds with copying on, 12 with nothing copied from nut strikes, the prediction written before](../data/findings/62-hard-nuts-stopped/).
+
+**Question.** With nut cracking made realistically hard (a beginner opens a nut with 2% of strikes, rising with its own strikes
+toward 83%; none before 3.5 years), does watching skilled elders make youngsters practise more?
+
+**Test.** Planned: 24 worlds × 150 days, seven arms (prediction written first). **Stopped** after the first arm and half the second,
+when the owner set a new aim (faithful hominins first) and the realism audit found that nut cracking has no direct evidence at
+2.5 Ma (earliest nuts with pitted stones about 780,000 years ago) and the worlds use ice-age animals by default.
+
+**Result (partial).** Nut cracking was now hard: of 858 youngsters born in the run who lived to 10, **41 (5%)** were skilled by then;
+someone became skilled in 21 of 24 worlds (first skilled hominin after 10–145 days). Main outcome, in the 10 worlds with data in both
+arms: copying on higher in **5**, lower in **5**, median ratio **1.03**. As predicted (prediction 1: no effect), but on too few worlds
+to be firm. The ends of the ranges were not run.
+
+**Interpretation.** No sign that watching makes youngsters practise a hard skill. But the skill, the age limit (a hard-coded outcome)
+and the animals are not faithful to 2.5 Ma hominins, so this is a test of a chimpanzee-borrowed skill in an ice-age world, and it is
+not carried further. Physics, growing bodies and Oldowan toolmaking come first (`docs/HOMININ-PLAN.md`, "THE AIM").
+
+**Strength.** Weak (partial, 10 paired worlds). **Lesson:** check that the skill and the world are real for the period before testing
+whether the skill spreads.
+
+---
+
 ## Open questions (next tests)
 
 - Ablate the bundle in entry 7: which of band size, parental feeding, instincts, one-shot memory and
