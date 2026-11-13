@@ -79,6 +79,8 @@ function buildWorld(cfg) {
   SOC.mood = cfg.mood !== false; // off: no lasting mood (the old rule)
   SOC.oneMove = cfg.eightWalks !== true; // on: the eight directions count as eight separate choices (the old rule)
   SOC.fireWatch = cfg.fireWatching === true && cfg.noFireWatching !== true; // off by default (the owner, after entry 59): fire skill only from one's own practice; --fire-watching restores the built-in rule that watching fire work raises it
+  SOC.brainCost = cfg.cheapBrain !== true; // the brain costs its real share of energy (off: the old, nearly free brain)
+  SOC.brainF = cfg.brainShare ?? 0.1; // share of energy for a typical hominin brain (primates 0.08-0.10, people 0.20-0.25)
   SOC.carry = cfg.noCarrying !== true; // infants cling to and travel with their mother, and nurse in her square (off: the old rule)
   SOC.carryAge = cfg.carryAge ?? 2; // years carried (an assumption: constant contact to about 7 months; tested 0.6-4)
   SOC.walkE = cfg.freeWalking !== true; // walking costs energy by body weight (off: free on the flat, the old rule)
