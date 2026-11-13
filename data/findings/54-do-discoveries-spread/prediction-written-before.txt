@@ -1,0 +1,8 @@
+Written 13 Nov 2026 BEFORE the runs (commit in ./commit). 8 worlds (seeds 1-8) x 60 days, new copying and --copy-moves.
+For each behaviour: rate of doing it for the first time among hominins who had watched someone do it in their square, divided by
+the rate among those who never had (the rate ratio). Sharing a place raises it under both copying rules.
+Primary outcome: the rate ratio for cracking nuts and for digging with a stick (the common behaviours), new against old copying.
+1. With the new copying, watching raises first-time rates (ratio above 1) for nuts and stick digging.
+2. The ratio is higher with the new copying than with the old (watching itself passes the behaviour on).
+3. Rare behaviours (fire, meat, cutting) have too few first times to tell.
+If (2) fails, discoveries are not spreading by watching, and the band-size hypothesis still has no mechanism in Genesis.

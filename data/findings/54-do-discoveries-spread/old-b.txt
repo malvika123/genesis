@@ -1,0 +1,6 @@
+copy-moves   nuts           worlds 4 | doers 83 | first after watching 36 never watched 43 | rate ratio (watched/not) 1.46
+copy-moves   stick digging  worlds 4 | doers 76 | first after watching 17 never watched 55 | rate ratio (watched/not) 1.74
+copy-moves   cooked food    worlds 4 | doers 8 | first after watching 0 never watched 4 | rate ratio (watched/not) 0
+copy-moves   burning stick  worlds 4 | doers 21 | first after watching 4 never watched 13 | rate ratio (watched/not) 14.2
+copy-moves   meat           worlds 1 | doers 10 | first after watching 0 never watched 9 | rate ratio (watched/not) 0
+copy-moves   cutting meat   worlds 1 | doers 1 | first after watching 0 never watched 0 | rate ratio (watched/not) null

@@ -44,6 +44,7 @@ Entries are kept even when the result was "no effect" or "it made things worse" 
 | Hunger and thirst come first | Hunger deaths 109 → 69 (−37%); births 27 → 30; but drownings doubled, 11 of 12 drowned were children | weak–moderate |
 | Moving as one choice, not eight (walking 70–80% → 25%) | Predator deaths 60 → 3; drownings 39 → 18; but hunger deaths 80 → 115 | moderate |
 | A mother keeps her nursing child near | 31 alive vs 25, better in 9 of 12; drownings and fire deaths about halved | weak–moderate |
+| **Discoveries do not spread by watching** (yet): nut cracking and stick digging are reinvented alone by most hominins; watching makes no consistent difference under old or new copying — so a bigger band has no mechanism to help | 8 worlds, two rules | moderate |
 | **Not** supported again: a bigger band (40, 80) makes no more kinds of discovery even with learning by watching; firsts come ~2 weeks sooner at 80 (numbers alone); survival per founder lower (more hunger). Every band discovers more than before the brains work (25 founders: 4.1 → 5.5 kinds; fire by burning stick 11 → 22 of 24 worlds) | 24 + 12 identical worlds | moderate |
 | **Learning by watching what worked, up close** (copy an elder's choice by how it turned out for it, only in the same square): hunger 30% → 17% of deaths; illness 16% (passes); children reaching 15 now just above the band (62%) | 24 worlds | moderate |
 | **Brains' expectations fixed** (good surprises no longer count four times as much in the value estimate): starving hominins on fruit eat 83% (was 1–5%); populations hold steady (−3.1% → −0.3% a year), die-outs 5 → 2, children reaching 15 45% → 59%, life expectancy 15 → 21; **5 of 7 reality checks pass** | 24 worlds | moderate–strong |
@@ -1585,6 +1586,32 @@ At 80 founders (12 worlds, against 25): discoveries 5.92 against 6.08; alive per
 **Interpretation.** Firsts coming sooner with more hominins is what sheer numbers do — more individuals trying things — not evidence that knowledge spreads. Bigger bands go hungrier, as larger primate groups face more feeding competition. **In Genesis the hypothesis is still not supported.** But the test is not yet complete: theories of cultural accumulation (e.g. Henrich; Kline & Boyd) say size helps only when discoveries spread and are kept, and that has not been measured (backlog: measure whether discoveries are repeated and spread). **What did change since entry 36:** bands of every size discover more — with 25 founders, 4.13 → 5.46 kinds per world, and a fire started with a burning stick in 11 → 22 of 24 worlds — from the brains work of entries 50–52, not from size.
 
 **Strength.** Moderate (24 + 12 identical worlds; prediction written first). **Lesson:** "sooner" and "more" are different claims; a bigger band gets the first sooner by numbers alone.
+
+### 54. Do discoveries spread by watching? Not measurably — they are reinvented alone — Nov 2026
+
+**Version.** Unreleased · commit `f3e547c`; tool `tools/analysis/spread.js`. Run by Claude.
+
+**Data.** New copying: [worlds 1–4](../data/findings/54-do-discoveries-spread/new-a.json), [5–8](../data/findings/54-do-discoveries-spread/new-b.json) · old copying (`--copy-moves`): [1–4](../data/findings/54-do-discoveries-spread/old-a.json), [5–8](../data/findings/54-do-discoveries-spread/old-b.json) · [the prediction, written before](../data/findings/54-do-discoveries-spread/prediction-written-before.txt).
+
+**Question.** Entry 53: a bigger band does not make more kinds of discovery. Theories of cultural accumulation (Henrich; Kline & Boyd) say size helps only when discoveries spread and are kept. Do they spread in Genesis?
+
+**Test.** 8 worlds × 60 days, with the new copying (entry 52) and the old. For each behaviour seen in one hominin — cracking nuts with a stone, digging roots with a stick, eating fire-cooked food, picking up a burning stick, eating meat, cutting meat with a sharp stone — who did it first and when, and who was awake in the same square when someone did it. Then the rate of doing it for the first time among those who had watched it, against those who never had (a simple form of the logic of network-based diffusion analysis, Franz & Nunn 2009). Sharing a place raises it under either copying rule; a larger effect with the new copying would show that watching passes the behaviour on. Prediction written first: (1) watching raises first-time rates for nuts and stick digging; (2) more so with the new copying.
+
+| | New copying | Old copying |
+|---|---|---|
+| Cracking nuts: hominins who did it | 165 | 175 |
+| …first time after watching / never having watched | 70 / 87 | 87 / 80 |
+| …rate ratio, watched ÷ not (worlds 1–4 / 5–8) | 0.74 / 1.50 | 0.75 / 1.46 |
+| Digging with a stick: hominins who did it | 169 | 165 |
+| …first time after watching / never | 48 / 113 | 47 / 110 |
+| …rate ratio (1–4 / 5–8) | 0.83 / 1.74 | 0.99 / 1.74 |
+| Cooked food, burning stick, meat, cutting meat | 0–5 first times after watching each: too few to tell | |
+
+**Result. Both predictions failed.** Nut cracking and stick digging are done by most hominins, about half of them without ever having watched anyone do it; watching makes no consistent difference (the ratio falls either side of 1 between halves of the worlds), and it is the same with the old and the new copying. The rare behaviours are too rare to judge.
+
+**Interpretation.** In Genesis, easy skills are reinvented by nearly everyone on their own, and nothing is passed on by watching in a measurable way. Copying one action ("strike", "eat") does not teach a sequence ("pick up a stone, then strike the nut"); real young chimpanzees take years to learn nut cracking by watching. **This completes the band-size question (entries 36, 53, 54): in Genesis a bigger band is not the key** — it gets some firsts sooner by numbers alone, discovers no more kinds of things, goes hungrier, and lacks the mechanism the hypothesis needs (skills spreading and being kept). The hypothesis is not refuted for real hominins; it is unsupported in a world where skills do not spread.
+
+**Strength.** Moderate (8 worlds, two copying rules; hundreds of first times for the common skills). **Lesson:** to test whether size helps culture, first check that there is culture to help.
 
 ---
 
