@@ -98,6 +98,16 @@ owner chose that order:
 with the greatest risk of tuning; (2) its results, before anything is celebrated or published; (3) the whole write-up, before a human
 expert reads it.
 
+**THE AIM (the owner, 13 Nov 2026, evening): "I don't care about eureka if it's all wrong and based on wrong — it will make an
+ivory tower. I want them to be mini copies of our hominins, and then do something."** Faithfulness to the real hominins of East
+Africa about 2.5 million years ago comes first; any discovery counts only on top of it. Order: (1) finish and log the running nut
+test honestly, as a test of a skill borrowed from chimpanzees (no direct evidence of nut cracking at 2.5 Ma); (2) a realism audit of
+the whole hominin — every trait and rule sorted into hominin evidence / chimpanzee or other stand-in / invented — and the gaps
+fixed in order of how far they pull from reality; (3) physics: growing hominin bodies, real hammer masses, strike energy, stone and
+shells that break under real force; (4) Oldowan stone toolmaking and butchery — the skills the record shows at 2.6–2.5 Ma — made
+realistically hard; nuts kept as a side food with biting for weak shells, labelled as inference; (5) only then: does anything spread
+or last?
+
 **Decided (the owner, 13 Nov, evening): physics before any discovery is claimed.** Hominin bodies that grow with age, strikes
 whose energy depends on body and stone, and shells that take real force and can break over several strikes (backlog A27) are
 built next, after the running nut test (entry 62), using hominin evidence first and chimpanzee or capuchin numbers only as
