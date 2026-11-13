@@ -1589,6 +1589,8 @@ At 80 founders (12 worlds, against 25): discoveries 5.92 against 6.08; alive per
 
 ### 54. Do discoveries spread by watching? Not measurably — they are reinvented alone — Nov 2026
 
+> **Revised 13 Nov after the second independent review** (`docs/reviews/2026-11-13-fable-review-2.md`): this measure was never validated on a case where spreading is known to happen, and has confounds (opportunity, survivorship, founders, pooled rates); and fire-making skill *does* spread by a built-in rule that it did not measure (`watchFire`, backlog B20). Read the result as "no spreading detected for nut cracking and stick digging with an unvalidated measure", not as "skills do not spread". The band-size conclusion drawn here is withdrawn pending the tests in backlog B20–B22.
+
 **Version.** Unreleased · commit `f3e547c`; tool `tools/analysis/spread.js`. Run by Claude.
 
 **Data.** New copying: [worlds 1–4](../data/findings/54-do-discoveries-spread/new-a.json), [5–8](../data/findings/54-do-discoveries-spread/new-b.json) · old copying (`--copy-moves`): [1–4](../data/findings/54-do-discoveries-spread/old-a.json), [5–8](../data/findings/54-do-discoveries-spread/old-b.json) · [the prediction, written before](../data/findings/54-do-discoveries-spread/prediction-written-before.txt).

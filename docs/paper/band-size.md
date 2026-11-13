@@ -1,10 +1,18 @@
 # Does a bigger band discover more? Tests in an evidence-based simulation of early hominins with learning minds
 
-**Malvika Sen** · draft, 13 November 2026 · Genesis (open source, MIT licence): https://github.com/malvika123/genesis · live:
+**Malvika Sen** · draft, revised 13 November 2026 after an independent review (`docs/reviews/2026-11-13-fable-review-2.md`) · Genesis (open source, MIT licence): https://github.com/malvika123/genesis · live:
 https://malvika123.github.io/genesis/
 
 *Built and analysed with AI assistance (Claude). Every number below comes from the research log (`docs/FINDINGS.md`, entries
 36, 42–54) and the raw data under `data/findings/`; every claim about the real world is sourced there. Comments welcome.*
+
+> **Revised after an independent review (13 November 2026).** (1) Fire-making skill *does* spread by watching in Genesis, through a
+> built-in rule outside the brains (`watchFire`, `src/sim.js`): anyone within about 6 km of someone practising or making fire gains fire
+> skill. It was not measured, and the firsts that came sooner in bigger bands were all fire events. (2) The spreading measure (4.3)
+> was never validated on a case where spreading is known to happen. (3) The copying rule passes on what surprised the elder, so a
+> skilled elder teaches almost nothing. (4) "5 of 7 checks" uses bands wider than their sources; against the sources, 3 of 7.
+> **Safe claim: in these tests a bigger band did not make more kinds of first discovery within 20 simulated years, within about one
+> kind. Why, and whether skills spread, is not yet shown.**
 
 ## Summary
 
