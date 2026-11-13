@@ -7,7 +7,7 @@ const X = require(path.join(root, 'tools/experiment-core'));
 const [seed, days, ice] = [Number(process.argv[2]), Number(process.argv[3]), process.argv[4] === 'ice'];
 // today's defaults (the old flight rule was forced here for entry 24; pass 'old' as a fourth argument to get it back)
 const old = process.argv[5] === 'old';
-const S = X.fromArgs(Object.assign({ 'naive-founders': true }, ice ? {} : { 'africa-animals': true }, old ? { 'old-flight': true } : {}));
+const S = X.fromArgs(Object.assign({ 'naive-founders': true }, ice ? { 'ice-animals': true } : {}, old ? { 'old-flight': true } : {}));
 const E = createEngine({ brain: S.brain }); E.setSeed(seed); E.reset(S.cfg);
 const seen = new Set(); const born = {};
 const snap = () => { const c = {}; for (const a of E.state().ag) if (a.sp === 2) c[a.S.n] = (c[a.S.n] || 0) + 1; return JSON.stringify(c); };

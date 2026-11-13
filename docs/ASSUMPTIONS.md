@@ -59,6 +59,11 @@ older parts of the model are still to be audited the same way.
 
 ## The animals of East Africa about 2.5 million years ago (`HKINDS` in `src/config.js`; patch 6)
 
+**The default since 14 Nov 2026** (realism audit, gap 1; `--ice-animals` restores the ice-age animals). In a 4-world, 30-day check all
+three hunter kinds survived (the newcomer rule, entry 39) and hyenas and leopards killed hominins. **Still a known deviation:** about nine
+times too many hunters for the prey (Carbone & Gittleman 2002; entry 24) — the scale step. **Still missing:** *Dinofelis* and
+*Homotherium* (other big cats of the time), crocodiles, and eagles (the Taung child: Berger & Clarke 1995).
+
 Each replaces an ice-age kind in the hominin world with `--africa-animals` — **off by default** until hunters and prey are balanced (research log entry 24). Life histories from the living
 species; numbers inside the ranges given. Abundance (`cap`, `share`) and the model's own settings (speed, size relative
 to a deer or wolf) are carried over from the kinds they replace: **assumptions**. Temperature limits and habitat ranges

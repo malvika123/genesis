@@ -216,23 +216,23 @@ test('the mind readout reflects the real network', () => {
 
 // Patch 6 of the hominin plan: early hominins live among the animals of East Africa 2.5 million years ago;
 // modern people (and --ice-animals) among the ice-age ones.
-test('with --africa-animals, early hominins share their world with antelopes, hyenas, leopards and sabre-tooths; modern people keep deer and wolves', () => {
+test('by default early hominins share their world with antelopes, hyenas, leopards and sabre-tooths; modern people keep deer and wolves', () => {
   const kinds = (cfg) => {
     const E = createEngine();
     E.setSeed(4);
     E.reset(cfg);
     return new Set(E.state().ag.filter((a) => a.sp === 1 || a.sp === 2).map((a) => a.S.n));
   };
-  const hom = kinds({ africaAnimals: true }),
-    sap = kinds({ sapiens: true, africaAnimals: true }),
-    ice = kinds({});
+  const hom = kinds({}),
+    sap = kinds({ sapiens: true }),
+    ice = kinds({ iceAnimals: true });
   for (const n of ['Antelope', 'Hyena']) assert.ok(hom.has(n), 'hominin world has ' + n + ': ' + [...hom]);
   for (const n of ['Deer', 'Wolf', 'Bison', 'Bear']) assert.ok(!hom.has(n), 'no ' + n + ' among hominins');
   assert.ok(sap.has('Deer') && sap.has('Wolf'), 'modern people among deer and wolves: ' + [...sap]);
-  assert.ok(ice.has('Deer') && !ice.has('Antelope'), 'by default (until hunters and prey are balanced) the ice-age animals: ' + [...ice]);
+  assert.ok(ice.has('Deer') && !ice.has('Antelope'), 'with --ice-animals, the old ice-age animals: ' + [...ice]);
   const E = createEngine();
   E.setSeed(4);
-  E.reset({ africaAnimals: true });
+  E.reset({});
   const leopard = E.state().ag.find((a) => a.S.n === 'Leopard'),
     hyena = E.state().ag.find((a) => a.S.n === 'Hyena');
   if (leopard) assert.ok(leopard.S.climb, 'leopards climb');
