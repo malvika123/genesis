@@ -21,7 +21,8 @@ for (const v of process.argv.slice(5)) {
 // hominins. Each hominin without it picks it up alone with chance PB a step, and — only with --plant=S — with an extra chance S a step
 // while it has watched a holder do it; holders "do" it with chance 0.05 a step. With S = 0 watching does nothing (negative control);
 // with S > 0 it spreads only by watching (positive control). Its own random numbers, so the world is untouched.
-const PS = opt.plant === undefined ? null : +opt.plant, PB = 0.00002;
+// --plant=S or --plant=S:B (B: chance a step of picking it up alone; default 0.00002)
+const PS = opt.plant === undefined ? null : +String(opt.plant).split(':')[0], PB = opt.plant !== undefined && String(opt.plant).includes(':') ? +String(opt.plant).split(':')[1] : 0.00002;
 let pr = 1;
 const prand = () => ((pr = (Math.imul(pr, 1664525) + 1013904223) >>> 0) / 4294967296);
 const B = ['nuts', 'stick digging', 'cooked food', 'burning stick', 'meat', 'cutting meat', 'planted'];
