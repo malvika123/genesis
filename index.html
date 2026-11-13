@@ -721,6 +721,27 @@
       #log li {
         margin-bottom: 4px;
       }
+      #log .who {
+        font: inherit;
+        color: var(--ink);
+        background: none;
+        border: 0;
+        padding: 0;
+        text-decoration: underline;
+        text-decoration-color: var(--acc);
+        text-underline-offset: 2px;
+        cursor: pointer;
+      }
+      #log .who:hover,
+      #log .who:focus-visible {
+        color: var(--acc);
+      }
+      #log .who.gone {
+        color: inherit;
+        text-decoration: line-through;
+        opacity: 0.7;
+        cursor: default;
+      }
     </style>
   </head>
   <body>

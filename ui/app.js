@@ -2157,8 +2157,12 @@ const findAt = [0, 0, 0, 0];
 function findOne(sp) {
   const list = ag.filter((a) => a.sp === sp && !a.dead);
   if (!list.length) return;
-  const a = list[findAt[sp]++ % list.length];
+  focusOn(list[findAt[sp]++ % list.length]);
+}
+// select a creature, turn the planet to it and keep it in view, and flash a ring round it so it can be found in a crowd
+function focusOn(a) {
   sel = a;
+  GL.flash = performance.now();
   fillIdeas();
   if (view === 'globe') {
     GL.lon0 = lonOfX(a.x);
@@ -2568,8 +2572,28 @@ function drawFeed() {
       if (aboutUs(events[i].s)) rows.push('Day ' + (Math.floor(events[i].t / DAY) + 1) + ': ' + events[i].s);
     if (!rows.length) rows = ['Nothing yet about the ' + word('people') + '.'];
   } else rows = FEED.logs;
-  $('log').innerHTML = rows.map((l, i) => '<li' + (FEED.tab === 'all' && i < FEED.fresh ? ' class="new"' : '') + '>' + word(l) + '</li>').join('');
+  $('log').innerHTML = rows.map((l, i) => '<li' + (FEED.tab === 'all' && i < FEED.fresh ? ' class="new"' : '') + '>' + linkNames(word(l)) + '</li>').join('');
 }
+// Names in the news are links: clicking one selects that creature and shows it (the owner, 14 Nov 2026). Those who have
+// died are shown faded and cannot be followed.
+function linkNames(t) {
+  const who = new Map();
+  for (const a of ag) if (a.name && (!who.has(a.name) || !a.gone)) who.set(a.name, a);
+  if (!who.size) return t;
+  const names = [...who.keys()].sort((x, y) => y.length - x.length).map((n) => n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+  return t.replace(new RegExp('\\b(' + names.join('|') + ')\\b', 'g'), (n) => {
+    const a = who.get(n);
+    return a.dead || a.gone
+      ? '<span class="who gone" title="No longer alive">' + n + '</span>'
+      : '<button type="button" class="who" data-who="' + a.id + '" title="Show ' + n + '">' + n + '</button>';
+  });
+}
+$('log').addEventListener('click', (e) => {
+  const b = e.target.closest('button.who');
+  if (!b) return;
+  const a = ag.find((o) => String(o.id) === b.dataset.who && !o.gone);
+  if (a) focusOn(a);
+});
 document.querySelectorAll('[data-ft]').forEach(
   (b) =>
     (b.onclick = () => {

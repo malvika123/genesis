@@ -1131,11 +1131,30 @@ const G3D = { ok: false };
     if (sel && !GL.eye) {
       const P = project(sel.rx, sel.ry);
       if (P) {
-        cx.strokeStyle = v('--ink');
-        cx.lineWidth = 2;
+        const r = Math.max(9, 1.1 * P[2]);
+        // a dark halo under a bright ring, so the one you are watching stands out on any ground
+        cx.lineWidth = 5;
+        cx.strokeStyle = 'rgba(0,0,0,.45)';
         cx.beginPath();
-        cx.arc(P[0], P[1], Math.max(7, 0.9 * P[2]), 0, 7);
+        cx.arc(P[0], P[1], r, 0, 7);
         cx.stroke();
+        cx.lineWidth = 2.5;
+        cx.strokeStyle = '#ffd84a'; // bright yellow: shows on land, water and in both themes
+        cx.beginPath();
+        cx.arc(P[0], P[1], r, 0, 7);
+        cx.stroke();
+        // just picked (from the news, or Find): rings pulse outward for a few seconds
+        const age = (performance.now() - (GL.flash || -1e9)) / 1000;
+        if (age < 4)
+          for (let k = 0; k < 2; k++) {
+            const f = (age * 1.2 + k * 0.5) % 1;
+            cx.globalAlpha = (1 - f) * (1 - age / 4);
+            cx.lineWidth = 3;
+            cx.beginPath();
+            cx.arc(P[0], P[1], r + f * 5 * r, 0, 7);
+            cx.stroke();
+          }
+        cx.globalAlpha = 1;
       }
     }
   };
