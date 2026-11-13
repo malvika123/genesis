@@ -1260,6 +1260,8 @@ function sim() {
                 for (const o of l)
                   if (o !== a && o.k === a.k && !o.dead && !o.asleep && o.age >= o.S.mat) help++;
             }
+        // prey too big for this hunter: it can neither bring it down nor wound it (entry 63: bites wore down adult buffalo)
+        const tooBig = a.sp === 2 && t.sp === 1 && SOC.hunterPreyMax && a.S.preyMax && T.mass && preyKg(t) > a.S.preyMax * SOC.preyMaxX;
         const odds = clamp((bodySize(a) * (1 + 0.6 * help)) / (t.sp === 0 ? bodySize(t) : T.size || 1), 0.15, 1.3),
           pc =
             a.sp === 0
@@ -1267,7 +1269,9 @@ function sim() {
                 (a.hand === 2 ? 1.5 : a.hand === 3 ? 1.25 : 1) *
                 // a person alone is slow and weak next to a deer or a bison; a rabbit can be grabbed
                 (t.sp === 3 ? 1 : (t.asleep ? 0.8 : 0.35) * Math.min(1, 0.6 / (T.size || 1)))
-              : (t.asleep || t.age < T.mat * T.wn ? 0.9 : 0.6) * Math.min(1, odds) * (t.up ? 0.35 : 1);
+              : tooBig
+                ? 0 // too big for this hunter (realism audit; entry 63: hunters were killing adult buffalo)
+                : (t.asleep || t.age < T.mat * T.wn ? 0.9 : 0.6) * Math.min(1, odds) * (t.up ? 0.35 : 1);
         if (rnd() < pc) {
           t.dead = true;
           t.cause = a.sp === 0 ? 'caught by a person' : 'killed by a predator';
@@ -1311,7 +1315,7 @@ function sim() {
           a.ev[2] = (a.sp === 0 ? 'it caught a fish' : 'it caught prey') + ' after going hungry on day ' + dn;
           if (a.sp === 0 && fished === 1) log('A person caught a fish for the first time.');
           if (t.sp === 2) log('A starving predator ate another predator.');
-        } else if (t.sp !== 3) {
+        } else if (t.sp !== 3 && !tooBig) {
           // big prey fights back: a bison's horns or a deer's hooves can badly hurt a hunter on foot
           if (a.sp === 0 && (T.size || 1) > 0.8 && rnd() < 0.3) {
             a.hp -= 10 * (T.size || 1);
@@ -1562,7 +1566,7 @@ const hunterSeen = (x) => {
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { smallPrey: true, maxPreyKg: 15, marrow: true, marrowShare: 0.15, marrowVal: 110, digStick: 0.55, digFlake: 0.4, digStone: 0.3, digBare: 0.15, sedges: true, sedgeCap: 0.5, africanNuts: true, rootVal: 80, voiceGenes: true, fireMaking: true, founderElders: 0.12, brainCost: true, brainF: 0.1, carry: true, carryAge: 2, walkE: true, walkJ: 4, pal: 1.7, growBodies: true, massF: 30, massM: 42, swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { hunterPreyMax: true, preyMaxX: 1, smallPrey: true, maxPreyKg: 15, marrow: true, marrowShare: 0.15, marrowVal: 110, digStick: 0.55, digFlake: 0.4, digStone: 0.3, digBare: 0.15, sedges: true, sedgeCap: 0.5, africanNuts: true, rootVal: 80, voiceGenes: true, fireMaking: true, founderElders: 0.12, brainCost: true, brainF: 0.1, carry: true, carryAge: 2, walkE: true, walkJ: 4, pal: 1.7, growBodies: true, massF: 30, massM: 42, swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {

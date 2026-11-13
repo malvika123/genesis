@@ -93,6 +93,8 @@ function buildWorld(cfg) {
   SOC.carryAge = cfg.carryAge ?? 2; // years carried (an assumption: constant contact to about 7 months; tested 0.6-4)
   SOC.walkE = cfg.freeWalking !== true; // walking costs energy by body weight (off: free on the flat, the old rule)
   SOC.walkJ = cfg.walkCost ?? 4; // net J per kg per m (people about 2, chimpanzees about 8: Sockol et al. 2007)
+  SOC.hunterPreyMax = cfg.huntersAnyPrey !== true; // each hunter kind brings down plant-eaters only up to its prey size (off: any, the old rule)
+  SOC.preyMaxX = cfg.preyMaxX ?? 1; // a multiple of the preferred upper bound (tested at 1 and 2: preferences are not hard limits)
   SOC.smallPrey = cfg.anyPrey !== true; // hominins bring down only small prey (off: any size, the old rule)
   SOC.maxPreyKg = cfg.maxPreyKg ?? 15; // the largest prey, kg (chimpanzees prefer 7.6 kg or less; young antelopes)
   SOC.marrow = cfg.noMarrow !== true; // bones hold marrow that a stone can crack open (off: none, the old rule)

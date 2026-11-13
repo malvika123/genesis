@@ -107,6 +107,8 @@
     { key: 'eightWalks', kind: 'on', def: false, flag: 'eight-walks', label: 'The eight directions count as eight separate choices, so an undecided brain mostly walks (the old rule)', cfg: true },
     { key: 'fireWatching', kind: 'on', def: false, flag: 'fire-watching', label: 'The old built-in rule: watching someone work at fire raises the watcher\'s fire skill (off by default since entry 61)', cfg: true },
     { key: 'noFireWatching', kind: 'on', def: false, flag: 'no-fire-watching', label: 'No fire watching (now the default; kept so older commands still run)', cfg: true },
+    { key: 'huntersAnyPrey', kind: 'on', def: false, flag: 'hunters-any-prey', label: 'Hunters can bring down plant-eaters of any size, even adult buffalo (the old rule)', cfg: true },
+    { key: 'preyMaxX', kind: 'num', def: 1, flag: 'prey-max-x', label: "Largest prey a hunter takes, as a multiple of the top of its preferred range (1-2)", min: 0.5, max: 4, cfg: true },
     { key: 'anyPrey', kind: 'on', def: false, flag: 'any-prey', label: 'Hominins can bring down prey of any size (the old rule; chimpanzees take prey of about 8 kg or less)', cfg: true },
     { key: 'maxPreyKg', kind: 'num', def: 15, flag: 'max-prey-kg', label: 'Largest prey a hominin can bring down, kg (an assumption from chimpanzees)', min: 1, max: 100, cfg: true },
     { key: 'noMarrow', kind: 'on', def: false, flag: 'no-marrow', label: 'No marrow in bones (the old rule)', cfg: true },

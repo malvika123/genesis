@@ -1880,6 +1880,38 @@ and the clock — a year is 3 simulated days, so whether a hunter's need is per 
 world's own counts before believing it.
 ---
 
+### 64. Hunters take only prey their size: no more adult buffalo — and now they are underfed — Nov 2026
+
+**Version.** Unreleased · this commit: each African hunter kind brings down plant-eaters only up to the top of its preferred prey size
+(leopard 40 kg, spotted hyena 182 kg, sabre-tooth 350 kg), and cannot wound prey too big for it; `--hunters-any-prey` restores the old
+rule (checked: identical worlds); `--prey-max-x` tests the limits at double. Run by Claude.
+
+**Data.** [The ledger on 4 worlds, the world's death tally, the prediction written before](../data/findings/64-hunter-prey-size/).
+
+**Evidence.** Leopards prefer prey of 10–40 kg (Hayward et al. 2006); spotted hyenas 56–182 kg and avoid buffalo, giraffe and zebra
+(Hayward 2006); *Megantereon* about 100–120 kg, an ambush hunter of larger hoofed animals (350 kg an assumption). Entry 63 found
+hunters killing 7–8 adult buffalo (about 600 kg) a world in 30 days. A first try stopped kills of big prey but not the wounds of failed
+attacks, which still wore adult buffalo down (6 of 8 buffalo killed were adults); bites on prey too big now do nothing.
+
+| Per world (30 days) | 1 | 2 | 3 | 4 |
+|---|---|---|---|---|
+| Prey killed, kg per hunter per day (before → after; need 3.5–4.9) | 7.2 → 1.5 | 7.3 → 1.2 | 5.5 → 0.3 | 0.65 → 2.5 |
+| Hunter samples more than 15 km from prey | 70% → 31% | 63% → 24% | 76% → 67% | 65% → 38% |
+| Hominin samples with no carcass within 3 squares | 90% → 80% | 94% → 99% | 100% → 100% | 92% → 90% |
+| Hominins killed by hunters (world's tally) | 2 → 0 | 13 → 17 | | |
+
+**Result.** (1) No adult buffalo killed — **held** (only calves of 61 and 114 kg). (2) Hunters below their need in most worlds —
+**held**, in all four. (3) More hungry hunters and more hominins killed — **not held**: hunter hunger deaths about the same, hominin
+deaths by hunters down in one world and up in the other. Not predicted: hunters are much less often far from prey.
+
+**Interpretation.** Hunters now take what real hunters of their size take, and are underfed — as the scale step expected: their real
+prey base (thousands of animals of their size) is not in the world yet. That, and carcasses, are the next steps; their needs are a
+reported number, not a target.
+
+**Strength.** Weak–moderate (4 worlds, 30 days). **Lesson:** a limit on success is not enough when failure also does harm.
+
+---
+
 ## Open questions (next tests)
 
 - Ablate the bundle in entry 7: which of band size, parental feeding, instincts, one-shot memory and
