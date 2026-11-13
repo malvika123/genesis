@@ -98,6 +98,12 @@ owner chose that order:
 with the greatest risk of tuning; (2) its results, before anything is celebrated or published; (3) the whole write-up, before a human
 expert reads it.
 
+**Decided (the owner, 13 Nov, evening): physics before any discovery is claimed.** Hominin bodies that grow with age, strikes
+whose energy depends on body and stone, and shells that take real force and can break over several strikes (backlog A27) are
+built next, after the running nut test (entry 62), using hominin evidence first and chimpanzee or capuchin numbers only as
+labelled stand-ins. Reviewers get `CLAUDE.md` and the realism rules every time; leaving something real out is the owner's call,
+never a reviewer's or Claude's.
+
 **The path to the first eureka (13 Nov, after entries 56–58):** youngsters do not learn nut cracking or stick digging by watching,
 because these skills are so easy that nearly every one finds them alone (entry 58). A tradition can only appear for a skill that is
 hard to find alone. So the eureka attempt is: **make nut cracking realistically hard** (backlog A26: young chimpanzees need 3–7 years;
