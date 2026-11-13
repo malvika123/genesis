@@ -92,6 +92,10 @@ owner chose that order:
    (`GAM` 0.97 × `LAM` 0.8, `src/config.js`), while a day is 96 steps and a life about 130 nights; the value estimate reaches
    about 33 steps. Then learning by watching what worked (Phase B).
 
+**Independent review checkpoints (Fable; 13 Nov):** (1) the eureka attempt's design and numbers, *before* building it — the step
+with the greatest risk of tuning; (2) its results, before anything is celebrated or published; (3) the whole write-up, before a human
+expert reads it.
+
 **The path to the first eureka (13 Nov, after entries 56–58):** youngsters do not learn nut cracking or stick digging by watching,
 because these skills are so easy that nearly every one finds them alone (entry 58). A tradition can only appear for a skill that is
 hard to find alone. So the eureka attempt is: **make nut cracking realistically hard** (backlog A26: young chimpanzees need 3–7 years;
