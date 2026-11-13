@@ -945,7 +945,7 @@ function sim() {
         }
       } else if (a.sp === 0 && ROOT[i] > 0.05) {
         // digging for roots: hard with bare hands, much easier with a stick
-        const pd = a.hand === 2 ? 0.55 : a.hand === 3 ? 0.4 : a.hand === 1 ? 0.3 : 0.15;
+        const pd = a.hand === 2 ? SOC.digStick : a.hand === 3 ? SOC.digFlake : a.hand === 1 ? SOC.digStone : SOC.digBare;
         a.e -= 0.15;
         if (rnd() < pd) {
           const b = Math.min(ROOT[i], 0.3);
@@ -1218,6 +1218,17 @@ function sim() {
             log(a.name + ' cracked a nut open with a stone, the first in this world.');
           }
         }
+      } else if (a.hand === 1 && SOC.marrow && marrowAt(a.x, a.y)) {
+        // a bone cracked open with a stone: the marrow inside, rich in fat (the earliest known percussion marks on bones,
+        // Bouri, 2.5 Ma: de Heinzelin et al. 1999). Birds and insects cannot reach it (realism audit, gap 5; --no-marrow)
+        const mb = marrowAt(a.x, a.y),
+          b = Math.min(mb.marrow, 0.1);
+        mb.marrow -= b;
+        a.e = Math.min(100, a.e + b * SOC.marrowVal * MEAL(a));
+        if (!firsts.marrow) {
+          firsts.marrow = 1;
+          log(a.name + ' cracked a bone open with a stone and ate the marrow.');
+        }
       } else if (a.hand === 1 && stone[i] > 0 && rnd() < SOC.flakeP) {
         stone[i]--;
         flake[i] = Math.min(6, flake[i] + 1);
@@ -1251,7 +1262,7 @@ function sim() {
         const odds = clamp((bodySize(a) * (1 + 0.6 * help)) / (t.sp === 0 ? bodySize(t) : T.size || 1), 0.15, 1.3),
           pc =
             a.sp === 0
-              ? (t.sp === 3 && ERA === 'hominin' && !SOC.homFish ? 0 : SOC.huntP) * // no fish before about 1.95 Ma (Braun et al. 2010)
+              ? (t.sp === 3 && ERA === 'hominin' && !SOC.homFish ? 0 : t.sp === 1 && SOC.smallPrey && T.mass && preyKg(t) > SOC.maxPreyKg ? 0 : SOC.huntP) * // no fish before about 1.95 Ma (Braun et al. 2010); only small prey (realism audit, gap 7)
                 (a.hand === 2 ? 1.5 : a.hand === 3 ? 1.25 : 1) *
                 // a person alone is slow and weak next to a deer or a bison; a rabbit can be grabbed
                 (t.sp === 3 ? 1 : (t.asleep ? 0.8 : 0.35) * Math.min(1, 0.6 / (T.size || 1)))
@@ -1491,6 +1502,11 @@ const bodySize = (a) => (a.sp === 0 && SOC.growBodies && a.S.growF ? bodyKg(a) /
 // SOC.carryAge years (2: an assumption, tested 0.6-4). The grasp is a true reflex (CLAUDE.md). --no-carrying: the old rule.
 const carried = (a) => SOC.carry && ERA === 'hominin' && a.sp === 0 && a.age < SOC.carryAge * TY && a.mom && !a.mom.dead && !a.mom.gone;
 const carriedBy = (m) => (m.kid && m.kid.mom === m && !m.kid.dead && !m.kid.gone && carried(m.kid) ? m.kid : null);
+// Prey a hominin can bring down (realism audit, gap 7): chimpanzees prefer prey of about 7.6 kg or less (young bushbuck,
+// red colobus), and the bushbuck and bushpig they kill are young (Bugir et al. 2021; reviews). A young animal's weight is
+// taken to grow in a straight line to its kind's adult weight (an assumption). --any-prey: the old rule.
+const preyKg = (t) => t.S.mass * (t.age < t.S.mat ? clamp(0.1 + (0.9 * t.age) / t.S.mat, 0.1, 1) : 1);
+const marrowAt = (x, y) => BODIES.find((b) => b.x === x && b.y === y && b.marrow > 0.01) || null;
 function walkCost(a) {
   const ck = SOC.carry ? carriedBy(a) : null, // a carried infant's weight is carried too (about in proportion: PMC10426031)
     kg = bodyKg(a) + (ck ? bodyKg(ck) : 0),
@@ -1544,7 +1560,7 @@ const hunterSeen = (x) => {
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { sedges: true, sedgeCap: 0.5, africanNuts: true, rootVal: 80, voiceGenes: true, fireMaking: true, founderElders: 0.12, brainCost: true, brainF: 0.1, carry: true, carryAge: 2, walkE: true, walkJ: 4, pal: 1.7, growBodies: true, massF: 30, massM: 42, swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { smallPrey: true, maxPreyKg: 15, marrow: true, marrowShare: 0.15, marrowVal: 110, digStick: 0.55, digFlake: 0.4, digStone: 0.3, digBare: 0.15, sedges: true, sedgeCap: 0.5, africanNuts: true, rootVal: 80, voiceGenes: true, fireMaking: true, founderElders: 0.12, brainCost: true, brainF: 0.1, carry: true, carryAge: 2, walkE: true, walkJ: 4, pal: 1.7, growBodies: true, massF: 30, massM: 42, swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {
