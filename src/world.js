@@ -293,7 +293,13 @@ function makeBand(ppl = ag.filter((a) => a.sp === 0)) {
   }
   // a few elders are mothers of the adults: grandmothers of the children
   const grans = ppl.filter((a) => a.sex && a.age >= 45 * yr);
-  for (const w of women) if (grans.length && rnd() < 0.5) w.mom = grans[(rnd() * grans.length) | 0];
+  for (const w of women)
+    if (grans.length && rnd() < 0.5) {
+      // the age groups overlap by a year, so the pick could be the woman herself or barely older (bug B26: about 5% of worlds
+      // had a woman who was her own mother); a mother must be at least 15 years older
+      const g = grans[(rnd() * grans.length) | 0];
+      if (g !== w && g.age - w.age >= 15 * yr) w.mom = g;
+    }
 }
 // modern people's biology as written in config.js, kept to restore it when a world of Homo sapiens is chosen
 const PERSON_BIO = Object.assign({}, KBIO[0]);

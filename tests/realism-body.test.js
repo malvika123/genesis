@@ -56,3 +56,20 @@ test('a young infant clings to its mother and travels with her; it nurses only a
   E.sim();
   assert.ok(kid.e <= e0 + 1e-9 || kid.x === mom.x, 'no milk from 9 km away');
 });
+
+test('nobody in a new world is their own ancestor (bug B26)', () => {
+  const E = createEngine();
+  for (let seed = 1; seed <= 40; seed++) {
+    E.setSeed(seed);
+    E.reset({});
+    for (const a of E.state().ag) {
+      let m = a.mom,
+        n = 0;
+      while (m && n < 100) {
+        assert.notEqual(m, a, 'seed ' + seed + ': ' + a.name + ' is their own ancestor');
+        m = m.mom;
+        n++;
+      }
+    }
+  }
+});

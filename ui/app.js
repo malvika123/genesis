@@ -1307,11 +1307,12 @@ function drawEyeHands(g, a, w, h) {
 // the world.
 const SKIN_LIGHT = [241, 194, 125],
   SKIN_DARK = [74, 44, 28];
-function skinOf(a) {
+function skinOf(a, depth = 0) {
   if (a.skin !== undefined) return a.skin;
+  if (depth > 50) return 0.75; // never loop forever on a broken family tree
   const hsh = ((a.id || 0) * 2654435761) % 1000 / 1000;
-  const m = a.mom ? skinOf(a.mom) : null,
-    d = a.dad ? skinOf(a.dad) : null;
+  const m = a.mom ? skinOf(a.mom, depth + 1) : null,
+    d = a.dad ? skinOf(a.dad, depth + 1) : null;
   a.skin = clamp(m !== null ? ((d !== null ? (m + d) / 2 : m) + (hsh - 0.5) * 0.12) : 0.62 + hsh * 0.3, 0, 1);
   return a.skin;
 }
