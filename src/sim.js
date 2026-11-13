@@ -127,13 +127,16 @@ function sim() {
     if (a.sp === 0 && (inW || wade) && !a.asleep) {
       // practice: a little in the shallows, more in deep water; children learn fastest
       const before = a.swim || 0;
-      a.swim = Math.min(1, before + (inW ? 0.02 : 0.004) * (young ? 2 : 1) * (1 - before));
+      // apes avoid deep water and drown in it, but captive apes raised by people learned to swim (Bender & Bender 2013);
+      // the rates are assumptions (SOC.swimDeep, SOC.swimShallow; --no-hominin-swimming: none)
+      if (SOC.swimLearn) a.swim = Math.min(1, before + (inW ? SOC.swimDeep : SOC.swimShallow) * (young ? 2 : 1) * (1 - before));
       if (before < 0.5 && a.swim >= 0.5 && !firsts.swim) {
         firsts.swim = 1;
         log(a.name + ' can swim now. Nobody taught them.');
       }
-      // and those watching close by pick a little up
-      if (inW && a.swim > 0.3)
+      // a built-in rule, outside the brain, like the old fire-watching rule: those close by pick a little up. Off by default
+      // (realism audit, 13 Nov 2026: learning by watching must go through the brains); --swim-watching restores it
+      if (SOC.swimWatch && inW && a.swim > 0.3)
         for (const o of ag)
           if (o !== a && o.sp === 0 && !o.asleep && Math.abs(dxw(o.x - a.x)) <= 1 && Math.abs(o.y - a.y) <= 1)
             o.swim = Math.min(1, (o.swim || 0) + 0.002 * a.swim * (o.g.im ?? 1));
@@ -891,7 +894,7 @@ function sim() {
         // (stone flakes were used to butcher carcasses 3 million years ago). Fresh, it is the richest food
         // there is; after a couple of days it is rotting, and often makes you sick.
         const m = meatAt(a.x, a.y, a.sp === 0 ? 0 : -1),
-          b = Math.min(m.meat, a.sp === 0 ? (a.hand === 3 ? 0.35 : 0.12) : 0.3),
+          b = Math.min(m.meat, a.sp === 0 ? (a.hand === 3 ? SOC.cutFlake : SOC.cutBare) : 0.3),
           rot = rotten(m);
         m.meat -= b;
         a.e = Math.min(100, a.e + b * 110 * MEAL(a));
@@ -1196,7 +1199,7 @@ function sim() {
             log(a.name + ' cracked a nut open with a stone, the first in this world.');
           }
         }
-      } else if (a.hand === 1 && stone[i] > 0 && rnd() < 0.05) {
+      } else if (a.hand === 1 && stone[i] > 0 && rnd() < SOC.flakeP) {
         stone[i]--;
         flake[i] = Math.min(6, flake[i] + 1);
         a.painA = Math.min(1, a.painA + 0.1);
@@ -1229,7 +1232,7 @@ function sim() {
         const odds = clamp(((a.S.size || 1) * (1 + 0.6 * help)) / (T.size || 1), 0.15, 1.3),
           pc =
             a.sp === 0
-              ? 0.25 *
+              ? (t.sp === 3 && ERA === 'hominin' && !SOC.homFish ? 0 : SOC.huntP) * // no fish before about 1.95 Ma (Braun et al. 2010)
                 (a.hand === 2 ? 1.5 : a.hand === 3 ? 1.25 : 1) *
                 // a person alone is slow and weak next to a deer or a bison; a rabbit can be grabbed
                 (t.sp === 3 ? 1 : (t.asleep ? 0.8 : 0.35) * Math.min(1, 0.6 / (T.size || 1)))
@@ -1486,7 +1489,7 @@ const hunterSeen = (x) => {
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {
