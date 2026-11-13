@@ -73,6 +73,11 @@ if (process.argv[2] === '--summary') {
       ok = !isNaN(v) && v >= REAL[k].lo && v <= REAL[k].hi;
     console.log('| ' + REAL[k].label + ' | ' + fmt(k, v) + ' | ' + fmt(k, REAL[k].lo) + ' to ' + fmt(k, REAL[k].hi) + ' | ' + (isNaN(v) ? 'no data' : ok ? 'pass' : v < REAL[k].lo ? 'FAIL (too low)' : 'FAIL (too high)') + ' | ' + REAL[k].src + ' |');
   }
+  // second score (second review, finding 6): against the sourced ranges only; bands that are assumptions are not counted as passes
+  const SRC = { infantDeath: [0.11, 0.21], survive15: [0.35, 0.6], e0: [13, 33], ibi: [5.2, 6.0], afb: [13.3, 14.9] };
+  let srcPass = 0;
+  for (const k in SRC) if (!isNaN(got[k]) && got[k] >= SRC[k][0] && got[k] <= SRC[k][1]) srcPass++;
+  console.log('\nAgainst the sourced ranges only (population change and illness bands are assumptions, not counted): ' + srcPass + ' of 7 pass.');
   console.log('\nWorlds that died out: ' + W.filter((w) => !w.nEnd).length + ' of ' + W.length + ' (population change is the median of the others).');
   console.log('\nSample sizes: followed to 1 year ' + at1 + ', to 15 years ' + at15 + ', birth intervals ' + ibi.length + ', first births ' + afb.length + ', worlds ' + growth.length);
   const tot = Object.values(cause).reduce((s, v) => s + v, 0);

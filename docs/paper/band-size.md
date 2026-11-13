@@ -10,7 +10,7 @@ https://malvika123.github.io/genesis/
 > built-in rule outside the brains (`watchFire`, `src/sim.js`): anyone within about 6 km of someone practising or making fire gains fire
 > skill. It was not measured, and the firsts that came sooner in bigger bands were all fire events. (2) The spreading measure (4.3)
 > was never validated on a case where spreading is known to happen. (3) The copying rule passes on what surprised the elder, so a
-> skilled elder teaches almost nothing. (4) "5 of 7 checks" uses bands wider than their sources; against the sources, 3 of 7.
+> skilled elder teaches almost nothing. (4) "5 of 7 checks" uses bands wider than their sources; against the sourced ranges, 2 of 7 (and 2 more pass bands that are assumptions).
 > **Safe claim: in these tests a bigger band did not make more kinds of first discovery within 20 simulated years, within about one
 > kind. Why, and whether skills spread, is not yet shown.**
 
@@ -65,6 +65,8 @@ watching an elder close by: they copy what the elder did in proportion to how it
 | Population change a year | −0.1% | about stable |
 | Deaths from illness (share) | 16% | 15–60% (band an assumption: modern outbreaks were partly human viruses) |
 | Babies dying in their first year | 5% | 11–21% (fails) |
+
+Against these bands 5 of 7 pass; two bands are wider than their sources (age at first birth: sources 13.3–14.9; years between births: 5.2–6.0) and two are assumptions (population change; illness, widened after the first disease results), so **against the sourced ranges alone 2 of 7 pass** (life expectancy, years between births), and 2 more pass bands that are assumptions. The table also guided the changes it now scores.
 
 **What it leaves out, or simplifies** (stated so the results can be judged): a world of 128 × 80 squares of about 3 km; a year
 squeezed into 3 days (some processes run on a day clock, others on a year clock); one band of a few dozen rather than many groups
@@ -163,12 +165,12 @@ Everything is in the repository. The three comparisons: `node tools/experiment.j
 with `--extra-people 15` (and `--seeds 1-12 --extra-people 55`), then `node tools/analysis/community-compare.js DIR/` and
 `first-times.js DIR/`; spreading: `node tools/analysis/spread.js 1,2,3,4 60 out.json` (and `--copy-moves`); realism:
 `node tools/analysis/reality-check.js SEEDS 100 DIR` then `--summary DIR`. Commits and data for each result are linked from its
-research-log entry.
+research-log entry. Code versions: 4.1 commit `b0bf369` (entry 36); 4.2 `f4df84f` (entry 53); 4.3 `f3e547c` (entry 54); the reality checks `d569f83` (entry 52).
 
 ## References
 
 - Franz M, Nunn CL (2009). Network-based diffusion analysis: a new method for detecting social learning. *Proc R Soc B*.
 - Henrich J (2004). Demography and cultural evolution: the Tasmanian case. *American Antiquity* 69.
 - Kline MA, Boyd R (2010). Population size predicts technological complexity in Oceania. *Proc R Soc B*.
-- Schuppli C et al. (2026). Peering in wild chimpanzees, Budongo (Max Planck Institute of Animal Behavior).
+- Slania et al. and Schuppli C et al. (2026). Peering in wild chimpanzees, Budongo (Max Planck Institute of Animal Behavior; cited from the institute's release, the papers themselves not checked).
 - Life-history, predator, disease and diet sources: `docs/ASSUMPTIONS.md` and the research log.
