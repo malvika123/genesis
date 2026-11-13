@@ -33,7 +33,7 @@ for (const seed of seeds) {
   const did = new Map(), saw = new Map(); // id -> Set of behaviours done / watched
   const W0 = {}; for (const b of B) W0[b] = { sw: 0, sn: 0, fw: 0, fn: 0 };
   const born = new Set(); const holder = new Set(); pr = seed * 7919 + 1;
-  for (const a of st.ag) if (a.sp === 0 && PS !== null && prand() < 0.15) holder.add(a.id); // a few hominins start with it
+  for (const a of st.ag) if (a.sp === 0 && PS !== null && prand() < 0.15) { holder.add(a.id); did.set(a.id, new Set(['planted'])); } // a few start with it (already have it: their first showing is not a new adopter)
   const seenB = new Set(), seenIds = new Set();
   for (const a of st.ag) if (a.sp === 0) seenIds.add(a.id);
   for (let t = 0; t < days * E.DAY; t++) {
