@@ -92,6 +92,8 @@ owner chose that order:
    (`GAM` 0.97 × `LAM` 0.8, `src/config.js`), while a day is 96 steps and a life about 130 nights; the value estimate reaches
    about 33 steps. Then learning by watching what worked (Phase B).
 
+**Website for visitors (the owner, 13 Nov; freeze exception):** after the review fixes, a Discoveries panel (who discovered what, when, and who learned it from whom) and a short first-visit guide ("What am I looking at?"). Then the band-size test again.
+
 **Next (the owner, 13 Nov, after entries 53–54): making skills spread comes before the scale step** — copying sequences of actions and learning over years, as young apes do; then the band-size test again (a real test of the hypothesis, which needs skills to spread). Freeze lifted for this item only.
 
 **Order changed (the owner, 12 Nov, after entries 44–46):** speed → **brains** → scale. Hunger causes about 40% of deaths because the

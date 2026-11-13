@@ -76,6 +76,7 @@ test on the same worlds; never tune toward survival.
 | A22 | **done 12 Nov** — Fix register attributions: pregnancy (Gombe 225 d, not Emery Thompson 2007); brain at birth (45%/25%, Coqueugniot & Hublin 2007; 40% is DeSilva & Lesnik's australopith estimate); sabre-tooth 100 kg is a European specimen; leaf study is a preprint; Lucy's fall disputed; activity budgets weakly sourced; hunters ~3.4–10× too many, not ~9× | Review finding 6–7 | |
 | A23 | Name one primary outcome before each test (12 outcomes give a chance "beyond noise" in about half of tests); align strength labels with the log's scale (entries 19, 32 → moderate; 25's copying → weak) | Review findings 4–5 | method |
 | A24 | **done 13 Nov: table (entry 42), method guide (docs/METHOD.md), write-up draft (docs/paper/band-size.md)** — A short method guide (`docs/METHOD.md`) and the reality-check table with passes and fails on the Research page | Fable's opinion, adopted by the owner 12 Nov | after the reality-check suite |
+| A25 | Website: a Discoveries panel (who found what, when, who learned it from whom) and a first-visit guide | The owner, 13 Nov: after the review fixes | 1–2 days |
 
 ## 3b. The real world of 2.5 million years ago — must be added (the owner, 12 Nov 2026)
 
