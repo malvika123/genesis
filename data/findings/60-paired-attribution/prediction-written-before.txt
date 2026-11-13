@@ -1,0 +1,11 @@
+Written 13 Nov 2026 BEFORE the runs. Paired attribution (second review, finding 5): the same 24 worlds x 100 days, reality-check
+tool, four arms on one commit:
+ A: all brain changes of entries 50-57 off: --boosted-value --no-back-replay --copy-moves --no-copy-sequence
+ B: only the expectations fix (entry 50): --no-back-replay --copy-moves --no-copy-sequence
+ C: B + backward replay + copying what worked up close by visible result + sequences (entries 51, 52, 55, 57): default minus nothing
+    except...  (C is the default: everything on)
+ D: everything on but copying by surprise (--copy-by-surprise), to isolate entry 57's change.
+Primary outcome: share of deaths from hunger.
+1. A -> B: the large fall (entry 50: about 39% -> 30%).
+2. B -> C: a further fall (entry 52's 30% -> 17% was attributed to learning by watching).
+3. C vs D: little difference (entry 57: hunger 17% -> 23% was unpaired and may not be this change).

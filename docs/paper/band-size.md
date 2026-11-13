@@ -109,7 +109,9 @@ Same design; the young copied whatever an elder did, however it turned out. 24 i
 
 Since 4.1, two changes to how the hominins learn (entries 50, 52): their expectations were made to match what they actually get (they
 had expected about ten times more, which taught them that eating did not pay), and the young copy an elder close by by how its
-choice turned out. Hunger fell from 39% to 17% of deaths, and **bands of every size discovered more**: with 25 founders, 4.13 → 5.46
+choice turned out. Hunger fell from about 39% to 23% of deaths (measured afterwards on the same 24 worlds, entry 60: about half
+from the expectations fix, half from the other learning changes together, which concern everyday choices, not skills spreading), and,
+after several changes, **bands of every size discovered more**: with 25 founders, 4.13 → 5.46
 kinds per world; a fire started with a burning stick in 11 → 22 of 24 worlds.
 
 | 24 identical worlds × 60 days | 25 founders | 40 founders | Difference (95% range) |

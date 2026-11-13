@@ -65,8 +65,9 @@ test('nobody is told of a death: a partner far away feels nothing at once, one w
 test('a partner long unseen is missed, more after days, then less as time passes', () => {
   const E = createEngine();
   E.setSeed(6);
-  // no disease: this test is about missing a partner; an outbreak could kill the one who is left before the feeling fades
-  E.reset({ people: 2, predators: 0, disease: false });
+  // no disease and no newcomer hunters (rescue, entry 39): this test is about missing a partner; an outbreak or an arriving
+  // hunter could kill the one who is left before the feeling fades
+  E.reset({ people: 2, predators: 0, disease: false, rescue: false });
   const s = E.state(),
     [p, q] = s.ag.filter((o) => o.sp === 0);
   p.mate = q;

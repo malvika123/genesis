@@ -1525,6 +1525,8 @@ Causes of death after: hunger 30%, old age 23%, predators 15%, illness 14%, fire
 
 ### 52. Learning by watching what worked, up close: hunger falls from 30% to 17% of deaths — Nov 2026
 
+> **Corrected by entry 60:** paired on the same worlds, the later learning changes together cut hunger by about 7 points, not 13; they concern everyday choices, not skills spreading.
+
 > **Correction (13 Nov, entry 57):** the tool used here read a list of creatures saved at the start of the run; Genesis makes a new list as creatures are born and die, so **only the founders were measured**, never hominins born later. The probe of young hominins' eating (first table) covered only children among the founders; the 24-world reality checks are unaffected.
 
 **Version.** Unreleased · the change: commit `d569f83` (`--copy-moves`: the old copying; `--copy-far`: copy what worked from anyone in sight — both checked: identical worlds); tool `tools/analysis/young-eat.js`. Run by Claude. Step 4 of the brains priority.
@@ -1673,6 +1675,8 @@ At 80 founders (12 worlds, against 25): discoveries 5.92 against 6.08; alive per
 
 ### 57. Youngsters born in the run: those who watched start cracking nuts more often — but being near nuts may explain it — Nov 2026
 
+> **Corrected by entry 60:** copying by result against by surprise made no difference to hunger on the same worlds; the 17% → 23% here was run-to-run difference.
+
 **Version.** Unreleased · commit `88e282f`: copying by what visibly came of the elder's choice (`--copy-by-surprise`: the old rule; checked: identical worlds); three tools fixed (below). Run by Claude. Second review, findings 2–3.
 
 **Data.** Tool check with everyone: [positive](../data/findings/57-youngsters-watching/pos-a.json), [negative](../data/findings/57-youngsters-watching/neg-a.json) (`-b` files alongside) · comparison: [new copying, worlds 1–6](../data/findings/57-youngsters-watching/new-a.json), [7–12](../data/findings/57-youngsters-watching/new-b.json); [old copying](../data/findings/57-youngsters-watching/old-a.json) · [reality checks with copying by visible result](../data/findings/57-youngsters-watching/reality-checks-copy-by-result.txt) · predictions: [spreading](../data/findings/57-youngsters-watching/prediction-written-before.txt), [copying](../data/findings/57-youngsters-watching/prediction-copy-by-result-written-before.txt).
@@ -1747,6 +1751,49 @@ Rarer behaviours (picking up a burning stick, eating meat) gave large ratios (2.
 **Interpretation.** The "sooner with a bigger band" of entry 53 came mostly from the built-in fire rule, not from numbers alone; the second review was right, and the write-up is corrected. One effect of size survives without the rule: **bigger bands make fire by rubbing in more worlds** (10 against 5 of 12), because more hominins practise and one of them succeeds — about *whether*, not *when*. The rule also makes fire-making far easier than the real record suggests (no accepted fire-making for over two million years after 2.5 million years ago). Whether to keep it on by default is the owner's decision.
 
 **Strength.** Weak–moderate (12 worlds per arm; counts of days are noisy). **Lesson:** look for the rule before crediting the crowd.
+
+---
+
+### 60. Which learning change cut hunger? The same 24 worlds, four ways — Nov 2026
+
+**Version.** Unreleased · commit `a7c48ea` (no code change; switches only). Run by Claude.
+
+**Data.** [The 96 worlds, the prediction written before, the paired results and the script](../data/findings/60-paired-attribution/).
+
+**Question.** Entries 50, 52 and 57 credited hunger's fall (39% → 30% → 17% → 23% of deaths) to single changes, but each
+number came from different runs, not paired (second review, finding 5). On the same worlds, how much does each part carry?
+
+**Test.** 24 identical worlds × 100 days (reality-check tool), four arms on one commit: **A** every learning change of entries 50–57
+off; **B** only the expectations fix (entry 50); **C** everything (the default: plus backward replay, copying what worked up close by
+its visible result, copying sequences); **D** everything, but copying by surprise. Main outcome, named first: hunger's share of
+deaths. Prediction: A → B a large fall; B → C a further fall; C ≈ D.
+
+| Hunger's share of deaths (pooled) | A all off | B expectations fix | C everything | D copy by surprise |
+|---|---|---|---|---|
+| Share | 38.8% | 29.8% | 22.9% | 20.9% |
+| Alive at the end (mean of 25 founders) | 7.7 | 23.5 | 24.4 | 25.9 |
+| Born per world | 18.8 | 40.1 | 35.5 | 39.0 |
+
+| Paired, per world | Hunger's share | 95% range | Worlds down / up |
+|---|---|---|---|
+| A → B | −8.8 points | −16.5, −1.2 | 16 / 8 |
+| B → C | −7.2 points | −13.9, 0.0 | 19 / 5 |
+| A → C | −16.0 points | −22.6, −8.7 | 19 / 5 |
+| C → D | −1.3 points | −6.8, +3.6 | 12 / 11 |
+
+**Result.** All three predictions **held**. The expectations fix alone carries about half the fall in hunger and nearly all of the
+gain in band size (alive at the end 7.7 → 23.5; births 19 → 40 per world, up in 22 of 24). The rest together carries the other half
+(hunger deaths per world −4.1, 95% range −7.2 to −1.0), with no clear change in band size. Copying by visible result against by
+surprise makes no difference to hunger.
+
+**Interpretation.** Entry 52's "hunger 30% → 17% from learning by watching what worked" was too big and too specific: paired, the
+later changes cut hunger by about 7 points, and they are a bundle (backward replay, copying moves, copying sequences) not split
+further here. Entry 58 found no skill spreading by watching, so this cut is about everyday choices (where to go, when to eat), not
+skills passing on. Entry 57's "hunger 17% → 23%" was not this change (C → D: no difference); it was run-to-run difference. The
+write-up's "39% to 17%" is replaced by the paired figures.
+
+**Strength.** Moderate (24 paired worlds; the B → C range touches zero for the share but not for the count). **Lesson:** a chain of
+unpaired before-and-afters adds up to a story; one paired run of all the arms tells which link holds.
 
 ---
 

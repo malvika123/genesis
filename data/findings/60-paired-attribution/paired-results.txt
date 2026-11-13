@@ -1,0 +1,32 @@
+A-all-off              pooled hunger share 38.8% (336/865) mean end 7.7 born 18.8
+B-expectations-only    pooled hunger share 29.8% (297/998) mean end 23.5 born 40.1
+C-everything           pooled hunger share 22.9% (198/866) mean end 24.4 born 35.5
+D-copy-by-surprise     pooled hunger share 20.9% (191/914) mean end 25.9 born 39.0
+A->B hunger  diff -0.088  95% [-0.165, -0.012]  up 8 down 16
+A->B hungerN diff -1.625  95% [-5.250, 2.042]  up 9 down 15
+A->B deaths  diff 5.542  95% [2.667, 8.625]  up 17 down 5
+A->B nEnd    diff 15.833  95% [10.167, 21.875]  up 19 down 3
+A->B born    diff 21.375  95% [16.333, 26.500]  up 22 down 0
+A->B growth  diff 0.150  95% [0.031, 0.278]  up 19 down 3
+
+B->C hunger  diff -0.072  95% [-0.139, 0.000]  up 5 down 19
+B->C hungerN diff -4.125  95% [-7.208, -1.000]  up 5 down 18
+B->C deaths  diff -5.500  95% [-9.000, -1.875]  up 8 down 16
+B->C nEnd    diff 0.833  95% [-6.083, 8.375]  up 8 down 12
+B->C born    diff -4.667  95% [-10.083, 1.000]  up 7 down 17
+B->C growth  diff -0.041  95% [-0.129, 0.007]  up 8 down 12
+
+A->C hunger  diff -0.160  95% [-0.226, -0.087]  up 5 down 19
+A->C hungerN diff -5.750  95% [-8.750, -2.458]  up 5 down 18
+A->C deaths  diff 0.042  95% [-2.875, 3.167]  up 8 down 15
+A->C nEnd    diff 16.667  95% [10.750, 22.792]  up 17 down 2
+A->C born    diff 16.708  95% [11.333, 22.125]  up 20 down 4
+A->C growth  diff 0.109  95% [0.026, 0.226]  up 17 down 2
+
+C->D hunger  diff -0.013  95% [-0.068, 0.036]  up 11 down 12
+C->D hungerN diff -0.292  95% [-2.333, 1.667]  up 10 down 11
+C->D deaths  diff 2.000  95% [-1.583, 5.583]  up 17 down 5
+C->D nEnd    diff 1.542  95% [-4.958, 7.208]  up 14 down 8
+C->D born    diff 3.542  95% [-1.500, 8.208]  up 17 down 7
+C->D growth  diff 0.034  95% [-0.094, 0.163]  up 14 down 8
+
