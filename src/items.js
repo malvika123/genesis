@@ -27,7 +27,8 @@ let stone, // loose stones on the ground, a few in each cell
   stick, // fallen branches
   flake, // stones with a sharp edge
   nut, // nuts under the trees: energy-rich, but locked in a hard shell
-  pyrite; // shiny, brassy stones (fool's gold) found in rocky hills: struck with a stone, they throw hot sparks
+  pyrite, // shiny, brassy stones (fool's gold) found in rocky hills: struck with a stone, they throw hot sparks
+  SEDGE; // land at the edge of fresh water or along a river, where sedges grow (realism audit, gap 6)
 const HAND = ['nothing', 'a stone', 'a stick', 'a sharp stone', 'a burning stick', 'a shiny yellow stone'];
 
 function initItems() {
@@ -40,6 +41,22 @@ function initItems() {
   flake = new Uint8Array(n);
   nut = new Float32Array(n);
   pyrite = new Uint8Array(n);
+  // Sedges at the water's edge: tiger nuts and other sedge tubers grow thick on land beside fresh water and along rivers;
+  // baboons in Amboseli dig them, and Paranthropus boisei may have lived largely on them (Macho 2014, PLoS ONE; C4 diets:
+  // Cerling et al. 2011). Computed without random numbers, so worlds are otherwise unchanged.
+  SEDGE = new Uint8Array(n);
+  for (let i = 0; i < n; i++) {
+    if (water[i] || rock[i]) continue;
+    const x = i % W,
+      y = (i / W) | 0;
+    let wet = river[i] ? 1 : 0;
+    for (let k = 0; k < 8 && !wet; k++) {
+      const X = x + MV[k][0],
+        Y = y + MV[k][1];
+      if (inb(X, Y) && water[idx(X, Y)] && !salt[idx(X, Y)]) wet = 1;
+    }
+    SEDGE[i] = wet;
+  }
   for (let i = 0; i < n; i++) {
     if (water[i] || rock[i] || pit[i]) continue;
     const x = i % W,
@@ -65,12 +82,23 @@ function initItems() {
 // how many nuts the trees of a cell can carry: broadleaf woods most (oak, hazel, walnut), pine seeds
 // in the cold, and some in the rainforest
 function nutCap(i) {
+  // among early hominins: hard-shelled fruits of warm, open woodland (today's East African nut trees, such as marula, as a
+  // stand-in: Peters 1993 lists 37 East and southern African species), not the oak, hazel and walnut of the old rule
+  // (realism audit, gap 6; --old-nuts). How many a cell carries is an assumption.
+  if (ERA === 'hominin' && SOC.africanNuts)
+    return water[i] || tree[i] < 0.15 || cellT(i) < 15 ? 0 : 0.5 * Math.min(1, tree[i] / 0.4) * (tree[i] > 0.7 ? 0.5 : 1);
   const k = fkind[i];
   return tree[i] < 0.25 || water[i] ? 0 : tree[i] * (k === 2 ? 0.7 : k === 1 ? 0.35 : k === 3 ? 0.4 : 0);
 }
 
 const rootCap = (i) =>
-  water[i] || rock[i] || cellT(i) < -5 ? 0 : ter[i] === 1 ? 0.12 : 0.5 * (1 - 0.7 * Math.min(1, tree[i]));
+  water[i] || rock[i] || cellT(i) < -5
+    ? 0
+    : Math.max(
+        ter[i] === 1 ? 0.12 : 0.5 * (1 - 0.7 * Math.min(1, tree[i])),
+        // sedge tubers at the water's edge (SOC.sedgeCap; --no-sedges: none)
+        ERA === 'hominin' && SOC.sedges && SEDGE && SEDGE[i] ? SOC.sedgeCap : 0
+      );
 function updateItems() {
   const n = W * H;
   for (let i = 0; i < n; i++) {

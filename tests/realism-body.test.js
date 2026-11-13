@@ -48,8 +48,18 @@ test('a young infant clings to its mother and travels with her; it nurses only a
     if (mom.x !== sx || mom.y !== sy) moved++;
     if (!kid.dead && !mom.dead) assert.ok(kid.x === mom.x && kid.y === mom.y, 'the infant is where its mother is (step ' + i + ')');
   }
-  // away from her it gets no milk
-  kid.x = (mom.x + 3) % E.W;
+  // away from her it gets no milk: put it on bare land with nothing to eat, three squares from her
+  const it = E.items(),
+    fo = E.forest(),
+    st = E.state();
+  let bare = -1;
+  for (let dx = 3; dx < E.W && bare < 0; dx++) {
+    const h = mom.y * E.W + ((mom.x + dx) % E.W);
+    if (!st.water[h] && !st.rock[h] && it.ROOT[h] < 0.05 && fo.fruit[h] < 0.05 && fo.tree[h] < 0.2) bare = h;
+  }
+  assert.ok(bare >= 0, 'a bare square nearby');
+  kid.x = bare % E.W;
+  kid.y = (bare / E.W) | 0;
   kid.e = 50;
   const e0 = kid.e;
   kid.age = Math.round(3 * E.TY); // old enough to walk on its own, still nursing
