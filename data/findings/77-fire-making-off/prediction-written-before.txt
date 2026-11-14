@@ -1,0 +1,6 @@
+Entry 77, fire-making off by default (the owner, after Fable's review; --fire-making restores). The checkpoint run again:
+24 worlds x 100 days, map on and off, with the B27 fix (entry 76) also in. Written before the run.
+1. Nobody makes fire (0 of 24, both arms); wildfire is still found and used (taking a burning stick, eating cooked food) in most worlds.
+2. Deaths by fire fall in both arms (14% and 8% of deaths in entry 75, partly from made fires).
+3. Deaths by wounds fall with the map on (B27 fix): below 20% of deaths.
+4. Hominins alive at day 100: no direction predicted (fire was mixed: warmth and cooked food, but burns).

@@ -170,8 +170,10 @@ took the Taung child: Berger & Clarke 1995); pigs, horses (*Eurygnathohippus*), 
 
 **Making fire is an experiment against the record** (realism audit, gap 4): the earliest known fire-making is about 400,000 years
 ago (Barnham, England, with pyrite; *Nature* 2025, checked through news coverage), and there is no evidence of fire use by
-hominins at 2.5 million years ago. It stays possible because the owner's design asks whether hominins could discover it;
-`--no-fire-making` (only wildfire) is the faithful setting, and results about fire must say which was used.
+hominins at 2.5 million years ago. **Off by default since 14 Nov 2026** (the owner, after Fable's review
+`docs/reviews/2026-11-14-fable-fire-and-scale.md`, entry 77): as built it was a hidden skill counter filled by the inborn pull to bang
+held sticks, so fire came in 20 of 24 worlds — about one invention per 1,000 hominin-life-years, against none known in some 10^10 real
+hominin-years. `--fire-making` keeps it as an experiment; wildfire (finding, taking, eating what it cooked) is unchanged.
 
 | Setting | Value | Evidence | Status |
 |---|---|---|---|
