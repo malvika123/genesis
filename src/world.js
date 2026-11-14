@@ -213,7 +213,7 @@ function buildWorld(cfg) {
       }
   }
   initForest();
-  initPreyMap();
+  if (typeof initPreyMap === 'function') initPreyMap(); // (guarded: a cached old page may not load preymap.js)
   initItems();
   initTalk();
   initFire();

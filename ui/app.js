@@ -2288,7 +2288,7 @@ function draw() {
     setHTML($('idoing'), doingHTML(sel, S, stage, night));
   }
   const c = [0, 0, 0, 0];
-  ag.forEach((a) => c[a.sp]++);
+  ag.forEach((a) => (c[a.sp] += a.head || 1)); // a herd (prey map) counts all its animals
   const asl = ag.filter((a) => a.asleep),
     sc = [0, 0, 0, 0];
   asl.forEach((a) => sc[a.sp]++);

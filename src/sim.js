@@ -24,7 +24,7 @@ function sim() {
       food[i] += (0.006 * food[i] * (1 - food[i]) + 0.0004 + 0.003 * Math.max(0, 0.6 - food[i])) * tf * Math.sqrt(soil[i]);
     if (soil[i] !== 1) soil[i] += (1 - soil[i]) * 0.0002; // settles back slowly, over months
   }
-  preyTick(); // the prey map: regrowth, and herds shown near hominins and hunters (preymap.js; off unless --prey-map)
+  if (typeof preyTick === 'function') preyTick(); // (guarded: a cached old page may not load preymap.js) the prey map: regrowth, and herds shown near hominins and hunters (preymap.js; off unless --prey-map)
   G = new Array(W * H);
   const pop = [0, 0, 0, 0],
     popK = [];
