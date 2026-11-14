@@ -2424,6 +2424,30 @@ from wounds did not rise (9 → 3, 2 → 2, 1 → 1, 4 → 4).
 **Interpretation.** Antelope-sized carcasses last longer, so scavenging opportunities rise, as Blumenschine's Serengeti work found
 for larger carcasses. Survival moved both ways (noise).
 
+### 81. Only the edible flesh is meat — Nov 2026
+
+**Version.** 0.7.0+ · this commit. Backlog A42. Hunters' stomachs and hominins' bites counted a carcass's whole weight as meat; only
+about half of it is edible flesh (Thomson's gazelle 48%, impala 54%, hartebeest 58%, wildebeest 44%: Blumenschine & Madrigal 1993, via
+Kuipers et al. 2010). Now 0.5 (tested 0.44 and 0.58 still to run). `--whole-body-meat` restores (checked: identical worlds).
+
+**Data.** [Four arms, worlds 1–4, 30 days; the prediction](../data/findings/81-edible-flesh/).
+
+| Map on (whole body → flesh) | 1 | 2 | 3 | 4 |
+|---|---|---|---|---|
+| Hominins' meat, kg per hominin-day | 0.46 → 0.24 | 0.26 → 0.08 | 0.25 → 0.19 | 0.09 → 0.02 |
+| Leopards' food, kg per day (need 4.2) | 3.6 → 2.4 | 5.9 → 3.7 | 5.0 → 4.6 | 1.9 → 1.1 |
+| Hunters dead of hunger | 3 → 4 | 1 → 3 | 0 → 4 | 4 → 4 |
+| Hominins alive at day 30 | 23 → 20 | 19 → 26 | 16 → 16 | 11 → 17 |
+
+Map off: hominins ate almost no meat either way; hunters' hunger deaths 5 → 6, 7 → 7, 7 → 8, 9 → 9.
+
+**Result.** (1) Less meat for hominins (map on) — **held** (4 of 4). (2) Leopards eat less — **held** (4 of 4). (3) More hunters starve
+with the map off — **held** (2 of 4).
+
+**Interpretation.** Each carcass now feeds half as much, as it really does. Hominins still eat meat in the chimpanzee range (Taï males
+about 0.19 kg a day). Leopards fall further below their need (1.1–4.6 kg against 4.2): with every animal they meet an adult or a
+yearling of the herd's mix and kills often lost while they sleep, they are the hunters most worth looking at next.
+
 ---
 
 ## Open questions (next tests)

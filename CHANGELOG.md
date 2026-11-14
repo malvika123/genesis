@@ -4,6 +4,8 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Carcasses as they really are** (research log entries 79–81): marrow is about 0.25% of an animal’s weight, very rich; bigger
+  carcasses rot more slowly; only the edible flesh, about half the weight, is meat. Each has a switch to restore the old rule.
 - **Fire as nature allows** (research log entries 77–78): banging sticks is not rubbing, sparks find nothing to catch in, fallen
   wood dries and dampens with the air, and a dropped burning stick lights only dry ground. Making fire is not modelled yet (said in
   About). Predation measured at about 3% of hominins a year, the real primate rate.
