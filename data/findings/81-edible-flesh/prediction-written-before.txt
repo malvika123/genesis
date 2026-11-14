@@ -1,0 +1,6 @@
+Entry 81, only the edible flesh (0.5 of body weight) is meat (--whole-body-meat restores). Worlds 1-4, 30 days, map off and on,
+both arms. Written before the run.
+1. A carcass feeds half as much: hominins' meat eaten per hominin-day falls in at least 3 of 4 worlds (map on).
+2. Hunters' food: a stomach-full per kill is unchanged for big prey but kills of small prey (hares, yearlings) feed less; leopards
+   eat less in at least 2 of 4 worlds (map on).
+3. Hunters' hunger deaths rise with the map off (scarce prey) in at least 2 of 4 worlds.

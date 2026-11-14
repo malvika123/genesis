@@ -138,7 +138,9 @@ function leaveBody(a, cause) {
     // meat on it: what a hunter already ate is gone; bodies in the water are out of reach
     meat: water[idx(a.x, a.y)] ? 0 : sz * young * (1 - (a.eaten || 0)),
     // kg of meat in one unit of 'meat' above (for hunters' stomachs, A30)
-    kgU: (a.S.mass ? preyKg(a) : a.sp === 0 && typeof bodyKg === 'function' ? bodyKg(a) : 70 * sz) / (sz * young),
+    // only the edible flesh is meat (A42, entry 81): about half of an animal's weight (impala 54%, Thomson's gazelle 48%, wildebeest 44%,
+    // hartebeest 58%: Blumenschine & Madrigal 1993 via Kuipers et al. 2010); --whole-body-meat: the old rule (the whole body)
+    kgU: ((a.S.mass ? preyKg(a) : a.sp === 0 && typeof bodyKg === 'function' ? bodyKg(a) : 70 * sz) * (SOC.fleshOnly ? SOC.fleshShare : 1)) / (sz * young),
     // marrow sealed in the long bones of plant-eaters and hunters: only a stone opens it (SOC.marrowShare, an assumption)
     // in kg since entry 79 (SOC.marrowKg): about 0.25% of body weight (impala 154 g of 55 kg, wildebeest 365 g of 165 kg: Blumenschine &
     // Madrigal 1993, via Kuipers et al. 2010); --marrow-units: the old rule (0.15 of the meat, in units)
