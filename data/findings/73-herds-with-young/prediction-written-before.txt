@@ -1,0 +1,6 @@
+Entry 73, antelope herds with yearlings (25%, 19 kg), females (38 kg) and males (49 kg) (--adult-herds restores). Worlds 1-4,
+30 days, map on, against entry 72. Written before any run.
+1. Leopards eat more, nearer their need (4.2 kg a day), in at least 3 of 4 worlds: most animals they meet are now within their
+   preferred 10-40 kg (yearlings and females), so fewer kills fail on the big-prey price.
+2. Kills by leopards (count) rise in at least 3 of 4 worlds.
+3. Hyenas and sabre-tooths: little change (their preferred sizes are above every antelope).

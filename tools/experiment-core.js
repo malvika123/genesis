@@ -166,6 +166,8 @@
     { key: 'preyLevel', kind: 'num', def: 5000, flag: 'prey-level', label: 'Prey map: mean kg of hoofed prey per km² (an assumption: 1,000-10,000)', min: 100, max: 30000, cfg: true },
     { key: 'buffaloShare', kind: 'num', def: 0.5, flag: 'buffalo-share', label: "Prey map: buffalo's share of the weight (an assumption: 0.25-0.75)", min: 0, max: 1, cfg: true },
     { key: 'preyRegrow', kind: 'num', def: 0.3, flag: 'prey-regrow', label: 'Prey map: regrowth per life-year at low numbers (an assumption: 0.1-0.6)', min: 0, max: 3, cfg: true },
+    { key: 'adultHerds', kind: 'on', def: false, flag: 'adult-herds', label: 'Prey map: every animal in a herd is an adult of the kind\'s weight (the old rule); otherwise antelope herds hold yearlings, females and males', cfg: true },
+    { key: 'youngShare', kind: 'num', def: 0.25, flag: 'young-share', label: "Prey map: yearlings' share of an antelope herd (about 0.25; 0.1-0.4)", min: 0, max: 0.6, cfg: true },
     { key: 'forestPrey', kind: 'num', def: 1000, flag: 'forest-prey', label: 'Prey map: forest antelope where open-country herds cannot live, kg per km² (an assumption: 300-3,000; 0 = none, the old rule)', min: 0, max: 5000, cfg: true },
     { key: 'preyZone', kind: 'num', def: 1, flag: 'prey-zone', label: 'Prey map: herds shown within this many squares of a hominin or hunter', min: 0, max: 4, cfg: true },
     { key: 'preyRadius', kind: 'num', def: 8, flag: 'prey-radius', label: 'Squares within which plant-eaters must live where a hunter starts or arrives (an assumption; tested at 8 and 4)', min: 1, max: 40, cfg: true },

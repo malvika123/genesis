@@ -86,7 +86,23 @@ function preyNear(x, y, r) {
     }
   return false;
 }
-const herdKg = (a) => a.head * a.S.mass;
+// Herds with young (backlog A36, entry 73): an antelope herd is a mix of yearlings (SOC.youngShare, about 25% of an impala population:
+// Southern Rhodesia study), adult females (38 kg) and adult males (49 kg) (South African impala: 38.3 and 49.2 kg; half each, an
+// assumption); yearlings about 19 kg (9-month-olds, same study). A hunter meets one animal drawn from that mix. Buffalo herds stay all
+// adults (no source found for their young). --adult-herds: every animal an adult of the kind's weight, the old rule.
+const youngMix = (c) => SOC.herdYoung && c === 0,
+  MIXKG = [19, 38, 49],
+  mixShare = () => [SOC.youngShare, (1 - SOC.youngShare) / 2, (1 - SOC.youngShare) / 2],
+  headKg = (c) => (youngMix(c) ? mixShare().reduce((t, p, j) => t + p * MIXKG[j], 0) : KBIO[PREYK[c]].mass);
+// the animal a hunter meets in a herd: its weight, drawn from the herd's mix
+function drawHerdKg(a) {
+  if (!youngMix(a.pc)) return a.S.mass;
+  const sh = mixShare();
+  let r = rnd2();
+  for (let j = 0; j < 3; j++) if ((r -= sh[j]) < 0) return MIXKG[j];
+  return MIXKG[2];
+}
+const herdKg = (a) => a.head * headKg(a.pc);
 // All the weight of prey in the world, map and herds (for the ledger)
 function preyTotal() {
   let t = 0;
@@ -98,6 +114,7 @@ function preyTotal() {
 // Each step, before anyone moves: regrowth (once a day), herds set aside where no one is near, herds shown where someone is.
 function preyTick() {
   if (!SOC.preyMap) return;
+  for (const a of ag) if (a.herd) a.drawKg = undefined; // the animal met last step is back in the mix
   const r = SOC.preyZone,
     zone = new Set();
   for (const a of ag)
@@ -143,7 +160,7 @@ function preyTick() {
     for (let c = 0; c < 2; c++) {
       const key = i * 2 + c;
       if (has.has(key)) continue;
-      const mass = KBIO[PREYK[c]].mass,
+      const mass = headKg(c),
         n = Math.floor(PREY[c][i] / mass);
       let a = PARK.get(key);
       if (!a && n < 1) continue;
@@ -165,8 +182,8 @@ function preyTick() {
 // One animal of a herd has died (cause c): it leaves its carcass where the herd is, and the herd goes on without it. If the
 // one shown (whose body the herd is) died of anything but a hunter, the rest are no longer shown: they go back to the map.
 function herdLoss(a, c) {
-  leaveBody({ sp: a.sp, S: a.S, x: a.x, y: a.y, age: a.age, eaten: a.eaten || 0, name: '', killer: a.killer }, c);
-  PREYSTAT.died += a.S.mass;
+  leaveBody({ sp: a.sp, S: a.S, x: a.x, y: a.y, age: a.age, eaten: a.eaten || 0, name: '', killer: a.killer, drawKg: a.drawKg }, c);
+  PREYSTAT.died += youngMix(a.pc) ? headKg(a.pc) : a.S.mass; // one head goes (its own weight leaves as the carcass)
   a.head--;
   a.eaten = 0;
   if (c !== 'killed by a predator' || a.head < 1) {
@@ -177,6 +194,7 @@ function herdLoss(a, c) {
   a.cause = '';
   a.killedBy = null;
   a.killer = null;
+  a.drawKg = undefined;
   a.hp = 100;
   return true;
 }
