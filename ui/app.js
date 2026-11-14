@@ -1543,7 +1543,238 @@ Object.assign(LOOK, {
   Leopard: { ...LOOK['Big cat'], col: '#d6a648' },
   'Sabre-tooth': { ...LOOK['Big cat'], col: '#b2895a', s: 1.25 },
 });
+// The animals of East Africa 2.5 million years ago, each with its own shape and marks (the owner, 14 Nov 2026: "they all look the same"):
+// impala-like antelope (reddish back, pale flanks, white belly, males with lyre-shaped horns, black lines on a white rump); scrub hare
+// (long black-tipped ears, big hind legs); buffalo (heavy, near-black, low head, horns sweeping down and up, both sexes); spotted hyena
+// (high shoulders, sloping back, spotted sandy coat, round ears, short bushy tail); leopard (long, low, golden, rosettes, long tail
+// curving up); sabre-tooth (Megantereon-like: heavy forequarters, short tail, long upper canines).
+const AFRICAN = {
+  Antelope: { col: '#b5733c', pale: '#e2c49a', belly: '#f3ece0', w: 4.0, h: 1.7, leg: 2.9, fl: 1, s: 0.9 },
+  Hare: { col: '#9a8a74', pale: '#c9bba5', belly: '#efe8dc', w: 2.4, h: 1.6, leg: 0.8, fl: 1, s: 0.7 },
+  Buffalo: { col: '#2a2522', pale: '#3a332e', belly: '#2f2925', w: 5.6, h: 2.9, leg: 1.6, fl: 1, s: 1.35 },
+  Hyena: { col: '#b39a68', pale: '#c9b384', belly: '#d8c69e', w: 4.0, h: 1.8, leg: 2.1, fl: 1.35, s: 1 },
+  Leopard: { col: '#d8a443', pale: '#ecd08a', belly: '#f4ead2', w: 4.8, h: 1.5, leg: 1.7, fl: 1, s: 1 },
+  'Sabre-tooth': { col: '#b38a58', pale: '#cfac7c', belly: '#e6d4b4', w: 5.0, h: 2.0, leg: 1.9, fl: 1.15, s: 1.25 },
+};
+function drawAfrican(g, a, X, Y, k) {
+  const n = a.S.n,
+    L = AFRICAN[n],
+    gr = clamp(a.age / a.S.mat, 0.35, 1),
+    u = k * L.s * (0.45 + 0.55 * gr) * 1.3,
+    f = a.face || 1,
+    bw = L.w * u,
+    bh = L.h * u,
+    legB = a.asleep ? 0 : L.leg * u, // hind legs
+    legF = legB * L.fl, // fore legs (longer in hyenas and sabre-tooths)
+    swing = a.moving && !a.asleep ? Math.sin(a.ph || 0) * u * 0.7 : 0,
+    by = Y - legB - bh / 2 + (a.asleep ? bh * 0.3 : 0),
+    tilt = a.asleep ? 0 : Math.atan2(legF - legB, bw) * f; // a back that slopes down from high shoulders
+  g.save();
+  g.lineCap = 'round';
+  // legs
+  if (legB) {
+    g.strokeStyle = n === 'Antelope' ? '#9c6233' : L.col;
+    g.lineWidth = Math.max(1, u * (n === 'Buffalo' ? 0.8 : n === 'Antelope' ? 0.32 : n === 'Sabre-tooth' ? 0.65 : 0.45));
+    g.beginPath();
+    for (const [lx, sw, fore] of [
+      [-0.32, swing, 0],
+      [-0.22, -swing, 0],
+      [0.25, -swing, 1],
+      [0.35, swing, 1],
+    ]) {
+      const top = by + bh * 0.3 - (fore ? (legF - legB) * 0.6 : 0),
+        lxx = X + f * lx * bw;
+      g.moveTo(lxx, top);
+      g.lineTo(lxx + sw * 0.5, Y);
+    }
+    g.stroke();
+    if (n === 'Hare' && !a.asleep) {
+      // big hind legs
+      g.fillStyle = L.col;
+      g.beginPath();
+      g.ellipse(X - f * bw * 0.3, by + bh * 0.25, bw * 0.22, bh * 0.38, 0, 0, 7);
+      g.fill();
+    }
+  }
+  g.translate(X, by);
+  g.rotate(-tilt * 0.6);
+  // tail
+  g.strokeStyle = n === 'Hyena' ? '#4a3c28' : L.col;
+  g.lineWidth = Math.max(1, u * (n === 'Hyena' ? 0.7 : n === 'Leopard' ? 0.45 : 0.35));
+  g.beginPath();
+  const tx = -f * bw * 0.5;
+  if (n === 'Leopard') {
+    g.moveTo(tx, -bh * 0.1);
+    g.bezierCurveTo(tx - f * bw * 0.35, bh * 0.7, tx - f * bw * 0.7, bh * 0.2, tx - f * bw * 0.62, -bh * 0.55);
+  } else if (n === 'Hyena') {
+    g.moveTo(tx, -bh * 0.15);
+    g.lineTo(tx - f * bw * 0.16, bh * 0.35);
+  } else if (n === 'Buffalo') {
+    g.moveTo(tx, -bh * 0.25);
+    g.quadraticCurveTo(tx - f * bw * 0.08, bh * 0.2, tx - f * bw * 0.06, bh * 0.55);
+  } else if (n === 'Sabre-tooth') {
+    g.moveTo(tx, -bh * 0.2);
+    g.lineTo(tx - f * bw * 0.1, bh * 0.05);
+  } else if (n === 'Antelope') {
+    g.moveTo(tx, -bh * 0.25);
+    g.lineTo(tx - f * bw * 0.08, bh * 0.1);
+  }
+  g.stroke();
+  // body: back colour, paler flank, belly
+  g.fillStyle = L.col;
+  g.beginPath();
+  g.ellipse(0, 0, bw / 2, bh / 2, 0, 0, 7);
+  g.fill();
+  if (n === 'Antelope' || n === 'Leopard' || n === 'Sabre-tooth' || n === 'Hare') {
+    g.fillStyle = L.pale;
+    g.beginPath();
+    g.ellipse(0, bh * 0.12, bw * 0.46, bh * 0.3, 0, 0, 7);
+    g.fill();
+  }
+  g.fillStyle = L.belly;
+  g.beginPath();
+  g.ellipse(0, bh * 0.32, bw * 0.38, bh * 0.16, 0, 0, 7);
+  g.fill();
+  if (n === 'Buffalo') {
+    // heavy shoulders
+    g.fillStyle = L.col;
+    g.beginPath();
+    g.ellipse(f * bw * 0.2, -bh * 0.12, bw * 0.3, bh * 0.5, 0, 0, 7);
+    g.fill();
+  }
+  if (n === 'Sabre-tooth') {
+    g.fillStyle = L.col;
+    g.beginPath();
+    g.ellipse(f * bw * 0.22, -bh * 0.05, bw * 0.28, bh * 0.52, 0, 0, 7);
+    g.fill();
+  }
+  // coat marks: leopard rosettes, hyena spots, faint sabre-tooth spots, antelope rump
+  const spots = (n2, r, col, ring) => {
+    for (let j = 0; j < n2; j++) {
+      // scattered over the coat (a sunflower spiral inside the body)
+      const t = j * 2.39996,
+        rr = Math.sqrt((j + 0.5) / n2),
+        sx = Math.cos(t) * rr * bw * 0.4,
+        sy = Math.sin(t) * rr * bh * 0.3 - bh * 0.06;
+      g.beginPath();
+      g.arc(sx, sy, r, 0, 7);
+      if (ring) {
+        g.strokeStyle = col;
+        g.lineWidth = Math.max(0.6, r * 0.55);
+        g.stroke();
+      } else {
+        g.fillStyle = col;
+        g.fill();
+      }
+    }
+  };
+  if (n === 'Leopard') spots(14, Math.max(0.7, u * 0.26), '#4a2e10', true);
+  else if (n === 'Hyena') spots(12, Math.max(0.6, u * 0.2), '#4f3a20', false);
+  else if (n === 'Sabre-tooth') spots(5, Math.max(0.5, u * 0.2), '#8a6a42', false);
+  if (n === 'Antelope') {
+    g.fillStyle = '#f6f1e8';
+    g.beginPath();
+    g.ellipse(-f * bw * 0.44, -bh * 0.05, Math.max(0.8, u * 0.35), bh * 0.3, 0, 0, 7);
+    g.fill();
+    g.strokeStyle = '#2a1d12';
+    g.lineWidth = Math.max(0.6, u * 0.12);
+    g.beginPath();
+    g.moveTo(-f * bw * 0.4, -bh * 0.3);
+    g.lineTo(-f * bw * 0.4, bh * 0.15);
+    g.stroke();
+  }
+  // head
+  const head = (n === 'Hare' ? 0.7 : n === 'Buffalo' ? 0.95 : n === 'Hyena' ? 0.95 : n === 'Antelope' ? 0.62 : 0.72) * bh,
+    neckUp = n === 'Antelope' ? 0.85 : n === 'Hyena' ? 0.5 : n === 'Buffalo' ? 0.05 : 0.35,
+    hx = f * (bw / 2 + head * (n === 'Antelope' ? 0.25 : 0.32)),
+    hy = -bh * neckUp + (a.act === A_EAT ? bh * (n === 'Antelope' ? 1.3 : 0.7) : 0);
+  if (n === 'Antelope') {
+    // a slender neck
+    g.strokeStyle = L.col;
+    g.lineWidth = Math.max(1, head * 0.55);
+    g.beginPath();
+    g.moveTo(f * bw * 0.35, -bh * 0.15);
+    g.lineTo(hx - f * head * 0.1, hy + head * 0.2);
+    g.stroke();
+  }
+  g.fillStyle = n === 'Hyena' ? '#9a8458' : L.col;
+  g.beginPath();
+  g.arc(hx, hy, head / 2, 0, 7);
+  g.fill();
+  // muzzle
+  g.beginPath();
+  g.ellipse(hx + f * head * 0.42, hy + head * 0.12, head * (n === 'Antelope' ? 0.36 : n === 'Hyena' ? 0.34 : 0.25), head * 0.2, 0, 0, 7);
+  g.fillStyle = n === 'Hyena' ? '#3a2e1e' : n === 'Buffalo' ? '#1c1816' : L.col;
+  g.fill();
+  // ears and horns
+  g.lineWidth = Math.max(1, u * 0.3);
+  if (n === 'Hare') {
+    g.fillStyle = L.col;
+    g.beginPath();
+    g.ellipse(hx - f * head * 0.15, hy - head * 1.05, head * 0.16, head * 0.62, -f * 0.2, 0, 7);
+    g.ellipse(hx + f * head * 0.08, hy - head * 1.0, head * 0.16, head * 0.62, f * 0.15, 0, 7);
+    g.fill();
+    g.fillStyle = '#2a2420';
+    g.beginPath();
+    g.arc(hx - f * head * 0.2, hy - head * 1.6, head * 0.12, 0, 7);
+    g.arc(hx + f * head * 0.04, hy - head * 1.55, head * 0.12, 0, 7);
+    g.fill();
+  } else if (n === 'Hyena' || n === 'Leopard' || n === 'Sabre-tooth') {
+    g.fillStyle = n === 'Hyena' ? '#7d6844' : L.col;
+    g.beginPath();
+    const er = head * (n === 'Hyena' ? 0.24 : 0.16);
+    g.arc(hx - f * head * 0.15, hy - head * 0.45, er, 0, 7);
+    g.fill();
+  } else if (n === 'Antelope') {
+    g.fillStyle = L.col;
+    g.beginPath();
+    g.ellipse(hx - f * head * 0.25, hy - head * 0.5, head * 0.12, head * 0.3, -f * 0.5, 0, 7);
+    g.fill();
+    if (!a.sex && gr > 0.8) {
+      // lyre-shaped horns of a male impala
+      g.strokeStyle = '#2b2018';
+      g.lineWidth = Math.max(0.8, u * 0.22);
+      g.beginPath();
+      g.moveTo(hx, hy - head * 0.4);
+      g.bezierCurveTo(hx - f * head * 0.7, hy - head * 1.0, hx + f * head * 0.4, hy - head * 1.4, hx - f * head * 0.1, hy - head * 2.0);
+      g.stroke();
+    }
+  } else if (n === 'Buffalo') {
+    // horns from a boss on top of the head, sweeping down and out, then up
+    g.strokeStyle = '#4a4038';
+    g.lineWidth = Math.max(1.2, u * 0.45);
+    g.beginPath();
+    // both horns, a heavy boss across the top of the head, curving down and out then up
+    g.moveTo(hx - f * head * 0.05, hy - head * 0.5);
+    g.quadraticCurveTo(hx - f * head * 0.9, hy - head * 0.25, hx - f * head * 0.8, hy - head * 0.95);
+    g.moveTo(hx + f * head * 0.05, hy - head * 0.5);
+    g.quadraticCurveTo(hx + f * head * 0.75, hy - head * 0.15, hx + f * head * 0.55, hy - head * 0.9);
+    g.stroke();
+  }
+  if (n === 'Sabre-tooth') {
+    // long upper canines
+    g.fillStyle = '#f4eedc';
+    g.beginPath();
+    g.moveTo(hx + f * head * 0.28, hy + head * 0.2);
+    g.lineTo(hx + f * head * 0.5, hy + head * 0.2);
+    g.lineTo(hx + f * head * 0.36, hy + head * 1.05);
+    g.closePath();
+    g.fill();
+  }
+  // hunters keep a thin red outline, so they are easy to pick out (thin, so their coats still show)
+  if (a.sp === 2) {
+    g.strokeStyle = 'rgba(210,60,44,0.8)';
+    g.lineWidth = Math.max(0.7, u * 0.14);
+    g.beginPath();
+    g.ellipse(0, 0, bw / 2, bh / 2, 0, 0, 7);
+    g.moveTo(hx + head / 2, hy);
+    g.arc(hx, hy, head / 2, 0, 7);
+    g.stroke();
+  }
+  g.restore();
+}
 function drawAnimal(g, a, X, Y, k) {
+  if (AFRICAN[a.S.n]) return drawAfrican(g, a, X, Y, k);
   const L = LOOK[a.S.n] || LOOK[a.S.look] || LOOK.Deer,
     nm = a.S.look || a.S.n,
     gr = clamp(a.age / a.S.mat, 0.35, 1),

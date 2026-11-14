@@ -4,6 +4,8 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Each animal looks like itself** (the owner): impala-like antelope with lyre horns and a white rump, long-eared hares, near-black
+  buffalo with swept horns, spotted hyenas with sloping backs, leopards with rosettes and a long curling tail, sabre-tooths with fangs.
 - **Carcasses as they really are** (research log entries 79–81): marrow is about 0.25% of an animal’s weight, very rich; bigger
   carcasses rot more slowly; only the edible flesh, about half the weight, is meat. Each has a switch to restore the old rule.
 - **Fire as nature allows** (research log entries 77–78): banging sticks is not rubbing, sparks find nothing to catch in, fallen
