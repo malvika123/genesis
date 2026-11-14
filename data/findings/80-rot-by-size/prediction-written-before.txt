@@ -1,0 +1,4 @@
+Entry 80, bigger carcasses rot more slowly (within 20-90 kg; --one-rot-rate restores). Worlds 1-4, 30 days, map on, both arms.
+Written before the run.
+1. Hominins see more carcasses: share of samples with no carcass in sight falls in at least 3 of 4 worlds.
+2. Hominins eat more meat (kg per hominin-day) in at least 3 of 4 worlds; deaths from rotten meat may rise (meat lasts into rot).

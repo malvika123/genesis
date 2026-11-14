@@ -143,6 +143,7 @@ function leaveBody(a, cause) {
     // in kg since entry 79 (SOC.marrowKg): about 0.25% of body weight (impala 154 g of 55 kg, wildebeest 365 g of 165 kg: Blumenschine &
     // Madrigal 1993, via Kuipers et al. 2010); --marrow-units: the old rule (0.15 of the meat, in units)
     marrow: water[idx(a.x, a.y)] || a.sp === 0 || !SOC.marrow ? 0 : SOC.marrowKg && a.S.mass ? SOC.marrowFrac * preyKg(a) : sz * young * SOC.marrowShare,
+    kg0: a.S.mass ? preyKg(a) : a.sp === 0 && typeof bodyKg === 'function' ? bodyKg(a) : 0, // the body's weight at death (A39)
     marrowKg0: SOC.marrowKg && a.S.mass ? SOC.marrowFrac * preyKg(a) : 0, // the carcass's marrow at death, kg (one long bone is an eighth)
   });
   if (BODIES.length > 400) BODIES.shift();
@@ -177,7 +178,11 @@ function updateBodies() {
     // Insects (blowfly maggots, then beetles) and microbes eat a body from within. How fast depends on
     // warmth: in summer grassland a small carcass loses over 90% of its mass in about 20 days; it
     // roughly doubles with every 10 °C warmer, and stops when frozen.
-    const q = T > 0 ? 0.12 * 2 ** ((T - 20) / 10) : 0,
+    // bigger carcasses rot more slowly (A39, entry 80): small pigs (under 35 kg) decomposed 2.82 times faster than large ones (60–90 kg)
+    // (Sutherland et al. 2013, Forensic Sci Int), about weight^-0.78 from 20 kg; applied only inside the studied 20–90 kg (smaller
+    // bodies rot at the 20 kg rate, bigger at the 90 kg rate: no stretching a pig study to a buffalo). --one-rot-rate: the old rule
+    const sizeF = SOC.rotBySize && b.kg0 > 0 ? (clamp(b.kg0, 20, 90) / 20) ** -0.78 : 1,
+      q = T > 0 ? 0.12 * 2 ** ((T - 20) / 10) * sizeF : 0,
       bugs = b.meat * (1 - Math.exp(-q * dt));
     b.rot = (b.rot || 0) + (T > 0 ? (T / 20) * (dt / 2) : 0); // 1: going bad (about two days at 20 °C)
     if (q > 0.03) b.flyT = tick;

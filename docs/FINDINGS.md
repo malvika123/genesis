@@ -2383,6 +2383,26 @@ differences are within world-to-world noise.
 
 **Strength.** Moderate (24 worlds × 2 arms) for "little change".
 
+### 79. Marrow in kg — a small food, as it really is — Nov 2026
+
+**Version.** 0.7.0+ · commit `cf17465`. Marrow was 0.15 of a carcass's meat, eaten at the value of meat. Now it is about 0.25% of body
+weight (impala 154 g of 55 kg, wildebeest 365 g of 165 kg: Blumenschine & Madrigal 1993, tabulated by Kuipers et al. 2010), each strike
+with a stone cracks one of eight long bones, and a kg gives 7,860 kcal (USDA, raw caribou marrow) against the day's need.
+`--marrow-units` restores the old rule (checked: identical worlds).
+
+**Data.** [Map on, worlds 1–4, 30 days, both arms; the prediction](../data/findings/79-marrow-in-kg/).
+
+| Map on (units → kg) | 1 | 2 | 3 | 4 |
+|---|---|---|---|---|
+| Hominins dead of hunger | 0 → 2 | 2 → 1 | 1 → 1 | 8 → 6 |
+| Hominins alive at day 30 | 23 → 20 | 24 → 22 | 17 → 23 | 15 → 18 |
+| Marrow eaten, g per hominin-day | 0.8 | 0.5 | 0.2 | 2.0 |
+
+**Result.** (1) Hunger changes within noise — **held**. (2) Under 30 g a day — **held** (0.2–2 g).
+
+**Interpretation.** Marrow is a small, rich food that hominins rarely reach here (only with a stone, at a carcass). Found on the way:
+only 44–58% of an animal's weight is edible flesh (same table), but Genesis counts the whole body as meat (backlog A42).
+
 ---
 
 ## Open questions (next tests)

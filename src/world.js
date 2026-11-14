@@ -104,6 +104,7 @@ function buildWorld(cfg) {
   SOC.africanNuts = cfg.oldNuts !== true; // nuts of warm open woodland among early hominins (off: oak, hazel, walnut rules)
   SOC.rootVal = cfg.rootValue ?? 80; // food from a bite of roots (fruit 70; an assumption: raw tubers are poor, sedge corms rich)
   SOC.voiceGenes = cfg.noVoiceGenes !== true; // vocal learning, pointing, shared-attention joy can evolve from ape-low (off: fixed at 0)
+  SOC.rotBySize = cfg.oneRotRate !== true; // bigger carcasses rot more slowly, within the studied 20-90 kg (off: one rate for all, the old rule)
   SOC.marrowKg = cfg.marrowUnits !== true; // marrow in kg with its real energy (off: 0.15 of the meat, in units, the old rule)
   SOC.marrowFrac = cfg.marrowShareKg ?? 0.0025; // marrow as a share of body weight (0.22-0.37%: Blumenschine & Madrigal 1993)
   SOC.marrowKcal = 7860; // kcal a kg of raw marrow (USDA: caribou 786 per 100 g)
