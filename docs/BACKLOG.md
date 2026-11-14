@@ -55,7 +55,7 @@ test on the same worlds; never tune toward survival.
 
 | # | What | Evidence | Note |
 |---|---|---|---|
-| A35 | **Next (Fable's step 3).** A hunter keeps its kill: a hunter resting at its carcass still keeps birds off; then, separately, leopards hoist kills into trees | leopards feed on a kill for days and hoist about half of them (51% of 2,032 kills; at least 21% lost, mainly to hyenas: Balme et al. 2017); in Genesis birds strip a carcass unless someone awake guards it, and a fed hunter sleeps | sources to find: days at a kill, vultures at guarded kills (Kruuk 1967; Houston 1974) |
+| A35 | **built 14 Nov (entry 70), no difference** — a hunter resting at its kill keeps the birds off (`--unguarded-sleep`) | hunters walk away from kills; birds still take 25% and rot 32% of the meat | open question: why hunters do not stay with a kill (owner's call) |
 | A36 | Herds with young (the owner's choice, Fable recommends): a share of each herd's kills are young, from sourced calving | every herd animal is an adult, so leopards (preferred 10–40 kg) pay the big-prey price on every kill (entry 69) | after A35 |
 | A37 | Hominins eat meat in kg (through kgU) with a sourced stomach | a bare-handed bite is about 31 kg of buffalo or 7 kg of antelope (Fable's review, finding 4) | after A35 |
 | A34 | **Next.** How easy a kill is: in Genesis an attack on prey beside it succeeds 37–49% of the time and can be tried every hour; a real hunt is a stalk that takes time and succeeds 14–38% (leopard; Bailey 1993: 2 of 13; Bertram: 3 of 64 by day) | with the map on, hunters still kill 4–10 times their need (entry 68) | find hunt durations and attempts a day; one change |

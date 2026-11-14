@@ -2104,6 +2104,40 @@ antelope above their preferred 40 kg (herds have no young yet). Next, per Fable:
 **Strength.** Moderate for the measuring correction (exact reproduction, 4 worlds × 3 entries); weak for the rest (4 worlds, 30 days).
 **Lesson:** check what a measure counts before reading it — the label "killed by a predator" covered two killers.
 
+### 70. A hunter resting at its kill keeps the birds off — no difference — Nov 2026
+
+**Version.** Unreleased · this commit. Backlog A35 (Fable's step 3). Birds do not feed on a carcass while the hunter that made it, or
+has eaten from it, rests in the same square, awake or asleep (a resting hunter deterring birds is an assumption; big cats do not let
+vultures feed while they feed: Attwell 1963; leopards feed on a kill for days: Balme et al. 2017). `--unguarded-sleep` restores the old
+rule (checked: identical worlds).
+
+**Data.** [The ledger, map on and off, worlds 1–4, 30 days; the prediction](../data/findings/70-hunter-keeps-kill/), against entry 69's
+strike-fix arms.
+
+| Map on, per world (entry 69 → this) | 1 | 2 | 3 | 4 |
+|---|---|---|---|---|
+| Eaten, kg per hunter-day: leopard / hyena / sabre-tooth | 3.4/4.2/14.4 → 2.6/2.3/12.8 | 0.5/1.0/13.2 → 0.3/4.1/15.8 | 4.3/2.6/4.8 → 3.0/3.6/8.9 | 1.2/8.3/16.2 → 0.2/2.1/13.4 |
+| Hunters' killed weight ÷ eaten weight | 5.1 → 6.2 | 5.0 → 5.2 | 3.3 → 3.8 | 4.6 → 3.7 |
+| Hominins alive at day 30 | 26 → 27 | 16 → 14 | 12 → 8 | 9 → 4 |
+
+With the map off, worlds 1, 3 and 4 hardly changed.
+
+**Result.** (1) Leopards and hyenas closer to need — **not held**. (2) Killed ÷ eaten under 2 in at least 2 worlds — **not held** (3.7–6.2).
+(3) Fewer own kills — **not held** (mixed). (4) Fewer carcasses in sight — **not held** (the share with none fell in 2 worlds).
+
+**Where a kill's meat goes** (a measuring-only trace, world 1, map on, 10 days): 79 carcasses, about 8,870 kg. Hunters ate about
+1,390 kg (about 900 at the kill, about 490 later — half of that by other hunters), hominins 180, **rot and insects about 2,860 (32%)**,
+**birds about 2,240 (25%)**, and the rest was still lying there. So birds still took a quarter: the hunter walks away from its kill,
+and the rule only protects a kill its hunter is resting on.
+
+**Interpretation.** The rule is not wrong but does nothing, because Genesis hunters do not stay with a kill: nothing in their bodies or
+brains makes them, and they have not learned it. Real leopards stay with or return to a kill for days and hoist it. Rot also takes a
+third within days (the insect rate, entry about carcasses: 0.12 a day at 20 °C, doubling every 10 °C). Kill weight here is the whole
+body, not the edible part. Which of these is the missing real thing is the next question, put to the owner.
+
+**Strength.** Weak (4 worlds × 2 arms, one trace). **Lesson:** a protection that depends on a behaviour does nothing until the
+behaviour exists.
+
 ---
 
 ## Open questions (next tests)
