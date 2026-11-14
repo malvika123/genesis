@@ -93,7 +93,7 @@ test('people see red berries; deer cannot tell them from green', () => {
 test('a newborn often misses or mistakes what it sees; with experience it sees truly', () => {
   const E = createEngine();
   E.setSeed(5);
-  E.reset({ people: 2 });
+  E.reset({ people: 2, noPreyMap: true }); // (single animals: noPreyMap — this test is about something else)
   const p = E.state().ag.find((o) => o.sp === 0);
   const baby = E.mk(0, p.x, p.y, 1, E.child(p, p), 1, 0, p.k);
   const truth = new Float32Array(E.NI);

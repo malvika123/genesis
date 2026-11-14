@@ -305,7 +305,13 @@ function spawnKind(sp, k, n, inst) {
         y = clamp(cy + Math.round((rnd() * 2 - 1) * r), 0, H - 1);
       }
       t++;
-    } while (t < 6000 && (sp === 3 ? !water[idx(x, y)] : !land(idx(x, y))));
+    } while (
+      t < 6000 &&
+      ((sp === 3 ? !water[idx(x, y)] : !land(idx(x, y))) ||
+        // every hunter of a group, not only where the group is centred, starts away from the band's camp (bug B28: a pair's second
+        // animal could start beside the camp; --old-hunter-placement: the old rule)
+        (sp === 2 && SOC.campFix && SOC.home && BANDAT && t < 3000 && wrapDist(x, y, BANDAT[0], BANDAT[1]) < 10))
+    );
     // the first of every kind start as young adults: grown bodies, blank minds
     const c = mk(sp, x, y, j % 2, gene(sp, inst), 0, (KBIO[k].smat * (1 + rnd() * 0.3)) | 0, k);
     c.found = true;

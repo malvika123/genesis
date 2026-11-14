@@ -51,7 +51,7 @@ test('roots dug up with a stick feed a person', () => {
 function leafEater(cfg) {
   const E = createEngine();
   E.setSeed(9);
-  E.reset(Object.assign({ predators: 0 }, cfg));
+  E.reset(Object.assign({ predators: 0, noPreyMap: true }, cfg)); // (single animals: noPreyMap — this test is about something else)
   const s = E.state(),
     p = s.ag.find((a) => a.sp === 0);
   Object.assign(p, { asleep: false, sl: 0, e: 30, w: 90, hand: 0 });
@@ -83,7 +83,7 @@ test('hungry hominins do not see grass as food; fruit they do', () => {
   const seen = (cfg, put) => {
     const E = createEngine();
     E.setSeed(9);
-    E.reset(Object.assign({ predators: 0 }, cfg));
+    E.reset(Object.assign({ predators: 0, noPreyMap: true }, cfg)); // (single animals: noPreyMap — this test is about something else)
     E.sim(); // builds the map of who is where, which the senses use
     const p = E.state().ag.find((a) => a.sp === 0);
     Object.assign(p, { e: 20, asleep: false, act: 8 }); // hungry, awake, has just looked all around
@@ -111,7 +111,7 @@ test('the same fruit is a bigger meal for a smaller hominin than for a full-size
   const gain = (cfg) => {
     const E = createEngine();
     E.setSeed(9);
-    E.reset(Object.assign({ predators: 0 }, cfg));
+    E.reset(Object.assign({ predators: 0, noPreyMap: true }, cfg)); // (single animals: noPreyMap — this test is about something else)
     const s = E.state(),
       p = s.ag.find((a) => a.sp === 0),
       i = E.idx(p.x, p.y);

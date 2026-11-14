@@ -21,7 +21,7 @@ const count = (E, sp) => E.state().ag.filter((a) => a.sp === sp).length;
 test('a new world has the creatures that were asked for', () => {
   const E = createEngine();
   E.setSeed(1);
-  E.reset({ people: 4, herbivores: 5, predators: 2, fish: 6 });
+  E.reset({ people: 4, herbivores: 5, predators: 2, fish: 6, noPreyMap: true }); // (single animals: noPreyMap — this test is about something else)
   assert.equal(count(E, PEOPLE), 4);
   assert.equal(count(E, HERBIVORE), 5);
   assert.equal(count(E, PREDATOR), 2);
@@ -221,6 +221,7 @@ test('by default early hominins share their world with antelopes, hyenas, leopar
     const E = createEngine();
     E.setSeed(4);
     E.reset(cfg);
+    E.sim(); // with the prey map (default since entry 83), antelope and buffalo appear as herds on the first step
     return new Set(E.state().ag.filter((a) => a.sp === 1 || a.sp === 2).map((a) => a.S.n));
   };
   const hom = kinds({}),

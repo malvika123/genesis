@@ -79,7 +79,7 @@ test('people feel cold where herbivores and predators do not, and huddling helps
   const E = createEngine();
   E.setSeed(5);
   // modern people, with bare skin (early hominins were still hairy, and feel the cold later)
-  E.reset({ people: 2, herbivores: 1, predators: 1, fish: 0, sapiens: true });
+  E.reset({ people: 2, herbivores: 1, predators: 1, fish: 0, sapiens: true, noPreyMap: true }); // (the old world of single animals: noPreyMap — this test is about something else)
   const { H, TY } = E;
   E.setTick(TY / 4);
   const ag = E.state().ag;

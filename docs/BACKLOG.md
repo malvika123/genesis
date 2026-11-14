@@ -11,6 +11,8 @@ test on the same worlds; never tune toward survival.
 
 | # | What | Why it matters | Status |
 |---|---|---|---|
+| B28 | **fixed 14 Nov** — the second hunter of a pair (or a pack member) was placed near its group's centre without the camp rule, so it could start beside the band (2 squares away in one world) | found when the prey map became default | `--old-hunter-placement` restores |
+| B29 | **fixed 14 Nov** — the page froze some seconds after clicking a name: the Doing text had no words for climbing, and the error stopped the drawing loop | the owner | climbing has words; a drawing error can no longer stop the world |
 | B27 | **fixed 14 Nov (entry 76)** — rot sickness by the kg eaten, not every bite (`--rot-per-bite` restores) | deaths by wounds fell in 4 of 4 worlds | done |
 | B1 | **built 12 Nov** (`--old-mating`) — After **any** mating the female enters the 4-year nursing wait, even if she did not conceive (`src/sim.js`, mating: `fem.cd = S.cd`) | Harmless while every mating led to pregnancy; with the female cycle, most matings miss the fertile days and lock her out for 4 years with no baby — births fell to a third | to fix: the wait starts only with a pregnancy |
 | B2 | **built 12 Nov as B7** — After mating, a male cannot mate again for 0.1 year (about 36 days) | No source; real chimpanzee males mate several times a day | verify online, then fix |
