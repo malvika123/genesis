@@ -51,7 +51,15 @@ function dryness(i) {
   return d;
 }
 // fallen sticks dry out within hours unless it is raining: a fire of sticks can burn on damp ground
-const stickDry = (i) => (RAIN[i] > 0.002 ? 0.1 : 0.85);
+// (entry 78, step 2) dead wood takes up and loses water with the air's humidity: dry in dry air, damp in humid air, wet in rain
+// (equilibrium moisture of dead fuels follows relative humidity: Simard 1968; Wood Handbook). The same humidity response as dry grass
+// (dryness, above), between 0.1 (wet) and 0.85 (dry). --fixed-stick-dryness: the old rule (0.85 unless it is raining)
+const stickDry = (i) => {
+  if (RAIN[i] > 0.002) return 0.1;
+  if (!SOC.stickHumid) return 0.85;
+  const rh = HUM[i] / capacity(cellT(i));
+  return 0.1 + 0.75 * clamp((0.95 - rh) / 0.5, 0, 1);
+};
 
 function ignite(i, f = 0.12) {
   if (water[i] || rock[i] || fuelOf(i) < 0.04) return false;
