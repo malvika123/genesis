@@ -2403,6 +2403,27 @@ with a stone cracks one of eight long bones, and a kg gives 7,860 kcal (USDA, ra
 **Interpretation.** Marrow is a small, rich food that hominins rarely reach here (only with a stone, at a carcass). Found on the way:
 only 44–58% of an animal's weight is edible flesh (same table), but Genesis counts the whole body as meat (backlog A42).
 
+### 80. Bigger carcasses rot more slowly — Nov 2026
+
+**Version.** 0.7.0+ · this commit. Backlog A39. The insect-and-microbe rot rate (over 90% of a carcass in about 20 days in summer,
+roughly doubling every 10 °C) was the same for a hare and a buffalo. Now it is × (weight ÷ 20 kg)^−0.78, from small pigs (under 35 kg)
+decomposing 2.82 times faster than large ones (60–90 kg) (Sutherland et al. 2013, *Forensic Sci Int*), applied only inside the studied
+20–90 kg (no stretching a pig study to a buffalo). `--one-rot-rate` restores the old rule (checked: identical worlds).
+
+**Data.** [Map on, worlds 1–4, 30 days, both arms; the prediction](../data/findings/80-rot-by-size/).
+
+| Map on (one rate → by size) | 1 | 2 | 3 | 4 |
+|---|---|---|---|---|
+| Hominin samples with no carcass in sight | 43 → 25% | 39 → 21% | 37 → 30% | 52 → 61% |
+| Meat eaten, kg per hominin-day | 0.26 → 0.46 | 0.20 → 0.26 | 0.31 → 0.25 | 0.07 → 0.09 |
+| Hominins alive at day 30 | 20 → 23 | 22 → 19 | 23 → 16 | 18 → 11 |
+
+**Result.** (1) More carcasses in sight — **held** (3 of 4). (2) More meat eaten — **held** (3 of 4; still 0.09–0.46 kg a day). Deaths
+from wounds did not rise (9 → 3, 2 → 2, 1 → 1, 4 → 4).
+
+**Interpretation.** Antelope-sized carcasses last longer, so scavenging opportunities rise, as Blumenschine's Serengeti work found
+for larger carcasses. Survival moved both ways (noise).
+
 ---
 
 ## Open questions (next tests)
