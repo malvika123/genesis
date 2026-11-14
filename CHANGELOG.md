@@ -4,6 +4,8 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Hominins eat meat in kg** (research log entry 74): a bite is a quarter of a kilo bare-handed, three quarters with a flake, and a kilo
+  gives its real energy. Before, a bite of buffalo counted as about 31 kg. `--meat-units` restores the old rule.
 - **Prey map: forest antelope and herds with young** (research log entries 72–73): dense forest now carries some prey; antelope herds
   hold yearlings, females and males, and a hunter meets one of them. `--forest-prey 0`, `--adult-herds` restore the old rules.
 - **Hunters remember where they ate** (research log entries 70–71): like every creature, a hunter now remembers where it found food —

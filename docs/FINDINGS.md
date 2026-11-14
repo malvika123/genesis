@@ -2224,6 +2224,36 @@ large effects and errors.
 
 **Strength.** None (no detectable effect).
 
+### 74. Hominins eat meat in kg — their meat now matches chimpanzees' — Nov 2026
+
+**Version.** 0.7.0+ · this commit. Backlog A37 (Fable's review, finding 4). Hominins ate meat as shares of a body, the same energy
+whatever the animal: a bare-handed bite was about 31 kg of buffalo or 7 kg of antelope. Now a bite (15 minutes) takes 0.25 kg
+bare-handed or 0.75 kg with a flake (assumptions: no measured rate found; the flake keeps its old threefold advantage), and a kg gives
+the share of the day's energy that 1,140 kcal is of the day's need (raw game meat 102–127 kcal per 100 g, USDA; need 86 × weight^0.792
+kcal a day, Leonard & Robertson 1997). `--meat-units` restores the old rule (checked: identical worlds). Marrow is still in the old
+units (to do); a hominin stomach is a separate step.
+
+**Data.** [Four arms, worlds 1–4, 30 days: map off and on, each with and without the change; the prediction](../data/findings/74-meat-in-kg/).
+
+| Map on, per world (old units → kg) | 1 | 2 | 3 | 4 |
+|---|---|---|---|---|
+| Meat eaten, kg per hominin-day | 1.14 → 0.20 | 0.31 → 0.21 | 0.61 → 0.31 | 0.89 → 0.13 |
+| Hominins dead of hunger | 3 → 6 | 0 → 3 | 0 → 0 | 1 → 1 |
+| Hominins alive at day 30 | 25 → 18 | 35 → 16 | 25 → 10 | 5 → 10 |
+
+With the map off, hominins ate almost no meat either way (0–0.07 kg a day: few carcasses near them); alive 13 → 22, 3 → 3, 38 → 38,
+12 → 19 — differences that come from worlds drifting apart, not from meat.
+
+**Result.** (1) Meat eaten falls with the map on — **held**, in all 4 worlds. (2) More hunger deaths with the map on — **held** (2 of 4).
+(3) Hominins alive (no direction predicted): fewer in 3 of 4 with the map on; the causes differ between worlds (hunger, wounds, fire,
+hunters).
+
+**Interpretation.** Meat is now worth what it is. With the prey map on, hominins eat 0.13–0.31 kg of meat a day — in the range of wild
+chimpanzees (Taï males about 0.19 kg, Gombe about 0.02 kg on average), where before they ate 0.3–1.1 kg, more than any ape. Meat was
+over-rewarding them; without it some go hungry. That is the real economics of meat for a 30–42 kg hominin without a cutting habit.
+
+**Strength.** Moderate for the meat intake (4 of 4 worlds, a large change); weak for survival (4 worlds, mixed causes).
+
 ---
 
 ## Open questions (next tests)
