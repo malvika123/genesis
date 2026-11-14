@@ -4,6 +4,9 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Hunters remember where they ate** (research log entries 70–71): like every creature, a hunter now remembers where it found food —
+  its kill — and comes back to it when hungry; a hunter resting at its own kill keeps the birds off. `--hunters-forget-kills`,
+  `--unguarded-sleep` restore the old rules.
 - **Fixed: hominins could wear down a buffalo bare-handed** (Fable’s review; research log entry 69): a failed strike now harms prey by
   the hominin’s weight against the prey’s. The research tools now record who killed what and what hunters ate; entries 66–68 corrected.
   `--old-hominin-strikes` restores the old rule.

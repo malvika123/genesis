@@ -2138,6 +2138,37 @@ body, not the edible part. Which of these is the missing real thing is the next 
 **Strength.** Weak (4 worlds × 2 arms, one trace). **Lesson:** a protection that depends on a behaviour does nothing until the
 behaviour exists.
 
+### 71. Hunters remember where they ate — they eat more of their kills — Nov 2026
+
+**Version.** 0.7.0+ · commit `734ec41` (released). After entry 70 found that hunters walk away from their kills, the cause was found
+in the code: every creature remembers where it last found food and has an inborn pull back to it when hungry, but the memory was only
+written when eating plants — hunters never remembered their own kill. Now eating meat writes it too, forgotten when the meat is gone.
+No new number. `--hunters-forget-kills` restores the old rule (checked: identical worlds — after the check caught two lines of mine
+that had changed the old rule too). Before it, the rot rate was checked: over 90% of a carcass gone in about 20 days in summer
+(forensic studies) — Genesis matches; that big carcasses rot more slowly is missing (backlog A39).
+
+**Data.** [The ledger, map on and off, worlds 1–4, 30 days; the prediction](../data/findings/71-hunters-remember-kills/), against entry 70.
+
+| Map on, per world (entry 70 → this) | 1 | 2 | 3 | 4 |
+|---|---|---|---|---|
+| Eaten, kg per hunter-day: leopard (need 4.2) | 2.6 → 3.4 | 0.3 → 1.6 | 3.0 → 4.3 | 0.2 → 1.2 |
+| hyena (need 3.9) | 2.3 → 5.1 | 4.1 → 6.0 | 3.6 → 3.2 | 2.1 → 3.5 |
+| Hunters' killed weight ÷ eaten weight | 6.2 → 4.6 | 5.2 → 3.8 | 3.8 → 2.6 | 3.7 → 4.7 |
+| Hominins alive at day 30 | 27 → 28 | 14 → 5 (15 burned) | 8 → 3 | 4 → 2 |
+
+Map off: hunters' hunger deaths 6 → 5, 5 → 7, 5 → 7, 8 → 4; world 1 lost 15 hominins to hunters (0 before; 30 → 13 alive).
+
+**Result.** (1) Leopards and hyenas closer to need — **held**: leopards ate more in all 4 worlds, hyenas in 3. (2) Killed ÷ eaten
+falls — **held** in 3 of 4. (3) Map off: fewer hunters starve — **held** only in 2 of 4. (4) Fewer carcasses in hominins' sight —
+**not held** (1 of 4).
+
+**Interpretation.** A missing memory, not a missing instinct, kept hunters from their kills; with it they come back and eat more, as
+real leopards return to a kill over several nights. Leopards are still under need (1.2–4.3 kg a day): every herd animal is an adult
+above their preferred size (backlog A36, herds with young). A hunter that has eaten a hominin now also remembers that place — often
+where the band is; in world 1 (map off) that came with 15 hominins killed. One world; to watch, not to read into yet.
+
+**Strength.** Weak (4 worlds × 2 arms, 30 days). **Lesson:** look for an omission in what already exists before adding a new mechanism.
+
 ---
 
 ## Open questions (next tests)
