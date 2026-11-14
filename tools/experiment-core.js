@@ -119,6 +119,8 @@
     { key: 'oldNuts', kind: 'on', def: false, flag: 'old-nuts', label: 'Nuts grow by the old oak, hazel and walnut rules (otherwise in warm open woodland)', cfg: true },
     { key: 'rootValue', kind: 'num', def: 80, flag: 'root-value', label: 'Food from a bite of roots and tubers (fruit is 70; an assumption)', min: 10, max: 150, cfg: true },
     { key: 'noVoiceGenes', kind: 'on', def: false, flag: 'no-voice-genes', label: 'Vocal learning, pointing and the joy of shared attention fixed at zero (a test: otherwise they start ape-low and can evolve)', cfg: true },
+    { key: 'marrowUnits', kind: 'on', def: false, flag: 'marrow-units', label: 'Marrow as 0.15 of the meat, at the value of meat (the old rule); otherwise in kg (0.25% of body weight) with its real energy', cfg: true },
+    { key: 'marrowShareKg', kind: 'num', def: 0.0025, flag: 'marrow-share', label: 'Marrow as a share of body weight (0.0022-0.0037)', min: 0, max: 0.02, cfg: true },
     { key: 'fixedStickDryness', kind: 'on', def: false, flag: 'fixed-stick-dryness', label: 'Fallen sticks are always 85% dry unless it is raining (the old rule); otherwise they follow the humidity of the air', cfg: true },
     { key: 'brandAlwaysLights', kind: 'on', def: false, flag: 'brand-always-lights', label: 'A dropped burning stick always lights the ground (the old rule); otherwise as the fuel\'s dryness allows', cfg: true },
     { key: 'oldFireLinks', kind: 'on', def: false, flag: 'old-fire-links', label: 'The old false links: striking pyrite or banging sticks trains a hidden fire skill and is rewarded (entry 77; otherwise sparks fly and a blow is a blow)', cfg: true },

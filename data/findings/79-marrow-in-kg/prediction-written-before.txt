@@ -1,0 +1,5 @@
+Entry 79, marrow in kg (0.25% of body weight, 7,860 kcal a kg; --marrow-units restores). Worlds 1-4, 30 days, map on, both arms.
+Written before the run.
+1. Marrow matters little: hominin hunger deaths change by no more than world-to-world noise. (A 55 kg impala holds about 150 g of
+   marrow, about 1,200 kcal: one day's need for one hominin; before, marrow was 0.15 of the meat, many times more.)
+2. Marrow eaten per hominin-day is small (under 30 g) in all 4 worlds.

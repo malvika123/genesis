@@ -140,7 +140,10 @@ function leaveBody(a, cause) {
     // kg of meat in one unit of 'meat' above (for hunters' stomachs, A30)
     kgU: (a.S.mass ? preyKg(a) : a.sp === 0 && typeof bodyKg === 'function' ? bodyKg(a) : 70 * sz) / (sz * young),
     // marrow sealed in the long bones of plant-eaters and hunters: only a stone opens it (SOC.marrowShare, an assumption)
-    marrow: water[idx(a.x, a.y)] || a.sp === 0 || !SOC.marrow ? 0 : sz * young * SOC.marrowShare,
+    // in kg since entry 79 (SOC.marrowKg): about 0.25% of body weight (impala 154 g of 55 kg, wildebeest 365 g of 165 kg: Blumenschine &
+    // Madrigal 1993, via Kuipers et al. 2010); --marrow-units: the old rule (0.15 of the meat, in units)
+    marrow: water[idx(a.x, a.y)] || a.sp === 0 || !SOC.marrow ? 0 : SOC.marrowKg && a.S.mass ? SOC.marrowFrac * preyKg(a) : sz * young * SOC.marrowShare,
+    marrowKg0: SOC.marrowKg && a.S.mass ? SOC.marrowFrac * preyKg(a) : 0, // the carcass's marrow at death, kg (one long bone is an eighth)
   });
   if (BODIES.length > 400) BODIES.shift();
 }

@@ -107,6 +107,7 @@ for (const seed of seeds) {
     hunterKgKilledPerHunterDay: huntDays ? Object.entries(E.state().killKg).filter(([k]) => !/^Person/.test(k)).reduce((t, [, v]) => t + v, 0) / huntDays : null,
     hunterDaysByKind: kindDays,
     eatenKgPerHunterDayByKind: Object.fromEntries(Object.entries(kindDays).map(([k, d]) => [k, (E.state().eatKg[k] || 0) / d])),
+    homininMarrowGPerHomininDay: homDays ? (1000 * (E.state().eatKg.Marrow || 0)) / homDays : null,
     homininMeatKgPerHomininDay: homDays ? (E.state().eatKg.Person || 0) / homDays : null,
     peopleAliveEnd: E.state().ag.filter((o) => o.sp === 0 && !o.dead).length,
     huntersAliveEnd: E.state().ag.filter((o) => o.sp === 2 && !o.dead).length,
