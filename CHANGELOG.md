@@ -4,6 +4,8 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Prey map: forest antelope and herds with young** (research log entries 72–73): dense forest now carries some prey; antelope herds
+  hold yearlings, females and males, and a hunter meets one of them. `--forest-prey 0`, `--adult-herds` restore the old rules.
 - **Hunters remember where they ate** (research log entries 70–71): like every creature, a hunter now remembers where it found food —
   its kill — and comes back to it when hungry; a hunter resting at its own kill keeps the birds off. `--hunters-forget-kills`,
   `--unguarded-sleep` restore the old rules.

@@ -2198,6 +2198,32 @@ each hominin or hunter) and the arid edges with no prey may explain; not yet tra
 
 **Strength.** Weak (4 worlds, 30 days; the level not yet tested at both ends).
 
+### 73. Herds with young — no clear difference in 4 worlds — Nov 2026
+
+**Version.** 0.7.0+ · this commit. Backlog A36 (the owner's choice, on Fable's recommendation). With the prey map on, a hunter
+attacking an antelope herd meets one animal drawn from the herd's mix: yearlings 25% at 19 kg, adult females 38 kg and males 49 kg,
+half each (impala population studies; the half-and-half split an assumption). Before, every animal was a 50 kg adult. Buffalo herds
+stay all adults (no source found). `--adult-herds` restores the old rule (checked: identical worlds).
+
+**Data.** [The ledger, map on, worlds 1–4, 30 days; the prediction](../data/findings/73-herds-with-young/), against entry 72.
+
+| Map on, per world (entry 72 → this) | 1 | 2 | 3 | 4 |
+|---|---|---|---|---|
+| Eaten, kg per hunter-day: leopard (need 4.2) | 2.4 → 3.6 | 5.1 → 2.0 | 4.5 → 3.3 | 1.5 → 1.2 |
+| hyena (need 3.9) | 3.3 → 3.5 | 6.3 → 4.0 | 4.8 → 3.2 | 5.6 → 3.0 |
+| Weight killed by leopards, kg | 820 → 1,559 | 2,907 → 1,045 | 1,850 → 1,710 | 362 → 458 |
+| Hominins alive at day 30 | 20 → 25 | 28 → 35 | 18 → 25 | 8 → 5 |
+
+**Result.** (1) Leopards nearer need in at least 3 of 4 — **not held** (1 of 4). (2) More killed by leopards — **not held** (2 of 4).
+(3) Little change for hyenas — **not held**: they ate less in 3 of 4.
+
+**Interpretation.** No clear effect: the differences go both ways and are as large as the differences between worlds. Four worlds of
+30 days cannot show a change this small; the change stays in (it is what real herds are), and its effect is a question for the big run
+with many more worlds. **Lesson:** small realism changes need more worlds than a 4-world check; the 4-world runs are only for spotting
+large effects and errors.
+
+**Strength.** None (no detectable effect).
+
 ---
 
 ## Open questions (next tests)
