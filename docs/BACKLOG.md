@@ -11,6 +11,7 @@ test on the same worlds; never tune toward survival.
 
 | # | What | Why it matters | Status |
 |---|---|---|---|
+| B27 | Rot sickness is rolled at every 15-minute bite (0.35), not by the amount eaten; since meat is in kg (entry 74) a carcass takes many more bites, so the same meat gives many more chances to fall sick | entry 75 trace: rotten meat the largest cause of death by wounds (map on) | fix next: the chance by kg eaten, keeping the old risk for the old bite |
 | B1 | **built 12 Nov** (`--old-mating`) — After **any** mating the female enters the 4-year nursing wait, even if she did not conceive (`src/sim.js`, mating: `fem.cd = S.cd`) | Harmless while every mating led to pregnancy; with the female cycle, most matings miss the fertile days and lock her out for 4 years with no baby — births fell to a third | to fix: the wait starts only with a pregnancy |
 | B2 | **built 12 Nov as B7** — After mating, a male cannot mate again for 0.1 year (about 36 days) | No source; real chimpanzee males mate several times a day | verify online, then fix |
 | B3 | **done** (merged into `percept` 12 Nov; `--people-cap` restores) — A fixed population cap blocks mating (`popK + kids < S.cap`) | Not biology: real populations are limited by food, disease and fertility | remove (audit, 11 Nov) |
@@ -55,7 +56,7 @@ test on the same worlds; never tune toward survival.
 
 | # | What | Evidence | Note |
 |---|---|---|---|
-| R1 | **Checkpoint big run (the owner, 14 Nov 2026)** — right after Fable's list (A37, A33, A34 if a gap remains, carcass contests observed): 24 worlds × 100 days, gentle on the laptop, to see the hominins' world with hunters and prey fixed. The full big run stays at the end (after the remaining gaps and reality tests 2–4) | the owner chose it | prediction first; what to read: hominin deaths by cause, births, meat eaten, discoveries |
+| R1 | **done 14 Nov (entry 75)** — checkpoint big run, 24 × 100 days, map on and off | hominins alive in 16–17 worlds, median 2; hunters the main killer (31–39%); wounds 24% with the map on | next: B27, then predation rates |
 | A38 | **built 14 Nov (entry 71)** — hunters remember where they ate meat (`--hunters-forget-kills`) | leopards ate more in 4 of 4 worlds, hyenas in 3; still under need | next: A36 (herds with young) |
 | A39 | Big carcasses rot more slowly than small ones (today a buffalo rots as fast as a hare; the rate itself matches: over 90% in about 20 days in summer, roughly doubling every 10 °C) | small pig carcasses decompose 2.82 times faster than large ones (South African pig study); a forensic soil study: over 90% mass lost in 20 days | find a size scaling from a source; one change |
 | A35 | **built 14 Nov (entry 70), no difference** — a hunter resting at its kill keeps the birds off (`--unguarded-sleep`) | hunters walk away from kills; birds still take 25% and rot 32% of the meat | open question: why hunters do not stay with a kill (owner's call) |

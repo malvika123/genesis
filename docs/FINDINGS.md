@@ -2254,6 +2254,47 @@ over-rewarding them; without it some go hungry. That is the real economics of me
 
 **Strength.** Moderate for the meat intake (4 of 4 worlds, a large change); weak for survival (4 worlds, mixed causes).
 
+### 75. The checkpoint run: hominins collapse in most worlds, mostly to hunters — Nov 2026
+
+**Version.** 0.7.0+ · commit `faa300a` era (after Fable's list: entries 66–74, A33 checked). The owner asked for a checkpoint big run
+before the remaining gaps. 24 worlds (seeds 1–24) × 100 days (about 33 life-years), every setting at its default, with the prey map
+on and, for comparison, off (the live default).
+
+**Data.** [Both tables and the prediction](../data/findings/75-checkpoint-run/). `node tools/experiment.js --seeds 1-24 --days 100
+--workers 4 [--prey-map]`.
+
+| 24 worlds × 100 days | Map off (default) | Map on |
+|---|---|---|
+| Worlds with hominins alive at day 100 | 17 | 16 |
+| Hominins alive: middle world / all worlds | 2 / 208 | 2 / 107 |
+| Worlds with a second generation | 13 | 17 |
+| Deaths: killed by hunters | 39% | 31% |
+| wounds | 11% | 24% |
+| hunger | 11% | 15% |
+| old age | 15% | 14% |
+| burned | 14% | 8% |
+| Worlds where someone made fire by rubbing wood | 9 | 20 |
+| … cut meat with a stone / brought down an animal | 2 / 11 | 12 / 7 |
+
+**Result (map on, against the prediction).** (1) Hominins alive in at least 16 of 24 — **held, only just** (16). (2) Hunters the largest
+cause in at least 8 worlds, hunger under a third — **held** (11 worlds; 15%). (3) Births in at least 18 worlds — **not held** (17);
+a second generation in at least 12 — held (17). (4) Nut cracking and digging found alone in most worlds — **held** (all 24); making fire
+rare — **not held** (20 of 24 with the map on). (5) Hunters survive in every world — held.
+
+**What killed hominins by wounds** (a measuring-only trace, 2 worlds × 40 days, map on): sickness from eating rotting meat 9, hurt by a
+buffalo or antelope they attacked 7. The rot sickness is partly an artefact of entry 74: its chance (0.35) is rolled at every 15-minute
+bite, and a bite is now a quarter kilo, so a carcass takes many more bites than before and the same meat gives many more chances to fall
+sick. The risk should follow the amount eaten (next step).
+
+**Interpretation.** In both worlds most bands shrink to a handful in 33 life-years; real chimpanzee communities do not usually die out
+that fast. Hunters are the main killer either way. The prey map does not cause the collapse (it happens with the map off too), but with
+it, more hominins die of wounds — from rotten meat counted per bite, and from attacking herds that fight back (the inborn pull to attack
+prey beside them, which the owner chose to leave to pain). Fire-making by rubbing wood is common — an experiment against the record
+(no fire-making before about 400,000 years ago), on by default; whether it stays on is the owner's call.
+
+**Strength.** Moderate (24 worlds; one seed set). **Next:** rot sickness by amount eaten; then look at why hunters kill so many
+hominins (real primates lose a few percent a year to predators).
+
 ---
 
 ## Open questions (next tests)
