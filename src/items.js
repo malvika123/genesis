@@ -130,6 +130,7 @@ function leaveBody(a, cause) {
     sp: a.sp,
     name: a.name || a.S.n,
     who: a, // so those bonded to it can recognise it when they come across it
+    owner: a.killer && a.killer.sp === 2 ? a.killer : null, // the hunter that made the kill (A35)
     t: tick,
     cause,
     size: sz,
@@ -154,6 +155,11 @@ function guarded(b) {
       const l = G[idx(wx(b.x + dx), clamp(b.y + dy, 0, H - 1))];
       if (l) for (const o of l) if (!o.dead && !o.asleep && (o.sp === 2 || o.sp === 0)) return true;
     }
+  // a hunter resting at its own kill (it made it, or has eaten from it) keeps the birds off even asleep (backlog A35, entry 70):
+  // big cats do not let vultures feed while they feed (Attwell 1963), and leopards feed on a kill for days (Balme et al. 2017);
+  // that a resting one deters them is an assumption. --unguarded-sleep: the old rule (only someone awake keeps them off)
+  const w = b.owner;
+  if (SOC.keepKill && w && !w.dead && !w.gone && w.x === b.x && w.y === b.y) return true;
   return false;
 }
 function updateBodies() {

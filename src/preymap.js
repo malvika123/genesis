@@ -147,7 +147,7 @@ function preyTick() {
 // One animal of a herd has died (cause c): it leaves its carcass where the herd is, and the herd goes on without it. If the
 // one shown (whose body the herd is) died of anything but a hunter, the rest are no longer shown: they go back to the map.
 function herdLoss(a, c) {
-  leaveBody({ sp: a.sp, S: a.S, x: a.x, y: a.y, age: a.age, eaten: a.eaten || 0, name: '' }, c);
+  leaveBody({ sp: a.sp, S: a.S, x: a.x, y: a.y, age: a.age, eaten: a.eaten || 0, name: '', killer: a.killer }, c);
   PREYSTAT.died += a.S.mass;
   a.head--;
   a.eaten = 0;
@@ -158,6 +158,7 @@ function herdLoss(a, c) {
   a.dead = false;
   a.cause = '';
   a.killedBy = null;
+  a.killer = null;
   a.hp = 100;
   return true;
 }

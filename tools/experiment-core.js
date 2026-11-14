@@ -153,6 +153,7 @@
     { key: 'certainConception', kind: 'on', def: false, flag: 'certain-conception', label: 'Every cycle can conceive (the old rule); otherwise about 1 cycle in 5, as wild chimpanzees need about 5', cfg: true },
     { key: 'conceive', kind: 'num', def: 0.2, flag: 'conceive', label: 'Chance a cycle can lead to conception (Gombe and Kanyawara about 0.2, Mahale about 0.11; tested at 0.2 and 0.1)', min: 0.01, max: 1, cfg: true },
     { key: 'huntersAnywhere', kind: 'on', def: false, flag: 'hunters-anywhere', label: 'Hunters start (and newcomers arrive) anywhere that suits them, even far from all prey (the old rule)', cfg: true },
+    { key: 'unguardedSleep', kind: 'on', def: false, flag: 'unguarded-sleep', label: 'Birds strip a kill while its hunter sleeps beside it (the old rule); otherwise a hunter resting at its own kill keeps them off', cfg: true },
     { key: 'oldHomininStrikes', kind: 'on', def: false, flag: 'old-hominin-strikes', label: "A hominin's failed strike harms any prey the same, even a buffalo (the old rule); otherwise by its weight against the prey's", cfg: true },
     { key: 'fixedHuntPull', kind: 'on', def: false, flag: 'fixed-hunt-pull', label: "A hunter's inborn pull to attack prey beside it is the same fed or hungry (the old rule); otherwise most of it grows with hunger", cfg: true },
     { key: 'huntPullFixed', kind: 'num', def: 0.25, flag: 'hunt-pull-fixed', label: 'Share of the hunting pull that is there even when fed (an assumption: 0.1-0.5)', min: 0, max: 1, cfg: true },

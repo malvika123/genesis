@@ -1,0 +1,6 @@
+Entry 70, a hunter resting at its own kill keeps the birds off (--unguarded-sleep restores). Worlds 1-4, 30 days, map on and off,
+against entry 69's strike-fix arms (data/findings/69-hunters-remeasured/strike-map-on, strike-map-off). Written before any run.
+1. Hunters eat more: leopards and hyenas closer to need (leopard 4.2, hyena 3.9 kg a day) in at least 3 of 4 worlds with the map on.
+2. Killed weight over eaten weight (hunters' own kills / meat eaten by hunters) falls, to under 2 in at least 2 of 4 worlds (Fable).
+3. Hunters' own kills per hunter-day fall (fed hunters, back at their kill, need fewer kills) in at least 3 of 4 worlds.
+4. Hominins' samples with no carcass in sight rise a little (birds no longer take kills quickly, but hunters sit on them).
