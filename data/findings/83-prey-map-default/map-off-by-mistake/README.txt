@@ -1,0 +1,1 @@
+These two runs were meant to have the prey map on by default but had it OFF: the runner passes preyMap:false unless told, and the first version of the new default treated that as off (fixed: only --no-prey-map or the page's checkbox turns it off). Kept as map-off data for the cutting comparison.

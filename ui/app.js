@@ -2836,6 +2836,7 @@ const readCfg = () => ({
   fish: +$('fsh').value || 0,
   retina: $('ret').checked,
   preyMap: $('pmap').checked,
+  fromPage: true, // the page's checkbox may turn the prey map off (the runner's preyMap default of false does not)
   earth: $('land').value === 'earth',
   sapiens: $('era').value === 'sapiens',
 });

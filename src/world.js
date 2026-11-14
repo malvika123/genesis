@@ -154,7 +154,7 @@ function buildWorld(cfg) {
   SOC.gutShare = cfg.gutShare ?? 0.25; // the most a hunter eats at once, share of its weight (hyena about 0.24; an assumption for the others: tested 0.15 and 0.33)
   SOC.digestH = cfg.digestHours ?? 24; // hours to digest a full stomach (an assumption: tested 12 and 48)
   SOC.mealSleep = cfg.mealSleep ?? 2; // how much faster tiredness builds with a full stomach (an assumption: tested 0 and 4)
-  SOC.preyMap = cfg.preyMap !== false && cfg.noPreyMap !== true; // on by default since entry 83 (the owner, 14 Nov 2026: without it plant-eaters died out in 12 of 24 worlds); --no-prey-map: a few single animals, the old rule // the land's antelope and buffalo as kg per square, shown as one herd per square near anyone (off: a few single animals, the old rule)
+  SOC.preyMap = cfg.noPreyMap !== true && !(cfg.preyMap === false && cfg.fromPage === true); // on by default since entry 83 (the owner, 14 Nov 2026: without it plant-eaters died out in 12 of 24 worlds); --no-prey-map: a few single animals, the old rule // the land's antelope and buffalo as kg per square, shown as one herd per square near anyone (off: a few single animals, the old rule)
   SOC.preyLevel = cfg.preyLevel ?? 5000; // mean kg of hoofed prey per km² where it lives (an assumption: 1,000–10,000 across African parks)
   SOC.buffShare = cfg.buffaloShare ?? 0.5; // buffalo's share of that weight (an assumption: tested 0.25 and 0.75)
   SOC.preyRegrow = cfg.preyRegrow ?? 0.3; // how fast the prey regrows, per life-year, at low numbers (an assumption: tested 0.1 and 0.6)
