@@ -133,6 +133,11 @@ function buildWorld(cfg) {
   SOC.cycleChance = cfg.certainConception !== true; // not every cycle can conceive (off: conception certain in the fertile days, the old rule)
   SOC.conceive = cfg.conceive ?? 0.2; // chance a cycle is conceptive (an assumption from cycles-to-conception; tested at 0.2 and 0.1)
   SOC.nearPrey = cfg.huntersAnywhere !== true; // hunters start and arrive where their prey lives (off: anywhere that suits them, the old rule)
+  SOC.preyMap = cfg.preyMap === true; // the land's antelope and buffalo as kg per square, shown as one herd per square near anyone (off: a few single animals, the old rule)
+  SOC.preyLevel = cfg.preyLevel ?? 5000; // mean kg of hoofed prey per km² where it lives (an assumption: 1,000–10,000 across African parks)
+  SOC.buffShare = cfg.buffaloShare ?? 0.5; // buffalo's share of that weight (an assumption: tested 0.25 and 0.75)
+  SOC.preyRegrow = cfg.preyRegrow ?? 0.3; // how fast the prey regrows, per life-year, at low numbers (an assumption: tested 0.1 and 0.6)
+  SOC.preyZone = cfg.preyZone ?? 1; // herds are shown in squares within this many of a hominin or hunter (1: its own and the eight around)
   SOC.preyRadius = cfg.preyRadius ?? 8; // squares within which a hunter's prey must live where it starts (an assumption)
   SOC.rescue = cfg.rescue !== false; // newcomers from the wider population when a hunter kind is rare (off: the old closed world)
   SOC.rescueRate = cfg.rescueRate ?? 1; // newcomers a life-year while rare (an assumption)
@@ -208,6 +213,7 @@ function buildWorld(cfg) {
       }
   }
   initForest();
+  initPreyMap();
   initItems();
   initTalk();
   initFire();

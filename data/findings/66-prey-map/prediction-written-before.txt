@@ -1,0 +1,11 @@
+Entry 66, the prey map (--prey-map), 4 worlds x 30 days, against entry 65 (same seeds, map off). Written before the run,
+but AFTER one 10-day smoke run of world 1 (154 antelope and 18 buffalo killed by 6 hunters in 10 days), so the intake
+prediction is not blind.
+1. Hunter intake rises far above need (3.5-4.9 kg/day): over 20 kg/hunter/day in at least 3 of 4 worlds - because a fed
+   hunter here can hunt again at once (no satiety / no days spent on a carcass), which the scarce old world hid.
+2. Hunters far from prey (over 5 squares): near 0% - by construction (herds form around every hunter), not a result.
+3. Hominins see far more animals (herd head counts) and more carcasses: share of samples with no carcass in sight falls
+   below 80% in at least 3 worlds.
+4. Leopards are not the worst fed (preyMax 40 < adult antelope 50; soft rule) - uncertain; reported only.
+5. Hominin deaths by hunters: not predicted in direction; reported.
+Mass balance within 1% (tested in tests/preymap.test.js).

@@ -2155,7 +2155,7 @@ function gensHTML() {
 // e.g. "9 deer, 31 rabbits, 4 bison"
 function kindCounts(sp) {
   const n = {};
-  for (const a of ag) if (a.sp === sp) n[a.S.n] = (n[a.S.n] || 0) + 1;
+  for (const a of ag) if (a.sp === sp) n[a.S.n] = (n[a.S.n] || 0) + (a.head || 1); // a herd counts all its animals
   return (
     Object.entries(n)
       .map(([k, c]) => c + ' ' + (c > 1 ? plural(k) : k).toLowerCase())
@@ -2553,6 +2553,7 @@ const readCfg = () => ({
   predators: +$('prd').value || 0,
   fish: +$('fsh').value || 0,
   retina: $('ret').checked,
+  preyMap: $('pmap').checked,
   earth: $('land').value === 'earth',
   sapiens: $('era').value === 'sapiens',
 });
@@ -2970,7 +2971,8 @@ function updateDock() {
     kg = sel.sp === 0 && SOC.growBodies && sel.S.growF ? ' · ' + Math.round(bodyKg(sel)) + ' kg' : '',
     sx = sel.sp === 3 ? '' : sel.sex ? ' · female' : ' · male',
     sub = age + sx + kg + (iq ? ' · IQ ' + iq.iq : '');
-  const nm = sel.name || sel.S.n;
+  // a herd on the prey map (--prey-map): the one animal shown stands for all of its square's animals of its kind
+  const nm = sel.herd ? 'A herd of ' + sel.head + ' ' + (sel.head > 1 ? plural(sel.S.n) : sel.S.n).toLowerCase() : sel.name || sel.S.n;
   if ($('dname').textContent !== nm) $('dname').textContent = nm;
   if ($('dsub').textContent !== sub) $('dsub').textContent = sub;
   d.hidden = false;

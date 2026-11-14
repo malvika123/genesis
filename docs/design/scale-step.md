@@ -104,3 +104,9 @@ of antelope-sized animals. The world can afford a few dozen visible animals with
 
 The step's test (prediction first): switch off gives identical worlds; mass balance within 1%; standing biomass inside the registered
 range; hunter intake and hominin deaths reported, not targeted.
+
+## Built (entry 66, 14 Nov 2026)
+
+Option (ii) as the owner chose it: **one herd per square** (all its animals of a class), shown within one square of each hominin and
+hunter (`--prey-map`, off). It exposed a missing part: a fed hunter hunts again at once (38–95 kg a day), so hunters' meals
+(backlog A30) come next, and the map stays off until then.

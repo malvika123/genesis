@@ -199,7 +199,8 @@ function spawn(sp, n, inst) {
     extra--;
   }
   for (let j = 0; extra < 0; j = (j + 1) % counts.length) (counts[j]++, extra++);
-  kinds.forEach((k, j) => spawnKind(sp, k, counts[j], inst));
+  // with the prey map, antelope and buffalo are herds that appear near hominins and hunters (preymap.js), not founders
+  kinds.forEach((k, j) => !(SOC.preyMap && PREYK.includes(k)) && spawnKind(sp, k, counts[j], inst));
 }
 function spawnKind(sp, k, n, inst) {
   const K = KINDS[k],
@@ -223,7 +224,8 @@ function spawnKind(sp, k, n, inst) {
     // Gittleman 2002); no leopard population lives hundreds of kilometres from any antelope. A hunter starts (and a
     // newcomer arrives) only with plant-eaters within 8 squares (an assumption: about the spread of a hunting group; tested at 8 and 4, `--prey-radius`).
     // Without this, big cats started far from every herd and starved (research log entry 40). --hunters-anywhere: the old rule.
-    if (sp === 2 && SOC.nearPrey && t < 4500 && !ag.some((o) => o.sp === 1 && !o.dead && wrapDist(x, y, o.x, o.y) <= SOC.preyRadius)) return false;
+    if (sp === 2 && SOC.nearPrey && t < 4500 && SOC.preyMap && !preyNear(x, y, SOC.preyRadius)) return false;
+    if (sp === 2 && SOC.nearPrey && t < 4500 && !SOC.preyMap && !ag.some((o) => o.sp === 1 && !o.dead && wrapDist(x, y, o.x, o.y) <= SOC.preyRadius)) return false;
     const h = K.hab;
     if (!h) return true;
     const T = meanTemp(i),

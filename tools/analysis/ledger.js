@@ -34,6 +34,7 @@ for (const seed of seeds) {
   const near = (a, o) => Math.abs(E.dxw(o.x - a.x)) <= SIGHT && Math.abs(o.y - a.y) <= SIGHT;
   let homSamples = 0,
     preyIn = 0,
+    headIn = 0,
     huntIn = 0,
     carcIn = 0,
     zeroCarc = 0,
@@ -45,12 +46,21 @@ for (const seed of seeds) {
   // the world removes the dead at the end of each step, so prey are followed from one step to the next: one that is gone (or
   // dead) with the cause 'killed by a predator' was killed by a hunter (the first version missed them all: entry 63, corrected)
   let prevPrey = [];
+  const herdSeen = {},
+    herdMass = {};
+  if (S.cfg.preyMap) Object.assign(herdMass, { Antelope: 50, Buffalo: 600 }); // adult weights (HKINDS); a herd's shown animal is adult
   for (let t = 0; t < days * D; t++) {
     E.sim();
     const st = E.state(),
       bodies = E.items().bodies;
+    // with the prey map, a herd lives on after a kill (one animal taken, preymap.js): its kills are counted from the deaths
+    for (const k of ['Antelope', 'Buffalo']) {
+      const n = st.deaths[k + ': killed by a predator'] || 0;
+      if (herdMass[k] !== undefined) killedKg += (n - (herdSeen[k] || 0)) * herdMass[k];
+      herdSeen[k] = n;
+    }
     for (const o of prevPrey)
-      if (o.dead && o.cause === 'killed by a predator') killedKg += (o.S.mass || 0) * (o.age < o.S.mat ? Math.min(1, 0.1 + (0.9 * o.age) / o.S.mat) : 1);
+      if (!o.herd && o.dead && o.cause === 'killed by a predator') killedKg += (o.S.mass || 0) * (o.age < o.S.mat ? Math.min(1, 0.1 + (0.9 * o.age) / o.S.mat) : 1);
     prevPrey = st.ag.filter((o) => o.sp === 1 && !o.dead);
     if (t % 12) continue; // sample every 3 hours
     const live = st.ag.filter((o) => !o.dead),
@@ -61,6 +71,7 @@ for (const seed of seeds) {
       if (a.sp === 0) {
         homSamples++;
         preyIn += prey.filter((o) => near(a, o)).length;
+        for (const o of prey) if (near(a, o)) headIn += o.head || 1; // animals, counting each herd's head
         huntIn += hunters.filter((o) => near(a, o)).length;
         const c = bodies.filter((b) => b.meat > 0.05 && b.sp !== 0 && near(a, b)).length;
         carcIn += c;
@@ -79,6 +90,7 @@ for (const seed of seeds) {
     days,
     flags,
     preyInSightPerHominin: preyIn / homSamples,
+    preyAnimalsInSightPerHominin: headIn / homSamples,
     huntersInSightPerHominin: huntIn / homSamples,
     carcassesInSightPerHominin: carcIn / homSamples,
     shareOfSamplesWithNoCarcass: zeroCarc / homSamples,

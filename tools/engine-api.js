@@ -22,6 +22,7 @@ return {
   talk: () => ({ received, absorb, SND, ambient, WSTAT, acoustics, hearWord, heardAs, spell, wordOf, choicesFor, SNDSTAT, BASE, GENSTAT, meaning, SAYN, HEARD, CALLS }),
   fire: () => ({ FIRE, SMOL, BURNT, COOK, fireStats, BURNING, dryness, fuelOf, ignite, pyrite }),
   alt: () => alt,
+  prey: () => ({ PREY, PCAP, PARK, PREYSTAT, preyTotal: () => preyTotal() }),
   social: () => ({ ouch, watchOthers, imitate, imitateVoice }),
   sense, SP, DAY, TY, IB, HB, NCH, A_STAY, A_EAT, A_SLEEP, A_GIVE, A_TAKE, A_DROP, A_STRIKE, A_CLIMB, NSAY, NV, HEAR, SPEECH, VG, SEEPT, O3, NI,
 };`;

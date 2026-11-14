@@ -1942,6 +1942,48 @@ than lower by hand. Hunters are now near or above their needs in 3 of 4 worlds, 
 **Strength.** Weak (4 worlds, 30 days; buffalo by killer in one world). **Lesson:** where failure also does harm, the harm must
 follow the same physics as success.
 
+### 66. The prey map: real numbers of antelope and buffalo, shown as one herd per square — Nov 2026
+
+**Version.** Unreleased · this commit. Scale step 1 (`docs/design/scale-step.md`), off by default (`--prey-map`; checked: with it off,
+worlds identical to the released ones). The land carries its antelope and buffalo as kg per square, in proportion to how well the
+square's plants grow, where each class can live; the mean is 5,000 kg/km² (an assumption, 1,000–10,000 across African parks; Fritz &
+Duncan 1994 give about 5,200 at 600 mm on rich soil), half of it buffalo (no source found). Around each hominin and hunter, a square's
+animals of one class are shown as **one herd** — the owner's choice (14 Nov) over real-sized herds of which only an invented share
+would be shown: at real density a 3 km square holds about 16 impala herds, too many to give each a brain. Herds are therefore bigger
+than real ones (about 450 antelope or 37 buffalo at the mean; real impala groups average 28–58, Mramba 2022; buffalo about 350,
+Sinclair 1977). A herd behaves as one animal; a death takes one animal and leaves one carcass; herds no one is near are set aside,
+brain and all; the map regrows on the life clock (0.3 a life-year, an assumption). Weight balance checked to 0.0000% over 10 days; a
+step is no slower.
+
+**Data.** [The ledger on 4 worlds, the prediction (written after one 10-day smoke run, so the intake prediction is not blind), the
+deaths with the map on and off in worlds 1 and 3](../data/findings/66-prey-map/). `node tools/analysis/ledger.js 1,2,3,4 30 OUT --prey-map`.
+
+| Per world (30 days; entry 65 → prey map) | 1 | 2 | 3 | 4 |
+|---|---|---|---|---|
+| Prey killed, kg per hunter per day (need 3.5–4.9) | 8.9 → 60 | 3.0 → 92 | 3.1 → 38 | 4.0 → 95 |
+| Hominin samples with no carcass in sight | 93% → 19% | 92% → 23% | 100% → 80% | 97% → 39% |
+| Hunter samples more than 5 squares from prey | 64% → 86% | 82% → 77% | 67% → 68% | 66% → 85% |
+| Animals in sight of a hominin (mean) | — → 395 | — → 197 | — → 80 | — → 609 |
+| Hominins alive at day 30 | 35 → 23 | 10 → 26 | 39 → 20 | 30 → 21 |
+
+Deaths, map off → on: world 1 hominins by wounds 0 → 6, by hunters 2 → 0, by hunger 4 → 3; world 3 hominins by hunters 0 → 11.
+Antelope killed by hunters 7 → 185 (world 1) and 3 → 158 (world 3); hunters killed by their prey 0 → 7 and 3 → 8.
+
+**Result.** (1) Intake far above need — **held**: 38–95 kg a day against a real leopard's about 4 (Odden & Wegge 2009: one kill every
+5.6 days, 10.6 for hoofed prey). (2) Hunters near prey by construction — **not held**: most hunter samples were still more than 5
+squares from a live herd. A likely cause, not yet checked: hunters kill out the squares around them and the map regrows slowly, so a
+square falls below one animal and shows no herd; or hunters walk where the class cannot live. (3) Carcasses in reach — **held** in
+3 of 4 worlds. Fewer hominins alive in 3 of 4 worlds, by different causes (wounds in world 1, hunters in world 3).
+
+**Interpretation.** With real prey numbers, a gap the scarce world hid shows at once: **a fed hunter in Genesis hunts again at once**.
+Real carnivores eat a kill over hours to days (a spotted hyena eats at most about 14.5 kg at one meal) and do not kill again until
+hungry; in Genesis a kill gives energy instantly, capped at a full store, and nothing stops the next attack. That is the next thing to
+add (backlog A30), before any result of the prey map is read as being about hominins. The fall in hominins alive is not interpreted
+yet: it comes with hunters killing ten to twenty times too much, and with hominins beside herds big enough to fight back.
+
+**Strength.** Weak (4 worlds, 30 days; deaths in two worlds). **Lesson:** making one part real can expose a missing part elsewhere;
+the prey map stays off until hunters' meals are real.
+
 ---
 
 ## Open questions (next tests)

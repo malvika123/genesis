@@ -42,6 +42,7 @@ test on the same worlds; never tune toward survival.
 
 | # | What | Result so far | Waits on |
 |---|---|---|---|
+| W8 | The prey map: antelope and buffalo as kg per square, one herd per square near hominins and hunters (`--prey-map`, off; entry 66) | Weight balances; hunters kill 38–95 kg a day (need about 4); fewer hominins alive in 3 of 4 worlds | A30 (hunters’ meals), then test again; then why hunters stay far from herds |
 | W1 | **on by default since 12 Nov (entry 38)** — Female cycle: 36 days, receptive 13, fertile near ovulation (`--cycle`, off) | Births fell to a third — caused by B1 (and perhaps B2) | B1, B2; then test again |
 | W2 | Animals of East Africa 2.5 million years ago (`--africa-animals`, off) | Hunters starved: Genesis has about 9× too many hunters for its prey | A1 |
 | W3 | **off by default since 12 Nov** — Founders' practice before the world begins (on in the runner) | Did not reduce hunger; drowning doubled | review: learning by watching (A4) may be the real fix |
@@ -54,6 +55,7 @@ test on the same worlds; never tune toward survival.
 
 | # | What | Evidence | Note |
 |---|---|---|---|
+| A30 | **Next (entry 66).** Hunters eat a kill over time and do not kill again until hungry: a meal fills the gut, and energy comes in as it is digested | leopard about 4 kg a day, one kill every 5.6 days (10.6 for hoofed prey) (Odden & Wegge 2009, Bardia); spotted hyena meals up to about 14.5 kg (Kruuk 1972, via Britannica; to check in the source) | with the prey map on, hunters kill 38–95 kg a day; keep `--prey-map` off until this is built |
 | A1 | Hunters to prey about 90 kg per 10,000 kg (more prey) | Carbone & Gittleman 2002 | measure the slow-down first; perhaps a rented server by the hour |
 | A2 | Knowing when to move on when food around runs out | After "moving is one choice", hunger rose (80 → 115); real apes travel to known food | research foraging decisions first |
 | A3 | Moving away from an approaching wildfire | Fongoli chimpanzees watch and anticipate fire (Pruetz & LaDuke 2010) | fire deaths are high |

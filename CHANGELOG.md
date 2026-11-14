@@ -4,6 +4,9 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **The prey map (experiment, off by default)** (research log entry 66): the land carries antelope and buffalo at real savanna
+  weights, shown as one herd per square around hominins and hunters; “Herds on the prey map” in New world, or `--prey-map`. It showed
+  that a fed hunter here hunts again at once (38–95 kg a day against about 4), so it stays off until hunters’ meals are real.
 - **The built-in fire-watching rule is off by default** (the owner's decision; research log entries 59, 61): fire skill grows only
   from each hominin's own practice. `--fire-watching` restores the rule (identical worlds).
 - **The learning changes measured together on the same worlds** (research log entry 60): hunger 39% → 23% of deaths, about half
