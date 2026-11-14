@@ -2295,6 +2295,26 @@ prey beside them, which the owner chose to leave to pain). Fire-making by rubbin
 **Strength.** Moderate (24 worlds; one seed set). **Next:** rot sickness by amount eaten; then look at why hunters kill so many
 hominins (real primates lose a few percent a year to predators).
 
+### 76. Sickness from rotting meat follows the amount eaten (bug B27) — Nov 2026
+
+**Version.** 0.7.0+ · this commit. Entry 75's trace found rotting meat the largest cause of hominin deaths by wounds with the prey map on.
+The cause was a bug from entry 74: the 0.35 chance of falling sick was rolled at every 15-minute bite, and since meat is eaten in kg a
+bite is a quarter kilo, so the same meat gave many more chances to fall sick. Now the chance follows the kg eaten: 1 − 0.65^(kg ÷ 7),
+0.35 for every 7 kg — the old bare-handed bite of an antelope, so the risk per kg is what it was. `--rot-per-bite` restores the bug
+(checked: identical worlds).
+
+**Data.** [Map on, worlds 1–4, 30 days, with and without; the prediction](../data/findings/76-rot-by-kg/).
+
+| Map on, per world (per bite → by kg) | 1 | 2 | 3 | 4 |
+|---|---|---|---|---|
+| Hominins dead of wounds | 9 → 5 | 4 → 3 | 8 → 4 | 7 → 5 |
+| Hominins alive at day 30 | 18 → 19 | 16 → 29 | 10 → 16 | 10 → 1 |
+
+**Result.** (1) Deaths by wounds fall in at least 3 of 4 — **held** (4 of 4). (2) More alive in at least 2 of 4 — **held** (3 of 4).
+
+**Strength.** Weak for survival (4 worlds); moderate for wounds (4 of 4). **Lesson:** when a unit changes (entry 74), every rule that
+counted the old unit must change with it.
+
 ---
 
 ## Open questions (next tests)

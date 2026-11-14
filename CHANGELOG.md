@@ -4,6 +4,11 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Fire-making is off by default** (the owner, after Fable’s review; research log entry 77): nobody made fire 2.5 million years ago, and
+  the way it worked was a hidden skill. Wildfire is unchanged. `--fire-making` keeps the experiment.
+- **Fixed: sickness from rotting meat** now follows how much is eaten, not how many bites (entry 76).
+- **Discoveries as rates**: `tools/analysis/rates.js` gives each first discovery per 1,000 hominin-days, with an upper bound when it
+  never happened.
 - **Hominins eat meat in kg** (research log entry 74): a bite is a quarter of a kilo bare-handed, three quarters with a flake, and a kilo
   gives its real energy. Before, a bite of buffalo counted as about 31 kg. `--meat-units` restores the old rule.
 - **Prey map: forest antelope and herds with young** (research log entries 72–73): dense forest now carries some prey; antelope herds

@@ -11,7 +11,7 @@ test on the same worlds; never tune toward survival.
 
 | # | What | Why it matters | Status |
 |---|---|---|---|
-| B27 | Rot sickness is rolled at every 15-minute bite (0.35), not by the amount eaten; since meat is in kg (entry 74) a carcass takes many more bites, so the same meat gives many more chances to fall sick | entry 75 trace: rotten meat the largest cause of death by wounds (map on) | fix next: the chance by kg eaten, keeping the old risk for the old bite |
+| B27 | **fixed 14 Nov (entry 76)** — rot sickness by the kg eaten, not every bite (`--rot-per-bite` restores) | deaths by wounds fell in 4 of 4 worlds | done |
 | B1 | **built 12 Nov** (`--old-mating`) — After **any** mating the female enters the 4-year nursing wait, even if she did not conceive (`src/sim.js`, mating: `fem.cd = S.cd`) | Harmless while every mating led to pregnancy; with the female cycle, most matings miss the fertile days and lock her out for 4 years with no baby — births fell to a third | to fix: the wait starts only with a pregnancy |
 | B2 | **built 12 Nov as B7** — After mating, a male cannot mate again for 0.1 year (about 36 days) | No source; real chimpanzee males mate several times a day | verify online, then fix |
 | B3 | **done** (merged into `percept` 12 Nov; `--people-cap` restores) — A fixed population cap blocks mating (`popK + kids < S.cap`) | Not biology: real populations are limited by food, disease and fertility | remove (audit, 11 Nov) |
@@ -56,6 +56,8 @@ test on the same worlds; never tune toward survival.
 
 | # | What | Evidence | Note |
 |---|---|---|---|
+| A40 | Offered, not chosen yet (the owner, 14 Nov): test the length of the year once (3 against 12 days a year) for skill learning; more worlds for exposure; several bands with young adults moving between them (needs design) | Fable's review of fire and scale: the squeezed year gives each life about 122 times less practice and watching, so entries on learning (54–58, 62) carry a clock caveat | the owner decides when |
+| A41 | Fire-making made physically real (wood, notch, heat, ember, tinder, blowing; no skill counter) | Fable: five or more new mechanisms; the faithful result would be "never happens" | low priority |
 | R1 | **done 14 Nov (entry 75)** — checkpoint big run, 24 × 100 days, map on and off | hominins alive in 16–17 worlds, median 2; hunters the main killer (31–39%); wounds 24% with the map on | next: B27, then predation rates |
 | A38 | **built 14 Nov (entry 71)** — hunters remember where they ate meat (`--hunters-forget-kills`) | leopards ate more in 4 of 4 worlds, hyenas in 3; still under need | next: A36 (herds with young) |
 | A39 | Big carcasses rot more slowly than small ones (today a buffalo rots as fast as a hare; the rate itself matches: over 90% in about 20 days in summer, roughly doubling every 10 °C) | small pig carcasses decompose 2.82 times faster than large ones (South African pig study); a forensic soil study: over 90% mass lost in 20 days | find a size scaling from a source; one change |
