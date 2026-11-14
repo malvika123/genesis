@@ -1981,6 +1981,11 @@ hungry; in Genesis a kill gives energy instantly, capped at a full store, and no
 add (backlog A30), before any result of the prey map is read as being about hominins. The fall in hominins alive is not interpreted
 yet: it comes with hunters killing ten to twenty times too much, and with hominins beside herds big enough to fight back.
 
+**Correction (14 Nov 2026, Fable's review; see entry 69).** The kills with the prey map on were mismeasured. Hominins' failed bare-handed
+strikes wore down adult buffalo and antelope, which then died as "killed by a predator", and the ledger counted them as hunters' kills;
+it also compared weight killed with weight needed, not weight eaten. The "prey killed per hunter per day" figures with the map on, and
+"carcasses in reach", are therefore not about hunters. Entry 69 re-measures them.
+
 **Strength.** Weak (4 worlds, 30 days; deaths in two worlds). **Lesson:** making one part real can expose a missing part elsewhere;
 the prey map stays off until hunters' meals are real.
 
@@ -2018,6 +2023,11 @@ not a reason to undo the stomach (the prey map is the fix for scarcity). With th
 fixed part of the attack pull (weight 7, unrelated to hunger) is untouched — the next step. How long a hunter can go without food is
 not sourced (Genesis: about 25 days from full; lions perhaps one to two weeks, weak sources).
 
+**Correction (14 Nov 2026, Fable's review; see entry 69).** The kills with the prey map on were mismeasured. Hominins' failed bare-handed
+strikes wore down adult buffalo and antelope, which then died as "killed by a predator", and the ledger counted them as hunters' kills;
+it also compared weight killed with weight needed, not weight eaten. The "prey killed per hunter per day" figures with the map on, and
+"carcasses in reach", are therefore not about hunters. Entry 69 re-measures them.
+
 **Strength.** Weak (4 worlds × 2 arms, 30 days; deaths by world tally). **Lesson:** the measured cause (full hunters attack) and the
 planned fix (a stomach) were not the same thing; diagnose before building.
 
@@ -2049,6 +2059,11 @@ hunters, map off (no direction predicted): fewer in 3 of 4 worlds, none more.
 four to ten times its need — what is left is not hunger but the ease of a kill: an attack beside a herd succeeds 37–49% of the time,
 every hour, where real leopards succeed in 14–38% of hunts that each take far longer (a stalk). That is the next part to check
 (backlog A34), with the prey map still off by default. World 4's collapse with the map on was a wildfire.
+
+**Correction (14 Nov 2026, Fable's review; see entry 69).** The kills with the prey map on were mismeasured. Hominins' failed bare-handed
+strikes wore down adult buffalo and antelope, which then died as "killed by a predator", and the ledger counted them as hunters' kills;
+it also compared weight killed with weight needed, not weight eaten. The "prey killed per hunter per day" figures with the map on, and
+"carcasses in reach", are therefore not about hunters. Entry 69 re-measures them.
 
 **Strength.** Weak (4 worlds × 2 arms, 30 days). **Lesson:** each mechanism removed one cause of the excess, and showed the next.
 
