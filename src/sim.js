@@ -1260,8 +1260,13 @@ function sim() {
                 for (const o of l)
                   if (o !== a && o.k === a.k && !o.dead && !o.asleep && o.age >= o.S.mat) help++;
             }
-        // prey too big for this hunter: it can neither bring it down nor wound it (entry 63: bites wore down adult buffalo)
-        const tooBig = a.sp === 2 && t.sp === 1 && SOC.hunterPreyMax && a.S.preyMax && T.mass && preyKg(t) > a.S.preyMax * SOC.preyMaxX;
+        // Prey bigger than a hunter takes by preference (the owner, 14 Nov 2026: they may try, from hunger or boldness, and pay for it).
+        // 'soft' (default): it can try; above its preferred size success falls steeply (× (preferred ÷ prey)^SOC.bigK), a pack
+        // widening what it can take; prey heavier than the hunter fights back. 'hard' (entry 64): never succeeds nor wounds.
+        // --hunters-any-prey: neither (the old rule). Its brain learns from the pain; boldness is left to selection.
+        const bigRule = a.sp === 2 && t.sp === 1 && a.S.preyMax && T.mass ? SOC.preyRule : 'none',
+          over = bigRule !== 'none' ? preyKg(t) / (a.S.preyMax * SOC.preyMaxX * (bigRule === 'soft' ? 1 + 0.6 * help : 1)) : 0,
+          tooBig = bigRule === 'hard' && over > 1;
         const odds = clamp((bodySize(a) * (1 + 0.6 * help)) / (t.sp === 0 ? bodySize(t) : T.size || 1), 0.15, 1.3),
           pc =
             a.sp === 0
@@ -1270,11 +1275,12 @@ function sim() {
                 // a person alone is slow and weak next to a deer or a bison; a rabbit can be grabbed
                 (t.sp === 3 ? 1 : (t.asleep ? 0.8 : 0.35) * Math.min(1, 0.6 / (T.size || 1)))
               : tooBig
-                ? 0 // too big for this hunter (realism audit; entry 63: hunters were killing adult buffalo)
-                : (t.asleep || t.age < T.mat * T.wn ? 0.9 : 0.6) * Math.min(1, odds) * (t.up ? 0.35 : 1);
+                ? 0 // too big for this hunter (the 'hard' rule of entry 64)
+                : (t.asleep || t.age < T.mat * T.wn ? 0.9 : 0.6) * Math.min(1, odds) * (t.up ? 0.35 : 1) * (bigRule === 'soft' && over > 1 ? over ** -SOC.bigK : 1);
         if (rnd() < pc) {
           t.dead = true;
           t.cause = a.sp === 0 ? 'caught by a person' : 'killed by a predator';
+          t.killedBy = a.S.n; // for the record (the ledger), changes nothing
           if (a.sp === 2) t.eaten = 0.6;
           if (a.sp === 2) kills[t.sp]++;
           else if (t.sp === 1) {
@@ -1316,6 +1322,18 @@ function sim() {
           if (a.sp === 0 && fished === 1) log('A person caught a fish for the first time.');
           if (t.sp === 2) log('A starving predator ate another predator.');
         } else if (t.sp !== 3 && !tooBig) {
+          // big prey fights back: a buffalo's horns can badly hurt, even kill, a hunter that takes it on alone (registered:
+          // the same 0.3 chance as for hominins, harm by how much heavier the prey is)
+          if (bigRule === 'soft' && a.S.mass && preyKg(t) > a.S.mass && rnd() < 0.3) {
+            a.hp -= 10 * Math.min(3, preyKg(t) / a.S.mass);
+            a.painA = Math.min(1, a.painA + 0.6);
+            ouch(a, 0.6, 'prey');
+            a.ev[0] = 'it was hurt by a ' + T.n.toLowerCase() + ' it attacked on day ' + dn;
+            if (a.hp <= 0) {
+              a.dead = true;
+              a.cause = 'killed by its prey';
+            }
+          }
           // big prey fights back: a bison's horns or a deer's hooves can badly hurt a hunter on foot
           if (a.sp === 0 && (T.size || 1) > 0.8 && rnd() < 0.3) {
             a.hp -= 10 * (T.size || 1);
@@ -1323,7 +1341,9 @@ function sim() {
             ouch(a, 0.6, 'prey');
             a.ev[0] = 'it was hurt by a ' + T.n.toLowerCase() + ' it attacked on day ' + dn;
           }
-          t.hp -= a.sp === 0 ? 12 : 25;
+          // a bite harms big prey less: by the weight of the hunter (or its pack) against the prey's, full harm when the prey is no
+          // heavier (soft rule; an assumption) — before, failed bites wore a 600 kg buffalo down like a hare (entry 65)
+          t.hp -= (a.sp === 0 ? 12 : 25) * (bigRule === 'soft' && a.S.mass ? Math.min(1, (a.S.mass * (1 + 0.6 * help)) / preyKg(t)) : 1);
           t.painA = Math.min(1, t.painA + 0.8);
           ouch(t, 0.8, 'bitten');
           t.rage = 1; // attacked, it is angry as well as afraid
@@ -1332,6 +1352,7 @@ function sim() {
           if (t.hp <= 0) {
             t.dead = true;
             t.cause = 'killed by a predator';
+            t.killedBy = a.S.n + ' (wounds)';
             kills[t.sp]++;
           }
         }
@@ -1566,7 +1587,7 @@ const hunterSeen = (x) => {
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { hunterPreyMax: true, preyMaxX: 1, smallPrey: true, maxPreyKg: 15, marrow: true, marrowShare: 0.15, marrowVal: 110, digStick: 0.55, digFlake: 0.4, digStone: 0.3, digBare: 0.15, sedges: true, sedgeCap: 0.5, africanNuts: true, rootVal: 80, voiceGenes: true, fireMaking: true, founderElders: 0.12, brainCost: true, brainF: 0.1, carry: true, carryAge: 2, walkE: true, walkJ: 4, pal: 1.7, growBodies: true, massF: 30, massM: 42, swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { preyRule: 'soft', bigK: 2, preyMaxX: 1, smallPrey: true, maxPreyKg: 15, marrow: true, marrowShare: 0.15, marrowVal: 110, digStick: 0.55, digFlake: 0.4, digStone: 0.3, digBare: 0.15, sedges: true, sedgeCap: 0.5, africanNuts: true, rootVal: 80, voiceGenes: true, fireMaking: true, founderElders: 0.12, brainCost: true, brainF: 0.1, carry: true, carryAge: 2, walkE: true, walkJ: 4, pal: 1.7, growBodies: true, massF: 30, massM: 42, swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {

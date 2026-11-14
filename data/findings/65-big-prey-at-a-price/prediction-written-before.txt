@@ -1,0 +1,5 @@
+Written 14 Nov 2026 before running: hunters may try prey bigger than they prefer (success x (preferred/prey)^2) and big prey
+fights back. Same 4 worlds x 30 days, compared with the hard limit (entry 64):
+1. A few adult buffalo or adult antelope killed by leopards again, but far fewer than the 7-8 buffalo a world before entry 64.
+2. Some hunters hurt or killed by their prey ("killed by its prey" appears in some worlds).
+3. Hunter intake a little above the hard-limit run (0.3-2.5 kg a day), still below need in most worlds.

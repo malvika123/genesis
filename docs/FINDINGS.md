@@ -1912,6 +1912,38 @@ reported number, not a target.
 
 ---
 
+### 65. Hunters may try prey too big for them — and big prey fights back — Nov 2026
+
+**Version.** Unreleased · this commit. The owner (14 Nov): hunters, like hominins, may try bigger prey "because of courage or foolery",
+and natural selection should decide. The hard limit of entry 64 became a price: above its preferred size a hunter's success falls
+steeply (× (preferred ÷ prey)², a pack widening what it can take), prey heavier than the hunter fights back (0.3 chance of harm, 10 ×
+the weight ratio, up to 3; it can kill), and — added after the first run — a failed bite harms big prey only by the hunter's weight
+against the prey's. Its brain learns from the pain; boldness is left to selection. Switches: `--hard-prey-limit` (entry 64, checked:
+identical worlds), `--hunters-any-prey` (the old rule, checked: identical worlds), `--big-prey-falloff` (2; test 1 and 3).
+
+**Data.** [The ledger on 4 worlds, the world's tallies, the buffalo killed and by whom, the prediction](../data/findings/65-big-prey-at-a-price/).
+
+| Per world (30 days) | 1 | 2 | 3 | 4 |
+|---|---|---|---|---|
+| Prey killed, kg per hunter per day (hard limit → may try; need 3.5–4.9) | 1.5 → 8.9 | 1.2 → 3.0 | 0.3 → 3.1 | 2.5 → 4.0 |
+| Buffalo killed (world's tally, first run) | 2 → 7 | 1 → 2 | | |
+
+**Result.** (1) A few big kills, far fewer than before entry 64 — **not held**: world 1 had 7 buffalo killed, 5 of them adults. The
+cause was found: every failed bite took 25 health whether the prey was a hare or a 600 kg buffalo, so failed attacks wore buffalo
+down. With bite harm scaled by weight, world 1 still lost 3 adult buffalo — to **hyena packs (2) and sabre-tooths (3 kills in all,
+1 of them an adult)**; leopards none. (2) Hunters hurt or killed by their prey — **not seen** as deaths in worlds 1–2 (injuries were
+not counted). (3) Intake a little above the hard limit — **held in direction, larger than expected** (3.0–8.9 kg a day).
+
+**Interpretation.** Leopards now leave buffalo alone, as real leopards do. Hyena packs take one occasionally — spotted hyena clans do,
+rarely (Hayward 2006: buffalo avoided) — but how often depends on the pack rule (each helper adds 0.6 of the hunter's strength, an older
+assumption). The sabre-tooth's kills rest on its assumed preferred size (350 kg, unsourced), the number to test at both ends rather
+than lower by hand. Hunters are now near or above their needs in 3 of 4 worlds, before the prey map.
+
+**Strength.** Weak (4 worlds, 30 days; buffalo by killer in one world). **Lesson:** where failure also does harm, the harm must
+follow the same physics as success.
+
+---
+
 ## Open questions (next tests)
 
 - Ablate the bundle in entry 7: which of band size, parental feeding, instincts, one-shot memory and
