@@ -4,6 +4,9 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Fixed: hominins could wear down a buffalo bare-handed** (Fable’s review; research log entry 69): a failed strike now harms prey by
+  the hominin’s weight against the prey’s. The research tools now record who killed what and what hunters ate; entries 66–68 corrected.
+  `--old-hominin-strikes` restores the old rule.
 - **A hunter’s pull to attack grows with hunger** (research log entry 68): a quarter of it is always there (fed cats still attack),
   the rest comes with hunger, so full hunters no longer kill. `--fixed-hunt-pull` restores the old rule.
 - **Hunters have a stomach** (research log entry 67): a kill fills it with as much as fits (a quarter of body weight), the rest stays

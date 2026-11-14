@@ -2067,6 +2067,43 @@ it also compared weight killed with weight needed, not weight eaten. The "prey k
 
 **Strength.** Weak (4 worlds × 2 arms, 30 days). **Lesson:** each mechanism removed one cause of the excess, and showed the next.
 
+### 69. Hunters re-measured, and hominins can no longer wear a buffalo down — Nov 2026
+
+**Version.** Unreleased · this commit. Fable's review of entries 66–68 (`docs/reviews/2026-11-14-fable-hunters-review.md`) found two
+errors: hominins' failed bare-handed strikes took 12 health from any prey, so with the prey map on they wore adult buffalo and antelope
+down to death, recorded as "killed by a predator"; and the ledger counted those as hunters' kills and compared weight killed with
+weight needed. Step 0: the world now records who killed what (kg) and what hunters ate (kg); worlds unchanged. Part A: entries 66–68
+re-measured with each entry's rules restored by switches (entry 68's tallies reproduced exactly). Part B: a hominin's failed strike
+harms prey by its weight against the prey's, as hunters' bites do (`--old-hominin-strikes` restores; checked: identical worlds).
+
+**Data.** [All arms, worlds 1–4, 30 days, with the prediction](../data/findings/69-hunters-remeasured/).
+
+| Map on, per world | 1 | 2 | 3 | 4 |
+|---|---|---|---|---|
+| Share of killed weight worn down by hominins (as entry 66 / 67 / 68) | 45 / 66 / 68% | 32 / 46 / 54% | 2 / 2 / 13% | 20 / 31 / 30% |
+| Hunters' own kills, kg per hunter-day (old ledger → new), as entry 68 | 45 → 14 | 44 → 21 | 15 → 14 | 28 → 20 |
+| Eaten, kg per hunter-day, as entry 68: leopard (need 4.2) / hyena (3.9) / sabre-tooth (8.4) | 2.7 / 3.4 / 11.2 | 1.7 / 2.6 / 8.8 | 6.4 / 2.2 / 7.5 | 0.7 / 3.6 / 12.2 |
+| With the strike fix: share by hominins | 2% | 1% | 1% | 1% |
+| With the strike fix: hunters' own kills, kg per hunter-day | 34 | 23 | 13 | 43 |
+| With the strike fix: hominins dead of wounds (entry 68 → fix) | 8 → 7 | 4 → 4 | 2 → 0 | 2 → 6 |
+| With the strike fix: hominins alive at day 30 (entry 68 → fix) | 24 → 26 | 24 → 16 | 12 → 12 | 2 → 9 |
+
+With the map off, nothing changed much: hominins wore down almost nothing (0–2%), and the strike fix left worlds 3–4 identical.
+
+**Result.** Part A: hominins' share over 25% in at least 3 of 4 worlds — **held** under entries 67 and 68, not under 66 (2 of 4); hunters'
+own kills under half the old figure in 3 of 4 — **not held** (2 of 4). **Hunters eat less than their need**, not more: leopards
+0.7–6.4 kg a day (need 4.2), hyenas 2.2–3.6 (3.9); only sabre-tooths eat about their need. Part B: (1) prey killed by hominins falls to
+about 0 — **held** (1–2%). (2) Deaths by wounds fall — **not held** (big herds still fight back when struck). (3) Little change with
+the map off — **held**.
+
+**Interpretation.** Entry 66–68's "hunters kill 4–10 times their need" was mostly hominins' doing and the wrong measure. The true
+picture: hunters kill 13–43 kg a day each but eat a stomach at a time and lose the rest (a fed hunter sleeps and birds strip its kill),
+so leopards and hyenas go short. Leopards also pay the big-prey price on every kill, because every herd animal is an adult 50 kg
+antelope above their preferred 40 kg (herds have no young yet). Next, per Fable: a hunter keeps its kill (step 3).
+
+**Strength.** Moderate for the measuring correction (exact reproduction, 4 worlds × 3 entries); weak for the rest (4 worlds, 30 days).
+**Lesson:** check what a measure counts before reading it — the label "killed by a predator" covered two killers.
+
 ---
 
 ## Open questions (next tests)
