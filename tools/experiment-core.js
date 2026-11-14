@@ -119,6 +119,7 @@
     { key: 'oldNuts', kind: 'on', def: false, flag: 'old-nuts', label: 'Nuts grow by the old oak, hazel and walnut rules (otherwise in warm open woodland)', cfg: true },
     { key: 'rootValue', kind: 'num', def: 80, flag: 'root-value', label: 'Food from a bite of roots and tubers (fruit is 70; an assumption)', min: 10, max: 150, cfg: true },
     { key: 'noVoiceGenes', kind: 'on', def: false, flag: 'no-voice-genes', label: 'Vocal learning, pointing and the joy of shared attention fixed at zero (a test: otherwise they start ape-low and can evolve)', cfg: true },
+    { key: 'oldFireLinks', kind: 'on', def: false, flag: 'old-fire-links', label: 'The old false links: striking pyrite or banging sticks trains a hidden fire skill and is rewarded (entry 77; otherwise sparks fly and a blow is a blow)', cfg: true },
     { key: 'fireMaking', kind: 'on', def: false, flag: 'fire-making', label: 'Hominins can make fire by rubbing wood or striking pyrite (an experiment against the record; off by default since entry 77)', cfg: true },
     { key: 'noFireMaking', kind: 'on', def: false, flag: 'no-fire-making', label: 'Nobody can make fire, only use wildfire (the record: no fire-making until about 400,000 years ago)', cfg: true },
     { key: 'founderElders', kind: 'num', def: 0.12, flag: 'founder-elders', label: 'Share of the founding band who are elders (foragers about 0.12; old adults were rarer among early hominins)', min: 0, max: 0.3, cfg: true },

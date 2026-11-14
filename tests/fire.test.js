@@ -6,10 +6,10 @@ const assert = require('node:assert/strict');
 const { createEngine } = require('../tools/engine');
 
 // a world, and a patch of open grassland in it that we can make dry or wet
-function grassland(seed = 4) {
+function grassland(seed = 4, cfg = {}) {
   const E = createEngine();
   E.setSeed(seed);
-  E.reset({ people: 2, herbivores: 0, predators: 0, fish: 0 });
+  E.reset({ people: 2, herbivores: 0, predators: 0, fish: 0, ...cfg });
   E.sim();
   const s = E.state(),
     F = E.fire(),
@@ -111,8 +111,15 @@ test('a person can pick up a burning stick, carry it, and start a fire by puttin
   assert.ok(F.FIRE[d] > 0, 'fire took hold where it was put down');
 });
 
-test('struck against a stone, pyrite throws sparks that can light dry tinder; plain stones cannot', () => {
-  const { E, s, F, c, set } = grassland();
+// Since entry 78 (the owner, after Fable's review) nothing in the world holds a spark: real spark tinder is charred material or
+// tinder fungus, and plain grass rarely catches one. Sparks can light grass only in the old experiment (--fire-making). The test
+// asks whether a hominin MADE fire (firsts.madefire), not whether some fire appeared: a passing wildfire could light the square.
+for (const [label, cfg, expect] of [
+  ['as nature allows: pyrite sparks do not light plain grass', {}, false],
+  ['the old experiment (--fire-making): pyrite sparks can light dry grass; plain stones cannot', { fireMaking: true }, true],
+])
+test('struck against a stone, ' + label, () => {
+  const { E, s, F, c, set } = grassland(4, cfg);
   set(0.15);
   const it = E.items(),
     p = s.ag.find((a) => a.sp === 0);
@@ -132,10 +139,10 @@ test('struck against a stone, pyrite throws sparks that can light dry tinder; pl
     for (let k = 0; k < (hand === 5 ? 1500 : 200) && !lit; k++) {
       p.hand = hand;
       E.sim();
-      lit = F.FIRE[c] > 0;
+      lit = !!s.firsts.madefire;
     }
     return lit;
   };
-  assert.equal(try_(1), false, 'stone on stone: no fire');
-  assert.equal(try_(5), true, 'pyrite on stone, into dry grass: fire');
+  assert.equal(try_(1), false, 'stone on stone: no fire made');
+  assert.equal(try_(5), expect, 'pyrite on stone, into dry grass: fire made = ' + expect);
 });

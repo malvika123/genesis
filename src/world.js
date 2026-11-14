@@ -104,6 +104,7 @@ function buildWorld(cfg) {
   SOC.africanNuts = cfg.oldNuts !== true; // nuts of warm open woodland among early hominins (off: oak, hazel, walnut rules)
   SOC.rootVal = cfg.rootValue ?? 80; // food from a bite of roots (fruit 70; an assumption: raw tubers are poor, sedge corms rich)
   SOC.voiceGenes = cfg.noVoiceGenes !== true; // vocal learning, pointing, shared-attention joy can evolve from ape-low (off: fixed at 0)
+  SOC.fireNatural = cfg.oldFireLinks !== true; // no hidden fire skill or reward from striking; a stick blow is not rubbing (off: the old links, entry 77)
   SOC.fireMaking = cfg.fireMaking === true && cfg.noFireMaking !== true; // off by default (the owner, 14 Nov 2026, after Fable's review: no fire-making before about 400,000 years ago, and the mechanism was a hidden skill counter); --fire-making: the old experiment
   SOC.founderElders = cfg.founderElders ?? 0.12; // share of founders who are elders (foragers about 0.12; fewer in early hominins, no number)
   SOC.growBodies = cfg.fixedBodies !== true; // hominin bodies grow with age and differ by sex (off: one body for all, the old rule)
