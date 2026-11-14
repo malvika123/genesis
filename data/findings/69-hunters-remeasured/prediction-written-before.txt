@@ -1,0 +1,10 @@
+Entry 69 (Fable's review, 14 Nov 2026). Written before any run with the new ledger.
+Part A - entries 66-68 re-measured with the new ledger (kills by who made them; meat eaten against need), map on, worlds 1-4,
+30 days, each entry's rules restored by switches (identical worlds checked). Fable's prediction: hunters eat about their need
+(5.2-6.5 kg a day) and kill about once in 4-7 days; 13-70% of the "hunter-killed" weight was worn down by hominins.
+  Mine: the hominin share of all killed weight is over 25% in at least 3 of 4 worlds under each entry; hunters' own kills are
+  under half of the old ledger's figure in at least 3 of 4.
+Part B - step 1: a hominin's failed strike harms prey by weight (--old-hominin-strikes restores). Map on and off, worlds 1-4.
+  1. Buffalo and adult antelope killed by hominins fall to about 0 (map on).
+  2. Hominin deaths by "its wounds" fall (they attack big herds less successfully... the fight-back stays, so not to 0).
+  3. Map off: little change (few big animals near hominins).
