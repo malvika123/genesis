@@ -2352,6 +2352,37 @@ are births and the squeezed year (the owner's backlog A40).
 **Strength.** Moderate (24 worlds × 2 arms). **Lesson:** a cause's share of deaths says little; its rate per individual-year can be
 compared with the real record.
 
+### 78. Fire as nature allows — Nov 2026
+
+**Version.** 0.7.0+ · this commit. The owner rejected a blanket "fire-making off" as unnatural ("imagine yesterday I was not able to
+make a bubble out of a setup and today I am, when everything is the same ... make it natural"). Fable reviewed a design
+(`docs/design/fire-making-natural.md`; `docs/reviews/2026-11-14-fable-natural-fire.md`): friction fire cannot be modelled faithfully
+at a 15-minute step (an ember needs minutes of unbroken drilling), so the false links were cut instead (the owner's choices A1, B1):
+a stick blow is no longer "rubbing"; pyrite sparks find no tinder that holds them (none exists in this world yet); no hidden fire
+practice or built-in reward from striking (`--old-fire-links`); dead sticks dry and wet with the air's humidity (`--fixed-stick-
+dryness`); a dropped burning stick lights the ground with a chance equal to its dryness (Ellis 2015: moisture dominates;
+`--brand-always-lights`). Each switch restores identical worlds. Making fire is now not modelled — said in the About tab — and
+backlog A41 (the full natural chain) is marked by the owner as a broken behaviour to fix later.
+
+**Data.** [Both tables and the prediction](../data/findings/78-fire-as-nature-allows/).
+
+| 24 worlds × 100 days (entry 77 → 78) | Map off | Map on |
+|---|---|---|
+| Worlds with hominins alive | 17 → 15 | 17 → 19 |
+| Hominins alive: middle world / all | 6 → 6 / 256 → 224 | 9 → 8 / 254 → 237 |
+| Deaths by fire | 9 → 7% | 8 → 5% |
+| Predation per hominin-year | 3.6 → 3.8% | 2.6 → 2.7% |
+| Worlds where a burning stick was taken / dropped and lit / cooked food eaten | 14/6/18 → 13/6/19 | 12/6/13 → 12/3/12 |
+
+**Result.** (1) Nobody makes fire; dropped brands light less often in at least one arm — **held** (map on, 6 → 3 worlds). (2) Fewer
+deaths by fire — **held** in both arms. (3) Not measured. (4) Predation near 2–4% a year — **held**.
+
+**Interpretation.** Small changes, as expected: the false links mattered little once fire-making was off. Wildfire is still found,
+carried and eaten from in about half the worlds or more, which fits apes that use burned landscapes (Fongoli chimpanzees). Survival
+differences are within world-to-world noise.
+
+**Strength.** Moderate (24 worlds × 2 arms) for "little change".
+
 ---
 
 ## Open questions (next tests)

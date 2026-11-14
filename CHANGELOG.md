@@ -4,6 +4,9 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Fire as nature allows** (research log entries 77–78): banging sticks is not rubbing, sparks find nothing to catch in, fallen
+  wood dries and dampens with the air, and a dropped burning stick lights only dry ground. Making fire is not modelled yet (said in
+  About). Predation measured at about 3% of hominins a year, the real primate rate.
 - **Fire-making is off by default** (the owner, after Fable’s review; research log entry 77): nobody made fire 2.5 million years ago, and
   the way it worked was a hidden skill. Wildfire is unchanged. `--fire-making` keeps the experiment.
 - **Fixed: sickness from rotting meat** now follows how much is eaten, not how many bites (entry 76).
