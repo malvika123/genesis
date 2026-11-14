@@ -254,11 +254,18 @@
   function runWorld(E, seed, S, onDay) {
     E.setSeed(seed);
     E.reset(S.cfg);
-    const day = {};
+    const day = {},
+      hdAt = {}; // hominin-days lived before each first happened (exposure, for rates: Fable's review, 14 Nov 2026)
+    let hd = 0;
     for (let t = 0; t < S.days * E.DAY; t++) {
       E.sim();
       const st = E.state();
-      for (const k of MILESTONES) if (st.firsts[k] && day[k] === undefined) day[k] = Math.floor(t / E.DAY) + 1;
+      if (t % 12 === 0) hd += st.ag.reduce((n, a) => n + (a.sp === 0), 0) / 8; // sampled every 3 hours
+      for (const k of MILESTONES)
+        if (st.firsts[k] && day[k] === undefined) {
+          day[k] = Math.floor(t / E.DAY) + 1;
+          hdAt[k] = Math.round(hd);
+        }
       if (st.over) break;
       if (onDay && (t + 1) % E.DAY === 0 && onDay((t + 1) / E.DAY)) break;
     }
@@ -270,6 +277,8 @@
     const mean = (f, d) => (ppl.length ? +(ppl.reduce((t, p) => t + (f(p) ?? d), 0) / ppl.length).toFixed(2) : '');
     return {
       seed,
+      hominin_days: Math.round(hd),
+      hdAt,
       days_run: Math.floor(st.tick / E.DAY),
       people_alive: ppl.length,
       generations: st.maxGen,
@@ -312,13 +321,14 @@
 
   // meta: { version, commit, runtime, seeds }
   function csv(rows, S, meta) {
-    const cols = [...HEAD, ...CAUSES.map((c) => 'died_' + c.replace(/ /g, '_')), ...MILESTONES.map((m) => 'day_' + m)];
+    const cols = [...HEAD, ...CAUSES.map((c) => 'died_' + c.replace(/ /g, '_')), ...MILESTONES.map((m) => 'day_' + m), 'hominin_days', ...MILESTONES.map((m) => 'hd_' + m)];
     const lines = [
       '# Genesis experiment',
       '# genesis ' + meta.version + ' commit ' + meta.commit + ', ' + meta.runtime,
       '# settings ' + JSON.stringify({ days: S.days, brain: S.brain, ...S.cfg }),
       '# seeds ' + meta.seeds,
       '# day_X = the day (1 = first) something first happened in that world; empty = never',
+      '# hominin_days = hominin-days lived in the world; hd_X = hominin-days lived before X first happened (empty = never)',
       cols.join(','),
     ];
     for (const r of rows)
@@ -327,6 +337,8 @@
           ...HEAD.map((h) => r[h]),
           ...CAUSES.map((c) => r.died[c] || 0),
           ...MILESTONES.map((m) => (r.day[m] === undefined ? '' : r.day[m])),
+          r.hominin_days ?? '',
+          ...MILESTONES.map((m) => (r.hdAt && r.hdAt[m] !== undefined ? r.hdAt[m] : '')),
         ].join(',')
       );
     return lines.join('\n') + '\n';
