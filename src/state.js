@@ -3,6 +3,8 @@
 
 let fished = 0,
   deaths = {}, // tally of deaths by species and cause, for experiments
+  killKg = {}, // kg of animals killed, by 'killer > prey' (for the ledger; changes nothing)
+  eatKg = {}, // kg of meat eaten into hunters' stomachs, by kind (for the ledger; changes nothing)
   pit,
   cave, // cave mouths in stony hill country: dry, out of the wind, cool in summer and mild in winter
   poison,

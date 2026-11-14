@@ -1295,7 +1295,7 @@ function sim() {
         if (rnd() < pc) {
           t.dead = true;
           t.cause = a.sp === 0 ? 'caught by a person' : 'killed by a predator';
-          t.killedBy = a.S.n; // for the record (the ledger), changes nothing
+          t.killedBy = a.S.n + (a.sp === 0 ? ' (caught)' : ''); // for the record (the ledger), changes nothing
           if (a.sp === 2) t.eaten = gutOn(a) ? 0 : 0.6; // with a stomach, what it eats is counted below
           if (a.sp === 2) kills[t.sp]++;
           else if (t.sp === 1) {
@@ -1409,6 +1409,11 @@ function sim() {
               ? 'old age'
               : null;
     if (!c) return true;
+    // the record of who killed what, in kg (the ledger; changes nothing)
+    if (a.killedBy && (c === 'killed by a predator' || c === 'caught by a person')) {
+      const kk = a.killedBy + ' > ' + a.S.n;
+      killKg[kk] = (killKg[kk] || 0) + (a.S.mass ? preyKg(a) : a.sp === 0 ? bodyKg(a) : 0);
+    }
     if (a.herd) {
       // one animal of a herd died: its carcass is left, and the herd goes on (preymap.js)
       const dk = a.S.n + ': ' + c;
@@ -1573,6 +1578,7 @@ const gutOn = (a) => SOC.gut && a.sp === 2 && !!a.S.mass,
 function gulp(a, kg) {
   const k = Math.max(0, Math.min(kg, gutCap(a) - (a.gut || 0)));
   a.gut = (a.gut || 0) + k;
+  eatKg[a.S.n] = (eatKg[a.S.n] || 0) + k; // the record (the ledger; changes nothing)
   return k;
 }
 const preyKg = (t) => t.S.mass * (t.age < t.S.mat ? clamp(0.1 + (0.9 * t.age) / t.S.mat, 0.1, 1) : 1);

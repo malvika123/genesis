@@ -177,6 +177,8 @@ function buildWorld(cfg) {
   kills = [0, 0, 0, 0];
   fished = 0;
   deaths = {};
+  killKg = {};
+  eatKg = {};
   firsts = {};
   maxGen = 0;
   nLessons = 0;

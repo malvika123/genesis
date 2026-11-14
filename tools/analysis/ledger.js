@@ -46,6 +46,7 @@ for (const seed of seeds) {
   // the world removes the dead at the end of each step, so prey are followed from one step to the next: one that is gone (or
   // dead) with the cause 'killed by a predator' was killed by a hunter (the first version missed them all: entry 63, corrected)
   let prevPrey = [];
+  const kindDays = {};
   const herdSeen = {},
     herdMass = {};
   if (S.cfg.preyMap) Object.assign(herdMass, { Antelope: 50, Buffalo: 600 }); // adult weights (HKINDS); a herd's shown animal is adult
@@ -67,6 +68,7 @@ for (const seed of seeds) {
       prey = live.filter((o) => o.sp === 1),
       hunters = live.filter((o) => o.sp === 2);
     huntDays += hunters.length / 8; // 8 samples a day
+    for (const h of hunters) kindDays[h.S.n] = (kindDays[h.S.n] || 0) + 1 / 8;
     for (const a of live) {
       if (a.sp === 0) {
         homSamples++;
@@ -97,6 +99,12 @@ for (const seed of seeds) {
     preyKgKilledPerHunterDay: huntDays ? killedKg / huntDays : null,
     shareHunterSamplesFarFromPrey: huntSamples ? farFromPrey / huntSamples : null,
     meanHunterDistanceToPrey: huntSamples ? distSum / huntSamples : null,
+    // step 0 of Fable's review (14 Nov): kills by who made them, and meat eaten against need, per hunter kind. The older field
+    // preyKgKilledPerHunterDay counts every death labelled 'killed by a predator', which included prey worn down by hominins.
+    killKgByKiller: E.state().killKg,
+    hunterKgKilledPerHunterDay: huntDays ? Object.entries(E.state().killKg).filter(([k]) => !/^Person/.test(k)).reduce((t, [, v]) => t + v, 0) / huntDays : null,
+    hunterDaysByKind: kindDays,
+    eatenKgPerHunterDayByKind: Object.fromEntries(Object.entries(kindDays).map(([k, d]) => [k, (E.state().eatKg[k] || 0) / d])),
     peopleAliveEnd: E.state().ag.filter((o) => o.sp === 0 && !o.dead).length,
     huntersAliveEnd: E.state().ag.filter((o) => o.sp === 2 && !o.dead).length,
     deaths: Object.fromEntries(Object.entries(E.state().deaths).filter(([k]) => !/^Fish/.test(k))),
