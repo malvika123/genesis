@@ -932,10 +932,20 @@ function sim() {
           kgMode = a.sp === 0 && SOC.homMeatKg && m.kgU > 0,
           // in kg (A37, entry 74): a bite is SOC.biteBareKg or SOC.biteFlakeKg of meat, whatever the animal; before, it was a share
           // of the body, so a bite of buffalo was about 31 kg and of antelope 7 kg, for the same energy. --meat-units: the old rule
+          // cutting is an act (entry 82, the owner's choice after Fable's review): holding a flake no longer cuts by itself; meat already
+          // cut off the bone (m.cut, kg, by a strike with a flake: below) is eaten fast, the rest torn off bare-handed. --flake-in-hand-cuts:
+          // the old rule (a flake in the hand while eating cuts)
+          cutAct = kgMode && SOC.cutAct,
+          cutHere = cutAct ? Math.min(m.cut || 0, m.meat * m.kgU) : 0,
           b = kgMode
-            ? Math.min(m.meat, (a.hand === 3 ? SOC.biteFlakeKg : SOC.biteBareKg) / m.kgU)
+            ? cutAct
+              ? cutHere > 0.01
+                ? Math.min(cutHere, SOC.biteFlakeKg) / m.kgU
+                : Math.min(m.meat, SOC.biteBareKg / m.kgU)
+              : Math.min(m.meat, (a.hand === 3 ? SOC.biteFlakeKg : SOC.biteBareKg) / m.kgU)
             : Math.min(m.meat, a.sp === 0 ? (a.hand === 3 ? SOC.cutFlake : SOC.cutBare) : 0.3),
           rot = rotten(m);
+        if (cutHere > 0.01) m.cut = cutHere - b * m.kgU;
         m.meat -= b;
         if (a.sp === 0 && m.kgU) eatKg.Person = (eatKg.Person || 0) + b * m.kgU; // the record (the ledger; changes nothing)
         a.e = Math.min(100, a.e + (kgMode ? b * m.kgU * homKgE(a) : b * 110 * MEAL(a)));
@@ -955,7 +965,7 @@ function sim() {
           firsts.meat = 1;
           log(a.name + ' ate meat from a dead ' + (m.sp === 1 ? 'animal' : 'creature') + '.');
         }
-        if (a.sp === 0 && a.hand === 3 && !firsts.butcher) {
+        if (a.sp === 0 && a.hand === 3 && !cutAct && !firsts.butcher) {
           firsts.butcher = 1;
           log(a.name + ' cut meat from a body with a sharp stone.');
         }
@@ -1251,6 +1261,18 @@ function sim() {
           if (!firsts.nut) {
             firsts.nut = 1;
             log(a.name + ' cracked a nut open with a stone, the first in this world.');
+          }
+        }
+      } else if (a.hand === 3 && SOC.cutAct && SOC.homMeatKg && meatAt(a.x, a.y, 0)) {
+        // a strike with a sharp flake on a carcass cuts meat off the bone (entry 82): SOC.cutKg in 15 minutes, left lying cut, ready to
+        // eat fast — by whoever eats there. Nothing tells anyone to do it, or that it pays
+        const m = meatAt(a.x, a.y, 0),
+          free = Math.max(0, m.meat * m.kgU - (m.cut || 0));
+        if (m.kgU > 0 && free > 0.01) {
+          m.cut = (m.cut || 0) + Math.min(free, SOC.cutKg);
+          if (!firsts.butcher) {
+            firsts.butcher = 1;
+            log(a.name + ' cut meat from a body with a sharp stone.');
           }
         }
       } else if (a.hand === 1 && SOC.marrow && marrowAt(a.x, a.y)) {
@@ -1677,7 +1699,7 @@ const hunterSeen = (x) => {
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { fleshOnly: true, fleshShare: 0.5, rotBySize: true, marrowKg: true, marrowFrac: 0.0025, marrowKcal: 7860, stickHumid: true, brandByDry: true, fireNatural: true, rotByKg: true, homMeatKg: true, biteBareKg: 0.25, biteFlakeKg: 0.75, meatKcal: 1140, herdYoung: true, youngShare: 0.25, forestPrey: 1000, meatMemory: true, keepKill: true, homStrikeKg: true, huntPull: true, atkFixed: 0.25, gut: true, gutShare: 0.25, digestH: 24, mealSleep: 2, preyMap: false, preyLevel: 5000, buffShare: 0.5, preyRegrow: 0.3, preyZone: 1, preyRule: 'soft', bigK: 2, preyMaxX: 1, smallPrey: true, maxPreyKg: 15, marrow: true, marrowShare: 0.15, marrowVal: 110, digStick: 0.55, digFlake: 0.4, digStone: 0.3, digBare: 0.15, sedges: true, sedgeCap: 0.5, africanNuts: true, rootVal: 80, voiceGenes: true, fireMaking: true, founderElders: 0.12, brainCost: true, brainF: 0.1, carry: true, carryAge: 2, walkE: true, walkJ: 4, pal: 1.7, growBodies: true, massF: 30, massM: 42, swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { cutAct: true, cutKg: 0.75, fleshOnly: true, fleshShare: 0.5, rotBySize: true, marrowKg: true, marrowFrac: 0.0025, marrowKcal: 7860, stickHumid: true, brandByDry: true, fireNatural: true, rotByKg: true, homMeatKg: true, biteBareKg: 0.25, biteFlakeKg: 0.75, meatKcal: 1140, herdYoung: true, youngShare: 0.25, forestPrey: 1000, meatMemory: true, keepKill: true, homStrikeKg: true, huntPull: true, atkFixed: 0.25, gut: true, gutShare: 0.25, digestH: 24, mealSleep: 2, preyMap: false, preyLevel: 5000, buffShare: 0.5, preyRegrow: 0.3, preyZone: 1, preyRule: 'soft', bigK: 2, preyMaxX: 1, smallPrey: true, maxPreyKg: 15, marrow: true, marrowShare: 0.15, marrowVal: 110, digStick: 0.55, digFlake: 0.4, digStone: 0.3, digBare: 0.15, sedges: true, sedgeCap: 0.5, africanNuts: true, rootVal: 80, voiceGenes: true, fireMaking: true, founderElders: 0.12, brainCost: true, brainF: 0.1, carry: true, carryAge: 2, walkE: true, walkJ: 4, pal: 1.7, growBodies: true, massF: 30, massM: 42, swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {
