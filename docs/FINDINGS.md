@@ -2315,6 +2315,43 @@ bite is a quarter kilo, so the same meat gave many more chances to fall sick. No
 **Strength.** Weak for survival (4 worlds); moderate for wounds (4 of 4). **Lesson:** when a unit changes (entry 74), every rule that
 counted the old unit must change with it.
 
+### 77. The checkpoint again, fire-making off: predation is at the real primate rate — Nov 2026
+
+**Version.** 0.7.0+ · commit `c26935d`. Entry 75 again, with fire-making off by default (the owner, after Fable's review) and the rot
+fix (entry 76); the runner now records hominin-days, so discoveries and deaths can be given as rates (the owner's choice). 24 worlds ×
+100 days (about 33 life-years), map off and on.
+
+**Data.** [Both tables, the prediction](../data/findings/77-fire-making-off/); rates with `node tools/analysis/rates.js TABLE`.
+
+| 24 worlds × 100 days (entry 75 → 77) | Map off | Map on |
+|---|---|---|
+| Worlds with hominins alive | 17 → 17 | 16 → 17 |
+| Hominins alive: middle world / all worlds | 2 → 6 / 208 → 256 | 2 → 9 / 107 → 254 |
+| Worlds with a second generation | 13 → 16 | 17 → 16 |
+| Deaths: killed by hunters / wounds / hunger / burned | 39→48 / 11→9 / 11→10 / 14→9% | 31→34 / 24→15 / 15→18 / 8→8% |
+| **Hominins killed by hunters, per hominin-year** | **3.6%** | **2.6%** |
+
+**Predation against the record.** Real primates lose a median of about 3% of a population a year to predators (24 populations,
+range 0–15%: Cheney & Wrangham 1987, reviewed by Isbell 1994, *Evol Anthropol*); great apes are among the lowest. Genesis hominins
+lose 2.6–3.6% a year — at the real rate. Hunters are the largest cause of death because the other causes are few in 33 life-years
+and the bands are small, not because hunters kill too many. The question raised in entry 75 is answered without a change.
+
+**Discoveries as rates** (firsts per 1,000 hominin-life-years, map off / on): nut cracking 126 / 99; digging 141 / 186; stone flakes
+21 / 44; cutting meat with a stone 0.5 / 3.1; bringing down an animal 1.7 / 0.9; taking a burning stick 2.1 / 1.5; eating
+wildfire-cooked food 3.8 / 1.8; dropping a burning stick that lights 0.7 / 0.6; keeping a fire 0 (< 0.26) both; making fire 0 (< 0.26)
+both; a shelter of carried branches 0.09 / 0 (< 0.26).
+
+**Result.** (1) Nobody makes fire; wildfire still found and used in most worlds — **held** (0; burning sticks taken in 12–14 worlds).
+(2) Fewer deaths by fire — held with the map off (14 → 9%), not with it on (8 → 8%). (3) Wounds below 20% with the map on — **held**
+(15%). (4) Hominins alive (no direction predicted): the middle world rose from 2 to 6–9, totals from 107–208 to about 255.
+
+**Interpretation.** With made fire gone and rotten meat fixed, more hominins live, and the deaths that remain are mostly hunters at a
+real primate rate, hunger, and old age. Bands still shrink in a third of worlds; with predation at the real rate, the next questions
+are births and the squeezed year (the owner's backlog A40).
+
+**Strength.** Moderate (24 worlds × 2 arms). **Lesson:** a cause's share of deaths says little; its rate per individual-year can be
+compared with the real record.
+
 ---
 
 ## Open questions (next tests)
