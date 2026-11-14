@@ -79,7 +79,11 @@ function doingWord(a, k) {
                 : 'banging ' + HAND[a.hand] + ' on the ground';
   }
   if (k < 8) return 'walking ' + CP[k];
-  return [
+  // climbing (the "Doing" text had no words for it, and a selected creature that climbed froze the page: fixed 14 Nov 2026)
+  if (k === A_CLIMB)
+    return a.up ? 'climbing down from the tree' : tree[idx(a.x, a.y)] >= 0.4 ? 'climbing a tree' : 'trying to climb, but there is no tree here';
+  return (
+    [
     'staying put',
     'eating',
     'drinking',
@@ -87,7 +91,8 @@ function doingWord(a, k) {
     'mating',
     a.sp === 2 ? 'attacking' : a.sp === 0 ? 'grabbing' : 'snapping',
     'sharing food',
-  ][k - 8];
+    ][k - 8] || 'doing something it has no word for here'
+  );
 }
 
 function placeOf(a) {
@@ -2765,13 +2770,21 @@ function loop() {
     }
     if (acc > 3) acc = 3; // what the computer could not keep up with is dropped, not saved up
   }
-  draw();
-  if (timeOn && events.length + tick % 16 !== tlN) {
-    tlN = events.length + (tick % 16);
-    drawTimeline();
+  // a mistake in drawing must never stop the world: the next frame is always asked for, and the error is reported once
+  try {
+    draw();
+    if (timeOn && events.length + tick % 16 !== tlN) {
+      tlN = events.length + (tick % 16);
+      drawTimeline();
+    }
+    updateDock();
+    updateTip();
+  } catch (err) {
+    if (!loop.warned) {
+      loop.warned = true;
+      console.error('Genesis: a drawing error (the world keeps running):', err);
+    }
   }
-  updateDock();
-  updateTip();
   requestAnimationFrame(loop);
 }
 $('play').onclick = () => {
