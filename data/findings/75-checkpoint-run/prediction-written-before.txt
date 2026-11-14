@@ -1,0 +1,9 @@
+Entry 75, the checkpoint big run (the owner, 14 Nov 2026: after Fable's list). 24 worlds (seeds 1-24) x 100 days, the prey map on
+(the world as now built: real numbers of antelope and buffalo, hunters with stomachs and memory, hominins eating meat in kg), every
+other setting at its default. Written before the run. Seen before: 4-world, 30-day runs of entries 66-74.
+1. Most worlds keep hominins alive to day 100: at least 16 of 24 (in the 30-day runs, 2-35 alive).
+2. Hominin deaths: killed by hunters is the largest single cause in at least 8 of 24 worlds; hunger is below a third of deaths overall.
+3. Births happen in most worlds (at least 18 of 24), and a second generation in at least 12.
+4. Discoveries made alone: nut cracking and stick digging in most worlds; making fire is rare (it is an experiment against the
+   record); nothing spreads by watching (measured later with the spread tool, not here).
+5. Hunters survive (with newcomers) in all worlds.
