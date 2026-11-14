@@ -1,0 +1,4 @@
+Entry 76, bug B27: rot sickness by kg eaten, not per bite (--rot-per-bite restores). Worlds 1-4, 30 days, map on, with and without.
+Written before any run.
+1. Hominin deaths by wounds fall in at least 3 of 4 worlds (rotting meat was the largest source in the entry-75 trace).
+2. Hominins alive at day 30: more in at least 2 of 4.

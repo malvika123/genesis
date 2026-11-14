@@ -166,6 +166,7 @@
     { key: 'preyLevel', kind: 'num', def: 5000, flag: 'prey-level', label: 'Prey map: mean kg of hoofed prey per km² (an assumption: 1,000-10,000)', min: 100, max: 30000, cfg: true },
     { key: 'buffaloShare', kind: 'num', def: 0.5, flag: 'buffalo-share', label: "Prey map: buffalo's share of the weight (an assumption: 0.25-0.75)", min: 0, max: 1, cfg: true },
     { key: 'preyRegrow', kind: 'num', def: 0.3, flag: 'prey-regrow', label: 'Prey map: regrowth per life-year at low numbers (an assumption: 0.1-0.6)', min: 0, max: 3, cfg: true },
+    { key: 'rotPerBite', kind: 'on', def: false, flag: 'rot-per-bite', label: 'Rotting meat: a 0.35 chance of falling sick at every 15-minute bite, whatever its size (bug B27); otherwise by the kg eaten', cfg: true },
     { key: 'meatUnits', kind: 'on', def: false, flag: 'meat-units', label: 'Hominins eat meat as shares of a body, the same energy whatever the animal (the old rule); otherwise in kg with its real energy', cfg: true },
     { key: 'biteBareKg', kind: 'num', def: 0.25, flag: 'bite-bare-kg', label: 'Meat a hominin tears off bare-handed in 15 minutes, kg (an assumption: 0.12-0.5)', min: 0.02, max: 2, cfg: true },
     { key: 'biteFlakeKg', kind: 'num', def: 0.75, flag: 'bite-flake-kg', label: 'Meat a hominin cuts with a flake in 15 minutes, kg (an assumption)', min: 0.05, max: 4, cfg: true },

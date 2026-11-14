@@ -147,6 +147,7 @@ function buildWorld(cfg) {
   SOC.buffShare = cfg.buffaloShare ?? 0.5; // buffalo's share of that weight (an assumption: tested 0.25 and 0.75)
   SOC.preyRegrow = cfg.preyRegrow ?? 0.3; // how fast the prey regrows, per life-year, at low numbers (an assumption: tested 0.1 and 0.6)
   SOC.preyZone = cfg.preyZone ?? 1;
+  SOC.rotByKg = cfg.rotPerBite !== true; // the chance of falling sick from rotting meat follows the kg eaten (off: 0.35 at every bite)
   SOC.homMeatKg = cfg.meatUnits !== true; // hominins eat meat in kg, with its real energy (off: shares of a body, the old rule)
   SOC.biteBareKg = cfg.biteBareKg ?? 0.25; // kg of meat torn off with bare hands and teeth in 15 minutes (an assumption: 0.12-0.5)
   SOC.biteFlakeKg = cfg.biteFlakeKg ?? 0.75; // with a sharp flake (an assumption: three times bare hands, as before)
