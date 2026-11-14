@@ -47,6 +47,7 @@ for (const seed of seeds) {
   // dead) with the cause 'killed by a predator' was killed by a hunter (the first version missed them all: entry 63, corrected)
   let prevPrey = [];
   const kindDays = {};
+  let homDays = 0;
   const herdSeen = {},
     herdMass = {};
   if (S.cfg.preyMap) Object.assign(herdMass, { Antelope: 50, Buffalo: 600 }); // adult weights (HKINDS); a herd's shown animal is adult
@@ -68,6 +69,7 @@ for (const seed of seeds) {
       prey = live.filter((o) => o.sp === 1),
       hunters = live.filter((o) => o.sp === 2);
     huntDays += hunters.length / 8; // 8 samples a day
+    homDays += live.filter((o) => o.sp === 0).length / 8;
     for (const h of hunters) kindDays[h.S.n] = (kindDays[h.S.n] || 0) + 1 / 8;
     for (const a of live) {
       if (a.sp === 0) {
@@ -105,6 +107,7 @@ for (const seed of seeds) {
     hunterKgKilledPerHunterDay: huntDays ? Object.entries(E.state().killKg).filter(([k]) => !/^Person/.test(k)).reduce((t, [, v]) => t + v, 0) / huntDays : null,
     hunterDaysByKind: kindDays,
     eatenKgPerHunterDayByKind: Object.fromEntries(Object.entries(kindDays).map(([k, d]) => [k, (E.state().eatKg[k] || 0) / d])),
+    homininMeatKgPerHomininDay: homDays ? (E.state().eatKg.Person || 0) / homDays : null,
     peopleAliveEnd: E.state().ag.filter((o) => o.sp === 0 && !o.dead).length,
     huntersAliveEnd: E.state().ag.filter((o) => o.sp === 2 && !o.dead).length,
     deaths: Object.fromEntries(Object.entries(E.state().deaths).filter(([k]) => !/^Fish/.test(k))),

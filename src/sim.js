@@ -929,10 +929,16 @@ function sim() {
         // (stone flakes were used to butcher carcasses 3 million years ago). Fresh, it is the richest food
         // there is; after a couple of days it is rotting, and often makes you sick.
         const m = meatAt(a.x, a.y, a.sp === 0 ? 0 : -1),
-          b = Math.min(m.meat, a.sp === 0 ? (a.hand === 3 ? SOC.cutFlake : SOC.cutBare) : 0.3),
+          kgMode = a.sp === 0 && SOC.homMeatKg && m.kgU > 0,
+          // in kg (A37, entry 74): a bite is SOC.biteBareKg or SOC.biteFlakeKg of meat, whatever the animal; before, it was a share
+          // of the body, so a bite of buffalo was about 31 kg and of antelope 7 kg, for the same energy. --meat-units: the old rule
+          b = kgMode
+            ? Math.min(m.meat, (a.hand === 3 ? SOC.biteFlakeKg : SOC.biteBareKg) / m.kgU)
+            : Math.min(m.meat, a.sp === 0 ? (a.hand === 3 ? SOC.cutFlake : SOC.cutBare) : 0.3),
           rot = rotten(m);
         m.meat -= b;
-        a.e = Math.min(100, a.e + b * 110 * MEAL(a));
+        if (a.sp === 0 && m.kgU) eatKg.Person = (eatKg.Person || 0) + b * m.kgU; // the record (the ledger; changes nothing)
+        a.e = Math.min(100, a.e + (kgMode ? b * m.kgU * homKgE(a) : b * 110 * MEAL(a)));
         if (rot && rnd() < 0.35) {
           a.hp -= 15;
           a.painA = Math.min(1, a.painA + 0.7);
@@ -1597,6 +1603,10 @@ function gulp(a, kg) {
   eatKg[a.S.n] = (eatKg[a.S.n] || 0) + k; // the record (the ledger; changes nothing)
   return k;
 }
+// The energy of a kg of raw meat for a hominin (A37): raw game meat holds about 1,140 kcal a kg (antelope 114 kcal per 100 g,
+// USDA; elk 111, moose 102, caribou 127), and a hominin needs 86 × weight^0.792 kcal a day (Leonard & Robertson 1997: about 1,270 at
+// 30 kg, 1,660 at 42 kg), so a kg is worth that share of the day's energy (the day's burn of the store, before brain and genes).
+const homKgE = (a) => (a.S.dE * BURN(a) * SOC.meatKcal) / (86 * bodyKg(a) ** 0.792);
 const preyKg = (t) => (t.drawKg !== undefined ? t.drawKg : t.S.mass * (t.age < t.S.mat ? clamp(0.1 + (0.9 * t.age) / t.S.mat, 0.1, 1) : 1)); // drawKg: the animal met in a herd (A36)
 const marrowAt = (x, y) => BODIES.find((b) => b.x === x && b.y === y && b.marrow > 0.01) || null;
 function walkCost(a) {
@@ -1652,7 +1662,7 @@ const hunterSeen = (x) => {
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { herdYoung: true, youngShare: 0.25, forestPrey: 1000, meatMemory: true, keepKill: true, homStrikeKg: true, huntPull: true, atkFixed: 0.25, gut: true, gutShare: 0.25, digestH: 24, mealSleep: 2, preyMap: false, preyLevel: 5000, buffShare: 0.5, preyRegrow: 0.3, preyZone: 1, preyRule: 'soft', bigK: 2, preyMaxX: 1, smallPrey: true, maxPreyKg: 15, marrow: true, marrowShare: 0.15, marrowVal: 110, digStick: 0.55, digFlake: 0.4, digStone: 0.3, digBare: 0.15, sedges: true, sedgeCap: 0.5, africanNuts: true, rootVal: 80, voiceGenes: true, fireMaking: true, founderElders: 0.12, brainCost: true, brainF: 0.1, carry: true, carryAge: 2, walkE: true, walkJ: 4, pal: 1.7, growBodies: true, massF: 30, massM: 42, swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { homMeatKg: true, biteBareKg: 0.25, biteFlakeKg: 0.75, meatKcal: 1140, herdYoung: true, youngShare: 0.25, forestPrey: 1000, meatMemory: true, keepKill: true, homStrikeKg: true, huntPull: true, atkFixed: 0.25, gut: true, gutShare: 0.25, digestH: 24, mealSleep: 2, preyMap: false, preyLevel: 5000, buffShare: 0.5, preyRegrow: 0.3, preyZone: 1, preyRule: 'soft', bigK: 2, preyMaxX: 1, smallPrey: true, maxPreyKg: 15, marrow: true, marrowShare: 0.15, marrowVal: 110, digStick: 0.55, digFlake: 0.4, digStone: 0.3, digBare: 0.15, sedges: true, sedgeCap: 0.5, africanNuts: true, rootVal: 80, voiceGenes: true, fireMaking: true, founderElders: 0.12, brainCost: true, brainF: 0.1, carry: true, carryAge: 2, walkE: true, walkJ: 4, pal: 1.7, growBodies: true, massF: 30, massM: 42, swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {

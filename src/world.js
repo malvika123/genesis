@@ -147,6 +147,10 @@ function buildWorld(cfg) {
   SOC.buffShare = cfg.buffaloShare ?? 0.5; // buffalo's share of that weight (an assumption: tested 0.25 and 0.75)
   SOC.preyRegrow = cfg.preyRegrow ?? 0.3; // how fast the prey regrows, per life-year, at low numbers (an assumption: tested 0.1 and 0.6)
   SOC.preyZone = cfg.preyZone ?? 1;
+  SOC.homMeatKg = cfg.meatUnits !== true; // hominins eat meat in kg, with its real energy (off: shares of a body, the old rule)
+  SOC.biteBareKg = cfg.biteBareKg ?? 0.25; // kg of meat torn off with bare hands and teeth in 15 minutes (an assumption: 0.12-0.5)
+  SOC.biteFlakeKg = cfg.biteFlakeKg ?? 0.75; // with a sharp flake (an assumption: three times bare hands, as before)
+  SOC.meatKcal = 1140; // kcal in a kg of raw game meat (USDA: antelope 114 per 100 g)
   SOC.herdYoung = cfg.adultHerds !== true; // antelope herds hold young and both sexes (off: every animal an adult of the kind's weight, the old rule)
   SOC.youngShare = cfg.youngShare ?? 0.25; // yearlings' share of an antelope herd (about 25% of an impala population; tested 0.1 and 0.4)
   SOC.forestPrey = cfg.forestPrey ?? 1000; // forest antelope where open-country herds cannot live, kg/km² (an assumption: 300-3,000; 0 = none, the old rule) // herds are shown in squares within this many of a hominin or hunter (1: its own and the eight around)

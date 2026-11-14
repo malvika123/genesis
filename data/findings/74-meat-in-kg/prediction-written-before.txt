@@ -1,0 +1,6 @@
+Entry 74, hominins eat meat in kg with its real energy (--meat-units restores). Worlds 1-4, 30 days; map off and on, each with
+and without the change (same code otherwise). Written before any run.
+1. A meal of meat now gives much less energy for a bite of a big carcass, and a bite of a small one about the same or more:
+   hominins' meat eaten in kg per hominin-day falls with the map on (big carcasses) in at least 3 of 4 worlds.
+2. Hominin hunger deaths rise a little with the map on (meat was over-rewarded), in at least 2 of 4; little change with the map off.
+3. Hominins alive at day 30: no direction predicted.
