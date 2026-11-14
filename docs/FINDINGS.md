@@ -2169,6 +2169,35 @@ where the band is; in world 1 (map off) that came with 15 hominins killed. One w
 
 **Strength.** Weak (4 worlds × 2 arms, 30 days). **Lesson:** look for an omission in what already exists before adding a new mechanism.
 
+### 72. Forest antelope on the prey map — Nov 2026
+
+**Version.** 0.7.0+ · this commit. Backlog A31 (Fable's step 4, first half). Squares warm enough for antelope but too thickly wooded
+for open-country herds used to hold no prey at all; in world 3 nearly every hominin and hunter stood in such forest, so herds vanished
+(entry 67). They now carry duiker- and bushbuck-like antelope at 1,000 kg/km² (an assumption: rain forests rarely carry over 3,000
+kg/km² of all mammals together, against 15,000–20,000 in grasslands, a review of 36 studies; tested 300 and 3,000 still to run).
+`--forest-prey 0` restores the old map (checked: identical worlds). The prey map stays off by default. The other half of the step,
+herds shown out to sight, is left: at real sight it would mean about a thousand herds with brains.
+
+**Data.** [The ledger, map on, worlds 1–4, 30 days; the prediction](../data/findings/72-forest-prey/), against entry 71.
+
+| Map on, per world (entry 71 → this) | 1 | 2 | 3 | 4 |
+|---|---|---|---|---|
+| Plant-eaters in a hominin's sight (mean) | 1.7 → 9.7 | 2.8 → 17.6 | 0.0 → 7.5 | 1.3 → 9.0 |
+| Hunter samples more than 5 squares from a herd | 78 → 71% | 61 → 68% | 82 → 59% | 50 → 54% |
+| Eaten, kg per hunter-day: leopard / hyena | 3.4/5.1 → 2.4/3.3 | 1.6/6.0 → 5.1/6.3 | 4.3/3.2 → 4.5/4.8 | 1.2/3.5 → 1.5/5.6 |
+| Hominins killed by hunters | 0 → 0 | 3 → 0 | 23 → 7 | 14 → 9 |
+| Hominins alive at day 30 | 28 → 20 | 5 → 28 | 3 → 18 | 2 → 8 |
+
+**Result.** (1) Hunters far from prey fall in 3 of 4 worlds — **not held** (2 of 4; still 54–71%). (2) World 3 shows herds again and its
+hunters eat more — **held** (none in sight before, 7.5 now). (3) Hominins killed by hunters (no direction predicted): fewer in 3 of 4
+worlds; more hominins alive in 3 of 4.
+
+**Interpretation.** Hominins now live among prey even where they choose wooded country, as early hominins did in woodland mosaics; and
+with prey nearby, hunters take fewer hominins. Hunters are still often far from a shown herd, which the herd zone (one square around
+each hominin or hunter) and the arid edges with no prey may explain; not yet traced.
+
+**Strength.** Weak (4 worlds, 30 days; the level not yet tested at both ends).
+
 ---
 
 ## Open questions (next tests)
