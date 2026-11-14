@@ -133,6 +133,7 @@ function buildWorld(cfg) {
   SOC.cycleChance = cfg.certainConception !== true; // not every cycle can conceive (off: conception certain in the fertile days, the old rule)
   SOC.conceive = cfg.conceive ?? 0.2; // chance a cycle is conceptive (an assumption from cycles-to-conception; tested at 0.2 and 0.1)
   SOC.nearPrey = cfg.huntersAnywhere !== true; // hunters start and arrive where their prey lives (off: anywhere that suits them, the old rule)
+  SOC.meatMemory = cfg.huntersForgetKills !== true; // a hunter remembers where it ate meat, as all creatures remember where they ate (off: only plant-eating is remembered, the old rule)
   SOC.keepKill = cfg.unguardedSleep !== true; // a hunter resting at its own kill keeps the birds off (off: only someone awake, the old rule)
   SOC.homStrikeKg = cfg.oldHomininStrikes !== true; // a hominin's failed strike harms prey by its weight against the prey's (off: always the same harm, the old rule)
   SOC.huntPull = cfg.fixedHuntPull !== true; // a hunter's inborn pull to attack grows with hunger, a part always there (off: all fixed, the old rule)

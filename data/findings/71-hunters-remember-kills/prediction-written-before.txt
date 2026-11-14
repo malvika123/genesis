@@ -1,0 +1,6 @@
+Entry 71, hunters remember where they ate meat (--hunters-forget-kills restores). Worlds 1-4, 30 days, map on and off, against
+entry 70 (data/findings/70-hunter-keeps-kill). Written before any run.
+1. Hunters eat more from their kills later: leopards and hyenas closer to need in at least 3 of 4 worlds with the map on.
+2. Killed weight / eaten weight falls in at least 3 of 4 worlds with the map on (hunters go back to kills instead of killing again).
+3. With the map off (scarce prey), hunters' hunger deaths fall in at least 2 of 4 worlds.
+4. Hominins see fewer carcasses (hunters sit on them): share of samples with no carcass rises in at least 2 of 4 (map on).

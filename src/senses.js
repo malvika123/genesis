@@ -351,7 +351,7 @@ function sense(a, x, night) {
     const dx = dxw(a.mf.x - a.x),
       dy = a.mf.y - a.y,
       d = Math.hypot(dx, dy) || 1;
-    if (d < 1.5 && food[idx(a.mf.x, a.mf.y)] < 0.15) a.mf = null;
+    if (d < 1.5 && (a.sp === 2 && SOC.meatMemory && !a.S.omni ? !meatAt(a.mf.x, a.mf.y, 2) : food[idx(a.mf.x, a.mf.y)] < 0.15)) a.mf = null; // a hunter's place: until the meat is gone (A38)
     else {
       x[IB + 14] = (dx / d) * te;
       x[IB + 15] = (dy / d) * te;

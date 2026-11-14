@@ -55,6 +55,7 @@ test on the same worlds; never tune toward survival.
 
 | # | What | Evidence | Note |
 |---|---|---|---|
+| A39 | Big carcasses rot more slowly than small ones (today a buffalo rots as fast as a hare; the rate itself matches: over 90% in about 20 days in summer, roughly doubling every 10 °C) | small pig carcasses decompose 2.82 times faster than large ones (South African pig study); a forensic soil study: over 90% mass lost in 20 days | find a size scaling from a source; one change |
 | A35 | **built 14 Nov (entry 70), no difference** — a hunter resting at its kill keeps the birds off (`--unguarded-sleep`) | hunters walk away from kills; birds still take 25% and rot 32% of the meat | open question: why hunters do not stay with a kill (owner's call) |
 | A36 | Herds with young (the owner's choice, Fable recommends): a share of each herd's kills are young, from sourced calving | every herd animal is an adult, so leopards (preferred 10–40 kg) pay the big-prey price on every kill (entry 69) | after A35 |
 | A37 | Hominins eat meat in kg (through kgU) with a sourced stomach | a bare-handed bite is about 31 kg of buffalo or 7 kg of antelope (Fable's review, finding 4) | after A35 |
