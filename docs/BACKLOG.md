@@ -55,7 +55,10 @@ test on the same worlds; never tune toward survival.
 
 | # | What | Evidence | Note |
 |---|---|---|---|
-| A30 | **Next (entry 66).** Hunters eat a kill over time and do not kill again until hungry: a meal fills the gut, and energy comes in as it is digested | leopard about 4 kg a day, one kill every 5.6 days (10.6 for hoofed prey) (Odden & Wegge 2009, Bardia); spotted hyena meals up to about 14.5 kg (Kruuk 1972, via Britannica; to check in the source) | with the prey map on, hunters kill 38–95 kg a day; keep `--prey-map` off until this is built |
+| A32 | **Next (the owner's order).** The inborn pull to attack prey beside it grows with hunger, keeping a small fixed part (fed cats still attack: Adamec 1976), tested at both ends | 81% of kills by hunters 95–100% full, before the stomach (entry 67's diagnostic); after it, kills with the map on still 18–103 kg a day | one change, own switch |
+| A33 | How long a hunter can go without food (Genesis: about 25 days from full, from its burn of 4% a day) | lions perhaps 7–14 days (weak sources); nothing found for leopard or hyena | find a source |
+| A31 | Prey map: some hoofed prey in dense forest and desert edges too, not none (today each class lives only inside the habitat it starts in) | in world 3 nearly every hominin and hunter stood in forest of tree cover about 0.9, where the map holds no prey, so herds vanished (entry 67); this explains entry 66's hunters far from prey. Forest ungulate biomass is lower than savanna's: numbers to find | one change, after A30 |
+| A30 | **built 14 Nov (entry 67)** — a hunter's stomach: a kill fills it, digested over a day, a full one is felt and makes it sleepy (`--instant-meals` restores) | kills with the map on fell only in 1 of 4 worlds; with the map off hunters go hungrier and take more hominins | next: A32 |
 | A1 | Hunters to prey about 90 kg per 10,000 kg (more prey) | Carbone & Gittleman 2002 | measure the slow-down first; perhaps a rented server by the hour |
 | A2 | Knowing when to move on when food around runs out | After "moving is one choice", hunger rose (80 → 115); real apes travel to known food | research foraging decisions first |
 | A3 | Moving away from an approaching wildfire | Fongoli chimpanzees watch and anticipate fire (Pruetz & LaDuke 2010) | fire deaths are high |

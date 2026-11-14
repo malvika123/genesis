@@ -136,6 +136,8 @@ function leaveBody(a, cause) {
     w: !!water[idx(a.x, a.y)],
     // meat on it: what a hunter already ate is gone; bodies in the water are out of reach
     meat: water[idx(a.x, a.y)] ? 0 : sz * young * (1 - (a.eaten || 0)),
+    // kg of meat in one unit of 'meat' above (for hunters' stomachs, A30)
+    kgU: (a.S.mass ? preyKg(a) : a.sp === 0 && typeof bodyKg === 'function' ? bodyKg(a) : 70 * sz) / (sz * young),
     // marrow sealed in the long bones of plant-eaters and hunters: only a stone opens it (SOC.marrowShare, an assumption)
     marrow: water[idx(a.x, a.y)] || a.sp === 0 || !SOC.marrow ? 0 : sz * young * SOC.marrowShare,
   });

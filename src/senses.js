@@ -408,7 +408,7 @@ function sense(a, x, night) {
         if (l) for (const o of l) if (kinYoung(a, o)) hk = Math.max(hk, 1 - o.e / 100);
       }
   x[IB + 17] = hk;
-  x[IB] = 1 - a.e / 100;
+  x[IB] = feltHunger(a); // a hunter's full stomach is felt (A30); otherwise 1 - energy
   x[IB + 1] = 1 - a.w / 100;
   x[IB + 2] = a.sl;
   x[IB + 3] = Math.min(1, a.painA + a.painW);

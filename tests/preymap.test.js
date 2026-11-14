@@ -27,7 +27,9 @@ test('prey map: weight kept, herds near someone, level inside 1,000-10,000 kg pe
   assert.ok(Math.abs(tot - expect) / expect < 0.01, 'weight balance within 1%: ' + tot + ' vs ' + expect);
   const ag = E.state().ag,
     herds = ag.filter((a) => a.herd);
-  assert.ok(herds.length > 0, 'herds are shown');
+  // herds form where someone is near prey; they may all be gone by the end if everyone walks into dense forest, where the map
+  // holds none (entry 67), so the test asks that herds were formed
+  assert.ok(s.made > 0, 'herds were shown');
   for (const h of herds) {
     assert.ok(h.head >= 1, 'a herd has animals');
     const near = ag.some((o) => !o.dead && (o.sp === 0 || o.sp === 2) && Math.abs(E.dxw(o.x - h.x)) <= 1 && Math.abs(o.y - h.y) <= 1);

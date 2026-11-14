@@ -98,6 +98,8 @@ for (const seed of seeds) {
     shareHunterSamplesFarFromPrey: huntSamples ? farFromPrey / huntSamples : null,
     meanHunterDistanceToPrey: huntSamples ? distSum / huntSamples : null,
     peopleAliveEnd: E.state().ag.filter((o) => o.sp === 0 && !o.dead).length,
+    huntersAliveEnd: E.state().ag.filter((o) => o.sp === 2 && !o.dead).length,
+    deaths: Object.fromEntries(Object.entries(E.state().deaths).filter(([k]) => !/^Fish/.test(k))),
   };
   fs.writeFileSync(path.join(out, 'world-' + seed + '.json'), JSON.stringify(res));
   console.log(JSON.stringify(res));

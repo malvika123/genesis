@@ -1984,6 +1984,43 @@ yet: it comes with hunters killing ten to twenty times too much, and with homini
 **Strength.** Weak (4 worlds, 30 days; deaths in two worlds). **Lesson:** making one part real can expose a missing part elsewhere;
 the prey map stays off until hunters' meals are real.
 
+### 67. A hunter's stomach: a kill is eaten over time, and a full stomach is felt — Nov 2026
+
+**Version.** Unreleased · this commit. Backlog A30, the first of two steps the owner chose (14 Nov: "gut and rest, then pull"). Before
+it, a diagnostic with the prey map on found **81% of kills made by hunters already 95–100% full**: the inborn pull to attack prey
+beside it (weight 7) does not depend on hunger, and a kill gave 70% of the store at once. Now (on by default; `--instant-meals`
+restores the old rule, checked: identical worlds) a kill fills the stomach with as much as fits (a quarter of body weight: a spotted
+hyena eats about 14.5 kg of its 60), the rest stays on the carcass; the energy comes in as it is digested over a day, a kg worth a
+day's energy divided by the kind's daily need (leopard 4.2 kg, hyena 3.9 kg; sourced); a full stomach is felt as not hungry and
+makes the hunter sleepy (full lions rest up to 20–21 hours a day). The inborn attack pull is unchanged (next step).
+
+**Data.** [The ledger, map off and on, with deaths; the prediction](../data/findings/67-hunters-stomach/).
+`node tools/analysis/ledger.js 1,2,3,4 30 OUT [--prey-map]`.
+
+| Per world (30 days) | 1 | 2 | 3 | 4 |
+|---|---|---|---|---|
+| Map off — prey killed, kg per hunter per day (entry 65 → stomach) | 8.9 → 7.3 | 3.0 → 7.3 | 3.1 → 2.4 | 4.0 → 1.3 |
+| Map off — hunters dead of hunger | 10 | 7 | 8 | 8 |
+| Map off — hominins alive at day 30 | 35 → 22 | 10 → 7 | 39 → 37 | 30 → 12 |
+| Map off — hominins killed by hunters | 8 | 25 | 0 | 15 |
+| Map on — prey killed, kg per hunter per day (entry 66 → stomach) | 60 → 46 | 92 → 103 | 38 → 18 | 95 → 81 |
+| Map on — hominins alive at day 30 | 23 → 28 | 26 → 25 | 20 → 16 | 21 → 24 |
+
+**Result.** (1) With the map on, kills fall to under half in 3 of 4 worlds — **not held**: only world 3 halved; world 2 rose. Still
+far above need in all 4 (18–103 kg a day against about 4) — held. (2) With prey scarce (map off), hunters go hungrier — **held**: a kill
+now feeds a leopard about 11 kg, two to three days' need, where it used to fill 70% of its store; 7–10 hunters a world died of hunger.
+(3) More meat left on carcasses within hominins' sight — **not held** (no clear change). (4) Hominins alive (no direction predicted):
+with the map off, fewer in all 4 worlds, mostly killed by hunters (0–25 a world).
+
+**Interpretation.** The stomach makes a kill feed a hunter for days, not weeks — so in the scarce world (map off) hunters are hungry,
+and hungry hunters take hominins, as real ones would where antelope are few. That is the old world's scarcity of prey showing again,
+not a reason to undo the stomach (the prey map is the fix for scarcity). With the map on, full hunters still kill far too much: the
+fixed part of the attack pull (weight 7, unrelated to hunger) is untouched — the next step. How long a hunter can go without food is
+not sourced (Genesis: about 25 days from full; lions perhaps one to two weeks, weak sources).
+
+**Strength.** Weak (4 worlds × 2 arms, 30 days; deaths by world tally). **Lesson:** the measured cause (full hunters attack) and the
+planned fix (a stomach) were not the same thing; diagnose before building.
+
 ---
 
 ## Open questions (next tests)

@@ -1,0 +1,9 @@
+Entry 67, a hunter's stomach (on by default; --instant-meals restores the old rule). 4 worlds x 30 days, the ledger.
+Arms: map off (against entry 65, same seeds) and map on (against entry 66). Written before the runs; seen before: one 5-day
+diagnostic of world 1 with the map on (kills 74 -> 45) and a 2-day trace of world 3.
+1. Map on: prey killed per hunter per day falls well below entry 66 (38-95), to under half in at least 3 of 4 worlds, but stays
+   above need (over 10 kg a day) in at least 2: the fixed part of the inborn attack pull remains whenever a hunter is awake.
+2. Map off (scarce prey): a kill now gives a leopard about 11 kg (about 10% of its store) instead of 70%, so hunters go hungrier:
+   more hunter deaths by hunger than entry 65's world tallies, and more newcomers.
+3. More meat left on carcasses: hominins' samples with no carcass (meat > 0.05) in sight fall in both arms, slightly.
+4. Hominins alive: no direction predicted.

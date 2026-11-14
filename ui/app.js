@@ -2970,7 +2970,9 @@ function updateDock() {
       : yrs.toFixed(1) + ' years',
     kg = sel.sp === 0 && SOC.growBodies && sel.S.growF ? ' · ' + Math.round(bodyKg(sel)) + ' kg' : '',
     sx = sel.sp === 3 ? '' : sel.sex ? ' · female' : ' · male',
-    sub = age + sx + kg + (iq ? ' · IQ ' + iq.iq : '');
+    // a hunter's stomach (A30): how full it is, from its real state
+    gut = typeof gutOn === 'function' && gutOn(sel) ? ' · stomach ' + Math.round(100 * gutFill(sel)) + '% full' : '',
+    sub = age + sx + kg + gut + (iq ? ' · IQ ' + iq.iq : '');
   // a herd on the prey map (--prey-map): the one animal shown stands for all of its square's animals of its kind
   const nm = sel.herd ? 'A herd of ' + sel.head + ' ' + (sel.head > 1 ? plural(sel.S.n) : sel.S.n).toLowerCase() : sel.name || sel.S.n;
   if ($('dname').textContent !== nm) $('dname').textContent = nm;

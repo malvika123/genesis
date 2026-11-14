@@ -110,6 +110,11 @@ function sim() {
       const brain =
         a.sp !== 0 ? 1 : SOC.brainCost && ERA === 'hominin' ? 1 - SOC.brainF + (SOC.brainF * a.nh) / 20 : 1 + (0.1 * (a.nh - S.nh)) / Math.max(1, S.hmax - S.nh);
       a.e -= (S.dE / DAY) * a.g.m * (0.8 + 0.2 * a.g.s + 0.04 * a.g.v) * df * brain * BURN(a);
+      if (a.gut > 0 && gutOn(a)) {
+        const d = Math.min(a.gut, gutCap(a) / (SOC.digestH * 4)); // digestion: a full stomach empties in SOC.digestH hours
+        a.gut -= d;
+        a.e = Math.min(100, a.e + d * eKg(a));
+      }
       a.w -= (S.dW / DAY) * df;
     }
     const fish = a.sp === 3,
@@ -211,7 +216,7 @@ function sim() {
     }
     a.sl = a.asleep
       ? Math.max(0, a.sl - 1 / (S.sleepH * 4))
-      : Math.min(1, a.sl + (1 + 0.6 * S.circ * (night ? 1 : -1)) / ((24 - S.sleepH) * 4));
+      : Math.min(1, a.sl + ((1 + 0.6 * S.circ * (night ? 1 : -1)) * (1 + SOC.mealSleep * gutFill(a))) / ((24 - S.sleepH) * 4)); // a full stomach makes a hunter sleepy (A30)
     a.lu =
       a.age >= S.smat && fertileAge(a)
         ? clamp(a.lu + (a.cd === 0 && a.e > 45 ? 0.01 : -0.02), 0, 1)
@@ -259,7 +264,7 @@ function sim() {
     if (young && fam > 0.5) a.bonus[7] += 0.005;
     if (S.pair && a.age >= S.smat) pairBond(a);
     if (a.sp !== 3) feelLoss(a, young);
-    const hu = 1 - a.e / 100,
+    const hu = feltHunger(a), // (for hunters with a stomach, a full one is felt as not hungry: A30)
       th = 1 - a.w / 100,
       D = [
         a.painA * a.g.b,
@@ -872,7 +877,15 @@ function sim() {
       }
     } else if (act === A_EAT && a.sp === 2 && !a.S.omni && !wade) {
       const m = meatAt(a.x, a.y, 2);
-      if (m && a.fd < S.hcap) {
+      if (m && gutOn(a) && m.kgU) {
+        // into the stomach, as much as fits (A30)
+        const b = Math.min(m.meat, 0.3, (gutCap(a) - (a.gut || 0)) / m.kgU);
+        if (b > 0) {
+          m.meat -= b;
+          gulp(a, b * m.kgU);
+          if (hu > 0.5) a.ev[2] = 'it ate from a carcass on day ' + dn;
+        }
+      } else if (m && a.fd < S.hcap) {
         const b = Math.min(m.meat, 0.3);
         m.meat -= b;
         a.fd += b;
@@ -1283,7 +1296,7 @@ function sim() {
           t.dead = true;
           t.cause = a.sp === 0 ? 'caught by a person' : 'killed by a predator';
           t.killedBy = a.S.n; // for the record (the ledger), changes nothing
-          if (a.sp === 2) t.eaten = 0.6;
+          if (a.sp === 2) t.eaten = gutOn(a) ? 0 : 0.6; // with a stomach, what it eats is counted below
           if (a.sp === 2) kills[t.sp]++;
           else if (t.sp === 1) {
             if (!firsts.hunt) {
@@ -1295,7 +1308,9 @@ function sim() {
             a.nfish = (a.nfish || 0) + 1;
             followed(a, 'fish', 'caught a fish');
           }
-          if (!(a.sp === 0 && t.sp === 1)) a.e = Math.min(
+          const meatKg = t.sp === 0 ? bodyKg(t) : t.sp !== 3 && t.S.mass ? preyKg(t) : 0;
+          if (gutOn(a) && meatKg) t.eaten = Math.min(1, (t.eaten || 0) + gulp(a, meatKg * (1 - (t.eaten || 0))) / meatKg);
+          else if (!(a.sp === 0 && t.sp === 1)) a.e = Math.min(
             100,
             a.e +
               (t.sp === 3
@@ -1316,7 +1331,8 @@ function sim() {
                   for (const o of l)
                     // a kill feeds the young — and, if it is big, the rest of the pack too
                     if (o !== a && o.k === a.k && !o.dead && (o.age < o.S.mat || (T.size || 1) > 1.5)) {
-                      o.e = Math.min(100, o.e + 35 * Math.min(1.5, T.size || 1) * MEAL(o));
+                      if (gutOn(o) && meatKg) t.eaten = Math.min(1, (t.eaten || 0) + gulp(o, meatKg * (1 - (t.eaten || 0))) / meatKg);
+                      else o.e = Math.min(100, o.e + 35 * Math.min(1.5, T.size || 1) * MEAL(o));
                       o.ev[2] = 'it shared a kill on day ' + dn;
                     }
               }
@@ -1542,6 +1558,23 @@ const carriedBy = (m) => (m.kid && m.kid.mom === m && !m.kid.dead && !m.kid.gone
 // Prey a hominin can bring down (realism audit, gap 7): chimpanzees prefer prey of about 7.6 kg or less (young bushbuck,
 // red colobus), and the bushbuck and bushpig they kill are young (Bugir et al. 2021; reviews). A young animal's weight is
 // taken to grow in a straight line to its kind's adult weight (an assumption). --any-prey: the old rule.
+// A hunter's stomach (backlog A30; research log entry 67): a kill fills it, at most SOC.gutShare of the body's weight (spotted
+// hyena about 14.5 kg of 60), and its energy comes in as it is digested (SOC.digestH hours to empty a full stomach). A kg of meat
+// gives a day's energy divided by the kind's daily need (leopard 3.5–4.9 kg, hyena 3.8–4.0 kg a day). A full stomach is felt:
+// hunger is felt less as it fills (stretch of the stomach signals fullness), and it makes the hunter sleepy (carnivores rest
+// after a meal; lions up to 20–21 hours a day). --instant-meals: the old rule (a kill gives 70% of the store at once).
+const gutOn = (a) => SOC.gut && a.sp === 2 && !!a.S.mass,
+  gutCap = (a) => SOC.gutShare * a.S.mass,
+  needKg = (a) => a.S.need || 4.2 * (a.S.mass / 45) ** 0.75, // kinds without a measured need: a leopard's, by Kleiber's law
+  eKg = (a) => a.S.dE / needKg(a), // energy (% of the store) from one kg of meat
+  gutFill = (a) => (gutOn(a) ? Math.min(1, (a.gut || 0) / gutCap(a)) : 0),
+  feltHunger = (a) => (1 - a.e / 100) * (1 - gutFill(a));
+// eat kg of meat into the stomach, as much as fits; returns the kg eaten
+function gulp(a, kg) {
+  const k = Math.max(0, Math.min(kg, gutCap(a) - (a.gut || 0)));
+  a.gut = (a.gut || 0) + k;
+  return k;
+}
 const preyKg = (t) => t.S.mass * (t.age < t.S.mat ? clamp(0.1 + (0.9 * t.age) / t.S.mat, 0.1, 1) : 1);
 const marrowAt = (x, y) => BODIES.find((b) => b.x === x && b.y === y && b.marrow > 0.01) || null;
 function walkCost(a) {
@@ -1597,7 +1630,7 @@ const hunterSeen = (x) => {
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { preyMap: false, preyLevel: 5000, buffShare: 0.5, preyRegrow: 0.3, preyZone: 1, preyRule: 'soft', bigK: 2, preyMaxX: 1, smallPrey: true, maxPreyKg: 15, marrow: true, marrowShare: 0.15, marrowVal: 110, digStick: 0.55, digFlake: 0.4, digStone: 0.3, digBare: 0.15, sedges: true, sedgeCap: 0.5, africanNuts: true, rootVal: 80, voiceGenes: true, fireMaking: true, founderElders: 0.12, brainCost: true, brainF: 0.1, carry: true, carryAge: 2, walkE: true, walkJ: 4, pal: 1.7, growBodies: true, massF: 30, massM: 42, swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { gut: true, gutShare: 0.25, digestH: 24, mealSleep: 2, preyMap: false, preyLevel: 5000, buffShare: 0.5, preyRegrow: 0.3, preyZone: 1, preyRule: 'soft', bigK: 2, preyMaxX: 1, smallPrey: true, maxPreyKg: 15, marrow: true, marrowShare: 0.15, marrowVal: 110, digStick: 0.55, digFlake: 0.4, digStone: 0.3, digBare: 0.15, sedges: true, sedgeCap: 0.5, africanNuts: true, rootVal: 80, voiceGenes: true, fireMaking: true, founderElders: 0.12, brainCost: true, brainF: 0.1, carry: true, carryAge: 2, walkE: true, walkJ: 4, pal: 1.7, growBodies: true, massF: 30, massM: 42, swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {

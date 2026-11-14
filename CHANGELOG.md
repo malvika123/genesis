@@ -4,6 +4,9 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Hunters have a stomach** (research log entry 67): a kill fills it with as much as fits (a quarter of body weight), the rest stays
+  on the carcass, the energy comes in as it is digested over a day, and a full stomach is felt and makes a hunter sleepy. Where
+  prey is scarce, hunters now go hungrier and take more hominins. `--instant-meals` restores the old rule.
 - **The prey map (experiment, off by default)** (research log entry 66): the land carries antelope and buffalo at real savanna
   weights, shown as one herd per square around hominins and hunters; “Herds on the prey map” in New world, or `--prey-map`. It showed
   that a fed hunter here hunts again at once (38–95 kg a day against about 4), so it stays off until hunters’ meals are real.
