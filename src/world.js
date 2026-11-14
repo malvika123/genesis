@@ -133,6 +133,8 @@ function buildWorld(cfg) {
   SOC.cycleChance = cfg.certainConception !== true; // not every cycle can conceive (off: conception certain in the fertile days, the old rule)
   SOC.conceive = cfg.conceive ?? 0.2; // chance a cycle is conceptive (an assumption from cycles-to-conception; tested at 0.2 and 0.1)
   SOC.nearPrey = cfg.huntersAnywhere !== true; // hunters start and arrive where their prey lives (off: anywhere that suits them, the old rule)
+  SOC.huntPull = cfg.fixedHuntPull !== true; // a hunter's inborn pull to attack grows with hunger, a part always there (off: all fixed, the old rule)
+  SOC.atkFixed = cfg.huntPullFixed ?? 0.25; // the part always there (an assumption: fed cats still attack, Adamec 1976; tested 0.1 and 0.5)
   SOC.gut = cfg.instantMeals !== true; // hunters have a stomach: a kill fills it, energy comes in as it digests, a full one is felt and makes them sleepy (off: a kill gives 70% at once, the old rule)
   SOC.gutShare = cfg.gutShare ?? 0.25; // the most a hunter eats at once, share of its weight (hyena about 0.24; an assumption for the others: tested 0.15 and 0.33)
   SOC.digestH = cfg.digestHours ?? 24; // hours to digest a full stomach (an assumption: tested 12 and 48)

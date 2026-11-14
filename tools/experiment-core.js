@@ -153,6 +153,8 @@
     { key: 'certainConception', kind: 'on', def: false, flag: 'certain-conception', label: 'Every cycle can conceive (the old rule); otherwise about 1 cycle in 5, as wild chimpanzees need about 5', cfg: true },
     { key: 'conceive', kind: 'num', def: 0.2, flag: 'conceive', label: 'Chance a cycle can lead to conception (Gombe and Kanyawara about 0.2, Mahale about 0.11; tested at 0.2 and 0.1)', min: 0.01, max: 1, cfg: true },
     { key: 'huntersAnywhere', kind: 'on', def: false, flag: 'hunters-anywhere', label: 'Hunters start (and newcomers arrive) anywhere that suits them, even far from all prey (the old rule)', cfg: true },
+    { key: 'fixedHuntPull', kind: 'on', def: false, flag: 'fixed-hunt-pull', label: "A hunter's inborn pull to attack prey beside it is the same fed or hungry (the old rule); otherwise most of it grows with hunger", cfg: true },
+    { key: 'huntPullFixed', kind: 'num', def: 0.25, flag: 'hunt-pull-fixed', label: 'Share of the hunting pull that is there even when fed (an assumption: 0.1-0.5)', min: 0, max: 1, cfg: true },
     { key: 'instantMeals', kind: 'on', def: false, flag: 'instant-meals', label: 'A kill gives a hunter 70% of its store at once (the old rule); otherwise it fills the stomach and is digested over a day, and a full stomach is felt and makes it sleepy', cfg: true },
     { key: 'gutShare', kind: 'num', def: 0.25, flag: 'gut-share', label: "Most a hunter eats at once, share of its weight (hyena about 0.24; 0.15-0.33)", min: 0.05, max: 0.5, cfg: true },
     { key: 'digestHours', kind: 'num', def: 24, flag: 'digest-hours', label: 'Hours for a hunter to digest a full stomach (an assumption: 12-48)', min: 2, max: 96, cfg: true },

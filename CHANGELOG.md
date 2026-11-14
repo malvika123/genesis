@@ -4,6 +4,8 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **A hunter’s pull to attack grows with hunger** (research log entry 68): a quarter of it is always there (fed cats still attack),
+  the rest comes with hunger, so full hunters no longer kill. `--fixed-hunt-pull` restores the old rule.
 - **Hunters have a stomach** (research log entry 67): a kill fills it with as much as fits (a quarter of body weight), the rest stays
   on the carcass, the energy comes in as it is digested over a day, and a full stomach is felt and makes a hunter sleepy. Where
   prey is scarce, hunters now go hungrier and take more hominins. `--instant-meals` restores the old rule.

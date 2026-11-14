@@ -2021,6 +2021,37 @@ not sourced (Genesis: about 25 days from full; lions perhaps one to two weeks, w
 **Strength.** Weak (4 worlds × 2 arms, 30 days; deaths by world tally). **Lesson:** the measured cause (full hunters attack) and the
 planned fix (a stomach) were not the same thing; diagnose before building.
 
+### 68. A hunter's pull to attack grows with hunger — Nov 2026
+
+**Version.** Unreleased · this commit. Backlog A32, the second step the owner chose. A quarter of a hunter's inborn pull to attack prey
+beside it is always there (fed cats still leave their food to kill a rat: Adamec 1976); the other three quarters are an inborn pull
+that grows with felt hunger (a full stomach counts as fed, entry 67). The brain can still learn either way. The share (0.25) is an
+assumption, to test at 0.1 and 0.5. `--fixed-hunt-pull` restores the old rule (checked: identical worlds). A 5-day diagnostic (world 1,
+map on) before the runs: kills by hunters at 95–100% energy fell from 60 of 74 (before the stomach) to 2 of 40.
+
+**Data.** [The ledger, map off and on, with deaths; the prediction](../data/findings/68-hunting-pull/).
+
+| Per world (30 days; entry 67 → this) | 1 | 2 | 3 | 4 |
+|---|---|---|---|---|
+| Map on — prey killed, kg per hunter per day | 46 → 45 | 103 → 44 | 18 → 15 | 81 → 28 |
+| Map off — prey killed, kg per hunter per day | 7.3 → 7.3 | 7.3 → 5.6 | 2.4 → 0.9 | 1.3 → 1.1 |
+| Map off — hunters dead of hunger | 10 → 8 | 7 → 3 | 8 → 5 | 8 → 8 |
+| Map off — hominins killed by hunters | 8 → 0 | 25 → 21 | 0 → 0 | 15 → 7 |
+| Map off — hominins alive at day 30 | 22 → 33 | 7 → 7 | 37 → 36 | 12 → 15 |
+| Map on — hominins alive at day 30 | 28 → 24 | 25 → 24 | 16 → 12 | 24 → 2 (11 burned in a wildfire) |
+
+**Result.** (1) Map on: kills fall by less than half in at least 3 of 4 worlds — **not held**: by less than half in 2 (worlds 1, 3),
+by more in 2 (worlds 2, 4); still far above need in all 4 (15–45 kg a day against about 4) — held. (2) Map off: little change in
+hunters' hunger deaths — **partly**: fewer in 3 of 4 worlds (fed hunters waste less effort?), the same in one. (3) Hominins killed by
+hunters, map off (no direction predicted): fewer in 3 of 4 worlds, none more.
+
+**Interpretation.** Full hunters no longer kill, as the evidence says; half-fed ones still do, and with the map on a hunter still kills
+four to ten times its need — what is left is not hunger but the ease of a kill: an attack beside a herd succeeds 37–49% of the time,
+every hour, where real leopards succeed in 14–38% of hunts that each take far longer (a stalk). That is the next part to check
+(backlog A34), with the prey map still off by default. World 4's collapse with the map on was a wildfire.
+
+**Strength.** Weak (4 worlds × 2 arms, 30 days). **Lesson:** each mechanism removed one cause of the excess, and showed the next.
+
 ---
 
 ## Open questions (next tests)

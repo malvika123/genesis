@@ -1,0 +1,7 @@
+Entry 68, a hunter's inborn pull to attack grows with hunger (a fixed part 0.25; --fixed-hunt-pull restores). 4 worlds x 30 days,
+map off and on, against entry 67 (the stomach). Written before the runs; seen before: one 5-day diagnostic of world 1, map on
+(kills 45 -> 40; kills by hunters at 95-100% energy 30% -> 5% of kills).
+1. Map on: prey killed per hunter per day falls, but by less than half in at least 3 of 4 worlds (still far above about 4 kg):
+   half-fed hunters still attack, and a kill's meat beyond the stomach is wasted.
+2. Map off: little change in hunters' hunger deaths (they are hungry anyway when prey is scarce).
+3. Hominins killed by hunters (map off): no direction predicted - fed hunters attack hominins less, hungry ones as before.

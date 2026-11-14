@@ -112,7 +112,9 @@ function newW(sp, inst, H = SP[sp].hmax) {
     D(A_SLEEP, B, -2.5);
     D(A_MATE, HB + 3, 4);
     D(A_MATE, B, -1.5);
-    if (sp === 2 || sp === 3) D(A_ATK, HB + 2, sp === 2 ? 7 : 0);
+    // a hunter's inborn pull to attack prey beside it: part of it is always there (fed cats still attack: Adamec 1976), the rest
+    // grows with hunger (sim.js, the inborn pulls; backlog A32, entry 68); --fixed-hunt-pull: all of it fixed, the old rule
+    if (sp === 2 || sp === 3) D(A_ATK, HB + 2, sp === 2 ? 7 * (SOC.huntPull ? SOC.atkFixed : 1) : 0);
     // rage is inborn in mammals: an angry animal is ready to strike
     if (sp === 0 || sp === 2) D(A_ATK, IB + 26, 2.5);
     if (sp === 0) {
