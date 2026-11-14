@@ -1020,6 +1020,7 @@ const G3D = { ok: false };
     hutsI.visible = GL.zoom >= 3 || !!GL.eye;
     if (!itemsOn && hutsI.visible && itemsFrame++ % 30 === 0) plantItems();
     bodiesI.visible = GL.zoom >= 2 || !!GL.eye;
+    bodiesI.visible = false; // (the dead are drawn on the overlay now: drawBodies in app.js)
     if (bodiesI.visible && bodiesFrame++ % 20 === 0) layBodies();
     if (itemsOn && itemsFrame++ % 30 === 0) plantItems();
     if (frame++ % 12 === 0) paint(v);
@@ -1088,6 +1089,8 @@ const G3D = { ok: false };
     // Far away, creatures are drawn as markers on top so you can find them. Close up, they become
     // figures standing on the land itself, so hills and trees can hide them like anything else.
     const close = GL.zoom >= 6;
+    // the dead, drawn as what is left of them (app.js drawBodies), over the land like the creatures
+    if (typeof drawBodies === 'function') drawBodies(cx, (x, y) => project(x, y), 0, 0);
     figures(close, v);
     if (!close)
       for (const a of ag) {
@@ -1143,18 +1146,7 @@ const G3D = { ok: false };
         cx.beginPath();
         cx.arc(P[0], P[1], r, 0, 7);
         cx.stroke();
-        // just picked (from the news, or Find): rings pulse outward for a few seconds
-        const age = (performance.now() - (GL.flash || -1e9)) / 1000;
-        if (age < 4)
-          for (let k = 0; k < 2; k++) {
-            const f = (age * 1.2 + k * 0.5) % 1;
-            cx.globalAlpha = (1 - f) * (1 - age / 4);
-            cx.lineWidth = 3;
-            cx.beginPath();
-            cx.arc(P[0], P[1], r + f * 5 * r, 0, 7);
-            cx.stroke();
-          }
-        cx.globalAlpha = 1;
+        // one ring only (the owner, 14 Nov 2026: one ring is enough to show who is picked; the pulsing extra rings are gone)
       }
     }
   };

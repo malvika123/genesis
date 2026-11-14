@@ -137,6 +137,7 @@ function leaveBody(a, cause) {
     w: !!water[idx(a.x, a.y)],
     // meat on it: what a hunter already ate is gone; bodies in the water are out of reach
     meat: water[idx(a.x, a.y)] ? 0 : sz * young * (1 - (a.eaten || 0)),
+    meat0: water[idx(a.x, a.y)] ? 0 : sz * young, // the flesh it had at death (for drawing how much is left; changes nothing)
     // kg of meat in one unit of 'meat' above (for hunters' stomachs, A30)
     // only the edible flesh is meat (A42, entry 81): about half of an animal's weight (impala 54%, Thomson's gazelle 48%, wildebeest 44%,
     // hartebeest 58%: Blumenschine & Madrigal 1993 via Kuipers et al. 2010); --whole-body-meat: the old rule (the whole body)

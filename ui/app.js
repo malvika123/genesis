@@ -1226,38 +1226,76 @@ function drawCarrion(g, P) {
     if (gone) BIRDS.delete(b);
   }
 }
-// the dead: a still figure on the ground that darkens and shrinks, then bare bones
-function drawBodies(g, P) {
+// The dead, drawn as what is left of them (the owner, 14 Nov 2026: they looked like white stones and never changed): a whole body while
+// its flesh is there; a red carcass with its ribs showing as it is eaten or rots; then a bare skeleton — skull, spine, ribs, leg bones —
+// fading slowly as the bones weather (savanna bones weather over years: Behrensmeyer 1978). How much is left is the body's real
+// remaining flesh (b.meat against b.meat0), not its age. P(x, y) gives [x, y, how big a square looks] on the canvas, or null.
+const BODYC = ['#c99a7a', '#8a6a46', '#9a8a78', '#4a3a2a'];
+function drawBodies(g, P, sx = 0.5, sy = 0.5) {
   for (const b of BODIES) {
-    const Q = P(b.x, b.y);
+    // a little way from the middle of its square, the same each time
+    const hx = ((b.t * 7919 + b.x * 104729) % 1000) / 1000,
+      hy = ((b.t * 6271 + b.y * 15485863) % 1000) / 1000,
+      Q = P(b.x + sx + (hx - 0.5) * 0.5, b.y + sy + (hy - 0.5) * 0.5);
     if (!Q || Q[2] < 3) continue;
-    const age = tick - b.t,
-      bones = clamp((age - 3 * 96) / (BODY_BONES - 3 * 96), 0, 1),
-      r = clamp(Q[2] * 0.02 * (b.sp === 0 ? 1 : 0.8 + 0.2 * b.size), 2.5, 12);
+    const left = b.meat0 > 0 ? clamp(b.meat / b.meat0, 0, 1) : b.meat > 0.05 ? 1 : 0,
+      age = tick - b.t,
+      weather = clamp(age / BODY_GONE, 0, 1),
+      kg = b.kg0 || (b.sp === 0 ? 35 : 50),
+      r = clamp(Q[2] * 0.012 * Math.cbrt(kg / 10), 1.5, 14),
+      f = hx < 0.5 ? 1 : -1;
     g.save();
     g.translate(Q[0], Q[1]);
-    if (bones < 1) {
-      g.globalAlpha = 1 - 0.5 * bones;
-      g.fillStyle = b.sp === 0 ? '#c99a7a' : ['', '#8a6a46', '#9a8a78', '#4a3a2a', '#707478', '#b08a3c', '#5a3e2a'][b.sp] || '#777';
+    g.lineCap = 'round';
+    if (left > 0.6) {
+      // a whole body lying on its side
+      g.fillStyle = BODYC[b.sp] || '#777';
       g.beginPath();
-      g.ellipse(0, 0, r * 2, r * 0.7 * (1 - 0.4 * bones), 0, 0, 7);
+      g.ellipse(0, 0, r * 2, r * 0.75, 0, 0, 7);
       g.fill();
       g.beginPath();
-      g.arc(-r * 2, 0, r * 0.6, 0, 7);
+      g.arc(f * r * 2.2, -r * 0.2, r * 0.6, 0, 7);
       g.fill();
-    }
-    g.globalAlpha = 0.4 + 0.6 * bones;
-    g.strokeStyle = '#e8e4d6';
-    g.lineWidth = Math.max(1, r * 0.25);
-    for (let k = 0; k < 4; k++) {
+      g.strokeStyle = BODYC[b.sp] || '#777';
+      g.lineWidth = Math.max(1, r * 0.3);
       g.beginPath();
-      g.moveTo(-r * 1.6 + k * r, -r * 0.3);
-      g.lineTo(-r * 1.6 + k * r, r * 0.3);
+      for (const lx of [-1.2, -0.6, 0.8, 1.3]) {
+        g.moveTo(lx * r, r * 0.4);
+        g.lineTo(lx * r + f * r * 0.6, r * 1.2);
+      }
       g.stroke();
+    } else {
+      // the skeleton: skull, spine, ribs, leg bones (bone-white, greying and fading as it weathers)
+      const bone = 'rgba(232,226,208,' + (0.95 - 0.7 * weather).toFixed(2) + ')';
+      if (left > 0.05) {
+        // flesh still on it: a red, torn carcass under the ribs
+        g.fillStyle = 'rgba(140,40,32,' + (0.35 + 0.6 * left).toFixed(2) + ')';
+        g.beginPath();
+        g.ellipse(0, 0, r * 1.6, r * 0.55, 0, 0, 7);
+        g.fill();
+      }
+      g.strokeStyle = bone;
+      g.fillStyle = bone;
+      g.lineWidth = Math.max(0.8, r * 0.18);
+      g.beginPath();
+      g.moveTo(-f * r * 1.8, 0);
+      g.lineTo(f * r * 1.8, 0); // spine
+      for (let k = 0; k < 5; k++) {
+        const x = f * (r * 0.9 - k * r * 0.35);
+        g.moveTo(x, 0);
+        g.quadraticCurveTo(x - f * r * 0.15, -r * 0.6, x - f * r * 0.05, -r * 0.75); // ribs
+      }
+      for (const lx of [-1.4, -1.0, 0.9, 1.3]) {
+        g.moveTo(f * lx * r, r * 0.1);
+        g.lineTo(f * (lx * r + r * 0.3), r * 0.9); // leg bones
+      }
+      g.stroke();
+      g.beginPath();
+      g.ellipse(f * r * 2.2, -r * 0.05, r * 0.5, r * 0.32, 0, 0, 7); // skull
+      g.fill();
     }
-    g.globalAlpha = 1;
-    const t = performance.now() / 1000;
     // flies buzzing over a body that is rotting in the warmth
+    const t = performance.now() / 1000;
     if (b.flyT && tick - b.flyT < 8 && b.meat > 0.03) {
       g.fillStyle = '#1b1b1b';
       for (let k = 0; k < 7; k++) {
