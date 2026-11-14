@@ -55,6 +55,7 @@ test on the same worlds; never tune toward survival.
 
 | # | What | Evidence | Note |
 |---|---|---|---|
+| R1 | **Checkpoint big run (the owner, 14 Nov 2026)** — right after Fable's list (A37, A33, A34 if a gap remains, carcass contests observed): 24 worlds × 100 days, gentle on the laptop, to see the hominins' world with hunters and prey fixed. The full big run stays at the end (after the remaining gaps and reality tests 2–4) | the owner chose it | prediction first; what to read: hominin deaths by cause, births, meat eaten, discoveries |
 | A38 | **built 14 Nov (entry 71)** — hunters remember where they ate meat (`--hunters-forget-kills`) | leopards ate more in 4 of 4 worlds, hyenas in 3; still under need | next: A36 (herds with young) |
 | A39 | Big carcasses rot more slowly than small ones (today a buffalo rots as fast as a hare; the rate itself matches: over 90% in about 20 days in summer, roughly doubling every 10 °C) | small pig carcasses decompose 2.82 times faster than large ones (South African pig study); a forensic soil study: over 90% mass lost in 20 days | find a size scaling from a source; one change |
 | A35 | **built 14 Nov (entry 70), no difference** — a hunter resting at its kill keeps the birds off (`--unguarded-sleep`) | hunters walk away from kills; birds still take 25% and rot 32% of the meat | open question: why hunters do not stay with a kill (owner's call) |
