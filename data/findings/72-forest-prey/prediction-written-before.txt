@@ -1,0 +1,5 @@
+Entry 72, forest antelope on the prey map (1,000 kg/km2 where open-country herds cannot live; --forest-prey 0 restores).
+Worlds 1-4, 30 days, map on, against entry 71 map-on. Written before any run.
+1. Hunters far from prey (over 5 squares) fall in at least 3 of 4 worlds - most stood in forest with no prey (A31).
+2. In world 3 (nearly everyone in forest) herds are shown again, and hunters there eat more.
+3. Hominins killed by hunters: no direction predicted (more prey near the band draws hunters, but feeds them).

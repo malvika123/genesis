@@ -146,7 +146,8 @@ function buildWorld(cfg) {
   SOC.preyLevel = cfg.preyLevel ?? 5000; // mean kg of hoofed prey per km² where it lives (an assumption: 1,000–10,000 across African parks)
   SOC.buffShare = cfg.buffaloShare ?? 0.5; // buffalo's share of that weight (an assumption: tested 0.25 and 0.75)
   SOC.preyRegrow = cfg.preyRegrow ?? 0.3; // how fast the prey regrows, per life-year, at low numbers (an assumption: tested 0.1 and 0.6)
-  SOC.preyZone = cfg.preyZone ?? 1; // herds are shown in squares within this many of a hominin or hunter (1: its own and the eight around)
+  SOC.preyZone = cfg.preyZone ?? 1;
+  SOC.forestPrey = cfg.forestPrey ?? 1000; // forest antelope where open-country herds cannot live, kg/km² (an assumption: 300-3,000; 0 = none, the old rule) // herds are shown in squares within this many of a hominin or hunter (1: its own and the eight around)
   SOC.preyRadius = cfg.preyRadius ?? 8; // squares within which a hunter's prey must live where it starts (an assumption)
   SOC.rescue = cfg.rescue !== false; // newcomers from the wider population when a hunter kind is rare (off: the old closed world)
   SOC.rescueRate = cfg.rescueRate ?? 1; // newcomers a life-year while rare (an assumption)

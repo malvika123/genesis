@@ -50,8 +50,26 @@ function initPreyMap() {
       m++;
     }
     const scale = m ? (SOC.preyLevel * SQKM * share) / (sum / m) : 0;
+    // Forest antelope (backlog A31, entry 72): squares warm enough for antelope but too thickly wooded for open-country herds
+    // carry duiker- and bushbuck-like antelope at a much lower level, SOC.forestPrey kg/km² (an assumption: rain forests rarely
+    // carry over 3,000 kg/km² of all mammals together, savanna up to 15,000–20,000; tested 300 and 3,000). Before, they carried none.
+    const forest = new Float32Array(n);
+    let fs = 0,
+      fm = 0;
+    if (c === 0 && h && SOC.forestPrey > 0)
+      for (let i = 0; i < n; i++) {
+        if (water[i] || rock[i] || pit[i] || PCAP[c][i] > 0) continue;
+        const T = meanTemp(i);
+        if (T < h.t[0] || T > h.t[1] || tree[i] <= h.tree[1]) continue;
+        const g = TF[ter[i]] * (1 - 0.35 * tree[i]) * clamp((T - 2) / 13, 0, 1.15);
+        if (g <= 0) continue;
+        forest[i] = g;
+        fs += g;
+        fm++;
+      }
+    const fscale = fm ? (SOC.forestPrey * SQKM) / (fs / fm) : 0;
     for (let i = 0; i < n; i++) {
-      PCAP[c][i] *= scale;
+      PCAP[c][i] = PCAP[c][i] * scale + forest[i] * fscale;
       PREY[c][i] = PCAP[c][i];
       start += PREY[c][i];
     }
