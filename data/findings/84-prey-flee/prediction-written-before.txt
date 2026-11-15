@@ -1,0 +1,5 @@
+Entry 84, plant-eaters have the inborn pull to flee (--no-prey-flight restores). A measuring-only trace, worlds 1-3 x 10 days, with and
+without. Written before the run.
+1. Herds with a hunter in their square or next to it move away far more often: "moved away" over 30% (was 3-4%).
+2. Hunters' attack success falls (was 47%), but stays above 15%: fleeing works only when the hunter is seen in time; detection (step 2)
+   is not built yet.

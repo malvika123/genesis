@@ -119,6 +119,7 @@
     { key: 'oldNuts', kind: 'on', def: false, flag: 'old-nuts', label: 'Nuts grow by the old oak, hazel and walnut rules (otherwise in warm open woodland)', cfg: true },
     { key: 'rootValue', kind: 'num', def: 80, flag: 'root-value', label: 'Food from a bite of roots and tubers (fruit is 70; an assumption)', min: 10, max: 150, cfg: true },
     { key: 'noVoiceGenes', kind: 'on', def: false, flag: 'no-voice-genes', label: 'Vocal learning, pointing and the joy of shared attention fixed at zero (a test: otherwise they start ape-low and can evolve)', cfg: true },
+    { key: 'noPreyFlight', kind: 'on', def: false, flag: 'no-prey-flight', label: 'Plant-eaters have no inborn pull to flee a hunter (the old rule; hominins always have one)', cfg: true },
     { key: 'oldHunterPlacement', kind: 'on', def: false, flag: 'old-hunter-placement', label: 'A hunter of a pair or pack may start beside the camp (bug B28, the old rule)', cfg: true },
     { key: 'flakeInHandCuts', kind: 'on', def: false, flag: 'flake-in-hand-cuts', label: 'Holding a flake while eating cuts meat by itself (the old rule); otherwise cutting is a strike with the flake on the carcass', cfg: true },
     { key: 'cutKg', kind: 'num', def: 0.75, flag: 'cut-kg', label: 'Meat a flake cuts off the bone in 15 minutes, kg (an assumption: 0.4-1.5)', min: 0.1, max: 4, cfg: true },
