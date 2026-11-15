@@ -21,8 +21,9 @@ for (const seed of (process.argv[2]||'1,2,3').split(',').map(Number)) {
     E.sim();
     for (const [a,b] of before) {
       const key=(a.sp===0?'hominin':(a.herd?'herd':'single prey'))+' d<='+b.d;
-      const r=res[key]||(res[key]={n:0,away:0,closer:0,stayed:0,climbed:0,died:0});
+      const r=res[key]||(res[key]={n:0,away:0,closer:0,stayed:0,climbed:0,died:0,chose:0,ate:0});
       r.n++;
+      if (a.act < 8) r.chose++; else if (a.act === 9) r.ate++;
       if (a.dead||a.gone) { r.died++; continue; }
       if (!b.up && a.up) { r.climbed++; continue; }
       let d=99; for (const h of E.state().ag.filter(o=>o.sp===2&&!o.dead)) d=Math.min(d,cheb(a,h));
@@ -31,5 +32,5 @@ for (const seed of (process.argv[2]||'1,2,3').split(',').map(Number)) {
   }
 }
 const pct=(v,n)=>Math.round(100*v/n);
-for (const [k,r] of Object.entries(res).sort()) console.log(k.padEnd(18),'samples',r.n,'| away',pct(r.away,r.n)+'%','| closer/sideways',pct(r.closer,r.n)+'%','| stayed',pct(r.stayed,r.n)+'%','| climbed',pct(r.climbed,r.n)+'%','| died',pct(r.died,r.n)+'%');
+for (const [k,r] of Object.entries(res).sort()) console.log(k.padEnd(18),'samples',r.n,'| away',pct(r.away,r.n)+'%','| closer/sideways',pct(r.closer,r.n)+'%','| stayed',pct(r.stayed,r.n)+'%','| climbed',pct(r.climbed,r.n)+'%','| died',pct(r.died,r.n)+'%','|| CHOSE to move',pct(r.chose,r.n)+'%','| chose to eat',pct(r.ate,r.n)+'%');
 console.log("hunters' attacks",ATTK.n,'kills',ATTK.k,'success',pct(ATTK.k,ATTK.n)+'%','| on plant-eaters',ATTK[1]||0,'kills',ATTK.k1||0,'| on hominins',ATTK[0]||0,'kills',ATTK.k0||0);

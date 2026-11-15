@@ -1,0 +1,4 @@
+herd d<=0          samples 405 | away 3% | closer/sideways 0% | stayed 96% | climbed 0% | died 1% || CHOSE to move 37% | chose to eat 8%
+herd d<=1          samples 4825 | away 3% | closer/sideways 1% | stayed 95% | climbed 0% | died 0% || CHOSE to move 54% | chose to eat 10%
+herd d<=2          samples 903 | away 0% | closer/sideways 3% | stayed 97% | climbed 0% | died 0% || CHOSE to move 62% | chose to eat 9%
+hunters' attacks 420 kills 206 success 49% | on plant-eaters 419 kills 206 | on hominins 0 kills 0

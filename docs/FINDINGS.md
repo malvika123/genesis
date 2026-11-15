@@ -2480,6 +2480,35 @@ larger share of deaths.
 
 **Strength.** Moderate (24 worlds × 2 arms); the cause of the improvement not yet separated.
 
+### 84. Prey choose to flee — but a 3 km square hides the escape — Nov 2026
+
+**Version.** 0.7.0+ · commit `d01fb21` (not yet released: held for Fable's review of the staying-alive design,
+`docs/design/staying-alive.md`; Fable's weekly limit was reached on 15 Nov). The owner (14 Nov): "in the real world everyone hides and
+runs; life is very important." A measuring-only trace found herds stayed in their square 95–97% of the time with a hunter in it or next
+to it, and hunters' attacks succeeded 47% of the time (field: lions about 15% alone and 30% in groups, Serengeti; leopards 14–38%).
+Only hominins had an inborn pull to flee; plant-eaters now have the same one (away from a hunter seen in a direction; with an awake
+hunter in the same square, a pull to bolt), the hominins' strength, no new number. `--no-prey-flight` restores (identical worlds).
+
+**Data.** [The traces and the prediction](../data/findings/84-prey-flee/) (worlds 1–3 × 10 days; then 1–2 × 10 days for the choices).
+
+| Herd, nearest hunter (without → with the pull) | Chose to move | Left its square | Ate |
+|---|---|---|---|
+| Same square | 37 → 56% | 3 → 4% | 8 → 7% |
+| 1 square | 54 → 57% | 3 → 3% | 10 → 10% |
+| 2 squares | 62 → 66% | 0 → 0% | 9 → 4% |
+| Hunters' attack success | 49 → 50% | | |
+
+**Result.** (1) Herds move away far more (over 30%, was 3–4%) — **not held** as measured by leaving the square; they **choose** to flee
+more (37 → 56% with a hunter in their square) but a square is 3 km and an animal running covers a third to a half of one in 15 minutes, so
+it rarely leaves in one step. (2) Attack success falls but stays above 15% — **not held**: unchanged (49 → 50%).
+
+**Interpretation.** Prey already tried to run when a hunter was next to them; what is missing is the escape itself. A real escape covers
+a few hundred metres, inside one square, so the map cannot show it; whether an attack succeeds must then depend on whether the prey
+saw it coming and ran — the design's step 2 (hunts that can be detected), to be reviewed before it is built.
+
+**Strength.** Weak (2–3 worlds, 10 days; a trace). **Lesson:** a measure tied to the map's grid can hide what the creatures do; measure
+the choice as well as the outcome.
+
 ---
 
 ## Open questions (next tests)

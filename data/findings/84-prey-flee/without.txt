@@ -1,0 +1,4 @@
+herd d<=0          samples 600 | away 4% | closer/sideways 0% | stayed 96% | climbed 0% | died 1%
+herd d<=1          samples 6962 | away 3% | closer/sideways 1% | stayed 95% | climbed 0% | died 0%
+herd d<=2          samples 1330 | away 0% | closer/sideways 3% | stayed 97% | climbed 0% | died 0%
+hunters' attacks 594 kills 279 success 47% | on plant-eaters 593 kills 279 | on hominins 0 kills 0
