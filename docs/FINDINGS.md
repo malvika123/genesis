@@ -2448,6 +2448,38 @@ with the map off — **held** (2 of 4).
 about 0.19 kg a day). Leopards fall further below their need (1.1–4.6 kg against 4.2): with every animal they meet an adult or a
 yearling of the herd's mix and kills often lost while they sleep, they are the hunters most worth looking at next.
 
+### 82–83. Cutting is an act; the prey map on by default — bands far healthier — Nov 2026
+
+**Version.** 0.7.0+ · commit `4cba3e6`. Entry 82 (the owner's choice after Fable's Oldowan review): holding a flake no longer cuts
+meat by itself; a strike with a flake on a carcass cuts meat off the bone, eaten fast by whoever eats there (`--flake-in-hand-cuts`
+restores). Entry 83 (the owner, 14 Nov: without it plant-eaters died out in 12 of 24 worlds): the prey map on by default
+(`--no-prey-map` restores); every hunter of a pair or pack starts away from the camp, not only the group's centre (bug B28;
+`--old-hunter-placement`). A first run of this entry had the map off by mistake (the runner passes `preyMap:false` unless told, which
+the first version treated as off; fixed, the runs kept and labelled in `map-off-by-mistake/`: without the map plant-eaters died out
+in 17 of 24 worlds).
+
+**Data.** [24 worlds × 100 days, the new default and the old flake rule; the prediction](../data/findings/83-prey-map-default/).
+
+| 24 worlds × 100 days | Entry 78 (map on) | New default (82+83) | New default, flake in hand cuts |
+|---|---|---|---|
+| Worlds with hominins alive | 19 | 21 | 21 |
+| Hominins alive: middle world / all | 8 / 237 | 14 / 404 | 17 / 421 |
+| Worlds where plant-eaters died out | 0 | 1 | 1 |
+| Hominins killed by hunters, per hominin-year | 2.7% | 1.3% | 1.3% |
+| Share of deaths by hunger | 17% | 22% | 22% |
+| Worlds where someone cut meat with a stone (rate per 1,000 hominin-life-years) | 17 (3.7) | 15 (1.8) | 13 (1.4) |
+
+**Result.** (1) Plant-eaters survive in all 24 worlds — **nearly** (23). (2) Cutting with a stone rarer as an act — **not held** (15
+worlds against 13; within noise). (3) Survival and predation as entry 78 — **not held**: far better. Many changes lie between entry
+78 and this run (marrow, carcass rot and edible flesh, cutting, the camp fix, the map's default); the camp fix is the likely main
+cause of the fall in predation (a hunter could start two squares from the band), not yet separated.
+
+**Interpretation.** With real numbers of prey and no hunter placed beside the band, bands hold far better: the middle world keeps 14
+hominins after 33 life-years, against 8. Predation (1.3% a year) is inside the real primate range (0–15%, median 3%). Hunger is now the
+larger share of deaths.
+
+**Strength.** Moderate (24 worlds × 2 arms); the cause of the improvement not yet separated.
+
 ---
 
 ## Open questions (next tests)

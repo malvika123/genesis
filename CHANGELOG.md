@@ -4,6 +4,9 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **The prey map is on by default** (research log entry 83): real numbers of antelope and buffalo as herds; plant-eaters no longer
+  die out. No hunter starts beside the band (bug B28). Cutting meat with a flake is something a hominin must do, not automatic (entry 82).
+  `--no-prey-map`, `--old-hunter-placement`, `--flake-in-hand-cuts` restore the old rules.
 - **Each animal looks like itself** (the owner): impala-like antelope with lyre horns and a white rump, long-eared hares, near-black
   buffalo with swept horns, spotted hyenas with sloping backs, leopards with rosettes and a long curling tail, sabre-tooths with fangs.
 - **Carcasses as they really are** (research log entries 79–81): marrow is about 0.25% of an animal’s weight, very rich; bigger
