@@ -2769,6 +2769,42 @@ this stays. **Strength.** Weak (3 worlds × 20 days).
 
 ---
 
+### 92. A satiety brake: full hunters stop attacking — but more hominins are killed (built, not released) — Nov 2026
+
+**Version.** 0.9.0+ · not released. Fable reviewed "why full hunters keep hunting" (`docs/reviews/2026-11-17-fable-full-hunters.md`):
+a rush costs nothing, a full hunter's hunger hardly falls (hunger is scaled to the 25-day store, not the meal), and "energy 80+" is not
+"full". Built: an inborn pull against attacking that grows with stomach fill, 12 × fill (the hungry pull's size, borrowed; tested 6 and
+24), `--no-full-brake` restores (identical worlds). Measured with `tools/analysis/hunt-measure.js`, 24 worlds × 20 days, adult hunters;
+the stomach and hours since swallowing are read **before** each attack (a first version read them after a kill had been swallowed and
+was discarded; a first baseline was spoiled because the tool re-reads the code for each world while the code was being changed —
+rerun cleanly; neither reached this log).
+
+**Data.** [All four arms and the prediction](../data/findings/92-full-hunters/).
+
+| | Before (brake off) | Brake 6 | Brake 12 | Brake 24 |
+|---|---|---|---|---|
+| Attacks on a stomach over ⅔ full: hyena / leopard / sabre-tooth | 23% / 20% / 22% | 1% / 0% / 1% | 0% / 0% / 0% | 0% / 0% / 0% |
+| Chance of attacking with prey beside, stomach ⅓–⅔ full (sabre-tooth) | 24% | 4% | 1% | 0% |
+| Kills per adult per day: hyena / leopard / sabre-tooth | 0.40 / 0.49 / 0.64 | 0.38 / 0.38 / 0.43 | 0.29 / 0.36 / 0.42 | 0.30 / 0.36 / 0.48 |
+| Meat per adult per day: hyena / leopard / sabre-tooth (need 3.9 / 4.2 / 8.4) | 5.9 / 4.3 / 14.0 | 6.3 / 4.2 / 13.2 | 5.7 / 4.2 / 12.7 | 6.2 / 4.4 / 12.8 |
+| **Hominins killed by hunters** (all kinds) | **29** | **64** | **43** | **41** |
+| Hunters killed by their own kind | 46 | 55 | 66 | 51 |
+
+**Result.** (1) Identical worlds with the switch — **held**. (2) Attacks on a stomach over ⅔ full under 10% — **held** (0–1%).
+(3) Sabre-tooth kills to about 0.4–0.6, not the field's 0.12–0.23 — **held** (0.42–0.48). (4) Sabre-tooth meat toward need from above,
+leopard meat not falling — **held** (14.0 → 12.7–13.2; leopard 4.2–4.4). (5) No sign of hunters starving — kills and meat hold for
+leopards and hyenas; starvation deaths not measured by this tool. **Not predicted: hominins killed by hunters rose from 29 to 41–64.**
+
+**Interpretation.** The brake does what a full stomach does in a real cat: a full hunter lets prey pass. Sabre-tooths still kill 2–3 ×
+their stand-ins and eat 1.5 × their need (the remaining steps Fable listed: digestion by size, the energy cap that throws meat away).
+The rise in hominins killed is a warning, not yet explained: perhaps hunters that skip prey while full are hungrier later and attack
+whatever is beside them, or the 20-day worlds differ by chance (hominin deaths are few). **Do not release** until a 24-world × 100-day
+run with predator deaths of hominins by age shows whether it is real. Hunters killing their own kind (46 before) was already there.
+
+**Strength.** Moderate for the brake's effect on hunters (24 worlds, three strengths, same direction); weak for the hominin rise.
+
+---
+
 ## Open questions (next tests)
 
 - Ablate the bundle in entry 7: which of band size, parental feeding, instincts, one-shot memory and

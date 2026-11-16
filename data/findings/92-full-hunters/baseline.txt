@@ -1,0 +1,6 @@
+# 24 worlds x 20 days; attacks by adult hunters; per adult hunter per real day (96 steps)
+kind | adult hunter-days | attacks | success | kills by wounds | kills per adult-day | meat eaten per hunter-day (all ages) | on asleep | on young | on eating | on hominins | kg per clean kill (whole animal) | prey mix of clean kills | energy at attack (mean) | attacks when well fed (energy 80+) | hunter-days all ages | meat per adult-day if adults ate it all | attacks on a stomach over 2/3 full | attacks within 6 h of swallowing | chance of attacking with prey beside, stomach 0-1/3, 1/3-2/3, 2/3-full
+Hyena | 1581 | 1373 | 46% | 1 | 0.40 | 4.07 | 12% | 1% | 10% | 1% | 50.5 | Antelope 502, Hare 73, Hyena 25, Buffalo 19, Hominin 11, Fish 1 | 77 | 51% | 2282 | 5.88 | 23% | 25% | 43% of 1896, 27% of 755, 22% of 1528
+Leopard | 1477 | 1726 | 42% | 4 | 0.49 | 3.27 | 10% | 1% | 12% | 1% | 29.8 | Antelope 517, Hare 182, Leopard 12, Hominin 7, Buffalo 3, Fish 1 | 70 | 43% | 1951 | 4.33 | 20% | 27% | 38% of 2764, 28% of 1036, 18% of 2086
+Sabre-tooth | 1722 | 2026 | 54% | 4 | 0.64 | 10.28 | 12% | 0% | 11% | 1% | 86.4 | Antelope 961, Buffalo 97, Hare 22, Hominin 11, Sabre-tooth 9, Fish 1 | 81 | 63% | 2337 | 13.95 | 22% | 27% | 32% of 3532, 24% of 1848, 18% of 2567
+(meat eaten is the world ledger by kind, all ages: it cannot be split by age)

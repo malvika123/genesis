@@ -51,6 +51,16 @@ Read this first in a new session, then **`docs/MASTER-PLAN.md` (the one plan to 
   attacks 80% → 61%). **Next:** a design note for review — what stops a real cat hunting when full (satiety, the cost of a rush),
   sourced; trace where the leopard's carcass goes; then a 24-world baseline; then the detection rule with a registered assumption tested at both ends.
 
+## The satiety brake (entry 92, 17 Nov) — built on `percept`, NOT released
+
+- `--no-full-brake` restores (identical worlds). Full hunters now let prey pass (attacks on a ⅔-full stomach 20% → 0%); sabre-tooth
+  kills 0.64 → 0.42; leopards keep their meat. **But hominins killed by hunters rose 29 → 41–64** (24 worlds × 20 days).
+- **Next (in order):** (1) 24 worlds × 100 days, both arms (`--no-full-brake` vs default), compare `died_killed_by_a_predator` for
+  hominins (`node tools/analysis/compare-runs.js A.csv B.csv`) and `node tools/analysis/predators.js` by age — release only if the
+  rise is not real or is explained; (2) Fable's next steps: digestion by size, the leopard's stomach share, the energy cap; (3) then F1.
+- Pitfalls met today: `hunt-measure.js` re-reads the code for each world (never edit `src/` while it runs); in zsh, `set -- $a` does
+  not split words (write each run out); read a hunter's stomach **before** its attack.
+
 ## Next, in order
 
 1. ~~Finish entry 85~~ (done, v0.8.0). Was: compare the two arms (dig firsts per 1,000 hominin-life-years with `node tools/analysis/rates.js`; hunger deaths),

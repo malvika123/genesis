@@ -105,6 +105,8 @@ function buildWorld(cfg) {
   SOC.africanNuts = cfg.oldNuts !== true; // nuts of warm open woodland among early hominins (off: oak, hazel, walnut rules)
   SOC.rootVal = cfg.rootValue ?? 80; // food from a bite of roots (fruit 70; an assumption: raw tubers are poor, sedge corms rich)
   SOC.voiceGenes = cfg.noVoiceGenes !== true; // vocal learning, pointing, shared-attention joy can evolve from ape-low (off: fixed at 0)
+  SOC.fullBrakeOn = cfg.noFullBrake !== true; // the satiety brake on attacking (entry 92; off: the old rule)
+  SOC.fullBrake = cfg.fullBrake ?? 12; // its strength (an assumption, the hungry pull's size: tested 6 and 24)
   SOC.fruitCal = cfg.fruitFollowsWarmth !== true; // the fruit calendar, Uvinza's year (entry 89; off: fruit follows warmth only, the old rule)
   SOC.fruitHang = cfg.fruitHang ?? 1 / 12; // how long ripe fruit hangs, as a share of a year (an assumption: tested 1/24 and 1/6)
   SOC.digAct = cfg.toolInHandDigs !== true; // digging with a tool is an act: a strike into the ground (off: holding a tool digs by itself, the old rule)

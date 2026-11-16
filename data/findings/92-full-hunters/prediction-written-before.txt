@@ -1,0 +1,10 @@
+Entry 92, the satiety brake (Fable's review of 17 Nov, option 2 keyed to the stomach). Written before the run with the brake.
+An inborn pull against attacking that grows with stomach fill: RF[A_ATK] -= SOC.fullBrake x stomach fill x (prey beside), with
+SOC.fullBrake = 12, the hungry pull's full size (5 + 7), borrowed as the prey's flight pull borrowed the hominins'; tested at 6 and 24.
+--no-full-brake restores. Measured with tools/analysis/hunt-measure.js, 24 worlds x 20 days, against the baseline (same worlds).
+1. Identical worlds with --no-full-brake (seeds 1-2 x 20 days).
+2. Attacks on a stomach over 2/3 full fall to a small share (under 10%) for all three kinds.
+3. Sabre-tooth kills per adult per day fall, to about 0.4-0.6 - NOT to the field's 0.12-0.23 (if they do, suspect starving).
+4. Sabre-tooth meat a day moves toward need from above; leopard meat a day does not fall.
+5. No rise in hunters' starvation (energy at attack and kills hold for leopard and hyena).
+If kills fall but meat falls below need, or hunters starve: stop, do not adjust.

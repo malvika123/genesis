@@ -368,6 +368,10 @@ function sim() {
       }
     }
     if (a.sp === 2) RF[A_ATK] = (5 + (SOC.huntPull ? 7 * (1 - SOC.atkFixed) : 0)) * hu * x[HB + 2]; // the hungry part of the pull to attack (A32)
+    // The satiety brake (entry 92; --no-full-brake: none): a full stomach damps the urge to attack, as a gorged cat lets prey pass and a
+    // bigger meal delays a leopard's next kill (Wilmers et al. 2017). Felt hunger is scaled to the long store, so it hardly falls after a
+    // meal; this pull is keyed to the stomach. Its size borrows the hungry pull's (SOC.fullBrake 12, an assumption tested 6 and 24).
+    if (a.sp === 2 && SOC.fullBrakeOn && gutOn(a)) RF[A_ATK] -= SOC.fullBrake * gutFill(a) * x[HB + 2];
     // Plant-eaters flee too (entry 84; the owner, 14 Nov 2026: "in the real world everyone hides and runs"). Before, only hominins had
     // an inborn pull away from a hunter; a herd stayed put 95–97% of the time with a hunter beside it or among it (measured). Prey are
     // born ready to fear and flee, and experience sharpens it (predator-naive moose regain full responses within a generation of losing
@@ -1345,6 +1349,7 @@ function sim() {
         }
       if (t) {
         a.kcd = 4;
+        const gut0 = HUNTLOG && gutOn(a) ? gutFill(a) : 0, e0 = a.e, g0 = a.gulpT; // before the attack, for the record only
         const T = t.S;
         // bigger prey is harder to bring down alone; hunters of the same kind close by help (a pack)
         let help = 0;
@@ -1472,7 +1477,7 @@ function sim() {
         }
         // the record of each hunter's attack, for measuring only (tools/analysis/hunt-measure.js; null unless asked for; changes nothing)
         if (HUNTLOG && a.sp === 2)
-          HUNTLOG.push({ k: a.S.n, adult: a.age >= a.S.mat, prey: t.sp === 0 ? 'Hominin' : T.n, kg: t.sp === 0 ? bodyKg(t) : T.mass ? preyKg(t) : 0, asleep: !!t.asleep, young: t.age < T.mat * T.wn, eating: t.act === A_EAT, fear: t.fear || 0, hungry: a.e, hit, wound: !hit && !!t.dead, tick });
+          HUNTLOG.push({ k: a.S.n, adult: a.age >= a.S.mat, prey: t.sp === 0 ? 'Hominin' : T.n, kg: t.sp === 0 ? bodyKg(t) : T.mass ? preyKg(t) : 0, asleep: !!t.asleep, young: t.age < T.mat * T.wn, eating: t.act === A_EAT, fear: t.fear || 0, hungry: e0, gut: gut0, sinceGulp: g0 === undefined ? null : (tick - g0) / 4, hit, wound: !hit && !!t.dead, tick });
       }
     }
     if (a.age % 48 === a.id % 48 && a.age > 48) lessons(a);
@@ -1680,6 +1685,7 @@ const gutOn = (a) => SOC.gut && a.sp === 2 && !!a.S.mass,
 function gulp(a, kg) {
   const k = Math.max(0, Math.min(kg, gutCap(a) - (a.gut || 0)));
   a.gut = (a.gut || 0) + k;
+  if (k > 0) a.gulpT = tick; // when it last swallowed (for measuring only; read by nothing in the world)
   eatKg[a.S.n] = (eatKg[a.S.n] || 0) + k; // the record (the ledger; changes nothing)
   return k;
 }
@@ -1742,7 +1748,7 @@ const hunterSeen = (x) => {
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { atkP: 0.6, atkEasy: 0.9, fruitCal: true, fruitHang: 1 / 12, mutP: 0.2, mutStep: 0.3, wireMutP: 0.03, wireMutSd: 0.4, digAct: true, preyFlight: true, campFix: true, cutAct: true, cutKg: 0.75, fleshOnly: true, fleshShare: 0.5, rotBySize: true, marrowKg: true, marrowFrac: 0.0025, marrowKcal: 7860, stickHumid: true, brandByDry: true, fireNatural: true, rotByKg: true, homMeatKg: true, biteBareKg: 0.25, biteFlakeKg: 0.75, meatKcal: 1140, herdYoung: true, youngShare: 0.25, forestPrey: 1000, meatMemory: true, keepKill: true, homStrikeKg: true, huntPull: true, atkFixed: 0.25, gut: true, gutShare: 0.25, digestH: 24, mealSleep: 2, preyMap: false, preyLevel: 5000, buffShare: 0.5, preyRegrow: 0.3, preyZone: 1, preyRule: 'soft', bigK: 2, preyMaxX: 1, smallPrey: true, maxPreyKg: 15, marrow: true, marrowShare: 0.15, marrowVal: 110, digStick: 0.55, digFlake: 0.4, digStone: 0.3, digBare: 0.15, sedges: true, sedgeCap: 0.5, africanNuts: true, rootVal: 80, voiceGenes: true, fireMaking: true, founderElders: 0.12, brainCost: true, brainF: 0.1, carry: true, carryAge: 2, walkE: true, walkJ: 4, pal: 1.7, growBodies: true, massF: 30, massM: 42, swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { fullBrakeOn: true, fullBrake: 12, atkP: 0.6, atkEasy: 0.9, fruitCal: true, fruitHang: 1 / 12, mutP: 0.2, mutStep: 0.3, wireMutP: 0.03, wireMutSd: 0.4, digAct: true, preyFlight: true, campFix: true, cutAct: true, cutKg: 0.75, fleshOnly: true, fleshShare: 0.5, rotBySize: true, marrowKg: true, marrowFrac: 0.0025, marrowKcal: 7860, stickHumid: true, brandByDry: true, fireNatural: true, rotByKg: true, homMeatKg: true, biteBareKg: 0.25, biteFlakeKg: 0.75, meatKcal: 1140, herdYoung: true, youngShare: 0.25, forestPrey: 1000, meatMemory: true, keepKill: true, homStrikeKg: true, huntPull: true, atkFixed: 0.25, gut: true, gutShare: 0.25, digestH: 24, mealSleep: 2, preyMap: false, preyLevel: 5000, buffShare: 0.5, preyRegrow: 0.3, preyZone: 1, preyRule: 'soft', bigK: 2, preyMaxX: 1, smallPrey: true, maxPreyKg: 15, marrow: true, marrowShare: 0.15, marrowVal: 110, digStick: 0.55, digFlake: 0.4, digStone: 0.3, digBare: 0.15, sedges: true, sedgeCap: 0.5, africanNuts: true, rootVal: 80, voiceGenes: true, fireMaking: true, founderElders: 0.12, brainCost: true, brainF: 0.1, carry: true, carryAge: 2, walkE: true, walkJ: 4, pal: 1.7, growBodies: true, massF: 30, massM: 42, swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {

@@ -17,20 +17,32 @@ const S = X.fromArgs(args),
   seeds = X.seedList(String(args.seeds || '1-3')),
   days = +(args.days || 20);
 const T = {},
-  row = (n) => (T[n] = T[n] || { adultSteps: 0, allSteps: 0, att: 0, hit: 0, wound: 0, kg: 0, asleep: 0, young: 0, eating: 0, hom: 0, hitKg: 0, mix: {}, eatKg: 0, fed: 0, eSum: 0 });
+  row = (n) => (T[n] = T[n] || { adultSteps: 0, allSteps: 0, att: 0, hit: 0, wound: 0, kg: 0, asleep: 0, young: 0, eating: 0, hom: 0, hitKg: 0, mix: {}, eatKg: 0, fed: 0, eSum: 0, full: 0, soon: 0, opp: [0, 0, 0], oppAtt: [0, 0, 0] });
 for (const seed of seeds) {
-  const E = new Function(engineSource() + '\nreturn { setSeed, reset, sim, DAY, ag: () => ag, eatKg: () => eatKg, startLog: () => { HUNTLOG = []; }, log: () => HUNTLOG };')();
+  const E = new Function(engineSource() + '\nreturn { setSeed, reset, sim, DAY, ag: () => ag, eatKg: () => eatKg, gutFill, HB, startLog: () => { HUNTLOG = []; }, log: () => HUNTLOG };')();
   E.setSeed(seed);
   E.reset(S.cfg);
   E.startLog();
   const kg0 = { ...E.eatKg() };
+  const wait = new Map(),
+    gutPrev = new Map(); // the stomach before this step (after it, a kill has been swallowed)
   for (let t = 0; t < days * E.DAY; t++) {
     E.sim();
     for (const a of E.ag())
       if (a.sp === 2 && !a.dead) {
         const r = row(a.S.n);
         r.allSteps++;
-        if (a.age >= a.S.mat) r.adultSteps++;
+        if (a.age >= a.S.mat) {
+          r.adultSteps++;
+          // the clean measure (Fable): the chance of attacking when awake, not waiting, with prey beside — by stomach fill (thirds)
+          if (!a.asleep && (wait.get(a) ?? 0) <= 1 && a.xi[E.HB + 2] > 0) {
+            const b = Math.min(2, Math.floor((gutPrev.get(a) ?? 0) * 3));
+            r.opp[b]++;
+            if (a.kcd === 4) r.oppAtt[b]++;
+          }
+        }
+        wait.set(a, a.kcd);
+        gutPrev.set(a, E.gutFill(a));
       }
   }
   for (const h of E.log()) {
@@ -43,6 +55,8 @@ for (const seed of seeds) {
     if (h.prey === 'Hominin') r.hom++;
     r.eSum += h.hungry;
     if (h.hungry >= 80) r.fed++;
+    if (h.gut > 2 / 3) r.full++;
+    if (h.sinceGulp !== null && h.sinceGulp < 6) r.soon++;
     if (h.hit) (r.hit++, (r.hitKg += h.kg), (r.mix[h.prey] = (r.mix[h.prey] || 0) + 1));
     if (h.wound) r.wound++;
   }
@@ -51,12 +65,12 @@ for (const seed of seeds) {
 }
 const pct = (a, b) => (b ? ((100 * a) / b).toFixed(0) + '%' : '-');
 console.log(`# ${seeds.length} worlds x ${days} days; attacks by adult hunters; per adult hunter per real day (96 steps)`);
-console.log('kind | adult hunter-days | attacks | success | kills by wounds | kills per adult-day | meat eaten per hunter-day (all ages) | on asleep | on young | on eating | on hominins | kg per clean kill (whole animal) | prey mix of clean kills | energy at attack (mean) | attacks when well fed (energy 80+) | hunter-days all ages | meat per adult-day if adults ate it all');
+console.log('kind | adult hunter-days | attacks | success | kills by wounds | kills per adult-day | meat eaten per hunter-day (all ages) | on asleep | on young | on eating | on hominins | kg per clean kill (whole animal) | prey mix of clean kills | energy at attack (mean) | attacks when well fed (energy 80+) | hunter-days all ages | meat per adult-day if adults ate it all | attacks on a stomach over 2/3 full | attacks within 6 h of swallowing | chance of attacking with prey beside, stomach 0-1/3, 1/3-2/3, 2/3-full');
 for (const [n, r] of Object.entries(T)) {
   const ad = r.adultSteps / 96,
     all = r.allSteps / 96;
   console.log(
-    [n, ad.toFixed(0), r.att, pct(r.hit, r.att), r.wound, ((r.hit + r.wound) / ad).toFixed(2), (r.eatKg / all).toFixed(2), pct(r.asleep, r.att), pct(r.young, r.att), pct(r.eating, r.att), pct(r.hom, r.att), r.hit ? (r.hitKg / r.hit).toFixed(1) : '-', Object.entries(r.mix).sort((a, b) => b[1] - a[1]).map(([p, c]) => p + ' ' + c).join(', '), r.att ? (r.eSum / r.att).toFixed(0) : '-', pct(r.fed, r.att), all.toFixed(0), (r.eatKg / ad).toFixed(2)].join(' | ')
+    [n, ad.toFixed(0), r.att, pct(r.hit, r.att), r.wound, ((r.hit + r.wound) / ad).toFixed(2), (r.eatKg / all).toFixed(2), pct(r.asleep, r.att), pct(r.young, r.att), pct(r.eating, r.att), pct(r.hom, r.att), r.hit ? (r.hitKg / r.hit).toFixed(1) : '-', Object.entries(r.mix).sort((a, b) => b[1] - a[1]).map(([p, c]) => p + ' ' + c).join(', '), r.att ? (r.eSum / r.att).toFixed(0) : '-', pct(r.fed, r.att), all.toFixed(0), (r.eatKg / ad).toFixed(2), pct(r.full, r.att), pct(r.soon, r.att), r.opp.map((o, b) => pct(r.oppAtt[b], o) + ' of ' + o).join(', ')].join(' | ')
   );
 }
 console.log('(meat eaten is the world ledger by kind, all ages: it cannot be split by age)');
