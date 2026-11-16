@@ -252,3 +252,33 @@ traits and learned scores by generation), `hunger-trace.js`, `drowning-trace.js`
 `life-trace.js`, `children-near-mothers.js`, `community-compare.js`, `first-times.js`, `talk-detector.js`. To track over long runs:
 brain and body size by generation, first stone flaking, first meat cut with a stone, first fire kept, group size, and — once it
 exists — whether discoveries are repeated and spread.
+
+
+## THE ROADMAP (the owner and Fable, 16 Nov 2026)
+
+The owner's vision: run Genesis for millions of years and watch hominins evolve generation after generation — groups with their
+own ways to learn and evolve, and language. "My vision is a little big, but for that I need these smaller pieces." The owner keeps
+the globe ("it gives the sense of my reality"), with a fine-grained valley inside it. Full text of the advice, every word kept:
+`docs/reviews/2026-11-16-fable-big-picture.md` (the big-picture review, the follow-up questions, and the vision); all reviews in
+`docs/reviews/`.
+
+| Stage | What | Test that it worked | Effort |
+|---|---|---|---|
+| 0 | Three months: detectable hunts, a frozen faithful-day table, the chain-learning probe, a real-length-year clock, counting repeats, one hard skill | milestones: faithful-day table (~3 weeks); a short chain learned (~6 weeks); one hard skill with repeats and a mother-to-young advantage (~3 months) | 3 months |
+| 1 | Engine: profile, then speed | 3× faster, identical worlds by seed | 2–4 weeks |
+| 2 | A valley (100–250 m squares) inside the globe | faithful-day table still passes; escapes show | 1–2 months |
+| 3 | Three bands, knowing individuals, females moving | transfer rates near Gombe's; bands last 300 years in most worlds | 1–2 months |
+| 4 | Things as things, two hands; then the tradition test | a habit that outlasts its inventor and differs between bands | 2–3 months |
+| 5 | Selection measured; a population-genetic bridge built and checked | the bridge predicts a lived 2,000 years within the spread between worlds | 2–3 months |
+| 6 | The first relay: 100,000 years, then a million | traits move the same way in most worlds, set beside the fossil record | 3+ months, a few hundred dollars |
+| 7 | Signals, alongside stage 3 onward | learned call meanings cut deaths; later, a band's own call | open-ended |
+
+**Stop rules.** Stage 0: stop if the milestones fail, or if a month passes with no change in hominin behaviour. If the bridge fails its
+check (stage 5), millions of years cannot be reached faithfully this way — stay with lived centuries and say so. If traditions do not
+appear at stage 4 on the real clock with working objects, change the brain one evidenced change at a time, or stop there.
+
+**The test of the project** (Fable): not "do they become human", but one belief about us, honestly built and checked, at a time —
+e.g. "with brain X they do not cut with a stone; with single change Y they do, and the young learn it beside a skilled mother", or an
+honest no. **Let go of for now:** ice ages, pigment, *Paranthropus*, friction fire (A41 stays as a broken behaviour to fix later).
+**Not fast-forwarded:** anything learned, and anything new. **Fake shortcuts to avoid:** hand-written selection, one measurement
+stretched across a million years, brains that grow without cost, cherry-picked windows.

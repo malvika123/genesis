@@ -54,6 +54,9 @@ test on the same worlds; never tune toward survival.
 | W6 | **merged into `percept` 12 Nov, goes live with Phase A** — Starving: smooth hunger + refeeding signal at 20% (and 25%) | 24 worlds: no measurable effect on survival or hunger at either end; 20% vs 25% within noise — keep, at 20% (evidence) | merge; then **each hominin inherits its own threshold in 20–25%** (the owner's idea: individuals differ; selection may favour one end) |
 | W7 | **merged into `percept` 12 Nov, goes live with Phase A** — Ape-like care: only mothers feed their young (`--human-care` restores foragers') | test queued | results due |
 
+**Roadmap (16 Nov 2026):** the staged plan to the owner's vision is in `docs/HOMININ-PLAN.md` ("THE ROADMAP"); the full advice in
+`docs/reviews/2026-11-16-fable-big-picture.md`. Items below are worked in its order: stage 0 first.
+
 ## 3. Verified, not built yet (in a sensible order)
 
 | # | What | Evidence | Note |
