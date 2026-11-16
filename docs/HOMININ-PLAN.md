@@ -354,3 +354,16 @@ fails in every release, a fair comparison page; write "to our knowledge", never 
 habit, a "traces left" test (the 2023 stone-transport authors are natural contacts). *Easy to copy:* features, technology, the idea.
 *Hard to copy:* the dated record of predictions, the discipline of not tuning, the checked assumptions register, independence, the
 owner's own voice.
+
+
+**Making Genesis hard to replace (Fable, 16 Nov 2026; full text in the review; general knowledge, check with a lawyer before paying for
+anything).** *Cannot be prevented:* MIT code can be copied, renamed and sold with the notice kept; ideas cannot be owned. **Stay MIT**
+(copyleft only stops closed copies and puts off adopters; keeping parts private destroys the reproducibility that is the real advantage).
+The danger is being ignored, not copied. Put the writing (log, reviews, lessons) under a Creative Commons attribution licence.
+*Cheap protection:* `LICENSE` and `CITATION.cff` with Zenodo DOIs already exist; only one release tag (v0.7.0, 8 Nov), so **release more
+often**; "Genesis" alone is a common word — use a distinctive full name with matching web address and GitHub name, a trademark only if real
+confusion appears; a preprint gives dated priority. *Irreplaceable even when copied:* the dated record of predictions and corrections, data
+repeatable by seed, trust earned by showing errors, collaborators and users, steady releases, the owner's own voice. **First steps:** this
+week — fix the public name and addresses, cut a new release, add how-to-cite and the writing licence; this month — link each entry to the
+commit holding its prediction, publish the "What we got wrong" page and the validation table; with stage 0 — a repeat-it guide and a
+contributor guide; then the preprint. *The aim: impossible to catch up with, not impossible to copy.*

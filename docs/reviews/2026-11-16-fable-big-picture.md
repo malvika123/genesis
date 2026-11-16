@@ -960,3 +960,88 @@ the idea of mixing the two camps. A funded laboratory could rebuild the engine i
 different in its *combination* and its *conduct* — and conduct is the part others find hardest to copy. Do not try to be
 different by adding features; someone will always have more. Be different by being the world whose every claim can be
 checked, and that says so when it is wrong.
+
+## Making Genesis hard to replace (16 Nov 2026)
+
+No web searches were used. I am not a lawyer: the licence and trademark points are general knowledge; check with one before
+paying for anything. I looked in the repository: `LICENSE` (MIT), `CITATION.cff` with Zenodo DOIs, one release tag (v0.7.0) and a `lab.html` are already there.
+
+### 1. What cannot be prevented — and whether to change the licence
+
+**Plainly: you cannot stop anyone making another Genesis.** The code is public under MIT, which lets anyone copy, change, rename
+and even sell it, so long as they keep your copyright notice. Copies already released under MIT stay MIT for ever; you cannot
+take that back. And ideas — a sourced hominin world, learning creatures, a prediction log — cannot be owned by anyone at all.
+
+**Would another licence help?**
+
+| Choice | What it does | For an open scientific instrument |
+|---|---|---|
+| Stay MIT | anyone may use it for anything, with your name kept | **Best for trust and adoption.** Teachers, museums and researchers can use it without asking a lawyer |
+| GPL / AGPL (copyleft) | anyone who shares a changed version must share their changes openly too | stops a *closed* copy; does not stop an open one. Some universities and companies avoid it. A fair choice if a closed commercial copy is your real fear — I do not think it is the real danger |
+| Keep parts private | others cannot run or check those parts | **Hurts most.** A result nobody can repeat is exactly what Genesis exists not to be. It trades your one true advantage for a lock that a funded team would rebuild around anyway |
+
+**My advice: stay MIT.** The danger to Genesis is not being copied. It is being ignored. A copy that credits you spreads your
+name; a locked project spreads nothing. One fair addition: license the *writing* (the findings log, reviews, lessons) under a
+Creative Commons attribution licence, so the words carry your name wherever they go.
+
+### 2. What can be protected, cheaply
+
+- **Copyright and attribution** — already yours, automatically, and MIT requires your notice to stay. *Achieves:* your name
+  travels with every honest copy. It does not stop copying.
+- **A DOI for each release (Zenodo, free)** — you have this already: `CITATION.cff` carries a Zenodo DOI for v0.7.0 and one
+  for all versions. Each numbered release is archived with a citable identifier and a date nobody can alter. *Achieves:* proof
+  of what existed when, kept by a third party; a proper way for papers to cite you. The gap: v0.7.0 is dated 8 Nov, and most of
+  entries 63–84 came after it. **Release more often**, so the archive keeps pace with the log.
+- **`CITATION.cff`** — you have it, with the DOIs. Keep it current with each release. *Achieves:* people cite the right thing.
+- **The name.** Using "Genesis" publicly and first gives some standing; a registered trademark gives more, at a cost, country by
+  country. But "Genesis" alone is a very common word and hard to defend. *Cheaper and stronger:* a distinctive full name used
+  everywhere the same way (for example with your name or a subtitle), the matching web address, and the same handle on GitHub.
+  Register a trademark only if a real confusion ever appears. *Achieves:* others may copy the code but may not pass themselves
+  off as you.
+- **A preprint.** A dated, public, citable statement of the method and first results, under your name. *Achieves:* priority
+  for the ideas in the only currency science accepts.
+
+None of these stops a copy. Together they make sure a copy is *known to be a copy*.
+
+### 3. What makes it irreplaceable even when copied
+
+Someone can copy the repository in a second. What they get is the code as it stands today. What they cannot get:
+
+- **The dated record.** Eighty-four entries with predictions written before results, corrections left in view. A copier starts
+  at entry zero or carries your history with your name on it. *Build it:* keep going exactly as now; add the prediction file's
+  commit to each entry so the "written first" is provable; archive each release on Zenodo.
+- **The data and runs.** Tables for every entry, repeatable by seed. *Build it:* keep `data/findings/` complete; publish the
+  one-command repeat for each entry. Reproducibility is a gift to copiers and, oddly, your best defence: the more people
+  re-run your results, the more *yours* is the reference everyone compares against.
+- **Trust and reputation.** Earned only by time and by being seen to say "we were wrong". *Build it:* the "What we got wrong"
+  page; the validation table with its fails; never an exaggerated claim. One overstated headline would cost more than any copy.
+- **People.** A collaborator, a teacher who uses it, a handful who file issues. A community follows a person and a history, not
+  a codebase. *Build it:* answer everyone; credit everyone by name; make a first contribution easy (a clear guide, small
+  starter tasks, a welcome).
+- **Steady releases.** A project that moves every month is the original by definition; a copy must keep pace or be stale.
+  *Build it:* small numbered releases on a rhythm you can keep for years, not sprints you cannot.
+- **Your voice.** The questions, the rules, the refusal to tune, the reason you began. Nobody else has your reasons. *Build it:*
+  write the short pieces only you can write — why a rule exists, what a null taught you — and sign them.
+
+**The honest sum:** if a well-funded team builds a faster, larger world on your ideas and credits you, that is not a loss; it
+is the best outcome short of doing it yourself, and you would be the one they cite and ask. If they do it without credit, your
+dated record, DOIs and preprint show who was first. Either way, what would be "another Genesis" needs the years of honest
+entries — and those cannot be copied, only earned again.
+
+### 4. First steps, in order — cheap and soon
+
+1. **This week (free):** decide the full public name; secure the web address and the GitHub name to match.
+2. **This week (free):** cut a new numbered release so Zenodo archives the work since v0.7.0 (Zenodo and `CITATION.cff` are
+   already set up); check the DOI shows in the README and the website footer.
+3. **This week (free):** add a line to the README and site: how to cite, and that the writing is under a Creative Commons
+   attribution licence (after choosing one).
+4. **This month:** make every findings entry point to the commit that holds its prediction, so "written before" can be checked
+   by anyone.
+5. **This month:** the "What we got wrong" page and the validation table with fails, on the site.
+6. **Within three months (with stage 0):** the repeat-it-yourself guide for entry 58; a short contributor's guide.
+7. **After stage 0:** the preprint, under your name, with the DOI.
+8. **Only if needed, later:** a lawyer about a trademark.
+
+**If I were you,** I would stop trying to make Genesis impossible to copy, and make it impossible to *catch up with*: a public
+history that grows every month, results anyone can check, and a name that people have learned to trust. Locks keep others
+out. A record keeps you ahead.
