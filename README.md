@@ -157,4 +157,5 @@ The tests check that the world is reproducible, that creatures stay within their
 
 ## License
 
-MIT — see [LICENSE](LICENSE). Copyright (c) 2026 Malvika Sen.
+The code: MIT — see [LICENSE](LICENSE). The writing (research log, assumptions, plan, reviews, data tables, the website's About and
+Research text): Creative Commons Attribution 4.0 — see [LICENSE-docs.md](LICENSE-docs.md). Copyright (c) 2026 Malvika Sen.
