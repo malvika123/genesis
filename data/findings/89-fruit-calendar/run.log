@@ -1,0 +1,27 @@
+
+24 worlds, 100 days each. People alive at the end: mean 15.5, median 8; 3 worlds ended with nobody left.
+Deaths: hunger 172, thirst 6, killed by a predator 220, drowned 7, burned 90, its wounds 138, old age 183, giving birth 5, illness 85
+take       24 / 24 worlds, median day 1, earliest 1
+nut        24 / 24 worlds, median day 1, earliest 1
+flake      24 / 24 worlds, median day 5, earliest 1
+root       24 / 24 worlds, median day 1, earliest 1
+dig        24 / 24 worlds, median day 1, earliest 1
+meat       24 / 24 worlds, median day 1, earliest 1
+butcher    12 / 24 worlds, median day 32, earliest 3
+hunt        7 / 24 worlds, median day 13, earliest 3
+cooked     16 / 24 worlds, median day 9, earliest 4
+brand      15 / 24 worlds, median day 12, earliest 4
+setfire     6 / 24 worlds, median day 13, earliest 8
+fed         3 / 24 worlds, median day 35, earliest 8
+kept        0 / 24 worlds
+madefire    0 / 24 worlds
+rubfire     0 / 24 worlds
+share      24 / 24 worlds, median day 1, earliest 1
+vicar      24 / 24 worlds, median day 1, earliest 1
+swim       22 / 24 worlds, median day 17, earliest 2
+point      24 / 24 worlds, median day 1, earliest 1
+joint      21 / 24 worlds, median day 1, earliest 1
+speak      24 / 24 worlds, median day 1, earliest 1
+shared     23 / 24 worlds, median day 17, earliest 4
+shelter     0 / 24 worlds
+Wrote calendar.csv

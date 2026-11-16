@@ -4,6 +4,15 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+## 0.9.0 — 2026-11-16
+
+- **Fruit has a year** (research log entries 88–89): it ripens most in the dry months of a real station's year (Uvinza, beside the
+  savanna-chimpanzee sites of Ugalla and Issa), as fruit does at Issa; lowest late in the rains. `--fruit-follows-warmth` restores.
+- **The mutation rule is registered and a gene that does nothing is added as the yardstick for chance** (entry 86): beside it,
+  learning from others fell in 17 of 18 worlds.
+- **Can the brain learn a chain?** (entry 87): two steps yes, three for half, four no; it holds a cue for 2–4 steps.
+- Tools: `tools/identical-worlds.sh`, `tools/analysis/chain-probe.js`, `neutral-compare.js`, `seasons-at-home.js`.
+
 ## 0.8.0 — 2026-11-16
 
 - **Plant-eaters run from hunters** (research log entry 84): they have the same inborn pull to flee as hominins; `--no-prey-flight`

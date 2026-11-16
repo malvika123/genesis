@@ -1,0 +1,15 @@
+24 paired worlds (seeds 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24)
+per seed alive A 21 16 30 15 0 32 6 24 19 17 1 6 5 8 0 7 24 0 6 13 0 3 0 0 | B 12 5 40 4 28 23 0 40 3 41 5 4 0 28 1 16 36 35 11 37 1 1 0 1
+died out: A 6, B 3
+people_alive                 A: 10.5 ± 10.2    B: 15.5 ± 15.8    diff 4.96 [-0.64, 10.56]  B higher in 14, lower in 9
+generations                  A: 2.0 ± 0.4      B: 2.0 ± 0.8      diff 0.00 [-0.34, 0.34]  B higher in 6, lower in 7
+plant_eaters                 A: 58.8 ± 31.3    B: 65.5 ± 21.3    diff 6.67 [-1.48, 14.81]  B higher in 16, lower in 8
+hunters                      A: 13.8 ± 3.3     B: 15.0 ± 3.3     diff 1.25 [-0.76, 3.26]  B higher in 14, lower in 9
+died_hunger                  A: sum 186        B: sum 172        diff -0.58 [-2.39, 1.22]  B higher in 9, lower in 10
+died_thirst                  A: sum 1          B: sum 6          diff 0.21 [0.00, 0.42]  B higher in 6, lower in 1
+died_killed_by_a_predator    A: sum 278        B: sum 220        diff -2.42 [-4.85, 0.01]  B higher in 7, lower in 13
+died_drowned                 A: sum 7          B: sum 7          diff 0.00 [-0.34, 0.34]  B higher in 4, lower in 6
+died_burned                  A: sum 95         B: sum 90         diff -0.21 [-1.92, 1.50]  B higher in 6, lower in 8
+died_its_wounds              A: sum 134        B: sum 138        diff 0.17 [-1.28, 1.61]  B higher in 12, lower in 8
+died_old_age                 A: sum 174        B: sum 183        diff 0.38 [-0.82, 1.57]  B higher in 12, lower in 9
+died_giving_birth            A: sum 6          B: sum 5          diff -0.04 [-0.30, 0.21]  B higher in 4, lower in 5

@@ -2549,7 +2549,7 @@ toward an outcome. **Lesson:** a first-time count measures chance as much as ski
 
 ### 86. The mutation rule registered, a gene that does nothing — and copying falls beside it — Nov 2026
 
-**Version.** 0.8.0+ · commit `817fad4` (not yet released). Master plan step 0.2. The mutation rule (each trait: a 1-in-5 chance at a
+**Version.** 0.9.0 · commit `817fad4`. Master plan step 0.2. The mutation rule (each trait: a 1-in-5 chance at a
 birth of a step within ±15%; each inborn wire: 3%) was in the code from the start but unregistered and unsourced; it is now `SOC.mutP`,
 `mutStep`, `wireMutP`, `wireMutSd` in `docs/ASSUMPTIONS.md`, marked **knowingly fast** (roughly 10–40 × real mutational variance, Houle
 et al. 1996). A **neutral marker gene** (`neutral_marker`, 0–1) is inherited and mutates by the same rule but is read by nothing, on its
@@ -2589,7 +2589,7 @@ changes nothing in the world.
 
 ### 87. Can the brain learn a chain? Two steps yes, three for half, four no — and memory is not the limit — Nov 2026
 
-**Version.** 0.8.0+ · commit after `24fe83f` (a measuring tool; the world unchanged). Master plan step 0.3 (F3 and L0, Fable's "measure
+**Version.** 0.9.0 · commit `663b98b` (a measuring tool; the world unchanged). Master plan step 0.3 (F3 and L0, Fable's "measure
 before building craft"). `tools/analysis/chain-probe.js` takes children of real founders and runs their brains exactly as the world
 does (forward, traces, learning, the one-try boost, backward replay) in a bare task: no hunger, no fear, no others to copy.
 **Chain:** N acts in order (take, strike, eat, give, climb), each state shown on the hand senses; reward 1 only at the end; an attempt
@@ -2630,7 +2630,7 @@ from a skilled elder before deciding.
 
 ### 88. The world's rain has a real dry season only at some homes (measuring only) — Nov 2026
 
-**Version.** 0.8.0+ (a measuring tool; the world unchanged). The hungry-season design (master plan 0.4) was reviewed by Fable
+**Version.** 0.9.0 · commit `ba315d5` (a measuring tool; the world unchanged). The hungry-season design (master plan 0.4) was reviewed by Fable
 (`docs/reviews/2026-11-16-fable-hungry-season.md`): do not build as drafted; first check the rain's own year. Measured with
 `tools/analysis/seasons-at-home.js --settle 8 --years 10 --shape` (8 years unmeasured, then 10 years by twelfths of a year, within 4
 squares of home), against Uvinza beside Ugalla and Issa, 1973–1989 (Directorate of Meteorology, Tanzania, via J. Moore; saved as
@@ -2656,6 +2656,52 @@ belt (Nicholson 2018, *BAMS* 99:337; abstract), so there is no single sourced nu
 (the owner's): give the plants at home a real station's year (Uvinza's shares, a labelled stand-in) now and leave the globe's weather
 alone; or fix the globe's rain belt first (a change everywhere, no clean source); or wait for the valley (stage 2), whose rain would come
 from a real station. **Strength.** Moderate (4 worlds × 10 years), shapes only.
+
+---
+
+### 89. The fruit calendar: fruit now has a year — lowest late in the rains, highest in the dry months — Nov 2026
+
+**Version.** 0.9.0 · commit after `ba315d5`. Master plan 0.4, the hungry season's first step, as Fable's review advised (one change,
+fruit only) with the owner's choice (a real station's year, entry 88). Fruit ripens faster in the dry months of Uvinza's real year
+(each month's dryness, averaged to 1 over the year, mirrored by hemisphere, on the life clock), because at Issa "fruit availability
+showed a significant inverse relationship to rainfall… peaking in the early dry season", lowest in the late wet season (Piel et al.
+2017, *J Hum Evol* 112:57, read in full). Ripe fruit hangs about a month of the year (`SOC.fruitHang`, an assumption; a 3–5 week
+ripening phase in one African fruit tree); ripening is scaled so the uneaten year's mean is unchanged. `--fruit-follows-warmth`
+restores (identical worlds, checked). Nuts and roots unchanged (no source yet; roots are the year-round fallback). A correction on
+the way: the paper Fable cited for "a late-dry-season peak at Issa" (doi 10.1007/s10764-015-9856-y) is about Guinea-Bissau
+(Carvalho, Vicente & Marques 2015); the Issa direction comes from Piel 2017 instead.
+
+**Data.** [Fruit by twelfth of a year (4 worlds, both rules), 24 worlds × 100 days (both arms), the prediction](../data/findings/89-fruit-calendar/).
+The old-rule arm is entry 86's run (same code; the switch gives identical worlds).
+
+| World | Fruit, highest ÷ lowest twelfth (old → calendar) | Lowest twelfth | Highest | Year's mean fruit (old → calendar) |
+|---|---|---|---|---|
+| 1 | 1.0 → 1.5 | 3 (rains) | 5 | 0.072 → 0.110 |
+| 2 | 1.0 → 1.5 | 4 (rains) | 11 (dry) | 0.125 → 0.116 |
+| 3 | 1.0 → 2.5 | 4 (rains) | 10 (dry) | 0.210 → 0.214 |
+| 4 | 1.0 → 2.7 | 3 (rains) | 12 (dry) | 0.085 → 0.036 |
+
+| 24 worlds × 100 days (old → calendar) | Old | Calendar | Difference (95% range) |
+|---|---|---|---|
+| Hunger deaths (sum) | 186 | 172 | −0.6 a world [−2.4, 1.2] |
+| People alive at day 100 (mean) | 10.5 | 15.5 | +5.0 [−0.6, 10.6] |
+| Bands died out | 6 | 3 | |
+| Killed by predators (sum) | 278 | 220 | −2.4 [−4.9, 0.0] |
+| Died of thirst (sum) | 1 | 6 | +0.2 [0.0, 0.4] |
+
+**Result.** (1) Identical worlds with the switch — **held**. (2) Fruit highest in the dry months, lowest late in the rains, at least
+3 × — **partly held**: lowest in the rains in 4 of 4 worlds, highest in dry months in 3 of 4, but only 1.5–2.7 ×. (3) The year's
+mean within 20% — **held in 2 of 4 worlds** (all four together: 0.123 → 0.119). (4) Hunger deaths no clear change — **held**.
+
+**Interpretation.** The world has a fruit year for the first time, in the direction the Issa record shows. The swing is gentler than
+expected: eating and the cap on how much fruit a tree holds flatten the dry-season peak, and a twelfth of the squeezed year is 6 hours,
+always the same hours, so the fruit measure also carries day and night (Fable). The worlds' means differ because the bands differ, not
+only the rule. As predicted, bodies do not feel a season 18 hours long: the body-side test (hunger, fallback eating, weight) waits for
+the real-length year (F4/A40). Fewer predator deaths and more surviving bands are within chance here; the thirst deaths (1 → 6) are
+small numbers, noted. **Next for the hungry season:** nuts by season (a source first), roots regrowing by season (unsourced), and the
+high-to-low ratio from Piel's Figure 3 (to read).
+
+**Strength.** Moderate for the fruit's year (4 worlds × 10 years, both rules); weak for any effect on the hominins (100 days, 3-day year).
 
 ---
 
