@@ -2705,6 +2705,31 @@ high-to-low ratio from Piel's Figure 3 (to read).
 
 ---
 
+### 90. Hunts measured before building detectable hunts: success too high, leopards eat too little, sabre-tooths too much (measuring only) — Nov 2026
+
+**Version.** 0.9.0+ (a measuring tool; the world unchanged). Master plan 0.5 (F1), Fable's rule: judge hunters by kills per hunter per
+day against need, and source detection and success separately. `tools/analysis/hunt-measure.js` (default world, 3 worlds × 20 days):
+an attack is a hunter that tried (its attack wait just set); kills are the world's own counter, shared among the kinds that attacked
+in that step.
+
+**Data.** [The table](../data/findings/90-hunts-measured/).
+
+| Hunter | Success per attack (15 min) | Kills per hunter per real day | Meat eaten per hunter per real day | Field / registered |
+|---|---|---|---|---|
+| Spotted hyena | 36% | 0.29 | 3.7 kg | need 3.8–4.0 kg |
+| Leopard | 46% | 0.39 | 2.6 kg | need 3.5–4.9 kg; one kill every 5.6 days (0.18 a day; Odden & Wegge 2009); success 14–38% |
+| Sabre-tooth | 53% | 0.86 | 13.7 kg | need 8.4 kg (an assumption, by Kleiber's law) |
+
+**Result.** No prediction (measuring only). Success per attack is above the field ranges for all three (lions 15–30%, Schaller 1972;
+leopards 14–38%). Leopards kill twice as often as in the field but eat about 60% of their need (small prey, eaten by others, or stolen:
+not traced); sabre-tooths eat 1.6 × their registered need. Hyenas eat about their need.
+
+**Interpretation.** Detectable hunts (prey that sees an attack coming makes it fail) should lower success per attack; whether hunters
+then eat their need depends on how often they try and what they catch. These are the numbers the change must be judged by, per kind,
+not success alone. **Strength.** Weak (3 worlds × 20 days); a 24-world run before the change is the baseline.
+
+---
+
 ## Open questions (next tests)
 
 - Ablate the bundle in entry 7: which of band size, parental feeding, instincts, one-shot memory and

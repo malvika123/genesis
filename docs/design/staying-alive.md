@@ -46,6 +46,16 @@ Serengeti; leopards 14–38%). No hominin was within 2 squares of a hunter in th
    rest registered at both ends.
 3. **Hominins measured** in longer runs: how often they move away, climb or stay with a hunter near; whether their pulls work.
 
+## Update, 16 Nov 2026 (entries 84 and 90): before step 2 is built
+
+Step 1 is built (entry 84: plant-eaters flee; success unchanged, about 50%). Measured by kind (entry 90, 3 worlds × 20 days): success
+per attack hyena 36%, leopard 46%, sabre-tooth 53%; kills per hunter per real day 0.29 / 0.39 / 0.86; meat eaten 3.7 / 2.6 / 13.7 kg
+a day against needs of 3.8–4.0 / 4.2 / 8.4. Fable's cautions (big-picture review, section 5): source detection and success
+separately (FitzGibbon 1989 checked; Elliott, Cowan & Holling 1977, Stander 1992, Hunter & Skinner 1998 to check — Stander 1992 and
+Hunter & Skinner 1998 confirmed by search on 16 Nov at abstract level: vigilance rises with predation pressure and falls with herd
+size; the Elliott thesis could not be fetched), a herd stays alert after a failed attack, vigilance tied to eating and sleeping, judge by
+kills per hunter per day against need.
+
 ## Questions for the reviewer
 
 1. Is an inborn flight pull for plant-eaters faithful, and how strong should it be without tuning toward survival? What sources give

@@ -1,0 +1,5 @@
+# 3 worlds x 20 days; per hunter per real day (96 steps)
+kind | hunter-days | attacks | kills | success per attack | kills per hunter-day | meat eaten kg per hunter-day
+Hyena | 303 | 241 | 86 | 36% | 0.29 | 3.73
+Leopard | 225 | 190 | 87 | 46% | 0.39 | 2.62
+Sabre-tooth | 278 | 453 | 239 | 53% | 0.86 | 13.66
