@@ -254,6 +254,8 @@ brain and body size by generation, first stone flaking, first meat cut with a st
 exists — whether discoveries are repeated and spread.
 
 
+**Starting a new session? Read `docs/HANDOVER.md` first** (state of the code, what is running, next steps, how the work is done).
+
 ## THE ROADMAP (the owner and Fable, 16 Nov 2026)
 
 The owner's vision: run Genesis for millions of years and watch hominins evolve generation after generation — groups with their

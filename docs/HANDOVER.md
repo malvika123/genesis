@@ -1,128 +1,68 @@
-# Genesis — state of the project and open questions
+# Handover — where Genesis stands (16 Nov 2026)
 
-A briefing for anyone picking the work up: a new contributor, a reviewer, or a more capable model asked
-to check the science. Written November 2026 after v0.7.0; updated 12 November 2026. Read `README.md` for what the world contains
-and `docs/MODEL.md` for the formal model description (ODD protocol).
+Read this first in a new session, then `CLAUDE.md`, `docs/HOMININ-PLAN.md` (THE ROADMAP and the sections after it) and
+`docs/BACKLOG.md` (section 0: Fable's advice as numbered commitments F1–F29, with status).
 
-**Everything found but not yet done is in `docs/BACKLOG.md`** (bugs first, then built-but-waiting, then verified-not-built). Keep it current.
+## The owner's decisions (16 Nov 2026)
 
-## Where things stand (12 November 2026) — start here
+- **Do everything Fable advised, no matter what** — every item is in `docs/BACKLOG.md` section 0 (F1–F29); full text, every word kept,
+  in `docs/reviews/2026-11-16-fable-big-picture.md`.
+- **Keep the globe**, with a fine-grained valley (100–250 m squares) *inside* it (F9).
+- Narrow and time-box: **stage 0, about three months**, with milestones and stop rules (F1–F7).
+- The long vision: millions of years, groups with their own ways, language — reached in small, tested pieces (stages 1–7, path to words L0–L6).
+- **Still waiting for the owner:** a distinctive public name (F25). Suggestions offered: Genesis Ancestors, Genesis 2.5, Genesis: Oldowan
+  World, Genesis Savanna — or the owner's own.
 
-**Priorities after Phase A (owner, 12 Nov, Fable's order): what the shelter heap was worth; a small reality-check suite (done, entry 42); speed (1.7× so far, entry 43); then — order changed 12 Nov — the brains (short memory for cause and effect, then learning by watching), then the scale. Go live right after the mating tests; hunter fixes are the next release** — see the plan. **The whole plan is in `docs/HOMININ-PLAN.md`** (phases A–E, rewritten 12 Nov); what is found but not built is in
-`docs/BACKLOG.md`. A review brief for a stronger model is in `docs/REVIEW-BRIEF.md`.
+## The state of the code (branch `percept`)
 
-- `develop` (live) has everything up to research log entry 19. `percept` has the research log through entry 36 and the code for
-  entries 20–33 (the mating pull, quicker conception after a lost baby, grass not seen as food, body-size food, climbing as a
-  choice, hunger and thirst first, temperament and parental care, moving as one choice, the mother's pull, the female cycle, mood).
-  Three **stacked working branches** carry the rest and must be merged into `percept` before anything goes live:
-  `refeed-wip` (smooth hunger and the refeeding signal; the cycle off by default) → `apecare-wip` (only mothers feed their
-  young) → `band-wip` (up to 200 founders, no cap on people, `--extra-people`, the founders' practice off by default).
-- **Off by default:** the African animals (`--africa-animals`: Genesis has about nine times too many hunters for its prey), the
-  female cycle (`--cycle`: it exposed the 4-year nursing lockout after any mating — backlog B1), the founders' practice.
-- **Next, in order (Phase A):** (1) the 100-year run (started 12 Nov 13:25; `runs22` in the scratch folder) → log it;
-  (2) first test of `tools/analysis/talk-detector.js`; (3) fix B1, B2, B4, then retest the cycle; (4) merge the branches, `npm test`,
-  check the page in a browser, merge to `develop`, push; update the README and About tab. Then Phase B (learning by watching).
-- **The owner's rules:** only true reflexes are automatic; **verify every claim online before building — the owner's ideas
-  included**; Genesis must not be a safe world (the real pressures are must-haves); one change at a time with a switch and a paired
-  test; never tune toward survival; log failures. Run experiments gently (`--workers 4`, `nice -n 19`): the laptop overheats at 8.
-- **Fable access:** the owner has it. The review is in `docs/REVIEW-BRIEF.md`; no API key is set on this laptop (an API script
-  would be a standalone tool under `tools/`, never in the dependency-free engine).
+- Live on GitHub Pages (`develop`): up to commit `3d312fd` (research log entries 82–83: the prey map on by default, cutting is an act,
+  the camp fix B28; freeze fix B29; one selection ring; bodies drawn by flesh left; each animal drawn as itself).
+- **On `percept`, not yet released (18 commits):**
+  - entry 84: plant-eaters have the inborn pull to flee (`--no-prey-flight`); measured: they *choose* to flee more (37 → 56% with a hunter
+    in their square) but a 3 km square hides the escape, and attack success is unchanged (about 50%) — detectable hunts (F1) are what matters;
+  - entry 85 (built, being measured): digging with a tool is an act (`--tool-in-hand-digs`); prediction written in
+    `data/findings/85-digging-is-an-act/`;
+  - the writing under CC BY 4.0 (`LICENSE-docs.md`, F23 done); the roadmap, positioning, funding and all Fable sections in the plan;
+    backlog section 0.
+- **Running when this was written:** the entry 85 comparison, 24 worlds × 100 days, both arms (`data/findings/85-digging-is-an-act/dig-act.csv`
+  and `tool-in-hand.csv`). If the files are missing, run again:
+  `nice -n 19 node tools/experiment.js --seeds 1-24 --days 100 --workers 2 [--tool-in-hand-digs] --out data/findings/85-digging-is-an-act/<arm>.csv`
+  (run both arms in parallel, 2 workers each — never more than 4 workers in total).
 
-## The rules the project is held to
+## Next, in order
 
-1. **As close to real Earth and real early humans as possible.** Every feature is judged against
-   evidence; where we simplify, the README and About tab say so.
-2. **Nothing scripted.** Creatures have their own neural networks and learn by reinforcement. Only
-   instincts that real animals and people are born with may be built in (hunger, taste, fear of being
-   hurt, a baby's cry, attachment, babbling…). Knowledge, skills, words and culture must emerge.
-3. **Honest minds.** What the page says a creature thinks must come from its actual network. The log and
-   the translator never invent reasons.
-4. **Whispers** are the only outside influence: small nudges, never commands.
-5. **Grow in patches;** check survival across many seeded worlds after every change.
+1. Finish entry 85: compare the two arms (dig firsts per 1,000 hominin-life-years with `node tools/analysis/rates.js`; hunger deaths),
+   write the entry in `docs/FINDINGS.md`, then the release routine below — and make it a **tagged release** (F24: release more often;
+   bump `package.json`, `CITATION.cff` version/date, CHANGELOG "Unreleased" → the version).
+2. **Stage 0, F1: detectable hunts.** Design: `docs/design/staying-alive.md` (step 2). Fable's cautions (big-picture review, section 5):
+   source detection and success separately (FitzGibbon 1989 checked; Elliott, Cowan & Holling 1977, Stander 1992, Hunter & Skinner 1998
+   to check), a herd stays alert after a failed attack, vigilance tied to eating and sleeping, judge by kills per hunter per day.
+3. F3: the chain-learning probe and the L0 delayed-response probe (about a day).
+4. F2 the faithful-day table; F4 the real-length-year clock; F5 count repeats; then F6 one hard skill.
+5. Alongside: F19 "What we got wrong" page, F20 link entries to commits, F17/F18 front page with the brain's limits and the validation
+   table, F21 guides.
 
-## How it is built
+## How the work is done (the owner's rules — also in memory)
 
-- Plain JavaScript, no dependencies. Engine in `src/` (headless, deterministic from a seed), page in
-  `ui/`, tests in `tests/`, experiment runner `tools/experiment.js` (CSV per world, switches for
-  ablations: `--no-vicar`, `--no-picky`, `--old-sound`, `--no-calls`, `--modern-voice`, `--brain N`,
-  `--earth`, `--any-start`, `--no-care`, `--no-shelter`). The same experiments run in the browser on the Lab page (`lab.html`), which
-  shares `tools/experiment-core.js` with the command line and gives identical rows.
-- Land: the real Earth about 70,000 years ago (ETOPO1 relief, sea 80 m lower; the page's default) or a
-  seeded made-up planet (the engine's and experiment runner's default). The first band starts where our
-  species lived (warm tropical land near fresh water; in Africa on the real Earth).
-- **Next direction (owner, 10 Nov 2026):** Genesis becomes early hominins in East Africa ~2.5 million years ago; see `docs/HOMININ-PLAN.md`.
-- The research log `docs/FINDINGS.md` records every survival test, including null and negative results,
-  with its raw data in `data/findings/`; the Research page (`research.html`) is built from it and from
-  `CHANGELOG.md`. Analysis scripts: `tools/analysis/predators.js` (predator deaths per 1,000 person-days
-  by age, encounters, who the victims were) and `tools/analysis/compare-predators.js` (paired comparison).
-- Several agents may work on the repo (Claude, ChatGPT). Each works on its own branch, one behaviour change
-  at a time across all of them, pulls before pushing, never force-pushes, and logs who ran each test.
-- `npm run test:quick` (≈20 s) while working; `npm test` (≈10 min) before merging.
-- Branches: work on `percept`, merge to `develop` (served live by GitHub Pages) only after a balance check.
+- Plain, simple English. Lead every report with "Did it make a difference? yes/no, before → after".
+- Verify every claim online before building; cite sources; every number sourced or registered in `docs/ASSUMPTIONS.md` (a registry test
+  enforces it).
+- Never tune toward an outcome. One change at a time, each with a switch that restores the old rule — checked to give **identical
+  worlds** (`/private/tmp/.../scratchpad/gapcheck.sh NAME --switch` in the old session; equivalent: run `tools/experiment.js` on seeds
+  1–2 × 20 days at the old commit and with the switch, and compare the data rows) — and a **prediction written before the run** in
+  `data/findings/NN-name/prediction-written-before.txt`. Log failures and nulls.
+- Every design step gets an independent review (Fable) before release when possible; leaving out something real is the owner's call.
+- Gentle on the only laptop: `nice -n 19`, at most 4 workers, heavy jobs one after another; `npm test` (90 tests) is slow now.
+- **Release routine** (no need to ask): `npm test` → page check in Chrome (serve with `python3 -m http.server 8765 --bind 127.0.0.1`,
+  force-reload scripts, check the console for errors) → `git checkout develop && git merge --ff-only percept && git checkout percept` →
+  **push as its own step** (`git push origin develop`; a combined command was blocked once) → confirm the live file with curl.
+- Commits: author Malvika Sen; end messages with `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`.
+- Keep `docs/BACKLOG.md`, `CHANGELOG.md` and `docs/FINDINGS.md` current. Never send the owner's name or email to outside services.
 
-## What we have measured (with how strong the evidence is)
+## Known pitfalls from this session
 
-| Finding | Evidence |
-|---|---|
-| Learning from others' pain (vicarious learning) did not hurt survival; with choosy copying, predator deaths roughly halved | 12 worlds × 30–40 days, same worlds with/without; moderate |
-| Making vultures behave realistically (wait for predators, warm lands only) restored survival that unrealistic vultures had cut | 12 worlds × 40 days; moderate |
-| Bigger brains alone survive worse in a short life: 64 units 8.2 alive, 256 → 6.1, 1,024 → 2.2 | 24 worlds per size × 40 days; strong |
-| Bonded partners feeling less pull to others raised the share of full siblings from ~30% to ~50% (humans ~66%) | 12 worlds; weak–moderate |
-| With a band of 25 of all ages, parental feeding and stronger one-shot learning, child survival to 12 reached ~56% in one world (foragers ~50%) and fishing was repeated and spread | 2 worlds × 120 days; weak |
-| Starting the band where our species lived: 23.1 vs 15.3 alive, better in 10 of 12 seeds, 0 vs 1 die-outs — but predator deaths did not fall (hunger and fire did) | 12 worlds × 60 days; weak–moderate, range of difference includes zero |
-| The real Earth map: populations survive about as well (20.3 alive, none died out) | 12 worlds × 60 days; weak (different worlds) |
-
-## Known problems (most important first)
-
-1. **Populations decline over months.** 40-day checks looked fine; 150–300-day runs showed slow decline
-   and some die-outs (hunger, then predators, drowning). Evolution, language and culture need a population
-   that lasts. Suspects: predator pressure, no mobility as a group, no food storage. (The start location
-   has now been made realistic; it seems to help over 60 days, not yet tested over 300.) Hunger is the
-   largest cause of death in every recent run. Traced on 9–10 Nov (entries 10–12): people starved with food
-   around them, mostly weaned children and orphans, alone. Eating food in reach did not help; cooperative
-   care cut hunger deaths by about a sixth (not yet clear); predators kill the isolated (86–94% of victims
-   had no grown person within reach; few were asleep), so isolation, not sleeping sites, is the next lever.
-2. **No formal validation.** Comparisons with real data have been piecemeal. Needed: a reality-check
-   suite (see below).
-3. **Fire-making is essentially never discovered** in runs of 120+ days (fire-keeping happens rarely).
-4. **No shared vocabulary yet.** Words are mostly one-offs; ape-like vocal control is meant to evolve
-   but too few generations pass.
-5. **Brain structure evolves only in principle:** the layout genes exist, but runs are too short to see
-   change.
-6. **Animals don't learn from others' pain; pregnant animals look the same as others; birds are drawn,
-   not agents.**
-7. **The real-Earth map is today's climate:** no ice-age ice sheets, no colder climate, no monsoon (India
-   too dry), Sahel too dry, a spurious lake in the Congo basin.
-
-## The proposed reality-check suite
-
-Run automatically over long multi-world runs; each check a real target with a source; publish pass/fail.
-
-| Check | Real target (source to confirm) |
-|---|---|
-| Population over 300+ days | roughly stable |
-| Children surviving to 15 | about half (Hadza, !Kung) |
-| Life expectancy at birth / adults reaching 60+ | ~30 years / common (forager demography) |
-| Births per woman | ~5–7 (forager total fertility) |
-| Interbirth interval | ~3–4 years |
-| Full-sibling share | ~66% (Dyble 2026) |
-| Predator : prey ratios | realistic for the kinds present |
-| Carcass decay time by temperature | ~20 days in summer for small carcasses |
-| Sound ranges | shout ~2 km, wolf howl 6–10 km, lion roar ≤8 km |
-| Gestation lengths | as each species |
-
-## Questions for a reviewer
-
-1. Is anything still scripted that real people or animals are not born with? (Search for pulls in `RF`,
-   bonuses in `a.bonus`, and anything that sets behaviour directly.) The most debatable built-in drives
-   are the wariness of big hunters and the push to feed one's own hungry young (`src/sim.js`): real, but
-   possibly carrying survival; an ablation would show it.
-2. Which reality checks matter most, what are the best sources and values, and how should each be measured
-   fairly in a 3 km grid with a 3-day "year"?
-3. Why do populations decline over months? Which of: start location, predator pressure, learning speed,
-   lack of group movement or storage — and what is the most realistic fix?
-4. How should fire-making be made discoverable without scripting it?
-5. Is the experiment design sound (sample sizes, confounds such as different random worlds when a
-   brain's input layout changes)?
-6. Do the research log's conclusions (`docs/FINDINGS.md`) follow from the numbers, and are the strength
-   labels fair?
+- `tools/experiment.js` passes `preyMap:false` by default; the prey map is on unless `--no-prey-map` (or the page checkbox) — fixed once
+  after a mistaken run (entry 83).
+- Measures tied to the 3 km grid can hide behaviour (entry 84): measure choices as well as outcomes.
+- A drawing error used to freeze the page; the loop now catches it, but check the console in every page check.
+- If GitHub is unreachable from the laptop, check the Wi-Fi has a real IPv4 address (it once had only a self-assigned 169.254 one).
