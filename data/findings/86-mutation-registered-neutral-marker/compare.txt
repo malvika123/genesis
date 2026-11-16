@@ -1,0 +1,10 @@
+trait | worlds | up | down | mean change | sd across worlds | mean |change|
+neutral_marker | 18 | 9 | 8 | -0.011 | 0.138 | 0.103
+learns_from_others | 18 | 1 | 17 | -0.138 | 0.152 | 0.157
+copies_successful | 18 | 11 | 6 | 0.032 | 0.089 | 0.065
+follows_crowd | 18 | 9 | 9 | 0.032 | 0.165 | 0.121
+cares_for_others | 18 | 9 | 7 | 0.009 | 0.087 | 0.062
+vocal_control | 18 | 11 | 5 | 0.009 | 0.053 | 0.038
+point_urge | 18 | 8 | 8 | -0.001 | 0.037 | 0.028
+share_joy | 18 | 8 | 8 | -0.012 | 0.044 | 0.035
+(worlds where the band died out are left out; a trait is read only beside the marker)

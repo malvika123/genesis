@@ -213,3 +213,10 @@ verified online, built with a switch, and tested on its own before the next, in 
 - What does one creature in Genesis stand for — one animal or a herd? (A1)
 - The Research page should say that "tools must be discovered" is an experiment: hominins made stone tools by 2.6–3.3
   million years ago.
+
+## Follow-ups from entry 86 (16 Nov 2026)
+
+- **Why does learning from others fall?** It fell in 17 of 18 worlds beside a neutral marker that drifted 9 up / 8 down. Split the
+  change into deaths and births (founders who died vs lived; children vs their parents), by age and cause of death; then test with
+  the mutation rule 10 × slower (`SOC.mutP` 0.02). No change to the world until the cause is measured.
+- Report every inherited trait beside `neutral_marker` in every future entry about evolution (master plan, test E1).

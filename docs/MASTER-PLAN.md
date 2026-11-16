@@ -163,7 +163,7 @@ Steps, in order. F-numbers are from `docs/BACKLOG.md` section 0; G-numbers are t
 | # | Step | Size | Status |
 |---|---|---|---|
 | 0.1 | Finish entry 85 (digging is an act): compare the arms, write the entry, tagged release (F24) | 1–2 days | [now] |
-| 0.2 | Housekeeping: put the identical-worlds check in `tools/` (the old script was in a temporary folder and is lost); register the mutation rule; add a neutral marker gene on its own random stream (G9); add `preymap`, `realism-body` and `registry` tests to the `test:quick`/`test:slow` lists (they are in neither) | 1 day | [to do] |
+| 0.2 | Housekeeping: put the identical-worlds check in `tools/` (the old script was in a temporary folder and is lost); register the mutation rule; add a neutral marker gene on its own random stream (G9); add `preymap`, `realism-body` and `registry` tests to the `test:quick`/`test:slow` lists (they are in neither) | 1 day | [done 16 Nov, entry 86: copying fell beside the marker in 17 of 18 worlds] |
 | 0.3 | F3: the chain-learning probe (chains of 2, 3, 4, 5 steps, reward at the end) and L0, the delayed-response probe | 1 day | [to do] |
 | 0.4 | **The hungry season (R1, G1).** Fruit follows rain with the real lag. Find monthly fruit data first (Issa: Piel et al. 2017; Ugalla). Switch: fruit follows warmth only. Prediction: hunger deaths and fallback eating bunch in one part of the year | 1–2 days after the data | [to do] |
 | 0.5 | F1: detectable hunts. Source detection and success separately; a herd stays alert after a failed attack; vigilance tied to eating and sleeping; judge by kills per hunter per day against need. Then leave hunters alone | 1–2 weeks | [to do] (prey flight built, entry 84) |

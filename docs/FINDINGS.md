@@ -2547,6 +2547,46 @@ toward an outcome. **Lesson:** a first-time count measures chance as much as ski
 
 ---
 
+### 86. The mutation rule registered, a gene that does nothing — and copying falls beside it — Nov 2026
+
+**Version.** 0.8.0+ · commit `817fad4` (not yet released). Master plan step 0.2. The mutation rule (each trait: a 1-in-5 chance at a
+birth of a step within ±15%; each inborn wire: 3%) was in the code from the start but unregistered and unsourced; it is now `SOC.mutP`,
+`mutStep`, `wireMutP`, `wireMutSd` in `docs/ASSUMPTIONS.md`, marked **knowingly fast** (roughly 10–40 × real mutational variance, Houle
+et al. 1996). A **neutral marker gene** (`neutral_marker`, 0–1) is inherited and mutates by the same rule but is read by nothing, on its
+own random stream: the yardstick for chance (master plan, test E1). The lost identical-worlds script is rebuilt as
+`tools/identical-worlds.sh` (it also reports DIFFERENT when a switch changes the world, checked); `tools/analysis/neutral-compare.js`
+compares each trait's change with the marker's.
+
+**Data.** [Day 1 and day 100 tables, the comparison and the prediction](../data/findings/86-mutation-registered-neutral-marker/)
+(worlds 1–24, the default world; 18 bands alive at day 100, about 2 generations).
+
+| Trait (inherited) | Worlds up | Worlds down | Mean change | Spread across worlds |
+|---|---|---|---|---|
+| **The neutral marker** (does nothing; 0–1) | 9 | 8 | −0.01 | 0.14 |
+| **Learns from others** (copying, `im`; founders 0.1–1.7) | **1** | **17** | **−0.14** | 0.15 |
+| Copies those doing well (0–1) | 11 | 6 | +0.03 | 0.09 |
+| Follows the crowd (0–1) | 9 | 9 | +0.03 | 0.17 |
+| Cares for others' young (0–1) | 9 | 7 | +0.01 | 0.09 |
+| Vocal control, urge to point, joy of sharing (0–1) | 11 / 8 / 8 | 5 / 8 / 8 | about 0 | 0.04–0.05 |
+
+**Result.** (1) Worlds identical to the commit before (seeds 1–2 × 20 days, 82 columns) — **held**. (2) No trait moves further than
+the marker in 2 generations — **not held for one trait**: the marker drifted up as often as down (9 / 8), and so did every other
+trait, but **learning from others fell in 17 of 18 worlds** (by chance alone about 1 in 7,000). Its size is about what chance gives
+on its wider scale (the marker's typical move, scaled to the copying gene's range, is about 0.16; copying moved 0.16) — what is not
+chance is the **direction**.
+
+**Interpretation.** The first trait in Genesis to move in one direction beside a neutral yardstick. Not yet known *how*: whether
+heavy copiers die more (they copy what others do, including dangerous things), have fewer surviving young, or both, and whether it is
+founders dying or children inherited. It agrees with entry 25 ("bred out", two worlds) and not with the 8-world 300-day run (mixed),
+which had no yardstick. Real-world note, not a target: people differ in how much they use social information, about a fifth almost
+never (Molleman et al. 2014). Next: split the change into deaths and births, and by age; test whether it holds with the mutation
+rule 10 × slower.
+
+**Strength.** Moderate for the direction (18 worlds, a sign test), weak for any cause (unmeasured), 100 days only. The registration
+changes nothing in the world.
+
+---
+
 ## Open questions (next tests)
 
 - Ablate the bundle in entry 7: which of band size, parental feeding, instincts, one-shot memory and
