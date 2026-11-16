@@ -51,12 +51,12 @@ for (const seed of seeds) {
 }
 const pct = (a, b) => (b ? ((100 * a) / b).toFixed(0) + '%' : '-');
 console.log(`# ${seeds.length} worlds x ${days} days; attacks by adult hunters; per adult hunter per real day (96 steps)`);
-console.log('kind | adult hunter-days | attacks | success | kills by wounds | kills per adult-day | meat eaten per hunter-day (all ages) | on asleep | on young | on eating | on hominins | kg per clean kill (whole animal) | prey mix of clean kills | energy at attack (mean) | attacks when well fed (energy 80+)');
+console.log('kind | adult hunter-days | attacks | success | kills by wounds | kills per adult-day | meat eaten per hunter-day (all ages) | on asleep | on young | on eating | on hominins | kg per clean kill (whole animal) | prey mix of clean kills | energy at attack (mean) | attacks when well fed (energy 80+) | hunter-days all ages | meat per adult-day if adults ate it all');
 for (const [n, r] of Object.entries(T)) {
   const ad = r.adultSteps / 96,
     all = r.allSteps / 96;
   console.log(
-    [n, ad.toFixed(0), r.att, pct(r.hit, r.att), r.wound, ((r.hit + r.wound) / ad).toFixed(2), (r.eatKg / all).toFixed(2), pct(r.asleep, r.att), pct(r.young, r.att), pct(r.eating, r.att), pct(r.hom, r.att), r.hit ? (r.hitKg / r.hit).toFixed(1) : '-', Object.entries(r.mix).sort((a, b) => b[1] - a[1]).map(([p, c]) => p + ' ' + c).join(', '), r.att ? (r.eSum / r.att).toFixed(0) : '-', pct(r.fed, r.att)].join(' | ')
+    [n, ad.toFixed(0), r.att, pct(r.hit, r.att), r.wound, ((r.hit + r.wound) / ad).toFixed(2), (r.eatKg / all).toFixed(2), pct(r.asleep, r.att), pct(r.young, r.att), pct(r.eating, r.att), pct(r.hom, r.att), r.hit ? (r.hitKg / r.hit).toFixed(1) : '-', Object.entries(r.mix).sort((a, b) => b[1] - a[1]).map(([p, c]) => p + ' ' + c).join(', '), r.att ? (r.eSum / r.att).toFixed(0) : '-', pct(r.fed, r.att), all.toFixed(0), (r.eatKg / ad).toFixed(2)].join(' | ')
   );
 }
 console.log('(meat eaten is the world ledger by kind, all ages: it cannot be split by age)');
