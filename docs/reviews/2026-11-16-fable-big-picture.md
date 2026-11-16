@@ -847,3 +847,116 @@ travel to meet a collaborator.
 **Plainly:** yes, at first it is self-funded — but the sum is small, closer to a hobby's cost than a laboratory's. The thing
 worth seeking is not money but one collaborator and a few real users. Money follows those, and with them it arrives without
 strings.
+
+## How Genesis is different (16 Nov 2026)
+
+Three web searches. **Checked today:** Polyworld; several agent-based models of early hominins (below); Project Sid.
+**Not checked today — described from memory, verify before quoting:** Avida, Framsticks, The Bibites, Lenia, Species: ALRE,
+Thrive, *Ancestors: The Humankind Odyssey*, Neural MMO, and the HOMINIDS foraging model (my search did not find it).
+
+### 1. The closest projects, and what each does well
+
+**Camp A — artificial life: creatures that evolve, in invented worlds.**
+- **Polyworld** (Yaeger, 1994; open source): agents with *vision*, neural networks that learn in life (Hebbian learning) and
+  whose wiring evolves, in a simple ecology. Thirty years old, and it already had "neural brains + learning + evolution +
+  no scripting". Used in published studies of how brain complexity evolves.
+- **Avida:** self-copying programs; the cleanest evolution experiments ever done in a computer; a teaching version with
+  evidence that students learn from it.
+- **Framsticks, The Bibites, Species: ALRE, Thrive:** evolving bodies and brains, beautifully shown, with communities of
+  followers. **Lenia:** lifelike patterns from pure mathematics.
+- *What they do well:* speed, thousands of creatures, long evolution, polish, audiences. *What they do not attempt:* a real
+  place, a real time, or numbers taken from field research.
+
+**Camp B — archaeology and anthropology: models tied to the record, with rule-following agents.**
+- An agent-based model of **Oldowan stone transport** (*Journal of Human Evolution*, 2023): can chimpanzee-style short carries
+  explain where Oldowan stones ended up? Answer: only partly.
+- A model of **hunter-gatherer hunting in tropical grassland**; a model of **confrontational scavenging and proto-language** in
+  *Homo erectus*; a European project (OLAF) joining agent models to Oldowan fieldwork; and a **2026 review** of agent-based
+  models of hominin foraging in the *Journal of Computer Applications in Archaeology*.
+- *What they do well:* one sharp question, compared with real finds, peer-reviewed, by people who dig. *What they do not
+  attempt:* creatures that learn. Their agents follow rules the modeller wrote.
+
+**Camp C — AI societies.** **Project Sid** (2024): hundreds of language-model agents in Minecraft, reported to form roles,
+rules and "religion" — a company's own report, not peer-reviewed. Such agents start with all of human language and culture
+inside them, so they can say nothing about where those came from. **Neural MMO** and similar: learning agents surviving in
+game worlds, built to study AI, not ancestors.
+
+**Camp D — games.** *Ancestors: The Humankind Odyssey*: the same period and place as Genesis, lovingly made — and a human
+player does the discovering.
+
+### 2. What is genuinely different about Genesis — and what only looks it
+
+**Genuinely different (as far as I can see; not "the first" or "the only"):**
+- **It stands between the two camps.** Camp A has learning brains in made-up worlds. Camp B has real-world numbers with
+  rule-following agents. Genesis puts *learning creatures* into a world of a *real time and place whose numbers are sourced*.
+  I know of few projects that try both at once.
+- **The no-tuning rule, actually kept.** Most models are adjusted until they behave. Yours forbids it, and the log shows the
+  rule being obeyed when it hurt.
+- **A public record of predictions and failures.** Predictions written before runs, a register of assumptions with ranges, a
+  switch that restores the old world for every change, nulls and corrections left in view (entries 54, 57, 58). In camp A this
+  is almost unknown; in camp B it is rarer than it should be.
+- **Rates set beside field data** — predation per hominin-year, meat per day, discoveries per thousand life-years.
+
+**Only looks different:**
+- *"Nothing is scripted; behaviour emerges."* Every artificial-life project says this. Polyworld said it in 1994.
+- *"Neural networks that learn and evolve."* Old, and others do it at far larger scale.
+- *A whole planet with climate.* Lovely, and yours to keep — but not a scientific difference.
+- *The period (2.5 Ma).* Camp B already works there, with fossils in hand.
+- *Whispers and honest minds.* Yours alone, and good for trust and wonder; they are character, not evidence.
+
+### 3. Where Genesis is not different, or is behind
+
+- **Against the record:** camp B compares its output with real finds (where stones lie, what bones show). Genesis does not yet.
+- **Peer review and domain experts:** none so far.
+- **The mind:** Polyworld's creatures *see* raw light; Genesis's are told "food" and "predator". Others evolve brain wiring
+  far more freely and for far longer.
+- **Speed and scale:** thousands of agents and millions of generations elsewhere; one band and decades here.
+- **Users and polish:** The Bibites and Thrive have communities; NetLogo and Avida-ED have classrooms.
+- **Sharpness:** each camp-B paper answers one question. Genesis has asked many and finished few.
+
+None of this is shameful for one person in a few months. But the website should not suggest otherwise.
+
+### 4. The identity worth protecting
+
+Two things, and they belong together:
+
+**(1) Learning creatures in a sourced world of a real time and place.**
+**(2) Radical honesty of method: nothing tuned, every assumption listed, every prediction first, every failure shown.**
+
+The first is what Genesis *is*. The second is why anyone should *believe* it. Many can match one; the pair is the identity.
+
+**How to make it unmistakable, without exaggerating:**
+- **Front page, three lines:** what it is; what the creatures are (a small learning brain — with its limits); the promise
+  ("no number tuned toward an outcome; every failure published").
+- **A "What we got wrong" page**, fed from the corrections in the log. Almost nobody publishes one. It is your signature.
+- **Every release carries the validation table** — passes *and fails* against field data — and the count of registered
+  assumptions tested at both ends.
+- **A "Where Genesis stands" page:** a fair comparison with Polyworld, Avida and the hominin models, saying plainly where
+  they are ahead. Generosity to others reads as confidence.
+- **In the paper:** a related-work section that places Genesis between the two camps and cites the 2026 review; then one
+  result. Write "to our knowledge", never "the first".
+- **Words to avoid everywhere:** "first", "only", "realistic humans", "emergent" without a control beside it.
+
+**And to become different where it now is behind:** adopt camp B's best habit. Add the "traces left" test — do your hominins
+leave stones and marked bones in patterns like the real sites? The 2023 stone-transport model is a ready comparison, and its
+authors are natural people to write to.
+
+### 5. Easy to copy, and hard to copy
+
+**Easy for others to copy:** any feature — the valley, the prey map, a voice, a bigger brain; the technology; the period;
+the idea of mixing the two camps. A funded laboratory could rebuild the engine in months, faster and larger.
+
+**Hard to copy:**
+- **The record itself.** Eighty-four dated entries with predictions written first cannot be made after the fact. Each month
+  adds to a history nobody can fake or buy.
+- **The discipline.** Not tuning is easy to promise and painful to keep; laboratories under pressure to publish find it hardest.
+- **The register of assumptions,** checked against sources line by line. Dull, slow, and therefore rare.
+- **Independence.** No funder, no career, no deadline needing a result. It is a weakness for resources and a strength for
+  trust — while you keep it.
+- **Your own voice:** the questions, the whispers, the insistence on reality. A project with a person visibly behind it is
+  remembered.
+
+**So, candidly:** Genesis is not different in its ingredients; nearly every one has been built before, often better. It is
+different in its *combination* and its *conduct* — and conduct is the part others find hardest to copy. Do not try to be
+different by adding features; someone will always have more. Be different by being the world whose every claim can be
+checked, and that says so when it is wrong.

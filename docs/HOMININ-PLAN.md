@@ -338,3 +338,19 @@ Sponsors once releases are public; apply to FOSS United and Emergent Ventures af
 collaborator. *Never bend:* ask for money for the instrument, never a result; promise only deliverables you control; predictions public
 and first. *No server:* static pages on GitHub Pages, the world running in each visitor's browser, rented machines by the hour for big runs,
 later a seed-verifiable "run a world for science" button.
+
+
+**How Genesis is different (Fable, 16 Nov 2026; full text in the review, "How Genesis is different"; checked online: Polyworld, several
+agent-based hominin models incl. Oldowan stone transport in *J Hum Evol* 2023, OLAF, a 2026 review, Project Sid; the rest from memory).**
+*Two camps exist:* artificial-life worlds (learning, evolving brains in invented worlds — Polyworld had neural brains, learning,
+evolution, no scripting in 1994) and archaeology models (real-world numbers and comparison with finds, but rule-following agents).
+*Genuinely different:* Genesis sits between them — learning creatures in a sourced world of a real time and place — and keeps a
+radical honesty of method: the no-tuning rule, a public log of predictions, nulls and corrections, rates beside field data. *Only
+looks different:* "nothing scripted, it emerges", evolving neural nets, the globe, the 2.5 Ma period, whispers. *Behind:* no comparison
+with the archaeological record yet, no peer review or domain experts, labelled senses (Polyworld's creatures see raw light), small scale
+and speed, few users, many questions asked but few finished. **Identity to protect:** the pair — learning creatures in a sourced real
+world, plus radical honesty of method. Make it visible: a three-line front page, a "What we got wrong" page, a validation table with its
+fails in every release, a fair comparison page; write "to our knowledge", never "first" or "only". Adopt the archaeology camp's best
+habit, a "traces left" test (the 2023 stone-transport authors are natural contacts). *Easy to copy:* features, technology, the idea.
+*Hard to copy:* the dated record of predictions, the discipline of not tuning, the checked assumptions register, independence, the
+owner's own voice.
