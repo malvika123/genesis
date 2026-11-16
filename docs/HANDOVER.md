@@ -43,6 +43,13 @@ Read this first in a new session, then **`docs/MASTER-PLAN.md` (the one plan to 
 - **Next, per the master plan:** 0.5 detectable hunts (F1), or finish the hungry season (nuts by season once sourced; Piel's Figure 3
   ratio), then 0.6 count repeats and split by sex, 0.7 the real-length year (F4) — where the body-side test of the season belongs.
 
+## Detectable hunts (F1), where it stands
+
+- Fable's review: `docs/reviews/2026-11-16-fable-detectable-hunts.md` (do not build yet; leopard and sabre-tooth only; hyenas unchanged).
+- Entries 90–91 (measuring): success 35–52% per attack; few attacks on sleepers; **sabre-tooths attack when full (80% of attacks)**.
+- **Next:** trace why full hunters attack (the fixed inborn pull vs learning; `node tools/analysis/hunt-measure.js`), and where the
+  leopard's carcass goes; then a 24-world baseline; then the detection rule with a registered assumption tested at both ends.
+
 ## Next, in order
 
 1. ~~Finish entry 85~~ (done, v0.8.0). Was: compare the two arms (dig firsts per 1,000 hominin-life-years with `node tools/analysis/rates.js`; hunger deaths),

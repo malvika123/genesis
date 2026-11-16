@@ -1,0 +1,6 @@
+# 3 worlds x 20 days; attacks by adult hunters; per adult hunter per real day (96 steps)
+kind | adult hunter-days | attacks | success | kills by wounds | kills per adult-day | meat eaten per hunter-day (all ages) | on asleep | on young | on eating | on hominins | kg per clean kill (whole animal) | prey mix of clean kills | energy at attack (mean) | attacks when well fed (energy 80+)
+Hyena | 208 | 214 | 35% | 0 | 0.35 | 3.73 | 8% | 0% | 6% | 0% | 83.1 | Antelope 68, Buffalo 6 | 82 | 62%
+Leopard | 177 | 172 | 45% | 1 | 0.44 | 2.62 | 7% | 4% | 8% | 0% | 23.3 | Antelope 48, Hare 27, Leopard 2 | 70 | 33%
+Sabre-tooth | 216 | 380 | 52% | 0 | 0.91 | 13.66 | 11% | 0% | 15% | 0% | 60.8 | Antelope 185, Buffalo 8, Hare 3 | 89 | 80%
+(meat eaten is the world ledger by kind, all ages: it cannot be split by age)

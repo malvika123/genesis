@@ -2730,6 +2730,38 @@ not success alone. **Strength.** Weak (3 worlds × 20 days); a 24-world run befo
 
 ---
 
+### 91. Tracing the hunters before F1: few attacks on sleepers, and sabre-tooths attack when full (measuring only) — Nov 2026
+
+**Version.** 0.9.0+ (measuring only; the world unchanged — identical worlds checked). Fable reviewed detectable hunts
+(`docs/reviews/2026-11-16-fable-detectable-hunts.md`): do not build yet; faithful for stalking cats, not for hyenas (they run prey down);
+trace the leopard's low meat and the sabre-tooth's many kills first. The world now keeps a record of each hunter's attack when a tool
+asks for it (`HUNTLOG`; changes nothing); `tools/analysis/hunt-measure.js` counts adult hunters only. The hunters' base success
+(0.6, 0.9 on sleepers and young) was unregistered: now `SOC.atkP`, `SOC.atkEasy`, same numbers, registered as an assumption.
+
+**Data.** [The table](../data/findings/91-hunt-trace/) (3 worlds × 20 days; attacks by adult hunters).
+
+| | Hyena | Leopard | Sabre-tooth |
+|---|---|---|---|
+| Success per attack | 35% | 45% | 52% |
+| Kills per adult hunter per real day (field) | 0.35 (not found) | 0.44 (0.14–0.18) | 0.91 (stand-ins: jaguar 0.23, puma 0.12–0.18) |
+| Attacks on sleepers / young / eating prey | 8% / 0% / 6% | 7% / 4% / 8% | 11% / 0% / 15% |
+| Kills by wounds | 0 | 1 | 0 |
+| Whole animal per clean kill (field) | 83 kg | 23 kg (about 22) | 61 kg |
+| Prey of clean kills | antelope 68, buffalo 6 | antelope 48, hare 27, leopard 2 | antelope 185, buffalo 8, hare 3 |
+| Energy at attack (mean); attacks when well fed (80+) | 82; 62% | 70; 33% | 89; **80%** |
+
+**Result.** No prediction (measuring only). Most attacks are on awake prey, so detection (F1) matters; sleepers are not the fault.
+Kills by wounds are negligible. Leopards take prey of the field's size; their low meat a day (entry 90) is not the prey mix — left to
+trace: what happens to the rest of a carcass, and cubs counted in the meat ledger. **Sabre-tooths attack when full** (80% of attacks
+at energy 80 or more), so they kill 4–7 × the stand-ins' rate; real cats seldom kill when full (surplus killing rare: Kruuk 1972).
+Two leopards were killed by leopards (noted).
+
+**Interpretation.** Before detection is built, the reason full hunters attack must be found: the fixed part of the inborn pull
+(`SOC.atkFixed`, an assumption), or learning that attacking pays even when full. Detection would lower kills for the wrong reason if
+this stays. **Strength.** Weak (3 worlds × 20 days).
+
+---
+
 ## Open questions (next tests)
 
 - Ablate the bundle in entry 7: which of band size, parental feeding, instincts, one-shot memory and

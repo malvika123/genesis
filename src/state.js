@@ -3,6 +3,7 @@
 
 let fished = 0,
   deaths = {}, // tally of deaths by species and cause, for experiments
+  HUNTLOG = null, // each hunter's attack, when a measuring tool asks for it (sim.js; changes nothing)
   killKg = {}, // kg of animals killed, by 'killer > prey' (for the ledger; changes nothing)
   eatKg = {}, // kg of meat eaten into hunters' stomachs, by kind (for the ledger; changes nothing)
   pit,
