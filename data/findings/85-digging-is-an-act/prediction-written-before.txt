@@ -1,0 +1,4 @@
+Entry 85, digging with a tool is an act (a strike with a stick, flake or stone into the ground; --tool-in-hand-digs restores).
+24 worlds x 100 days, the default world (prey map on, plant-eaters flee, entry 84), both arms. Written before the run.
+1. Digging with a stick ("dig" firsts) becomes rarer: its rate per 1,000 hominin-life-years falls.
+2. Hunger deaths rise a little (roots are harder to get without a tool used on purpose) - within noise likely.
