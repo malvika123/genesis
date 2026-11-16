@@ -270,3 +270,120 @@ with brain X do not come to use a sharp stone to cut; with the single change Y, 
 beside a skilled mother."* That one sentence, honestly earned, says something real about what the step from ape to human
 needed. And if the honest answer is "no single change we tried was enough", that is worth having too, and you will know more
 about why we are rare than you did when you began.
+
+## The owner's vision: millions of years (16 Nov 2026)
+
+Noted: the globe stays, with a fine valley inside it; the other recommendations are agreed. No web searches were used here.
+Dates and findings about language and culture below are well-known ones quoted from memory; cloud prices and run times are
+rough arithmetic. **All of them need checking before anything is built on them.**
+
+### 1. Running for millions of years
+
+**The honest arithmetic.** Today one world lives about 33 life-years in 20–60 minutes: roughly one simulated year a minute.
+A million years is then about two years of computing for one world — and it cannot be shared out. More cores or rented machines
+give *more worlds at once*, never *more years in one world*, because each year needs the one before it. Only a faster engine
+buys years. And this is on the squeezed 3-day year; at a real-length year it is 122 times worse.
+
+**A second problem, bigger than speed.** Selection hardly works in one band. In a group of 30, chance (who happens to die)
+swamps all but the strongest advantages. The real hominin breeding population was in the order of ten thousand. A faithful run
+of evolution needs thousands of individuals, not a faster band.
+
+**So brute force is out, on any hardware you can rent. The minimal faithful design is a relay:**
+
+1. **Lived windows.** The full simulation, 24+ worlds, a few hundred years each. They measure, for each inherited trait, how
+   much it changes survival and births (the selection on it), and how often skills are found, kept and lost.
+2. **Calculated bridges.** Between windows, a standard population-genetics calculation carries the *inherited traits* of a
+   population of thousands forward through thousands of generations, using the measured selection, a real mutation rate and
+   generation time, and the real climate record of the period.
+3. **Re-seeding.** The next window starts with creatures drawn from the bridge's traits, in that time's climate. Selection is
+   measured again — it changes as bodies, brains and climate change.
+
+**What can be fast-forwarded faithfully:** gene-borne traits under measured selection; climate (from the record); numbers of
+animals. **What cannot:** anything learned. A tradition lives in heads, not genes; it must be lived, or carried by a
+cultural model whose rates were measured in windows, and labelled as calculated. And nothing *new* can appear in a bridge — no
+new behaviour, no first word. Every discovery happens in a lived window or not at all.
+
+**It becomes a fake shortcut if:** selection is written by hand ("bigger brains are better"); one window's measurement is
+stretched over a million years; a bigger brain comes without its real food cost; windows that went well are kept and others
+dropped; or the page shows calculated ages as if creatures lived them.
+
+**The test that makes the relay trustworthy:** measure selection in the first 200 years, let the bridge predict year 2,000, then
+actually live 2,000 years in the cloud and compare. Trust bridges only as far as this check holds. Entry 25 (learning from
+others was bred out) shows selection is already measurable here.
+
+**Engine speed.** Profile first (entries 43 and 47 say the easy gains are gone). Rewriting the brain loop in Rust/WebAssembly
+might give 2–5 times; a graphics card suits thousands of identical brains, not a hundred creatures with tangled rules; animals far
+from any hominin should have no brain at all (as the prey map already does). Expect 3–10 times in all, for weeks of work that
+adds no realism. Worth doing once, modestly.
+
+**Cost, roughly.** One window (24 worlds × 300 years) is about 120 core-hours: a long day on the laptop at 4 workers, or
+5–10 dollars rented. A million-year relay with a window every 10,000 years is about 12,000 core-hours: a few hundred dollars.
+The money is small. The work is in the design and the checking.
+
+### 2. A valley inside the globe
+
+**How.** Keep the planet as it is, as the valley's surroundings. Choose one basin (about 25 × 30 km) and lay a fine grid over
+it, 100–250 m squares. The planet gives the valley its weather, seasons, river flow and the density of animals at its edge;
+the valley gives the planet nothing it needs back.
+
+- **All creatures with brains live in the valley.** Outside it there are only density maps.
+- **Leaving is real.** A hominin that walks out joins a calculated "elsewhere"; newcomers (young females, a strange male, a
+  hunter) arrive from it at field rates.
+- **Time.** The planet keeps its 15-minute step. The valley takes short steps (1–5 minutes) only where something is happening —
+  a hunt, a quarrel, work with the hands — and long ones while everyone sleeps.
+
+**What it costs.**
+- *Detail must come from somewhere.* The coarse planet has no 200 m hills or single trees. Either make detail by rule
+  (registered as an assumption), or borrow the measured shape of a real Rift basin today as a labelled stand-in. I would borrow.
+- *Compute.* Squares are cheap; brain steps are not. One-minute steps mean up to 15 times more thinking per day. With
+  the real-length year on top, that is affordable for days or a few years, not centuries. So there are really three speeds:
+  fine and real (a season of craft), 15-minute and real (a childhood), squeezed (generations). Each result must say which.
+- *Every rule tied to "a square" or "a step"* (sight range, bites, attack odds, rot) must be re-expressed in metres and minutes —
+  entry 76's lesson, many times over. This is most of the work: perhaps 4–8 weeks, with a switch back to the coarse world.
+
+### 3. Language and group traditions
+
+**What is known (to verify).**
+- *Traditions are old and not special to us.* Chimpanzee communities differ in dozens of habits that neither genes nor
+  surroundings explain (Whiten et al. 1999). Stone tools: 3.3 Ma (Lomekwi, disputed), 2.9–2.6 Ma (Nyayanga, Gona). But
+  hand-axes then stayed much the same for a million years: tradition without piling-up. Culture that *accumulates* is late.
+- *Language left no fossils.* Estimates run from simple proto-language over a million years ago to full language within the
+  last 200,000 years. Clues: the throat bone of a 3.3 Ma australopith child is ape-like and a Neanderthal's is like ours;
+  hearing tuned to speech sounds by about 430,000 years ago; monkeys' throats could shape speech sounds — what they lack is
+  the brain's control of the voice (Fitch et al. 2016). Ape calls are mostly inborn; what is *learned* is what a call means
+  and when to answer (vervet alarm calls). Understanding comes before producing.
+- *What it seems to need:* voluntary control of the voice; learning by watching and listening that really works; knowing
+  individuals; reasons to tell the truth to each other (kin, shared young, shared danger); long childhoods; groups in contact.
+
+**What Genesis has and lacks.** It has a voice, hearing, pointing and a "sound and words" region — the plumbing. It lacks
+everything that would give a call a *use*: social learning that works (entry 58), knowing who is who, several groups, and
+enough generations for selection to shape the voice. Reward is each body's own, as it should be; that makes shared signals
+far harder than in research where talkers are paid for being understood. That difficulty is the faithful one.
+
+**Achievable (1–2 years):** creatures that learn what inborn calls mean and are saved by it; a band's own food habits or
+tool habits that outlast their inventor and differ from the next band's for no reason of place or genes — a true
+tradition, measured the way Whiten measured it. **Possible, uncertain:** one or two learned calls with a shared meaning in a
+band. **A long-term dream:** words by agreement, combined words, grammar. Not with this brain, and nobody has shown it
+emerging unscripted from bodies and survival alone. If it never comes, that is not failure; it is the real size of the
+question.
+
+### 4. The roadmap, in pieces
+
+| Stage | What | Test that it worked | Effort (evenings and weekends) |
+|---|---|---|---|
+| 0 | The agreed three months: detectable hunts, faithful-day table, chain probe, real-year clock, repeats, one hard skill | the three milestones already written | 3 months |
+| 1 | Engine: profile, then speed | 3× faster, identical worlds by seed | 2–4 weeks |
+| 2 | Valley in the globe | faithful-day table still passes; entry 84 again shows escapes | 1–2 months |
+| 3 | Three bands, knowing individuals, females moving | transfer rates near Gombe's; bands last 300 years in most worlds | 1–2 months |
+| 4 | Things as things, two hands; then the tradition test | a habit that outlasts its inventor and differs between bands | 2–3 months |
+| 5 | Selection measured; the bridge built and checked | the bridge predicts a lived 2,000 years within the spread between worlds | 2–3 months |
+| 6 | The first relay: 100,000 years, then a million | traits move the same way in most worlds, and can be set beside the fossil record | 3+ months, a few hundred dollars |
+| 7 | Signals, alongside stage 3 onward | learned call meanings cut deaths; later, a band's own call | open-ended |
+
+**Stop rules.** Stage 0's rules stand. After that: if the bridge fails its check (stage 5), the millions of years cannot be
+reached faithfully this way — stay with lived centuries and say so. If traditions do not appear at stage 4 on the real clock with
+working objects, change the brain (one evidenced change at a time) or stop there. Review the whole plan at each stage's end.
+
+**Honestly:** this is about two years of steady spare-time work to a labelled, checked million-year relay in which a few
+inherited traits evolve and bands may hold simple traditions. That is reachable. Language emerging on its own is not something
+I can promise at any horizon. The smaller pieces are worth having each by themselves — which is the right way to hold a big vision.
