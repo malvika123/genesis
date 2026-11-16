@@ -1,0 +1,4 @@
+seed 4 (lat 11) | world: 33.7 32.6 9.7 0.9 9.9 8.4 1.2 0.0 0.0 0.0 0.0 3.7 | months <2%: 6 | wettest 6 months: 95%
+Uvinza           | 13.5 11.1 15.4 14.4 3.7 0.1 0.1 0.4 1.3 6.7 16.2 17.1 | months <2%: 4 | wettest 6 months: 88%
+fruit (÷ the year's mean): 0.99 0.98 0.99 0.99 0.99 1.00 1.00 1.01 1.01 1.01 1.01 1.02 | mean 0.0848 | highest twelfth 12, lowest 2, ratio 1.0
+calendar dryness          : 1.37 0.42 0.03 0.29 0.60 0.33 0.27 1.17 1.82 1.94 1.92 1.84

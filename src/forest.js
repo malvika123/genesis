@@ -54,17 +54,44 @@ function updateForest() {
       tree[i] += (target - tree[i]) * (target > tree[i] ? 0.003 : 0.006);
       if (tree[i] < 0.02) tree[i] = 0;
     }
-  // fruit ripens on trees in the warm, growing part of the year, and slowly rots away
+  // fruit ripens on trees in the warm, growing part of the year, and slowly rots away.
+  // The fruit calendar (entry 89; --fruit-follows-warmth: the old rule): in savanna woodland, fruit is most plentiful when the rains
+  // stop and scarcest late in the rains (Issa: Piel et al. 2017). Ripening follows the dryness of each month of a real station's year
+  // (Uvinza, FRUITCAL), mirrored by hemisphere, on the life clock; ripe fruit hangs about SOC.fruitHang of a year; ripening is scaled
+  // so that, uneaten, the year's mean standing fruit is as before (only its timing changes).
+  const cal = SOC.fruitCal,
+    keep = cal ? Math.exp(-1 / (SOC.fruitHang * TY)) : 0.9995,
+    rip = cal ? (1 - keep) / (1 - 0.9995) : 1,
+    mS = cal ? fruitMonth(false) : 0,
+    mN = cal ? fruitMonth(true) : 0;
   for (let i = 0; i < n; i++) {
     if (tree[i] < 0.25 || water[i]) {
       fruit[i] = 0;
       continue;
     }
-    const g = growthAt(i);
-    fruit[i] = Math.min(tree[i] * 0.7, fruit[i] * 0.9995 + 0.0012 * tree[i] * Math.max(0, g - 0.3));
+    const g = growthAt(i),
+      c = cal ? rip * FRUITCAL[latOfRow((i / W) | 0) >= 0 ? mN : mS] : 1;
+    fruit[i] = Math.min(tree[i] * 0.7, fruit[i] * keep + 0.0012 * c * tree[i] * Math.max(0, g - 0.3));
   }
 }
 
+// Uvinza's year (data/reference/uvinza-rain.csv, 1973-1989; checked against the file by tests/seasons.test.js): each month's share
+// of the year's rain, January first. Its dryness (1 - share / the wettest month's share), averaged to 1 over the year, sets how fast
+// fruit ripens that month: a real station's year as a labelled stand-in for the hominins' home (the owner, 16 Nov 2026; entry 88).
+const UVINZA = [0.1350, 0.1111, 0.1541, 0.1437, 0.0371, 0.0013, 0.0013, 0.0042, 0.0128, 0.0671, 0.1619, 0.1705],
+  FRUITCAL = (() => {
+    const mx = Math.max(...UVINZA),
+      d = UVINZA.map((s) => 1 - s / mx),
+      m = d.reduce((u, v) => u + v, 0) / 12;
+    return d.map((v) => v / m);
+  })();
+// which month of Uvinza's (southern) year it is: the world's southern midsummer (season() lowest, three quarters through the year)
+// is about 21 December; the north is six months apart
+function fruitMonth(north) {
+  const p = (tick % TY) / TY,
+    m = (((11.67 + (p - 0.75) * 12) % 12) + 12 + (north ? 6 : 0)) % 12;
+  return Math.floor(m);
+}
 // how thick the trees are where a creature stands (0 if it is in the water)
 // trees give cover; a cave gives more
 // Branches piled high in one place keep off wind and rain and hide whoever is inside, as a brush shelter

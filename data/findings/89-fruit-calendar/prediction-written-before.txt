@@ -1,0 +1,13 @@
+Entry 89, the fruit calendar (master plan 0.4; the owner chose "a real station's year", 16 Nov). Written before the run.
+Fruit ripens by a yearly calendar on the life clock: faster in the dry months of Uvinza's real year (the dryness of each month,
+1 - its share of the year's rain / the wettest month's share, averaged to 1 over the year), mirrored by hemisphere; ripe fruit hangs
+about a month of the year (SOC.fruitHang, an assumption from a 3-5 week ripening phase), and ripening is scaled so the year's mean
+standing fruit stays about the same. Source for the direction: Piel et al. 2017 (Issa): fruit availability inversely related to rain,
+peaking in the early dry season, lowest in the late wet season. --fruit-follows-warmth restores the old rule.
+1. Identical worlds with --fruit-follows-warmth (seeds 1-2 x 20 days).
+2. Ripe fruit around home, by twelfth of a year (10 settled years, 4 worlds): highest in the dry months of the calendar, lowest late
+   in the rains; highest month at least 3 x the lowest. (A peak in mid-dry rather than early-dry would be a partial miss: the model
+   has no flowering, only ripening.)
+3. The year's mean standing fruit within 20% of the old rule's (held by design: timing changes, not the total).
+4. Hunger deaths over 24 worlds x 100 days: no clear change (an 18-hour season is too short for a body to feel; the body-side test
+   belongs to the real-length year, F4/A40).

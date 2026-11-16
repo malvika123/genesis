@@ -238,6 +238,13 @@ worlds). A child takes each inherited trait from one parent or the other at rand
 | The neutral marker gene (`g.nm`, reported as `neutral_marker`) | 0–1, founders drawn evenly; inherited and mutated by the same rule; read by nothing; its own random stream | the standard yardstick for drift: a trait claimed to be selected must move further, and in the same direction in more worlds, than a neutral one (Lande 1976, *Evolution*, drift of neutral traits; as cited in the plan, from memory) | method, not a number about the world |
 | Generation time | not set: it emerges | chimpanzees about 24.6 years (Langergraber et al. 2012, *PNAS* 109:15716, checked); to be measured as the mean age of parents at a birth (master plan, stage 5) | to measure |
 
+## The fruit calendar (registered 16 Nov 2026, entry 89; the owner chose a real station's year)
+
+| Setting | Value | Evidence | Status |
+|---|---|---|---|
+| The fruit calendar (`SOC.fruitCal`; `--fruit-follows-warmth`: the old rule) and its year (`UVINZA` in `src/forest.js`) | fruit ripens faster in the dry months: each month's dryness (1 − its share of the year's rain ÷ the wettest month's) from Uvinza 1973–1989, averaged to 1, mirrored by hemisphere; on the life clock | Issa: "fruit availability showed a significant inverse relationship to rainfall… peaking in the early dry season" in each of three full years; lowest in the late wet season (Piel et al. 2017, *J Hum Evol* 112:57, full text read; 597 plants, monthly); Uvinza rainfall from the Directorate of Meteorology, Tanzania, via J. Moore (`data/reference/uvinza-rain.csv`) | **direction** (the shape of the curve, dryness, is our choice; the high-to-low ratio was not read: Piel's Figure 3); a **stand-in** place for all of the world's fruit |
+| How long ripe fruit hangs (`SOC.fruitHang`; `--fruit-hang`) | 1/12 of a year (about a month); ripening scaled so the uneaten year's mean is unchanged | one African fruit tree's ripening phase lasts 3–5 weeks (*Dacryodes edulis*, 2021 study, as summarised); no savanna-woodland figure found | **assumption**: test 1/24 and 1/6 |
+
 ## To do
 
 - Audit the older parts of the model the same way (temperatures, energy use, foods, predators, sound…).

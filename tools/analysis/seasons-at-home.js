@@ -9,9 +9,9 @@
 const { engineSource } = require('../engine');
 const arg = (k, d) => { const i = process.argv.indexOf('--' + k); return i > 0 ? +process.argv[i + 1] : d; };
 const SEED = arg('seed', 1), YEARS = arg('years', 2), R = arg('r', 4), SETTLE = arg('settle', 0), SHAPE = process.argv.includes('--shape');
-const E = new Function(engineSource() + '\nreturn { setSeed, reset, sim, TY, W, H, idx, home: () => BANDAT, wx: () => ({ RAIN, MOIST }), food: () => food, fruit: () => fruit, items: () => ({ ROOT, nut }), tick: () => tick, latOfRow };')();
+const E = new Function(engineSource() + '\nreturn { setSeed, reset, sim, TY, W, H, idx, home: () => BANDAT, wx: () => ({ RAIN, MOIST }), food: () => food, fruit: () => fruit, items: () => ({ ROOT, nut }), tick: () => tick, latOfRow, FRUITCAL: typeof FRUITCAL !== "undefined" ? FRUITCAL : null, fruitMonth: typeof fruitMonth !== "undefined" ? fruitMonth : null };')();
 E.setSeed(SEED);
-E.reset({});
+E.reset(process.argv.includes('--fruit-follows-warmth') ? { fruitFollowsWarmth: true } : {});
 const [hx, hy] = E.home();
 if (!SHAPE) console.log(`# seed ${SEED}, home square ${hx},${hy} (latitude ${E.latOfRow(hy).toFixed(1)}), means within ${R} squares`);
 if (!SHAPE) console.log('year.month | rain | soil moisture | grass | fruit | roots | nuts');
@@ -19,14 +19,17 @@ const cells = [];
 for (let dy = -R; dy <= R; dy++) for (let dx = -R; dx <= R; dx++) if (hy + dy >= 0 && hy + dy < E.H) cells.push(E.idx(hx + dx, hy + dy));
 const M = E.TY / 12;
 let acc = null, n = 0;
-const RM = new Array(12).fill(0);
+const RM = new Array(12).fill(0), FM = new Array(12).fill(0), CM = new Array(12).fill(0);
 for (let t = 0; t < SETTLE * E.TY; t++) E.sim();
 for (let t = 0; t < YEARS * E.TY; t++) {
   E.sim();
   const { RAIN, MOIST } = E.wx(), F = E.food(), FR = E.fruit(), { ROOT, nut } = E.items();
   const v = [RAIN, MOIST, F, FR, ROOT, nut].map((A) => cells.reduce((s, i) => s + A[i], 0) / cells.length);
   acc = acc ? acc.map((s, k) => s + v[k]) : v; n++;
-  RM[Math.floor((t % E.TY) / M)] += v[0];
+  const mo = Math.floor((t % E.TY) / M);
+  RM[mo] += v[0];
+  FM[mo] += v[3];
+  if (E.FRUITCAL) CM[mo] += E.FRUITCAL[E.fruitMonth(E.latOfRow(hy) >= 0)] / (M * YEARS);
   if ((t + 1) % M === 0) {
     if (!SHAPE) console.log(`${Math.floor(t / E.TY) + 1}.${String(Math.floor((t % E.TY) / M) + 1).padStart(2, '0')} | ` + acc.map((s, k) => (s / n).toFixed(k === 0 ? 5 : 3)).join(' | '));
     acc = null; n = 0;
@@ -43,4 +46,10 @@ if (SHAPE) {
   const U = shape(new Array(12).fill(0).map((_, k) => ref.reduce((u, r) => u + r[k], 0))), S = shape(RM);
   console.log(`seed ${SEED} (lat ${E.latOfRow(hy).toFixed(0)}) | world: ${S.sh.map((v) => (100 * v).toFixed(1)).join(' ')} | months <2%: ${S.dry} | wettest 6 months: ${(100 * S.wet6).toFixed(0)}%`);
   console.log(`Uvinza           | ${U.sh.map((v) => (100 * v).toFixed(1)).join(' ')} | months <2%: ${U.dry} | wettest 6 months: ${(100 * U.wet6).toFixed(0)}%`);
+}
+if (SHAPE) {
+  const mean = FM.reduce((a, b) => a + b, 0) / 12, f = FM.map((v) => v / mean);
+  const hi = f.indexOf(Math.max(...f)), lo = f.indexOf(Math.min(...f));
+  console.log(`fruit (÷ the year's mean): ${f.map((v) => v.toFixed(2)).join(' ')} | mean ${(mean / (M * YEARS)).toFixed(4)} | highest twelfth ${hi + 1}, lowest ${lo + 1}, ratio ${(f[hi] / Math.max(1e-9, f[lo])).toFixed(1)}`);
+  if (E.FRUITCAL) console.log(`calendar dryness          : ${CM.map((v) => v.toFixed(2)).join(' ')}`);
 }
