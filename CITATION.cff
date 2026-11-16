@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use Genesis in research, please cite it as below and state the version or commit you used."
-title: "Genesis: an autonomous world of learning creatures"
+title: "Genesis Odyssey: Origins — an open, sourced world of early hominins, 2.5 million years ago"
 abstract: "An open-source simulation of an Earth-like world in which creatures with their own neural networks learn by reinforcement, reproduce and evolve, with nothing about their behaviour scripted. Runs without a browser, is exactly repeatable from a seed, and includes an experiment runner."
 type: software
 authors:

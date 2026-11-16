@@ -10,8 +10,9 @@ Read this first in a new session, then `CLAUDE.md`, `docs/HOMININ-PLAN.md` (THE 
 - **Keep the globe**, with a fine-grained valley (100–250 m squares) *inside* it (F9).
 - Narrow and time-box: **stage 0, about three months**, with milestones and stop rules (F1–F7).
 - The long vision: millions of years, groups with their own ways, language — reached in small, tested pieces (stages 1–7, path to words L0–L6).
-- **Still waiting for the owner:** a distinctive public name (F25). Suggestions offered: Genesis Ancestors, Genesis 2.5, Genesis: Oldowan
-  World, Genesis Savanna — or the owner's own.
+- **Public name chosen (F25): Genesis Odyssey: Origins** — tagline "an open, sourced world of early hominins, 2.5 million years ago"
+  (README, page title, citation updated). Still to decide with the owner: renaming the GitHub repository and a web address (both change the
+  live URL; ask first). Note: "Odyssey" and "Origins" also appear in famous game titles — the tagline keeps it clearly a science instrument.
 
 ## The state of the code (branch `percept`)
 

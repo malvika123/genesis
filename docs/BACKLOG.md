@@ -39,7 +39,7 @@ Worked in the roadmap's order; status kept here.
 | F22 | Preprint (one sharp question, e.g. "when does a skill become a tradition?"), a collaborator from cultural evolution or primatology, then a simulation-friendly journal; publish nulls; pre-register publicly | after stage 0 | to do |
 | F23 | Stay MIT for code; writing under CC BY 4.0 | now | **done 16 Nov** (LICENSE-docs.md) |
 | F24 | Release more often (frozen, dated releases) | now | to do this week |
-| F25 | A distinctive public name with matching web address and GitHub name (the owner chooses); trademark only if confusion appears | this week | waiting for the owner's choice |
+| F25 | A distinctive public name with matching web address and GitHub name; trademark only if confusion appears | this week | **name chosen 16 Nov: Genesis Odyssey: Origins** (README, page title, citation updated); tagline "an open, sourced world of early hominins, 2.5 million years ago"; GitHub repository name and a web address still to decide with the owner (renaming changes the live URL) |
 | F26 | Funding order: self-fund stage 0; GitHub Sponsors once releases are public; FOSS United and Emergent Ventures after a result and a preprint; cloud credits through a collaborator; never ask money for a result. A small second desktop for runs | ongoing | to do |
 | F27 | No server: static website, worlds run in visitors' browsers, rented machines by the hour; later a seed-verifiable "run a world for science" button | ongoing | partly (static site, browser runs) |
 | F28 | A "traces left" test against the Oldowan record; contact the 2023 stone-transport authors | 4+ | to do |

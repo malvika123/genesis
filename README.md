@@ -1,4 +1,6 @@
-# Genesis
+# Genesis Odyssey: Origins
+
+*An open, sourced world of early hominins, 2.5 million years ago.* (Short name: Genesis.)
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24050772.svg)](https://doi.org/10.5281/zenodo.24050772)
 
