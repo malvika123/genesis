@@ -323,3 +323,18 @@ NetLogo, Avida-ED, PhET, HHMI lessons, the game *Ancestors*); its niche a faithf
 funding, if ever needed, from outreach grants or a university partner. *Teaching:* not wasted — Schelling's model, the Game of Life,
 NetLogo and Avida all crossed between teaching and research. Keep both doors open: one engine (no easier "classroom mode"), frozen
 releases, a continuing log, lessons built from real entries.
+
+
+**Funding (Fable, 16 Nov 2026; full text in the review, "Funding"; prices are rough arithmetic, not quotes; ask an accountant about money
+from abroad in India).** *Cost is small:* a 24-world test is a laptop night or 1–2 dollars rented; a 300-year window 5–10 dollars; the
+million-year relay a few hundred; year one roughly 200–500 dollars, the relay year 500–1,500. No database or always-on server is needed.
+The one purchase worth making: a small second desktop (very roughly ₹50,000–70,000) so the only laptop stops overheating. *Why fund it:*
+funders back a person who has shown something and asks for a specific next step — first a public repository with frozen releases, a
+stage-0 result, a preprint, a few real users, a collaborator. *Routes:* checked and open to individuals — GitHub Sponsors (open in India),
+FOSS United grants (India, up to about ₹15 lakh, changing in 2026), FLOSS/fund by Zerodha (how to apply unclear), Emergent Ventures
+India; checked but needing an institution — Google Cloud and AWS research credits (via an academic collaborator); not checked — Open
+Collective, Experiment.com, Indian outreach grants, the Leakey Foundation. *Order:* self-fund stage 0 and the first windows; switch on
+Sponsors once releases are public; apply to FOSS United and Emergent Ventures after a result and a preprint; seek cloud credits through a
+collaborator. *Never bend:* ask for money for the instrument, never a result; promise only deliverables you control; predictions public
+and first. *No server:* static pages on GitHub Pages, the world running in each visitor's browser, rented machines by the hour for big runs,
+later a seed-verifiable "run a world for science" button.

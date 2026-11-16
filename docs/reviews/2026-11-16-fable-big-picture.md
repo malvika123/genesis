@@ -743,3 +743,107 @@ and research has always swung both ways.
 vanish when you count the obvious alternative — and carries that into medicine, or policy, or their own science — that is not
 a consolation prize. Many published discoveries do less good than that. The effort would be wasted only if it ended as a
 world that claimed more than it knew. You have built it so that it cannot.
+
+## Funding (16 Nov 2026)
+
+Three web searches, used only to check that programmes exist. **Prices and rupee figures are my rough arithmetic, not quotes;
+check each before spending or applying.** I am not a tax or legal adviser: money from abroad to an individual in India has
+rules of its own — ask an accountant before accepting any.
+
+### 1. What it really costs
+
+The honest news first: **this project is cheap.** The scarce things are your time and a second machine, not a budget.
+
+| Scale | What it needs | Rough cost |
+|---|---|---|
+| Daily work, 2–4 worlds | the laptop, 4 workers | nothing |
+| A standard test: 24 worlds × 100 days | about 10–25 core-hours | laptop overnight, or about 1–2 dollars rented |
+| A lived window: 24 worlds × 300 years | about 120 core-hours | 5–10 dollars |
+| Real-length-year runs, a brain four times larger | 4–20 times a window | 20–200 dollars each, used sparingly |
+| The million-year relay | about 12,000 core-hours | a few hundred dollars, once or twice |
+| Storage | result tables are small; keep summaries, not every world | a few dollars a month, or free in the repository |
+| Website | static pages | free |
+
+So: **year one, about 200–500 dollars (very roughly ₹20,000–45,000). The relay year, perhaps 500–1,500 dollars.** No database
+is needed — files in the repository are simpler, free and more reproducible. No server needs to "keep it running": runs are
+batch jobs that start, finish and are switched off.
+
+**The one purchase I would make:** a small desktop that is not your only laptop (a used mini-PC or a Mac mini class machine,
+very roughly ₹50,000–70,000). It runs all night at 8 workers, costs nothing per hour, and your laptop stops overheating. It
+pays for itself against rented machines within a year, and nobody's approval is needed.
+
+### 2. Why would a funder fund it — and what they want first
+
+Funders do not fund dreams or worlds. They fund **a person who has already shown something, asking for a specific next step.**
+Reasons that fit Genesis:
+- *Open-source funders:* a well-kept open project that others use.
+- *Education and outreach funders:* a free tool that teaches evolution and the scientific method, with lessons a class can run.
+- *Research funders:* a question, a method, and a host institution — almost always the last.
+- *Individual-talent funders:* an unusual person doing serious work outside the usual path.
+
+**Evidence they will ask for, in the order you can get it:**
+1. A public repository with frozen releases and the repeat-it-yourself guide.
+2. One finished result from stage 0 (the faithful-day table with its fails; entry 58 written up).
+3. A preprint.
+4. Users: one teacher who ran it with a class; one researcher who re-ran a result.
+5. A collaborator with an institution — the key that opens research money and research cloud credits.
+
+Before items 1–3 exist, applications mostly waste your evenings. After them, small money is quite possible.
+
+### 3. Routes for an independent person in India
+
+| Route | Checked today? | Needs | Likely gives |
+|---|---|---|---|
+| **GitHub Sponsors** | Yes — open to developers in India (GitHub's announcement; payout details are from older sources) | a public repository, a profile, identity checks | small monthly sums from individuals; realistically little until there are users |
+| **FOSS United grants** (India) | Yes — exists; funds open-source makers and projects in India, one-time grants up to about ₹15 lakh; said to be folding into wider "maintainer programmes" in 2026, so read the current page | an open-source project of use to others | the best-fitting Indian source; a small grant here would cover years of compute |
+| **FLOSS/fund** (Zerodha) | Yes — exists; about 1 million dollars a year to open-source projects worldwide; said to continue in 2026. Sources disagree on how to apply (a public `funding.json` file in the repository, or a rolling form) | an established project others depend on | aimed at widely used software; a long shot now, worth the small effort of the file |
+| **Emergent Ventures India** | Yes — exists; cohorts announced through 2026; individuals apply through the main Emergent Ventures form, choosing India | a short, personal application about you and the idea | grants to individuals with unusual projects; competitive; the route that least needs an institution |
+| **Google Cloud research credits** | Yes — exists, but **only for faculty, PhD students and postdocs** at universities or eligible research nonprofits | an academic collaborator who applies | about 1,000–5,000 dollars of compute |
+| **AWS Cloud Credit for Research** | Yes — exists, but again for staff and students of accredited research institutions; review takes 3–4 months | the same | similar or more |
+| **Open Collective** | Not checked | a "fiscal host" that holds money for the project | transparent donations; useful once several people want to give |
+| **Crowdfunding** (e.g. Experiment.com for science) | Not checked | a clear small goal, a video, your own network | a few hundred to a few thousand dollars, once; much effort |
+| **Indian science-outreach or education grants** (government or foundations) | Not checked — I could not name one with confidence | usually an institution | unknown; ask a collaborator |
+| **Human-origins foundations abroad** (e.g. the Leakey Foundation) | Not checked | normally a researcher at an institution | not for now |
+| **A university partner** | — | one academic who finds the work useful | credits, a student's time, a route to proper grants, and a co-author |
+
+**The pattern:** as an individual, your real options are *open-source money* (FOSS United, Sponsors, FLOSS/fund) and
+*talent money* (Emergent Ventures). Research money and cloud credits come only through a collaborator. That is one more reason
+the collaborator matters more than any grant.
+
+### 4. What to self-fund, what to seek, in what order
+
+**Self-fund:** everything in stage 0 and the first lived windows — a few thousand rupees — and, if you can, the desktop.
+The foundations must owe nothing to anyone.
+
+**Seek, later, only for things that scale:** the relay's compute; a student or helper for the lab interface and lessons;
+travel to meet a collaborator.
+
+**Order:**
+1. Now: nothing. Finish stage 0 on the laptop.
+2. With releases and the guide public: switch on GitHub Sponsors and add the `funding.json` file. Ten minutes each; expect little.
+3. With a stage-0 result and a preprint: apply to FOSS United and Emergent Ventures India. Write to possible collaborators.
+4. With a collaborator: research cloud credits for the relay.
+
+**Keeping money from bending the work.** Your no-tuning rule needs four guards:
+- **Ask for money for the instrument, never for a result.** "Fund the open world, its validation and its lessons" — not "fund
+  the emergence of tools". Never promise a discovery in an application.
+- **Deliverables you control:** releases, a validation table, lessons, a paper *whatever it finds*.
+- **Predictions stay public and come first,** funded or not. A funder who dislikes a null is the wrong funder.
+- **Keep it small enough to walk away from.** If the grant is less than you could pay yourself in a hard year, nobody owns the
+  project but you.
+
+### 5. Running without a server
+
+- **Website:** static pages on GitHub Pages, as now. Free. Result tables as files beside the pages.
+- **The world in the visitor's browser:** the engine is already free of browser-only code and already runs there. Each visitor's
+  own computer does the work. This is the cheapest "server" there is, and it is why keeping the engine dependency-free matters.
+- **Checks on each change:** GitHub's free automated runs for public repositories can run `npm test` and a two-world smoke
+  run (limits not checked today).
+- **Big runs:** rent a machine by the hour, run, copy the tables back, switch it off. Never leave one running.
+- **Shared compute, later:** a "run a world for science" button — a visitor's browser runs one seeded world and offers the
+  result table back. Because worlds are exactly repeatable by seed, any returned result can be verified by re-running it. This
+  is real work to build safely; do it only if users exist.
+
+**Plainly:** yes, at first it is self-funded — but the sum is small, closer to a hobby's cost than a laboratory's. The thing
+worth seeking is not money but one collaborator and a few real users. Money follows those, and with them it arrives without
+strings.
