@@ -997,20 +997,24 @@ function sim() {
           firsts.fruit = 1;
           log(a.name + ' ate fruit from the trees.');
         }
-      } else if (a.sp === 0 && ROOT[i] > 0.05) {
-        // digging for roots: hard with bare hands, much easier with a stick
-        const pd = a.hand === 2 ? SOC.digStick : a.hand === 3 ? SOC.digFlake : a.hand === 1 ? SOC.digStone : SOC.digBare;
-        a.e -= 0.15;
+      } else if (a.sp === 0 && (ROOT[i] > 0.05 || (SOC.digAct && DUG[i] > 0.02))) {
+        // digging for roots: hard with bare hands, much easier with a stick. Since entry 85 (A44, the same false link as the flake's):
+        // holding a tool no longer digs by itself — eating here digs bare-handed, or eats roots someone already dug up with a tool (a
+        // strike with a stick, flake or stone on the ground, below). --tool-in-hand-digs: the old rule
+        const dugHere = SOC.digAct && DUG[i] > 0.02,
+          pd = dugHere ? 1 : SOC.digAct ? SOC.digBare : a.hand === 2 ? SOC.digStick : a.hand === 3 ? SOC.digFlake : a.hand === 1 ? SOC.digStone : SOC.digBare;
+        if (!dugHere) a.e -= 0.15;
         if (rnd() < pd) {
-          const b = Math.min(ROOT[i], 0.3);
-          ROOT[i] -= b;
+          const b = Math.min(dugHere ? DUG[i] : ROOT[i], 0.3);
+          if (dugHere) DUG[i] -= b;
+          else ROOT[i] -= b;
           a.e = Math.min(100, a.e + b * SOC.rootVal * MEAL(a)); // roots and tubers (SOC.rootVal: an assumption, tested lower)
           if (hu > 0.5) a.ev[2] = 'it dug up roots after going hungry on day ' + dn;
           if (!firsts.root) {
             firsts.root = 1;
             log(a.name + ' dug up a root and ate it.');
           }
-          if (a.hand === 2 && !firsts.dig) {
+          if (a.hand === 2 && !SOC.digAct && !firsts.dig) {
             firsts.dig = 1;
             log(a.name + ' dug for roots with a stick.');
           }
@@ -1279,6 +1283,20 @@ function sim() {
           if (!firsts.nut) {
             firsts.nut = 1;
             log(a.name + ' cracked a nut open with a stone, the first in this world.');
+          }
+        }
+      } else if (SOC.digAct && (a.hand === 1 || a.hand === 2 || a.hand === 3) && ROOT[i] > 0.05 && !(a.hand === 3 && meatAt(a.x, a.y, 0)) && !(a.hand === 1 && (nut[i] > 0.05 || stone[i] > 0 || marrowAt(a.x, a.y)))) {
+        // digging with a tool is an act (entry 85): a strike with a stick, flake or stone into the ground where roots are loosens them
+        // with the tool's chance (SOC.digStick, digFlake, digStone, as before), leaving them dug up and lying ready to eat
+        a.e -= 0.15;
+        const pd = a.hand === 2 ? SOC.digStick : a.hand === 3 ? SOC.digFlake : SOC.digStone;
+        if (rnd() < pd) {
+          const b = Math.min(ROOT[i], 0.3);
+          ROOT[i] -= b;
+          DUG[i] += b;
+          if (a.hand === 2 && !firsts.dig) {
+            firsts.dig = 1;
+            log(a.name + ' dug for roots with a stick.');
           }
         }
       } else if (a.hand === 3 && SOC.cutAct && SOC.homMeatKg && meatAt(a.x, a.y, 0)) {
@@ -1720,7 +1738,7 @@ const hunterSeen = (x) => {
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { preyFlight: true, campFix: true, cutAct: true, cutKg: 0.75, fleshOnly: true, fleshShare: 0.5, rotBySize: true, marrowKg: true, marrowFrac: 0.0025, marrowKcal: 7860, stickHumid: true, brandByDry: true, fireNatural: true, rotByKg: true, homMeatKg: true, biteBareKg: 0.25, biteFlakeKg: 0.75, meatKcal: 1140, herdYoung: true, youngShare: 0.25, forestPrey: 1000, meatMemory: true, keepKill: true, homStrikeKg: true, huntPull: true, atkFixed: 0.25, gut: true, gutShare: 0.25, digestH: 24, mealSleep: 2, preyMap: false, preyLevel: 5000, buffShare: 0.5, preyRegrow: 0.3, preyZone: 1, preyRule: 'soft', bigK: 2, preyMaxX: 1, smallPrey: true, maxPreyKg: 15, marrow: true, marrowShare: 0.15, marrowVal: 110, digStick: 0.55, digFlake: 0.4, digStone: 0.3, digBare: 0.15, sedges: true, sedgeCap: 0.5, africanNuts: true, rootVal: 80, voiceGenes: true, fireMaking: true, founderElders: 0.12, brainCost: true, brainF: 0.1, carry: true, carryAge: 2, walkE: true, walkJ: 4, pal: 1.7, growBodies: true, massF: 30, massM: 42, swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { digAct: true, preyFlight: true, campFix: true, cutAct: true, cutKg: 0.75, fleshOnly: true, fleshShare: 0.5, rotBySize: true, marrowKg: true, marrowFrac: 0.0025, marrowKcal: 7860, stickHumid: true, brandByDry: true, fireNatural: true, rotByKg: true, homMeatKg: true, biteBareKg: 0.25, biteFlakeKg: 0.75, meatKcal: 1140, herdYoung: true, youngShare: 0.25, forestPrey: 1000, meatMemory: true, keepKill: true, homStrikeKg: true, huntPull: true, atkFixed: 0.25, gut: true, gutShare: 0.25, digestH: 24, mealSleep: 2, preyMap: false, preyLevel: 5000, buffShare: 0.5, preyRegrow: 0.3, preyZone: 1, preyRule: 'soft', bigK: 2, preyMaxX: 1, smallPrey: true, maxPreyKg: 15, marrow: true, marrowShare: 0.15, marrowVal: 110, digStick: 0.55, digFlake: 0.4, digStone: 0.3, digBare: 0.15, sedges: true, sedgeCap: 0.5, africanNuts: true, rootVal: 80, voiceGenes: true, fireMaking: true, founderElders: 0.12, brainCost: true, brainF: 0.1, carry: true, carryAge: 2, walkE: true, walkJ: 4, pal: 1.7, growBodies: true, massF: 30, massM: 42, swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {

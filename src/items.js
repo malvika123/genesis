@@ -22,7 +22,7 @@ let soil;
 // Roots and tubers: starchy food stored underground by many wild plants, most of all in grassland and
 // open woodland with a dry season. A staple of early humans — but hidden, and hard to dig out with
 // bare hands; a stick makes it much easier, as the Hadza still dig them today.
-let ROOT;
+let ROOT, DUG; // DUG: roots dug up with a tool (entry 85)
 let stone, // loose stones on the ground, a few in each cell
   stick, // fallen branches
   flake, // stones with a sharp edge
@@ -34,6 +34,7 @@ const HAND = ['nothing', 'a stone', 'a stick', 'a sharp stone', 'a burning stick
 function initItems() {
   BODIES = [];
   ROOT = new Float32Array(W * H);
+  DUG = new Float32Array(W * H); // roots dug up with a tool, lying ready to eat (entry 85)
   soil = new Float32Array(W * H).fill(1);
   const n = W * H;
   stone = new Uint8Array(n);

@@ -104,6 +104,7 @@ function buildWorld(cfg) {
   SOC.africanNuts = cfg.oldNuts !== true; // nuts of warm open woodland among early hominins (off: oak, hazel, walnut rules)
   SOC.rootVal = cfg.rootValue ?? 80; // food from a bite of roots (fruit 70; an assumption: raw tubers are poor, sedge corms rich)
   SOC.voiceGenes = cfg.noVoiceGenes !== true; // vocal learning, pointing, shared-attention joy can evolve from ape-low (off: fixed at 0)
+  SOC.digAct = cfg.toolInHandDigs !== true; // digging with a tool is an act: a strike into the ground (off: holding a tool digs by itself, the old rule)
   SOC.preyFlight = cfg.noPreyFlight !== true; // plant-eaters have the inborn pull to flee a hunter that hominins have (off: the old rule)
   SOC.campFix = cfg.oldHunterPlacement !== true; // every hunter of a group starts away from the camp (off: only the group's centre, bug B28)
   SOC.cutAct = cfg.flakeInHandCuts !== true; // cutting meat is an act: a strike with a flake on a carcass (off: holding a flake while eating cuts, the old rule)
