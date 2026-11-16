@@ -2756,8 +2756,15 @@ trace: what happens to the rest of a carcass, and cubs counted in the meat ledge
 at energy 80 or more), so they kill 4–7 × the stand-ins' rate; real cats seldom kill when full (surplus killing rare: Kruuk 1972).
 Two leopards were killed by leopards (noted).
 
-**Interpretation.** Before detection is built, the reason full hunters attack must be found: the fixed part of the inborn pull
-(`SOC.atkFixed`, an assumption), or learning that attacking pays even when full. Detection would lower kills for the wrong reason if
+**Trace (same worlds, `--hunt-pull-fixed 0`, measuring only).** With the fixed part of the inborn pull removed, sabre-tooths still
+attack when full in 61% of attacks (was 80%) and kill 0.61 a day (was 0.91); leopards 25% (was 33%), hyenas 30% (was 62%). So the
+fixed pull is a small part; **most is learned**: reward is the fall of a drive, and a full hunter's hunger drive is near 0 (3 × 0.11²),
+so eating barely rewards it — but "prey beside me → attack", learned while hungry, carries over when full, and a failed attack costs
+little, so nothing unlearns it.
+
+**Interpretation.** Before detection is built, what makes a real cat stop hunting when full must be found and sourced: how strongly
+satiety damps the urge (Adamec 1976 shows fed cats still attack, but less), and what a rush costs (energy, injury risk). A design
+question for review. Detection would lower kills for the wrong reason if
 this stays. **Strength.** Weak (3 worlds × 20 days).
 
 ---

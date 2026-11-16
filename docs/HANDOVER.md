@@ -47,8 +47,9 @@ Read this first in a new session, then **`docs/MASTER-PLAN.md` (the one plan to 
 
 - Fable's review: `docs/reviews/2026-11-16-fable-detectable-hunts.md` (do not build yet; leopard and sabre-tooth only; hyenas unchanged).
 - Entries 90–91 (measuring): success 35–52% per attack; few attacks on sleepers; **sabre-tooths attack when full (80% of attacks)**.
-- **Next:** trace why full hunters attack (the fixed inborn pull vs learning; `node tools/analysis/hunt-measure.js`), and where the
-  leopard's carcass goes; then a 24-world baseline; then the detection rule with a registered assumption tested at both ends.
+- Traced (entry 91): full hunters attack mostly from **learning**, not the fixed pull (`--hunt-pull-fixed 0`: sabre-tooth fed
+  attacks 80% → 61%). **Next:** a design note for review — what stops a real cat hunting when full (satiety, the cost of a rush),
+  sourced; trace where the leopard's carcass goes; then a 24-world baseline; then the detection rule with a registered assumption tested at both ends.
 
 ## Next, in order
 
