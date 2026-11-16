@@ -500,3 +500,138 @@ questions about us.
 agreement — is possible and would be remarkable; I would not promise it. L5 is a long shot. L6, grammar, I would not bet on;
 no one has grown it from bodies and survival alone. But after L1–L2 the sentence "not possible with this brain" would no
 longer be true, and that part is within a few months' reach.
+
+## Purpose, physics and positioning (16 Nov 2026)
+
+No web searches were used. Dates and studies are from memory and need checking before use (flagged where they matter most).
+
+### 1. Will all this bring them closer to our ancestors?
+
+**Closer in what they live through — yes, clearly.**
+- *Their days:* a valley at walking scale, real escapes, a hungry season, neighbours, known individuals.
+- *Their lives:* a childhood long enough to practise in; mothers and young together for years.
+- *Their hands:* stones that differ, blows that can fail, things carried and kept.
+- *Their numbers:* births, deaths, predation and diet inside field ranges, without tuning.
+
+**Closer in what they are inside — only a little.** Memory, prediction and a larger brain move the mind from "habit machine"
+toward "small animal mind". That is real progress, and still a very long way from an ape.
+
+**What stays unlike them however much is built:**
+- A brain millions of times smaller, built from one or two learning ideas where real brains use many we do not understand.
+- No raw seeing: the world is still partly handed over in names.
+- No felt body in the full sense — no gut, hormones, illness and mood as they really interlock.
+- No real development: a real infant's brain builds itself over years by rules nobody has written down.
+- And the plain limit: a model can only contain what we already know to put in. Where science does not know why hominins did
+  something, Genesis cannot know either. It can *test* a guess; it cannot supply the answer.
+
+**How we would know we are closer.** Never by how human they look. By a fixed list, written before, scored the same way each time:
+
+| Level | Measure | Compared with |
+|---|---|---|
+| Body and life | growth, birth spacing, infant survival, lifespan, causes of death | chimpanzee long-term sites; forager life tables as the upper bookend |
+| The day | hours feeding, resting, travelling; day range; nest each night | chimpanzee and baboon field studies |
+| Diet | plant and meat shares; meat per day | isotope evidence (C3/C4), chimpanzee meat intake |
+| Danger | deaths by predators per year; who is taken | primate predation rates |
+| Social | group size, who moves between groups, grooming time | chimpanzee communities |
+| Learning | years to master a skill; whether young learn it beside the mother | nut-cracking studies |
+| Traces left | flakes and cores per site, stone carried how far, cut and hammer marks on bones | the Oldowan record itself |
+
+The last row is the strongest test: *do they leave behind what the real ones left?* A score that rises on this table across
+stages is "closer". A world that only looks livelier is not.
+
+### 2. Do they need real physics to build things?
+
+**They need the right physics for 2.5 Ma — which is less than you fear, and different from "stacking branches".**
+
+First the record: there is **no evidence of built shelters at 2.5 Ma**. The oldest shaped wooden structure known is about
+476,000 years old (Kalambo Falls; to verify), and binding things together is later still. What apes do build, every night, is a
+**nest** — branches bent and woven in a tree. So the faithful "shelter" is a nest, and a hut of stacked branches at 2.5 Ma would
+be a fairy-world result. Entry 41 was right to call the first shelters chance.
+
+| What they really did at 2.5 Ma | The physics that matters | Minimum faithful form |
+|---|---|---|
+| Knocking flakes off stone | how stone breaks: the angle of the edge struck (under 90°), the force, the kind of rock | a blow succeeds by angle, force and rock quality — numbers from knapping experiments |
+| Cracking bones and nuts | energy of the blow against strength of the shell or bone | already designed (A27): mass × height × body |
+| Cutting | sharpness that wears with use | an edge value that falls with each cut |
+| Carrying stone, food, infants | weight slows and tires the carrier | load as kg; walking cost rising with load (human and ape load studies) |
+| Digging | hardness of ground, wet or dry | a per-strike amount by soil and tool |
+| Nests | a branch bends or snaps under weight; height against falling and leopards | branch strength by thickness; body weight |
+| Rain, wind, cold on a sleeper | wet fur chills; cover above keeps rain off | already partly there (R25): cover as a share of sky |
+
+**The principle:** *physics of amounts, not physics of shapes.* Mass, force, energy, angle, wear, heat — one honest formula each,
+sourced. Not solid objects tumbling and balancing in three dimensions.
+
+**Too much for the laptop, and not needed for this period:** piles that stand or fall; wind flowing through a structure; knots
+and binding; cloth and skins; water held in a vessel. Each is a research field of its own, costs far more than a hundred brains,
+and belongs to times hundreds of thousands of years later. If the relay ever reaches those times, add them then.
+
+**One addition worth having early:** throwing. It is cheap (mass, distance, a chance to hit) and it matters for driving off
+hunters — though good throwing shoulders come with *Homo erectus*, about 2 Ma (to verify), so at 2.5 Ma it should be weak.
+
+### 3. A tool people can trust
+
+Your instinct is right: without trust it is a private world. Trust comes from six plain things, and you already have three.
+
+1. **Documented assumptions** — you have this (`ASSUMPTIONS.md`). Finish registering every number.
+2. **Predictions before results** — you have this. It is the rarest of the six.
+3. **Honest nulls kept** — you have this.
+4. **Validation against data** — the table in section 1, shown on the site with passes *and fails*, re-scored at every release.
+5. **Anyone can repeat it** — same seed, same version, same world, on their machine: one command per logged entry, results
+   stored openly, each release numbered and frozen. Other people re-running entry 58 and getting your table is worth more than
+   any claim.
+6. **A plain statement of limits** — one page: what Genesis can answer, what it cannot, and why (the brain; the clocks; the
+   labelled senses).
+
+Then a **lab interface**: choose switches and ranges, name one outcome, write the prediction, run N worlds, get the table and
+the data. It is your own method, made usable by others — and by you, without Claude.
+
+**What it can honestly support:**
+
+- **Now:** "what if" questions about the *model* — how do predation, food and band size trade off in this world? What does a
+  rule about learning do to hunger? Teaching how to run a fair experiment (prediction, control, noise, a null).
+- **After stage 0:** questions about *simple learning in a sourced ecology* — how often does trial and error find a skill at
+  given rates of opportunity? Does watching help when the means are counted? How does a food-against-safety trade shift with
+  predator numbers? These can be set beside field data with a straight face.
+- **After the roadmap:** questions about *conditions* — under which ecology, group structure and brain cost does a tradition
+  last? Does selection favour learning from others, and when? What must be true for a signal to pay? These are the questions
+  real researchers argue about, and a transparent world where each condition can be switched is useful to them — as a
+  *thinking tool*, not as evidence about fossils.
+
+**Never supported:** "this is what happened", "this is why brains grew", "this is when language began".
+
+**Who would use it.** Teachers and students first — human evolution, ecology, and above all *method*. Curious people, through
+the website. Researchers in cultural evolution and behavioural ecology would look if two things exist: a short methods paper
+and a result they can reproduce. Specialists in fossils will be the hardest to interest, and that is fair.
+
+### 4. How I would position it
+
+**What it is:** an open, explorable model world for asking "what would it take?" about early human evolution — not a
+reconstruction of the past.
+
+**In one paragraph:**
+
+> Genesis is an open-source simulated world of East Africa about 2.5 million years ago. Its creatures are given no behaviours:
+> each has a small learning brain, a body with real needs, and a world whose every number is taken from research or listed as an
+> assumption. Nothing is tuned to make them survive or "become human". Every experiment is logged with its prediction written
+> first, its data, and its failures. Genesis cannot tell us what our ancestors did. It lets anyone test, in the open, what
+> conditions would have been enough — or not enough — for the things they did.
+
+**Claim:** every number sourced or declared; every result repeatable; nulls reported; where it matches field data and where it
+does not.
+
+**Never claim:** that the sims are small hominins or small humans; that a result shows what happened; that anything "emerged"
+without the deaf arm, the control and 24 worlds; that it predicts the fossil record. Put the sentence about the brain (64
+units, what it can and cannot stand for) on the front page, not in a footnote. It will win more trust than it loses.
+
+**How to share, in order:**
+1. **The website** as the front door: the world to watch, the research log, the validation table with its fails.
+2. **Open source with frozen, numbered releases** and a ten-minute "repeat entry 58 yourself" guide.
+3. **A short methods paper** (the band-size draft is the seed): the method and two or three solid results, sent to a
+   simulation or cultural-evolution journal, or posted openly as a preprint first. Ask one working researcher to read it before
+   it goes out; their objections are worth more than my reviews.
+4. **A teaching pack**: three ready experiments a class can run in an hour.
+5. **The lab interface**, once stage 0 is done.
+
+**The meaning of all this,** since you asked: it does not hang on the sims becoming human. It is that a person who needed to
+understand where we come from built a world honest enough that others can ask their questions in it too. That is already
+partly true today, and each stage makes it truer.
