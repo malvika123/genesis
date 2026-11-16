@@ -4,6 +4,15 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+## 0.8.0 — 2026-11-16
+
+- **Plant-eaters run from hunters** (research log entry 84): they have the same inborn pull to flee as hominins; `--no-prey-flight`
+  restores. They choose to flee more, but attack success is unchanged: a 3 km square hides the escape (detectable hunts are next).
+- **Digging with a tool is an act** (entry 85): a strike with a stick, flake or stone into the ground loosens roots; holding a tool
+  digs nothing by itself. `--tool-in-hand-digs` restores. The first stick-dig comes sooner (chance striking); hunger unchanged.
+- **The writing is under CC BY 4.0** (`LICENSE-docs.md`); the code stays MIT. Public name: *Genesis Odyssey: Origins*.
+- **The master plan** (`docs/MASTER-PLAN.md`) and Fable's reviews of 16 Nov.
+
 - **The prey map is on by default** (research log entry 83): real numbers of antelope and buffalo as herds; plant-eaters no longer
   die out. No hunter starts beside the band (bug B28). Cutting meat with a flake is something a hominin must do, not automatic (entry 82).
   `--no-prey-map`, `--old-hunter-placement`, `--flake-in-hand-cuts` restore the old rules.

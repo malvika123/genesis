@@ -2482,7 +2482,7 @@ larger share of deaths.
 
 ### 84. Prey choose to flee — but a 3 km square hides the escape — Nov 2026
 
-**Version.** 0.7.0+ · commit `d01fb21` (not yet released: held for Fable's review of the staying-alive design,
+**Version.** 0.8.0 · commit `d01fb21` (released in 0.8.0; at first not released: held for Fable's review of the staying-alive design,
 `docs/design/staying-alive.md`; Fable's weekly limit was reached on 15 Nov). The owner (14 Nov): "in the real world everyone hides and
 runs; life is very important." A measuring-only trace found herds stayed in their square 95–97% of the time with a hunter in it or next
 to it, and hunters' attacks succeeded 47% of the time (field: lions about 15% alone and 30% in groups, Serengeti; leopards 14–38%).
@@ -2508,6 +2508,42 @@ saw it coming and ran — the design's step 2 (hunts that can be detected), to b
 
 **Strength.** Weak (2–3 worlds, 10 days; a trace). **Lesson:** a measure tied to the map's grid can hide what the creatures do; measure
 the choice as well as the outcome.
+
+---
+
+### 85. Digging with a tool is an act — a stick finds roots sooner, nobody goes hungrier — Nov 2026
+
+**Version.** 0.8.0 · commit `15307c1` (the rule), `88dddcf` (the prediction). The same false link as the flake's (entry 82): holding a
+stick, flake or stone made digging for roots easier by itself. Now digging with a tool is a strike into the ground where roots are; it
+loosens them with the tool's old chance (A44: stick 0.55, flake 0.4, stone 0.3), leaving them dug up and lying for anyone to eat. Eating
+without a strike digs bare-handed. `--tool-in-hand-digs` restores (identical worlds).
+
+**Data.** [Both arms and the prediction](../data/findings/85-digging-is-an-act/) (worlds 1–24 × 100 days, the default world).
+
+| Measure (old rule → digging is an act) | Old | Act | Difference (95% range) |
+|---|---|---|---|
+| First dig with a stick, per 1,000 hominin-life-years | 162 | 400 | worlds 24 of 24 in both |
+| Hunger deaths (sum, 24 worlds) | 217 | 186 | −1.3 a world [−4.0, 1.4] |
+| People alive at day 100 (mean) | 12.5 | 10.5 | −1.9 [−7.0, 3.2] |
+| Worlds where the band died out | 2 | 6 | |
+| First nut cracked, per 1,000 hominin-life-years | 97 | 69 | |
+| Drowned (sum) | 2 | 7 | 0.2 [0.04, 0.38] |
+
+"First dig" is comparable in both arms: the first time a stick gets roots out (old: eating roots with a stick in hand; act: a strike with
+a stick that loosens them).
+
+**Result.** (1) Digging with a stick becomes rarer — **not held**: the first stick-dig came about 2.5 times *sooner*. (2) Hunger deaths
+rise a little — **not held**: no difference (slightly fewer, within noise).
+
+**Interpretation.** Under the old rule a stick helped only when a hominin happened to be holding one *and* chose to eat at a root
+patch. Now any strike with a stick on root ground digs — and striking is an act hominins already try often (with flakes on carcasses,
+stones on nuts). So the first dig comes sooner; it is chance striking, not a learned skill, and the first-time measure cannot tell the
+two apart (it says when, not how often or whether it was repeated: F5, count repeats). Food from roots did not change enough to show
+in hunger. The fewer nuts cracked and more bands dying out (6 vs 2 of 24) and drownings (2 vs 7, small numbers, one of many
+comparisons) are noted, not explained; the band size range includes no change.
+
+**Strength.** Moderate (24 worlds × 100 days, both arms). The rule is kept: it removes a false link (holding is not using), not tuned
+toward an outcome. **Lesson:** a first-time count measures chance as much as skill; the next step is counting repeats (F5).
 
 ---
 

@@ -25,14 +25,14 @@ Read this first in a new session, then **`docs/MASTER-PLAN.md` (the one plan to 
     `data/findings/85-digging-is-an-act/`;
   - the writing under CC BY 4.0 (`LICENSE-docs.md`, F23 done); the roadmap, positioning, funding and all Fable sections in the plan;
     backlog section 0.
-- **Running when this was written:** the entry 85 comparison, 24 worlds × 100 days, both arms (`data/findings/85-digging-is-an-act/dig-act.csv`
-  and `tool-in-hand.csv`). If the files are missing, run again:
-  `nice -n 19 node tools/experiment.js --seeds 1-24 --days 100 --workers 2 [--tool-in-hand-digs] --out data/findings/85-digging-is-an-act/<arm>.csv`
-  (run both arms in parallel, 2 workers each — never more than 4 workers in total).
+- **Entry 85 measured (16 Nov evening):** digging is an act — the first stick-dig comes about 2.5× sooner (chance striking), hunger
+  deaths unchanged; both predictions not held; written in `docs/FINDINGS.md`. Released as **v0.8.0** (tagged).
+- **`docs/MASTER-PLAN.md`** (Fable, 16 Nov): the one plan to keep. Its next steps supersede the list below where they differ
+  (it puts the one-day chain probe F3 before detectable hunts F1, and the hungry season in stage 0).
 
 ## Next, in order
 
-1. Finish entry 85: compare the two arms (dig firsts per 1,000 hominin-life-years with `node tools/analysis/rates.js`; hunger deaths),
+1. ~~Finish entry 85~~ (done, v0.8.0). Was: compare the two arms (dig firsts per 1,000 hominin-life-years with `node tools/analysis/rates.js`; hunger deaths),
    write the entry in `docs/FINDINGS.md`, then the release routine below — and make it a **tagged release** (F24: release more often;
    bump `package.json`, `CITATION.cff` version/date, CHANGELOG "Unreleased" → the version).
 2. **Stage 0, F1: detectable hunts.** Design: `docs/design/staying-alive.md` (step 2). Fable's cautions (big-picture review, section 5):
