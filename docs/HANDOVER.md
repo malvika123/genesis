@@ -30,6 +30,19 @@ Read this first in a new session, then **`docs/MASTER-PLAN.md` (the one plan to 
 - **`docs/MASTER-PLAN.md`** (Fable, 16 Nov): the one plan to keep. Its next steps supersede the list below where they differ
   (it puts the one-day chain probe F3 before detectable hunts F1, and the hungry season in stage 0).
 
+## Later on 16 Nov (v0.9.0, live and tagged)
+
+- Entry 86: mutation rule registered; neutral marker gene; learning from others fell in 17 of 18 worlds beside it (cause unmeasured:
+  backlog). `tools/identical-worlds.sh OLD_COMMIT --switch` is the identical-worlds check.
+- Entry 87: chain probe — chains of 2 learned, 3 by half, 4–5 none; a cue held 2–4 steps. Next: the probe with copying from an elder.
+- Entries 88–89: the hungry season, step 1. Rain at home is seasonal only by chance of latitude; the owner chose "a real station's
+  year": fruit now follows Uvinza's dry months (Piel et al. 2017). Fable's hungry-season review is in `docs/reviews/`; its citation for
+  a late-dry peak was wrong (a Guinea-Bissau paper), corrected in entry 89.
+- PDFs: no reader is installed (the owner was asked about `brew install poppler`, no answer); a stdlib extractor worked:
+  `python3 -I <scratchpad>/pdftext.py IN.pdf OUT.txt` (rewrite it if the scratchpad is gone: decompress FlateDecode streams, read Tj/TJ).
+- **Next, per the master plan:** 0.5 detectable hunts (F1), or finish the hungry season (nuts by season once sourced; Piel's Figure 3
+  ratio), then 0.6 count repeats and split by sex, 0.7 the real-length year (F4) — where the body-side test of the season belongs.
+
 ## Next, in order
 
 1. ~~Finish entry 85~~ (done, v0.8.0). Was: compare the two arms (dig firsts per 1,000 hominin-life-years with `node tools/analysis/rates.js`; hunger deaths),
