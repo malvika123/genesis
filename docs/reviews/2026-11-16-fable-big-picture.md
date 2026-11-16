@@ -387,3 +387,116 @@ working objects, change the brain (one evidenced change at a time) or stop there
 **Honestly:** this is about two years of steady spare-time work to a labelled, checked million-year relay in which a few
 inherited traits evolve and bands may hold simple traditions. That is reachable. Language emerging on its own is not something
 I can promise at any horizon. The smaller pieces are worth having each by themselves — which is the right way to hold a big vision.
+
+## Making words and grammar possible (16 Nov 2026)
+
+Read for this: `src/voice.js`, `src/talk.js`, `src/config.js`, `src/brain.js` (briefly). One web search (the Lazaridou & Baroni
+2020 survey exists; its details were not confirmed). **Every study named below is quoted from memory and must be checked before
+anything is built on it.** "Possible in principle" is the honest target; nothing here makes language *likely*.
+
+### 1. What stops it today
+
+- **One word every 15 minutes.** A creature says at most one word (one or two syllables) per step, and hears only the *loudest*
+  word of that step. Two words in a row are half an hour apart. Grammar is order within seconds; the clock cannot hold it.
+- **Almost no memory.** Eight numbers carried from the last step, and credit that fades by 0.78 a step. Nothing can hold one
+  word in mind while the next arrives.
+- **Four units for sound.** The "sound and words" region starts as 1 unit in 16 — four of 64 (it can evolve).
+- **Learning only from reward.** The network changes only when the body feels better or worse than expected. A child learns the
+  sound patterns of its language from mere listening, with no reward per word. Genesis has no such learning.
+- **No "who".** A hearer cannot tell who spoke, so cannot learn whom to believe.
+- **Little reason to speak.** Reward is each body's own. Telling another where food is pays the speaker nothing.
+- **Thin shared attention.** There are inputs for someone pointing and where they look, but nothing ties a heard word to the
+  thing both are looking at.
+
+What is already good: the voice has no meanings built in, the ear gets sound not labels, air carries it by real physics, and
+`talk.js` only *watches* what words come to mean. Keep all of that. One caution: the *things* are labelled ("predator",
+"food"), so a first "word" would be a name for one of the builder's labels — easier than the real problem. Say so when it happens.
+
+### 2. What the evidence says words and grammar need
+
+**In the brain.**
+- *Learning patterns from listening alone.* Eight-month-old babies find word boundaries in two minutes of a made-up stream
+  (Saffran, Aslin & Newport 1996); tamarin monkeys can too (Hauser et al. 2001). So this is old primate equipment.
+- *Holding things in mind.* All primates have working memory; humans hold more, for longer.
+- *Combining.* Some monkeys and chimpanzees join two calls into a new meaning; nothing beyond that is known in the wild.
+- *Reading others.* Apes follow gaze and grasp what another sees and wants. Showing something *just to share it* (about 9–12
+  months in human babies) is rare or absent in apes (Tomasello).
+
+**In the body.** Apes have little voluntary control of the voice; their hands are another matter — chimpanzees use dozens of
+deliberate gestures (Hobaiter & Byrne). Monkey throats could shape speech; the limit is the brain's wiring to the voice
+(Fitch et al. 2016).
+
+**In the group.** Children are the engine. Deaf children brought together in Nicaragua in the 1980s made a new sign language,
+and each new wave of children made its grammar richer (Senghas). In the laboratory, a made-up language passed down a chain of
+learners becomes regular by itself (Kirby, Cornish & Smith 2008). So grammar needs learners learning from learners, over
+generations — given a human brain.
+
+**When (uncertain throughout).** Gestures and calls with learned meanings: older than 6 million years. Breath control for long
+speech: not yet in *Homo erectus* at 1.6 Ma, present in Neanderthals (MacLarnon & Hewitt 1999). Speech-tuned hearing: by about
+430,000 years ago. A language gene variant shared with Neanderthals. Signs of symbols (engraved ochre, beads): about 100,000
+years ago. Full language: at the latest before living peoples split, some 150,000–200,000 years ago; perhaps much earlier in
+simpler form. **At 2.5 Ma the faithful expectation is gestures and a few calls, not words.** Words belong to the far end of the
+relay, if anywhere.
+
+### 3. Brain changes that would make it possible in principle
+
+Each is one change, with a switch, a test in a bare test world first, and its size inherited and paid for in food.
+
+| # | Change | Evidence | Test | Cost on the laptop |
+|---|---|---|---|---|
+| A | **Speech in seconds:** when a voice is used, the step opens into a short burst of syllables; all nearby words heard, not only the loudest | real speech and hearing | two calls in one step arrive in order | small |
+| B | **Working memory:** more memory units that fade slowly and are learned, not just copied forward | prefrontal memory in all primates | the classic delayed-response test: hold a cue for N steps; compare with monkey and ape results | +10–30% |
+| C | **Learning by prediction:** the brain also guesses what it will sense next and learns from being wrong, without reward | statistical learning in babies and monkeys; a leading theory of cortex | the Saffran test: after listening only, does it tell "words" from "part-words"? | up to about 2× brain time |
+| D | **Shared attention as an inherited pull,** starting near zero: looking where another looks, and at what they point to | gaze-following in apes; sharing attention in humans | does a pointed-at thing get looked at more than chance | small |
+| E | **Knowing who** (roadmap stage 3) | all primates | learns to ignore a caller that was often wrong | small |
+| F | **Bigger brains at a real price:** unit count inherited, each unit costing energy at the real share of the body's budget | brain tissue is costly; register the share with its range | brains grow only in worlds where they pay | 256 units is about 4× brain time; fine for 100 creatures |
+| G | **A reason to tell:** nothing new — the mother's existing pull toward her child's welfare, and kin | maternal care; kin selection | calls arise first between mother and child | none |
+| H | **Selection** on voice control, memory size, attention, over the relay | inheritance | traits shift the same way across worlds | the relay's cost |
+
+**Faithful:** A, B, D, E, G. **Faithful but a modelling choice among several:** C (how real brains learn from prediction is
+argued over; register it as an assumption and test with and without). **Wishful, and I would refuse them:** rewarding a
+speaker for being understood; a ready-made "language part"; modern machine-learning machinery that looks back over long
+stretches of time with exact credit (no brain does that); starting from any system trained on human language; giving 2.5 Ma
+hominins a human baby's drive to copy sounds (`voice.js` notes most primates lack it — it must evolve, at a cost).
+
+**The gesture road.** At 2.5 Ma the hands, not the voice, are under control. Genesis already has pointing. Richer learned
+gestures may be the more faithful first road to shared signs.
+
+### 4. What research on emergent communication shows
+
+- **Signals arise easily when interests are shared.** In the simplest signalling games, plain reward learning produces a shared
+  code (Lewis; Skyrms). In Steels' "naming games", robots that look at the same thing and correct each other settle on shared
+  names with no central control.
+- **Deep-learning agents invent codes** when two agents are paid *together* for a task that needs talk (many studies since
+  2016).
+- **What has not been achieved:** word-like, combinable language from selfish agents rewarded only for their own survival. When
+  agents' interests differ, cheap talk tends to collapse (Cao et al. 2018). Structure that looks like grammar is fragile and
+  appears mainly under special pressures: small memory, many partners, and new learners entering — the same lesson as Nicaragua
+  and Kirby's chains. Many "it emerged" claims weakened under closer testing.
+
+**For Genesis:** (1) start where interests truly overlap — mother and child, close kin, shared danger; (2) joint attention and
+feedback matter more than brain size; (3) generations of young learners are not a detail, they are the mechanism; (4) be the
+strictest judge of your own result — always run a deaf arm.
+
+### 5. The staged path, inside the roadmap
+
+| Step | With roadmap stage | What | Progress looks like |
+|---|---|---|---|
+| L0 | 0 | Add a delayed-response probe beside the chain probe | a number: how many steps today's brain can hold a cue (I expect 1–2) |
+| L1 | 1–2 | Changes A and B | the hold grows into the monkey range; worlds otherwise unchanged |
+| L2 | 2–3 | Change C | passes the Saffran test from listening alone |
+| L3 | 3 | D, E, three bands; first signals | a call or gesture that is *not* inborn comes to be used in one situation, hearers act on it, and worlds with hearing beat a deaf arm (24 worlds) |
+| L4 | 4–5 | Conventions | bands differ in which sound means what; a child moved between bands learns its new band's |
+| L5 | 6 (relay) | Combining | two signals together mean something neither means alone; brains and voice control shift under selection |
+| L6 | beyond | Order that carries meaning | the same signals in a different order are answered differently |
+
+**It cannot be reached this way if:** L3 stays null against the deaf arm on the real-length clock after A–E are in — then
+nothing in this world is worth saying, and the fault is in the world (who knows what others do not?), not the brain. If L4
+never comes while L3 holds, Genesis has reached what monkeys have, and that is the result. If brains do not grow under
+selection in the relay because they never pay for themselves, words stay out of reach — which is itself one of the oldest
+questions about us.
+
+**My honest odds, as a judgment and not a calculation:** L1–L2 are engineering and will work. L3 is likely. L4 — real words by
+agreement — is possible and would be remarkable; I would not promise it. L5 is a long shot. L6, grammar, I would not bet on;
+no one has grown it from bodies and survival alone. But after L1–L2 the sentence "not possible with this brain" would no
+longer be true, and that part is within a few months' reach.
