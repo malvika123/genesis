@@ -1,0 +1,8 @@
+Entry 86 (housekeeping, master plan step 0.2): the mutation rule moved into SOC (SOC.mutP 0.2, SOC.mutStep 0.3, SOC.wireMutP 0.03,
+SOC.wireMutSd 0.4 - the same numbers) and registered; a neutral marker gene (g.nm, 0-1, inherited and mutated like the other 0-1
+traits but read by nothing) drawn from its own third random stream (rnd3); its mean among the living reported as neutral_marker.
+Written before the run.
+1. Worlds are identical to the commit before (seeds 1-2 x 20 days: every data row the same, except the new column).
+2. Over 100 days (about 2 generations) the marker's average moves by chance only: its change from the founders' (about 0.5) is as
+   often up as down across 24 worlds, and of the same size as the change in the other 0-1 traits (copies_successful, follows_crowd)
+   - with only ~2 generations, no trait is expected to move further than the marker.

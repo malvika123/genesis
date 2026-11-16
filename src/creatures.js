@@ -20,6 +20,7 @@ const gene = (sp, inst) => ({
   cf: rnd(), // how much it goes with what most others are doing (inherited)
   w: newW(sp, inst),
   ...laterTraits(),
+  nm: rnd3(), // the neutral marker (entry 86): inherited and mutated like the other 0-1 traits, read by nothing; its own stream
 });
 // Traits added later, drawn from their own random stream (state.js: rnd2) so worlds stay the same without them.
 // tm: timidity — how strongly fear rises and pulls away from danger; inborn temperament differs and is partly inherited
@@ -31,7 +32,7 @@ const gene = (sp, inst) => ({
 // are separate, weakly heritable traits in rhesus monkeys (8–14% and 10%); no study shows they are inherited apart, so the
 // split is a way to measure which one selection acts on (`--one-social-gene`: one gene for both, the old rule).
 const laterTraits = () => ({ tm: 0.4 + rnd2() * 1.2, pc: 0.4 + rnd2() * 1.2, ...(SOC.vicarGene ? { vf: 0.1 + rnd2() * 1.6 } : {}) });
-const mut2 = (v, lo, hi) => clamp(rnd2() < 0.2 ? v + (rnd2() - 0.5) * 0.3 * v : v, lo, hi);
+const mut2 = (v, lo, hi) => clamp(rnd2() < SOC.mutP ? v + (rnd2() - 0.5) * SOC.mutStep * v : v, lo, hi);
 function mk(sp, x, y, sex, g, gen, age, k = KDEF[sp]) {
   const a = {
     id: NID++,
@@ -139,12 +140,17 @@ function mk(sp, x, y, sex, g, gen, age, k = KDEF[sp]) {
   return a;
 }
 // for traits that run from 0 to 1, a mutation is a small step either way (a share of 0 can still change)
+// The mutation rule (registered in docs/ASSUMPTIONS.md, entry 86): at each birth each inherited trait changes with chance SOC.mutP,
+// by a step drawn evenly within ±SOC.mutStep/2 (of its value; for 0–1 traits, absolute); each inborn wire with chance SOC.wireMutP,
+// by a bell-shaped step of SOC.wireMutSd. An assumption: real mutational variance is far smaller per generation (Houle et al. 1996).
 function mutA(v, lo, hi) {
-  return clamp(rnd() < 0.2 ? v + (rnd() - 0.5) * 0.3 : v, lo, hi);
+  return clamp(rnd() < SOC.mutP ? v + (rnd() - 0.5) * SOC.mutStep : v, lo, hi);
 }
 function mut(v, lo, hi) {
-  return clamp(rnd() < 0.2 ? v + (rnd() - 0.5) * 0.3 * v : v, lo, hi);
+  return clamp(rnd() < SOC.mutP ? v + (rnd() - 0.5) * SOC.mutStep * v : v, lo, hi);
 }
+// the neutral marker mutates by the same rule, on its own stream
+const mut3 = (v) => clamp(rnd3() < SOC.mutP ? v + (rnd3() - 0.5) * SOC.mutStep : v, 0, 1);
 // A child gets a random mix of both parents' inborn wiring. Only habits a parent learned strongly (well-worn, repeated) can pass on, each with a 50% chance and only partly.
 function child(p, q) {
   const w = new Float32Array(p.g.w.length);
@@ -152,7 +158,7 @@ function child(p, q) {
     // only the inborn wiring is inherited — what a parent learned in its life is not (it can pass on
     // only by the child watching and copying)
     let v = rnd() < 0.5 ? p.g.w[i] : q.g.w[i];
-    if (rnd() < 0.03) v += gauss() * 0.4;
+    if (rnd() < SOC.wireMutP) v += gauss() * SOC.wireMutSd;
     w[i] = clamp(v, -6, 6);
   }
   // region units stay wired only to their own senses
@@ -180,6 +186,7 @@ function child(p, q) {
     tm: mut2((rnd2() < 0.5 ? p.g.tm : q.g.tm) ?? 1, 0.3, 1.8),
     pc: mut2((rnd2() < 0.5 ? p.g.pc : q.g.pc) ?? 1, 0.3, 1.8),
     ...(SOC.vicarGene ? { vf: mut2((rnd2() < 0.5 ? p.g.vf : q.g.vf) ?? 1, 0.05, 3) } : {}),
+    nm: mut3((rnd3() < 0.5 ? p.g.nm : q.g.nm) ?? 0.5),
     w,
   };
 }

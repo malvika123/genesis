@@ -38,6 +38,7 @@ function reset(cfg = {}) {
 }
 function buildWorld(cfg) {
   SEED2 = (SEED ^ 0x9e3779b9) | 0; // the separate stream for later traits (state.js)
+  SEED3 = (SEED ^ 0x85ebca6b) | 0; // the neutral marker's own stream (state.js, entry 86)
   // switches for experiments: learning from others' pain, and choosy copying (both on normally)
   SOC.vic = cfg.vicar !== false;
   SOC.pick = cfg.pickyCopy !== false;

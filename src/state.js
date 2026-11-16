@@ -53,6 +53,15 @@ function rnd2() {
   t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
   return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
 }
+// A third stream, only for the neutral marker gene (entry 86): a gene that does nothing, the yardstick for chance. Drawing it leaves
+// every other random number, and so the world, exactly as it was.
+let SEED3 = 1;
+function rnd3() {
+  SEED3 = (SEED3 + 0x6d2b79f5) | 0;
+  let t = Math.imul(SEED3 ^ (SEED3 >>> 15), 1 | SEED3);
+  t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+}
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v)),
   gauss = () => rnd() + rnd() + rnd() - 1.5;
 // The world wraps east–west like a globe: walking off one side brings you back on the other.

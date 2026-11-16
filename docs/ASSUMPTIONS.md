@@ -225,6 +225,19 @@ fertility (entry 19), grass seen as food, food needed for body size, the next bi
 | Most of a kind the world can hold | 120 people | A fixed cap stops mating when reached; real populations are limited by food, disease and fertility, not a number. Not reached by hominin bands of about 25 | **deviation**, to remove |
 | Learning settings (plasticity, curiosity, imitation, memory) | — | Properties of the model's networks; no real-world numbers in these units | model settings, not biology |
 
+## Inheritance and mutation (registered 16 Nov 2026, entry 86; found unregistered by Fable's master plan)
+
+The rule has been in the code since the start (`src/creatures.js`); it is now named and registered, with the same numbers (identical
+worlds). A child takes each inherited trait from one parent or the other at random, then:
+
+| Setting | Value | Evidence | Status |
+|---|---|---|---|
+| Chance a trait mutates at a birth (`SOC.mutP`) | 0.2 per trait | real quantitative traits gain new variation from mutation each generation of about 10⁻³ of the environmental variance (V_M/V_E; Houle, Morikawa & Lynch 1996, *Genetics* 143:1467, the measure checked, the typical size only at the order-of-magnitude level); no figure for hominins | **assumption, knowingly fast** |
+| Size of a trait's mutation step (`SOC.mutStep`) | a step drawn evenly within ±15% of the value (±0.15 for 0–1 traits) | with `SOC.mutP` this adds about 0.0015 × value² of variance a generation — about 2% of the founders' spread in a 0–1 trait, roughly 10–40 × the real rate above. Kept because a run lasts tens of generations, not thousands; results about evolution must say so and compare with the neutral marker | **assumption, knowingly fast**: test 10 × smaller (`mutP` 0.02) when selection is measured (stage 5) |
+| Chance an inborn brain wire mutates (`SOC.wireMutP`) and its step (`SOC.wireMutSd`) | 0.03 a wire; a bell-shaped step of about ±0.4 (the sum of three even draws, sd about 0.2) | none: brain wiring has no measured mutation rate; inborn wiring stands for many genes | **assumption** |
+| The neutral marker gene (`g.nm`, reported as `neutral_marker`) | 0–1, founders drawn evenly; inherited and mutated by the same rule; read by nothing; its own random stream | the standard yardstick for drift: a trait claimed to be selected must move further, and in the same direction in more worlds, than a neutral one (Lande 1976, *Evolution*, drift of neutral traits; as cited in the plan, from memory) | method, not a number about the world |
+| Generation time | not set: it emerges | chimpanzees about 24.6 years (Langergraber et al. 2012, *PNAS* 109:15716, checked); to be measured as the mean age of parents at a birth (master plan, stage 5) | to measure |
+
 ## To do
 
 - Audit the older parts of the model the same way (temperatures, energy use, foods, predators, sound…).
