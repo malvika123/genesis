@@ -2587,6 +2587,47 @@ changes nothing in the world.
 
 ---
 
+### 87. Can the brain learn a chain? Two steps yes, three for half, four no — and memory is not the limit — Nov 2026
+
+**Version.** 0.8.0+ · commit after `24fe83f` (a measuring tool; the world unchanged). Master plan step 0.3 (F3 and L0, Fable's "measure
+before building craft"). `tools/analysis/chain-probe.js` takes children of real founders and runs their brains exactly as the world
+does (forward, traces, learning, the one-try boost, backward replay) in a bare task: no hunger, no fear, no others to copy.
+**Chain:** N acts in order (take, strike, eat, give, climb), each state shown on the hand senses; reward 1 only at the end; an attempt
+ends after 3N steps. Learned = finishing at least half as often as a perfect player over 2,000 steps. **Delay:** one of two cues for
+one step, then after D steps the matching act is rewarded; held = 75% right over 500 trials (chance 50%). Budget: a real-length
+childhood, 10 years of waking steps (175,200). One change to the test before the full run, after a one-brain trial: two blank steps
+between delay trials (without them a reward every step smeared the credit and even "no delay" failed).
+
+**Data.** [Results, each brain's value, and the prediction](../data/findings/87-chain-probe/) (10 brains).
+
+| Task | Learned | Median time (real-length years of waking) | Within the world's squeezed childhood (2,880 steps) |
+|---|---|---|---|
+| Chain of 2 | 10 / 10 | 0.8 | 0 / 10 |
+| Chain of 3 | **5 / 10** | 7.3 | 0 / 10 |
+| Chain of 4 | 0 / 10 | — | 0 / 10 |
+| Chain of 5 | 0 / 10 | — | 0 / 10 |
+| Hold a cue 0 / 1 / 2 steps | 10 / 10 each | 0.7 / 0.4 / 1.3 | |
+| Hold a cue 4 steps | 5 / 10 | 4.0 | |
+| Hold a cue 8 steps | 1 / 10 | 7.6 | |
+
+**Result.** (1) Chains of 2 learned by all — **held**; most within a squeezed childhood — **not held** (none; about 5 × too slow).
+(2) Chains of 3 by most within a real-length childhood — **not held, borderline** (half, late); 4–5 by few or none — **held** (none).
+(3) A cue held at 0–1 steps, rarely 2, never 4–8 — **not held: memory is better than expected** (2 steps all, 4 steps half, 8 one).
+
+**Interpretation.** The brain can hold a cue for a few steps (an hour of the world's time) but cannot credit a reward back along a
+chain of more than about three acts: the limit for craft is **credit along a chain, not memory**. Two consequences. On the world's
+squeezed clock (a childhood of 2,880 steps) not even a two-step chain is learned alone in a childhood, so learning questions need the
+real-length clock (F4). And milestone 2 ("a 3-step chain within one real-length childhood") is at the edge: half the brains. Knapping
+and carrying stone to a carcass are longer chains than this brain learns alone; in the world, copying the whole path of a skilled elder
+(entry 55) and the one-try boost may help, untested here. For comparison, not a target: young chimpanzees take about 3–5 years of
+watching to crack nuts (Bossou: Matsuzawa; Inoue-Nakamura & Matsuzawa 1997), a chain of about three acts.
+
+**Strength.** Moderate (10 brains, one bare task, one reward size). Not tested: copying a mother's path, longer budgets, rewards along
+the way. **Next:** the master plan's stop rule says milestone 2 decides whether the brain must change; repeat this probe with copying
+from a skilled elder before deciding.
+
+---
+
 ## Open questions (next tests)
 
 - Ablate the bundle in entry 7: which of band size, parental feeding, instincts, one-shot memory and

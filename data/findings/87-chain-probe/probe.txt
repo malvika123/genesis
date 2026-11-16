@@ -1,0 +1,10 @@
+# chain probe, 10 brains, budget 175200 steps (10.0 real-length years of waking); the world's squeezed childhood = 2880 steps
+chain 2: learned by 10/10; median 0.79 real yr (13812 steps); within a squeezed childhood 0/10
+chain 3: learned by 5/10; median 7.34 real yr (128514 steps); within a squeezed childhood 0/10
+chain 4: learned by 0/10; median -; within a squeezed childhood 0/10
+chain 5: learned by 0/10; median -; within a squeezed childhood 0/10
+delay 0: held by 10/10; median 0.72 real yr (12558 steps)
+delay 1: held by 10/10; median 0.37 real yr (6420 steps)
+delay 2: held by 10/10; median 1.31 real yr (22910 steps)
+delay 4: held by 5/10; median 3.98 real yr (69671 steps)
+delay 8: held by 1/10; median 7.62 real yr (133573 steps)

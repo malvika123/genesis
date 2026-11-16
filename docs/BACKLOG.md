@@ -17,7 +17,7 @@ Worked in the roadmap's order; status kept here.
 |---|---|---|---|
 | F1 | Detectable hunts: an alert prey that sees an attack makes it fail; detection and success sourced separately; a herd stays alert after a failed attack; vigilance tied to eating and sleeping; judged by kills per hunter per day | 0 | next (prey flight, entry 84, built) |
 | F2 | Faithful-day table, frozen: the world checked against field data (life history, day, diet, danger, social life, learning times), shown with its fails | 0 | to do (~3 weeks) |
-| F3 | Chain-learning probe: can the brain learn a multi-step chain (stone → strike → flake → carry → cut)? plus L0, a delayed-response probe | 0 | to do (~1 day) |
+| F3 | Chain-learning probe: can the brain learn a multi-step chain (stone → strike → flake → carry → cut)? plus L0, a delayed-response probe | 0 | done (entry 87): 2 yes, 3 half, 4–5 no; memory 2–4 steps. Next: the probe with copying from a skilled elder |
 | F4 | A second, real-length-year clock for learning questions (test A40, a 12-day year, first) | 0 | to do |
 | F5 | Count repeats, not only firsts, for every discovery | 0 | to do |
 | F6 | One hard skill with repeats and a mother-to-young advantage (milestone 3) | 0 | to do (~3 months) |

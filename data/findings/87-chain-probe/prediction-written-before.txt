@@ -1,0 +1,7 @@
+Entry 87, the chain-learning probe and the delayed-response probe (F3, L0; master plan 0.3). Written before the run.
+tools/analysis/chain-probe.js: 10 brains (children of real founders), budget a real-length childhood (10 years of waking steps).
+Chains: N acts in order, reward only at the end, each state shown on its own input; an attempt ends after 3N steps.
+1. Chains of 2 are learned by all brains, most within a squeezed childhood (the world's clock).
+2. Chains of 3 are learned by most brains within a real-length childhood (milestone 2's bar); chains of 4-5 by few or none
+   (Fable: credit fades by 0.78 a step; backward replay may help).
+3. Delayed response: held at a delay of 0 and 1 step, rarely at 2, never at 4 or 8 (Fable expected 1-2 steps).
