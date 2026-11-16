@@ -282,3 +282,14 @@ e.g. "with brain X they do not cut with a stone; with single change Y they do, a
 honest no. **Let go of for now:** ice ages, pigment, *Paranthropus*, friction fire (A41 stays as a broken behaviour to fix later).
 **Not fast-forwarded:** anything learned, and anything new. **Fake shortcuts to avoid:** hand-written selection, one measurement
 stretched across a million years, brains that grow without cost, cherry-picked windows.
+
+
+**The path to words (Fable, 16 Nov 2026; full text in `docs/reviews/2026-11-16-fable-big-picture.md`, "Making words and grammar
+possible"; the studies named there are from memory and must be checked before building).** Brain changes, one switch and one test each:
+speech in seconds within a step; learned working memory; learning by prediction from listening (the Saffran test); shared attention as an
+inherited pull starting near zero; knowing who spoke; bigger brains at a real energy price; selection over the relay. Never: a reward for
+being understood, a ready-made language module, exact long-range credit, training on human language. Always run a deaf arm. Gestures may
+be the more faithful first road; start with mother and child (shared codes arise where interests are shared).
+L1–L2 (memory, prediction) inside stages 1–3; L3 first learned signals that beat a deaf arm (stage 3); L4 band conventions (stages 4–5);
+L5 combining (the relay); L6 order that carries meaning (beyond). If L3 stays null against the deaf arm, the world, not the brain, is the
+limit. Fable's odds: L1–L2 will work; L3 likely; L4 possible; L5 a long shot; L6, grammar, not a bet.
