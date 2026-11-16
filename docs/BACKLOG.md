@@ -7,6 +7,44 @@ why (the evidence or the finding), and what it waits on. When an item is done, m
 Rules for every item: verify online first (the owner's ideas included); one change at a time, with a switch; a paired
 test on the same worlds; never tune toward survival.
 
+
+## 0. Fable's advice — every item a commitment (the owner, 16 Nov 2026: "whatever Fable said, we need to do it no matter what")
+
+Source: `docs/reviews/2026-11-16-fable-big-picture.md` (every word kept); summary in `docs/HOMININ-PLAN.md` (THE ROADMAP and after).
+Worked in the roadmap's order; status kept here.
+
+| # | Commitment | Stage | Status |
+|---|---|---|---|
+| F1 | Detectable hunts: an alert prey that sees an attack makes it fail; detection and success sourced separately; a herd stays alert after a failed attack; vigilance tied to eating and sleeping; judged by kills per hunter per day | 0 | next (prey flight, entry 84, built) |
+| F2 | Faithful-day table, frozen: the world checked against field data (life history, day, diet, danger, social life, learning times), shown with its fails | 0 | to do (~3 weeks) |
+| F3 | Chain-learning probe: can the brain learn a multi-step chain (stone → strike → flake → carry → cut)? plus L0, a delayed-response probe | 0 | to do (~1 day) |
+| F4 | A second, real-length-year clock for learning questions (test A40, a 12-day year, first) | 0 | to do |
+| F5 | Count repeats, not only firsts, for every discovery | 0 | to do |
+| F6 | One hard skill with repeats and a mother-to-young advantage (milestone 3) | 0 | to do (~3 months) |
+| F7 | Stop rules: stop if stage-0 milestones fail, or a month passes with no change in hominin behaviour | 0 | in force |
+| F8 | Engine: profile, then speed (3× faster, identical worlds by seed) | 1 | to do |
+| F9 | **A valley inside the globe**: one basin at 100–250 m squares within the planet, the planet supplying weather, rivers, edge densities; all brained creatures in the valley; leavers to a calculated "elsewhere"; short steps only where something happens | 2 | to do (4–8 weeks) |
+| F10 | Three bands, knowing individuals (familiar, kin, what happened last time), females moving between bands | 3 | to do |
+| F11 | Things as things: each stone, stick, bone an object with weight, hardness, an edge; two hands; then the tradition test (a habit that outlasts its inventor and differs between bands) | 4 | to do |
+| F12 | Physics of amounts, not shapes: stone fracture, blow energy, edge wear, carrying load, digging, branch strength for nests, rain and cold on a sleeper; nests, not huts; weak throwing early | 2–4 | to do |
+| F13 | Selection measured; a population-genetic bridge built and checked against a lived 2,000 years | 5 | to do |
+| F14 | The relay: 100,000 years, then a million (no hand-written selection, no stretched measurements, no free brain growth, no cherry-picked windows) | 6 | to do |
+| F15 | Path to words: L0 delayed-response probe; L1 speech in seconds and working memory; L2 learning by prediction (Saffran test); L3 first learned signals vs a deaf arm; L4 band conventions; L5 combining; L6 order. Never reward being understood, no language module, no human language. Start with mother and child; gestures may come first | 1–7 | to do |
+| F16 | Senses: work towards fewer labelled inputs (raw senses where feasible); add smell (A45) | 2–4 | to do |
+| F17 | Positioning: an open "what would it take?" world; the brain's limits on the front page; claim/never-claim rules; a three-line front page; a fair comparison page; "to our knowledge", never "first" | now | to do |
+| F18 | Trusted tool: validation table with its fails in every release; one-command reproducibility with frozen releases; a one-page statement of limits; then a lab interface | now–0 | to do |
+| F19 | "What we got wrong" page | this month | to do |
+| F20 | Link each research-log entry to the commit holding its prediction | this month | to do |
+| F21 | Repeat-it guide and contributor guide | with stage 0 | to do |
+| F22 | Preprint (one sharp question, e.g. "when does a skill become a tradition?"), a collaborator from cultural evolution or primatology, then a simulation-friendly journal; publish nulls; pre-register publicly | after stage 0 | to do |
+| F23 | Stay MIT for code; writing under CC BY 4.0 | now | **done 16 Nov** (LICENSE-docs.md) |
+| F24 | Release more often (frozen, dated releases) | now | to do this week |
+| F25 | A distinctive public name with matching web address and GitHub name (the owner chooses); trademark only if confusion appears | this week | waiting for the owner's choice |
+| F26 | Funding order: self-fund stage 0; GitHub Sponsors once releases are public; FOSS United and Emergent Ventures after a result and a preprint; cloud credits through a collaborator; never ask money for a result. A small second desktop for runs | ongoing | to do |
+| F27 | No server: static website, worlds run in visitors' browsers, rented machines by the hour; later a seed-verifiable "run a world for science" button | ongoing | partly (static site, browser runs) |
+| F28 | A "traces left" test against the Oldowan record; contact the 2023 stone-transport authors | 4+ | to do |
+| F29 | Let go of for now: ice ages, pigment, *Paranthropus*, friction fire (A41 stays a broken behaviour to fix later); keep `--sapiens` as a labelled thought experiment; stay at 2.5 Ma | — | agreed |
+
 ## 1. Bugs and flaws in the code (fix first: other things rest on them)
 
 | # | What | Why it matters | Status |
