@@ -308,3 +308,18 @@ reproducibility with frozen releases; a one-page statement of limits; then a lab
 source with frozen releases, a short methods paper read first by a working researcher, a teaching pack, the lab interface. **Physics:**
 amounts, not shapes — stone fracture, blow energy, edge wear, carrying load, digging, branch strength for nests, rain and cold on a
 sleeper; the faithful shelter at 2.5 Ma is a nest (built huts would be a fairy-world result); weak throwing is a cheap early addition.
+
+
+**Recognition, product and worth (Fable, 16 Nov 2026; full text in the review, "Recognition, product and worth"; historical examples from
+memory, to check before repeating publicly).** *Recognition:* what lasts is a small, sharp, repeatable question (Schelling, Axelrod,
+Avida), not a big world that "evolved something amazing". A genuine Genesis discovery would be a condition result (e.g. "a skill becomes
+a tradition only when it takes more than X years to master"), a measurement trap exposed (entry 58 already is one), or a clean null on a
+claim (band size). Rough odds: a solid specialist paper in one to two years about one in three; wide discussion about one in twenty;
+headlines very small. Path: one question (when does a skill become a tradition?), a collaborator from cultural evolution or primatology
+asked for criticism, a preprint, then a simulation-friendly journal, about a year after stage 0. The no-tuning rule is the asset:
+pre-register publicly, choose questions where both answers are interesting, publish nulls. *Product:* the wrong frame — an **open
+scientific instrument**; adopters teachers and lecturers first, then museums, researchers after a paper, the curious public (alongside
+NetLogo, Avida-ED, PhET, HHMI lessons, the game *Ancestors*); its niche a faithful, sourced hominin world with a public log of failures;
+funding, if ever needed, from outreach grants or a university partner. *Teaching:* not wasted — Schelling's model, the Game of Life,
+NetLogo and Avida all crossed between teaching and research. Keep both doors open: one engine (no easier "classroom mode"), frozen
+releases, a continuing log, lessons built from real entries.

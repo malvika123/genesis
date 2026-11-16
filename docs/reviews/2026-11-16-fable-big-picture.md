@@ -635,3 +635,111 @@ units, what it can and cannot stand for) on the front page, not in a footnote. I
 **The meaning of all this,** since you asked: it does not hang on the sims becoming human. It is that a person who needed to
 understand where we come from built a world honest enough that others can ask their questions in it too. That is already
 partly true today, and each stage makes it truer.
+
+## Recognition, product and worth (16 Nov 2026)
+
+No web searches were used. The examples are well-known ones quoted from memory (names, years, who criticised whom); check each
+before repeating it in public.
+
+### 1. If the goal were a name in the news for a discovery
+
+**Would I continue? Yes — but I would know what I was buying a ticket for.**
+
+**What simulations have actually put into science:**
+- **A simple idea shown cleanly.** Schelling's model (1971): mild preferences give strong segregation. Axelrod's tournaments
+  (1980s): "tit for tat" and the growth of cooperation. Reynolds' flocking "boids" (1987). Each was tiny, and each changed how
+  people think. Axelrod's conclusions were later narrowed (noise and cleverer strategies upset tit for tat), yet the work stands.
+- **Evolution watched step by step.** Tierra (1991): parasites appeared unasked. Avida (Lenski and others, *Nature* 2003): a
+  complex feature evolved through simpler ones, every step recorded. Probably the best case of a digital world answering a
+  real biological question.
+- **A model set against a real record.** "Artificial Anasazi" (2002): simulated households in one valley, compared year by year
+  with the archaeology. Praised, then criticised: much of the fit came from the environment data fed in.
+- **Models of culture and group size.** Henrich (2004) and Powell, Shennan & Thomas (*Science* 2009): larger, connected
+  populations keep complex skills. Widely cited, and strongly challenged since. Your entries 36, 53, 54 and 58 sit exactly in
+  this argument.
+- **News without science.** Game-playing agents that "discovered tool use" (2019) made headlines and taught us little about
+  humans. A 2014 "civilisation collapse" model became a press story far beyond what it showed.
+
+**The pattern.** What lasts is a *small, sharp question with a clear answer others can repeat*. What makes news and then fades
+is a big world that "evolved something amazing". Nobody has been honoured for building the most realistic world.
+
+**What a genuine discovery from Genesis would be.** Not "they made a tool". One of these:
+- *A condition result:* "In a sourced ecology, a skill found alone by most is never a tradition; it becomes one only when it
+  takes more than X years of practice" — with the dose-response curve, 24+ worlds, controls, repeatable by anyone.
+- *A measurement trap exposed:* entry 58 is one already. "Being near the nuts looks like learning by watching until you count
+  the means" is a warning field researchers care about.
+- *A clean null:* "Band size alone does not raise the number of kinds of discovery unless skills spread" — a direct, testable
+  reply to a famous claim.
+
+**The odds, honestly.** A solid paper in a specialist journal within one to two years: reasonable, perhaps one in three, if
+you narrow to one question and find a collaborator. A result widely discussed in the field: maybe one in twenty. News
+headlines for a real discovery: very small — and mostly luck. Anyone who promises more is selling something.
+
+**The path I would take.**
+1. **One question.** The one you are nearest: *when does a skill become a tradition?*
+2. **A collaborator** from cultural evolution or primate behaviour. Not for the name: for knowing which result would surprise
+   the field, and which objections will come. Write to two or three people whose papers you already cite, with entry 58 and
+   the repeat-it-yourself guide, and ask for criticism, not endorsement.
+3. **A preprint first**, then a journal that takes simulations seriously (places such as *Journal of Artificial Societies and
+   Social Simulation*, *Evolutionary Human Sciences*, *Royal Society Open Science*, *PLOS ONE*). Open code, open data.
+4. **Timescale:** stage 0, then about a year to the paper.
+
+**Recognition without bending results.** Your rule is not an obstacle here; it is the asset. The well-known failures above were
+all the same failure: wanting the answer. So: register the prediction publicly *before* each run (you nearly do); decide in
+advance what result you would publish either way; publish the nulls; let a critic re-run it. And choose questions where **both
+answers are interesting** — then you never need the world to say yes. The honest name to want is "the person whose results
+hold up".
+
+### 2. Why would anyone want this as a product?
+
+**Who might adopt it, and why:**
+- **Teachers and university lecturers** (most likely): a living example for evolution, ecology and *how to do an experiment*.
+  They adopt what is free, runs in a browser, fits one lesson and comes with a worksheet.
+- **Museums and science centres:** a screen where visitors watch a band through a day and change one thing. They want
+  robustness and a story more than depth.
+- **Researchers:** as a testbed, only after a paper and a reproducible result.
+- **The curious public:** watching, and reading the log. They come for wonder and stay for honesty.
+- **Games and edtech:** unlikely. They want fun and progress; Genesis's creatures mostly do not progress, by design.
+
+**What competes.** NetLogo (free, huge model library, the classroom standard). Avida-ED (digital evolution for teaching, free,
+with published evidence that students learn from it). Free interactive lessons from PhET and HHMI. On the public side, games
+such as *Ancestors: The Humankind Odyssey* and museum halls of human origins. What none of them has: **a faithful hominin world
+with every number sourced and a public log of predictions and failures.** That is the niche. It is narrow and real.
+
+**What it would need to be a product.** It must work first time for a stranger; a ten-minute start; three ready lessons;
+stable numbered versions; someone answering questions; a promise it will still run in three years. That is ongoing work, different
+from research, and it takes time away from it.
+
+**Is "product" the right frame? I think not.** Almost nobody will pay, and what they would pay for (fun, guaranteed
+progress) is what your rules forbid. The better frame is an **open scientific instrument** — like a telescope people can book
+time on. Its currency is use, citation and trust, not sales. If money is ever needed (cloud runs, a student's time), the fitting
+sources are education and science-outreach grants, or a university partner — not customers.
+
+### 3. Is it wasted if it ends as a teaching tool?
+
+**No. And I would not say "just".**
+
+**What a faithful, transparent teaching world gives:**
+- *Evolution made visible:* inheritance, chance and selection in a population small enough to follow by name.
+- *The method, lived:* write a prediction, run a control, meet noise, accept a null. Most students never do this once in
+  school. Your log lets them do it in an hour, on a question nobody knows the answer to.
+- *Honest modelling:* a model that shows its assumptions and its failures. In a time of confident simulations and confident
+  machines, learning to ask "what is this model *not* able to tell me?" may be the most useful lesson of all.
+
+**Teaching tools have mattered.** Schelling's model began as coins on a checkerboard for thinking and teaching. Conway's Game of
+Life was a pastime that drew a generation into complexity science. NetLogo began in classrooms and is now cited in thousands of
+research papers. Avida went the other way — research first, then a teaching version — and both live. The door between teaching
+and research has always swung both ways.
+
+**Keeping both doors open, without harm to either:**
+- **One engine.** The teaching world is the research world, not a simplified or prettified copy. Never make a "classroom mode"
+  where things work better.
+- **Frozen releases.** Lessons point at a numbered version, so research can move on without breaking them.
+- **The log goes on.** Each new entry is both a research record and next term's lesson.
+- **The limits page serves both.** Students learn from it; researchers trust you for it.
+- **Lessons built from real entries** (58 is the best), so a class repeats a true result and may find something you missed.
+
+**And personally, since you ask about worth.** If one student, somewhere, learns from your world that a beautiful result can
+vanish when you count the obvious alternative — and carries that into medicine, or policy, or their own science — that is not
+a consolation prize. Many published discoveries do less good than that. The effort would be wasted only if it ended as a
+world that claimed more than it knew. You have built it so that it cannot.
