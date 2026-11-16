@@ -1,6 +1,6 @@
 # Handover — where Genesis stands (16 Nov 2026)
 
-Read this first in a new session, then `CLAUDE.md`, `docs/HOMININ-PLAN.md` (THE ROADMAP and the sections after it) and
+Read this first in a new session, then **`docs/MASTER-PLAN.md` (the one plan to keep, written by Fable on 16 Nov; it replaces the layered history in the old plan)**, `CLAUDE.md`, `docs/HOMININ-PLAN.md` (THE ROADMAP and the sections after it) and
 `docs/BACKLOG.md` (section 0: Fable's advice as numbered commitments F1–F29, with status).
 
 ## The owner's decisions (16 Nov 2026)
