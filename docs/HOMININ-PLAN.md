@@ -293,3 +293,18 @@ be the more faithful first road; start with mother and child (shared codes arise
 L1–L2 (memory, prediction) inside stages 1–3; L3 first learned signals that beat a deaf arm (stage 3); L4 band conventions (stages 4–5);
 L5 combining (the relay); L6 order that carries meaning (beyond). If L3 stays null against the deaf arm, the world, not the brain, is the
 limit. Fable's odds: L1–L2 will work; L3 likely; L4 possible; L5 a long shot; L6, grammar, not a bet.
+
+
+**What Genesis is (Fable's positioning, 16 Nov 2026; full text in `docs/reviews/2026-11-16-fable-big-picture.md`, "Purpose, physics and
+positioning").** *Genesis is an open-source simulated world of East Africa about 2.5 million years ago. Its creatures are given no
+behaviours: each has a small learning brain, a body with real needs, and a world whose every number is taken from research or listed as
+an assumption. Nothing is tuned to make them survive or "become human". Every experiment is logged with its prediction written first,
+its data, and its failures. Genesis cannot tell us what our ancestors did. It lets anyone test, in the open, what conditions would have
+been enough — or not enough — for the things they did.* **Claim:** every number sourced or declared; every result repeatable; nulls
+reported; where it matches field data and where not. **Never claim:** that the sims are small hominins or humans; that a result shows
+what happened; that anything "emerged" without a control and 24 worlds; that it predicts the fossil record. Put the sentence about the
+brain's limits on the front page. **To be a trusted tool, still needed:** a validation table shown with its fails; one-command
+reproducibility with frozen releases; a one-page statement of limits; then a lab interface. **Share in this order:** website, open
+source with frozen releases, a short methods paper read first by a working researcher, a teaching pack, the lab interface. **Physics:**
+amounts, not shapes — stone fracture, blow energy, edge wear, carrying load, digging, branch strength for nests, rain and cold on a
+sleeper; the faithful shelter at 2.5 Ma is a nest (built huts would be a fairy-world result); weak throwing is a cheap early addition.
