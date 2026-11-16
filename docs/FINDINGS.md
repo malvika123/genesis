@@ -2628,6 +2628,37 @@ from a skilled elder before deciding.
 
 ---
 
+### 88. The world's rain has a real dry season only at some homes (measuring only) — Nov 2026
+
+**Version.** 0.8.0+ (a measuring tool; the world unchanged). The hungry-season design (master plan 0.4) was reviewed by Fable
+(`docs/reviews/2026-11-16-fable-hungry-season.md`): do not build as drafted; first check the rain's own year. Measured with
+`tools/analysis/seasons-at-home.js --settle 8 --years 10 --shape` (8 years unmeasured, then 10 years by twelfths of a year, within 4
+squares of home), against Uvinza beside Ugalla and Issa, 1973–1989 (Directorate of Meteorology, Tanzania, via J. Moore; saved as
+`data/reference/uvinza-rain.csv`: 1,026 mm a year, 88% in November–April, 4 months under 2%). Shapes only: the world's rain has no
+real unit, and a squeezed month is 6 hours, always the same hours, so month is mixed with time of day (Fable).
+
+**Data.** [The shapes](../data/findings/88-rain-year/).
+
+| Home (latitude) | Months with under 2% of the year's rain | Share in the wettest six months |
+|---|---|---|
+| Uvinza, real (5° S) | 4 | 88% |
+| World 1 (3°) | 1 | 64% |
+| World 2 (5°) | 0 | 56% |
+| World 3 (9°) | 1 | 74% |
+| World 4 (11°) | 6 | 95% |
+
+**Result.** No prediction (measuring only). Near the equator the rain belt never leaves (`lift` swings only ±8° with the sun), so it
+rains all year; at 11° the dry season is too long and too sharp. Only by chance of where the band starts is the year near Uvinza's.
+
+**Interpretation.** A fruit calendar driven by "the square's own rain" (Fable's recommendation) would inherit a wrong year at most
+homes. In the real East Africa the rains are shaped by mountains and a low-level jet in the Turkana Channel more than by a simple moving
+belt (Nicholson 2018, *BAMS* 99:337; abstract), so there is no single sourced number for the belt's swing on a coarse globe. Choices
+(the owner's): give the plants at home a real station's year (Uvinza's shares, a labelled stand-in) now and leave the globe's weather
+alone; or fix the globe's rain belt first (a change everywhere, no clean source); or wait for the valley (stage 2), whose rain would come
+from a real station. **Strength.** Moderate (4 worlds × 10 years), shapes only.
+
+---
+
 ## Open questions (next tests)
 
 - Ablate the bundle in entry 7: which of band size, parental feeding, instincts, one-shot memory and

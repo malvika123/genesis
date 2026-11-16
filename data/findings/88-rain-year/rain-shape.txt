@@ -1,0 +1,4 @@
+seed 1 (lat 3) | world: 7.5 12.4 13.3 9.2 7.6 11.2 10.6 5.1 1.6 3.7 9.0 8.6 | months <2%: 1 | wettest 6 months: 64%
+seed 2 (lat 5) | world: 8.6 11.2 10.3 7.2 7.2 10.7 9.0 5.2 4.8 8.5 9.3 8.0 | months <2%: 0 | wettest 6 months: 56%
+seed 3 (lat 9) | world: 20.7 15.6 6.4 6.2 14.0 8.7 2.5 0.6 3.7 6.1 4.5 11.0 | months <2%: 1 | wettest 6 months: 74%
+seed 4 (lat 11) | world: 33.7 32.6 9.7 0.9 9.9 8.4 1.2 0.0 0.0 0.0 0.0 3.7 | months <2%: 6 | wettest 6 months: 95%

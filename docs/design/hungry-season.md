@@ -1,6 +1,6 @@
 # Design: the hungry season (master plan step 0.4; R1, G1) — for review before building
 
-Status: **draft for independent review**, 16 Nov 2026. Nothing below is built.
+Status: **reviewed by Fable 16 Nov 2026 (`docs/reviews/2026-11-16-fable-hungry-season.md`): do not build as drafted.** Next: measure the rain's year against Uvinza; then one change, a fruit calendar on the life clock with the sourced late-dry-season peak. Nothing below is built.
 
 ## What was measured (measuring only: `tools/analysis/seasons-at-home.js`, 3 worlds × 2 years, means within 4 squares of home)
 
@@ -32,6 +32,13 @@ Status: **draft for independent review**, 16 Nov 2026. Nothing below is built.
   transition; at Kibale sunlight predicts fruiting better than rain (Polansky & Boesch 2013 and others; to read).
 - Hominin teeth record seasonal food stress (Joannes-Boyau et al. 2019, *Nature*; Sponheimer et al. 2006, *Science*: master plan,
   checked by search).
+
+## Update after the review (entry 88): the rain's own year
+
+Over 10 settled years, only some homes have a real dry season: months under 2% of the year's rain — Uvinza (real) 4; worlds at 3°, 5°,
+9°: 1, 0, 1; at 11°: 6. A fruit calendar driven by the square's own rain would inherit a wrong year at most homes. Decision for the
+owner: (A, recommended) the plants' calendar at home follows a real station's year (Uvinza's monthly shares, `data/reference/
+uvinza-rain.csv`, labelled a stand-in), the globe's weather unchanged; (B) fix the globe's rain belt first; (C) wait for the valley.
 
 ## Questions for the reviewer
 
