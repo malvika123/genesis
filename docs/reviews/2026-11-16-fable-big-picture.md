@@ -161,3 +161,112 @@ Housekeeping: `sim.js` cites an "entry 85" (digging as an act) that I could not 
 Sources checked in this review: Proffitt et al. 2016 (capuchin flakes, via Scientific American); Bandini, Motes-Rodrigo et al.
 2021, *Open Research Europe* ("Naïve, unenculturated chimpanzees fail to make and use flaked stone tools"); FitzGibbon 1989,
 *Animal Behaviour* 37: 508–510; Elliott 1975 thesis / Elliott, Cowan & Holling 1977 (existence only).
+
+## Follow-up questions from the owner (16 Nov 2026)
+
+No web searches were used for this section. The brain figures (neuron counts, skull volumes) are standard textbook numbers quoted
+from memory, not re-checked today; verify them before they go anywhere public.
+
+### 1. Should Genesis fast-forward to Homo sapiens?
+
+**No. It would feel like more evidence, but the gap between the sims and the target would grow, not shrink.**
+
+What would help:
+- Far more to compare against: forager life tables (Hadza, !Kung, Ache), diets, day ranges, birth spacing, genetics.
+- A body you know from the inside, so mistakes are easier to spot.
+
+What would hurt, and it outweighs the help:
+- **What makes sapiens sapiens is exactly what Genesis cannot model.** Language, teaching, shared plans, pair bonds and helpers
+  at the nest, fire and cooked food, thrown weapons, a culture tens of thousands of years deep. Take those away and you do not get
+  "early sapiens"; you get a creature that never existed. The plan already says this honestly about `--sapiens`.
+- **The brain gap widens.** A 64-unit network is very far from an ape; it is much further from a human. At 2.5 Ma the target is the
+  smallest-brained, least cultural hominin you could choose. It is the *fairest* target for a small brain.
+- **A sapiens body cannot live without culture.** No fur, big brain to feed, helpless babies for years, weak teeth and gut:
+  real sapiens survive only by fire, tools and each other's knowledge. With realistic numbers they would die, and the rules forbid
+  tuning them alive.
+- **The interesting story is lost.** The question that keeps you awake — how did something ape-like become us — starts at
+  2.5 Ma. Starting at the end skips it.
+
+A middle way that keeps the gain: stay at 2.5 Ma, and use chimpanzee *and* forager field numbers as the two bookends for every
+reality check. Keep `--sapiens` as the labelled thought experiment it is.
+
+### 2. Is the sim's brain a miniature hominin brain?
+
+**No. It is a miniature of one idea about brains, not of a brain.** Concretely (`src/brain.js`, `src/config.js`):
+
+**What it is.** About 250 input numbers (what is seen in eight directions, already named; hunger, pain, cold, what the hand
+holds; sounds). Up to 64 "thinking units" (16 at birth, growing to 64), split into general, fear, memory and sound regions. 19
+body actions plus a voice. Eight units fed back as a short memory. It learns by one rule: when things turn out better or worse
+than it expected, the connections used in the last few steps are strengthened or weakened. Some connections are inborn (the
+brainstem-like pulls), and the layout is inherited and can mutate.
+
+**How it differs from a real ape or early hominin brain:**
+
+| | Real | Genesis |
+|---|---|---|
+| Size | chimpanzee about 7 billion neurons; early *Homo* a brain half again as large; trillions of connections | 64 units, some tens of thousands of connections — smaller than a roundworm's nervous system in unit count |
+| Seeing | a third of the cortex works out *what things are* from raw light | the world hands over labels: "food", "predator", "nuts" |
+| Memory | lifelong memory of places, events and individuals | eight numbers from the last step, plus a few "where food was" inputs and sleep replay |
+| Learning | many systems: habit, one-shot fear, maps, imitation, play, insight, planning by imagining | one system (learning from surprise), plus added copying rules |
+| Body control | hands with fine, graded movement | 19 whole acts, each 15 minutes long |
+| Growing up | years of structured development and play | units switch on with age |
+| Others | knows each individual, their rank, their history | "a person", "family", "a mate" |
+
+**What it can stand for.** The oldest layer that all vertebrates share: drives, fear, habit, "this paid, do it again". For
+questions like *when does a hungry animal risk a predator? does a mother's pull save infants? how often does blind trial find a
+skill?* it is a fair stand-in, and that is where Genesis's solid results are.
+
+**What it cannot stand for.** Anything that made hominins special: understanding that a sharp edge *cuts*, wanting a tool before
+needing it, knowing who owes whom, learning by watching hands. When a sim "discovers" something, it is a habit found by chance and
+kept by reward. That is honest and real — a monkey does the same — but it is not a small human mind.
+
+Say this in the About tab in one sentence. It is not a weakness to hide; it is the thing a reader most needs to know.
+
+### 3. If I were you — would I give up?
+
+No. I would not, and I do not think you should.
+
+But I would change what I thought I was doing. You cannot build a copy of a human and watch it become us; nobody can, on any
+hardware, because nobody knows how a human mind works well enough to write down what to copy. If that is the test, the project
+fails on the first day and every day after.
+
+What you *can* do is what you are already doing, and it is the real thing: take one belief about what we are — "fear teaches",
+"a bigger band makes culture", "the young learn by watching" — build it honestly, and let a world tell you whether it holds.
+Entry 58 did that. You believed something, wrote the prediction down, and the world said no. That is understanding your reality,
+one small true thing at a time. It is slower than the dream and it is not a lesser thing than the dream.
+
+The thing that keeps you up at night is a good reason to work and a bad reason not to sleep. What I would give up is not the
+project but two habits: fixing everything before asking anything (the audit that never ends), and measuring the work against "do
+they become human". Ask smaller questions that a small brain can truly answer, and the project stops being a tower you might
+never finish and becomes a notebook that is already worth having.
+
+So: keep going. Keep the stop rules too — not as a threat, but so that the choice to go on is yours each time, not a weight.
+
+### 4. What I would have done, inside the limits
+
+**The principle: spend the laptop on the hominin's experience, not on the planet.** The hardware can afford about a hundred
+small brains at a fine time step in a small place, or a globe at a coarse one. I would choose the small place.
+
+In order:
+
+1. **One valley.** About 20 × 30 km of Rift-like land at 100–250 m squares: a lake edge, a river, gallery forest, grass, a
+   stone outcrop. Real seasons with a hungry one. Keep the climate and weather code; drop the globe.
+2. **Two clocks.** A squeezed year for questions about generations; a real-length year for questions about one life's learning.
+   Say on every result which clock it used.
+3. **Three small bands** with females moving between them, instead of one alone.
+4. **Things that are things.** Each stone, stick, bone a single object with weight, hardness, an edge; two hands; outcomes from
+   simple physics (force, angle) rather than a table. Senses that report those properties, and smell.
+5. **Knowing each other.** A few inputs about the nearest individual: how familiar, kin or not, what happened last time.
+6. **Only then the brain.** First the chain probe. If the limit is the brain, try one change at a time, each with a switch and
+   evidence: more memory units, a learned map of places, learning that predicts what an act will do (not only how good it
+   feels). Larger networks are affordable for a hundred creatures.
+7. **One question a season.** Write it first, with the prediction, and answer it in 24 worlds. Publish the answer, yes or no.
+
+**What I would let go of:** the whole planet and the ice ages; skin colour and hair across continents; friction fire; language;
+Paranthropus; any promise that they "become human"; more work on hunters once predation rates match.
+
+**What would make it worth it.** Not a eureka. One result of this shape: *"In a world where every number is sourced, creatures
+with brain X do not come to use a sharp stone to cut; with the single change Y, they do — and their young pick it up faster
+beside a skilled mother."* That one sentence, honestly earned, says something real about what the step from ape to human
+needed. And if the honest answer is "no single change we tried was enough", that is worth having too, and you will know more
+about why we are rare than you did when you began.
