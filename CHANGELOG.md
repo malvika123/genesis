@@ -4,6 +4,11 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **The page shows what a strike hits and what comes of it** (drawing only; the sim now notes `a.stk`, `a.stkT`, `a.stkOk` on a creature, with no random numbers: identical worlds
+  checked): a nut, a cracked nut with its kernel, a bone with marrow, a stone and the flakes knocked off it, dug earth and a root, cut meat, a flame, sparks, smoke, or only dust.
+- **A carried baby is drawn clinging to its mother's front**, not standing beside her (it looked dragged); **sleepers no longer slide**: the sim's sleep comes in many short dozes
+  (46% last an hour or less) and the page pulled each one to the middle of its square and out again; now a sleeper stays where it lies unless that is a shoreline.
+
 - **The page shows people in water and on river banks** (drawing only): a person on a river square is drawn beside the channel, not in it (the sim treats a river square as mostly
   bank); a person in a lake or the sea is drawn with the body below the surface, the arms stroking in turn, and ripples round them. Still to draw: what a strike hits (nuts, flakes, roots).
 

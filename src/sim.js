@@ -1246,9 +1246,15 @@ function sim() {
       // struck on another stone can knock a sharp flake off it; a stick or a flake just hits the ground.
       const i = idx(a.x, a.y);
       a.e -= 0.05;
+      // for the page (entry-free, drawing only: no random numbers, nothing reads it but the drawing): what this blow hit (a.stk), when (a.stkT)
+      // and when it did what it was for (a.stkOk): a nut cracked, a root loosened, a bone broken, a flake knocked off, meat cut, a stick caught
+      a.stk = a.hand === 1 && stone[i] > 0 ? 'stone' : 'hit';
+      a.stkT = tick;
       const tinder = (food[i] > 0.1 && dryness(i) > 0.4) || (stick[i] > 0 && stickDry(i) > 0.5);
       if (a.hand === 2 && FIRE[i] > 0.05) {
         // a stick pushed into a fire catches
+        a.stk = 'poke';
+        a.stkOk = tick;
         a.hand = 4;
         a.brand = 8;
         a.fh = (a.fh || 0) + 1;
@@ -1260,6 +1266,7 @@ function sim() {
       } else if ((a.hand === 5 && stone[i] + flake[i] > 0) || ((a.hand === 1 || a.hand === 3) && pyrite[i])) {
         // pyrite struck with a stone throws hot sparks. Catching one in dry tinder and nursing it into a
         // flame is a knack: almost never at first, quickly once learned.
+        a.stk = 'spark';
         const sk = a.fsk || 0,
           oldFire = !SOC.fireNatural || SOC.fireMaking; // the old links (entry 78): a hidden skill, a built-in reward
         if (oldFire) a.bonus[6] += 0.02 * (1 - sk); // sparks flying are new and striking to see, until they are familiar
@@ -1277,6 +1284,7 @@ function sim() {
         // rubbing or drilling dry wood on wood heats it: smoke, then black dust, then perhaps a glowing
         // ember that must be blown into flame. A skilled hand does it within minutes; a beginner can try
         // for days and never get there.
+        a.stk = 'rub';
         a.rub = a.lastRub === tick - 1 ? (a.rub || 0) + 1 : 1;
         a.lastRub = tick;
         const sk = a.fsk || 0;
@@ -1285,6 +1293,8 @@ function sim() {
         else if (a.rub >= 2) firePractice(a, 0.004); // only steady, sustained rubbing teaches anything
       } else if (a.hand === 1 && nut[i] > 0.05 && !SOC.hardNuts) {
         // the old rule (--easy-nuts): every strike on a nut opens it
+        a.stk = 'nut';
+        a.stkOk = tick;
         const b = Math.min(nut[i], 0.25);
         nut[i] -= b;
         a.e = Math.min(100, a.e + b * 110 * MEAL(a));
@@ -1302,12 +1312,14 @@ function sim() {
         // them (Koops et al. 2022). Here a strike succeeds with a chance that grows only with the hominin's OWN strikes
         // on nuts (its hands learning), from a beginner's SOC.nutP0 toward 0.83; before 3.5 years it never succeeds.
         // Nothing is learned by watching here: whatever is copied goes through the brains.
+        a.stk = 'nut';
         a.nutTry = (a.nutTry || 0) + 1;
         a.nutT = tick;
         const sk = a.nsk || 0,
           p = a.age >= 3.5 * TY ? SOC.nutP0 + (SOC.nutCeil - SOC.nutP0) * sk : 0;
         a.nsk = sk + SOC.nutG * (1 - sk);
         if (rnd() < p) {
+          a.stkOk = tick;
           const b = Math.min(nut[i], 0.25);
           nut[i] -= b;
           a.e = Math.min(100, a.e + b * 110 * MEAL(a));
@@ -1323,8 +1335,10 @@ function sim() {
         // digging with a tool is an act (entry 85): a strike with a stick, flake or stone into the ground where roots are loosens them
         // with the tool's chance (SOC.digStick, digFlake, digStone, as before), leaving them dug up and lying ready to eat
         a.e -= 0.15;
+        a.stk = 'dig';
         const pd = a.hand === 2 ? SOC.digStick : a.hand === 3 ? SOC.digFlake : SOC.digStone;
         if (rnd() < pd) {
+          a.stkOk = tick;
           const b = Math.min(ROOT[i], 0.3);
           ROOT[i] -= b;
           DUG[i] += b;
@@ -1339,7 +1353,9 @@ function sim() {
         // eat fast — by whoever eats there. Nothing tells anyone to do it, or that it pays
         const m = meatAt(a.x, a.y, 0),
           free = Math.max(0, m.meat * m.kgU - (m.cut || 0));
+        a.stk = 'cut';
         if (m.kgU > 0 && free > 0.01) {
+          a.stkOk = tick;
           m.cut = (m.cut || 0) + Math.min(free, SOC.cutKg);
           did(a, 'butcher');
           if (!firsts.butcher) {
@@ -1355,6 +1371,8 @@ function sim() {
           // in kg (entry 79): a strike cracks one of the eight long bones; marrow holds 7,860 kcal a kg (USDA, raw caribou marrow,
           // 786 kcal per 100 g), against the day's need; before, 0.1 unit at the value of meat
           b = kgM ? Math.min(mb.marrow, mb.marrowKg0 / 8) : Math.min(mb.marrow, 0.1);
+        a.stk = 'bone';
+        a.stkOk = tick;
         mb.marrow -= b;
         if (kgM) eatKg.Marrow = (eatKg.Marrow || 0) + b; // the record (changes nothing)
         a.e = Math.min(100, a.e + (kgM ? (b * homKgE(a) * SOC.marrowKcal) / SOC.meatKcal : b * SOC.marrowVal * MEAL(a)));
@@ -1364,6 +1382,8 @@ function sim() {
           log(a.name + ' cracked a bone open with a stone and ate the marrow.');
         }
       } else if (a.hand === 1 && stone[i] > 0 && rnd() < SOC.flakeP) {
+        a.stk = 'flake';
+        a.stkOk = tick;
         stone[i]--;
         flake[i] = Math.min(6, flake[i] + 1);
         a.painA = Math.min(1, a.painA + 0.1);

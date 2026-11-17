@@ -785,6 +785,9 @@ const G3D = { ok: false };
       gr = Math.round(clamp(a.age / S.mat, 0.3, 1) * 10) / 10,
       pose = a.moving ? Math.round(Math.sin(a.ph || 0) * 2) : 0,
       swf = a.act === A_STRIKE && !a.asleep ? Math.round(bodySwing(a)) : 0,
+      heldv = typeof carried === 'function' && a.sp === 0 && carried(a) ? 1 : 0, // a carried infant clings to its mother
+      stkv = a.stkT !== undefined && tick - a.stkT <= 1 ? a.stk : null, // what its blow lands on, and whether it did what it was for
+      okv = a.stkOk !== undefined && tick - a.stkOk <= 1 ? 1 : 0,
       wetv = wetOf(a), // in water: the arms stroke (five steps of the stroke, so only a few pictures are made)
       swv = wetv ? Math.round(strokeNow() * 2) / 2 : 0,
       key = [
@@ -798,6 +801,9 @@ const G3D = { ok: false };
         swf,
         wetv,
         swv,
+        heldv,
+        stkv,
+        okv,
         a.face || 1,
         a.preg ? Math.round(clamp(1 - (a.preg.due - tick) / Math.max(1, a.S.gest), 0, 1) * 3) : 0, // how far along a pregnancy is
         a.ptT !== undefined && tick - a.ptT <= 1 ? a.pt : -1, // pointing
@@ -824,6 +830,9 @@ const G3D = { ok: false };
         swf,
         wetv,
         swv,
+        heldv,
+        stkv,
+        okv,
         act: a.act,
         id: 0,
         ptv: a.ptT !== undefined && tick - a.ptT <= 1 ? a.pt : -1,
@@ -1022,7 +1031,11 @@ const G3D = { ok: false };
           const tlo = (gx / W) * 2 * Math.PI - Math.PI,
             tla = LATMAX * (1 - (2 * gy) / H);
           sp.position.copy(local(tla, tlo, 1 + EX * heightAt(tla, tlo) + 0.0068 * sz));
-        } else sp.position.copy(local(la, lo, ground + 0.0002));
+        } else {
+          // a carried infant is held up on its mother's front, not standing on the ground beside her
+          const lift = a.sp === 0 && typeof carried === 'function' && carried(a) ? (a.asleep ? 0.06 : 0.27) * s * 0.7 : 0; // a fraction of the mother's drawn height (about 0.7 of the picture)
+          sp.position.copy(local(la, lo, ground + 0.0002 + lift));
+        }
         sp.scale.set(s, s, 1);
       }
     for (let k = n; k < pool.length; k++) pool[k].visible = false;

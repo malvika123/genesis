@@ -1489,6 +1489,94 @@ const skinCol = (t, dk = 0) =>
 // arms and legs that bend at elbow and knee, hands and feet. Bare, as the first people were. In the
 // pose of what they are doing: walking, bending down to pick something up or drink, a hand to the mouth
 // when eating, an arm swinging when striking, an arm held out when sharing or pointing.
+// What a blow lands on, drawn on the ground where the hand comes down (sim.js records it: a.stk is the kind, a.stkOk when the blow did what
+// it was for). Drawing only. kind: nut, bone, stone, flake, dig, cut, poke, spark, rub, hit (a stick, flake or stone on bare ground).
+function drawStrikeTarget(g, kind, ok, h, foot, sw) {
+  const x = h * 0.27,
+    y = foot - h * 0.01,
+    u = h * 0.05,
+    t = (performance.now() / 180) % 1,
+    hit = sw < -0.3; // the blow lands when the hand is down
+  const blob = (cx, cy, rx, ry, c) => {
+      g.fillStyle = c;
+      g.beginPath();
+      g.ellipse(cx, cy, rx, ry, 0, 0, 7);
+      g.fill();
+    },
+    puff = (c, n, spread) => {
+      for (let i = 0; i < n; i++) {
+        const q = (i / n) * 6.28 + t * 2,
+          r = u * spread * (0.4 + t);
+        blob(x + Math.cos(q) * r, y - u * 0.6 - Math.abs(Math.sin(q)) * r * 0.8, u * 0.3, u * 0.3, c);
+      }
+    },
+    chip = (c, n) => {
+      g.fillStyle = c;
+      for (let i = 0; i < n; i++) {
+        const q = (i / n) * 3.1 + 0.2 + t,
+          r = u * (1.2 + 1.4 * t),
+          cx = x + Math.cos(q) * r * (i % 2 ? 1 : -1),
+          cy = y - u - Math.sin(q) * r;
+        g.beginPath();
+        g.moveTo(cx, cy - u * 0.5);
+        g.lineTo(cx + u * 0.45, cy + u * 0.3);
+        g.lineTo(cx - u * 0.45, cy + u * 0.3);
+        g.closePath();
+        g.fill();
+      }
+    };
+  g.save();
+  if (kind === 'nut') {
+    if (ok && hit) {
+      blob(x - u * 0.8, y - u * 0.4, u * 0.7, u * 0.5, '#6b4a2b');
+      blob(x + u * 0.8, y - u * 0.4, u * 0.7, u * 0.5, '#6b4a2b');
+      blob(x, y - u * 0.5, u * 0.45, u * 0.35, '#efe3c2');
+      puff('#c9b48a', 4, 1.4);
+    } else {
+      blob(x, y - u * 0.55, u * 0.8, u * 0.65, '#6b4a2b');
+      blob(x - u * 0.2, y - u * 0.75, u * 0.25, u * 0.2, '#8d6a44');
+    }
+  } else if (kind === 'bone') {
+    g.fillStyle = '#e8e2d0';
+    g.fillRect(x - u * 1.6, y - u * 0.8, u * 3.2, u * 0.7);
+    blob(x - u * 1.6, y - u * 0.7, u * 0.5, u * 0.5, '#e8e2d0');
+    blob(x + u * 1.6, y - u * 0.7, u * 0.5, u * 0.5, '#e8e2d0');
+    if (ok && hit) {
+      blob(x, y - u * 0.8, u * 0.5, u * 0.35, '#e6a98f');
+      chip('#e8e2d0', 3);
+    }
+  } else if (kind === 'stone' || kind === 'flake') {
+    blob(x, y - u * 0.5, u * 1.1, u * 0.7, '#8a8a84');
+    blob(x - u * 0.3, y - u * 0.75, u * 0.4, u * 0.25, '#a9a9a2');
+    if (hit && kind === 'flake') chip('#cfcfc8', 3);
+    else if (hit) puff('#d8d4c8', 3, 1);
+  } else if (kind === 'dig') {
+    blob(x, y - u * 0.3, u * 1.5, u * 0.5, '#5a4128');
+    if (ok && hit) {
+      puff('#6b4d2e', 5, 1.8);
+      blob(x + u * 1.4, y - u * 0.5, u * 0.9, u * 0.3, '#e3d6a8');
+    }
+  } else if (kind === 'cut') {
+    blob(x, y - u * 0.5, u * 1.5, u * 0.7, '#a8403a');
+    if (ok && hit) blob(x + u * 1.2, y - u * 0.9, u * 0.7, u * 0.35, '#c9605a');
+  } else if (kind === 'poke') {
+    blob(x, y - u * 0.7, u * 0.8, u * 1.3, '#ff9b2e');
+    blob(x, y - u * 0.5, u * 0.4, u * 0.8, '#ffd54a');
+  } else if (kind === 'spark') {
+    blob(x, y - u * 0.5, u * 1, u * 0.6, '#8a8a84');
+    if (hit) for (let i = 0; i < 5; i++) blob(x + Math.cos(i * 1.7 + t * 4) * u * 1.6, y - u - Math.abs(Math.sin(i * 2.3 + t * 5)) * u * 1.8, u * 0.22, u * 0.22, '#ffd54a');
+  } else if (kind === 'rub') {
+    g.strokeStyle = 'rgba(190,190,190,0.7)';
+    g.lineWidth = Math.max(0.5, u * 0.35);
+    for (let i = 0; i < 2; i++) {
+      g.beginPath();
+      g.moveTo(x + i * u, y - u * 0.4);
+      g.quadraticCurveTo(x + i * u + u * Math.sin(t * 6 + i), y - u * 2, x + i * u, y - u * 3.2);
+      g.stroke();
+    }
+  } else if (hit) puff('#cdbb94', 4, 1.1); // a stick, flake or stone on bare ground: only dust
+  g.restore();
+}
 // In water (a lake or the sea, not a river square, which is mostly bank): 0 out of it, 1 in the shallows, 2 in deep water. A person there
 // is wading or swimming (the sim: swimming is practised in the shallows and in deep water, sim.js), so it is drawn with its body in the
 // water and its arms stroking, with ripples round it. Drawing only: nothing in the world changes.
@@ -1516,6 +1604,9 @@ function drawPerson(g, a, X, Y, k, gr, col) {
     fem = !!a.sex,
     wet = a.wetv ?? wetOf(a),
     swS = a.swv ?? strokeNow(),
+    held = a.heldv ?? (typeof carried === 'function' && a.sp === 0 && carried(a) ? 1 : 0), // a carried infant clings to its mother
+    stk = a.stkv !== undefined ? a.stkv : a.stkT !== undefined && tick - a.stkT <= 1 ? a.stk : null,
+    stkOk = a.okv !== undefined ? a.okv : a.stkOk !== undefined && tick - a.stkOk <= 1,
     adult = gr > 0.85;
   g.save();
   g.translate(X, a.asleep ? Y : Y - h * 0.35);
@@ -1532,8 +1623,8 @@ function drawPerson(g, a, X, Y, k, gr, col) {
     hip = sh + h * (ape ? 0.33 : 0.27),
     hiW = h * (ape ? 0.1 : fem && adult ? 0.1 : 0.088),
     crotch = hip + h * 0.035,
-    foot = h / 2,
-    step = a.asleep || !a.moving || crouch ? 0 : Math.sin(a.ph || 0) * h * 0.14;
+    foot = held ? crotch + h * 0.1 : h / 2,
+    step = a.asleep || !a.moving || crouch || held ? 0 : Math.sin(a.ph || 0) * h * 0.14;
   g.lineCap = 'round';
   g.lineJoin = 'round';
   const limb = (pts, w0, w1, c) => {
@@ -1580,6 +1671,9 @@ function drawPerson(g, a, X, Y, k, gr, col) {
       [mx, my] = MV[d];
     rx = h * (mx === 0 ? 0.3 : 0.45) * (mx < 0 ? -1 : 1) * (a.face === -1 ? -1 : 1);
     ry = sh + h * (0.0 + 0.08 * my);
+  } else if (held) {
+    rx = h * 0.17;
+    ry = sh - h * 0.04; // a carried infant holds on: both arms up round her
   } else if (wet) {
     // in the water: the arms reach out and pull in turn, the right when the stroke is positive
     const up = Math.max(0, swS);
@@ -1588,8 +1682,8 @@ function drawPerson(g, a, X, Y, k, gr, col) {
   }
   // the resting (left) arm swings with walking, behind the body's edge
   const upL = wet ? Math.max(0, -swS) : 0,
-    lhx = wet ? -(shW + h * 0.12 + h * 0.3 * upL) : -shW - h * 0.035 + step * 0.5,
-    lhy = wet ? sh - h * 0.02 - h * 0.16 * upL + h * 0.05 * (1 - upL) : crouch ? hip + h * 0.08 : ape ? knee - h * 0.02 : hip + h * 0.05;
+    lhx = wet ? -(shW + h * 0.12 + h * 0.3 * upL) : held ? -(shW + h * 0.15) : -shW - h * 0.035 + step * 0.5,
+    lhy = wet ? sh - h * 0.02 - h * 0.16 * upL + h * 0.05 * (1 - upL) : held ? sh - h * 0.04 : crouch ? hip + h * 0.08 : ape ? knee - h * 0.02 : hip + h * 0.05;
   limb([[-shW + h * 0.03, sh + h * 0.02], [(-shW + lhx) / 2 - h * 0.015, (sh + lhy) / 2], [lhx, lhy]], h * 0.048, h * 0.04, shade);
   g.fillStyle = shade;
   g.beginPath();
@@ -1636,6 +1730,7 @@ function drawPerson(g, a, X, Y, k, gr, col) {
   g.arc(rx, ry, h * 0.024, 0, 7);
   g.fill();
   if (a.hand) drawHeld(g, a.hand, rx, ry, h, Math.max(1, h * 0.04));
+  if (act === A_STRIKE && stk) drawStrikeTarget(g, stk, stkOk, h, foot, sw); // what the blow lands on, and what comes of it
   // neck and head
   g.fillStyle = skin;
   g.fillRect(-h * 0.025, hcy + hr * 0.7, h * 0.05, neckY - hcy - hr * 0.6);
@@ -2097,7 +2192,15 @@ function drawCreature(g, a, X, Y, k, v, dim = 1) {
         g.stroke();
       }
       g.restore();
-    } else drawPerson(g, a, X, Y, k, gr, a.sex ? v('--f') : v('--m'));
+    } else {
+      // a carried infant is held on its mother's front, not standing on the ground beside her
+      let YY = Y;
+      if (typeof carried === 'function' && carried(a) && a.mom) {
+        const mh = (5.5 + 6 * clamp(a.mom.age / a.mom.S.mat, 0.3, 1)) * k * (typeof ERA !== 'undefined' && ERA === 'hominin' ? 0.85 : 1);
+        YY = Y - (a.asleep ? 0.06 : 0.27) * mh;
+      }
+      drawPerson(g, a, X, YY, k, gr, a.sex ? v('--f') : v('--m'));
+    }
   } else if (a.sp === 1 || a.sp === 2) {
     g.globalAlpha = (a.asleep ? 0.75 : 1) * dim;
     drawAnimal(g, a, X, Y + 3.5 * k, k);
@@ -2643,8 +2746,8 @@ function glide() {
   for (const a of ag) {
     // a carried infant rides on its mother: drawn on her, moving with her, never walking or jumping on its own
     if (typeof carried === 'function' && carried(a) && a.mom.rx !== undefined) {
-      a.rx = a.mom.rx + 0.07 * (a.mom.face || 1);
-      a.ry = a.mom.ry + 0.04;
+      a.rx = a.mom.rx + 0.025 * (a.mom.face || 1); // on her front, drawn raised onto her body (drawCreature, globe3d figures)
+      a.ry = a.mom.ry + 0.03;
       a.face = a.mom.face;
       a.moving = false;
       continue;
@@ -2663,8 +2766,26 @@ function glide() {
       ty += my * p;
       if (walking && mx) a.face = mx > 0 ? 1 : -1;
     }
-    if (a.sp !== 3 && river[idx(a.x, a.y)]) {
-      const [bx, by] = bankOffset(a);
+    let bx = 0,
+      by = 0;
+    if (a.sp !== 3 && river[idx(a.x, a.y)]) [bx, by] = bankOffset(a);
+    if (a.asleep && a.rx !== undefined && a.sp !== 3) {
+      // a sleeper stays exactly where it lies: the sim's sleep comes in many short dozes (46% last an hour or less), and pulling each one to the
+      // middle of its square and out again made them slide. Only a sleeper that would lie on a shoreline (in the next square, if that is water:
+      // the owner, 14 Nov 2026) goes to the middle of its own square, and one on a river square to its bank
+      const ci = idx(Math.round(a.rx), clamp(Math.round(a.ry), 0, H - 1)),
+        shore = water[ci] && !river[ci] && (Math.round(a.rx) !== a.x || Math.round(a.ry) !== a.y);
+      if (bx || by) {
+        tx = a.x + bx + clamp(dxw(a.rx - (a.x + bx)), -0.3, 0.3);
+        ty = a.y + by + clamp(a.ry - (a.y + by), -0.3, 0.3);
+      } else if (shore) {
+        tx = a.x;
+        ty = a.y;
+      } else {
+        tx = a.rx;
+        ty = a.ry;
+      }
+    } else {
       tx += bx;
       ty += by;
     }

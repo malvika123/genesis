@@ -264,7 +264,7 @@ The owner cannot run the sim to check, so what is drawn is what is believed. Aud
   turn, ripples. Verified on a test canvas (the flat-map and figure drawing); the globe's ripple rings **seen by eye on 17 Nov** (a person in the sea: body below the surface, arm in a stroke, a ring on the water); released with the river fix.
 - **Striking is 23% of all person samples (3,299): stick 1,502, stone 973, empty hand 813, flake 11.** The page draws the swing but not what is struck or what comes of it
   (a nut cracking, a flake coming off, a root dug, a bone broken, soil flying). Needs a drawing-only record in the sim of what each strike hit (no random numbers) so the page
-  can show it. **Not built.**
+  can show it. **Built 17 Nov** (nut, bone, stone, flake, dig, cut, poke, spark, rub, hit; seen on a test canvas; identical worlds).
 - Still to audit action by action against the 19 actions (`src/config.js` A_*): climbing a tree (is the climber drawn up it?), mating, attack on prey, giving, carrying a burning
   stick, running or fleeing, drinking from a river square, a mother nursing; and a newborn (carried until 2 years: drawn riding on the mother, `ui/app.js` ~2490; the owner saw
   one walking at birth — not reproduced; ask which view and which baby).
@@ -287,4 +287,7 @@ The owner cannot run the sim to check, so what is drawn is what is believed. Aud
   deaths went to zero. Measure hunters' attacks while full (`tools/analysis/hunt-measure.js`) in both arms.
 - Every earlier table used the old eye: re-run the headline baselines (reality-check rows, hunger, learning) with the default, before the faithful-day table is frozen (step 0.8).
 - Fable's next honest-label steps (labelled-senses review): the mate channel (`o.rd`, 6 × range through hills), family by familiarity, founders' recognition skill 0.9 → test 0.5.
+- **Sleep is fragmented in the sim** (17 Nov, seed 3, 10 days): 641 sleep periods among about 25 hominins, median 3.25 hours, 46% an hour or less. Real chimpanzees sleep about
+  ten hours in one night nest; check against sources (is a doze by day real? how long are bouts?) before trusting the sleep numbers. The page now holds sleepers still.
+- **Seen by eye:** the baby clinging to its mother was seen on a drawing canvas (2D figure code), not on the globe (a thinking bubble covered the figure); the globe lifts it by the same fraction.
 
