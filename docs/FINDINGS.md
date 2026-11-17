@@ -3151,6 +3151,32 @@ computed, so I cannot call it noise or a shift; (3) baby wound deaths near zero 
 **Interpretation.** With the honest eye few carried babies chose to attack, so blocking it changes little; the fix is kept because no real infant does it, not for its numbers. The worlds diverge by chance from the first blocked
 attack, so a 24-world table moves by a few points on its own. **Intervals added afterwards** (`reality-check.js --summary` now resamples worlds 1,000 times): population change −3.1% (95%: −7.6 to −1.3) in entry 98 and −4.8% (−7.6 to −1.3) here — **the same range: the difference is noise**. The intervals also show two passes are borderline: life expectancy 11.1–17.3 years and survival to 15 26.9–48.9% both reach outside their real bands. **Strength.** Weak: one run each.
 
+### 102. The real Earth keeps the band alive; the made-up planet does not — and every experiment so far used the made-up planet — Nov 2026
+
+**Version.** 0.11.0 + the baby fix (`3ac78f7`). The owner, watching the page, saw 25 → 43 hominins by year 19 and 82 by year 88, while most test worlds shrank. The page's Land menu defaults to "Earth, 70,000 years ago";
+`tools/experiment-core.js` defaults to a made-up planet (`earth: false`). **Every experiment table so far was a made-up planet.**
+
+**Data.** [Prediction, table, runs](../data/findings/102-real-earth/). `node tools/analysis/reality-check.js SEEDS 100 OUT --earth`, seeds 1–24, four processes; summary with 95% intervals (worlds resampled).
+
+| Check (real band) | Made-up planet (entry 100) | Real Earth |
+|---|---|---|
+| Population change a year (−1 to +1.5%, assumed band) | −4.8% (95% −7.6 to −1.3): fails | **−1.0% (−3.1 to +0.1): passes, at the edge** |
+| Life expectancy (13–33 y) | 14.2 (11.1–17.3) | **17.8 (14.8–20.5)** |
+| Born who reach 15 (30–60%) | 38.6% (26.9–48.9) | **48.3% (39.2–56.3)** |
+| Years between births (5.0–6.5) | 5.3 | 5.3 |
+| Age at first birth (12.5–15.5) | 15.9: fails | 15.5 (15.1–16.0): fails, just over |
+| Babies dying in their first year (10–25%) | 4.7%: fails | 4.0% (2.4–5.6): fails, too low |
+| Illness share (assumed band) | 6.6%: fails | 7.7%: fails |
+| Worlds that grew / shrank / died out | 2 / 14 / 8 | **6 / 12 / 5** (best 25 → 51) |
+| Births followed | 489 | 696 |
+
+**Result.** The prediction held: population change on the real Earth (−1.0%) lies outside the made-up planet's interval, so the planet matters for this row; fewer worlds emptied (5 against 8). Four of seven rows pass (3 of the 5
+with sourced bands). The owner's world (82 at year 88, about +1.35% a year) is among the growing ones, not an oddity.
+
+**Interpretation.** The East African start of the real Earth — real rivers, lakes and land — sustains a band near the real, roughly stable range, where a random made-up planet starves or exposes it. So the experiments have been measuring a
+world the owner never sees, and a harsher one. **Decision for the owner:** whether experiments default to the real Earth (recommended: the aim is East Africa 2.5 Ma, and the page already shows it); if so, the baselines are made
+again on it. Two rows fail on both planets and are real gaps: babies die far too rarely, and first births come a little late. **Strength.** Moderate (24 worlds, intervals; one run). **Lesson.** Check that what is measured is what is shown.
+
 ---
 
 ## Open questions (next tests)

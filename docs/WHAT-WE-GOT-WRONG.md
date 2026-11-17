@@ -44,6 +44,10 @@ On 17 November the owner pointed out that the page must show what the world does
 river square as mostly bank); wading and swimming not drawn at all; strikes drawn as a swing with no target or result; a carried baby drawn standing beside its mother, so it looked dragged;
 and sleepers sliding because the world's sleep is in many short dozes. All are fixed (drawing only). The human-voiced "words" and the human synthesis of the Listen sound are still a stand-in.
 
+## A different world measured from the one shown
+
+- **Entry 102: the page runs the real Earth; every experiment so far ran a made-up planet,** which is harsher (population −4.8% against −1.0% a year). Found by the owner watching the page grow. The owner decides which the experiments use.
+
 ## Sources and numbers we got wrong
 
 - **Entry 89: a wrong paper.** The paper cited for "a late-dry-season fruit peak at Issa" is about Guinea-Bissau (Carvalho, Vicente & Marques 2015). The Issa direction comes from Piel
