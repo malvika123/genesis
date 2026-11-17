@@ -1,0 +1,6 @@
+Entry 102: the reality checks on the real Earth (--earth: "Earth, 70,000 years ago", the page's default Land) against the made-up planet the experiments have used (entry 100's table, the same code).
+Written 17 Nov 2026, before the run. Prompted by the owner watching the page: 25 -> 43 hominins at year 19 and 82 at year 88 on the real Earth, while most made-up-planet worlds shrink.
+Test: tools/analysis/reality-check.js, seeds 1-24, 100 days, --earth, 4 processes; summary with the 95% intervals (worlds resampled).
+What I expect: the page world grew, but it is one world. I expect the real Earth to differ from the made-up planet in population change (less negative; the made-up planet gave -4.8%, 95% -7.6 to -1.3) because
+the band starts in East Africa with real rivers and lakes; and fewer worlds emptied (made-up: 8 of 24). The life-history rows (birth spacing, age at first birth) within their intervals of entry 100.
+Not held if: population change on the real Earth is inside entry 100's interval (then the page world was luck, and the planet does not matter for this row).
