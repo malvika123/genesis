@@ -220,3 +220,10 @@ verified online, built with a switch, and tested on its own before the next, in 
   change into deaths and births (founders who died vs lived; children vs their parents), by age and cause of death; then test with
   the mutation rule 10 × slower (`SOC.mutP` 0.02). No change to the world until the cause is measured.
 - Report every inherited trait beside `neutral_marker` in every future entry about evolution (master plan, test E1).
+
+## Parked 17 Nov 2026 (the owner: go on with the plan; the paper may be downloaded by hand later)
+
+- Hunters, digestion by size and the leopard's stomach share: need De Cuyper et al. 2019, *Oikos* 128:13–22 (gut capacity and kill
+  frequency by body mass; "above 30 kg, predators can afford to hunt every second day", as summarised). Both open copies refuse automated
+  download. Then the energy cap (fat from a gorge), then F1 detection.
+- Unexplained from entry 93: hominins burned to death fell 90 → 36 with the satiety brake.

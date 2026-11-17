@@ -61,6 +61,35 @@ Read this first in a new session, then **`docs/MASTER-PLAN.md` (the one plan to 
 - Pitfalls: `hunt-measure.js` and `hominin-attacks.js` re-read the code for each world (never edit `src/` while they run); in zsh
   `set -- $a` does not split words; read a hunter's stomach before its attack.
 
+## Task card: master plan 0.6 — count repeats, split by sex (ready for Sonnet; the owner chose this on 17 Nov)
+
+The hunter steps are **parked**: digestion by size and the leopard's stomach share need De Cuyper et al. 2019 (*Oikos* 128:13–22),
+blocked for automated download (Zurich and UCL); the owner may download it by hand later.
+
+**Goal.** For every discovery the world records as a "first" (`firsts.X = 1` in `src/sim.js`, about 32 places; `MILESTONES` in
+`tools/experiment-core.js`), also count **every time it happens**, **how many different individuals did it**, and **how many of them
+were female / male**. Measuring only: the world must not change.
+
+**Steps.**
+1. Write `data/findings/95-repeats/prediction-written-before.txt` first (e.g. which discoveries are repeated by many, which by one;
+   whether females and males differ — say what you expect and why, before any run).
+2. In `src/state.js` add a measuring-only record, e.g. `DONE = {}` (reset with the world like `firsts`). In `src/sim.js`, at each place a
+   first is set, call a helper before the `if (!firsts.X)` check, e.g. `did(a, 'X')`, which increments `DONE.X.n`, adds `a.id` to a
+   Set, and counts females (`a.sex === 1`; check which value is female in `src/creatures.js`) and males by first occurrence. Only where
+   the event is done by an individual `a`; list any first not tied to one. **No random numbers, no change to any creature.**
+3. In `tools/experiment-core.js` add columns `rep_X` (times), `who_X` (individuals), `whoF_X` (female individuals) after the `hd_X`
+   columns; expose `DONE` through `state()` in `tools/engine-api.js`.
+4. `tools/identical-worlds.sh HEAD` must print IDENTICAL (new columns are listed, not compared). Run `npm run test:quick`.
+5. Run 24 worlds × 100 days, 4 workers, nice: `nice -n 19 node tools/experiment.js --seeds 1-24 --days 100 --workers 4 --out
+   data/findings/95-repeats/repeats.csv`. **Never edit `src/` while it runs.**
+6. Extend `tools/analysis/rates.js` (or a new `repeats.js`) to report, per discovery: worlds where it happened, total repeats per 1,000
+   hominin-life-years (hominin_days / 3), individuals per world, share female.
+7. Write entry 95 in `docs/FINDINGS.md` (prediction held / not held, with the table), update the master plan's step 0.6 status and
+   `docs/BACKLOG.md` F5, then the release routine (tests, page check in Chrome, merge to develop, push develop on its own, confirm live).
+
+**Stop and ask for Opus** if: worlds are not identical; a first has no individual and the right counting is unclear; or the results
+look like a bug rather than a finding.
+
 ## Next, in order
 
 1. ~~Finish entry 85~~ (done, v0.8.0). Was: compare the two arms (dig firsts per 1,000 hominin-life-years with `node tools/analysis/rates.js`; hunger deaths),
