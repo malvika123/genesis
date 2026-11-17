@@ -282,3 +282,9 @@ The owner cannot run the sim to check, so what is drawn is what is believed. Aud
 - At the language stage (L0–L3): a graded call space (F0, duration, noisiness, rise/fall) in place of CV syllables, with a switch (`--cv-voice`) restoring today's model; three arms
   (graded, CV, deaf); founder `vl` 0–0.05 and 0–0.3. Not: a smaller syllable set, letting `vl` evolve CV syllables, any reward for convergence.
 
+## Follow-ups from entry 97 (17 Nov 2026)
+- Trace why, with the honest eye, leaf eating fell 91% and picking things up 45%; why deaths from wounds fell about two thirds; why predator deaths of hominins rose by half; why thirst
+  deaths went to zero. Measure hunters' attacks while full (`tools/analysis/hunt-measure.js`) in both arms.
+- Every earlier table used the old eye: re-run the headline baselines (reality-check rows, hunger, learning) with the default, before the faithful-day table is frozen (step 0.8).
+- Fable's next honest-label steps (labelled-senses review): the mate channel (`o.rd`, 6 × range through hills), family by familiarity, founders' recognition skill 0.9 → test 0.5.
+

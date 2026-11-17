@@ -4,7 +4,14 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
-- **An honest eye, built, off by default until measured** (research log entry 97): `--no-need-weighted-eye` makes the eye report only how much food, water and prey is there, not how much the body needs it. Default unchanged.
+## 0.11.0 — 2026-11-17
+
+- **An honest eye is now the default** (research log entry 97): the eye reports only how much food, water and prey is there, not how much the body needs it (hunger and
+  thirst reach the brain by their own inputs). Measured over 24 worlds × 100 days: hominin-days −23% (1,895 → 1,461), hunger deaths +32% a life-year, thirst deaths 14 → 0, predator deaths
+  +54%, wounds −65%, leaf eating −91%, picking things up −45%. **Earlier tables used the old eye**; `--need-weighted-eye` restores it.
+- **An ape-like hominin voice on the page** (audio only; `docs/design/hominin-voice.md`): the Listen sound is a soft hoo, a harsh scream and a low breathy grunt in place of a human voice;
+  only the cry's resonances and length are measured, the rest are registered assumptions. A stand-in. The sim's words are still human-style syllables (Opus: entry 95's shared words are
+  probably chance: `docs/reviews/2026-11-17-opus-human-style-words.md`).
 - **Every discovery counted each time, not only the first** (research log entry 95; master plan 0.6, F5): times done, how many
   different hominins did it, and how many of them were female (`rep_X`, `who_X`, `whoF_X` in experiment tables). Measuring only:
   the worlds are identical. Tool: `tools/analysis/repeats.js`.

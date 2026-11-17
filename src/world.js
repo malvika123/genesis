@@ -83,7 +83,7 @@ function buildWorld(cfg) {
   SOC.apeCare = cfg.humanCare !== true; // on: early hominins share care for children as human foragers do (the old rule)
   SOC.refeed = cfg.oldStarving !== true; // on: the old rule (a sudden jolt of discomfort below 15% energy, no refeeding signal)
   SOC.refeedAt = cfg.refeedAt === undefined ? 20 : Number(cfg.refeedAt); // the critical reserve, %: about 20 (80% of fat gone; evidence 20–25)
-  SOC.needEye = cfg.needWeightedEye !== false; // off: the eye reports only how much food and water is there, not how much the body needs it
+  SOC.needEye = cfg.needWeightedEye === true; // on: the old rule (the eye sees food and water more strongly the more the body needs them); default since entry 97: the eye reports only how much is there (hunger and thirst reach the brain by their own inputs)
   SOC.momPull = cfg.motherPull !== false; // off: a mother goes to her child only when it cries (the old rule)
   SOC.cycle = cfg.cycle !== false; // on by default since 12 Nov 2026: with mating fixed it costs about 17% of births, as waiting for fertile days should (research log entry 38); --no-cycle turns it off
   SOC.mood = cfg.mood !== false; // off: no lasting mood (the old rule)

@@ -1,0 +1,27 @@
+
+24 worlds, 100 days each. People alive at the end: mean 9.3, median 2.5; 6 worlds ended with nobody left.
+Deaths: hunger 184, killed by a predator 386, drowned 6, burned 16, its wounds 46, old age 161, giving birth 3, illness 73
+take       24 / 24 worlds, median day 1, earliest 1
+nut        23 / 24 worlds, median day 2, earliest 1
+flake      23 / 24 worlds, median day 12, earliest 1
+root       24 / 24 worlds, median day 1, earliest 1
+dig        24 / 24 worlds, median day 1, earliest 1
+meat       24 / 24 worlds, median day 2, earliest 1
+butcher    10 / 24 worlds, median day 27.5, earliest 4
+hunt        9 / 24 worlds, median day 17, earliest 1
+cooked     13 / 24 worlds, median day 10, earliest 6
+brand       8 / 24 worlds, median day 8.5, earliest 6
+setfire     0 / 24 worlds
+fed         3 / 24 worlds, median day 9, earliest 6
+kept        0 / 24 worlds
+madefire    0 / 24 worlds
+rubfire     0 / 24 worlds
+share      24 / 24 worlds, median day 1, earliest 1
+vicar      24 / 24 worlds, median day 1, earliest 1
+swim       19 / 24 worlds, median day 13, earliest 3
+point      24 / 24 worlds, median day 1, earliest 1
+joint      24 / 24 worlds, median day 1, earliest 1
+speak      24 / 24 worlds, median day 1, earliest 1
+shared     19 / 24 worlds, median day 16, earliest 4
+shelter     0 / 24 worlds
+Wrote data/findings/97-eye-reports-looks/honest-eye.csv

@@ -3007,6 +3007,50 @@ on 37 hunters) is not explained by it. **Strength.** Weak to moderate: one poole
 of 24 worlds. **Lesson.** A sex difference that arises without any rule about sex can still be traced to a rule that bears on one sex only (here, who
 has a young child): switch it off and count again, before reading anything into the lean.
 
+### 97. The eye reports what a thing looks like, not how much the body needs it — the world gets smaller, and behaviour changes a lot — Nov 2026
+
+**Version.** 0.11.0 · commit of the switch `96d4fac`, default flipped after this entry. Fable's labelled-senses review (`docs/reviews/2026-11-17-fable-labelled-senses.md`) found
+that the food and water channels the brain is handed were multiplied by hunger and thirst (`0.15 + hunger`, `0.15 + thirst`, `src/senses.js` `sense()`): the eye reported how
+much the body needed a thing, not what it looked like. Hunger already reaches the brain by its own inputs (`x[IB]`, `x[IB+1]`). This applies to every kind (hominins, plant-eaters,
+hunters, fish).
+
+**Data.** [Prediction, both tables, the comparison](../data/findings/97-eye-reports-looks/) (`honest-eye.csv`, `comparison.txt`; the old-rule table is entry 95's `repeats.csv`: same
+code at its default, checked IDENTICAL by `tools/identical-worlds.sh` on seeds 1–2 × 20 days). Command: `nice -n 19 node tools/experiment.js --seeds 1-24 --days 100 --workers 4
+--no-need-weighted-eye`, then `node tools/analysis/compare-arms.js data/findings/95-repeats/repeats.csv data/findings/97-eye-reports-looks/honest-eye.csv`.
+
+| 24 worlds × 100 days, old eye → honest eye | | |
+|---|---|---|
+| Hominin-days lived, mean a world | 1,895 → **1,461** | paired by seed −434 ± 159 (lower in 17 of 24 worlds) |
+| People alive at day 100, mean | 13.1 → **9.3** | worlds where everyone died 4 → 6 |
+| Hunger deaths per 1,000 hominin-life-years | 11.9 → **15.7** (+32%) | 180 → 184 deaths |
+| Thirst deaths | 14 → **0** | |
+| Killed by a predator, per 1,000 | 21.4 → **33.0** (+54%) | 324 → 386 |
+| Deaths from wounds, per 1,000 | 11.1 → **3.9** (−65%) | 168 → 46 |
+| Burned, drowned | 36 → 16, 3 → 6 | |
+| Repeats per 1,000 hominin-life-years: take | 4,471 → **2,457** | |
+| nut / flake / butcher / marrow | 438 → 169, 43 → 22, 28 → 5, 109 → 45 | |
+| leaves / fruit / share / speak | 1,741 → **165**, 6,983 → 4,767, 644 → 432, 30,864 → 16,522 | |
+| swim / joint (goes where another pointed) | 7 → **20**, 6 → 15 | |
+| dig / meat / point | 481 → 541, 818 → 876, 41 → 46 | roughly unchanged |
+
+**Result.** Against the prediction written before the run:
+1. Hunger deaths up by 10–60% a life-year — **held** (+32%).
+2. Hunters attack more while full — **not measured** by this table (needs `hunt-measure.js`); the rise in predator deaths of hominins (+54% a life-year) fits it but is not proof.
+3. Thirst deaths up — **not held**: 14 → 0. The water channel is now always at full strength where there is water, so everyone finds it.
+4. Discoveries, births and sex shares within seed noise — **not held**: repeats a life-year fell by 45% (take), 61% (nut), 91% (leaves), 82% (butcher), 46% (speak).
+5. The stop rule (everyone dead in more than 12 of 24 worlds) — **not met**: 6 of 24.
+**Not predicted:** deaths from wounds fell by about two thirds (cause unexplained), swimming nearly tripled, the female share of marrow and leaves moved (41 → 51%, 55 → 63%; small counts).
+
+**Decision (the rule written before the run).** The honest eye is the realism rule and the world did not collapse, so it becomes the default (`needWeightedEye` is off; the old eye
+is `--need-weighted-eye`). **Every earlier table (entries 1–96) was made with the old eye; compare new runs with old ones only with `--need-weighted-eye`.**
+
+**Interpretation.** The old multiplier did much of the work of directing hungry creatures to food and water; without it, hominins live smaller lives (23% fewer hominin-days, 6 worlds
+emptied) and do fewer of the everyday acts a life-year. That means the old results on survival and discovery partly rested on a cue no real eye gives: not a reason to keep it, but a
+reason to read earlier numbers as "with a kind eye". The large drop in leaf eating and picking things up is **unexplained** (a smaller or hungrier band? less pull to food when full?)
+and is the first thing to trace; the wounds, predator-death and thirst changes are too. Nothing was tuned.
+**Strength.** Moderate for the population and the cause-of-death shifts (24 worlds, paired, 2.7 standard errors for hominin-days); weak for the causes (none traced).
+**Lesson.** A cue the world gives for free can carry behaviour that looks like learning; removing it and re-measuring is how to find out how much.
+
 ---
 
 ## Open questions (next tests)
