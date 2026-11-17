@@ -145,6 +145,7 @@ function sim() {
       // apes avoid deep water and drown in it, but captive apes raised by people learned to swim (Bender & Bender 2013);
       // the rates are assumptions (SOC.swimDeep, SOC.swimShallow; --no-hominin-swimming: none)
       if (SOC.swimLearn) a.swim = Math.min(1, before + (inW ? SOC.swimDeep : SOC.swimShallow) * (young ? 2 : 1) * (1 - before));
+      if (before < 0.5 && a.swim >= 0.5) did(a, 'swim'); // entry 95: every repeat (measuring only)
       if (before < 0.5 && a.swim >= 0.5 && !firsts.swim) {
         firsts.swim = 1;
         log(a.name + ' can swim now. Nobody taught them.');
@@ -589,6 +590,7 @@ function sim() {
     a.pt = vc && vc[GPT] > 0 ? vc[GPT] - 1 : -1; // pointing this way (a direction 0 … 7), or not
     if (a.pt >= 0) {
       a.ptT = tick;
+      did(a, 'point');
       if (!firsts.point) {
         firsts.point = 1;
         log(a.name + ' pointed, for the first time anyone has.');
@@ -722,6 +724,7 @@ function sim() {
       a.bonus[7] += 0.01 * shareJoy(a);
       if (p && !p.gone) {
         p.bonus[7] += 0.03 * shareJoy(p);
+        did(a, 'joint');
         if (!firsts.joint) {
           firsts.joint = 1;
           log(a.name + ' went the way ' + p.name + ' pointed: attention shared, for the first time.');
@@ -778,12 +781,14 @@ function sim() {
       // calling out to others nearby eases loneliness a little (like grooming does for apes)
       if (seeOwn) a.bonus[7] += 0.03 * a.lo;
       if (typeof onCall === 'function') onCall(a, k, w);
+      if (k === 2) did(a, 'speak');
       if (k === 2 && !firsts.speak) {
         firsts.speak = 1;
         log(a.name + ' said something: “' + word + '”.');
       }
       if (k === 2 && st.who && st.who.size >= 3 && st.n >= 10 && !st.shared) {
         st.shared = 1;
+        did(a, 'shared'); // the one whose saying made the word shared
         if (!firsts.shared) {
           firsts.shared = 1;
           log('Three people now say “' + word + '”: the first word shared by a group.');
@@ -806,10 +811,12 @@ function sim() {
         if (!a.up && tree[here] >= 0.4) {
           a.up = true;
           a.e -= 0.2; // climbing is work
+          did(a, 'tree');
           if (!firsts.tree) {
             firsts.tree = 1;
             log(a.name + ' climbed a tree.');
           }
+          if (hunterSeen(x)) did(a, 'treeflee');
           if (hunterSeen(x) && !firsts.treeflee) {
             firsts.treeflee = 1;
             log(a.name + ' climbed a tree with a hunter in sight.');
@@ -881,6 +888,7 @@ function sim() {
             ouch(a, 0.7, 'fall');
             a.trap = 12;
             a.ev[0] = 'it fell into a pit on day ' + dn;
+            did(a, 'pit');
             if (a.sp === 0 && !firsts.pit) {
               firsts.pit = 1;
               log(a.name + ' fell into a pit.');
@@ -929,6 +937,7 @@ function sim() {
         COOK[i] -= b;
         a.e = Math.min(100, a.e + b * 120 * MEAL(a));
         if (hu > 0.5) a.ev[2] = 'it ate food cooked by fire after going hungry on day ' + dn;
+        did(a, 'cooked');
         if (a.sp === 0 && !firsts.cooked) {
           firsts.cooked = 1;
           log(a.name + ' ate food cooked by a fire.');
@@ -942,6 +951,7 @@ function sim() {
         ouch(a, 0.8, 'berries');
         a.ev[0] = 'it got sick from red berries on day ' + dn;
         learnSight(a, 9, 0.15);
+        did(a, 'berries');
         if (!firsts['p' + a.sp]) {
           firsts['p' + a.sp] = 1;
           log(who(a) + ' ate red berries and got sick.');
@@ -978,15 +988,18 @@ function sim() {
           a.painA = Math.min(1, a.painA + 0.7);
           ouch(a, 0.7, 'meat');
           a.ev[0] = 'it got sick from rotting meat on day ' + dn;
+          did(a, 'rotten');
           if (a.sp === 0 && !firsts.rotten) {
             firsts.rotten = 1;
             log(a.name + ' ate rotting meat and got sick.');
           }
         } else if (hu > 0.5) a.ev[2] = 'it ate meat after going hungry on day ' + dn;
+        did(a, 'meat');
         if (a.sp === 0 && !firsts.meat) {
           firsts.meat = 1;
           log(a.name + ' ate meat from a dead ' + (m.sp === 1 ? 'animal' : 'creature') + '.');
         }
+        if (a.sp === 0 && a.hand === 3 && !cutAct) did(a, 'butcher');
         if (a.sp === 0 && a.hand === 3 && !cutAct && !firsts.butcher) {
           firsts.butcher = 1;
           log(a.name + ' cut meat from a body with a sharp stone.');
@@ -997,6 +1010,7 @@ function sim() {
         fruit[i] -= b;
         a.e = Math.min(100, a.e + b * 70 * MEAL(a));
         if (hu > 0.5) a.ev[2] = 'it ate fruit after going hungry on day ' + dn;
+        did(a, 'fruit');
         if (a.sp === 0 && !firsts.fruit) {
           firsts.fruit = 1;
           log(a.name + ' ate fruit from the trees.');
@@ -1014,10 +1028,12 @@ function sim() {
           else ROOT[i] -= b;
           a.e = Math.min(100, a.e + b * SOC.rootVal * MEAL(a)); // roots and tubers (SOC.rootVal: an assumption, tested lower)
           if (hu > 0.5) a.ev[2] = 'it dug up roots after going hungry on day ' + dn;
+          did(a, 'root');
           if (!firsts.root) {
             firsts.root = 1;
             log(a.name + ' dug up a root and ate it.');
           }
+          if (a.hand === 2 && !SOC.digAct) did(a, 'dig');
           if (a.hand === 2 && !SOC.digAct && !firsts.dig) {
             firsts.dig = 1;
             log(a.name + ' dug for roots with a stick.');
@@ -1031,6 +1047,7 @@ function sim() {
         const b = 0.4;
         a.e = Math.min(100, a.e + b * 70 * a.S.leaf * MEAL(a));
         if (hu > 0.5) a.ev[2] = 'it ate leaves after going hungry on day ' + dn;
+        did(a, 'leaves');
         if (!firsts.leaves) {
           firsts.leaves = 1;
           log(a.name + ' ate leaves from the trees.');
@@ -1157,6 +1174,7 @@ function sim() {
         a.ev[7] = (tc >= 1 ? 'it fed its hungry child on day ' : 'it fed a hungry child of the band on day ') + dn;
         a.shared++;
         followed(a, 'share', 'fed a hungry child');
+        did(a, 'share');
         if (!firsts.share) {
           firsts.share = 1;
           log(a.name + ' shared food with ' + t.name + '. Nobody taught this.');
@@ -1176,6 +1194,7 @@ function sim() {
       a.brand = 8;
       a.fh = (a.fh || 0) + 1;
       a.painA = Math.min(1, a.painA + 0.15);
+      did(a, 'brand');
       if (!firsts.brand) {
         firsts.brand = 1;
         log(a.name + ' grabbed a burning stick out of a fire, and was burned.');
@@ -1183,6 +1202,7 @@ function sim() {
     } else if (act === A_TAKE && a.sp === 0 && !a.asleep) {
       if (pickUp(a)) {
         a.e -= 0.02;
+        did(a, 'take');
         if (!firsts.take) {
           firsts.take = 1;
           log(a.name + ' picked up ' + HAND[a.hand] + ' for the first time.');
@@ -1197,18 +1217,25 @@ function sim() {
       // (entry 78, step 3) a flaming stick lights what it falls on as the fuel's dryness allows: moisture dominates whether a firebrand
       // lights litter (Ellis 2015, Int J Wildland Fire 24:225); the chance is the ground's dryness (an assumption: the equations could
       // not be reached). --brand-always-lights: the old rule (always, on any fuel)
-      if (was === 4 && (!SOC.brandByDry || rnd2() < Math.max(dryness(i), stick[i] > 0 ? stickDry(i) : 0)) && ignite(i, 0.12) && !firsts.setfire) {
-        firsts.setfire = 1;
-        log(a.name + ' dropped a burning stick, and fire took hold where it fell.');
-      } else if (was === 2 && burning && !firsts.fed) {
-        firsts.fed = 1;
-        log(a.name + ' dropped a stick onto a fire, and it burned on.');
+      if (was === 4 && (!SOC.brandByDry || rnd2() < Math.max(dryness(i), stick[i] > 0 ? stickDry(i) : 0)) && ignite(i, 0.12)) {
+        did(a, 'setfire'); // entry 95: every repeat (measuring only; the chance and the lighting run exactly as before)
+        if (!firsts.setfire) {
+          firsts.setfire = 1;
+          log(a.name + ' dropped a burning stick, and fire took hold where it fell.');
+        }
+      } else if (was === 2 && burning) {
+        did(a, 'fed');
+        if (!firsts.fed) {
+          firsts.fed = 1;
+          log(a.name + ' dropped a stick onto a fire, and it burned on.');
+        }
       }
       // real control: one person feeding the same fire again and again over many hours
       if (was === 2 && burning) {
         if (!a.fedT0 || tick - a.fedLast > DAY / 2) (a.fedT0 = tick), (a.fedN = 0);
         a.fedN++;
         a.fedLast = tick;
+        if (a.fedN >= 6 && tick - a.fedT0 >= DAY / 4) did(a, 'kept'); // each feed while keeping a fire going
         if (a.fedN >= 6 && tick - a.fedT0 >= DAY / 4 && !firsts.kept) {
           firsts.kept = 1;
           log(a.name + ' kept a fire going for hours, feeding it again and again. Day ' + (((tick / DAY) | 0) + 1) + '.');
@@ -1225,6 +1252,7 @@ function sim() {
         a.hand = 4;
         a.brand = 8;
         a.fh = (a.fh || 0) + 1;
+        did(a, 'brand');
         if (!firsts.brand) {
           firsts.brand = 1;
           log(a.name + ' poked a stick into a fire and it caught, by accident, as far as anyone can tell.');
@@ -1262,6 +1290,7 @@ function sim() {
         a.e = Math.min(100, a.e + b * 110 * MEAL(a));
         a.nuts++;
         if (hu > 0.5) a.ev[2] = 'it cracked a nut open with a stone after going hungry on day ' + dn;
+        did(a, 'nut');
         if (!firsts.nut) {
           firsts.nut = 1;
           log(a.name + ' cracked a nut open with a stone. Nobody showed them how.');
@@ -1284,6 +1313,7 @@ function sim() {
           a.e = Math.min(100, a.e + b * 110 * MEAL(a));
           a.nuts++;
           if (hu > 0.5) a.ev[2] = 'it cracked a nut open with a stone after going hungry on day ' + dn;
+          did(a, 'nut');
           if (!firsts.nut) {
             firsts.nut = 1;
             log(a.name + ' cracked a nut open with a stone, the first in this world.');
@@ -1298,6 +1328,7 @@ function sim() {
           const b = Math.min(ROOT[i], 0.3);
           ROOT[i] -= b;
           DUG[i] += b;
+          if (a.hand === 2) did(a, 'dig');
           if (a.hand === 2 && !firsts.dig) {
             firsts.dig = 1;
             log(a.name + ' dug for roots with a stick.');
@@ -1310,6 +1341,7 @@ function sim() {
           free = Math.max(0, m.meat * m.kgU - (m.cut || 0));
         if (m.kgU > 0 && free > 0.01) {
           m.cut = (m.cut || 0) + Math.min(free, SOC.cutKg);
+          did(a, 'butcher');
           if (!firsts.butcher) {
             firsts.butcher = 1;
             log(a.name + ' cut meat from a body with a sharp stone.');
@@ -1326,6 +1358,7 @@ function sim() {
         mb.marrow -= b;
         if (kgM) eatKg.Marrow = (eatKg.Marrow || 0) + b; // the record (changes nothing)
         a.e = Math.min(100, a.e + (kgM ? (b * homKgE(a) * SOC.marrowKcal) / SOC.meatKcal : b * SOC.marrowVal * MEAL(a)));
+        did(a, 'marrow');
         if (!firsts.marrow) {
           firsts.marrow = 1;
           log(a.name + ' cracked a bone open with a stone and ate the marrow.');
@@ -1334,6 +1367,7 @@ function sim() {
         stone[i]--;
         flake[i] = Math.min(6, flake[i] + 1);
         a.painA = Math.min(1, a.painA + 0.1);
+        did(a, 'flake');
         if (!firsts.flake) {
           firsts.flake = 1;
           log(a.name + ' knocked a sharp-edged flake off a stone by striking two stones together.');
@@ -1388,6 +1422,7 @@ function sim() {
           if (a.sp === 2) t.eaten = gutOn(a) ? 0 : 0.6; // with a stomach, what it eats is counted below
           if (a.sp === 2) kills[t.sp]++;
           else if (t.sp === 1) {
+            did(a, 'hunt');
             if (!firsts.hunt) {
               firsts.hunt = 1;
               log(a.name + ' brought down a ' + T.n.toLowerCase() + '. Nobody taught them.');
@@ -1482,6 +1517,7 @@ function sim() {
     }
     if (a.age % 48 === a.id % 48 && a.age > 48) lessons(a);
     // the first time someone sleeps inside a heap of branches people carried together
+    if (a.sp === 0 && a.asleep && stick[idx(a.x, a.y)] >= 7) did(a, 'shelter'); // each hour asleep in a shelter
     if (a.sp === 0 && a.asleep && !firsts.shelter && stick[idx(a.x, a.y)] >= 7) {
       firsts.shelter = 1;
       log(a.name + ' slept in a shelter of piled branches. Nobody taught this.');
@@ -1594,6 +1630,7 @@ function fireMade(a, how) {
   a.made = (a.made || 0) + 1;
   watchFire(a, 0.06);
   const key = how === 'spark' ? 'madefire' : 'rubfire';
+  did(a, key);
   if (!firsts[key]) {
     firsts[key] = 1;
     log(
@@ -1786,6 +1823,7 @@ function watchOthers() {
       if (e.act >= 0) imitate(o, e.act, -0.05 * hurt);
       o.vic = (o.vic || 0) + hurt;
       if (hurt > 0.12) o.ev[0] = 'it saw ' + (v.name || 'someone') + ' ' + OUCHW[e.kind] + ' on day ' + dayN();
+      if (hurt > 0.12) did(o, 'vicar');
       if (!firsts.vicar && hurt > 0.12) {
         firsts.vicar = 1;
         log(o.name + ' saw ' + (v.name || 'someone') + ' ' + OUCHW[e.kind] + ', and was afraid.');

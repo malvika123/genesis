@@ -35,6 +35,8 @@
     'shared', // three people say the same word: the first shared word
     'shelter', // someone sleeps in a heap of branches carried together
   ];
+  // everything counted each time it is done (entry 95): the milestones and the other firsts the world logs
+  const REPEATS = [...MILESTONES, 'marrow', 'fruit', 'leaves', 'tree', 'treeflee', 'pit', 'rotten', 'berries'];
   // the same, in words, for the Lab page
   const MILESTONE_NAMES = {
     take: 'picks something up',
@@ -333,6 +335,10 @@
       loners_pct: ppl.length ? Math.round((100 * ppl.filter((p) => (p.g.im ?? 1) < 0.35).length) / ppl.length) : '',
       died,
       day,
+      // every repeat by hominins (entry 95): times done, different individuals, and the females among them (empty = no counter)
+      done: st.DONE
+        ? Object.fromEntries(REPEATS.map((k) => [k, st.DONE[k] ? { n: st.DONE[k].n, who: st.DONE[k].who.size, f: st.DONE[k].f, other: st.DONE[k].other } : { n: 0, who: 0, f: 0, other: 0 }]))
+        : null,
     };
   }
 
@@ -340,7 +346,7 @@
 
   // meta: { version, commit, runtime, seeds }
   function csv(rows, S, meta) {
-    const cols = [...HEAD, ...CAUSES.map((c) => 'died_' + c.replace(/ /g, '_')), ...MILESTONES.map((m) => 'day_' + m), 'hominin_days', ...MILESTONES.map((m) => 'hd_' + m)];
+    const cols = [...HEAD, ...CAUSES.map((c) => 'died_' + c.replace(/ /g, '_')), ...MILESTONES.map((m) => 'day_' + m), 'hominin_days', ...MILESTONES.map((m) => 'hd_' + m), ...REPEATS.flatMap((m) => ['rep_' + m, 'who_' + m, 'whoF_' + m])];
     const lines = [
       '# Genesis experiment',
       '# genesis ' + meta.version + ' commit ' + meta.commit + ', ' + meta.runtime,
@@ -348,6 +354,7 @@
       '# seeds ' + meta.seeds,
       '# day_X = the day (1 = first) something first happened in that world; empty = never',
       '# hominin_days = hominin-days lived in the world; hd_X = hominin-days lived before X first happened (empty = never)',
+      '# rep_X = times hominins did X; who_X = different hominins who did it; whoF_X = the females among them (entry 95)',
       cols.join(','),
     ];
     for (const r of rows)
@@ -358,6 +365,7 @@
           ...MILESTONES.map((m) => (r.day[m] === undefined ? '' : r.day[m])),
           r.hominin_days ?? '',
           ...MILESTONES.map((m) => (r.hdAt && r.hdAt[m] !== undefined ? r.hdAt[m] : '')),
+          ...REPEATS.flatMap((m) => (r.done ? [r.done[m].n, r.done[m].who, r.done[m].f] : ['', '', ''])),
         ].join(',')
       );
     return lines.join('\n') + '\n';
@@ -414,5 +422,5 @@
     return out.join('\n');
   }
 
-  return { MILESTONES, MILESTONE_NAMES, CAUSES, SETTINGS, fromArgs, build, command, seedList, runWorld, csv, stats, summary, median, meanSE };
+  return { MILESTONES, REPEATS, MILESTONE_NAMES, CAUSES, SETTINGS, fromArgs, build, command, seedList, runWorld, csv, stats, summary, median, meanSE };
 });

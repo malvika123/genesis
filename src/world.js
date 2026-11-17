@@ -210,6 +210,7 @@ function buildWorld(cfg) {
   killKg = {};
   eatKg = {};
   firsts = {};
+  DONE = {};
   maxGen = 0;
   nLessons = 0;
   over = false;

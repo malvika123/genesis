@@ -1,0 +1,31 @@
+Entry 95: count repeats, split by sex (master plan step 0.6, F5). Written 17 Nov 2026, before any run.
+
+What is measured: for each discovery the world records as a "first", every time a hominin does it, how many different
+hominins did it, and how many of those were female. Measuring only: the worlds must stay identical.
+
+What I expect, and why (24 worlds x 100 days, the default settings):
+
+1. Everyday acts are repeated by nearly everyone, thousands of times: picking things up (take), eating meat (meat),
+   cracking nuts (nut), digging roots (root). These are what the brain is rewarded for every day; most adults will have done
+   each. Expected: in most worlds more than half of the hominins alive do take and root.
+
+2. Tool and fire acts are rare and done by few: flake, butcher, dig with a stick, setfire, fed, kept. I expect most of these
+   in fewer than half the worlds, and where they happen, by 1-3 individuals, a handful of times. Firsts that came by chance
+   striking (entry 85) will mostly stay one-offs, not habits. madefire and rubfire: none (fire-making is not modelled, 14 Nov).
+
+3. Sharing food (share) is done only by mothers: in the hominin era only a mother cares for her own child (apeCare), so the
+   female share should be 100% (or very near it, if the switch is off in some path). This is a check of the counter as much
+   as a finding.
+
+4. Hunting (hunt): rare, by few, more often by males, because a heavier body raises the odds in an attack (males 40 kg vs
+   females 30 kg). Expected female share below 50%, but with few hunters the difference may not be clear.
+
+5. Everything else (take, nut, root, meat, flake, swim, point, speak): no clear difference between the sexes - roughly half
+   female - because the brain and the rewards are the same for both. Mothers held near their young by the pull toward the
+   child may do a little less of whatever needs moving away (swimming, going where another pointed).
+
+6. Words: speak is said by many (any call made with the word voice); shared (a word becoming shared by three) happens a few
+   times per world at most.
+
+What would count as not held: a sex difference above 15 points (outside 35-65% female) in any of the acts in point 5 with
+more than 20 individuals; share below 95% female; or tool and fire acts done by many hominins in most worlds.

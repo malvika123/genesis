@@ -10,6 +10,7 @@ let fished = 0,
   cave, // cave mouths in stony hill country: dry, out of the wind, cool in summer and mild in winter
   poison,
   firsts = {},
+  DONE = {}, // every time a hominin does what firsts records once: { X: { n, who: Set of ids, f: females among them, other } } (entry 95; changes nothing)
   water,
   salt, // sea water: you can swim in it but not drink it
   alt, // height of each cell in km (negative = depth of the sea)
@@ -101,6 +102,17 @@ const word = (t) =>
 // whose turn it is while the world steps: each piece of news remembers the creature it came from, so the page can show it
 let LOGWHO = null;
 const LOGW = [];
+// Count a repeat of a discovery (entry 95, measuring only: no random numbers, nothing about the creature changes).
+// Hominins are counted (n, who, f: a.sex is 1 for a female); any other kind reaching the same code is counted in 'other'.
+function did(a, k) {
+  const d = DONE[k] || (DONE[k] = { n: 0, who: new Set(), f: 0, other: 0 });
+  if (a.sp !== 0) return void d.other++;
+  d.n++;
+  if (!d.who.has(a.id)) {
+    d.who.add(a.id);
+    if (a.sex) d.f++;
+  }
+}
 function log(t) {
   t = word(t);
   events.push({ t: tick, s: t, who: LOGWHO });
