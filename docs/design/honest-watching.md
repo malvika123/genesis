@@ -1,4 +1,4 @@
-# Honest watching: a youngster learns from what it can see of an elder — design note for review, not built (17 Nov 2026)
+# Honest watching: a youngster learns from what it can see of an elder — design note, reviewed by Fable 17 Nov (build with changes; `docs/reviews/2026-11-17-fable-honest-watching.md`), not built
 
 **Why.** The owner (17 Nov): senses are how a creature connects to the world. The one question the project is narrowing to — when does a skill become a tradition? — rests on one sense above all: seeing what
 another does and what comes of it. Today that sense is not a sense (backlog, "How a hominin sees another's actions"; `src/sim.js` ~616–700, ~531–535; `src/brain.js` `imitate`, `imitateAt`, `copySequence`):
@@ -50,3 +50,15 @@ arrive later and in fewer hominins; the reality rows within noise. **Not held** 
 2. Is the results-first rule (item 3) a mechanism of our own, or a fair reading of emulation? Is there a simpler one?
 3. Should whole-path copying go entirely, or stay on the watcher's own view?
 4. What would you measure to know the change worked (and was not just "less learning")?
+
+## Revised after Fable's review (17 Nov)
+- **Item 3 replaced:** copy only the elder's visible body acts (strike, take, eat, dig, drop — never stay, voice or unseen acts), weighed by the visible result (ate, cracked, hurt), trained on the watcher's own inputs.
+  No result-to-act table. Enhancement, if wanted, through the existing curiosity term.
+- **Added to scope:** seeing another hurt (`watchOthers`) gets the same who-can-be-watched test and nudges away from the place or thing, not the victim's act; `copySequence`'s trigger (hidden reward, no age, view or night
+  check); the mother's −30 bonus that blocks copying from elders in the same square; copying heard words (~719, vocal production learning); the update-order timing of `daAct`/`lastR` against `o.act`.
+- **Wording:** "same 3 km square, distance unknown" (not 0.5 km); together two steps running as a stand-in for 5 s of peering; a positive result is an upper bound (distance overstated 100–1000×).
+- **Whole paths:** removed from the honest arm.
+- **Test:** one switch per fix, single-switch arms on at least 8 worlds; rate at ½ and 2×; the two-steps rule on and off; skill-specific transmission (watched vs not, per skill), mother–offspring match, group differences over
+  generations, a dose-matched control; "not held" if the honest arm's transmission ratio is no greater than no-copying's; identical worlds over 100 days on one seed and no random numbers drawn by the new code with the switch on.
+  If skills vanish, do not raise the rate: look for what real thing is missing.
+- **The owner decides:** copying heard words; dropping whole paths; same square now or wait for the valley; accepting late or no skills as the honest answer; "seen succeeding" for "expert".
