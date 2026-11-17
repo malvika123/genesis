@@ -4,6 +4,7 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **An honest eye, built, off by default until measured** (research log entry 97): `--no-need-weighted-eye` makes the eye report only how much food, water and prey is there, not how much the body needs it. Default unchanged.
 - **Every discovery counted each time, not only the first** (research log entry 95; master plan 0.6, F5): times done, how many
   different hominins did it, and how many of them were female (`rep_X`, `who_X`, `whoF_X` in experiment tables). Measuring only:
   the worlds are identical. Tool: `tools/analysis/repeats.js`.
