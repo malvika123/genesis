@@ -4,6 +4,9 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **The page shows people in water and on river banks** (drawing only): a person on a river square is drawn beside the channel, not in it (the sim treats a river square as mostly
+  bank); a person in a lake or the sea is drawn with the body below the surface, the arms stroking in turn, and ripples round them. Still to draw: what a strike hits (nuts, flakes, roots).
+
 ## 0.11.0 — 2026-11-17
 
 - **An honest eye is now the default** (research log entry 97): the eye reports only how much food, water and prey is there, not how much the body needs it (hunger and

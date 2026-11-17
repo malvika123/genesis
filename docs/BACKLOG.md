@@ -261,7 +261,7 @@ The owner cannot run the sim to check, so what is drawn is what is believed. Aud
 - **Sleeping on a river square (0.3% of sleeping samples; 12 of 4,291)**: the sim treats a river square as mostly bank, but the page drew the sleeper on the river line.
   Fixed on branch `ui-actions` (drawn 0.3 of a square beside the channel, on one bank by id); verified by the drawn coordinates, not by eye.
 - **In water (577 samples, none in deep water)**: wading and swim practice were not drawn at all. Built on `ui-actions`: body below the surface, arms reaching in
-  turn, ripples. Verified on a test canvas (the flat-map and figure drawing); the **globe's ripple rings were not seen by eye** (no console errors) — check before release.
+  turn, ripples. Verified on a test canvas (the flat-map and figure drawing); the globe's ripple rings **seen by eye on 17 Nov** (a person in the sea: body below the surface, arm in a stroke, a ring on the water); released with the river fix.
 - **Striking is 23% of all person samples (3,299): stick 1,502, stone 973, empty hand 813, flake 11.** The page draws the swing but not what is struck or what comes of it
   (a nut cracking, a flake coming off, a root dug, a bone broken, soil flying). Needs a drawing-only record in the sim of what each strike hit (no random numbers) so the page
   can show it. **Not built.**
