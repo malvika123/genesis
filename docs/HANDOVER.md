@@ -72,8 +72,11 @@ Read this first in a new session, then **`docs/MASTER-PLAN.md` (the one plan to 
 - **Hunter steps are partly unparked:** De Cuyper et al. 2020 (gut fill) is read (retention time about 14–16 h for hunter-sized carnivores against the sim's 24 h: test both ends); the 2019 kill-frequency paper (stomach capacity) is
   free as the Zurich accepted manuscript. Check Table 3 of the 2020 paper by eye (my text extraction garbled some digits).
 - Work in separate branches/worktrees works well: `git worktree add` a copy to run experiments from while editing; the owner asked for this. **Never edit `src/` while an experiment or reality-check runs from the same folder** (the tools rebuild the engine for every world).
-- **Next, in order:** trace entry 97's loose ends (hunters attacking while full, leaf eating, wounds, thirst, infant deaths); the digestion-time test (14–16 h against 24 h); make `words_shared` band-local with a chance baseline
-  (measuring only); step 0.7 (`yearDays`, then 3 against 12 days); finish 0.6 (other learning measures by sex); then 0.8. Fable's next honest-label steps (mate channel, family by familiarity, founders' recognition skill) are the owner's call.
+- **Next, in order (the owner agreed 17 Nov):** entry 99, the trace of entry 97's loose ends (running); **honest watching** — a youngster learns from what it can see of an elder (hands, what is held, food eaten,
+  a hurt), within view and reach, not from the elder's chosen act number, reward and inputs (backlog: "How a hominin sees another's actions"; sources being gathered; design note and a Fable review before building);
+  then the digestion-time test (14–16 h against 24 h); `words_shared` band-local with a chance baseline (measuring only); step 0.7 (`yearDays`, 3 against 12 days); finish 0.6; then 0.8.
+- **Opus's advice to the owner (17 Nov):** narrow to one question ("when does a skill become a tradition?"), stop broadening (no smell, voice design or new senses unless they could fake that answer), keep the stop rule with
+  a date (about mid-February); the owner asked whether the project is useful to anyone: say plainly on the front page what it is (a small, open, honest testbed), F17. Fable's next honest-label steps (mate channel, family by familiarity, founders' recognition skill) are the owner's call.
 
 ## Step 0.6 done (17 Nov, entry 95, live on develop at `29ef613`; not tagged)
 
