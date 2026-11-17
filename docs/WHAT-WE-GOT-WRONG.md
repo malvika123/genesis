@@ -23,6 +23,10 @@ Genesis is a research instrument, so its mistakes are part of the record. This p
 - **Entry 95, "shared words": probably chance.** The count asks for three speakers and ten uses anywhere in the world, in a space of only 144 sounds, and at founder vocal control 0–0.3 most
   mouth choices are random. Opus's estimate (`docs/reviews/2026-11-17-opus-human-style-words.md`, not yet measured): read "not held" as "the test cannot tell chance from convergence".
 
+## Measuring tools that misled us (17 Nov)
+
+- **"3 of 7 sourced rows".** The reality-check tool printed "against the sourced ranges only: N of 7" though only 5 rows have sourced bands; entries 98 and 100 repeated it. It is 3 of 5. Fixed in the tool; the tool now also gives 95% intervals, which showed entry 100's population change was noise.
+
 ## Bugs in the world itself
 
 - **Entry 99: carried babies attacked antelopes and buffalo,** were hurt by them and died "of wounds". Most of the old eye's infant deaths (entry 98, 9.6%) came from this. Being fixed (entry 100).

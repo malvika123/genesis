@@ -3068,7 +3068,7 @@ for seeds 1–24 in four processes, then `--summary OUT`. 24 worlds × 100 days 
 | Age at first birth (12.5–15.5 y) | 15.8 fails (high) | 16.1 fails (high) |
 | Population change a year (−1 to +1.5%, an assumed band) | −2.0% fails | **−3.1%** fails |
 | Deaths from illness (15–60%, an assumed band) | 8.8% fails | 8.3% fails |
-| Sourced rows passing | 3 of 7 | 3 of 7 |
+| Rows passing (of the 5 with sourced bands) | 3 of 7 (3 of 5) | 3 of 7 (3 of 5) |
 | Births followed / worlds that died out | 727 / 4 of 24 | **498 / 6 of 24** |
 | Causes of death | predator 32%, old age 19%, hunger 18%, **wounds 17%**, illness 9%, burned 4%, thirst 1%, birth 1% | **predator 44%**, hunger 21%, old age 18%, illness 8%, **wounds 5%**, burned 2%, drowned 1% |
 
@@ -3149,7 +3149,7 @@ reported so); (2) every other row within noise and the same rows pass — **held
 computed, so I cannot call it noise or a shift; (3) baby wound deaths near zero — not measured in this table (the trace of entry 99 had 5 in the honest arm).
 
 **Interpretation.** With the honest eye few carried babies chose to attack, so blocking it changes little; the fix is kept because no real infant does it, not for its numbers. The worlds diverge by chance from the first blocked
-attack, so a 24-world table moves by a few points on its own: **the population row needs an interval before any further reading** (backlog). **Strength.** Weak: one run each, no intervals for the population row.
+attack, so a 24-world table moves by a few points on its own. **Intervals added afterwards** (`reality-check.js --summary` now resamples worlds 1,000 times): population change −3.1% (95%: −7.6 to −1.3) in entry 98 and −4.8% (−7.6 to −1.3) here — **the same range: the difference is noise**. The intervals also show two passes are borderline: life expectancy 11.1–17.3 years and survival to 15 26.9–48.9% both reach outside their real bands. **Strength.** Weak: one run each.
 
 ---
 

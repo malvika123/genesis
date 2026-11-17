@@ -64,7 +64,7 @@ Read this first in a new session, then **`docs/MASTER-PLAN.md` (the one plan to 
 ## 17 Nov, later: v0.11.0 and what changed (read this first)
 
 - **The default eye is honest** (entry 97): food, water and prey are seen by how much is there, not how much the body needs it. `--need-weighted-eye` restores the old eye. **Every table before v0.11.0 used the old eye.**
-  Baselines re-made in entry 98 (24 × 100 days, both eyes): the same 3 of 7 sourced reality rows pass (survival to 15, life expectancy, birth spacing); both eyes fail babies dying (too few), age at first birth (too high) and the
+  Baselines re-made in entry 98 (24 × 100 days, both eyes): the same 3 of 7 reality rows pass (3 of the 5 with sourced bands) (survival to 15, life expectancy, birth spacing); both eyes fail babies dying (too few), age at first birth (too high) and the
   population (−2.0% old, −3.1% honest a year; assumed band).
 - Entry 96: the mother's pull explains part of the male lean in butchery and fire acts (weak). Entry 95's "shared words" are probably chance (Opus: `docs/reviews/2026-11-17-opus-human-style-words.md`).
 - Page: ape-like Listen voice (audio only), people in water and on river banks drawn right, what a strike hits drawn, a carried baby clings to its mother, sleepers hold still. F19 `docs/WHAT-WE-GOT-WRONG.md` and F20 `docs/PREDICTIONS.md` done.
