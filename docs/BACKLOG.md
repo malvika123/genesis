@@ -236,6 +236,16 @@ verified online, built with a switch, and tested on its own before the next, in 
   direction of the satiety brake (entries 92–94) but gives no stomach share, digestion time or leopard figure: those need the full text, the Dryad data (doi 10.5061/dryad.n23q7q1, assumed
   to be this paper's) or the companion gut-fill paper (De Cuyper et al. 2020, *Comp Biochem Physiol A*, LJMU repository record 12632).
 
+- **De Cuyper et al. 2020 read (17 Nov; the owner downloaded the LJMU copy; text decoded by a plain-text extractor with garbled capitals and digits 2, 3, 6, 7, not checked against the page images: re-check
+  Table 3 by eye, e.g. after `brew install poppler`).** *Comp Biochem Physiol A* 2020 (doi 10.1016/j.cbpa.2020.110683): dry-matter gut contents for 25 Carnivora species by the occupancy principle.
+  Abstract (clean text): across Carnivora and herbivores dry matter intake ~ BM^0.75, digestibility ~ BM^0, retention time ~ BM^0.11, dry-matter gut contents ~ BM^0.88; carnivores' intake level reached
+  77%, their retention time about 32% and their dry-matter gut contents only 29% of the herbivores'. **Table 3 (carnivores, as decoded):** mean retention time RT (h) = 8.1 × BM(kg)^0.14 (phylogenetic fit; 95% interval of the
+  intercept 3.5–18.9, of the exponent −0.04–0.31), or 6.7 × BM^0.23 (ordinary fit): about 14–16 h for a 50 kg leopard or a 60 kg hyena; dry-matter gut contents DMC (kg) = 0.009 × BM^0.77 (phylogenetic; intervals wide)
+  or 0.006 × BM^0.98. **What it supports for the sim:** the digestion time (`SOC.digestH` = 24 h to empty a full stomach, sim.js:114) looks long against a mean retention time of about 14–16 h for hunter-sized carnivores
+  — test both ends (14–16 h and 24 h) with a prediction first; mean retention time is not the same as time to empty a full stomach, so say so. **What it does not give:** the largest stomach a hunter can fill at one gorge
+  (the sim's `SOC.gutShare` 0.25 of body weight, spotted hyena 14.5 of 60 kg): that is stomach *capacity*, which the 2019 kill-frequency paper (Zurich accepted manuscript) uses; this paper gives the average content
+  (wet gut contents of a dog and of a smaller carnivore about 13.9% and 0.7% of body mass as decoded; one citation of wolves eating up to 22% of body mass at a meal).
+
 ## Follow-ups from entry 95 (17 Nov 2026)
 
 - **Entry 96 (17 Nov): the mother's pull explains part of it** (butchery 32 → 43% female, burning sticks 30 → 44% without it; weak evidence). Still open: why the band is smaller without the pull (births? not measured), and why hunting leans female. Original item: Why do butchery, burning sticks and marrow lean male, and hunting a little female? Test the mother's pull (`--no-mother-pull`) with the repeat counts; measure where mothers of young infants spend their time against carcasses and fires.
