@@ -1385,6 +1385,16 @@ const skinCol = (t, dk = 0) =>
 // arms and legs that bend at elbow and knee, hands and feet. Bare, as the first people were. In the
 // pose of what they are doing: walking, bending down to pick something up or drink, a hand to the mouth
 // when eating, an arm swinging when striking, an arm held out when sharing or pointing.
+// In water (a lake or the sea, not a river square, which is mostly bank): 0 out of it, 1 in the shallows, 2 in deep water. A person there
+// is wading or swimming (the sim: swimming is practised in the shallows and in deep water, sim.js), so it is drawn with its body in the
+// water and its arms stroking, with ripples round it. Drawing only: nothing in the world changes.
+function wetOf(a) {
+  if (a.sp !== 0 || a.asleep || a.dead || a.x === undefined) return 0;
+  const i = idx(a.x, a.y);
+  return water[i] && !river[i] && !iced(i) ? (deep[i] ? 2 : 1) : 0;
+}
+// the stroke's phase, -1 … 1, the same for everyone in the water at one moment (a person drawn each frame; the globe's pictures use five steps of it)
+const strokeNow = () => Math.sin(performance.now() / 380);
 function drawPerson(g, a, X, Y, k, gr, col) {
   // Early hominins (the default world): small upright apes — a little shorter, covered in dark hair, a long
   // body on shorter legs, arms reaching to the knees, no waist, a heavy brow and a projecting lower face
@@ -1400,6 +1410,8 @@ function drawPerson(g, a, X, Y, k, gr, col) {
     crouch = act === A_TAKE || act === A_DROP || act === A_DRINK || act === A_STRIKE ? 1 : 0,
     sw = act === A_STRIKE ? (a.swf ?? bodySwing(a)) : 0,
     fem = !!a.sex,
+    wet = a.wetv ?? wetOf(a),
+    swS = a.swv ?? strokeNow(),
     adult = gr > 0.85;
   g.save();
   g.translate(X, a.asleep ? Y : Y - h * 0.35);
@@ -1464,10 +1476,16 @@ function drawPerson(g, a, X, Y, k, gr, col) {
       [mx, my] = MV[d];
     rx = h * (mx === 0 ? 0.3 : 0.45) * (mx < 0 ? -1 : 1) * (a.face === -1 ? -1 : 1);
     ry = sh + h * (0.0 + 0.08 * my);
+  } else if (wet) {
+    // in the water: the arms reach out and pull in turn, the right when the stroke is positive
+    const up = Math.max(0, swS);
+    rx = h * (0.12 + 0.3 * up);
+    ry = sh - h * 0.02 - h * 0.16 * up + h * 0.05 * (1 - up);
   }
   // the resting (left) arm swings with walking, behind the body's edge
-  const lhx = -shW - h * 0.035 + step * 0.5,
-    lhy = crouch ? hip + h * 0.08 : ape ? knee - h * 0.02 : hip + h * 0.05;
+  const upL = wet ? Math.max(0, -swS) : 0,
+    lhx = wet ? -(shW + h * 0.12 + h * 0.3 * upL) : -shW - h * 0.035 + step * 0.5,
+    lhy = wet ? sh - h * 0.02 - h * 0.16 * upL + h * 0.05 * (1 - upL) : crouch ? hip + h * 0.08 : ape ? knee - h * 0.02 : hip + h * 0.05;
   limb([[-shW + h * 0.03, sh + h * 0.02], [(-shW + lhx) / 2 - h * 0.015, (sh + lhy) / 2], [lhx, lhy]], h * 0.048, h * 0.04, shade);
   g.fillStyle = shade;
   g.beginPath();
@@ -1952,7 +1970,30 @@ function drawCreature(g, a, X, Y, k, v, dim = 1) {
   g.globalAlpha = (a.asleep ? 0.45 : 1) * dim;
   if (a.sp === 0) {
     g.globalAlpha = (a.asleep ? 0.8 : 1) * dim;
-    drawPerson(g, a, X, Y, k, gr, a.sex ? v('--f') : v('--m'));
+    const wet = wetOf(a);
+    if (wet) {
+      // the body is in the water: knee- to thigh-deep in the shallows, only the head out in deep water; ripples round it
+      const hh = (5.5 + 6 * gr) * k * (typeof ERA !== 'undefined' && ERA === 'hominin' ? 0.85 : 1),
+        wl = Y + 0.15 * hh - hh * (wet === 2 ? 0.78 : 0.3);
+      g.save();
+      g.beginPath();
+      g.rect(X - hh, Y - 2 * hh, 2 * hh, wl - (Y - 2 * hh));
+      g.clip();
+      drawPerson(g, a, X, Y, k, gr, a.sex ? v('--f') : v('--m'));
+      g.restore();
+      g.save();
+      g.strokeStyle = 'rgba(255,255,255,0.7)';
+      g.lineWidth = Math.max(0.5, hh * 0.03);
+      const t0 = (performance.now() / 900) % 1;
+      for (let r = 0; r < 2; r++) {
+        const u = (t0 + r / 2) % 1;
+        g.globalAlpha = 0.8 * (1 - u) * dim;
+        g.beginPath();
+        g.ellipse(X, wl, hh * (0.18 + 0.3 * u), hh * (0.05 + 0.08 * u), 0, 0, 7);
+        g.stroke();
+      }
+      g.restore();
+    } else drawPerson(g, a, X, Y, k, gr, a.sex ? v('--f') : v('--m'));
   } else if (a.sp === 1 || a.sp === 2) {
     g.globalAlpha = (a.asleep ? 0.75 : 1) * dim;
     drawAnimal(g, a, X, Y + 3.5 * k, k);
