@@ -314,3 +314,18 @@ The owner cannot run the sim to check, so what is drawn is what is believed. Aud
   mother?) — trace with the per-world files in `data/findings/98-baselines-honest-eye/`.
 - Why the world shrinks even with the old eye: births per mother-year against real chimpanzees (the birth spacing passes), deaths of adults by predators (32–44% of all deaths).
 
+
+## How a hominin "sees" another's actions (read 17 Nov 2026, the owner's question: senses connect a creature to the world) — the owner decides
+Social learning is not perception in the code (`src/sim.js` ~616–700, ~531–535; `src/brain.js` `imitate`, `imitateAt`, `copySequence`):
+- **The elder's choice and its reward are read straight out of its mind.** The copier gets the elder's chosen act as an exact number (`tch.daAct`, one of 19) and the elder's own reward (`tch.lastR`), and both are
+  written into the copier's brain weights as a training target (`imitate`). No sense is involved: a real youngster sees hands and food, not a choice or a reward.
+- **Watching a whole path uses the elder's own senses** (`copySequence`: "the elder's own record of each moment stands for what it saw"): the youngster is trained on the elder's input vectors, including the elder's
+  hunger, thirst and short-term memory, not on what the youngster itself saw.
+- **Whom it watches:** anyone within its sight range in squares (`a.g.v`, several 3 km squares), with no check of field of view, hills, trees or night; the "follow the crowd" count reads every one of those elders'
+  exact acts. Copying a choice needs the same square (about 0.5 km apart in this model; real peering is within arm's reach), but **voice copying is not limited to the same square** and copies the elder's mouth
+  commands (`tch.vc`), not the sound heard.
+- **"Copy the successful"** reads the elder's hidden health and energy (`hp + e`).
+- What is fair: mothers first, elders only, more copying when unsure, the youngster's own inputs used for single-choice copying (`imitate` uses `a.xi`).
+**Smallest honest steps (each with a switch, identical worlds, a prediction):** (1) copy only from an elder actually in view (field of view, line of sight, daylight); (2) replace the act number and reward with what is visible:
+what the elder holds and does with its hands, and whether it then eats or is hurt; (3) watching a path: train on the youngster's own view, not the elder's inputs; (4) voice copied from the sound heard, within earshot.
+Expect learning from others to fall a lot. Entries resting on copying (48–60, 86) would need re-reading. Real apes copy with low fidelity (emulation vs imitation: to be sourced before building).
