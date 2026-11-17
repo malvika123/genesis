@@ -3126,6 +3126,31 @@ still contains a few. Both arms fail the infant row as too low even so. **Streng
 event records in 13 cases and the code. **Lesson.** Count what creatures *do* with their time before reading their discoveries; a third of the day spent striking is a symptom, not a culture. **Next:** fix the bug (a carried
 infant cannot attack; `--babies-attack` restores the old rule) and re-run the reality checks.
 
+### 100. A carried infant cannot attack: the bug fixed; the reality checks barely move — Nov 2026
+
+**Version.** 0.11.0 + commit `3ac78f7` (`--babies-attack` restores the old rule; checked: identical worlds, seeds 1–2 × 20 days, 176 columns). Entry 99 found carried babies attacking antelopes and buffalo and dying of it.
+
+**Data.** [Prediction, table, runs](../data/findings/100-babies-cannot-attack/). `node tools/analysis/reality-check.js SEEDS 100 OUT` for seeds 1–24 in four processes; compared with entry 98's honest-eye table (the same code but for the fix).
+
+| Check (real band) | Entry 98, honest eye | With the fix |
+|---|---|---|
+| Babies dying in their first year (10–25%) | 4.2% (21 of 495) | 4.7% (23 of 489) — fails, too low |
+| Born who reach age 15 (30–60%) | 41.3% | 38.6% — passes |
+| Life expectancy (13–33 y) | 14.7 | 14.2 — passes |
+| Years between births (5.0–6.5) | 5.3 | 5.3 — passes |
+| Age at first birth (12.5–15.5) | 16.1 | 15.9 — fails, high |
+| Population change a year (assumed band) | −3.1% | −4.8% — fails |
+| Illness share (assumed band) | 8.3% | 6.6% — fails |
+| Worlds that died out | 6 of 24 | 8 of 24 |
+| Causes of death | predator 44%, hunger 21%, old age 18%, illness 8%, wounds 5% | predator 48%, hunger 17%, old age 17%, wounds 9%, illness 7% |
+
+**Result.** Against the prediction written before the run: (1) infant deaths 4.2% → about 3–4% — **not held**: 4.7% (two more deaths in 489, z about 0.4: noise; but my own rule said "not held if infant deaths rise", and it is
+reported so); (2) every other row within noise and the same rows pass — **held** for pass and fail (no row changed status); the population row moved from −3.1% to −4.8% a year and worlds emptied from 6 to 8, with no interval
+computed, so I cannot call it noise or a shift; (3) baby wound deaths near zero — not measured in this table (the trace of entry 99 had 5 in the honest arm).
+
+**Interpretation.** With the honest eye few carried babies chose to attack, so blocking it changes little; the fix is kept because no real infant does it, not for its numbers. The worlds diverge by chance from the first blocked
+attack, so a 24-world table moves by a few points on its own: **the population row needs an interval before any further reading** (backlog). **Strength.** Weak: one run each, no intervals for the population row.
+
 ---
 
 ## Open questions (next tests)
