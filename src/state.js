@@ -112,6 +112,20 @@ function did(a, k) {
     d.who.add(a.id);
     if (a.sex) d.f++;
   }
+  // per individual: when it first did this (entry 101, measuring only: transmission and mother–offspring match)
+  const fd = a.fd || (a.fd = {});
+  if (fd[k] === undefined) fd[k] = tick;
+}
+// Copy events from watching (entry 101, measuring only): how many, and which skill each was about, per watcher (a.ws[skill] = first tick it watched it)
+let WATCHN = 0;
+const STK_SKILL = { nut: 'nut', dig: 'dig', cut: 'butcher', bone: 'marrow', flake: 'flake' };
+function sawSkill(a, tch, what) {
+  WATCHN++;
+  if (what !== A_STRIKE || tch.stkT === undefined || tick - tch.stkT > 1) return;
+  const sk = STK_SKILL[tch.stk];
+  if (!sk) return;
+  const ws = a.ws || (a.ws = {});
+  if (ws[sk] === undefined) ws[sk] = tick;
 }
 function log(t) {
   t = word(t);

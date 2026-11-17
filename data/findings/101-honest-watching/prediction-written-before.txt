@@ -1,0 +1,29 @@
+Entry 101: honest watching — a youngster learns only from what it can see of an elder. Written 17 Nov 2026, before any run (design: docs/design/honest-watching.md, Fable's review
+docs/reviews/2026-11-17-fable-honest-watching.md; numbers registered as hypotheses in docs/ASSUMPTIONS.md, "Honest watching"). The owner chose (17 Nov): no copying of heard words, no whole-path
+copying, same-square watching now, and late or absent skills accepted as an honest answer (never raise the copying rate to rescue them).
+
+Arms (tools/analysis/watch-trace.js: transmission, mother-offspring match, copy events, repeats, deaths; 100 days; 4 processes, nice):
+  A old copying (the default)                24 worlds
+  B --honest-watching (all six pieces)       24 worlds
+  C --no-copying (the floor)                 24 worlds
+  D old copying thinned to B's number of copy events (--copy-thin P, P set from B's copy events before D runs)   24 worlds
+  single-switch arms, 8 worlds each: --honest-who, --honest-what, --no-path-copy, --no-voice-copy, --honest-hurt, --honest-success
+  ends of the hypotheses, 8 worlds each, with --honest-watching: --peer-hi 0.15 --peer-lo 0.05 and --peer-hi 0.25 --peer-lo 0.10; --watch-steps 1 and 4.
+Identical worlds: with every switch off, seeds 1-2 x 20 days and seed 1 x 100 days must match the commit before; the new code draws no random numbers then.
+
+What I expect, and why:
+1. Copy events (the dose) fall a lot in B: from every step an elder is in sight (A) to a chance of 0.075-0.2 a step when together two steps, awake, by day and foraging: B's copy events per 1,000
+   hominin-days are under a fifth of A's.
+2. Transmission (first-time rate after watching a skill / before or never watching it): in A the ratio is above 1 for nut, flake and dig but partly because watching and doing happen in the same
+   squares (the same place). In B the ratio stays above 1 for at least one skill and is above C's for that skill (C has no watching, so its "watched" count is zero; compare B with D instead:
+   B's ratio at least as high as D's, because B copies visible acts with their visible result rather than a choice number).
+3. Repeats per 1,000 hominin-days of nut, flake, dig, butcher: B lower than A, closer to C; the share of hominins who ever do each skill lower in B than A.
+4. Mother-offspring match: young whose mother did a skill first do it more often than young whose mother never did, in A and B; the gap smaller in B.
+5. Deaths, hunger and the population: within noise across A, B, C (copying is a small part of what keeps hominins alive since the honest eye).
+6. Single switches: --honest-who and --honest-what carry most of the fall in copy events and repeats; --no-voice-copy, --no-path-copy and --honest-hurt change little in skills.
+7. Ends of the hypotheses: more watching (peer 0.25/0.10, watch-steps 1) gives more copy events and more transmission than less (0.15/0.05, watch-steps 4); the order holds.
+8. The mother as target: in B, of the young's copy events in their first year (age under 1), the mother is the elder in over 80%. (Read from the copy records if the tool can; otherwise reported as not measured.)
+
+Not held if: B's transmission ratio for every skill is no greater than D's (then what is seen adds nothing beyond fewer events); or B's ratio is no greater than 1 for every skill while A's is above 1
+(honest watching passes nothing on: a result, written up as such, not rescued); or deaths or the population move beyond noise between A and B.
+Strength warning: first-time events per skill are tens per arm; ratios with fewer than 10 events in either part are traces.

@@ -83,6 +83,20 @@ function buildWorld(cfg) {
   SOC.apeCare = cfg.humanCare !== true; // on: early hominins share care for children as human foragers do (the old rule)
   SOC.refeed = cfg.oldStarving !== true; // on: the old rule (a sudden jolt of discomfort below 15% energy, no refeeding signal)
   SOC.refeedAt = cfg.refeedAt === undefined ? 20 : Number(cfg.refeedAt); // the critical reserve, %: about 20 (80% of fat gone; evidence 20–25)
+  // honest watching (docs/design/honest-watching.md): each piece on its own switch, all off by default until measured; --honest-watching turns all on
+  {
+    const hw = cfg.honestWatching === true;
+    SOC.watchWho = hw || cfg.honestWho === true;
+    SOC.watchWhat = hw || cfg.honestWhat === true;
+    SOC.noPathCopy = hw || cfg.noPathCopy === true;
+    SOC.noVoiceCopy = hw || cfg.noVoiceCopy === true;
+    SOC.honestHurt = hw || cfg.honestHurt === true;
+    SOC.watchSuccess = hw || cfg.honestSuccess === true;
+    SOC.watchSteps = cfg.watchSteps === undefined ? 2 : Number(cfg.watchSteps);
+    SOC.peerHi = cfg.peerHi === undefined ? 0.2 : Number(cfg.peerHi);
+    SOC.peerLo = cfg.peerLo === undefined ? 0.075 : Number(cfg.peerLo);
+    SOC.copyThin = cfg.copyThin === undefined ? 0 : Number(cfg.copyThin);
+  }
   SOC.babyNoAttack = cfg.babiesAttack !== true; // a carried infant cannot attack (entry 100); on: the old rule, it could
   SOC.needEye = cfg.needWeightedEye === true; // on: the old rule (the eye sees food and water more strongly the more the body needs them); default since entry 97: the eye reports only how much is there (hunger and thirst reach the brain by their own inputs)
   SOC.momPull = cfg.motherPull !== false; // off: a mother goes to her child only when it cries (the old rule)
@@ -213,6 +227,7 @@ function buildWorld(cfg) {
   eatKg = {};
   firsts = {};
   DONE = {};
+  WATCHN = 0;
   maxGen = 0;
   nLessons = 0;
   over = false;
