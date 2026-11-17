@@ -331,3 +331,6 @@ what the elder holds and does with its hands, and whether it then eats or is hur
 Expect learning from others to fall a lot. Entries resting on copying (48–60, 86) would need re-reading. Real apes copy with low fidelity (emulation vs imitation: to be sourced before building).
 - **Intervals for the reality rows (entry 100):** the population row moved −3.1% → −4.8% a year between two 24-world runs of nearly the same code. Add a bootstrap over worlds to `reality-check.js --summary`, so a change can be read against run-to-run spread.
 
+- **The page and the experiments simulate different planets (found 17 Nov from the owner's observation: 43 hominins at year 19 on the page).** The page's Land menu defaults to "Earth, 70,000 years ago" (`index.html`
+  `#land`, first option); `tools/experiment-core.js` defaults to `earth: false` (a made-up planet). Every table so far was measured on made-up planets. Next: the reality checks with `--earth` (24 worlds), then the owner
+  decides whether experiments default to the real Earth (recommended: the aim is East Africa), and the baselines are made again on it.
