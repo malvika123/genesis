@@ -260,7 +260,7 @@ An ape-like rendering of the sim's three kinds of sound (`speakApe` in `ui/app.j
 | Resonances of the soft "hoo" (the cry) | F1 360, F2 900 Hz | **sourced**, weak: chimpanzee hoo F1 359 (SD 57), F2 896 (SD 133), 8 calls from 3 animals (ICPHS 2023) |
 | Length of the hoo | 0.6 s | **sourced**, weak: 0.6 s (SD 0.3), same study |
 | Grunt resonances for vowels | F1 330–440, F2 800–1100 Hz | **assumption**: the human vowel range compressed around the measured hoo's (an ape's throat gives a narrow range) |
-| Fundamental (F0), adult male / female / young | 150 (100–250) / 220 (150–350) / 450 (300–700) Hz | **assumption**; only a chimpanzee grunt range of 70–700 Hz (secondary table) and the lowest-F0 loud calls of chimpanzees 128 ± 46 and bonobos 299 ± 54 Hz bound it; F0 follows larynx size (bonobos about an octave above chimpanzees) |
+| Fundamental (F0), adult male / female / young | 120 (100–250) / 170 (150–350) / 380 (300–700) Hz | **assumption** (first 150 / 220 / 450, lowered after the owner heard it as thin and high, still inside the range; both ends to be listened to); only a chimpanzee grunt range of 70–700 Hz (secondary table) and the lowest-F0 loud calls of chimpanzees 128 ± 46 and bonobos 299 ± 54 Hz bound it; F0 follows larynx size (bonobos about an octave above chimpanzees) |
 | Scream F0, adult / young | 1000 (800–2000) / 1500 Hz | **direction**: chimpanzee scream 800–2000 Hz, flat middle (secondary table) |
 | Grunt length, contour | 0.25 s (0.1–0.4), falling about 20% | **assumption** |
 | Noise share: hoo / grunt / scream | 0.05 / 0.2 / 0.35 | **assumption**: harsh and breathy qualities are general knowledge, not verified from a source here |

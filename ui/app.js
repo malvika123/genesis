@@ -1039,10 +1039,10 @@ let listen = false,
 // the nearest ape call: the cry as a soft "hoo", the scream as a chimpanzee-like scream, speech as a low breathy grunt whose vowel
 // only nudges the two resonances. Measured: the chimpanzee hoo's resonances F1 359 (SD 57) and F2 896 (SD 133) Hz, 0.6 s (SD 0.3)
 // (8 calls from 3 animals, ICPHS 2023). Everything else is an ASSUMPTION inside a range research allows (docs/ASSUMPTIONS.md,
-// "The hominin voice"): F0 male 150 (100–250), female 220 (150–350), young 450 (300–700) Hz; scream F0 1000 adult (800–2000), 1500 young;
+// "The hominin voice"): F0 male 120 (100–250), female 170 (150–350), young 380 (300–700) Hz; scream F0 1000 adult (800–2000), 1500 young;
 // grunt 0.25 s (0.1–0.4), contour falling by 20%; noise share 0.05 hoo, 0.2 grunt, 0.35 scream. The voice is a stand-in: A. afarensis was
 // neither a chimpanzee nor a gorilla.
-const APE = { f0m: 150, f0f: 220, f0y: 450, scream: 1000, screamY: 1500, hooF: [360, 900], hoo: 0.6, grunt: 0.25, scr: 0.5, nHoo: 0.05, nGrunt: 0.2, nScr: 0.35 };
+const APE = { f0m: 120, f0f: 170, f0y: 380, scream: 1000, screamY: 1500, hooF: [360, 900], hoo: 0.6, grunt: 0.25, scr: 0.5, nHoo: 0.05, nGrunt: 0.2, nScr: 0.35 };
 function speakApe(c, dest, t0, a, k, w) {
   const young = a.age < a.S.mat,
     f0 = young ? APE.f0y : a.sex ? APE.f0f : APE.f0m,
@@ -1062,48 +1062,66 @@ function speakApe(c, dest, t0, a, k, w) {
       ns.start(at);
       ns.stop(at + dur);
     },
-    // one call: a buzzing source with a little jitter, shaped by two resonances, with a share of breath or noise
-    call = (at, dur, p0, p1, formants, qs, noiseShare, peak, noiseHz) => {
+    // one call: a buzzing source with a little random irregularity (not a regular vibrato), a rumble an octave below (the chest), kept
+    // whole through a low-pass and given its two resonances as peaks in it (a thin band-pass of a buzz sounds like a radio), with a
+    // share of breath or noise
+    call = (at, dur, p0, p1, formants, qs, noiseShare, peak, noiseHz, lowHz = 2600, boost = 14, rumble = 0.35) => {
       const out = c.createGain();
       out.gain.setValueAtTime(0, at);
       out.gain.linearRampToValueAtTime(peak, at + Math.min(0.04, dur * 0.2));
       out.gain.setValueAtTime(peak, at + dur * 0.7);
       out.gain.linearRampToValueAtTime(0, at + dur);
       out.connect(dest);
+      const N = 24,
+        curve = new Float32Array(N),
+        sub = new Float32Array(N);
+      for (let i = 0; i < N; i++) {
+        curve[i] = (p0 + ((p1 - p0) * i) / (N - 1)) * (1 + 0.025 * (Math.random() * 2 - 1));
+        sub[i] = curve[i] / 2;
+      }
       const src = c.createOscillator(),
-        lfo = c.createOscillator(),
-        lg = c.createGain();
+        low = c.createOscillator(),
+        lg = c.createGain(),
+        lp = c.createBiquadFilter(),
+        mix = c.createGain();
       src.type = 'sawtooth';
-      src.frequency.setValueAtTime(p0, at);
-      src.frequency.linearRampToValueAtTime(p1, at + dur);
-      lfo.frequency.value = 28; // the irregular beat of ape vocal folds
-      lg.gain.value = 0.04 * p0;
-      lfo.connect(lg).connect(src.frequency);
-      const mix = c.createGain();
-      mix.gain.value = 1 - noiseShare;
+      src.frequency.setValueCurveAtTime(curve, at, dur);
+      low.type = 'sine';
+      low.frequency.setValueCurveAtTime(sub, at, dur);
+      lg.gain.value = rumble;
+      lp.type = 'lowpass';
+      lp.frequency.value = lowHz;
+      lp.Q.value = 0.5;
+      let node = lp;
       formants.forEach((f, i) => {
-        const bp = c.createBiquadFilter();
-        bp.type = 'bandpass';
-        bp.frequency.value = f;
-        bp.Q.value = qs[i];
-        src.connect(bp).connect(mix);
+        const pk = c.createBiquadFilter();
+        pk.type = 'peaking';
+        pk.frequency.value = f;
+        pk.Q.value = qs[i];
+        pk.gain.value = boost;
+        node.connect(pk);
+        node = pk;
       });
+      src.connect(lp);
+      node.connect(mix);
+      low.connect(lg).connect(mix);
+      mix.gain.value = (1 - noiseShare) * 0.55;
       mix.connect(out);
       src.start(at);
-      lfo.start(at);
+      low.start(at);
       src.stop(at + dur + 0.03);
-      lfo.stop(at + dur + 0.03);
+      low.stop(at + dur + 0.03);
       if (noiseShare > 0) noise(dur, noiseHz, 0.8, noiseShare * peak * 1.2, at);
     };
   if (k === 0) {
     // the cry: a soft, tonal "hoo", rising a little and falling
-    call(t0, APE.hoo, f0 * 0.9, f0 * 0.75, APE.hooF, [5, 6], APE.nHoo, 0.28, 800);
+    call(t0, APE.hoo, f0 * 0.9, f0 * 0.75, APE.hooF, [3, 4], APE.nHoo, 0.3, 800);
     return t0 + APE.hoo;
   }
   if (k === 1) {
     // the scream: high and harsh, flat in the middle, with a good share of noise
     const p = young ? APE.screamY : APE.scream;
-    call(t0, APE.scr, p * 1.05, p * 0.9, [900, 2400], [2.5, 2], APE.nScr, 0.3, 2600);
+    call(t0, APE.scr, p * 1.05, p * 0.9, [900, 2400], [1.5, 1.5], APE.nScr, 0.3, 2600, 6000, 8, 0);
     return t0 + APE.scr;
   }
   // speech: a low breathy grunt for each syllable; the vowel moves the two resonances a little, around the measured hoo's (a narrow
@@ -1113,7 +1131,7 @@ function speakApe(c, dest, t0, a, k, w) {
     const F1 = [330, 380, 440][h] ?? 380,
       F2 = [1100, 950, 800][b] - 70 * r;
     if (o && !v) noise(0.05, 1200, 0.8, 0.12, t);
-    call(t + (o && !v ? 0.04 : 0), APE.grunt, f0 * 1.05, f0 * 0.82, [F1, F2], [5, 6], APE.nGrunt, 0.3, 900);
+    call(t + (o && !v ? 0.04 : 0), APE.grunt, f0 * 1.05, f0 * 0.82, [F1, F2], [3, 4], APE.nGrunt, 0.3, 900);
     t += APE.grunt;
   }
   return t;
