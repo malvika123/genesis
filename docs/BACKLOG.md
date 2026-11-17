@@ -352,3 +352,13 @@ Expect learning from others to fall a lot. Entries resting on copying (48–60, 
   and without (`--no-marrow` and the equivalent for meat), same seeds. Bigger-brained hominins leaving more young only when rich food is there would be step 4's mechanism in one generation: a direction, not evolution.
 - **Known obstacles:** a bigger brain must actually help (README: "bigger brains on their own made things worse"); brains cost energy (`SOC.brainF`, registered); evolution itself needs the long runs (stage 6 relay).
 - Prediction first, both ends, no tuning toward bigger brains.
+
+## Defence and lasting as a population (17 Nov 2026; the owner: "they barely climb trees, share space with predators, never chase them off"; evidence: `docs/reviews/2026-11-17-defence-and-persistence-sources.md`)
+Approach (the owner agreed in principle: inborn pulls sized by evidence, then learning decides; one switch each; a prediction first; inferred from living primates):
+1. **More than one band** — the most important missing piece (no documented primate group wiped out by predators; shrunken groups merge; populations persist through many groups). Fable's F10 brought forward for this reason.
+2. **Hunter numbers held to total prey mass (about 1:111, Carbone & Gittleman 2002)**, hominins a small part of their diet (leopards about 10% primates): the page's 6 → 18 hunters on one band has no support. Entry 103 (the long run, queued) measures it first.
+3. **Rally and chase** (Boesch 1991: about one rescue or chase per leopard attack; about 45% of attacks still wound or kill).
+4. **Sleep high, and leave a site after a kill** (chimpanzee nests higher where predators are; baboon cliff sites). Measure first how often our hominins sleep up a tree.
+5. **Small bands merge** (vervets: at about 3–6 members or under 2 adults).
+6. Second: avoid learned dangerous places (weak evidence). **Not:** weapons for defence; predators giving up on large groups; prey switching.
+Then a design note for Fable's review, before building.
