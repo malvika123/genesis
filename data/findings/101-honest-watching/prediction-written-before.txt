@@ -32,3 +32,6 @@ ADDENDUM, 17 Nov, after arms A, B (first build) and C ran and BEFORE the correct
 elder was foraging in view, counting the foraging restriction twice (about 0.2 bouts an hour, below the registered 0.3-1.5). That arm is kept as B0 (a low-rate end). Corrected: SOC.peerHi 0.5, SOC.peerLo 0.19 per foraging
 step (x 0.92 / 0.37, wild chimpanzee feeding share 36-37%, Waibira). The predictions above apply to the corrected arm B1, unchanged. Already seen in A and C (not a prediction): skills are about as common with no copying
 as with old copying; this makes prediction 2's comparison with D (dose-matched) and C the decisive test.
+
+ADDENDUM 2, 17 Nov, before the corrected arm B1 runs: at the owner's question ("grown-ups learn skills too"), an adult can now watch any other adult, older or younger (a youngster still only those older); weakly supported
+(Hobaiter 2014; Luncz 2015 summary). Expectation added: in B1 some first-time skill events of adults follow watching a younger adult; adult copy events are a minority of all copy events (adults peer far less).

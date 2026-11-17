@@ -1856,7 +1856,9 @@ function honestTeacher(a, act, seen) {
     nw = new Map(),
     l = G[idx(a.x, a.y)] || [];
   for (const o of l)
-    if (o !== a && o.sp === a.sp && !o.dead && !o.gone && !o.asleep && o.has && o.age > a.age) nw.set(o.id, (W.get(o.id) || 0) + 1);
+    // a youngster watches those older than itself; an adult can learn from any other adult, older or younger (moss-sponging spread to adult watchers: Hobaiter et al. 2014;
+    // immigrant females take up their new group's way of cracking nuts: Luncz et al. 2015) — a weakly supported hypothesis, registered
+    if (o !== a && o.sp === a.sp && !o.dead && !o.gone && !o.asleep && o.has && (a.age < a.S.mat ? o.age > a.age : o.age >= o.S.mat)) nw.set(o.id, (W.get(o.id) || 0) + 1);
   a.withN = nw;
   if (a.asleep || act < 8 || (isNightAt(a.x) && !(a.hand === 4 || fireNear(a.x, a.y) > 0.05))) return { tch: null, n: 0 };
   const can = [];
