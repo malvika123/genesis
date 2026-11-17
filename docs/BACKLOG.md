@@ -362,3 +362,9 @@ Approach (the owner agreed in principle: inborn pulls sized by evidence, then le
 5. **Small bands merge** (vervets: at about 3–6 members or under 2 adults).
 6. Second: avoid learned dangerous places (weak evidence). **Not:** weapons for defence; predators giving up on large groups; prey switching.
 Then a design note for Fable's review, before building.
+
+## FIRST TOMORROW (found 17 Nov late): the feeding time budget is far off
+Adults in the sim eat or strike in only **5–6% of waking steps**; wild chimpanzees feed about **36–37%** of the day (Waibira, Budongo; bonobos at Lomako about 40%). A 15-minute eating step seems to give far too much food at once.
+It shapes everything: time left for travel and danger, and how much there is for the young to watch (honest-watching bouts run at 0.06–0.13 an hour against the registered 0.3–1.5 because elders are rarely foraging).
+Next: source intake rates (grams per minute by food: fruit, leaves, roots, meat, nuts) and daily feeding hours; find why the sim's are fast; fix behind a switch with a prediction; this is the faithful-day table's first row (hours
+feeding, resting, travelling). Then test honest watching again.
