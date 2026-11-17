@@ -33,8 +33,8 @@ Worked in the roadmap's order; status kept here.
 | F16 | Senses: work towards fewer labelled inputs (raw senses where feasible); add smell (A45) | 2–4 | to do |
 | F17 | Positioning: an open "what would it take?" world; the brain's limits on the front page; claim/never-claim rules; a three-line front page; a fair comparison page; "to our knowledge", never "first" | now | to do |
 | F18 | Trusted tool: validation table with its fails in every release; one-command reproducibility with frozen releases; a one-page statement of limits; then a lab interface | now–0 | to do |
-| F19 | "What we got wrong" page | this month | to do |
-| F20 | Link each research-log entry to the commit holding its prediction | this month | to do |
+| F19 | "What we got wrong" page | this month | **done 17 Nov** (`docs/WHAT-WE-GOT-WRONG.md`; add to it when we find another) |
+| F20 | Link each research-log entry to the commit holding its prediction | this month | **done 17 Nov** (`docs/PREDICTIONS.md`, from `tools/prediction-commits.js`; regenerate after each new entry) |
 | F21 | Repeat-it guide and contributor guide | with stage 0 | to do |
 | F22 | Preprint (one sharp question, e.g. "when does a skill become a tradition?"), a collaborator from cultural evolution or primatology, then a simulation-friendly journal; publish nulls; pre-register publicly | after stage 0 | to do |
 | F23 | Stay MIT for code; writing under CC BY 4.0 | now | **done 16 Nov** (LICENSE-docs.md) |
