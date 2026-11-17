@@ -269,3 +269,8 @@ The owner cannot run the sim to check, so what is drawn is what is believed. Aud
   stick, running or fleeing, drinking from a river square, a mother nursing; and a newborn (carried until 2 years: drawn riding on the mother, `ui/app.js` ~2490; the owner saw
   one walking at birth — not reproduced; ask which view and which baby).
 - Check that every Doing text matches the drawn pose.
+
+## Hominin voice (17 Nov 2026): `docs/design/hominin-voice.md`
+- Sourced partly. First step (built on branch `ui-voice`, audio only, nothing in the sim changes): ape-like calls in the page's Listen sound — grunt, hoo, scream — with every
+  F0, duration and noise share registered as an assumption. **Open (a design question, Fable review first):** the sim's words are human consonant-vowel syllables; apes use few,
+  graded, context-bound calls. Not changed.
