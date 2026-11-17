@@ -228,6 +228,14 @@ verified online, built with a switch, and tested on its own before the next, in 
   download. Then the energy cap (fat from a gorge), then F1 detection.
 - Unexplained from entry 93: hominins burned to death fell 90 → 36 with the satiety brake.
 
+- **De Cuyper reference, exact (from a Wiley citation export the owner saved, 17 Nov):** De Cuyper A, Clauss M, Carbone C, Codron D, Cools A, Hesta M, Janssens GPJ (2019) Predator size and prey
+  size–gut capacity ratios determine kill frequency and carcass production in terrestrial carnivorous mammals. *Oikos* 128(1):13–22. doi:10.1111/oik.05488. Not open access (the owner's download of
+  `oik.05151`, an unrelated parasitoid paper, came from the same list). **What the abstract alone supports (qualitative, no numbers):** small carnivores may have to eat to full stomach capacity
+  repeatedly a day, needing fast digestion; large carnivores need not eat to full capacity every day, or every day at all, which lowers kill frequency and drives scavenging and partial carcass
+  consumption; the model uses carnivore mass, prey mass, pack size, partial consumption and gut capacity, with a negative size–kill-frequency relation for large prey-feeders. That backs the
+  direction of the satiety brake (entries 92–94) but gives no stomach share, digestion time or leopard figure: those need the full text, the Dryad data (doi 10.5061/dryad.n23q7q1, assumed
+  to be this paper's) or the companion gut-fill paper (De Cuyper et al. 2020, *Comp Biochem Physiol A*, LJMU repository record 12632).
+
 ## Follow-ups from entry 95 (17 Nov 2026)
 
 - **Entry 96 (17 Nov): the mother's pull explains part of it** (butchery 32 → 43% female, burning sticks 30 → 44% without it; weak evidence). Still open: why the band is smaller without the pull (births? not measured), and why hunting leans female. Original item: Why do butchery, burning sticks and marrow lean male, and hunting a little female? Test the mother's pull (`--no-mother-pull`) with the repeat counts; measure where mothers of young infants spend their time against carcasses and fires.
