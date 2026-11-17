@@ -61,6 +61,20 @@ Read this first in a new session, then **`docs/MASTER-PLAN.md` (the one plan to 
 - Pitfalls: `hunt-measure.js` and `hominin-attacks.js` re-read the code for each world (never edit `src/` while they run); in zsh
   `set -- $a` does not split words; read a hunter's stomach before its attack.
 
+## 17 Nov, later: v0.11.0 and what changed (read this first)
+
+- **The default eye is honest** (entry 97): food, water and prey are seen by how much is there, not how much the body needs it. `--need-weighted-eye` restores the old eye. **Every table before v0.11.0 used the old eye.**
+  Baselines re-made in entry 98 (24 × 100 days, both eyes): the same 3 of 7 sourced reality rows pass (survival to 15, life expectancy, birth spacing); both eyes fail babies dying (too few), age at first birth (too high) and the
+  population (−2.0% old, −3.1% honest a year; assumed band).
+- Entry 96: the mother's pull explains part of the male lean in butchery and fire acts (weak). Entry 95's "shared words" are probably chance (Opus: `docs/reviews/2026-11-17-opus-human-style-words.md`).
+- Page: ape-like Listen voice (audio only), people in water and on river banks drawn right, what a strike hits drawn, a carried baby clings to its mother, sleepers hold still. F19 `docs/WHAT-WE-GOT-WRONG.md` and F20 `docs/PREDICTIONS.md` done.
+- Design notes and sources: `docs/design/smell-droppings.md` (build with the fine valley), `docs/design/hominin-voice.md`, `docs/design/real-year.md` (step 0.7 plan), `docs/reviews/2026-11-17-fable-labelled-senses.md`, nuts/roots sources (no honest seasonal rule).
+- **Hunter steps are partly unparked:** De Cuyper et al. 2020 (gut fill) is read (retention time about 14–16 h for hunter-sized carnivores against the sim's 24 h: test both ends); the 2019 kill-frequency paper (stomach capacity) is
+  free as the Zurich accepted manuscript. Check Table 3 of the 2020 paper by eye (my text extraction garbled some digits).
+- Work in separate branches/worktrees works well: `git worktree add` a copy to run experiments from while editing; the owner asked for this. **Never edit `src/` while an experiment or reality-check runs from the same folder** (the tools rebuild the engine for every world).
+- **Next, in order:** trace entry 97's loose ends (hunters attacking while full, leaf eating, wounds, thirst, infant deaths); the digestion-time test (14–16 h against 24 h); make `words_shared` band-local with a chance baseline
+  (measuring only); step 0.7 (`yearDays`, then 3 against 12 days); finish 0.6 (other learning measures by sex); then 0.8. Fable's next honest-label steps (mate channel, family by familiarity, founders' recognition skill) are the owner's call.
+
 ## Step 0.6 done (17 Nov, entry 95, live on develop at `29ef613`; not tagged)
 
 - Every first is now also counted each time (`rep_X`, `who_X`, `whoF_X`; `tools/analysis/repeats.js`); worlds identical.
