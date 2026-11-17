@@ -25,6 +25,9 @@ Genesis is a research instrument, so its mistakes are part of the record. This p
 
 ## Bugs in the world itself
 
+- **Entry 99: carried babies attacked antelopes and buffalo,** were hurt by them and died "of wounds". Most of the old eye's infant deaths (entry 98, 9.6%) came from this. Being fixed (entry 100).
+- **"Its wounds" is a catch-all:** any death where health runs out on land is called that, so it mixes injuries with cold, heat, falls and pits. Read wound deaths with care.
+
 - **Entry 76: sickness from rotting meat.** The 0.35 chance of falling sick was rolled at every 15-minute bite; since meat is eaten in kg, the same meat gave many more chances. It now
   follows the kg eaten. `--rot-per-bite` restores the bug.
 - **The prey map default.** `tools/experiment.js` passed the prey map as off by default after it had been switched on in the page, so some runs used the wrong setting. Fixed (entry 83);

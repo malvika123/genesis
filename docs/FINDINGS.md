@@ -3089,6 +3089,43 @@ band), the babies row (too few infant deaths) and the age at first birth (too hi
 **Strength.** Moderate for the cause-of-death shifts and the births followed (24 worlds, 498–727 births); weak for the infant-death cause (not traced); the row-by-row pass/fail status is unchanged. **Lesson.** A change that moves the
 population by a quarter can leave every life-history average where it was: check numbers of creatures as well as averages of them.
 
+### 99. Why the honest eye changed so much: with the old eye hominins stood still striking — and carried babies attacked buffalo (a bug) — Nov 2026
+
+**Version.** 0.11.0, measuring only: `tools/analysis/trace-eye.js` (follows every hominin every step; changes nothing) and `tools/analysis/baby-deaths.js`. The question: entry 97 found picking things up −45%,
+nut-cracking −61%, leaf eating −91%, wound deaths −65%, predator deaths +54% with the honest eye, all unexplained.
+
+**Data.** [The trace, both arms, the comparison and the baby check](../data/findings/99-why-the-honest-eye-changed-so-much/). `node tools/analysis/trace-eye.js SEEDS 100 OUT [--need-weighted-eye]` for seeds 1–24 in four
+processes, then `--compare OLD NEW`; `node tools/analysis/baby-deaths.js SEED` for seeds 1–3.
+
+| 24 worlds × 100 days, old eye → honest eye | Babies (carried, under 2) | Children | Adults |
+|---|---|---|---|
+| Share of awake steps **striking** | **30.9% → 8.8%** | **52.4% → 9.8%** | **36.3% → 7.1%** |
+| Squares moved per 100 awake steps | 0.9 → 4.6 | 0.7 → 5.1 | 1.7 → 6.6 |
+| Taking something up / attacking | 8.2% → 4.7% / **6.7% → 3.7%** | 4.8% → 3.2% / 0.6% → 0.7% | 4.9% → 2.8% / 0.6% → 0.6% |
+| Steps in a lake or the sea | 1.2% → 3.1% | 0.8% → 3.5% | 1.4% → 4.0% |
+| Thirsty steps / hungry steps | 0 → 0 / 0.2% → 0.5% | 0.4% → 0 / 1.4% → 1.7% | 1.0% → 0 / 2.5% → 3.1% |
+
+| Hunter in the same or a neighbouring square, per 1,000 hominin-steps | Old eye | Honest eye | Share of those when the hunter was hungry |
+|---|---|---|---|
+| Sabre-tooth | 1.7 | **8.4** | 12% → 1% |
+| Leopard | 3.0 | **11.4** | 13% → 1% |
+| Hyena | 5.8 | 7.1 | 21% → 4% |
+
+Babies' "wound" deaths: **74 → 5**. The sim calls any death where health runs out on land "its wounds" (`src/sim.js` ~1557), which lumps injuries with cold, heat, falls and pits; so the old arm's baby wound deaths
+were traced (8 worlds, 26 cases): none cold, hot, in a pit, hungry or thirsty; well fed (energy 70–100), mother alive. Their last events (seeds 1–3, 13 cases): **"it was hurt by an antelope it attacked"** or
+"…a buffalo it attacked", health falling about 8 points a blow. **A carried infant could choose to attack a large animal** in reach and be hurt by it (`src/sim.js` attack code: no check of age or of being carried).
+
+**Result.** Against the prediction written before the run: (1) hunters near hominins rise by at least 25%, and fewer of them hungry — **held**, far more than predicted (sabre-tooth ×5, leopard ×4, hyena +22%; hungry share
+12–21% → 1–4%); (2) time in water up by at least 30%, thirsty steps down — **held** (about ×3; thirsty 1% → 0); (3) moving up by at least 10% — **held** (×4–7); (4) taking and striking down by about a third — **held in
+direction, much larger for striking** (−80%); (5) hungry steps equal or up — **held** (2.5% → 3.1% adults); (6) baby wound deaths much rarer — **held** (74 → 5), and the reason was not one I had thought of.
+
+**Interpretation.** With the old eye, food and water looked faint to a fed creature, so the strongest call in a fed brain was to stay and strike whatever it held: a third to half of every waking day spent hitting
+things, in one place. That inflated the repeats of nut-cracking, flaking and digging (entries 95–96) and kept hominins away from water and from hunters. With the honest eye they travel, find water, and walk into
+full hunters that now notice them. **The infant deaths of the old eye were mostly a bug** (carried babies attacking big prey), so entry 98's 9.6% for the old eye is not a real infant mortality; the honest eye's 4.2%
+still contains a few. Both arms fail the infant row as too low even so. **Strength.** Strong for the activity shifts (millions of hominin-steps); moderate for hunter proximity (counts per 1,000 steps); the bug is shown by
+event records in 13 cases and the code. **Lesson.** Count what creatures *do* with their time before reading their discoveries; a third of the day spent striking is a symptom, not a culture. **Next:** fix the bug (a carried
+infant cannot attack; `--babies-attack` restores the old rule) and re-run the reality checks.
+
 ---
 
 ## Open questions (next tests)
