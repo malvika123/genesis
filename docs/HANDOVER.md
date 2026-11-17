@@ -61,7 +61,15 @@ Read this first in a new session, then **`docs/MASTER-PLAN.md` (the one plan to 
 - Pitfalls: `hunt-measure.js` and `hominin-attacks.js` re-read the code for each world (never edit `src/` while they run); in zsh
   `set -- $a` does not split words; read a hunter's stomach before its attack.
 
-## Task card: master plan 0.6 — count repeats, split by sex (ready for Sonnet; the owner chose this on 17 Nov)
+## Step 0.6 done (17 Nov, entry 95, live on develop at `29ef613`; not tagged)
+
+- Every first is now also counted each time (`rep_X`, `who_X`, `whoF_X`; `tools/analysis/repeats.js`); worlds identical.
+- Found: flake and stick-digging are habits of many (not one-offs); butchery, burning sticks and marrow lean male across worlds;
+  hunting leans female (70%, but 37 hunters in 6 worlds); sharing is 100% mothers. Causes untested — follow-ups in `docs/BACKLOG.md`
+  ("Follow-ups from entry 95"): test `--no-mother-pull` with the counts; split the other learning measures by sex (second half of 0.6).
+- **Next, per the master plan:** the second half of 0.6 or 0.7 (F4, the real-length year; test A40 first).
+
+## Task card: master plan 0.6 — count repeats, split by sex (DONE, kept for the record)
 
 The hunter steps are **parked**: digestion by size and the leopard's stomach share need De Cuyper et al. 2019 (*Oikos* 128:13–22),
 blocked for automated download (Zurich and UCL); the owner may download it by hand later.
