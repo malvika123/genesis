@@ -2829,8 +2829,8 @@ to the digit (people alive 15.5 ± 15.8, 172 hunger deaths, 220 predator deaths)
 days, in most worlds. It is not yet explained. Release condition: **not met**.
 
 **What is not known (listed, not guessed).** Why. Candidates, each to be tested: (a) hunters that skip prey while full are hungrier
-later and attack whatever is beside them, hominins included (hominins were 7–14% of attacks on a ⅔-full stomach... in entry 92 the
-hominin share of clean kills rose, e.g. hyena 11 → 15–37); (b) with fewer plant-eaters killed (down 10 of 66), hunters turn to the
+later and attack whatever is beside them, hominins included (in entry 92's prey lists, clean kills of hominins rose for hyenas, 11 →
+15–37, and leopards, 7 → 11–19, and stayed about the same for sabre-tooths, 11 → 9–14); (b) with fewer plant-eaters killed (down 10 of 66), hunters turn to the
 next prey; (c) hunters stand near the band more. Side effects with no explanation yet: burned deaths fall by 60% (90 → 36), plant-eaters
 fall by 15%, thirst deaths rise (6 → 14, small numbers). **Strength.** Moderate (24 worlds × 100 days, paired, same seeds).
 
