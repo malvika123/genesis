@@ -197,7 +197,10 @@ function sense(a, x, night) {
   GRASSEYE = SOC.grassEye ? 0.5 : 0;
   x.fill(0);
   const tw = 1 - a.w / 100,
-    te = 1 - a.e / 100;
+    te = 1 - a.e / 100,
+    // the eye does not report how much the body needs a thing (SOC.needEye off: it reports only how much is there)
+    nwE = SOC.needEye ? 0.15 + te : 1,
+    nwW = SOC.needEye ? 0.15 + tw : 1;
   const S = a.S,
     here0 = idx(a.x, a.y),
     // in thick forest you can't see far, and at night only as far as the eyes allow
@@ -233,7 +236,7 @@ function sense(a, x, night) {
     if (!seen) {
     } else if (a.sp === 3) {
       if (water[i]) {
-        const f = food[i] * cl * (0.15 + te);
+        const f = food[i] * cl * nwE;
         if (f > x[b + 1]) x[b + 1] = f;
         if (x[b] < cl) x[b] = cl;
       } else if (x[b + 2] < cl) x[b + 2] = cl;
@@ -247,12 +250,12 @@ function sense(a, x, night) {
       } else if (deep[i]) {
         if (x[b + 2] < cl) x[b + 2] = cl;
       } else {
-        const q = cl * (0.15 + tw);
+        const q = cl * nwW;
         if (x[b] < q) x[b] = q;
       }
     } else {
       if (PUD[i] && a.sp !== 3) {
-        const q = cl * (0.15 + tw);
+        const q = cl * nwW;
         if (x[b] < q) x[b] = q;
       }
       if ((rock[i] || pit[i]) && x[b + 2] < cl) x[b + 2] = cl;
@@ -273,7 +276,7 @@ function sense(a, x, night) {
             ? Math.max(food[i], tree[i] * 0.3)
             : food[i]) *
         cl *
-        (0.15 + te);
+        nwE;
       if (f > x[b + 1]) x[b + 1] = f;
       // trees, and the dark mouth of a cave, are cover: somewhere to get out of the rain and the wind
       const cv = cover(i);
@@ -296,7 +299,7 @@ function sense(a, x, night) {
         // anyone among thick trees is harder to spot
         const hid = 1 - 0.6 * cover(i),
           c = o.sp === 3 ? 8 : o.sp === 1 ? 3 : o.sp === 0 ? 4 : 5,
-          q = ((a.sp === 2 && c !== 5) || (a.sp === 0 && c === 8) ? cl * (0.15 + te) : cl) * hid;
+          q = ((a.sp === 2 && c !== 5) || (a.sp === 0 && c === 8) ? cl * nwE : cl) * hid;
         if (x[b + c] < q) x[b + c] = q;
         if (o.k === a.k && o.sex !== a.sex && o.rd && a.rd && x[b + 6] < cl) x[b + 6] = cl;
         if ((o === a.kid || o === a.mom || o.mom === a) && x[b + 7] < cl) x[b + 7] = cl;
