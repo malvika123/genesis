@@ -341,3 +341,6 @@ Expect learning from others to fall a lot. Entries resting on copying (48–60, 
 - **Do not model:** staying guarded for hours after a scare (baboons return to normal looking within about 5 minutes: Allan et al. 2024); sentinels; a strong many-eyes effect; vigilance while asleep.
 - **A finding against the present model:** fear now halves about every 1.5 hours, far longer than the evidence for vigilance (minutes). Separate fast vigilance (minutes) from slow stress (days to weeks, hormones and grooming) and test a
   short half-life for the fast part; with a prediction, both ends, one switch.
+- **How these are built (the owner, 17 Nov):** each behind its own switch, off by default until measured, identical worlds with the switch off, a prediction first that names what result would show it adds something
+  artificial (then it stays off and the reason is written here); each registered as **inferred from living primates** (which species, how safe: startle very safe, alarm calls fairly safe, vigilance moderate, minutes-long
+  watchfulness weak — one baboon study).
