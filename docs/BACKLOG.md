@@ -255,3 +255,17 @@ verified online, built with a switch, and tested on its own before the next, in 
   build a seasonal nut/root rule; register the root swing as an assumption (1× to mild wet-season rise) or leave it flat.
 - **Check entry 89**: "lowest late in the rains" was not found in Piel et al. 2017's text (inverse to rainfall, peak early dry, Figure 3 only). If it is
   not in the paper, correct the wording (second correction of a citation after the Guinea-Bissau one).
+
+## The page must show what the sim does (the owner, 17 Nov 2026: "the UI needs to be accurate")
+The owner cannot run the sim to check, so what is drawn is what is believed. Audit of a seed-3 world, 20 days, people sampled every 4th step:
+- **Sleeping on a river square (0.3% of sleeping samples; 12 of 4,291)**: the sim treats a river square as mostly bank, but the page drew the sleeper on the river line.
+  Fixed on branch `ui-actions` (drawn 0.3 of a square beside the channel, on one bank by id); verified by the drawn coordinates, not by eye.
+- **In water (577 samples, none in deep water)**: wading and swim practice were not drawn at all. Built on `ui-actions`: body below the surface, arms reaching in
+  turn, ripples. Verified on a test canvas (the flat-map and figure drawing); the **globe's ripple rings were not seen by eye** (no console errors) — check before release.
+- **Striking is 23% of all person samples (3,299): stick 1,502, stone 973, empty hand 813, flake 11.** The page draws the swing but not what is struck or what comes of it
+  (a nut cracking, a flake coming off, a root dug, a bone broken, soil flying). Needs a drawing-only record in the sim of what each strike hit (no random numbers) so the page
+  can show it. **Not built.**
+- Still to audit action by action against the 19 actions (`src/config.js` A_*): climbing a tree (is the climber drawn up it?), mating, attack on prey, giving, carrying a burning
+  stick, running or fleeing, drinking from a river square, a mother nursing; and a newborn (carried until 2 years: drawn riding on the mother, `ui/app.js` ~2490; the owner saw
+  one walking at birth — not reproduced; ask which view and which baby).
+- Check that every Doing text matches the drawn pose.
