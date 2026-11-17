@@ -785,6 +785,8 @@ const G3D = { ok: false };
       gr = Math.round(clamp(a.age / S.mat, 0.3, 1) * 10) / 10,
       pose = a.moving ? Math.round(Math.sin(a.ph || 0) * 2) : 0,
       swf = a.act === A_STRIKE && !a.asleep ? Math.round(bodySwing(a)) : 0,
+      wetv = wetOf(a), // in water: the arms stroke (five steps of the stroke, so only a few pictures are made)
+      swv = wetv ? Math.round(strokeNow() * 2) / 2 : 0,
       key = [
         a.k,
         a.sex,
@@ -794,6 +796,8 @@ const G3D = { ok: false };
         a.asleep ? 0 : a.act >= 8 ? a.act : 0, // what it is doing changes its pose
         a.hand || 0,
         swf,
+        wetv,
+        swv,
         a.face || 1,
         a.preg ? Math.round(clamp(1 - (a.preg.due - tick) / Math.max(1, a.S.gest), 0, 1) * 3) : 0, // how far along a pregnancy is
         a.ptT !== undefined && tick - a.ptT <= 1 ? a.pt : -1, // pointing
@@ -818,6 +822,8 @@ const G3D = { ok: false };
         ph: Math.asin(clamp(pose / 2, -1, 1)), // the leg position for this picture
         hand: a.hand || 0,
         swf,
+        wetv,
+        swv,
         act: a.act,
         id: 0,
         ptv: a.ptT !== undefined && tick - a.ptT <= 1 ? a.pt : -1,
@@ -934,9 +940,14 @@ const G3D = { ok: false };
     m.material.color.setScalar(isNightAt(a.x) ? 0.35 : 0.9);
     m.material.needsUpdate = true;
   }
+  // ripples round a person standing or swimming in water: two rings that spread and fade on the water's surface
+  const rings = [],
+    ringGeo = new THREE.RingGeometry(0.9, 1, 28),
+    Z3 = new THREE.Vector3(0, 0, 1);
   function figures(on, v) {
     let n = 0,
-      nf = 0;
+      nf = 0,
+      nr = 0;
     if (on)
       for (const a of ag) {
         if (a === GL.eye || !project(a.rx, a.ry, 0)) continue;
@@ -973,6 +984,23 @@ const G3D = { ok: false };
           const surface = salt[ci] ? 1 : ground,
             sink = deep[ci] ? 0.78 : 0.3;
           sp.position.copy(local(la, lo, surface - sink * s * 0.82));
+          if (a.sp === 0 && !a.asleep)
+            for (let r = 0; r < 2; r++) {
+              let rg = rings[nr];
+              if (!rg) {
+                rg = new THREE.Mesh(ringGeo, new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, depthWrite: false, side: THREE.DoubleSide }));
+                globe.add(rg);
+                rings.push(rg);
+              }
+              nr++;
+              const u = (performance.now() / 900 + r / 2) % 1,
+                pr = local(la, lo, surface + 0.0004);
+              rg.visible = true;
+              rg.position.copy(pr);
+              rg.quaternion.setFromUnitVectors(Z3, pr.clone().normalize());
+              rg.scale.setScalar(s * (0.22 + 0.4 * u));
+              rg.material.opacity = 0.75 * (1 - u);
+            }
         } else if (a.up) {
           // asleep up a tree: in the crown of one of the trees actually drawn in its square (the same places
           // and sizes as plantTrees), not hanging in the air between them
@@ -998,6 +1026,7 @@ const G3D = { ok: false };
         sp.scale.set(s, s, 1);
       }
     for (let k = n; k < pool.length; k++) pool[k].visible = false;
+    for (let k = nr; k < rings.length; k++) rings[k].visible = false;
     for (let k = nf; k < fishPool.length; k++) fishPool[k].visible = false;
   }
 
