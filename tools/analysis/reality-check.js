@@ -28,56 +28,76 @@ const REAL = {
 if (process.argv[2] === '--summary') {
   const dir = process.argv[3];
   const W = fs.readdirSync(dir).filter((f) => f.endsWith('.json')).map((f) => JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')));
-  // pool person-years and events across worlds
-  const PY = new Array(80).fill(0),
-    DE = new Array(80).fill(0);
-  let born = 0, died1 = 0, at1 = 0, at15 = 0, reach15 = 0;
-  const ibi = [], afb = [], growth = [], cause = {};
-  for (const w of W) {
-    w.py.forEach((v, i) => (PY[i] += v));
-    w.de.forEach((v, i) => (DE[i] += v));
-    born += w.born;
-    at1 += w.followed1;
-    died1 += w.diedBefore1;
-    at15 += w.followed15;
-    reach15 += w.reached15;
-    ibi.push(...w.ibi);
-    afb.push(...w.afb);
-    if (w.nEnd > 0) growth.push(w.growth); // worlds that died out are counted separately, not as a rate
-    for (const [k, v] of Object.entries(w.causes)) cause[k] = (cause[k] || 0) + v;
+  // the seven checks from a list of worlds (pooled), so they can be recomputed on resampled worlds for an interval
+  function compute(W) {
+    // pool person-years and events across worlds
+    const PY = new Array(80).fill(0),
+      DE = new Array(80).fill(0);
+    let born = 0, died1 = 0, at1 = 0, at15 = 0, reach15 = 0;
+    const ibi = [], afb = [], growth = [], cause = {};
+    for (const w of W) {
+      w.py.forEach((v, i) => (PY[i] += v));
+      w.de.forEach((v, i) => (DE[i] += v));
+      born += w.born;
+      at1 += w.followed1;
+      died1 += w.diedBefore1;
+      at15 += w.followed15;
+      reach15 += w.reached15;
+      ibi.push(...w.ibi);
+      afb.push(...w.afb);
+      if (w.nEnd > 0) growth.push(w.growth); // worlds that died out are counted separately, not as a rate
+      for (const [k, v] of Object.entries(w.causes)) cause[k] = (cause[k] || 0) + v;
+    }
+    // life table: survivorship from yearly death rates (deaths / person-years at each age), ages 0–60
+    let l = 1, e0 = 0;
+    for (let x = 0; x < 60; x++) {
+      const m = PY[x] > 0 ? DE[x] / PY[x] : 0,
+        q = 1 - Math.exp(-m);
+      e0 += l * (1 - q / 2);
+      l *= 1 - q;
+    }
+    const med = (a) => (a.length ? a.slice().sort((p, q) => p - q)[Math.floor(a.length / 2)] : NaN);
+    const known = Object.entries(cause).filter(([k]) => k !== 'old age').reduce((s, [, v]) => s + v, 0) + (cause['old age'] || 0);
+    const got = {
+      infantDeath: at1 ? died1 / at1 : NaN,
+      survive15: at15 ? reach15 / at15 : NaN,
+      e0,
+      ibi: med(ibi),
+      afb: med(afb),
+      growth: med(growth),
+      illness: known ? (cause.illness || 0) / known : 0,
+    };
+    return { got, born, at1, at15, ibi, afb, growth, cause };
   }
-  // life table: survivorship from yearly death rates (deaths / person-years at each age), ages 0–60
-  let l = 1, e0 = 0;
-  for (let x = 0; x < 60; x++) {
-    const m = PY[x] > 0 ? DE[x] / PY[x] : 0,
-      q = 1 - Math.exp(-m);
-    e0 += l * (1 - q / 2);
-    l *= 1 - q;
+  const { got, born, at1, at15, ibi, afb, growth, cause } = compute(W);
+  // 95% intervals by resampling worlds with replacement (1,000 times, a fixed seed): how much a 24-world table moves by chance (entry 100)
+  let sd = 12345;
+  const rnd = () => ((sd = (sd * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff);
+  const boot = {};
+  for (const k in REAL) boot[k] = [];
+  for (let b = 0; b < 1000; b++) {
+    const R = W.map(() => W[Math.floor(rnd() * W.length)]),
+      g = compute(R).got;
+    for (const k in REAL) if (!isNaN(g[k])) boot[k].push(g[k]);
   }
-  const med = (a) => (a.length ? a.slice().sort((p, q) => p - q)[Math.floor(a.length / 2)] : NaN);
-  const known = Object.entries(cause).filter(([k]) => k !== 'old age').reduce((s, [, v]) => s + v, 0) + (cause['old age'] || 0);
-  const got = {
-    infantDeath: at1 ? died1 / at1 : NaN,
-    survive15: at15 ? reach15 / at15 : NaN,
-    e0,
-    ibi: med(ibi),
-    afb: med(afb),
-    growth: med(growth),
-    illness: known ? (cause.illness || 0) / known : 0,
+  const ci = (k) => {
+    const v = boot[k].slice().sort((p, q) => p - q);
+    return v.length ? [v[Math.floor(0.025 * v.length)], v[Math.floor(0.975 * v.length) - 1]] : [NaN, NaN];
   };
   const fmt = (k, v) => (isNaN(v) ? '—' : REAL[k].unit === '%' ? (100 * v).toFixed(1) + '%' : v.toFixed(1));
   console.log('Reality checks: ' + W.length + ' worlds, ' + born + ' births followed (life clock: a year = 3 days)\n');
-  console.log('| Check | Genesis | Real band | Pass? | Real numbers |\n|---|---|---|---|---|');
+  console.log('| Check | Genesis | 95% (worlds resampled) | Real band | Pass? | Real numbers |\n|---|---|---|---|---|---|');
   for (const k in REAL) {
     const v = got[k],
       ok = !isNaN(v) && v >= REAL[k].lo && v <= REAL[k].hi;
-    console.log('| ' + REAL[k].label + ' | ' + fmt(k, v) + ' | ' + fmt(k, REAL[k].lo) + ' to ' + fmt(k, REAL[k].hi) + ' | ' + (isNaN(v) ? 'no data' : ok ? 'pass' : v < REAL[k].lo ? 'FAIL (too low)' : 'FAIL (too high)') + ' | ' + REAL[k].src + ' |');
+    const [c0, c1] = ci(k);
+    console.log('| ' + REAL[k].label + ' | ' + fmt(k, v) + ' | ' + fmt(k, c0) + ' to ' + fmt(k, c1) + ' | ' + fmt(k, REAL[k].lo) + ' to ' + fmt(k, REAL[k].hi) + ' | ' + (isNaN(v) ? 'no data' : ok ? 'pass' : v < REAL[k].lo ? 'FAIL (too low)' : 'FAIL (too high)') + ' | ' + REAL[k].src + ' |');
   }
   // second score (second review, finding 6): against the sourced ranges only; bands that are assumptions are not counted as passes
   const SRC = { infantDeath: [0.11, 0.21], survive15: [0.35, 0.6], e0: [13, 33], ibi: [5.2, 6.0], afb: [13.3, 14.9] };
   let srcPass = 0;
   for (const k in SRC) if (!isNaN(got[k]) && got[k] >= SRC[k][0] && got[k] <= SRC[k][1]) srcPass++;
-  console.log('\nAgainst the sourced ranges only (population change and illness bands are assumptions, not counted): ' + srcPass + ' of 7 pass.');
+  console.log('\nAgainst the sourced ranges only (population change and illness bands are assumptions, not counted): ' + srcPass + ' of ' + Object.keys(SRC).length + ' pass.');
   console.log('\nWorlds that died out: ' + W.filter((w) => !w.nEnd).length + ' of ' + W.length + ' (population change is the median of the others).');
   console.log('\nSample sizes: followed to 1 year ' + at1 + ', to 15 years ' + at15 + ', birth intervals ' + ibi.length + ', first births ' + afb.length + ', worlds ' + growth.length);
   const tot = Object.values(cause).reduce((s, v) => s + v, 0);

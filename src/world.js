@@ -93,8 +93,8 @@ function buildWorld(cfg) {
     SOC.honestHurt = hw || cfg.honestHurt === true;
     SOC.watchSuccess = hw || cfg.honestSuccess === true;
     SOC.watchSteps = cfg.watchSteps === undefined ? 2 : Number(cfg.watchSteps);
-    SOC.peerHi = cfg.peerHi === undefined ? 0.2 : Number(cfg.peerHi);
-    SOC.peerLo = cfg.peerLo === undefined ? 0.075 : Number(cfg.peerLo);
+    SOC.peerHi = cfg.peerHi === undefined ? 0.5 : Number(cfg.peerHi);
+    SOC.peerLo = cfg.peerLo === undefined ? 0.19 : Number(cfg.peerLo);
     SOC.copyThin = cfg.copyThin === undefined ? 0 : Number(cfg.copyThin);
   }
   SOC.babyNoAttack = cfg.babiesAttack !== true; // a carried infant cannot attack (entry 100); on: the old rule, it could

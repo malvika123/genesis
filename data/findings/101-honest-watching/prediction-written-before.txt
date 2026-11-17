@@ -27,3 +27,8 @@ What I expect, and why:
 Not held if: B's transmission ratio for every skill is no greater than D's (then what is seen adds nothing beyond fewer events); or B's ratio is no greater than 1 for every skill while A's is above 1
 (honest watching passes nothing on: a result, written up as such, not rescued); or deaths or the population move beyond noise between A and B.
 Strength warning: first-time events per skill are tens per arm; ratios with fewer than 10 events in either part are traces.
+
+ADDENDUM, 17 Nov, after arms A, B (first build) and C ran and BEFORE the corrected arm runs: the first build applied the sourced watching chance (0.075-0.2 per 15 minutes of ALL time together) only on steps when the
+elder was foraging in view, counting the foraging restriction twice (about 0.2 bouts an hour, below the registered 0.3-1.5). That arm is kept as B0 (a low-rate end). Corrected: SOC.peerHi 0.5, SOC.peerLo 0.19 per foraging
+step (x 0.92 / 0.37, wild chimpanzee feeding share 36-37%, Waibira). The predictions above apply to the corrected arm B1, unchanged. Already seen in A and C (not a prediction): skills are about as common with no copying
+as with old copying; this makes prediction 2's comparison with D (dose-matched) and C the decisive test.
