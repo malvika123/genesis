@@ -72,7 +72,7 @@ for (const seed of seeds) {
   E.reset(S.cfg);
   const TY = E.TY || 288,
     zeros = () => ({ baby: 0, child: 0, adult: 0 });
-  const R = { seed, days, flags, steps: 0, n: zeros(), asleep: zeros(), hungry: zeros(), thirsty: zeros(), water: zeros(), moved: zeros(), acts: { baby: new Array(19).fill(0), child: new Array(19).fill(0), adult: new Array(19).fill(0) }, near: {}, deaths: [] };
+  const R = { seed, days, flags, steps: 0, n: zeros(), asleep: zeros(), hungry: zeros(), thirsty: zeros(), water: zeros(), moved: zeros(), acts: { baby: new Array(19).fill(0), child: new Array(19).fill(0), adult: new Array(19).fill(0) }, near: {}, deaths: [], exposed: { baby: { cold: 0, heat: 0 }, child: { cold: 0, heat: 0 }, adult: { cold: 0, heat: 0 } } };
   const clsOf = (a) => (a.age < 2 * TY ? 'baby' : a.age < a.S.mat ? 'child' : 'adult');
   const causeOf = (a) => (a.dead ? a.cause : a.hp <= 0 ? (a.wasW ? 'drowned' : 'its wounds') : a.w <= 0 ? 'thirst' : a.e <= 0 ? 'hunger' : a.age > a.lf ? 'old age' : 'unknown');
   const last = new Map(); // id -> { a, x, y, cls }
@@ -110,12 +110,15 @@ for (const seed of seeds) {
           if (h.e < 40) r.hungry++;
         }
       }
-      last.set(a.id, { x: a.x, y: a.y, cls: c, a, momAlive: a.mom ? !a.mom.dead && !a.mom.gone : false });
+      const q = last.get(a.id) || {};
+      if ((a.cold || 0) > 0.7) R.exposed[c].cold++, (q.coldN = (q.coldN || 0) + 1);
+      if ((a.heat || 0) > 0.7) R.exposed[c].heat++, (q.heatN = (q.heatN || 0) + 1);
+      last.set(a.id, { x: a.x, y: a.y, cls: c, a, momAlive: a.mom ? !a.mom.dead && !a.mom.gone : false, coldN: q.coldN, heatN: q.heatN });
     }
     for (const [id, p] of last) {
       if (now.has(id)) continue;
       const a = p.a;
-      R.deaths.push({ id, cls: p.cls, ageY: +(a.age / TY).toFixed(2), cause: causeOf(a) || 'unknown', killer: a.killedBy || null, momAlive: p.momAlive, tick: t });
+      R.deaths.push({ id, cls: p.cls, ageY: +(a.age / TY).toFixed(2), cause: causeOf(a) || 'unknown', killer: a.killedBy || null, momAlive: p.momAlive, tick: t, cold: +(a.cold || 0).toFixed(2), heat: +(a.heat || 0).toFixed(2), e: +a.e.toFixed(1), w: +a.w.toFixed(1), trap: a.trap || 0, coldSteps: p.coldN || 0, heatSteps: p.heatN || 0 });
       last.delete(id);
     }
     if (!people.length) break;
