@@ -4,6 +4,9 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **The reality checks re-run with the honest eye** (research log entry 98): the same three of seven pass (survival to 15, life expectancy, birth spacing); population −3.1% a year (old eye −2.0%), babies dying in
+  their first year 4.2% (old 9.6%), predators 44% of deaths (old 32%). Also: `docs/WHAT-WE-GOT-WRONG.md`, `docs/PREDICTIONS.md` (each prediction linked to its commit), a design note for the real-length year.
+
 - **The page shows what a strike hits and what comes of it** (drawing only; the sim now notes `a.stk`, `a.stkT`, `a.stkOk` on a creature, with no random numbers: identical worlds
   checked): a nut, a cracked nut with its kernel, a bone with marrow, a stone and the flakes knocked off it, dug earth and a root, cut meat, a flame, sparks, smoke, or only dust.
 - **A carried baby is drawn clinging to its mother's front**, not standing beside her (it looked dragged); **sleepers no longer slide**: the sim's sleep comes in many short dozes

@@ -3051,6 +3051,44 @@ and is the first thing to trace; the wounds, predator-death and thirst changes a
 **Strength.** Moderate for the population and the cause-of-death shifts (24 worlds, paired, 2.7 standard errors for hominin-days); weak for the causes (none traced).
 **Lesson.** A cue the world gives for free can carry behaviour that looks like learning; removing it and re-measuring is how to find out how much.
 
+### 98. The reality checks with the honest eye: the same three of seven pass, but the band is smaller and babies die less — Nov 2026
+
+**Version.** 0.11.0 (honest eye the default) against the old eye (`--need-weighted-eye`). Every earlier table used the old eye (entry 97), so the baselines for the faithful-day table (master plan 0.8)
+had to be made again.
+
+**Data.** [Prediction, both tables, both runs](../data/findings/98-baselines-honest-eye/) (`table-honest.txt`, `table-old.txt`, one file per world). Command: `node tools/analysis/reality-check.js SEEDS 100 OUT [--need-weighted-eye]`
+for seeds 1–24 in four processes, then `--summary OUT`. 24 worlds × 100 days (about 33 life-years) per arm.
+
+| Check (real band) | Old eye | Honest eye (default) |
+|---|---|---|
+| Babies dying in their first year (10–25%) | 9.6% (69 of 718): fails, just under | **4.2%** (21 of 495): fails, far under |
+| Born who reach age 15 (30–60%) | 40.5% pass | 41.3% pass |
+| Life expectancy at birth (13–33 y) | 15.9 pass | 14.7 pass |
+| Years between births (5.0–6.5) | 5.3 pass | 5.3 pass |
+| Age at first birth (12.5–15.5 y) | 15.8 fails (high) | 16.1 fails (high) |
+| Population change a year (−1 to +1.5%, an assumed band) | −2.0% fails | **−3.1%** fails |
+| Deaths from illness (15–60%, an assumed band) | 8.8% fails | 8.3% fails |
+| Sourced rows passing | 3 of 7 | 3 of 7 |
+| Births followed / worlds that died out | 727 / 4 of 24 | **498 / 6 of 24** |
+| Causes of death | predator 32%, old age 19%, hunger 18%, **wounds 17%**, illness 9%, burned 4%, thirst 1%, birth 1% | **predator 44%**, hunger 21%, old age 18%, illness 8%, **wounds 5%**, burned 2%, drowned 1% |
+
+**Result.** Against the prediction written before the run:
+1. Life expectancy and survival to 15 lower or equal — **held**: life expectancy 15.9 → 14.7 years (no interval computed), survival to 15 40.5% → 41.3% (a difference of 0.8 points, z = 0.2: noise).
+2. Babies dying in their first year equal or higher — **not held, the opposite**: 9.6% → 4.2% (z = 3.5, pooling babies from worlds as independent, so the strength is overstated). The cause is not traced; deaths from wounds fell from 17% to 5% of all deaths, and
+   the old arm's babies may have been dying of wounds.
+3. Population change more negative — **held**: −2.0% → −3.1% a year.
+4. Share of deaths from illness lower — **held, but only just** (8.8% → 8.3%): not a difference.
+5. Birth spacing and age at first birth within 10% — **held** (5.3 and 5.3; 15.8 and 16.1).
+6. Rows that passed with the old eye: **none changed**; the same three pass and the same four fail. No band was moved.
+Not held: only item 2. The stop conditions (survival or life expectancy rising by more than noise; spacing or first birth moving by more than 10%) were not met.
+
+**Interpretation.** The honest eye leaves the life-history numbers of those who live almost as they were (survival, life expectancy, spacing, first birth) and changes **how many live**: 31% fewer births followed, six worlds emptied
+instead of four, and predators the leading killer (44% of deaths against 32%). It does not mend the rows that failed before. **Both arms fail the population row** (a shrinking band, −2.0% and −3.1% a year, against a real stable
+band), the babies row (too few infant deaths) and the age at first birth (too high); the illness band is an assumption. Those are the first fails of the faithful-day table whichever eye it uses. This table is the baseline for step 0.8:
+**the default (honest eye) numbers are the ones to carry.** Not explained: why infant deaths halve (the guess is fewer wound deaths among babies; not measured), and why wound deaths fall by two thirds (entry 97).
+**Strength.** Moderate for the cause-of-death shifts and the births followed (24 worlds, 498–727 births); weak for the infant-death cause (not traced); the row-by-row pass/fail status is unchanged. **Lesson.** A change that moves the
+population by a quarter can leave every life-history average where it was: check numbers of creatures as well as averages of them.
+
 ---
 
 ## Open questions (next tests)

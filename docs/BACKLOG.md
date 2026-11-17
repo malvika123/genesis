@@ -309,3 +309,8 @@ The owner cannot run the sim to check, so what is drawn is what is believed. Aud
   ten hours in one night nest; check against sources (is a doze by day real? how long are bouts?) before trusting the sleep numbers. The page now holds sleepers still.
 - **Seen by eye:** the baby clinging to its mother was seen on a drawing canvas (2D figure code), not on the globe (a thinking bubble covered the figure); the globe lifts it by the same fraction.
 
+## Follow-ups from entry 98 (17 Nov 2026)
+- Both eyes fail the population row (−2.0% and −3.1% a year), babies dying (too few), age at first birth (too high): the first fails of the faithful-day table. Why do infant deaths halve with the honest eye (wounds among babies? births per
+  mother?) — trace with the per-world files in `data/findings/98-baselines-honest-eye/`.
+- Why the world shrinks even with the old eye: births per mother-year against real chimpanzees (the birth spacing passes), deaths of adults by predators (32–44% of all deaths).
+
