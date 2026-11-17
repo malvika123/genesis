@@ -582,29 +582,39 @@ function drawRivers(g, v, colour, width = 0.32) {
     for (let x = 0; x < W; x++) {
       const i = y * W + x;
       if (!river[i]) continue;
-      // flow on to the lowest neighbouring water: a lake or the sea if there is one, else the river downhill
-      let to = -1,
-        tx = 0,
-        ty = 0,
-        lo = Infinity;
-      for (const [dx, dy] of MV) {
-        const Y = y + dy;
-        if (Y < 0 || Y >= H) continue;
-        const j = idx(x + dx, Y);
-        if (!water[j]) continue;
-        const h = river[j] ? alt[j] : -99;
-        if (h < lo) {
-          lo = h;
-          to = j;
-          tx = x + dx;
-          ty = Y;
-        }
-      }
+      const f = riverFlow(x, y);
       g.moveTo(x * C + C / 2, y * C + C / 2);
-      if (to >= 0) g.lineTo(tx * C + C / 2, ty * C + C / 2);
+      if (f) g.lineTo((x + f[0]) * C + C / 2, (y + f[1]) * C + C / 2);
       else g.lineTo(x * C + C / 2 + 0.01, y * C + C / 2);
     }
   g.stroke();
+}
+// Where a river square's channel runs on: to the lowest neighbouring water, a lake or the sea if there is one, else the river
+// downhill. Returns the step [dx, dy] to that neighbour (cell units), or null for a stretch with nowhere to go.
+function riverFlow(x, y) {
+  let best = null,
+    lo = Infinity;
+  for (const [dx, dy] of MV) {
+    const Y = y + dy;
+    if (Y < 0 || Y >= H) continue;
+    const j = idx(x + dx, Y);
+    if (!water[j]) continue;
+    const h = river[j] ? alt[j] : -99;
+    if (h < lo) {
+      lo = h;
+      best = [dx, dy];
+    }
+  }
+  return best;
+}
+// A river square is land with a channel through its middle (drawRivers), and a creature there is on the bank (sim.js: "a river
+// square is mostly bank"). Drawn at the middle of its square it would stand in the channel, so it is drawn beside it, on one
+// bank (which one: by its id), a little more than the channel's half width (0.16) from the middle. Drawing only: nothing in the world changes.
+function bankOffset(a) {
+  const f = riverFlow(a.x, a.y),
+    side = (a.id || 0) & 1 ? 1 : -1,
+    n = f ? Math.hypot(f[0], f[1]) : 1;
+  return f ? [(-f[1] / n) * 0.3 * side, (f[0] / n) * 0.3 * side] : [0.3 * side, 0];
 }
 function drawTerrain(g, v, relief = true) {
   g.fillStyle = v('--dirt');
@@ -2507,6 +2517,11 @@ function glide() {
       tx += mx * p;
       ty += my * p;
       if (walking && mx) a.face = mx > 0 ? 1 : -1;
+    }
+    if (a.sp !== 3 && river[idx(a.x, a.y)]) {
+      const [bx, by] = bankOffset(a);
+      tx += bx;
+      ty += by;
     }
     if (a.rx === undefined) {
       a.rx = tx;
