@@ -266,6 +266,26 @@ An ape-like rendering of the sim's three kinds of sound (`speakApe` in `ui/app.j
 | Noise share: hoo / grunt / scream | 0.05 / 0.2 / 0.35 | **assumption**: harsh and breathy qualities are general knowledge, not verified from a source here |
 | Not found | gorilla grunt, belch, bark, roar F0; juvenile and female gorilla F0; pant-hoot F0 | not rendered |
 
+## Honest watching (registered 17 Nov 2026, before building was measured; `docs/design/honest-watching.md`; sources `docs/reviews/2026-11-17-ape-social-learning-sources.md`, `docs/reviews/2026-11-17-peering-numbers.md`)
+
+Each number is a **hypothesis**: a claim about real young apes that the runs can refute (the owner, 17 Nov: keep assumptions close to the evidence, like a theory). All are used only with `--honest-who` (or `--honest-watching`).
+
+| Number | Value (range tested) | Hypothesis, evidence, and what would refute it |
+|---|---|---|
+| `SOC.watchSteps` | 2 steps of 15 min together in the same square (1–4) | **Deviation and hypothesis:** real peering is from under 2 m for more than 5 s (Nodé-Langlois et al. 2025, Taï); the 3 km grid knows only "same square, distance unknown", so two steps running stand for being close enough, long enough. Weakly supported: no source sets it. Refuted if, with it, the mother is not over 80% of the watched elders in the first year and under 20% after 9 years (Nodé-Langlois 2025), i.e. it fails to make brief overlaps with others rare. |
+| `SOC.peerHi` | 0.5 a step **while the elder forages in view**, ages 3–6 (0.37–0.62) | **Hypothesis, corrected 17 Nov:** Taï immatures peer about 1.25 times an hour of all time (2,343 events in 1,873 focal hours; Nodé-Langlois et al. 2025, rate divided by us), 92% of it while foraging; wild chimpanzees feed about 36–37% of the day (Waibira, Budongo: PMC12701709; bonobos at Lomako about 40%). The chance of a bout per 15 minutes together, 8–27% (1 − e^(−λ/4)), is therefore about 0.92 ÷ 0.37 ≈ 2.5 times higher while the elder forages: 0.2 → 0.5 (0.15–0.25 → 0.37–0.62). First built as 0.2 applied only while foraging, which counted the foraging restriction twice and gave about 0.2 bouts an hour (entry 101, arm B0: below the band). Refuted if the simulated peak of watching falls outside 3–6 years, or watching outside 0.3–1.5 bouts an hour together. |
+| `SOC.peerLo` | 0.19 at other ages, while the elder forages (0.12–0.25) | **Hypothesis:** peering is rarer in infancy and falls with age after 6 (Nodé-Langlois 2025; Kukofka et al. 2025, orangutans peak 3–4 y); 0.075 (0.05–0.10) of all time together × 2.5, as above. Refuted with `SOC.peerHi` by the same tests. |
+| `SOC.peerTool` | 3 × the chance when the elder strikes (tool use) | **Sourced direction and value:** peering is about 3 times higher during extractive tool use than ordinary feeding (Nodé-Langlois 2025). Refuted if watching in the simulation is not concentrated on tool use and feeding. |
+| `SOC.peerMom` | 3 × the weight of another elder for the mother | **Hypothesis from a sourced ratio:** elders a youngster spends about 10% of time within 1 m of are about 3 times more likely to be watched than those near 0% (Nodé-Langlois 2025); the mother is the closest. Refuted if watching is spread evenly over elders present, or the mother falls below 80% of targets in year 1. |
+| `SOC.copyThin` | 0 (a test control only) | Not about the world: the share of old copy events dropped to match the honest arm's number of copy events (Fable's dose-matched control). Off (0) except in that arm. |
+
+Whom a hominin can watch (`--honest-who`): **a youngster only those older than itself** (immatures peer at older animals or peers, very rarely at younger ones: Kukofka et al. 2025; Biro et al. 2003); **an adult any other adult, older or younger** — a weakly supported hypothesis added 17 Nov at the owner's question ("the grown-ups learn skills too"): moss-sponging spread through wild chimpanzees to watchers who included a dominant adult female (Hobaiter et al. 2014; the age of every learner not stated), and immigrant females adopt their new group's nut-cracking (Luncz, Wittig & Boesch 2015, summary only); adults peer far less (`SOC.peerLo`). Refuted if adults' copy events from younger adults never precede an adult's first doing of a skill, or adult watching swamps the young's.
+
+What is seen (`--honest-what`): eating and striking and their visible results (ate; cracked, dug, cut; hurt), never the elder's choice number or reward: apes attend to outcomes and copy with low fidelity (Horner & Whiten 2005;
+Tennie, Call & Tomasello 2009; Hobaiter et al. 2014). Calls are not copied (`--no-voice-copy`: apes do not learn to produce new calls, Fischer & Hammerschmidt 2020). Whole paths are not copied (`--no-path-copy`: results are
+visible here, the case where chimpanzees emulated rather than copied sequences, Horner & Whiten 2005). "Successful" means seen to succeed (`--honest-success`), a Laplace estimate of the results seen — an assumption standing in
+for Kendal et al. 2015's "expert".
+
 ## To do
 
 - Audit the older parts of the model the same way (temperatures, energy use, foods, predators, sound…).

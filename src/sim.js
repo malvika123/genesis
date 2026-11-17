@@ -529,7 +529,7 @@ function sim() {
       notePath(a, a.xl, lastAct, r);
       if (r > 0.3) {
         // youngsters watching in the same square learn from the whole sequence that led to it (brain.js: copySequence)
-        if (SOC.copySeq && S.imit && SOC.copying && (SOC.copyNuts || !(lastAct === A_STRIKE && a.nutT === tick - 1)))
+        if (SOC.copySeq && !SOC.noPathCopy && S.imit && SOC.copying && (SOC.copyNuts || !(lastAct === A_STRIKE && a.nutT === tick - 1)))
           for (const o of G[idx(a.x, a.y)] || [])
             if (o !== a && o.sp === 0 && !o.asleep && !o.dead && o.has && o.age < o.S.mat && o.age >= o.S.mat * o.S.wn * 0.5)
               copySequence(o, a.path, S.imit * 3 * (o.g.im ?? 1) * Math.min(1, r));
@@ -560,6 +560,11 @@ function sim() {
       a.daAct = lastAct; // which choice this surprise was about (others watching can learn from it: copy what worked)
       a.daNut = lastAct === A_STRIKE && a.nutT === tick - 1; // it was a strike on a nut (for the --no-nut-copying test arm)
       a.lastR = r; // and what visibly came of it (a meal, a hurt): what others can see
+      // (honest watching) what others can SEE of the last step: the act if a hand or mouth act, and its result in plain sight: it ate, its blow cracked,
+      // dug or cut something (+1), it was hurt (−1), nothing to see (0). Recorded always (no random numbers); read only with --honest-what
+      a.visAct = lastAct;
+      a.visRes = (lastAct === A_EAT && a.ateT === tick - 1) || (lastAct === A_STRIKE && a.stkOk === tick - 1) ? 1 : tick - (a.hurtT ?? -9) <= 1 ? -1 : 0;
+      a.visT = tick;
       a.mod = mod;
       // The one-try boost and fear make a striking moment shape what the brain does — but its estimate of how good things are
       // learns from good and bad surprises alike: otherwise good surprises count up to four times as much as bad ones and its
@@ -622,10 +627,16 @@ function sim() {
       let tch = null,
         bd = 37;
       const pb = SOC.pick ? (a.g.pb ?? 0.5) : 0,
-        okay = (o) => clamp((o.hp + o.e) / 200, 0, 1),
+        // --honest-success: "the successful" are those this watcher has SEEN succeed (a Laplace estimate of the results it saw), not their hidden health and energy
+        okay = SOC.watchSuccess ? (o) => seenOkay(a, o) : (o) => clamp((o.hp + o.e) / 200, 0, 1),
         seen = new Array(NA).fill(0);
       let nseen = 0;
-      const rr = Math.round(a.g.v);
+      const rr = SOC.watchWho ? -1 : Math.round(a.g.v); // --honest-who: the search below is replaced by honestTeacher
+      if (SOC.watchWho) {
+        const ht = honestTeacher(a, act, seen);
+        tch = ht.tch;
+        nseen = ht.n;
+      }
       for (let dy = -rr; dy <= rr; dy++)
         for (let dx = -rr; dx <= rr; dx++) {
           const X = a.x + dx,
@@ -643,7 +654,7 @@ function sim() {
               o.age <= a.age
             )
               continue;
-            seen[o.act]++;
+            seen[SOC.watchWhat ? (VIS_ACT.has(o.visAct) && o.visT === tick ? o.visAct : A_SLEEP) : o.act]++;
             nseen++;
             const dd = dx * dx + dy * dy + (o === a.mom ? -30 : 0) - 8 * pb * okay(o); // the successful are preferred among those close enough to watch well
             if (dd < bd) {
@@ -681,11 +692,20 @@ function sim() {
           // surprised, so copying by surprise passed on almost nothing it knew well (second review, finding 3; entry 57). A good
           // meal (a reward of about 0.3, the level of a striking memory) counts fully; the 0.3 is an assumption.
           // --copy-by-surprise: the old rule.
-          const o = SOC.copyByResult ? clamp((tch.lastR ?? 0) / 0.3, -1, 1) : clamp(tch.da ?? 0, -1, 1),
+          // --honest-what: only what can be seen — a hand or mouth act (VIS_ACT) and its result in plain sight (visRes), not the elder's choice number or reward
+          const vis = SOC.watchWhat,
+            o = vis ? (tch.visT === tick && VIS_ACT.has(tch.visAct) ? tch.visRes : 0) : SOC.copyByResult ? clamp((tch.lastR ?? 0) / 0.3, -1, 1) : clamp(tch.da ?? 0, -1, 1),
+            what = vis ? tch.visAct : tch.daAct,
             close = !SOC.copyClose || (tch.x === a.x && tch.y === a.y);
-          if (o && close && tch.daAct !== undefined && tch.daAct !== A_SLEEP && (SOC.copyNuts || !tch.daNut))
-            imitate(a, tch.daAct, rate * (1 - cf) * o);
-          if (tch.vc) imitateVoice(a, tch.vc, rate * (1 - cf));
+          if (o && close && what !== undefined && what !== A_SLEEP && (SOC.copyNuts || !tch.daNut)) {
+            if (!(SOC.copyThin > 0 && rnd2() < SOC.copyThin)) {
+              // --copy-thin P: the dose-matched control, old copying with a share P of its copy events dropped (entry 101)
+              imitate(a, what, rate * (1 - cf) * o);
+              sawSkill(a, tch, what); // the record (measuring only)
+            }
+            if (SOC.watchSuccess) noteSeen(a, tch, o > 0);
+          }
+          if (tch.vc && !SOC.noVoiceCopy) imitateVoice(a, tch.vc, rate * (1 - cf));
         } else imitate(a, tch.act, rate * (1 - cf), tch.vc);
         if (cf) imitate(a, maj, rate * cf);
         if (!a.copied && a.sp === 0 && young) {
@@ -715,7 +735,7 @@ function sim() {
     // feels good to both — even newborns take turns "talking" with their mothers.
     // Vocal imitation, inborn in humans: hearing a word, the mouth is drawn a little toward making the
     // same sounds — strongly in babies and children, and more in those born to learn from others.
-    if (a.sp === 0 && a.heardW && !a.asleep)
+    if (a.sp === 0 && a.heardW && !a.asleep && !SOC.noVoiceCopy) // --no-voice-copy: apes do not learn to make new calls (Fischer & Hammerschmidt 2020)
       imitateVoice(a, choicesFor(a.heardW), 0.02 * (young ? 3 : 1) * (a.g.im ?? 1) * x[HEAR + 6] * vocalCtl(a));
     // Shared attention: if it goes the way someone close pointed, both feel the small pleasure of
     // having shared something — as much as each was born to (sh).
@@ -834,6 +854,7 @@ function sim() {
       }
     } else a.up = false;
     if (a.asleep && sleepy > 0.8) a.ev[4] = 'it slept after being exhausted on day ' + dn;
+    const eAct = a.e; // (honest watching) energy before this step's act: if eating raised it, others can see that it ate
     if (act < 8) {
       a.hd = act; // it turns to face the way it walks
       let preyS = false;
@@ -1537,6 +1558,7 @@ function sim() {
           HUNTLOG.push({ k: a.S.n, adult: a.age >= a.S.mat, prey: t.sp === 0 ? 'Hominin' : T.n, kg: t.sp === 0 ? bodyKg(t) : T.mass ? preyKg(t) : 0, asleep: !!t.asleep, young: t.age < T.mat * T.wn, eating: t.act === A_EAT, fear: t.fear || 0, hungry: e0, gut: gut0, sinceGulp: g0 === undefined ? null : (tick - g0) / 4, hit, wound: !hit && !!t.dead, tick });
       }
     }
+    if (a.sp === 0 && act === A_EAT && a.e > eAct) a.ateT = tick; // (honest watching) it visibly ate: no random numbers, nothing else reads it
     if (a.age % 48 === a.id % 48 && a.age > 48) lessons(a);
     // the first time someone sleeps inside a heap of branches people carried together
     if (a.sp === 0 && a.asleep && stick[idx(a.x, a.y)] >= 7) did(a, 'shelter'); // each hour asleep in a shelter
@@ -1807,7 +1829,7 @@ const hunterSeen = (x) => {
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { fullBrakeOn: true, fullBrake: 12, atkP: 0.6, atkEasy: 0.9, fruitCal: true, fruitHang: 1 / 12, mutP: 0.2, mutStep: 0.3, wireMutP: 0.03, wireMutSd: 0.4, digAct: true, preyFlight: true, campFix: true, cutAct: true, cutKg: 0.75, fleshOnly: true, fleshShare: 0.5, rotBySize: true, marrowKg: true, marrowFrac: 0.0025, marrowKcal: 7860, stickHumid: true, brandByDry: true, fireNatural: true, rotByKg: true, homMeatKg: true, biteBareKg: 0.25, biteFlakeKg: 0.75, meatKcal: 1140, herdYoung: true, youngShare: 0.25, forestPrey: 1000, meatMemory: true, keepKill: true, homStrikeKg: true, huntPull: true, atkFixed: 0.25, gut: true, gutShare: 0.25, digestH: 24, mealSleep: 2, preyMap: false, preyLevel: 5000, buffShare: 0.5, preyRegrow: 0.3, preyZone: 1, preyRule: 'soft', bigK: 2, preyMaxX: 1, smallPrey: true, maxPreyKg: 15, marrow: true, marrowShare: 0.15, marrowVal: 110, digStick: 0.55, digFlake: 0.4, digStone: 0.3, digBare: 0.15, sedges: true, sedgeCap: 0.5, africanNuts: true, rootVal: 80, voiceGenes: true, fireMaking: true, founderElders: 0.12, brainCost: true, brainF: 0.1, carry: true, carryAge: 2, walkE: true, walkJ: 4, pal: 1.7, growBodies: true, massF: 30, massM: 42, swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, needEye: false, babyNoAttack: true, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { fullBrakeOn: true, fullBrake: 12, atkP: 0.6, atkEasy: 0.9, fruitCal: true, fruitHang: 1 / 12, mutP: 0.2, mutStep: 0.3, wireMutP: 0.03, wireMutSd: 0.4, digAct: true, preyFlight: true, campFix: true, cutAct: true, cutKg: 0.75, fleshOnly: true, fleshShare: 0.5, rotBySize: true, marrowKg: true, marrowFrac: 0.0025, marrowKcal: 7860, stickHumid: true, brandByDry: true, fireNatural: true, rotByKg: true, homMeatKg: true, biteBareKg: 0.25, biteFlakeKg: 0.75, meatKcal: 1140, herdYoung: true, youngShare: 0.25, forestPrey: 1000, meatMemory: true, keepKill: true, homStrikeKg: true, huntPull: true, atkFixed: 0.25, gut: true, gutShare: 0.25, digestH: 24, mealSleep: 2, preyMap: false, preyLevel: 5000, buffShare: 0.5, preyRegrow: 0.3, preyZone: 1, preyRule: 'soft', bigK: 2, preyMaxX: 1, smallPrey: true, maxPreyKg: 15, marrow: true, marrowShare: 0.15, marrowVal: 110, digStick: 0.55, digFlake: 0.4, digStone: 0.3, digBare: 0.15, sedges: true, sedgeCap: 0.5, africanNuts: true, rootVal: 80, voiceGenes: true, fireMaking: true, founderElders: 0.12, brainCost: true, brainF: 0.1, carry: true, carryAge: 2, walkE: true, walkJ: 4, pal: 1.7, growBodies: true, massF: 30, massM: 42, swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, needEye: false, babyNoAttack: true, watchWho: false, watchWhat: false, noPathCopy: false, noVoiceCopy: false, honestHurt: false, watchSuccess: false, watchSteps: 2, peerHi: 0.5, peerLo: 0.19, peerTool: 3, peerMom: 3, copyThin: 0, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {
@@ -1822,8 +1844,67 @@ const SOC = { fullBrakeOn: true, fullBrake: 12, atkP: 0.6, atkEasy: 0.9, fruitCa
     lightning: 'get struck by lightning',
     wounds: 'die of its wounds',
   };
+// ---------- honest watching (docs/design/honest-watching.md; Fable's review 17 Nov; sources docs/reviews/2026-11-17-*) ----------
+// What can be seen of another's hand or mouth: eating and striking (foraging and tool use; 92% of real peering is while foraging).
+const VIS_ACT = new Set([A_EAT, A_STRIKE]);
+// --honest-who: a youngster can watch an elder only when they could really be close: in the same 3 km square (distance unknown: a registered deviation
+// from 1–5 m peering) for SOC.watchSteps steps running, both awake, by day or firelight, the watcher not travelling, the elder foraging in plain sight;
+// then it watches with a chance by its age (SOC.peerHi at 3–6 years, else SOC.peerLo; ×SOC.peerTool for tool use), choosing among elders by closeness
+// (the mother SOC.peerMom times the weight of another). Hypotheses with sources in docs/ASSUMPTIONS.md. Random numbers from the second stream.
+function honestTeacher(a, act, seen) {
+  const W = a.withN || new Map(),
+    nw = new Map(),
+    l = G[idx(a.x, a.y)] || [];
+  for (const o of l)
+    // a youngster watches those older than itself; an adult can learn from any other adult, older or younger (moss-sponging spread to adult watchers: Hobaiter et al. 2014;
+    // immigrant females take up their new group's way of cracking nuts: Luncz et al. 2015) — a weakly supported hypothesis, registered
+    if (o !== a && o.sp === a.sp && !o.dead && !o.gone && !o.asleep && o.has && (a.age < a.S.mat ? o.age > a.age : o.age >= o.S.mat)) nw.set(o.id, (W.get(o.id) || 0) + 1);
+  a.withN = nw;
+  if (a.asleep || act < 8 || (isNightAt(a.x) && !(a.hand === 4 || fireNear(a.x, a.y) > 0.05))) return { tch: null, n: 0 };
+  const can = [];
+  let tw = 0;
+  for (const o of l) if (nw.has(o.id) && nw.get(o.id) >= SOC.watchSteps) {
+      TOGETHER++; // the record (measuring only): a step together, long enough, still, awake, by day
+      break;
+    }
+  for (const o of l) {
+    if (!nw.has(o.id) || nw.get(o.id) < SOC.watchSteps || o.visT !== tick || !VIS_ACT.has(o.visAct)) continue;
+    const w = o === a.mom ? SOC.peerMom : 1;
+    can.push([o, w]);
+    tw += w;
+    seen[o.visAct]++;
+  }
+  if (!can.length) return { tch: null, n: 0 };
+  let q = rnd2() * tw,
+    tch = can[can.length - 1][0];
+  for (const [o, w] of can)
+    if ((q -= w) <= 0) {
+      tch = o;
+      break;
+    }
+  const ageY = a.age / TY,
+    p = (ageY >= 3 && ageY <= 6 ? SOC.peerHi : SOC.peerLo) * (tch.visAct === A_STRIKE ? SOC.peerTool : 1);
+  if (rnd2() < Math.min(1, p)) {
+    WATCHB++; // the record (measuring only): a watching bout
+    return { tch, n: can.length };
+  }
+  return { tch: null, n: can.length };
+}
+// --honest-success: a running count of the results this watcher has seen from each elder, and a Laplace estimate of its success
+function noteSeen(a, o, ok) {
+  const m = a.seenRes || (a.seenRes = new Map()),
+    r = m.get(o.id) || [0, 0];
+  r[0] += ok ? 1 : 0;
+  r[1]++;
+  m.set(o.id, r);
+}
+function seenOkay(a, o) {
+  const r = a.seenRes && a.seenRes.get(o.id);
+  return r ? (r[0] + 1) / (r[1] + 2) : 0.5;
+}
 function ouch(a, amt, kind, died = false) {
   if (a.sp !== 0) return;
+  a.hurtT = tick; // (honest watching) a hurt others can see
   OUCH.push({ a, x: a.x, y: a.y, amt, kind, act: died ? -1 : a.act });
 }
 function watchOthers() {
@@ -1832,8 +1913,9 @@ function watchOthers() {
     const v = e.a;
     for (const o of ag) {
       if (o === v || o.sp !== 0 || o.dead || o.gone || o.asleep || !o.has) continue;
-      const r = Math.min(5, Math.round(o.g.v));
+      const r = SOC.honestHurt ? 0 : Math.min(5, Math.round(o.g.v)); // --honest-hurt: only someone in the same square, by day or firelight, sees it
       if (Math.abs(dxw(o.x - e.x)) > r || Math.abs(o.y - e.y) > r) continue;
+      if (SOC.honestHurt && isNightAt(o.x) && !(o.hand === 4 || fireNear(o.x, o.y) > 0.05)) continue;
       const fam = v === o.mom || v === o.kid || v === o.mate || (v.mom && v.mom === o.mom) || v.mom === o,
         young = o.age < o.S.mat,
         share = Math.min(0.8, 0.3 * (fam ? 1 : 0.5) * (young ? 1.5 : 1) * (PREPARED[e.kind] ?? 0.3) * feelsOthers(o)),
@@ -1842,7 +1924,8 @@ function watchOthers() {
       o.bonus[0] -= hurt; // felt as its own pain, in its learning signal
       o.fear = clamp(o.fear + 0.6 * hurt, 0, 1);
       // and it turns away from what it saw lead there
-      if (e.act >= 0) imitate(o, e.act, -0.05 * hurt);
+      // (old rule) it turns away from the victim's exact choice; --honest-hurt: the felt pain alone teaches it to avoid what it sees here, not a choice it cannot see
+      if (e.act >= 0 && !SOC.honestHurt) imitate(o, e.act, -0.05 * hurt);
       o.vic = (o.vic || 0) + hurt;
       if (hurt > 0.12) o.ev[0] = 'it saw ' + (v.name || 'someone') + ' ' + OUCHW[e.kind] + ' on day ' + dayN();
       if (hurt > 0.12) did(o, 'vicar');

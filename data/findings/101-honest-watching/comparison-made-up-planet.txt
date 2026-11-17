@@ -1,0 +1,40 @@
+
+== /Users/malvikasen/genesis-wt/honest-watching/data/findings/101-honest-watching/A-old: 24 worlds, 1094 hominins, copy events 3248026 (per 1,000 hominin-days 92987.2)
+hominin-days 34930, alive at the end 175, worlds emptied 8; repeats per 1,000 hominin-days: take 866.4, nut 64.1, flake 7.3, dig 189.5, butcher 6.0, marrow 19.5, root 149.6, meat 356.3, share 155.7, speak 8100.1
+deaths: its wounds 83, old age 154, illness 61, hunger 159, killed by a predator 444, burned 13, drowned 3, giving birth 2
+skill | watched by | did | first-time rate per 1,000 days: after watching / before or never (ratio) | young who did it: mother did first / mother never
+nut | 426 | 19 | 0.78 (11 in 14081 d) / 0.38 (8 in 20842 d) = 2.04 | 0% of 6 / 1% of 481
+dig | 455 | 64 | 2.37 (35 in 14777 d) / 1.44 (29 in 20130 d) = 1.64 | 27% of 15 / 6% of 473
+butcher | 4 | 0 | 0.00 (0 in 161 d) / 0.00 (0 in 34769 d) = NaN | - / 0% of 494
+marrow | 19 | 7 | 0.00 (0 in 569 d) / 0.20 (7 in 34358 d) = 0.00 | - / 1% of 489
+flake | 15 | 1 | 1.73 (1 in 576 d) / 0.00 (0 in 34353 d) = Infinity | - / 0% of 494
+
+== /Users/malvikasen/genesis-wt/honest-watching/data/findings/101-honest-watching/B0-honest-too-low: 24 worlds, 1078 hominins, copy events 292 (per 1,000 hominin-days 8.9)
+hominin-days 32915, alive at the end 191, worlds emptied 8; repeats per 1,000 hominin-days: take 906.2, nut 71.0, flake 7.0, dig 205.5, butcher 3.0, marrow 28.4, root 99.8, meat 442.9, share 210.3, speak 1513.5
+deaths: its wounds 182, old age 141, hunger 105, killed by a predator 385, illness 53, drowned 1, giving birth 2, burned 17, thirst 1
+skill | watched by | did | first-time rate per 1,000 days: after watching / before or never (ratio) | young who did it: mother did first / mother never
+nut | 10 | 21 | 0.00 (0 in 267 d) / 0.64 (21 in 32640 d) = 0.00 | 0% of 4 / 3% of 471
+dig | 24 | 46 | 0.00 (0 in 708 d) / 1.43 (46 in 32192 d) = 0.00 | 29% of 7 / 5% of 469
+butcher | 0 | 1 | NaN (0 in 0 d) / 0.03 (1 in 32914 d) = NaN | - / 0% of 478
+marrow | 6 | 11 | 0.00 (0 in 159 d) / 0.34 (11 in 32751 d) = 0.00 | 0% of 1 / 1% of 475
+flake | 0 | 4 | NaN (0 in 0 d) / 0.12 (4 in 32914 d) = NaN | 0% of 1 / 0% of 477
+
+== /Users/malvikasen/genesis-wt/honest-watching/data/findings/101-honest-watching/B1-honest: 24 worlds, 1016 hominins, copy events 1025 (per 1,000 hominin-days 35.1)
+hominin-days 29223, alive at the end 100, worlds emptied 8; repeats per 1,000 hominin-days: take 990.8, nut 66.8, flake 6.4, dig 204.0, butcher 5.0, marrow 25.5, root 124.7, meat 467.4, share 220.0, speak 1405.1
+deaths: its wounds 194, old age 116, killed by a predator 406, hunger 122, illness 52, burned 22, giving birth 2, drowned 2
+skill | watched by | did | first-time rate per 1,000 days: after watching / before or never (ratio) | young who did it: mother did first / mother never
+nut | 30 | 24 | 1.04 (1 in 960 d) / 0.81 (23 in 28255 d) = 1.28 | 0% of 6 / 2% of 405
+dig | 70 | 53 | 1.33 (3 in 2250 d) / 1.85 (50 in 26955 d) = 0.72 | 11% of 19 / 4% of 393
+butcher | 4 | 1 | 0.00 (0 in 112 d) / 0.03 (1 in 29111 d) = 0.00 | 0% of 2 / 0% of 414
+marrow | 12 | 7 | 0.00 (0 in 354 d) / 0.24 (7 in 28867 d) = 0.00 | - / 1% of 416
+flake | 1 | 4 | 0.00 (0 in 67 d) / 0.14 (4 in 29153 d) = 0.00 | 0% of 2 / 1% of 412
+
+== /Users/malvikasen/genesis-wt/honest-watching/data/findings/101-honest-watching/C-none: 24 worlds, 1044 hominins, copy events 0 (per 1,000 hominin-days 0.0)
+hominin-days 31822, alive at the end 131, worlds emptied 7; repeats per 1,000 hominin-days: take 974.9, nut 72.8, flake 7.9, dig 200.1, butcher 3.2, marrow 22.5, root 126.8, meat 327.7, share 202.2, speak 7956.7
+deaths: old age 144, giving birth 4, hunger 164, killed by a predator 463, its wounds 62, drowned 5, illness 44, burned 26, thirst 1
+skill | watched by | did | first-time rate per 1,000 days: after watching / before or never (ratio) | young who did it: mother did first / mother never
+nut | 0 | 29 | NaN (0 in 0 d) / 0.91 (29 in 31811 d) = NaN | 11% of 9 / 3% of 432
+dig | 0 | 52 | NaN (0 in 0 d) / 1.63 (52 in 31805 d) = NaN | 0% of 12 / 5% of 427
+butcher | 0 | 2 | NaN (0 in 0 d) / 0.06 (2 in 31822 d) = NaN | - / 0% of 444
+marrow | 0 | 5 | NaN (0 in 0 d) / 0.16 (5 in 31820 d) = NaN | 0% of 3 / 0% of 440
+flake | 0 | 4 | NaN (0 in 0 d) / 0.13 (4 in 31822 d) = NaN | 0% of 1 / 0% of 443
