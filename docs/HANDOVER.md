@@ -61,6 +61,17 @@ Read this first in a new session, then **`docs/MASTER-PLAN.md` (the one plan to 
 - Pitfalls: `hunt-measure.js` and `hominin-attacks.js` re-read the code for each world (never edit `src/` while they run); in zsh
   `set -- $a` does not split words; read a hunter's stomach before its attack.
 
+## 18 Nov morning: where things stand (read this first)
+
+- **Released (develop `4bc39ef`):** entries 99–103. Honest watching is merged behind six switches, all off (`--honest-watching`); experiments run on the real Earth by default (`--made-up-planet` for the old planet).
+- **Key results:** copying of any kind barely changes how common skills are (entry 101, two planets); honest watching could not be tested properly because **adults eat or strike in only 5–6% of waking steps against about 37%
+  feeding in wild chimpanzees** — elders are rarely seen foraging (bouts 0.20 an hour against the registered 0.3–1.5). On seeds 1–8 every band ended by predators within 85 years; hunters fill their fixed caps within 10 years by
+  births and newcomers (entry 103).
+- **Next, in order:** (1) **the feeding time budget** (backlog "FIRST TOMORROW"): source intake rates by food and daily feeding hours, find why a 15-minute eating step gives so much, fix behind a switch with a prediction;
+  (2) honest watching again (bout rate, transmission, single switches, ends of hypotheses); (3) defence per `docs/design/defence.md` as revised by Fable: measure (nights up a tree, hunters' origins), then **several bands**,
+  then hunter caps from field density × range, rally only with a wounding phase, sleep high last. **The owner's call pending:** add the missing 2.5 Ma predators (lions, *Homotherium*, *Dinofelis*, *Chasmaporthetes*, crocodiles)?
+- **Pitfall learned:** never commit while `npm test` runs (the experiment test compares two tables that name the commit).
+
 ## 17 Nov, later: v0.11.0 and what changed (read this first)
 
 - **Experiments default to the real Earth since entry 102** (the owner's choice, 17 Nov); every table before it is a made-up planet (`--made-up-planet`). Entry 102 is the real-Earth baseline: 4 of 7 reality rows pass, population −1.0% a year.
