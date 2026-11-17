@@ -249,3 +249,9 @@ verified online, built with a switch, and tested on its own before the next, in 
 - Sourced as far as the literature goes: qualitative yes, distances and rates mostly not (hyena range, wind limits, dung output, removal by sun and rain,
   carcass smell duration, parasite risk: all unverified). Today's `near` (2 squares = about 6 km) is hyena range, not primate range; smell cannot be honest on
   a 3 km grid, so **build it with the fine valley (F9)**, not before. The owner decides; a Fable review of the note comes first.
+
+## Nuts and roots by season (17 Nov 2026): `docs/reviews/2026-11-17-nuts-roots-seasons-sources.md`
+- No honest seasonal rule for nuts (no savanna data) or for roots' size of swing; Ugalla roots are dug in the rains, **not** as a lean-season fallback. Do not
+  build a seasonal nut/root rule; register the root swing as an assumption (1× to mild wet-season rise) or leave it flat.
+- **Check entry 89**: "lowest late in the rains" was not found in Piel et al. 2017's text (inverse to rainfall, peak early dry, Figure 3 only). If it is
+  not in the paper, correct the wording (second correction of a citation after the Guinea-Bissau one).
