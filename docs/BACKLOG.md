@@ -329,3 +329,36 @@ Social learning is not perception in the code (`src/sim.js` ~616–700, ~531–5
 **Smallest honest steps (each with a switch, identical worlds, a prediction):** (1) copy only from an elder actually in view (field of view, line of sight, daylight); (2) replace the act number and reward with what is visible:
 what the elder holds and does with its hands, and whether it then eats or is hurt; (3) watching a path: train on the youngster's own view, not the elder's inputs; (4) voice copied from the sound heard, within earshot.
 Expect learning from others to fall a lot. Entries resting on copying (48–60, 86) would need re-reading. Real apes copy with low fidelity (emulation vs imitation: to be sourced before building).
+- **Done 17 Nov — intervals for the reality rows (entry 100):** the population row moved −3.1% → −4.8% a year between two 24-world runs of nearly the same code. Add a bootstrap over worlds to `reality-check.js --summary`, so a change can be read against run-to-run spread.
+
+- **Decided 17 Nov (entry 102): experiments default to the real Earth.** Was: the page and the experiments simulate different planets (found 17 Nov from the owner's observation: 43 hominins at year 19 on the page).** The page's Land menu defaults to "Earth, 70,000 years ago" (`index.html`
+  `#land`, first option); `tools/experiment-core.js` defaults to `earth: false` (a made-up planet). Every table so far was measured on made-up planets. Next: the reality checks with `--earth` (24 worlds), then the owner
+  decides whether experiments default to the real Earth (recommended: the aim is East Africa), and the baselines are made again on it.
+
+## Startle, staying on guard, vigilance, alarm calls — under F1 (17 Nov 2026; evidence: `docs/reviews/2026-11-17-startle-vigilance-alarm-sources.md`; the owner: only what the evidence supports)
+- **Model (each a close hypothesis):** (a) a startle to any sudden loud sound, a reflex of seconds that fades with harmless repeats (the 15-minute step can show it only as one interrupted step; say so); (c) vigilance as a cost to
+  feeding on the ground, nearly free at rest, more on the ground than in trees, less with close neighbours; (d) an alarm call with an inborn sound whose triggers are learned, given more when others near have not seen the threat.
+- **Do not model:** staying guarded for hours after a scare (baboons return to normal looking within about 5 minutes: Allan et al. 2024); sentinels; a strong many-eyes effect; vigilance while asleep.
+- **A finding against the present model:** fear now halves about every 1.5 hours, far longer than the evidence for vigilance (minutes). Separate fast vigilance (minutes) from slow stress (days to weeks, hormones and grooming) and test a
+  short half-life for the fast part; with a prediction, both ends, one switch.
+- **How these are built (the owner, 17 Nov):** each behind its own switch, off by default until measured, identical worlds with the switch off, a prediction first that names what result would show it adds something
+  artificial (then it stays off and the reason is written here); each registered as **inferred from living primates** (which species, how safe: startle very safe, alarm calls fairly safe, vigilance moderate, minutes-long
+  watchfulness weak — one baboon study).
+
+## The second question (the owner, 17 Nov 2026): does rich food make a bigger brain pay? (brain–diet selection; after honest watching)
+- **Why:** a leading explanation of the human line: meat, marrow and later cooking supplied the spare energy that made larger brains affordable, and larger brains then paid for themselves (tools, food, social learning)
+  — debated in its parts (Aiello & Wheeler 1995, the expensive gut; Wrangham, cooking; Pontzer et al., higher total energy use). Sources to be checked before building.
+- **Cheap first measurement, no change to the world:** in short runs, the selection gradient — inherited brain size (the grown units and layout genes) against surviving young raised per hominin — with rich foods available (as now)
+  and without (`--no-marrow` and the equivalent for meat), same seeds. Bigger-brained hominins leaving more young only when rich food is there would be step 4's mechanism in one generation: a direction, not evolution.
+- **Known obstacles:** a bigger brain must actually help (README: "bigger brains on their own made things worse"); brains cost energy (`SOC.brainF`, registered); evolution itself needs the long runs (stage 6 relay).
+- Prediction first, both ends, no tuning toward bigger brains.
+
+## Defence and lasting as a population (17 Nov 2026; the owner: "they barely climb trees, share space with predators, never chase them off"; evidence: `docs/reviews/2026-11-17-defence-and-persistence-sources.md`)
+Approach (the owner agreed in principle: inborn pulls sized by evidence, then learning decides; one switch each; a prediction first; inferred from living primates):
+1. **More than one band** — the most important missing piece (no documented primate group wiped out by predators; shrunken groups merge; populations persist through many groups). Fable's F10 brought forward for this reason.
+2. **Hunter numbers held to total prey mass (about 1:111, Carbone & Gittleman 2002)**, hominins a small part of their diet (leopards about 10% primates): the page's 6 → 18 hunters on one band has no support. Entry 103 (the long run, queued) measures it first.
+3. **Rally and chase** (Boesch 1991: about one rescue or chase per leopard attack; about 45% of attacks still wound or kill).
+4. **Sleep high, and leave a site after a kill** (chimpanzee nests higher where predators are; baboon cliff sites). Measure first how often our hominins sleep up a tree.
+5. **Small bands merge** (vervets: at about 3–6 members or under 2 adults).
+6. Second: avoid learned dangerous places (weak evidence). **Not:** weapons for defence; predators giving up on large groups; prey switching.
+Then a design note for Fable's review, before building.

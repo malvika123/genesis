@@ -3068,7 +3068,7 @@ for seeds 1–24 in four processes, then `--summary OUT`. 24 worlds × 100 days 
 | Age at first birth (12.5–15.5 y) | 15.8 fails (high) | 16.1 fails (high) |
 | Population change a year (−1 to +1.5%, an assumed band) | −2.0% fails | **−3.1%** fails |
 | Deaths from illness (15–60%, an assumed band) | 8.8% fails | 8.3% fails |
-| Sourced rows passing | 3 of 7 | 3 of 7 |
+| Rows passing (of the 5 with sourced bands) | 3 of 7 (3 of 5) | 3 of 7 (3 of 5) |
 | Births followed / worlds that died out | 727 / 4 of 24 | **498 / 6 of 24** |
 | Causes of death | predator 32%, old age 19%, hunger 18%, **wounds 17%**, illness 9%, burned 4%, thirst 1%, birth 1% | **predator 44%**, hunger 21%, old age 18%, illness 8%, **wounds 5%**, burned 2%, drowned 1% |
 
@@ -3125,6 +3125,57 @@ full hunters that now notice them. **The infant deaths of the old eye were mostl
 still contains a few. Both arms fail the infant row as too low even so. **Strength.** Strong for the activity shifts (millions of hominin-steps); moderate for hunter proximity (counts per 1,000 steps); the bug is shown by
 event records in 13 cases and the code. **Lesson.** Count what creatures *do* with their time before reading their discoveries; a third of the day spent striking is a symptom, not a culture. **Next:** fix the bug (a carried
 infant cannot attack; `--babies-attack` restores the old rule) and re-run the reality checks.
+
+### 100. A carried infant cannot attack: the bug fixed; the reality checks barely move — Nov 2026
+
+**Version.** 0.11.0 + commit `3ac78f7` (`--babies-attack` restores the old rule; checked: identical worlds, seeds 1–2 × 20 days, 176 columns). Entry 99 found carried babies attacking antelopes and buffalo and dying of it.
+
+**Data.** [Prediction, table, runs](../data/findings/100-babies-cannot-attack/). `node tools/analysis/reality-check.js SEEDS 100 OUT` for seeds 1–24 in four processes; compared with entry 98's honest-eye table (the same code but for the fix).
+
+| Check (real band) | Entry 98, honest eye | With the fix |
+|---|---|---|
+| Babies dying in their first year (10–25%) | 4.2% (21 of 495) | 4.7% (23 of 489) — fails, too low |
+| Born who reach age 15 (30–60%) | 41.3% | 38.6% — passes |
+| Life expectancy (13–33 y) | 14.7 | 14.2 — passes |
+| Years between births (5.0–6.5) | 5.3 | 5.3 — passes |
+| Age at first birth (12.5–15.5) | 16.1 | 15.9 — fails, high |
+| Population change a year (assumed band) | −3.1% | −4.8% — fails |
+| Illness share (assumed band) | 8.3% | 6.6% — fails |
+| Worlds that died out | 6 of 24 | 8 of 24 |
+| Causes of death | predator 44%, hunger 21%, old age 18%, illness 8%, wounds 5% | predator 48%, hunger 17%, old age 17%, wounds 9%, illness 7% |
+
+**Result.** Against the prediction written before the run: (1) infant deaths 4.2% → about 3–4% — **not held**: 4.7% (two more deaths in 489, z about 0.4: noise; but my own rule said "not held if infant deaths rise", and it is
+reported so); (2) every other row within noise and the same rows pass — **held** for pass and fail (no row changed status); the population row moved from −3.1% to −4.8% a year and worlds emptied from 6 to 8, with no interval
+computed, so I cannot call it noise or a shift; (3) baby wound deaths near zero — not measured in this table (the trace of entry 99 had 5 in the honest arm).
+
+**Interpretation.** With the honest eye few carried babies chose to attack, so blocking it changes little; the fix is kept because no real infant does it, not for its numbers. The worlds diverge by chance from the first blocked
+attack, so a 24-world table moves by a few points on its own. **Intervals added afterwards** (`reality-check.js --summary` now resamples worlds 1,000 times): population change −3.1% (95%: −7.6 to −1.3) in entry 98 and −4.8% (−7.6 to −1.3) here — **the same range: the difference is noise**. The intervals also show two passes are borderline: life expectancy 11.1–17.3 years and survival to 15 26.9–48.9% both reach outside their real bands. **Strength.** Weak: one run each.
+
+### 102. The real Earth keeps the band alive; the made-up planet does not — and every experiment so far used the made-up planet — Nov 2026
+
+**Version.** 0.11.0 + the baby fix (`3ac78f7`). The owner, watching the page, saw 25 → 43 hominins by year 19 and 82 by year 88, while most test worlds shrank. The page's Land menu defaults to "Earth, 70,000 years ago";
+`tools/experiment-core.js` defaults to a made-up planet (`earth: false`). **Every experiment table so far was a made-up planet.**
+
+**Data.** [Prediction, table, runs](../data/findings/102-real-earth/). `node tools/analysis/reality-check.js SEEDS 100 OUT --earth`, seeds 1–24, four processes; summary with 95% intervals (worlds resampled).
+
+| Check (real band) | Made-up planet (entry 100) | Real Earth |
+|---|---|---|
+| Population change a year (−1 to +1.5%, assumed band) | −4.8% (95% −7.6 to −1.3): fails | **−1.0% (−3.1 to +0.1): passes, at the edge** |
+| Life expectancy (13–33 y) | 14.2 (11.1–17.3) | **17.8 (14.8–20.5)** |
+| Born who reach 15 (30–60%) | 38.6% (26.9–48.9) | **48.3% (39.2–56.3)** |
+| Years between births (5.0–6.5) | 5.3 | 5.3 |
+| Age at first birth (12.5–15.5) | 15.9: fails | 15.5 (15.1–16.0): fails, just over |
+| Babies dying in their first year (10–25%) | 4.7%: fails | 4.0% (2.4–5.6): fails, too low |
+| Illness share (assumed band) | 6.6%: fails | 7.7%: fails |
+| Worlds that grew / shrank / died out | 2 / 14 / 8 | **6 / 12 / 5** (best 25 → 51) |
+| Births followed | 489 | 696 |
+
+**Result.** The prediction held: population change on the real Earth (−1.0%) lies outside the made-up planet's interval, so the planet matters for this row; fewer worlds emptied (5 against 8). Four of seven rows pass (3 of the 5
+with sourced bands). The owner's world (82 at year 88, about +1.35% a year) is among the growing ones, not an oddity.
+
+**Interpretation.** The East African start of the real Earth — real rivers, lakes and land — sustains a band near the real, roughly stable range, where a random made-up planet starves or exposes it. So the experiments have been measuring a
+world the owner never sees, and a harsher one. **Decision for the owner:** whether experiments default to the real Earth (recommended: the aim is East Africa 2.5 Ma, and the page already shows it); if so, the baselines are made
+again on it. Two rows fail on both planets and are real gaps: babies die far too rarely, and first births come a little late. **Strength.** Moderate (24 worlds, intervals; one run). **Lesson.** Check that what is measured is what is shown.
 
 ---
 

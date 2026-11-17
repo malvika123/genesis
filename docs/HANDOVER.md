@@ -63,8 +63,11 @@ Read this first in a new session, then **`docs/MASTER-PLAN.md` (the one plan to 
 
 ## 17 Nov, later: v0.11.0 and what changed (read this first)
 
+- **Experiments default to the real Earth since entry 102** (the owner's choice, 17 Nov); every table before it is a made-up planet (`--made-up-planet`). Entry 102 is the real-Earth baseline: 4 of 7 reality rows pass, population −1.0% a year.
+- **Entry 101 (honest watching) is in progress on the `honest-watching` branch** (worktree `~/genesis-wt/honest-watching`): arms A (old copying), B0 (too-low rate), C (no copying) done on the made-up planet; B1 (corrected) running; to re-run on the real Earth after merging. First look: copying, even the old mind-reading kind, barely changes skills.
+
 - **The default eye is honest** (entry 97): food, water and prey are seen by how much is there, not how much the body needs it. `--need-weighted-eye` restores the old eye. **Every table before v0.11.0 used the old eye.**
-  Baselines re-made in entry 98 (24 × 100 days, both eyes): the same 3 of 7 sourced reality rows pass (survival to 15, life expectancy, birth spacing); both eyes fail babies dying (too few), age at first birth (too high) and the
+  Baselines re-made in entry 98 (24 × 100 days, both eyes): the same 3 of 7 reality rows pass (3 of the 5 with sourced bands) (survival to 15, life expectancy, birth spacing); both eyes fail babies dying (too few), age at first birth (too high) and the
   population (−2.0% old, −3.1% honest a year; assumed band).
 - Entry 96: the mother's pull explains part of the male lean in butchery and fire acts (weak). Entry 95's "shared words" are probably chance (Opus: `docs/reviews/2026-11-17-opus-human-style-words.md`).
 - Page: ape-like Listen voice (audio only), people in water and on river banks drawn right, what a strike hits drawn, a carried baby clings to its mother, sleepers hold still. F19 `docs/WHAT-WE-GOT-WRONG.md` and F20 `docs/PREDICTIONS.md` done.

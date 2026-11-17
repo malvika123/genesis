@@ -4,6 +4,10 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Experiments now run on the real Earth by default, as the page does** (the owner's choice after entry 102): every earlier table used a made-up planet, which is harsher (population −4.8% against −1.0% a year). `--made-up-planet` restores the old default. Entry 102's reality checks are the real-Earth baselines.
+
+- **A carried infant cannot attack** (entries 99–100): babies riding their mothers attacked antelopes and buffalo and died of it, most of the old eye's infant deaths. `--babies-attack` restores the bug. Also entry 99's trace tool (`tools/analysis/trace-eye.js`): with the old eye hominins spent a third to half of each day striking in one place.
+
 - **The reality checks re-run with the honest eye** (research log entry 98): the same three of seven pass (survival to 15, life expectancy, birth spacing); population −3.1% a year (old eye −2.0%), babies dying in
   their first year 4.2% (old 9.6%), predators 44% of deaths (old 32%). Also: `docs/WHAT-WE-GOT-WRONG.md`, `docs/PREDICTIONS.md` (each prediction linked to its commit), a design note for the real-length year.
 
