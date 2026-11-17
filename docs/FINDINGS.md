@@ -2707,7 +2707,7 @@ high-to-low ratio from Piel's Figure 3 (to read).
 
 ### 90. Hunts measured before building detectable hunts: success too high, leopards eat too little, sabre-tooths too much (measuring only) — Nov 2026
 
-**Version.** 0.9.0+ (a measuring tool; the world unchanged). Master plan 0.5 (F1), Fable's rule: judge hunters by kills per hunter per
+**Version.** 0.10.0 (a measuring tool; the world unchanged). Master plan 0.5 (F1), Fable's rule: judge hunters by kills per hunter per
 day against need, and source detection and success separately. `tools/analysis/hunt-measure.js` (default world, 3 worlds × 20 days):
 an attack is a hunter that tried (its attack wait just set); kills are the world's own counter, shared among the kinds that attacked
 in that step.
@@ -2732,7 +2732,7 @@ not success alone. **Strength.** Weak (3 worlds × 20 days); a 24-world run befo
 
 ### 91. Tracing the hunters before F1: few attacks on sleepers, and sabre-tooths attack when full (measuring only) — Nov 2026
 
-**Version.** 0.9.0+ (measuring only; the world unchanged — identical worlds checked). Fable reviewed detectable hunts
+**Version.** 0.10.0 (measuring only; the world unchanged — identical worlds checked). Fable reviewed detectable hunts
 (`docs/reviews/2026-11-16-fable-detectable-hunts.md`): do not build yet; faithful for stalking cats, not for hyenas (they run prey down);
 trace the leopard's low meat and the sabre-tooth's many kills first. The world now keeps a record of each hunter's attack when a tool
 asks for it (`HUNTLOG`; changes nothing); `tools/analysis/hunt-measure.js` counts adult hunters only. The hunters' base success
@@ -2771,7 +2771,7 @@ this stays. **Strength.** Weak (3 worlds × 20 days).
 
 ### 92. A satiety brake: full hunters stop attacking — but more hominins are killed (built, not released) — Nov 2026
 
-**Version.** 0.9.0+ · not released. Fable reviewed "why full hunters keep hunting" (`docs/reviews/2026-11-17-fable-full-hunters.md`):
+**Version.** 0.10.0 · commit `f02924e`. Fable reviewed "why full hunters keep hunting" (`docs/reviews/2026-11-17-fable-full-hunters.md`):
 a rush costs nothing, a full hunter's hunger hardly falls (hunger is scaled to the 25-day store, not the meal), and "energy 80+" is not
 "full". Built: an inborn pull against attacking that grows with stomach fill, 12 × fill (the hungry pull's size, borrowed; tested 6 and
 24), `--no-full-brake` restores (identical worlds). Measured with `tools/analysis/hunt-measure.js`, 24 worlds × 20 days, adult hunters;
@@ -2807,7 +2807,7 @@ run with predator deaths of hominins by age shows whether it is real. Hunters ki
 
 ### 93. The satiety brake over 100 days: hominins killed by hunters rise by half — not released — Nov 2026
 
-**Version.** 0.9.0+ · commit `f02924e` (the brake), not released. The release condition set in entry 92 and the handover: run 24 worlds
+**Version.** 0.10.0 · commit `f02924e` (the brake). The release condition set in entry 92 and the handover: run 24 worlds
 × 100 days with and without the brake, and release only if the rise in hominins killed by hunters is not real or is explained. No
 numeric prediction was written for this check (the condition above was the test). The brake-off arm reproduces entry 89's calendar run
 to the digit (people alive 15.5 ± 15.8, 172 hunger deaths, 220 predator deaths): worlds are repeatable.
@@ -2826,7 +2826,7 @@ to the digit (people alive 15.5 ± 15.8, 172 hunger deaths, 220 predator deaths)
 | Bands died out | 3 | 4 | |
 
 **Result.** The rise seen in entry 92 (29 → 41–64 over 20 days) is **real**: hominins killed by hunters go up by about half over 100
-days, in most worlds. It is not yet explained. Release condition: **not met**.
+days, in most worlds. It is not yet explained. Release condition: **not met** on its own terms (entry 94 measures it against the real predation rate and releases it).
 
 **What is not known (listed, not guessed).** Why. Candidates, each to be tested: (a) hunters that skip prey while full are hungrier
 later and attack whatever is beside them, hominins included (in entry 92's prey lists, clean kills of hominins rose for hyenas, 11 →
@@ -2837,6 +2837,45 @@ fall by 15%, thirst deaths rise (6 → 14, small numbers). **Strength.** Moderat
 **Next.** Trace who the hunters attack (age, asleep, near the band) with and without the brake (`HUNTLOG` already records prey,
 asleep, young); then decide: keep the brake with a fix, drop it, or make it part of a larger change with detection (F1). One change at a
 time; do not adjust the brake's strength toward fewer hominin deaths.
+
+---
+
+### 94. Why more hominins die with the satiety brake — and the rate is still the real one (measuring only) — Nov 2026
+
+**Version.** 0.10.0 · commit `60321b2` (the brake) + a measuring tool. Entry 93 found hominins killed by hunters rise from 220 to 324
+over 24 worlds × 100 days with the brake. Traced with `tools/analysis/hominin-attacks.js` (24 worlds × 20 days, both arms, adult hunters;
+the attack record `HUNTLOG`), then measured against the real predation rate.
+
+**Data.** [Both traces](../data/findings/94-why-more-hominins/); the 100-day arms are entry 93's.
+
+| 24 worlds × 20 days (brake off → on) | Hyena | Leopard | Sabre-tooth |
+|---|---|---|---|
+| Time very hungry (energy under 15) | 5% → 4% | 4% → 5% | 2% → 3% |
+| Time within a square of a hominin | 0.3% → **1.1%** | 0.5% → 0.6% | 0.3% → 0.1% |
+| Time within a square of its own kind | 46% → 47% | 30% → **40%** | 48% → 53% |
+| Attacks on hominins (kills) | 16 (11) → 20 (15) | **9 (7) → 23 (19)** | 22 (11) → 11 (9) |
+| Hunter's energy at attacks on hominins | 68 → 65 | 92 → 67 | 41 → 80 |
+| Attacks on its own kind (only when starving) | 35 → 44 | 14 → 53 | 10 → 16 |
+
+| 24 worlds × 100 days | Predator deaths per hominin-year | Median world | Range |
+|---|---|---|---|
+| Brake off | 1.53% | 1.02% | 0–11.0% |
+| Brake on | 2.14% | 1.96% | 0–9.1% |
+| **Real primates** (24 populations: Cheney & Wrangham 1987, reviewed by Isbell 1994, *Evol Anthropol*; entry 76) | | **median about 3%** | **0–15%** |
+
+**Result.** No prediction (a trace). "Hunters starve later and attack anything" is **not supported**: time spent very hungry is the
+same. The rise has no single cause: **hyenas spend almost 4 × more time beside the band**; **leopards are not nearer but attack hominins
+more when they are**, hungrier at that moment (energy 67 against 92); sabre-tooths attack hominins less. Full hunters no longer kill and
+move on: they linger near the herds, near each other (leopards 30% → 40% of the time beside another leopard, and more fights among
+them) and, for hyenas, near the band. The counts are small (tens of attacks), so this is a lead, not proof. The fall in plant-eaters in
+entry 93 is **not** fewer animals: on the prey map herds are shown only where someone is (`src/preymap.js`), so it means hunters are
+spread over fewer places. Burned deaths (90 → 36) remain **unexplained**.
+
+**Interpretation.** Measured against the real record, the brake moves hominin predation **toward** the real median (1.5% → 2.1% a year,
+the primate median about 3%), inside the real range in both arms. By the realism rules a faithful mechanism is not rejected because
+more creatures die; it is judged against the field. The brake is kept and released (0.10.0). Hunters lingering beside the band is
+itself worth checking against the field later (do real hyenas rest near primate groups?), with detection (F1) and the hominins' own
+alertness. **Strength.** Moderate for the rate (24 × 100 days, paired); weak for the causes (20 days, tens of attacks).
 
 ---
 

@@ -51,17 +51,15 @@ Read this first in a new session, then **`docs/MASTER-PLAN.md` (the one plan to 
   attacks 80% → 61%). **Next:** a design note for review — what stops a real cat hunting when full (satiety, the cost of a rush),
   sourced; trace where the leopard's carcass goes; then a 24-world baseline; then the detection rule with a registered assumption tested at both ends.
 
-## The satiety brake (entries 92–93, 17 Nov) — built on `percept`, NOT released
+## The satiety brake (entries 92–94, 17 Nov) — released in v0.10.0
 
-- `--no-full-brake` restores (identical worlds). Full hunters now let prey pass (attacks on a ⅔-full stomach 20% → 0%); sabre-tooth
-  kills 0.64 → 0.42; leopards keep their meat. **But hominins killed by hunters rose 220 → 324 over 24 worlds × 100 days (higher in 17
-  of 23; real; entry 93).** The release condition is not met, so v0.9.0 stays live.
-- **Next (needs a stronger model or a Fable review — design work, not a checklist):** trace who the hunters attack with and without the
-  brake (`HUNTLOG`: prey, asleep, young, near the band), explain the rise (also: burned deaths −60%, plant-eaters −15%), then decide: fix,
-  drop, or combine with detection (F1). Do not tune the brake's strength toward fewer hominin deaths. Fable's later steps for hunters:
-  digestion by size, the leopard's stomach share, the energy cap.
-- Pitfalls met: `hunt-measure.js` re-reads the code for each world (never edit `src/` while it runs); in zsh `set -- $a` does not split
-  words; read a hunter's stomach **before** its attack.
+- Full hunters let prey pass; hominin predation 1.5% → 2.1% a year, toward the real primate median (~3%, range 0–15%): kept.
+- Causes traced (entry 94, weak): hyenas spend more time beside the band; leopards hungrier when they meet hominins. Burned deaths
+  falling (90 → 36) is unexplained.
+- **Next for hunters (Fable's order):** digestion by size (`--digest-hours`), the leopard's stomach share (0.25 unsupported; 0.10–0.20),
+  the energy cap that throws meat away; then F1 detection (leopard and sabre-tooth only). Each needs a source read first.
+- Pitfalls: `hunt-measure.js` and `hominin-attacks.js` re-read the code for each world (never edit `src/` while they run); in zsh
+  `set -- $a` does not split words; read a hunter's stomach before its attack.
 
 ## Next, in order
 

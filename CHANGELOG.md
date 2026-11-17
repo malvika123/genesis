@@ -4,6 +4,15 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+## 0.10.0 — 2026-11-17
+
+- **A full hunter lets prey pass** (research log entries 92–94): a satiety brake grows with stomach fill, as a gorged cat lets prey go
+  by. Attacks on a full stomach fall from about 20% to 0%; sabre-tooth kills from 0.64 to 0.42 a day; leopards keep their meat.
+  Hominins killed by hunters rise from 1.5% to 2.1% a year — toward the real primate median of about 3%. `--no-full-brake` restores.
+- **Hunters measured before detectable hunts** (entries 90–91): success per attack, kills and meat per day against need, by kind; the
+  hunters' base success registered; a record of every attack for measuring (`HUNTLOG`, changes nothing).
+- Tools: `tools/analysis/hunt-measure.js`, `hominin-attacks.js`.
+
 ## 0.9.0 — 2026-11-16
 
 - **Fruit has a year** (research log entries 88–89): it ripens most in the dry months of a real station's year (Uvinza, beside the

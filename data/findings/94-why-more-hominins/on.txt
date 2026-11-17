@@ -1,0 +1,5 @@
+# 24 worlds x 20 days; adult hunters
+kind | time within a square of a hominin | time within a square of its own kind | time at energy <15 / 15-40 / 40-80 / 80+ | attacks | on own kind | on hominins | kills of hominins | hunter energy at hominin attacks (mean) | of those, energy <40 | stomach fill (mean) | hominin young | hominin asleep
+Hyena | 1.1% | 47.3% | 4.1% / 11.7% / 52.4% / 31.8% | 1164 | 44 | 20 | 15 | 65 | 25.0% | 0.15 | 25.0% | 30.0%
+Leopard | 0.6% | 40.2% | 4.6% / 11.8% / 54.3% / 29.3% | 1403 | 53 | 23 | 19 | 67 | 13.0% | 0.13 | 8.7% | 47.8%
+Sabre-tooth | 0.1% | 53.2% | 3.2% / 8.4% / 39.8% / 48.5% | 1251 | 16 | 11 | 9 | 80 | 0.0% | 0.08 | 18.2% | 18.2%
