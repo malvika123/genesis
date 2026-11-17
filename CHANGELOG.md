@@ -4,6 +4,10 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Every discovery counted each time, not only the first** (research log entry 95; master plan 0.6, F5): times done, how many
+  different hominins did it, and how many of them were female (`rep_X`, `who_X`, `whoF_X` in experiment tables). Measuring only:
+  the worlds are identical. Tool: `tools/analysis/repeats.js`.
+
 ## 0.10.0 — 2026-11-17
 
 - **A full hunter lets prey pass** (research log entries 92–94): a satiety brake grows with stomach fill, as a gorged cat lets prey go

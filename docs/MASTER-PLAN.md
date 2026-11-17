@@ -167,7 +167,7 @@ Steps, in order. F-numbers are from `docs/BACKLOG.md` section 0; G-numbers are t
 | 0.3 | F3: the chain-learning probe (chains of 2, 3, 4, 5 steps, reward at the end) and L0, the delayed-response probe | 1 day | [done 16 Nov, entry 87: chains of 2 yes, 3 for half, 4–5 no; a cue held 2–4 steps] |
 | 0.4 | **The hungry season (R1, G1).** Fruit follows rain with the real lag. Find monthly fruit data first (Issa: Piel et al. 2017; Ugalla). Switch: fruit follows warmth only. Prediction: hunger deaths and fallback eating bunch in one part of the year | 1–2 days after the data | [step 1 done 16 Nov, entries 88–89: fruit follows Uvinza's year (owner's choice); nuts, roots and the body-side test to do] |
 | 0.5 | F1: detectable hunts. Source detection and success separately; a herd stays alert after a failed attack; vigilance tied to eating and sleeping; judge by kills per hunter per day against need. Then leave hunters alone | 1–2 weeks | [to do] (prey flight built, entry 84) |
-| 0.6 | F5: count repeats, not only firsts, for every discovery; split every learning measure by sex (G13) | 2 days | [to do] |
+| 0.6 | F5: count repeats, not only firsts, for every discovery; split every learning measure by sex (G13) | 2 days | [done for discoveries 17 Nov, entry 95: flake and stick-digging are habits of many; butchery and fire acts lean male, hunting a little female (cause untested); other learning measures still to split] |
 | 0.7 | F4: the real-length-year clock for learning questions; test A40 (a 12-day year) first | 1 week | [to do] |
 | 0.8 | **Milestone 1 — F2: the faithful-day table, frozen.** See below | ~3 weeks in all | [to do] |
 | 0.9 | **Milestone 2 — a 3-step chain learned within one real-length childhood** | by ~week 6 | [to do] |

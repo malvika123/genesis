@@ -2877,6 +2877,86 @@ more creatures die; it is judged against the field. The brake is kept and releas
 itself worth checking against the field later (do real hyenas rest near primate groups?), with detection (F1) and the hominins' own
 alertness. **Strength.** Moderate for the rate (24 × 100 days, paired); weak for the causes (20 days, tens of attacks).
 
+### 95. Every discovery counted each time, and split by sex (measuring only) — Nov 2026
+
+**Version.** 0.10.0 + commit `210474c` (the counter; measuring only). Master plan step 0.6 (F5, G13).
+
+**Data.** [The table and the prediction](../data/findings/95-repeats/) (`repeats.csv`, `repeats-table.txt`). Command:
+`nice -n 19 node tools/experiment.js --seeds 1-24 --days 100 --workers 4 --out data/findings/95-repeats/repeats.csv`, then
+`node tools/analysis/repeats.js data/findings/95-repeats/repeats.csv`.
+
+**Added.** Until now the world recorded only the *first* time anything happened. Now, at every place a first is recorded, the world
+also counts every time a hominin does it, how many different hominins did it, and how many of those were female (`rep_X`, `who_X`,
+`whoF_X`). Nothing about any creature changes and no random number is drawn: the identical-worlds check (seeds 1–2 × 20 days against
+the commit before) gave **IDENTICAL**. How some acts are counted: *shared* is credited to the hominin whose saying made the word shared;
+*kept* counts every feed while keeping a fire going; *shelter* counts every hour asleep in one; *speak* every call with the word voice.
+Other kinds reaching the same code (plant-eaters poisoned by berries, animals in pits) are kept apart, not counted.
+
+**Test.** 24 worlds × 100 days, default settings, 15,161 hominin-life-years (a year is 3 days). A hominin is born female with chance ½,
+and the everyday acts done by nearly everyone (fruit 49%, take 50%, speak 49% female) show that the living are about half female.
+
+| Discovery | Worlds | Times | Per 1,000 hominin-life-years | Hominins per world, median (range) | Hominins | Female % (95%) |
+|---|---|---|---|---|---|---|
+| take (picks something up) | 24/24 | 67,784 | 4,471 | 50 (31–77) | 1,234 | 50 (47–52) |
+| fruit | 24/24 | 105,878 | 6,983 | 49.5 (25–80) | 1,239 | 49 (46–52) |
+| root | 24/24 | 7,964 | 525 | 39 (19–62) | 956 | 49 (46–52) |
+| dig (with a stick) | 24/24 | 7,293 | 481 | 34.5 (18–64) | 867 | 49 (46–52) |
+| nut | 24/24 | 6,638 | 438 | 24 (12–38) | 576 | 48 (44–53) |
+| meat | 24/24 | 12,400 | 818 | 26 (13–38) | 612 | 48 (44–52) |
+| flake | 24/24 | 657 | 43 | 13 (5–25) | 311 | 51 (45–56) |
+| marrow | 24/24 | 1,656 | 109 | 8 (3–17) | 211 | **41 (35–48)** |
+| leaves | 24/24 | 26,398 | 1,741 | 15.5 (5–38) | 426 | 55 (51–60) |
+| butcher (cuts meat with a flake) | 15/24 | 418 | 28 | 1.5 (0–6) | 47 | **32 (20–46)** |
+| hunt (brings down a land animal) | 6/24 | 69 | 4.6 | 0 (0–11) | 37 | **70 (54–83)** |
+| cooked (eats wildfire-cooked food) | 15/24 | 65 | 4.3 | 1 (0–11) | 53 | 36 (24–49) |
+| brand (takes up a burning stick) | 12/24 | 57 | 3.8 | 0.5 (0–8) | 37 | **30 (17–46)** |
+| setfire | 5/24 | 17 | 1.1 | 0 (0–2) | 7 | 14 (3–51) |
+| fed (a fire) | 6/24 | 6 | 0.4 | 0 (0–1) | 6 | 50 (19–81) |
+| kept, madefire, rubfire, shelter | 0/24 | 0 | 0 | 0 | 0 | — |
+| share (feeds a hungry child) | 24/24 | 9,770 | 644 | 13 (7–23) | 302 | **100 (99–100)** |
+| vicar (fear from seeing another hurt) | 24/24 | 35,859 | 2,365 | 38.5 (25–69) | 928 | 51 (48–54) |
+| swim | 22/24 | 105 | 6.9 | 3 (0–18) | 105 | 52 (43–62) |
+| point | 24/24 | 620 | 41 | 15 (7–29) | 390 | 48 (44–53) |
+| joint (goes where another pointed) | 23/24 | 88 | 5.8 | 3 (0–7) | 79 | 44 (34–55) |
+| speak | 24/24 | 467,940 | 30,864 | 54.5 (36–81) | 1,301 | 49 (46–51) |
+| shared (a word becomes shared) | 24/24 | 2,791 | 184 | 26 (1–65) | 635 | 51 (47–54) |
+| tree / treeflee / pit / rotten / berries | | | | | | 48–52 |
+
+The pooled interval treats hominins as independent, but they cluster by world. Counted world by world (worlds where the act was done by
+more females than males, against more males): **butcher 2 against 12**, **brand 0 against 9**, marrow 6 against 18, setfire 0 against 4;
+**hunt 4 against 1** (37 hunters in 6 worlds; seed 6 alone gives 11). Butcher, brand and marrow lean male in most worlds; the hunting
+lean toward females rests on five worlds and is not yet more than a hint.
+
+**Result.** Against the prediction written before the run:
+1. Everyday acts by nearly everyone, thousands of times — **held** (take, fruit, root, nut, meat).
+2. Tool and fire acts rare and by 1–3 — **mixed.** Held for butcher, setfire, fed, kept and the fire-making acts (none, as expected).
+   **Not held for flake and dig:** flakes were struck in all 24 worlds by a median of 13 hominins, and roots dug with a stick by 34.5 a
+   world, 7,293 times. Since entry 85 these are acts (a strike), and they became habits of many, not one-offs.
+3. Sharing by mothers only — **held** (302 of 302 sharers female), as the hominin-era care rule (`apeCare`) says. This also checks the counter.
+4. Hunting more often by males — **not held**: 70% of the hunters were female, in 4 of the 5 worlds with a clear lean. The reason given
+   was wrong: a hominin's chance in an attack does not depend on its body size in the model (`src/sim.js`, the `pc` for `a.sp === 0`).
+   The cause is not measured.
+5. No sex difference in take, nut, root, meat, flake, swim, point or speak (all within 35–65%) — **held** (48–52%).
+6. Shared words a few times a world at most — **not held**: on average 116 words became shared per world (2,791 in all), by a median of
+   26 hominins a world.
+
+Not in the prediction: cutting meat with a flake (32% female), taking up burning sticks (30%) and cracking bones for marrow (41%) lean
+male across worlds; eating leaves leans a little female (55%).
+
+**Interpretation.** Counting only firsts hid that flaking and stick-digging are now habits across the band, while butchery and fire
+stay rare. The sex differences arise without any rule that treats the sexes differently in these acts; the one obvious candidate is the
+mother's pull toward her young child (`SOC.momPull`), which keeps mothers near the infant and may keep them away from carcasses and
+fires — **not tested**. Against the real record: among Gombe chimpanzees adult and adolescent males made 89% of red colobus kills in
+1982–1991 (Stanford et al. 1994, *Am J Phys Anthropol* 94:213), but at Fongoli, Senegal, tool-assisted hunting of bushbabies is done
+mostly by females and immatures (Pruetz & Bertolani 2007, *Curr Biol* 17:412; Pruetz et al. 2015, *R Soc Open Sci*). The model's
+hominin "hunt" is grabbing small prey, closer to Fongoli's hunting than to Gombe's monkey chases — so a female lean is not against
+the record, but it is not explained either. The "split every learning measure by sex" half of step 0.6 is done for discoveries; the
+other learning measures (chain probe, copying) are still to split.
+
+**Strength.** Moderate for the counts and the everyday acts (24 × 100 days, hundreds of individuals); weak for the rare acts and
+the hunting lean (tens of individuals, clustered in a few worlds). **Lesson.** Measure repeats and who, not only firsts: a "first"
+can be a one-off or the start of a habit, and the two look the same in a first-day table.
+
 ---
 
 ## Open questions (next tests)

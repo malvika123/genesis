@@ -19,7 +19,7 @@ Worked in the roadmap's order; status kept here.
 | F2 | Faithful-day table, frozen: the world checked against field data (life history, day, diet, danger, social life, learning times), shown with its fails | 0 | to do (~3 weeks) |
 | F3 | Chain-learning probe: can the brain learn a multi-step chain (stone → strike → flake → carry → cut)? plus L0, a delayed-response probe | 0 | done (entry 87): 2 yes, 3 half, 4–5 no; memory 2–4 steps. Next: the probe with copying from a skilled elder |
 | F4 | A second, real-length-year clock for learning questions (test A40, a 12-day year, first) | 0 | to do |
-| F5 | Count repeats, not only firsts, for every discovery | 0 | to do |
+| F5 | Count repeats, not only firsts, for every discovery | 0 | done (entry 95, 17 Nov; `rep_X`/`who_X`/`whoF_X`, `tools/analysis/repeats.js`) |
 | F6 | One hard skill with repeats and a mother-to-young advantage (milestone 3) | 0 | to do (~3 months) |
 | F7 | Stop rules: stop if stage-0 milestones fail, or a month passes with no change in hominin behaviour | 0 | in force |
 | F8 | Engine: profile, then speed (3× faster, identical worlds by seed) | 1 | to do |
@@ -227,3 +227,12 @@ verified online, built with a switch, and tested on its own before the next, in 
   frequency by body mass; "above 30 kg, predators can afford to hunt every second day", as summarised). Both open copies refuse automated
   download. Then the energy cap (fat from a gorge), then F1 detection.
 - Unexplained from entry 93: hominins burned to death fell 90 → 36 with the satiety brake.
+
+## Follow-ups from entry 95 (17 Nov 2026)
+
+- Why do butchery, burning sticks and marrow lean male, and hunting a little female? Test the mother's pull (`--no-mother-pull`) with the repeat counts; measure where mothers of young infants spend their time against carcasses and fires.
+- The hunting lean rests on 37 hunters in 6 worlds: count again over more worlds before reading anything into it.
+- Split the other learning measures by sex (step 0.6, second half): the chain probe, copying from others, fire skill.
+- The shared-word count (2,791 in 24 worlds) is far above the prediction: check what "three say it, ten times" means against the
+  word list (`words_shared`) before treating it as language.
+
