@@ -1863,6 +1863,10 @@ function honestTeacher(a, act, seen) {
   if (a.asleep || act < 8 || (isNightAt(a.x) && !(a.hand === 4 || fireNear(a.x, a.y) > 0.05))) return { tch: null, n: 0 };
   const can = [];
   let tw = 0;
+  for (const o of l) if (nw.has(o.id) && nw.get(o.id) >= SOC.watchSteps) {
+      TOGETHER++; // the record (measuring only): a step together, long enough, still, awake, by day
+      break;
+    }
   for (const o of l) {
     if (!nw.has(o.id) || nw.get(o.id) < SOC.watchSteps || o.visT !== tick || !VIS_ACT.has(o.visAct)) continue;
     const w = o === a.mom ? SOC.peerMom : 1;
@@ -1880,7 +1884,11 @@ function honestTeacher(a, act, seen) {
     }
   const ageY = a.age / TY,
     p = (ageY >= 3 && ageY <= 6 ? SOC.peerHi : SOC.peerLo) * (tch.visAct === A_STRIKE ? SOC.peerTool : 1);
-  return rnd2() < Math.min(1, p) ? { tch, n: can.length } : { tch: null, n: can.length };
+  if (rnd2() < Math.min(1, p)) {
+    WATCHB++; // the record (measuring only): a watching bout
+    return { tch, n: can.length };
+  }
+  return { tch: null, n: can.length };
 }
 // --honest-success: a running count of the results this watcher has seen from each elder, and a Laplace estimate of its success
 function noteSeen(a, o, ok) {

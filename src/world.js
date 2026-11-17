@@ -228,6 +228,8 @@ function buildWorld(cfg) {
   firsts = {};
   DONE = {};
   WATCHN = 0;
+  WATCHB = 0;
+  TOGETHER = 0;
   maxGen = 0;
   nLessons = 0;
   over = false;

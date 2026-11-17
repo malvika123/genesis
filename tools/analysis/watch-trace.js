@@ -20,6 +20,8 @@ if (process.argv[2] === '--compare') {
       rep = (k) => ((1000 * W.reduce((t, w) => t + ((w.done[k] || {}).n || 0), 0)) / HD).toFixed(1),
       dd = {};
     for (const w of W) for (const [k, v] of Object.entries(w.deaths)) dd[k] = (dd[k] || 0) + v;
+    const BT = W.reduce((t, w) => t + (w.bouts || 0), 0), TG = W.reduce((t, w) => t + (w.together || 0), 0);
+    if (TG) console.log(`watching bouts ${BT} in ${(TG / 4).toFixed(0)} hours together: ${(BT / (TG / 4)).toFixed(2)} an hour (registered band 0.3-1.5)`);
     console.log(`hominin-days ${HD.toFixed(0)}, alive at the end ${W.reduce((t, w) => t + w.alive, 0)}, worlds emptied ${W.filter((w) => !w.alive).length}; repeats per 1,000 hominin-days: ` + ['take', 'nut', 'flake', 'dig', 'butcher', 'marrow', 'root', 'meat', 'share', 'speak'].map((k) => k + ' ' + rep(k)).join(', '));
     console.log('deaths: ' + Object.entries(dd).map(([k, v]) => k + ' ' + v).join(', '));
     console.log('skill | watched by | did | first-time rate per 1,000 days: after watching / before or never (ratio) | young who did it: mother did first / mother never');
@@ -103,6 +105,6 @@ for (const seed of seeds) {
     done = Object.fromEntries(Object.entries(st.DONE || {}).map(([k, v]) => [k, { n: v.n, who: v.who.size }])),
     deaths = Object.fromEntries(Object.entries(st.deaths).filter(([k]) => k.startsWith('Person: ')).map(([k, v]) => [k.slice(8), v])),
     hdays = people.reduce((tt, p) => tt + (Math.min(p.death ?? end, end) - p.enter) / 96, 0);
-  fs.writeFileSync(path.join(out, 'world-' + seed + '.json'), JSON.stringify({ seed, days, flags, end, watchN: st.WATCHN, hdays, done, deaths, alive: alive.size, people }));
+  fs.writeFileSync(path.join(out, 'world-' + seed + '.json'), JSON.stringify({ seed, days, flags, end, watchN: st.WATCHN, bouts: st.WATCHB || 0, together: st.TOGETHER || 0, hdays, done, deaths, alive: alive.size, people }));
   console.log('world', seed, 'done: hominins', people.length, 'copy events', E.state().WATCHN);
 }

@@ -117,7 +117,9 @@ function did(a, k) {
   if (fd[k] === undefined) fd[k] = tick;
 }
 // Copy events from watching (entry 101, measuring only): how many, and which skill each was about, per watcher (a.ws[skill] = first tick it watched it)
-let WATCHN = 0;
+let WATCHN = 0,
+  WATCHB = 0, // watching bouts under --honest-who (measuring only)
+  TOGETHER = 0; // steps a still, awake watcher spent by day with an elder it had been with long enough (measuring only)
 const STK_SKILL = { nut: 'nut', dig: 'dig', cut: 'butcher', bone: 'marrow', flake: 'flake' };
 function sawSkill(a, tch, what) {
   WATCHN++;
