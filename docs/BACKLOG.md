@@ -344,3 +344,11 @@ Expect learning from others to fall a lot. Entries resting on copying (48–60, 
 - **How these are built (the owner, 17 Nov):** each behind its own switch, off by default until measured, identical worlds with the switch off, a prediction first that names what result would show it adds something
   artificial (then it stays off and the reason is written here); each registered as **inferred from living primates** (which species, how safe: startle very safe, alarm calls fairly safe, vigilance moderate, minutes-long
   watchfulness weak — one baboon study).
+
+## The second question (the owner, 17 Nov 2026): does rich food make a bigger brain pay? (brain–diet selection; after honest watching)
+- **Why:** a leading explanation of the human line: meat, marrow and later cooking supplied the spare energy that made larger brains affordable, and larger brains then paid for themselves (tools, food, social learning)
+  — debated in its parts (Aiello & Wheeler 1995, the expensive gut; Wrangham, cooking; Pontzer et al., higher total energy use). Sources to be checked before building.
+- **Cheap first measurement, no change to the world:** in short runs, the selection gradient — inherited brain size (the grown units and layout genes) against surviving young raised per hominin — with rich foods available (as now)
+  and without (`--no-marrow` and the equivalent for meat), same seeds. Bigger-brained hominins leaving more young only when rich food is there would be step 4's mechanism in one generation: a direction, not evolution.
+- **Known obstacles:** a bigger brain must actually help (README: "bigger brains on their own made things worse"); brains cost energy (`SOC.brainF`, registered); evolution itself needs the long runs (stage 6 relay).
+- Prediction first, both ends, no tuning toward bigger brains.
