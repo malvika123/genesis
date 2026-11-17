@@ -2805,6 +2805,41 @@ run with predator deaths of hominins by age shows whether it is real. Hunters ki
 
 ---
 
+### 93. The satiety brake over 100 days: hominins killed by hunters rise by half — not released — Nov 2026
+
+**Version.** 0.9.0+ · commit `f02924e` (the brake), not released. The release condition set in entry 92 and the handover: run 24 worlds
+× 100 days with and without the brake, and release only if the rise in hominins killed by hunters is not real or is explained. No
+numeric prediction was written for this check (the condition above was the test). The brake-off arm reproduces entry 89's calendar run
+to the digit (people alive 15.5 ± 15.8, 172 hunger deaths, 220 predator deaths): worlds are repeatable.
+
+**Data.** [Both arms and the comparison](../data/findings/92-full-hunters/) (`long-off.csv`, `long-on.csv`, `long-compare.txt`).
+
+| 24 worlds × 100 days (brake off → on) | Off | On | Difference (95% range) |
+|---|---|---|---|
+| **Hominins killed by a predator (sum)** | **220** | **324** | **+4.3 a world [+1.1, +7.6]; higher in 17, lower in 6** |
+| Died of their wounds (sum) | 138 | 168 | +1.3 [−0.2, +2.7] |
+| Burned (sum) | 90 | 36 | −2.3 [−4.0, −0.5]; lower in 10, higher in 2 |
+| Hunger / thirst (sum) | 172 / 6 | 180 / 14 | +0.3 [−1.6, +2.3] / +0.3 [−0.1, +0.7] |
+| People alive at day 100 (mean) | 15.5 | 13.1 | −2.4 [−7.7, +2.8] |
+| Plant-eaters at day 100 (mean) | 65.5 | 55.8 | −9.7 [−16.7, −2.6]; lower in 17 |
+| Hunters at day 100 (mean) | 15.0 | 14.5 | −0.5 [−2.1, +1.1] |
+| Bands died out | 3 | 4 | |
+
+**Result.** The rise seen in entry 92 (29 → 41–64 over 20 days) is **real**: hominins killed by hunters go up by about half over 100
+days, in most worlds. It is not yet explained. Release condition: **not met**.
+
+**What is not known (listed, not guessed).** Why. Candidates, each to be tested: (a) hunters that skip prey while full are hungrier
+later and attack whatever is beside them, hominins included (hominins were 7–14% of attacks on a ⅔-full stomach... in entry 92 the
+hominin share of clean kills rose, e.g. hyena 11 → 15–37); (b) with fewer plant-eaters killed (down 10 of 66), hunters turn to the
+next prey; (c) hunters stand near the band more. Side effects with no explanation yet: burned deaths fall by 60% (90 → 36), plant-eaters
+fall by 15%, thirst deaths rise (6 → 14, small numbers). **Strength.** Moderate (24 worlds × 100 days, paired, same seeds).
+
+**Next.** Trace who the hunters attack (age, asleep, near the band) with and without the brake (`HUNTLOG` already records prey,
+asleep, young); then decide: keep the brake with a fix, drop it, or make it part of a larger change with detection (F1). One change at a
+time; do not adjust the brake's strength toward fewer hominin deaths.
+
+---
+
 ## Open questions (next tests)
 
 - Ablate the bundle in entry 7: which of band size, parental feeding, instincts, one-shot memory and

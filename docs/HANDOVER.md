@@ -51,15 +51,17 @@ Read this first in a new session, then **`docs/MASTER-PLAN.md` (the one plan to 
   attacks 80% → 61%). **Next:** a design note for review — what stops a real cat hunting when full (satiety, the cost of a rush),
   sourced; trace where the leopard's carcass goes; then a 24-world baseline; then the detection rule with a registered assumption tested at both ends.
 
-## The satiety brake (entry 92, 17 Nov) — built on `percept`, NOT released
+## The satiety brake (entries 92–93, 17 Nov) — built on `percept`, NOT released
 
 - `--no-full-brake` restores (identical worlds). Full hunters now let prey pass (attacks on a ⅔-full stomach 20% → 0%); sabre-tooth
-  kills 0.64 → 0.42; leopards keep their meat. **But hominins killed by hunters rose 29 → 41–64** (24 worlds × 20 days).
-- **Next (in order):** (1) 24 worlds × 100 days, both arms (`--no-full-brake` vs default), compare `died_killed_by_a_predator` for
-  hominins (`node tools/analysis/compare-runs.js A.csv B.csv`) and `node tools/analysis/predators.js` by age — release only if the
-  rise is not real or is explained; (2) Fable's next steps: digestion by size, the leopard's stomach share, the energy cap; (3) then F1.
-- Pitfalls met today: `hunt-measure.js` re-reads the code for each world (never edit `src/` while it runs); in zsh, `set -- $a` does
-  not split words (write each run out); read a hunter's stomach **before** its attack.
+  kills 0.64 → 0.42; leopards keep their meat. **But hominins killed by hunters rose 220 → 324 over 24 worlds × 100 days (higher in 17
+  of 23; real; entry 93).** The release condition is not met, so v0.9.0 stays live.
+- **Next (needs a stronger model or a Fable review — design work, not a checklist):** trace who the hunters attack with and without the
+  brake (`HUNTLOG`: prey, asleep, young, near the band), explain the rise (also: burned deaths −60%, plant-eaters −15%), then decide: fix,
+  drop, or combine with detection (F1). Do not tune the brake's strength toward fewer hominin deaths. Fable's later steps for hunters:
+  digestion by size, the leopard's stomach share, the energy cap.
+- Pitfalls met: `hunt-measure.js` re-reads the code for each world (never edit `src/` while it runs); in zsh `set -- $a` does not split
+  words; read a hunter's stomach **before** its attack.
 
 ## Next, in order
 
