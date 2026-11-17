@@ -1033,6 +1033,91 @@ let listen = false,
 // The voice played back from the mouth that made it: a buzzing source (the vocal folds) shaped by the
 // vowel's two resonances (F1, F2 — the same numbers the listeners hear), with a burst of breath for a
 // p, t or k, a short voiced start for b, d or g. The cry and the scream are inborn sounds.
+// An ape-like voice for the early hominins (docs/design/hominin-voice.md; entry-free, audio only: nothing in the world changes).
+// Anatomy (an ape-like hyoid at 3.3 Ma, apelike breathing nerves, chimpanzee-like hearing) points to graded ape calls, not human
+// consonant-vowel syllables, but the sim's calls are still human-style (src/voice.js), so each of its three kinds of sound is drawn with
+// the nearest ape call: the cry as a soft "hoo", the scream as a chimpanzee-like scream, speech as a low breathy grunt whose vowel
+// only nudges the two resonances. Measured: the chimpanzee hoo's resonances F1 359 (SD 57) and F2 896 (SD 133) Hz, 0.6 s (SD 0.3)
+// (8 calls from 3 animals, ICPHS 2023). Everything else is an ASSUMPTION inside a range research allows (docs/ASSUMPTIONS.md,
+// "The hominin voice"): F0 male 150 (100–250), female 220 (150–350), young 450 (300–700) Hz; scream F0 1000 adult (800–2000), 1500 young;
+// grunt 0.25 s (0.1–0.4), contour falling by 20%; noise share 0.05 hoo, 0.2 grunt, 0.35 scream. The voice is a stand-in: A. afarensis was
+// neither a chimpanzee nor a gorilla.
+const APE = { f0m: 150, f0f: 220, f0y: 450, scream: 1000, screamY: 1500, hooF: [360, 900], hoo: 0.6, grunt: 0.25, scr: 0.5, nHoo: 0.05, nGrunt: 0.2, nScr: 0.35 };
+function speakApe(c, dest, t0, a, k, w) {
+  const young = a.age < a.S.mat,
+    f0 = young ? APE.f0y : a.sex ? APE.f0f : APE.f0m,
+    noise = (dur, f, q, gain, at) => {
+      const n = c.createBuffer(1, Math.max(1, Math.round(c.sampleRate * dur)), c.sampleRate),
+        d = n.getChannelData(0);
+      for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+      const ns = c.createBufferSource(),
+        bp = c.createBiquadFilter(),
+        gn = c.createGain();
+      ns.buffer = n;
+      bp.type = 'bandpass';
+      bp.frequency.value = f;
+      bp.Q.value = q;
+      gn.gain.value = gain;
+      ns.connect(bp).connect(gn).connect(dest);
+      ns.start(at);
+      ns.stop(at + dur);
+    },
+    // one call: a buzzing source with a little jitter, shaped by two resonances, with a share of breath or noise
+    call = (at, dur, p0, p1, formants, qs, noiseShare, peak, noiseHz) => {
+      const out = c.createGain();
+      out.gain.setValueAtTime(0, at);
+      out.gain.linearRampToValueAtTime(peak, at + Math.min(0.04, dur * 0.2));
+      out.gain.setValueAtTime(peak, at + dur * 0.7);
+      out.gain.linearRampToValueAtTime(0, at + dur);
+      out.connect(dest);
+      const src = c.createOscillator(),
+        lfo = c.createOscillator(),
+        lg = c.createGain();
+      src.type = 'sawtooth';
+      src.frequency.setValueAtTime(p0, at);
+      src.frequency.linearRampToValueAtTime(p1, at + dur);
+      lfo.frequency.value = 28; // the irregular beat of ape vocal folds
+      lg.gain.value = 0.04 * p0;
+      lfo.connect(lg).connect(src.frequency);
+      const mix = c.createGain();
+      mix.gain.value = 1 - noiseShare;
+      formants.forEach((f, i) => {
+        const bp = c.createBiquadFilter();
+        bp.type = 'bandpass';
+        bp.frequency.value = f;
+        bp.Q.value = qs[i];
+        src.connect(bp).connect(mix);
+      });
+      mix.connect(out);
+      src.start(at);
+      lfo.start(at);
+      src.stop(at + dur + 0.03);
+      lfo.stop(at + dur + 0.03);
+      if (noiseShare > 0) noise(dur, noiseHz, 0.8, noiseShare * peak * 1.2, at);
+    };
+  if (k === 0) {
+    // the cry: a soft, tonal "hoo", rising a little and falling
+    call(t0, APE.hoo, f0 * 0.9, f0 * 0.75, APE.hooF, [5, 6], APE.nHoo, 0.28, 800);
+    return t0 + APE.hoo;
+  }
+  if (k === 1) {
+    // the scream: high and harsh, flat in the middle, with a good share of noise
+    const p = young ? APE.screamY : APE.scream;
+    call(t0, APE.scr, p * 1.05, p * 0.9, [900, 2400], [2.5, 2], APE.nScr, 0.3, 2600);
+    return t0 + APE.scr;
+  }
+  // speech: a low breathy grunt for each syllable; the vowel moves the two resonances a little, around the measured hoo's (a narrow
+  // range, as an ape's throat gives); a voiceless start is a puff of breath
+  let t = t0;
+  for (const [o, v, h, b, r] of w || [[0, 1, 2, 1, 0]]) {
+    const F1 = [330, 380, 440][h] ?? 380,
+      F2 = [1100, 950, 800][b] - 70 * r;
+    if (o && !v) noise(0.05, 1200, 0.8, 0.12, t);
+    call(t + (o && !v ? 0.04 : 0), APE.grunt, f0 * 1.05, f0 * 0.82, [F1, F2], [5, 6], APE.nGrunt, 0.3, 900);
+    t += APE.grunt;
+  }
+  return t;
+}
 function speak(a, k, w) {
   if (!listen) return;
   const now = performance.now();
@@ -1040,6 +1125,7 @@ function speak(a, k, w) {
   lastVoice = now;
   try {
     AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+    if (typeof ERA !== 'undefined' && ERA === 'hominin') return void speakApe(AC, AC.destination, AC.currentTime + 0.02, a, k, w);
     const young = a.age < a.S.mat,
       f0 = young ? 330 : a.sex ? 210 : 125,
       syl = w || [[0, 1, k === 0 ? 2 : 2, 1, 0]],

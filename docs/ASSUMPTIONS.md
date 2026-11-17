@@ -249,6 +249,23 @@ worlds). A child takes each inherited trait from one parent or the other at rand
 | The fruit calendar (`SOC.fruitCal`; `--fruit-follows-warmth`: the old rule) and its year (`UVINZA` in `src/forest.js`) | fruit ripens faster in the dry months: each month's dryness (1 − its share of the year's rain ÷ the wettest month's) from Uvinza 1973–1989, averaged to 1, mirrored by hemisphere; on the life clock | Issa: "fruit availability showed a significant inverse relationship to rainfall… peaking in the early dry season" in each of three full years; lowest in the late wet season (Piel et al. 2017, *J Hum Evol* 112:57, full text read; 597 plants, monthly); Uvinza rainfall from the Directorate of Meteorology, Tanzania, via J. Moore (`data/reference/uvinza-rain.csv`) | **direction** (the shape of the curve, dryness, is our choice; the high-to-low ratio was not read: Piel's Figure 3); a **stand-in** place for all of the world's fruit |
 | How long ripe fruit hangs (`SOC.fruitHang`; `--fruit-hang`) | 1/12 of a year (about a month); ripening scaled so the uneaten year's mean is unchanged | one African fruit tree's ripening phase lasts 3–5 weeks (*Dacryodes edulis*, 2021 study, as summarised); no savanna-woodland figure found | **assumption**: test 1/24 and 1/6 |
 
+## The hominin voice (registered 17 Nov 2026; the page's Listen sound only: nothing in the world changes)
+
+An ape-like rendering of the sim's three kinds of sound (`speakApe` in `ui/app.js`; sources and gaps in `docs/design/hominin-voice.md`). The voice is a stand-in:
+*A. afarensis* was neither a chimpanzee nor a gorilla. Hyoid, breathing-nerve canals and hearing of the australopithecines point to a graded, ape-like repertoire
+(sourced, thin evidence); the sim's words are still human-style syllables (an open design question).
+
+| Number | Value (range) | Status |
+|---|---|---|
+| Resonances of the soft "hoo" (the cry) | F1 360, F2 900 Hz | **sourced**, weak: chimpanzee hoo F1 359 (SD 57), F2 896 (SD 133), 8 calls from 3 animals (ICPHS 2023) |
+| Length of the hoo | 0.6 s | **sourced**, weak: 0.6 s (SD 0.3), same study |
+| Grunt resonances for vowels | F1 330–440, F2 800–1100 Hz | **assumption**: the human vowel range compressed around the measured hoo's (an ape's throat gives a narrow range) |
+| Fundamental (F0), adult male / female / young | 150 (100–250) / 220 (150–350) / 450 (300–700) Hz | **assumption**; only a chimpanzee grunt range of 70–700 Hz (secondary table) and the lowest-F0 loud calls of chimpanzees 128 ± 46 and bonobos 299 ± 54 Hz bound it; F0 follows larynx size (bonobos about an octave above chimpanzees) |
+| Scream F0, adult / young | 1000 (800–2000) / 1500 Hz | **direction**: chimpanzee scream 800–2000 Hz, flat middle (secondary table) |
+| Grunt length, contour | 0.25 s (0.1–0.4), falling about 20% | **assumption** |
+| Noise share: hoo / grunt / scream | 0.05 / 0.2 / 0.35 | **assumption**: harsh and breathy qualities are general knowledge, not verified from a source here |
+| Not found | gorilla grunt, belch, bark, roar F0; juvenile and female gorilla F0; pant-hoot F0 | not rendered |
+
 ## To do
 
 - Audit the older parts of the model the same way (temperatures, energy use, foods, predators, sound…).
