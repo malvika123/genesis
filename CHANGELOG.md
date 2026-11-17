@@ -7,6 +7,7 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 - **Every discovery counted each time, not only the first** (research log entry 95; master plan 0.6, F5): times done, how many
   different hominins did it, and how many of them were female (`rep_X`, `who_X`, `whoF_X` in experiment tables). Measuring only:
   the worlds are identical. Tool: `tools/analysis/repeats.js`.
+- **The mother's pull explains part of the male lean in butchery and fire acts** (entry 96): with `--no-mother-pull` butchery 32 → 43% female, burning sticks 30 → 44%; the band is smaller without it. Measuring only; the default is unchanged.
 
 ## 0.10.0 — 2026-11-17
 

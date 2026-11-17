@@ -230,7 +230,7 @@ verified online, built with a switch, and tested on its own before the next, in 
 
 ## Follow-ups from entry 95 (17 Nov 2026)
 
-- Why do butchery, burning sticks and marrow lean male, and hunting a little female? Test the mother's pull (`--no-mother-pull`) with the repeat counts; measure where mothers of young infants spend their time against carcasses and fires.
+- **Entry 96 (17 Nov): the mother's pull explains part of it** (butchery 32 → 43% female, burning sticks 30 → 44% without it; weak evidence). Still open: why the band is smaller without the pull (births? not measured), and why hunting leans female. Original item: Why do butchery, burning sticks and marrow lean male, and hunting a little female? Test the mother's pull (`--no-mother-pull`) with the repeat counts; measure where mothers of young infants spend their time against carcasses and fires.
 - The hunting lean rests on 37 hunters in 6 worlds: count again over more worlds before reading anything into it.
 - Split the other learning measures by sex (step 0.6, second half): the chain probe, copying from others, fire skill.
 - The shared-word count (2,791 in 24 worlds) is far above the prediction: check what "three say it, ten times" means against the

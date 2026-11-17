@@ -2957,6 +2957,53 @@ other learning measures (chain probe, copying) are still to split.
 the hunting lean (tens of individuals, clustered in a few worlds). **Lesson.** Measure repeats and who, not only firsts: a "first"
 can be a one-off or the start of a habit, and the two look the same in a first-day table.
 
+### 96. Without the mother's pull, the male lean in butchery and fire acts mostly goes — and the band is smaller (measuring) — Nov 2026
+
+**Version.** 0.10.0 + code of commit `210474c` (unchanged `src/` since); the arm is the existing switch `--no-mother-pull`.
+
+**Data.** [Prediction, table and run](../data/findings/96-mother-pull-repeats/); baseline is entry 95's table. Command:
+`nice -n 19 node tools/experiment.js --seeds 1-24 --days 100 --workers 4 --no-mother-pull --out data/findings/96-mother-pull-repeats/repeats.csv`.
+
+**Test.** Entry 95 found that cutting meat with a flake (32% female), taking up burning sticks (30%) and cracking bones for marrow (41%)
+lean male, with no rule treating the sexes differently except the mother's pull toward her nursing child (`SOC.momPull`). Same 24 worlds ×
+100 days, pull on (entry 95) against off (a mother goes to her child only when it cries). The worlds differ from the first mother's first step,
+so the comparison is of means, not of the same events.
+
+| 24 worlds × 100 days, pull on → off | Repeats per 1,000 hominin-life-years | Hominins who did it | Female % | Worlds |
+|---|---|---|---|---|
+| butcher (cuts meat with a flake) | 28 → 45 | 47 → 35 | **32 → 43** | 15 → 12 |
+| brand (takes up a burning stick) | 4 → 5 | 37 → 45 | **30 → 44** | 12 → 12 |
+| cooked (eats wildfire-cooked food) | 4 → 5 | 53 → 59 | **36 → 54** | 15 → 18 |
+| marrow | 109 → 143 | 211 → 205 | 41 → 45 | 24 → 23 |
+| hunt | 5 → 5 | 37 → 38 | 70 → 58 | 6 → 8 |
+| take, fruit, root, nut, flake, point, speak | within about 10% | | 48–52 → 49–52 | 24 → 24 |
+| meat | 818 → 992 | 612 → 580 | 48 → 47 | 24 → 24 |
+| leaves | 1,741 → 1,131 | 426 → 380 | 55 → 54 | 24 → 24 |
+| share (feeds a hungry child) | 644 → 669 | 302 → 252 | **100 → 100** | 24 → 24 |
+
+Butchery, burning sticks and cooked food together: **33% female (45 of 137 hominins) → 48% (67 of 139)**, z = 2.6 (pooled, treating hominins as
+independent; they cluster by world, so this is an upper bound on the strength). World by world the three acts do not agree: butchery repeats rose
+in 7 worlds and fell in 12, burning sticks 8 up and 6 down, cooked 7 and 6.
+
+**Result.** Against the prediction written before the run:
+1. Female share of butcher, brand and marrow rises toward 50% — **held in direction** (butcher 32 → 43, brand 30 → 44), marrow 41 → 45 just short of the 46 I wrote.
+2. Hunting (70% female) not moving by more than chance — **inconclusive**: 70 → 58 on 37 and 38 hunters in 6 and 8 worlds cannot be told from chance.
+3. Everyday acts stay near 50% — **held** (47–55% in all).
+4. Repeats of butchery, burning sticks and marrow rise by under 30% — **not held** for butchery (+60%) and marrow (+31%), burning sticks +25%.
+5. Sharing stays 100% mothers — **held**; the number of feeds per life-year did not fall (644 → 669).
+The "not held" criterion (all three shares within 5 points) was not met: butchery moved 11 points and burning sticks 14.
+
+**Not in the prediction.** Without the pull the band is smaller: hominin-days lived fell from 1,895 to 1,621 a world (paired difference −274, standard
+error 151; lower in 15 of 24 worlds) and worlds where people died out rose from 4 to 5; deaths in all fell (1,013 → 942, hunger 180 → 161, thirst 14 → 5).
+The band is smaller although fewer hominins die, so the cause is not deaths; fewer births is the obvious candidate but **was not measured**. The paired difference is about 1.8 standard errors: a hint, not a finding.
+
+**Interpretation.** The mother's pull is a plausible cause of part of the male lean: where mothers of young children are kept near them, they are less
+often among those who cut meat or take up burning sticks. The effect is moderate in size and weak in evidence (35–59 hominins an act, worlds that do
+not agree). The pull is not shown to be the *only* cause: the acts still lean slightly male (butchery 43%, marrow 45%) and the hunting lean (70% female
+on 37 hunters) is not explained by it. **Strength.** Weak to moderate: one pooled contrast of 137 against 139 hominins, clustered by world, a single run
+of 24 worlds. **Lesson.** A sex difference that arises without any rule about sex can still be traced to a rule that bears on one sex only (here, who
+has a young child): switch it off and count again, before reading anything into the lean.
+
 ---
 
 ## Open questions (next tests)
