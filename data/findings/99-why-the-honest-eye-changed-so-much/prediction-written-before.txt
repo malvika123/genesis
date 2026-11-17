@@ -1,0 +1,18 @@
+Entry 99: why did the honest eye (entry 97, v0.11.0) change the world so much? A trace, measuring only (tools/analysis/trace-eye.js: follows every hominin every step; changes nothing).
+Written 17 Nov 2026, before any run. 24 worlds (seeds 1-24) x 100 days per arm: old eye (--need-weighted-eye) against the honest eye (default); 4 processes at a time, nice.
+
+What the code does (src/senses.js, sense()): the old eye multiplied the food and water channels, and for hunters the prey and people channels, by (0.15 + hunger or thirst). The honest eye shows them at full
+strength by nearness alone. So a full creature sees food, water and (for hunters) prey about 5 times more strongly than before, a hungry one about as before.
+
+What I expect, and why:
+1. Hunters near hominins: with prey seen at full strength whatever the hunger, hunters are pulled toward people and herds even when full. Steps with a leopard, hyena or sabre-tooth in the same or a neighbouring square per 1,000
+   hominin-steps rise by at least 25% (the predator deaths rose by 54% a life-year), and the share of those steps when the hunter is hungry (energy under 40) falls.
+2. Water: a thirst-blind water channel is always at full strength, so hominins are more drawn to water: the share of steps in a lake or sea square rises by at least 30%, and thirsty steps (water under 30) fall.
+3. Movement: squares moved per 100 awake steps rises (an always-on pull to food and water), by at least 10%.
+4. Tool and gathering acts (take, strike) take a smaller share of awake steps (about a third less, as take fell 45% a life-year), because more of the day goes to travel (item 3) and less to staying and fiddling.
+5. Hungry steps (energy under 30): about equal or up (hunger deaths rose 32% a life-year).
+6. Babies: deaths from wounds are much rarer with the honest eye, so baby deaths fall (4.2% against 9.6% in entry 98); I expect the old arm's baby deaths to be mostly wounds and predators, and the honest arm's to be few of any kind.
+   I do not know why; this is the first thing the table will show. If baby deaths by wounds are not the difference, the explanation is something I have not thought of, and I will say so.
+
+Not held if: hunters near hominins rise by less than 10% or fall; steps in water rise by less than 10%; movement falls; baby wound deaths do not fall.
+Strength warning: 24 worlds, one pooled comparison; deaths are small counts (tens): read cause shifts under about 15 deaths as traces. The act share uses awake steps; the sleep act is counted while asleep, so ignore that column.
