@@ -236,3 +236,11 @@ verified online, built with a switch, and tested on its own before the next, in 
 - The shared-word count (2,791 in 24 worlds) is far above the prediction: check what "three say it, ten times" means against the
   word list (`words_shared`) before treating it as language.
 
+
+## Follow-ups from Fable on labelled senses (17 Nov 2026; `docs/reviews/2026-11-17-fable-labelled-senses.md`) — the owner decides
+- Honest-label fixes (smallest step toward F16): (1) remove the hunger/thirst multipliers from the food and water channels (`src/senses.js`
+  lines ~236–276; need already reaches the brain at `x[IB]`, `x[IB+1]`); (2) mate channel from sight and visible cues only (not `o.rd`, not 6 × range
+  through hills); (3) family by familiarity; (4) founders' recognition skill 0.9 → test about 0.5. Each with a switch restoring the old rule,
+  identical-worlds check, prediction first. Test: labels / honest labels / blind control (/ raw `retina()`), 24 worlds.
+- Smell (A45) before raw vision. Not: raw vision as default, heritable eye traits (ape eye was fixed at 2.5 Ma), a bigger brain for raw light.
+- `retina()` has never been measured in an entry: run it once as a blind-or-raw reference.

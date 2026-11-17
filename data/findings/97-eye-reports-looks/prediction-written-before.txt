@@ -1,0 +1,31 @@
+Entry 97: the eye reports what a thing looks like, not how much the body needs it (Fable, 17 Nov 2026, labelled-senses review).
+Written 17 Nov 2026, before the change is built or run.
+
+The rule today: in src/senses.js sense(), the food and water channels (and, for hunters and fish-eating hominins, the prey and fish
+channels) are multiplied by (0.15 + hunger) or (0.15 + thirst). A full creature sees food at 15-20% strength, a starving one at full
+strength or more. No eye does this; hunger already reaches the brain by its own inputs (x[IB], x[IB+1]).
+The change: with the switch (--no-need-weighted-eye, name to be confirmed in the code) those channels report only how near and how clear
+the thing is: strength = nearness, whatever the hunger. The default stays the old rule until the arms are measured. This applies to every kind
+(hominins, plant-eaters, hunters, fish): it is what the eye does, not a hominin-only rule.
+
+Test: 24 worlds x 100 days, seeds 1-24, default settings, 4 workers, nice; old rule against the switch; paired by seed. The identical-worlds
+check (default against the commit before) must say IDENTICAL. Both arms start from the same founders; worlds will differ at once by chance.
+
+What I expect, and why:
+1. The brains were trained (within one life, by reinforcement) with a food signal that rose with hunger. Without it, the food channel is
+   always on at full nearness, so a full creature is pulled toward food as strongly as a hungry one until its brain learns to gate
+   the pull by its own hunger input. So I expect MORE time walking toward and standing at food when full, and a little more wandering:
+   hominin energy at day 100 a few points lower, hunger deaths per hominin-year up, by between 10% and 60% (the range is wide on purpose:
+   I do not know how much the brain's own hunger input already carries).
+2. Hunters see prey at full strength when full: attacks while full rise from the satiety-brake level (entries 92-94) toward the old
+   no-brake level; kills per hunter per day up a little. Plant-eaters: no clear change, since a grazer is rarely full for long.
+3. Water: thirst deaths up by a similar amount in worlds with dry stretches.
+4. Discovery firsts, births and the sex shares of entry 95 do not move by more than seed noise.
+5. If nothing about hunger deaths moves (within +-10%), that would mean the brain's own hunger input carried the behaviour and the
+   eye's multiplier was decoration. That is a result too, and the arm is then kept as the honest rule.
+
+Not held if: hunger deaths fall by more than 10%, or rise by more than 60%; or hunters' attacks while full do not rise.
+Strength warning: 24 worlds with seed-to-seed spread; a change under about 20% in a rate of rare deaths will be called a trace, "weak".
+Decision rule before the run (no tuning toward an outcome): the honest rule is the realism rule. It is adopted as the default unless it
+makes the world collapse (people extinct in more than 12 of 24 worlds), in which case something real is missing (the owner's rule) and
+I stop and ask for Opus and Fable rather than adjust numbers.

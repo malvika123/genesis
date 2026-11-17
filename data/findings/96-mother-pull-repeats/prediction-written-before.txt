@@ -1,0 +1,21 @@
+Entry 96: does the mother's pull toward her young child explain the sex differences in entry 95? Written 17 Nov 2026, before any run.
+
+Test: the same 24 worlds x 100 days as entry 95 (seeds 1-24, default settings), with --no-mother-pull (a mother goes to her child
+only when it cries). Baseline: data/findings/95-repeats/repeats.csv (same code, nothing in src/ changed since). Paired by seed;
+note that the arm changes the worlds from the first mother's first step, so worlds will differ by chance beyond the switch.
+
+Why I think it might matter: with the pull, a mother with a nursing child is kept near it, so she is less free to go to carcasses,
+fires and far food. Entry 95 found cutting meat (32% female), taking up burning sticks (30%) and marrow (41%) lean male.
+
+What I expect:
+1. Share of female individuals for butcher, brand and marrow rises toward 50% without the pull (butcher 32 -> 40+, brand 30 -> 40+,
+   marrow 41 -> 46+). Not by a large amount: the pull only holds mothers of young children, a part of the females.
+2. Hunt (70% female) does not move toward 50% by more than chance: the lean is not an effect of the pull, if it is not chance.
+3. Everyday acts (take, fruit, root, nut, meat, speak) stay at 48-52% female.
+4. Repeats per 1,000 hominin-life-years of butcher, brand and marrow rise a little (mothers freed to go): by under 30%.
+5. Sharing stays 100% mothers (only mothers feed, apeCare); the number of feeds may fall, since the pull keeps mother and child together.
+
+Not held if: butcher, brand and marrow female shares are all within 5 points of entry 95's (the pull is not the cause), or any
+everyday act leaves 45-55%, or sharing falls below 95% mother.
+Strength warning: the rare acts are 37-53 individuals in the baseline; a difference under about 15 points will not be separable from
+chance, and I will say so rather than read it as a finding.
