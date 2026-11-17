@@ -274,3 +274,11 @@ The owner cannot run the sim to check, so what is drawn is what is believed. Aud
 - Sourced partly. First step (built on branch `ui-voice`, audio only, nothing in the sim changes): ape-like calls in the page's Listen sound — grunt, hoo, scream — with every
   F0, duration and noise share registered as an assumption. **Open (a design question, Fable review first):** the sim's words are human consonant-vowel syllables; apes use few,
   graded, context-bound calls. Not changed.
+
+## Human-style words (Opus, 17 Nov 2026): `docs/reviews/2026-11-17-opus-human-style-words.md` — the owner decides
+- **Measurement-only first:** make `words_shared` band-local (speakers heard each other) and report its excess over a shuffled-speaker baseline and over the deaf arm; re-measure
+  entry 95's worlds to see how much of 116 shared words a world was chance. Rename `words_said` (calls made).
+- Rename in the log and page: an abstract call space with ape-limited control, shown as grunt variants rather than "de" (no change to the creatures).
+- At the language stage (L0–L3): a graded call space (F0, duration, noisiness, rise/fall) in place of CV syllables, with a switch (`--cv-voice`) restoring today's model; three arms
+  (graded, CV, deaf); founder `vl` 0–0.05 and 0–0.3. Not: a smaller syllable set, letting `vl` evolve CV syllables, any reward for convergence.
+

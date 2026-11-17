@@ -2939,6 +2939,9 @@ lean toward females rests on five worlds and is not yet more than a hint.
 5. No sex difference in take, nut, root, meat, flake, swim, point or speak (all within 35–65%) — **held** (48–52%).
 6. Shared words a few times a world at most — **not held**: on average 116 words became shared per world (2,791 in all), by a median of
    26 hominins a world.
+   **Caveat added 17 Nov (Opus's review, `docs/reviews/2026-11-17-opus-human-style-words.md`; an estimate, not a run):** this count is probably chance collisions in a
+   144-form sound space counted over the whole world, not convergence: speech is replaced by random mouth choices 70–100% of the time at founder vocal control 0–0.3, and `shared`
+   needs only three speakers and ten uses anywhere in the world. Read "not held" as "the test cannot tell chance from convergence". The sex split for `speak` stands.
 
 Not in the prediction: cutting meat with a flake (32% female), taking up burning sticks (30%) and cracking bones for marrow (41%) lean
 male across worlds; eating leaves leans a little female (55%).
