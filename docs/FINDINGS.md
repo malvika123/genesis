@@ -3151,6 +3151,40 @@ computed, so I cannot call it noise or a shift; (3) baby wound deaths near zero 
 **Interpretation.** With the honest eye few carried babies chose to attack, so blocking it changes little; the fix is kept because no real infant does it, not for its numbers. The worlds diverge by chance from the first blocked
 attack, so a 24-world table moves by a few points on its own. **Intervals added afterwards** (`reality-check.js --summary` now resamples worlds 1,000 times): population change −3.1% (95%: −7.6 to −1.3) in entry 98 and −4.8% (−7.6 to −1.3) here — **the same range: the difference is noise**. The intervals also show two passes are borderline: life expectancy 11.1–17.3 years and survival to 15 26.9–48.9% both reach outside their real bands. **Strength.** Weak: one run each.
 
+### 101. Honest watching, first test: copying of any kind barely changes skills; honest watching is rare because elders are rarely seen foraging — Nov 2026
+
+**Version.** 0.11.0 + honest watching behind six switches, all off by default (`--honest-watching` turns all on; design `docs/design/honest-watching.md`, Fable's review, sources in `docs/reviews/2026-11-17-*`; numbers registered as
+hypotheses in `docs/ASSUMPTIONS.md`). Identical worlds with the switches off (seeds 1–2 × 20 days and seed 1 × 100 days). The owner chose: no copying of heard words, no whole-path copying, same-square watching now, and late or absent skills
+accepted as an honest answer (never raise the copying rate to rescue them); adults may watch any adult (a weak hypothesis, added at the owner's question).
+
+**Data.** [All arms, both planets, the comparisons](../data/findings/101-honest-watching/) (`comparison-made-up-planet.txt`, `comparison-real-earth.txt`). `node tools/analysis/watch-trace.js SEEDS 100 OUT [switches]`, 24 worlds an arm, then `--compare`.
+Two corrections were made **before** the arms they apply to, each written into the prediction file first: the watching chance had counted the foraging restriction twice (arm B0, kept as a too-low end; corrected 0.2 → 0.5 and
+0.075 → 0.19 per foraging step, from the wild chimpanzee feeding share of 36–37%); and adults may now watch younger adults.
+
+| Real Earth, 24 worlds × 100 days | A old copying | B1 honest watching | C no copying | D old copying, thinned to B1's dose |
+|---|---|---|---|---|
+| Copy events per 1,000 hominin-days | 81,929 | 27.8 | 0 | 28.5 |
+| Watching bouts an hour together | — | **0.20** (registered 0.3–1.5) | — | — |
+| Nut-cracking / stick-digging per 1,000 hominin-days | 38.5 / 132 | 58.0 / 177 | 57.4 / 167 | 29.0 / 125 |
+| Flaking / marrow | 6.0 / 11.4 | 5.5 / 14.2 | 5.4 / 13.1 | 3.7 / 8.0 |
+| Hominins who ever cracked a nut / dug with a stick | 17 / 52 | 22 / 73 | 17 / 75 | 12 / 47 |
+| Speech per 1,000 hominin-days | 11,843 | **1,429** | 8,309 | 7,173 |
+| Deaths from wounds / predators / hunger | 88 / 424 / 143 | **148** / 381 / 92 | 109 / 408 / 102 | 70 / 489 / 116 |
+
+The made-up planet (A, B0, B1, C) gives the same picture (`comparison-made-up-planet.txt`): old copying with 3.2 million copy events leaves nut-cracking and digging as common as no copying at all.
+
+**Result.** Against the prediction written before the run: (1) copy events far fewer in B than A — **held** (by about 3,000 times, far more than "a fifth": watching is rare); (2) B's transmission ratio above 1 for at least one skill and
+at least D's — **not testable**: B had 5 first-time digs after watching (ratio 1.47) and none for other skills; D had almost no watched skills; under 10 events in every case (the prediction's own rule: traces); (3) skills lower in B
+than A, closer to C — **not held**: B and C are alike and A is *lower* than both on the real Earth; (4) mother–offspring match — **not testable** (counts under 30); (5) deaths and the population within noise — **mostly held**,
+but wound deaths rise with honest watching (88 → 148), likely the honest seeing of hurts (only in the same square now); (6–7) single switches and the ends of the hypotheses — **not run** (the time budget below comes first);
+(8) mother as target — not measured. And: **watching bouts at 0.20 an hour together fall below the registered 0.3–1.5: the hypothesis as built is refuted by its own test.** The cause was found with the new bout counter:
+adults eat or strike in only 5–6% of their waking steps, where wild chimpanzees feed about 37% of the day — elders are rarely seen foraging, so there is little to watch.
+
+**Interpretation.** The robust finding is the oldest one in the table: **copying, even mind-reading copying three million times over, does not make skills more common here**; hominins learn nut-cracking and digging on their own, as the
+zone-of-latent-solutions view of chimpanzees says (Tennie et al. 2009). Honest watching could not yet be tested as a channel for traditions, because the world's feeding time is about seven times too short. Turning off the copying of
+heard words cut speech by about 85%: most "speech" was copying, not use. **Next:** the feeding time budget (faithful-day row one), then honest watching again. **Strength.** Strong for "copying does not change skill frequency" (two planets,
+four arms, 24 worlds each); weak for everything about honest watching itself.
+
 ### 102. The real Earth keeps the band alive; the made-up planet does not — and every experiment so far used the made-up planet — Nov 2026
 
 **Version.** 0.11.0 + the baby fix (`3ac78f7`). The owner, watching the page, saw 25 → 43 hominins by year 19 and 82 by year 88, while most test worlds shrank. The page's Land menu defaults to "Earth, 70,000 years ago";
@@ -3176,6 +3210,31 @@ with sourced bands). The owner's world (82 at year 88, about +1.35% a year) is a
 **Interpretation.** The East African start of the real Earth — real rivers, lakes and land — sustains a band near the real, roughly stable range, where a random made-up planet starves or exposes it. So the experiments have been measuring a
 world the owner never sees, and a harsher one. **Decision for the owner:** whether experiments default to the real Earth (recommended: the aim is East Africa 2.5 Ma, and the page already shows it); if so, the baselines are made
 again on it. Two rows fail on both planets and are real gaps: babies die far too rarely, and first births come a little late. **Strength.** Moderate (24 worlds, intervals; one run). **Lesson.** Check that what is measured is what is shown.
+
+### 103. The long run: on seeds 1–8 every band ended within 22–85 years, by predators; hunters filled their caps within 10 years — Nov 2026
+
+**Version.** 0.11.0 + the baby fix; real Earth (the default since entry 102). The owner's page world grew to 82 by year 88, then 18 hunters killed every hominin by year 157.
+
+**Data.** [Prediction, runs, summary](../data/findings/103-long-run/). `node tools/analysis/long-run.js SEEDS 480 OUT` (160 years), seeds 1–8, then `--summary`.
+
+| Seed | Band peak (year) → end | Hunters at years 10 / 40 / 80 | Hunters born / arrived as newcomers | Hominins killed by |
+|---|---|---|---|---|
+| 1 | 27 (1) → 0 at year 34 | 18 / 17 / 17 | 62 / 16 | hyena 23 |
+| 2 | 27 (1) → 0 at 22 | 12 / 18 / 18 | 23 / 20 | hyena 26, sabre-tooth 9 |
+| 3 | 26 (2) → 0 at 45 | 20 / 23 / 16 | 73 / 29 | sabre-tooth 24 |
+| 4 | 28 (1) → 0 at 23 | 11 / 12 / 12 | 34 / 13 | leopard 35, sabre-tooth 2 |
+| 5 | 29 (1) → 0 at 82 | 16 / 12 / 12 | 76 / 76 | sabre-tooth 21, hyena 8, leopard 7 |
+| 6 | 28 (8) → 0 at 31 | 23 / 16 / 16 | 58 / 18 | sabre-tooth 17, leopard 3 |
+| 7 | 30 (2) → 0 at 85 | 11 / 11 / 14 | 79 / 87 | leopard 33, hyena 11 |
+| 8 | 28 (1) → 0 at 39 | 16 / 13 / 13 | 60 / 25 | hyena 19, leopard 2 |
+
+**Result.** Against the prediction written before the run: (1) hunter numbers rise in worlds where the band grows — **not held as written**: no band grew, yet hunters rose from 6 to 11–23 within 10 years anyway, filling their fixed caps
+by births *and* newcomers (newcomers as many as births in seeds 5 and 7: the `rescue` rule adds a young adult about once a life-year while a kind has fewer than 4); (2) bands end by predators — **held**, in all 8; (3) at least 2 of 8 grow
+and are later wiped out — **not held**: none grew. Seeds 1–8 are the worse part of entry 102's 24 (there, worlds 9–24 held the growers), so this is not the owner's case of a band that grew; but it shows how a band ends here: hunters at their
+caps within a decade, and the band whittled down by one kind or another until none is left.
+
+**Interpretation.** Hunter numbers are set by fixed caps and a newcomer rule, not by prey; they fill quickly whatever the band does. With one band and no rescue from neighbours, every downturn is final. This supports Fable's order
+(design `docs/design/defence.md`): measure, then several bands, then hunter caps from field density. **Strength.** Moderate: 8 worlds, the poorer seeds; one run.
 
 ---
 

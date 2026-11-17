@@ -4,6 +4,9 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **Honest watching, built behind six switches, all off** (entry 101): a youngster learns only from what it can see of an elder. First test: copying of any kind barely changes how common skills are; honest watching is rare because elders eat in only 5–6% of waking steps (real chimpanzees about 37%). Tools: `watch-trace.js`, `long-run.js`.
+- **The long run** (entry 103): on seeds 1–8 every band ended within 85 years, by predators; hunters fill their fixed caps within 10 years (births and newcomers).
+
 - **Experiments now run on the real Earth by default, as the page does** (the owner's choice after entry 102): every earlier table used a made-up planet, which is harsher (population −4.8% against −1.0% a year). `--made-up-planet` restores the old default. Entry 102's reality checks are the real-Earth baselines.
 
 - **A carried infant cannot attack** (entries 99–100): babies riding their mothers attacked antelopes and buffalo and died of it, most of the old eye's infant deaths. `--babies-attack` restores the bug. Also entry 99's trace tool (`tools/analysis/trace-eye.js`): with the old eye hominins spent a third to half of each day striking in one place.

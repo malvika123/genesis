@@ -48,6 +48,8 @@ and sleepers sliding because the world's sleep is in many short dozes. All are f
 
 - **Entry 102: the page runs the real Earth; every experiment so far ran a made-up planet,** which is harsher (population −4.8% against −1.0% a year). Found by the owner watching the page grow. The owner decides which the experiments use.
 
+- **Entry 101: the watching chance counted foraging twice.** A sourced chance for all time together was applied only while the elder foraged, so watching ran far too low; caught by a check before the next arm, kept as arm B0.
+
 ## Sources and numbers we got wrong
 
 - **Entry 89: a wrong paper.** The paper cited for "a late-dry-season fruit peak at Issa" is about Guinea-Bissau (Carvalho, Vicente & Marques 2015). The Issa direction comes from Piel

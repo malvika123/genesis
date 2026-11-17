@@ -1,0 +1,4 @@
+old: 6e82cac Entry 102: the real Earth keeps the band alive (population -1.0% a year, passes) where the made-up planet does not (-4.8%); every experiment so far used the made-up planet
+new: working tree 289d789 --made-up-planet
+worlds: seeds 1-2 x 20 days
+IDENTICAL (2 rows x 176 columns)

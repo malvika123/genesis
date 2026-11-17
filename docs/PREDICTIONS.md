@@ -58,4 +58,6 @@ either have no prediction file (older entries, before the rule) or were measurin
 | 98 | [baselines-honest-eye](../data/findings/98-baselines-honest-eye/) | [`bfde988`](https://github.com/malvika123/genesis/commit/bfde988eb401a5a59d3c60cbc7225fe270291a9b) | 2026-11-17 |
 | 99 | [why-the-honest-eye-changed-so-much](../data/findings/99-why-the-honest-eye-changed-so-much/) | [`fc62461`](https://github.com/malvika123/genesis/commit/fc62461a6ffa6d13fdedeb08c8569d8f0d14e5ea) | 2026-11-17 |
 | 100 | [babies-cannot-attack](../data/findings/100-babies-cannot-attack/) | [`3ac78f7`](https://github.com/malvika123/genesis/commit/3ac78f718ab9d98767b04d54b0dc8d43f2ed4649) | 2026-11-17 |
+| 101 | [honest-watching](../data/findings/101-honest-watching/) | [`0777479`](https://github.com/malvika123/genesis/commit/077747990c32d57f75a56f5f06dc01de979e88a7) | 2026-11-17 |
 | 102 | [real-earth](../data/findings/102-real-earth/) | [`6a42ce4`](https://github.com/malvika123/genesis/commit/6a42ce476e0c6c47f786ce547d3421e8c70fa0ca) | 2026-11-17 |
+| 103 | [long-run](../data/findings/103-long-run/) | [`76e494e`](https://github.com/malvika123/genesis/commit/76e494e9b8e06394e4c0f25625bfc991cf52ae81) | 2026-11-17 |
