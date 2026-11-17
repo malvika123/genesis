@@ -1,0 +1,10 @@
+Entry 100: a carried infant cannot attack (the bug found in entry 99). Written 17 Nov 2026, before any run.
+Change: in src/sim.js the attack act does nothing for a hominin being carried (under SOC.carryAge, 2 years, with its mother alive). --babies-attack restores the old rule (checked: identical worlds,
+seeds 1-2 x 20 days, 176 columns).
+Test: the reality checks (tools/analysis/reality-check.js), 24 worlds x 100 days, default settings (honest eye), against entry 98's honest-eye table (the same code but for this fix). The worlds differ by chance
+from the first blocked attack.
+What I expect: in entry 99's trace the honest eye left only 5 baby "wound" deaths in 24 worlds (and babies chose to attack in 3.7% of awake steps), so the fix should change little now:
+1. Babies dying in their first year: 4.2% -> about 3-4% (a few fewer); still far under the real 10-25%: the infant row keeps failing, as too low.
+2. All other rows within noise of entry 98's honest arm (survival to 15, life expectancy, birth spacing, age at first birth, population change, illness share); the same rows pass.
+3. Baby deaths by wounds near zero; nothing else about babies changes.
+Not held if: infant deaths rise; or any other row moves from pass to fail or back.
