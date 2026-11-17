@@ -334,3 +334,10 @@ Expect learning from others to fall a lot. Entries resting on copying (48–60, 
 - **The page and the experiments simulate different planets (found 17 Nov from the owner's observation: 43 hominins at year 19 on the page).** The page's Land menu defaults to "Earth, 70,000 years ago" (`index.html`
   `#land`, first option); `tools/experiment-core.js` defaults to `earth: false` (a made-up planet). Every table so far was measured on made-up planets. Next: the reality checks with `--earth` (24 worlds), then the owner
   decides whether experiments default to the real Earth (recommended: the aim is East Africa), and the baselines are made again on it.
+
+## Startle, staying on guard, vigilance, alarm calls — under F1 (17 Nov 2026; evidence: `docs/reviews/2026-11-17-startle-vigilance-alarm-sources.md`; the owner: only what the evidence supports)
+- **Model (each a close hypothesis):** (a) a startle to any sudden loud sound, a reflex of seconds that fades with harmless repeats (the 15-minute step can show it only as one interrupted step; say so); (c) vigilance as a cost to
+  feeding on the ground, nearly free at rest, more on the ground than in trees, less with close neighbours; (d) an alarm call with an inborn sound whose triggers are learned, given more when others near have not seen the threat.
+- **Do not model:** staying guarded for hours after a scare (baboons return to normal looking within about 5 minutes: Allan et al. 2024); sentinels; a strong many-eyes effect; vigilance while asleep.
+- **A finding against the present model:** fear now halves about every 1.5 hours, far longer than the evidence for vigilance (minutes). Separate fast vigilance (minutes) from slow stress (days to weeks, hormones and grooming) and test a
+  short half-life for the fast part; with a prediction, both ends, one switch.
