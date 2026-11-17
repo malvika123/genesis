@@ -17,7 +17,7 @@ if (process.argv[2] === '--summary') {
     for (const r of R) for (const [k, v] of Object.entries(r.kill)) kills[k] = (kills[k] || 0) + v;
     console.log(`seed ${w.seed}: ${R.length} days (${(R.length / 3).toFixed(0)} y); hominins start ${R[0].h}, peak ${peak.h} at year ${(peak.d / 3).toFixed(0)}, end ${R[R.length - 1].h}` +
       `; hunters at years 10/40/80/end: ${[10, 40, 80].map((y) => hunt(at(y))).join('/')}/${hunt(R[R.length - 1])} (${Object.entries(R[R.length - 1].hk).map(([k, v]) => k + ' ' + v).join(', ')})` +
-      `; plant-eaters at the end ${R[R.length - 1].pe}; hominins killed by: ${Object.entries(kills).map(([k, v]) => k + ' ' + v).join(', ') || 'none'}`);
+      `; hunters born ${w.hFrom ? w.hFrom.born : '?'}, arrived ${w.hFrom ? w.hFrom.arrived : '?'}; plant-eaters at the end ${R[R.length - 1].pe}; hominins killed by: ${Object.entries(kills).map(([k, v]) => k + ' ' + v).join(', ') || 'none'}`);
   }
   process.exit(0);
 }
@@ -46,11 +46,16 @@ for (const seed of seeds) {
   const R = [];
   let kill = {},
     alive = new Map(E.state().ag.filter((a) => a.sp === 0).map((a) => [a.id, a]));
+  const seenH = new Set(E.state().ag.filter((a) => a.sp === 2).map((a) => a.id)),
+    hFrom = { born: 0, arrived: 0 }; // where hunters came from: born in the world (age 0) or arrived grown (newcomers when a kind is rare)
   for (let t = 1; t <= days * E.DAY; t++) {
     E.sim();
     const ag = E.state().ag,
       now = new Map();
-    for (const a of ag) if (a.sp === 0) now.set(a.id, a);
+    for (const a of ag) {
+      if (a.sp === 0) now.set(a.id, a);
+      else if (a.sp === 2 && !seenH.has(a.id)) (seenH.add(a.id), a.age < E.DAY ? hFrom.born++ : hFrom.arrived++);
+    }
     for (const [id, a] of alive)
       if (!now.has(id) && a.dead && /predator/.test(a.cause || '')) {
         const k = String(a.killedBy || 'unknown').replace(/ \(.*\)$/, '');
@@ -65,6 +70,6 @@ for (const seed of seeds) {
       if (!now.size && t / E.DAY > 3) break;
     }
   }
-  fs.writeFileSync(path.join(out, 'world-' + seed + '.json'), JSON.stringify({ seed, flags, days: R }));
+  fs.writeFileSync(path.join(out, 'world-' + seed + '.json'), JSON.stringify({ seed, flags, days: R, hFrom }));
   console.log('world', seed, 'done:', R.length, 'days, hominins at the end', R[R.length - 1].h);
 }

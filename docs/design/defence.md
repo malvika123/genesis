@@ -1,4 +1,4 @@
-# Defence and lasting as a population: hunters held to their prey, rally and chase, sleeping high, several bands — design note for review, not built (17 Nov 2026)
+# Defence and lasting as a population: hunters held to their prey, rally and chase, sleeping high, several bands — reviewed by Fable 17 Nov (build with changes: `docs/reviews/2026-11-17-fable-defence.md`), not built
 
 **Why.** The owner's page world (real Earth): 25 hominins grew to 82 by year 88, then hunters — 18 of them, up from 6 — killed every one by year 157. The owner: "they barely climb trees, share space with predators, never chase
 them off… fetch info online, then put it behind a switch and test… I don't want them to become apes, I want them to be our hominins." Evidence: `docs/reviews/2026-11-17-defence-and-persistence-sources.md`; also
@@ -39,3 +39,9 @@ Real Earth, 24 worlds × 100 days and 8 worlds × 160 years: predation on homini
 2. Is the rally sized honestly from Boesch's 29 interactions (forest chimpanzees with leopards), applied to hominins in open country with hyenas and sabre-tooths too?
 3. Should several bands come before rally and sleep-high, given it is the biggest real difference?
 4. Anything here that would make them apes rather than our hominins, or the other way round, without evidence?
+
+## Revised after Fable's review (17 Nov)
+Order: **measure first** (nights up a tree; where the hunters came from — births or `rescue` newcomers; hominins' share of each kind's kills; how long an attack lasts; how bands end over 160 years) → **several bands** (with
+female dispersal and merging) → **hunter caps from field density × the area hunters range over**, with 1:111 summed over the guild only as a check, never diet share as an input → **rally**, only after a wounding phase exists, for single
+climbing cats only, judged by who dies (young before adults), not by the number it was sized from → **sleep high** last, with baboon cliffs as a model as good as chimpanzee nests; rocky outcrops as cover if the map has them.
+**The owner decides:** the real guild at 2.5 Ma had 8–10 large carnivores (lions, *Homotherium*, *Dinofelis*, *Chasmaporthetes*, crocodiles left out); the sim's hunter pressure is lower than the real guild's.
