@@ -244,3 +244,8 @@ verified online, built with a switch, and tested on its own before the next, in 
   identical-worlds check, prediction first. Test: labels / honest labels / blind control (/ raw `retina()`), 24 worlds.
 - Smell (A45) before raw vision. Not: raw vision as default, heritable eye traits (ape eye was fixed at 2.5 Ma), a bigger brain for raw light.
 - `retina()` has never been measured in an entry: run it once as a blind-or-raw reference.
+
+## Smell design note (17 Nov 2026): `docs/design/smell-droppings.md`
+- Sourced as far as the literature goes: qualitative yes, distances and rates mostly not (hyena range, wind limits, dung output, removal by sun and rain,
+  carcass smell duration, parasite risk: all unverified). Today's `near` (2 squares = about 6 km) is hyena range, not primate range; smell cannot be honest on
+  a 3 km grid, so **build it with the fine valley (F9)**, not before. The owner decides; a Fable review of the note comes first.
