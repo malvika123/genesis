@@ -1,0 +1,19 @@
+Entry 98: the reality checks (tools/analysis/reality-check.js: infant deaths, survival to 15, life expectancy, years between births, age at first birth,
+population change, share of deaths from illness) re-run with the honest eye as the default (v0.11.0, entry 97), against the old eye (--need-weighted-eye).
+Written 17 Nov 2026, before any run. 24 worlds (seeds 1-24) x 100 days per arm, same seeds; 4 processes at once, nice; the arms run one after the other.
+
+Why: every earlier table used the old eye. The faithful-day table (master plan 0.8) must not be frozen on numbers made with a cue no real eye gives.
+
+What entry 97 already showed (24 x 100 days, old -> honest): hominin-days -23%, people alive 13.1 -> 9.3, hunger deaths +32% a life-year, predator deaths +54%, wounds -65%,
+thirst deaths 14 -> 0. From that I expect, honest against old:
+1. Life expectancy at birth lower, and survival to 15 lower (more predator and hunger deaths a life-year). By how much I cannot say: the wounds deaths fall by two thirds, which
+   may offset. Direction only: lower or equal; a rise would surprise me.
+2. Babies dying in their first year: about equal or higher (predation on the young is part of the +54%).
+3. Population change a year: more negative (the band shrinks: hominin-days -23%).
+4. Share of deaths from illness: lower (the denominator grows with predator and hunger deaths).
+5. Years between births and age at first birth: within 10% of the old arm (they depend on nursing and the cycle, not on what the eye reports).
+6. Pass or fail against the real bands (REAL in the tool): rows that passed with the old eye may fail with the honest eye; I will report both arms and not move any band.
+
+Not held if: life expectancy or survival to 15 rises by more than a seed-noise margin (I will state the margin from the 95% interval across worlds); birth spacing or age at first birth moves by
+more than 10%.
+Strength warning: 24 worlds, extinct worlds counted separately (the tool does this for growth); rows with fewer than about 30 events are traces.
