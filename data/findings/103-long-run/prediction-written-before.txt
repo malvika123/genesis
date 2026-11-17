@@ -1,0 +1,7 @@
+Entry 103: the long run — do hunters multiply as the band grows, and end it? Written 17 Nov 2026, before the run. Prompted by the owner's page world: 25 hominins grew to 82 by year 88 on the real Earth, then hunters
+(18 of them, from 6) killed them all by year 157.
+Test: tools/analysis/long-run.js, real Earth (the default), seeds 1-8, 480 days (160 years), 4 processes; day by day: hominins, plant-eaters, hunters by kind, hominins killed by each kind.
+What I expect: (1) hunter numbers rise over the decades in worlds where the band grows (hunters breed where prey, hominins included, is plentiful; and new hunters arrive when a kind is rare); (2) worlds whose band ends
+end mostly by predators, in a run of kills over a few years, not one at a time over decades; (3) in at least 2 of 8 worlds the band that grew is later wiped out, as on the page.
+Not held if: hunter numbers stay near their start in all worlds, or bands that end, end by hunger rather than predators.
+Real yardsticks to report against: primate predation about 3% a year, range 0-15% (Cheney & Wrangham 1987, via entry 94); hunter-to-prey biomass about 90 kg per 10,000 kg (Carbone & Gittleman 2002).
