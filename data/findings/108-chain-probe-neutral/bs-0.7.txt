@@ -10,3 +10,5 @@ chain 5: learned by 20/20; median 2.57 real yr (44978 steps); within a squeezed 
 delay 0: held by 20/20; median 0.14 real yr (2415 steps); each: 2802 3417 2241 2085 2292 2658 2385 2415 1983 1977 2502 2442 2688 2328 2553 2208 3582 2076 2469 2049
 delay 1: held by 20/20; median 0.83 real yr (14524 steps); each: 11580 14524 11092 3712 15164 6712 6028 11188 66496 41280 12048 18924 5260 17140 21868 6536 10272 23876 16784 29004
 delay 2: held by 16/20; median 6.18 real yr (108320 steps); each: 86050 - - 15020 127905 28700 91330 108320 170745 154250 88780 77605 24440 174315 141960 27365 137985 - 161690 -
+delay 4: held by 0/20; median -; each: - - - - - - - - - - - - - - - - - - - -
+delay 8: held by 0/20; median -; each: - - - - - - - - - - - - - - - - - - - -
