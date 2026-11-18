@@ -368,3 +368,12 @@ Adults in the sim eat or strike in only **5–6% of waking steps**; wild chimpan
 It shapes everything: time left for travel and danger, and how much there is for the young to watch (honest-watching bouts run at 0.06–0.13 an hour against the registered 0.3–1.5 because elders are rarely foraging).
 Next: source intake rates (grams per minute by food: fruit, leaves, roots, meat, nuts) and daily feeding hours; find why the sim's are fast; fix behind a switch with a prediction; this is the faithful-day table's first row (hours
 feeding, resting, travelling). Then test honest watching again.
+
+## Does a bigger brain open possibilities and pay? (the owner, 18 Nov 2026: "if they somehow started to expand their brains, they will have potential to be different than apes"; extends the second question)
+A bigger brain is necessary but not enough: its extra capacity must be usable and must pay for itself. Three measurements, in order, all measuring-only or one test switch, each with a prediction first:
+1. **Selection trace (entry 105, queued):** the slope of children borne on inherited brain size, against the neutral marker's drift. Small real effects can be missed with a few hundred adults: "no sign" is never "no effect".
+2. **A controlled founder comparison:** a test switch for founders' brain-size trait `bs` (today 0.27–0.36 of the 64-unit ceiling, about 17–23 units; arms about 0.45–0.55 and 0.6–0.7), everything else the same; measure survival, children raised, skills, repeats.
+   It answers "does a bigger brain pay here, and how much" in one run, without waiting for evolution.
+3. **The potential, directly:** `tools/analysis/chain-probe.js` (entry 87: chains of 2 learned, 3 by half, 4–5 none, a cue held 2–4 steps) with brains of different sizes. If extra units lift the chain length or memory, bigger brains really open what can be learned
+   (the "potential"); if not, size alone is not the limit and the missing thing is elsewhere (the learning rule, the world's rewards).
+Not: raising the 64-unit ceiling (that is the modern ceiling; the early–modern range fits inside it; beyond it there is no evidence, and runs slow).
