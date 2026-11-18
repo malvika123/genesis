@@ -22,6 +22,7 @@ const BRAINS = arg('brains', 10),
   STEPS = arg('steps', 175200),
   SEED = arg('seed', 1),
   ONLY = (process.argv[process.argv.indexOf('--only') + 1] || '').split(',').filter(Boolean), // e.g. --only chain2,delay1
+  NEUTRAL = process.argv.includes('--neutral'), // entry 108: the probe without the confound Opus found (inborn hand reflexes on the chain's input states): neutral wiring on those inputs, a random assignment of the five acts to the chain's steps, and the starting choice probability of each step reported
   BS = process.argv.includes('--bs') ? arg('bs', 0) : null; // brain size, the share of the 64-unit ceiling the brain has grown to (entry 107: the chain probe by size); default: as before
 
 function engine() {
@@ -41,6 +42,11 @@ function newLearner(E, s) {
   const a = E.mk(0, p.x, p.y, 0, E.child(p, q), 1, 0);
   a.age = Math.round(a.S.mat * 0.4); // a youngster: weaned, still plastic
   a.nh = E.grownUnits(a);
+  if (NEUTRAL) {
+    // the chain's states live on the hand senses IB+19..23 and the always-on input IB+11, which carry inborn weights (brain.js: TAKE -4 while holding, +1.6 on the stone and stick inputs, EAT -2.5 on IB+11):
+    // zero every inborn direct sense-to-choice weight on those inputs, in the probe only (the world's hominins keep their reflexes: they are realistic)
+    for (const i of [E.IB + 11, E.IB + 19, E.IB + 20, E.IB + 21, E.IB + 22, E.IB + 23]) for (let k = 0; k < E.NA; k++) a.lw[k * E.NI + i] = 0;
+  }
   if (BS !== null) {
     // the brain by size (entry 107): the same child, with the inherited size trait set and its units grown to that size (a grown brain of that size, still plastic as a youngster)
     a.g.bs = BS;
@@ -73,9 +79,13 @@ function step(E, a, x, r) {
   return act;
 }
 
-const ACTS = (E) => [E.A_TAKE, E.A_STRIKE, E.A_EAT, E.A_GIVE, E.A_CLIMB];
-function chain(E, a, N) {
-  const acts = ACTS(E).slice(0, N),
+const ACTS = (E) => {
+  const l = [E.A_TAKE, E.A_STRIKE, E.A_EAT, E.A_GIVE, E.A_CLIMB];
+  if (NEUTRAL) for (let i = l.length - 1; i > 0; i--) { const j = Math.floor(E.rnd() * (i + 1)); [l[i], l[j]] = [l[j], l[i]]; } // a random assignment of acts to steps, per brain
+  return l;
+};
+function chain(E, a, N, acts0) {
+  const acts = (acts0 || ACTS(E)).slice(0, N),
     x = new Float32Array(E.NI),
     win = [];
   let k = 0,
@@ -139,14 +149,29 @@ const tmp = newLearner(E0, 0),
   squeezed = Math.round(tmp.S.mat); // a squeezed childhood in steps (the world's clock: TY steps a year)
 const show = (v) => (v === null ? 'not learned' : (v / YR).toFixed(2) + ' real yr (' + v + ' steps)');
 console.log(`# chain probe, ${BRAINS} brains${BS !== null ? ', brain size ' + BS + ' (' + Math.max(0, Math.round(64 * BS)) + ' units)' : ''}, budget ${STEPS} steps (${(STEPS / YR).toFixed(1)} real-length years of waking); the world's squeezed childhood = ${squeezed} steps`);
+const startP = {};
 for (const N of [2, 3, 4, 5]) {
   if (ONLY.length && !ONLY.includes('chain' + N) && process.argv.includes('--only')) continue;
   const out = [];
   for (let b = 0; b < BRAINS; b++) {
     const E = engine();
-    out.push(chain(E, newLearner(E, b + 1), N));
+    const a = newLearner(E, b + 1),
+      acts = ACTS(E);
+    if (NEUTRAL) {
+      // the starting probability of the act each step asks for, before any learning (entry 108: how hard the task is at the start)
+      const h = new Float32Array(a.h.length), z = new Float32Array(E.NA), zv = new Float32Array(a.zv.length);
+      for (let k = 0; k < N; k++) {
+        const x = new Float32Array(E.NI);
+        x[E.IB + 11] = 1;
+        x[E.IB + 19 + k] = 1;
+        E.forward(a.lw, x, h, z, a.nh, null, zv, null);
+        (startP[N] = startP[N] || []).push(z[acts[k]]);
+      }
+    }
+    out.push(chain(E, a, N, acts));
   }
   const ok = out.filter((v) => v !== null).sort((u, v) => u - v);
+  if (NEUTRAL && startP[N]) { const q = startP[N].slice().sort((u, v) => u - v); console.log(`chain ${N} starting probability of the asked act per step (median, 10th, 90th %): ${q[q.length >> 1].toFixed(3)}, ${q[Math.floor(q.length * 0.1)].toFixed(3)}, ${q[Math.floor(q.length * 0.9)].toFixed(3)}`); }
   console.log(`chain ${N}: learned by ${ok.length}/${BRAINS}; median ${ok.length ? show(ok[ok.length >> 1]) : '-'}; within a squeezed childhood ${out.filter((v) => v !== null && v <= squeezed).length}/${BRAINS}; each: ${out.map((v) => v ?? '-').join(' ')}`);
 }
 for (const D of [0, 1, 2, 4, 8]) {
