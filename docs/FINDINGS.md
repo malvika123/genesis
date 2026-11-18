@@ -3292,6 +3292,23 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Interpretation (Opus).** The gate fired because the probe was the wrong comparison, not because the learner is too good: each step's state is shown on its own input, a wrong act costs only time, and the direct sense-to-choice path can solve it with no thinking units (a lookup table of 5 labelled states). It says nothing about chimpanzee serial order (Kawai & Matsuzawa's numerals are visible together, with distractors), so **the chimpanzee gate is retired for this probe** and chain times cannot be compared with tool-use learning. Fair: "with labelled states the learner links at least 5 acts, and size neither helps nor hurts". Not fair: "the learner is not the limit for chains". Cue holding is the one place size shows (the echo loop needs thinking units), slightly worse with size, consistent with the scaling rule `k = S.nh/nh` (0.84 at 19 units, 0.25 at 64; inferred from the code, no ablation yet). Correction: there are 19 acts, so chance is 0.053 (the 0.08 start is a little above it).
 **What follows.** This pair of tasks cannot show a benefit of size however memory is built. Next: a **conjunctive probe** (entry 112; the right act depends on a combination of two inputs, so thinking units are required; 2, 4, 8, 16 combinations; a single-input control), run at both ends of `k` (`--size-learning`, built, off by default), and the chain and cue pair rerun at both ends. The owner's two decisions are in build (`--size-learning`, `--memory-from-layout`: at most 8 memory slots, so cue length cannot grow past today's until a sourced decision lifts the cap; changing NM changes every world). **Strength.** Strong for "the probe is a lookup table"; weak for any claim about brains. **Lesson.** Write the gate for what the task needs, not for a number from a different task.
 
+### 109. How fast hominins learn to swim: ten times slower leaves 6% of adults swimming, and drownings rise 3.5 times — Nov 2026
+
+**Version.** Branch `swim` (not merged: frozen with the rest while the population is stabilised): `--swim-rate X` multiplies the practice rates (`SOC.swimDeep` 0.02 and `SOC.swimShallow` 0.004 a step; children twice as fast); the log line now reads "learned to swim by practice". Evidence: `docs/reviews/2026-11-18-swimming-sources.md` (swimming is learned, not innate, in apes and humans; wild apes wade and almost never swim; the one trained ape took weeks with a safety net; no published learning rates).
+
+**Data.** `data/findings/109-swim-rate/` (worktree `~/genesis-wt/swim`; prediction written before): 24 real-Earth worlds × 100 days at rate 1 (today's) and rate 0.1, same seeds. Identical-worlds check passed (default unchanged).
+
+| | rate 1 (today) | rate 0.1 |
+|---|---|---|
+| adults who can swim at the end of the run (skill 0.5 or more) | 170 of 244 (70%) | 15 of 239 (6%) |
+| drowned (count; per 1,000 hominin-years) | 12; 0.8 | 44; 2.8 |
+| killed by a predator, per 1,000 hominin-years | 27.1 | 26.7 |
+| hunger / wounds / illness, per 1,000 hominin-years | 9.1 / 5.6 / 4.6 | 7.0 / 6.4 / 5.5 |
+| worlds emptied | 5 | 5 |
+
+**Result against the prediction.** Held: (1) at today's rate most adults swim by the end (70%); at one tenth almost none do (6%, under the predicted 10%); (2) population and other deaths unchanged within noise (5 of 24 worlds emptied in both; predators 27.1 and 26.7); drowning rose only because hominins still enter deep water unskilled, as predicted.
+**Interpretation.** The practice rate controls how many hominins can swim, but not the hominins' own judgement: at one tenth they still go into deep water in numbers that drown 44 of them in 24 worlds (0.28% of hominin-years a year, small against about 6% total mortality). Real apes avoid deep water and wade; the sim's hominins do not avoid it enough: the avoidance of deep water is the missing piece, not the rate. The rate stays an assumption (no published rates; both ends reported); the default stays 1 until the owner chooses; swimming is still an authored number, not a learned stroke (backlog: body layer). **Strength.** Moderate: 24 worlds each, clear on skill and drowning, nothing on survival. **Lesson.** A skill rule and the judgement to use it are separate things; slowing the rule exposed the missing judgement.
+
 ### 110. Defence, measured first: per-person predation is already about real; the band is small and closed; attacks are few and nearly all fatal — Nov 2026
 
 **Version.** 0.11.0, measuring only: `tools/analysis/defence-measure.js`. Opus's read: 18 Nov (`docs/design/defence.md`, entries 102 and 103).

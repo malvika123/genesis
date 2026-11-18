@@ -455,3 +455,6 @@ Rule: find what is missing; do not tune survival.
 5. **Habitat and avoidance** (where bands live; avoiding hunters' hours and fresh kills) only if still needed.
 If a realistic closed band still cannot last: that is the finding (populations need several bands, as in nature), recorded as the result.
 
+## Found by entry 109 (frozen; for after the population is stable)
+Hominins enter deep water unskilled in numbers that real apes would not (wild apes avoid deep water): at one tenth of the swim practice rate 44 drowned in 24 worlds × 100 days (2.8 per 1,000 hominin-years against 0.8). The missing piece is avoidance of deep water (a judgement the brain should learn or an inborn wariness), not only the practice rate. Merge `swim` only with that question settled.
+
