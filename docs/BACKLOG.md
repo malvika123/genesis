@@ -444,3 +444,14 @@ Default: predators 27.1, old age 12.2, hunger 9.1, wounds 5.6, illness 4.6, othe
 **Inference (not measured):** with population change about −2.7% a year, births are only about 3.3% a year, against 4% or more in real chimpanzees: the decline is more likely a **births** shortfall than a deaths excess. Suspect: age at first birth 15.5 years in the sim against 13–14.6 in real chimpanzees (Gombe 13.3, Taï 13.7, Mahale 14.6). Next: measure births per adult female, age at first birth, and birth gaps directly (a births table with the deaths-by-cause table), then several bands.
 Rule: find what is missing; do not tune survival.
 
+## FOCUS (the owner, 18 Nov, 23:40: "lets take things one by one ... focus on stabilising the population. freeze everything else")
+**One problem: a population that lasts, without tuning.** Everything below is FROZEN until it is settled (nothing deleted; each item keeps its note): swimming rate test (entry 109, stopped at the first arm; `--swim-rate` built, off); conjunctive probe results (entry 112: arms running, results not to be read yet) and the learner switches (`--size-learning`, `--memory-from-layout`); the missing predators; the body layer; the default flip of slow eating plus berry dose; the meat rate; the brain question as a whole; README text refreshes.
+**Success target for "stable" (to fix before any run; sourced bands only where they exist):** in 24 real-Earth worlds × 100 days: at most 1 world emptied; median population change within −1.0% to +1.5% a year (the assumed band of reality-check.js); births per adult female and age at first birth inside the sourced ranges (age at first birth 12.5–15.5 years, birth gaps 5.0–6.5 years); first-year deaths inside 10–25% or explained. No survival number is tuned.
+**Order, one at a time (each step reported before the next):**
+1. **Births and deaths diagnosed:** births per adult female, age at first birth, birth gaps, fertile-female share, first-year deaths with the mother alive or dead, by class (tool + a table; reads data, no change).
+2. **Whatever step 1 shows is missing or wrong, fixed behind a switch** (prediction first; evidence first; both ends).
+3. **Several bands with dispersal and merging** (`--bands N`; arms 1 × 25, 4 × 25, 1 × 100).
+4. **Attack escape** (a wounding phase, flee, climb, rally) only if deaths by predators still end bands after steps 1–3, measured first (asleep or awake, adult or child, helpers near).
+5. **Habitat and avoidance** (where bands live; avoiding hunters' hours and fresh kills) only if still needed.
+If a realistic closed band still cannot last: that is the finding (populations need several bands, as in nature), recorded as the result.
+
