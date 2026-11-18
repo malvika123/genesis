@@ -40,6 +40,10 @@ That means, for example:
 - **Never tune a number toward an outcome** (survival, "becoming human"). If realistic numbers fail,
   something real is missing: find it. Test uncertain numbers at both ends of their range.
 - Traits change only through inheritance and selection, never by use or disuse in a lifetime.
+- **Nothing is gifted, above all the brain** (the owner, 18 Nov 2026): every run of the main scenario starts with ape-sized brains (the inherited size trait `bs` of the founders, about a third of the modern ceiling) and the trait changes only by
+  inheritance and mutation, generation by generation; whatever grows, grows on its own, and the result is read from what the world did, never from what we handed it. Exceptions are labelled, never the main result: **controlled test arms**
+  (for example founders with a different `bs`, to measure whether a bigger brain pays: they are comparisons, not discoveries), **diagnostic probes outside the world** (the chain probe by brain size), and the `--sapiens` option (a labelled
+  thought experiment with a modern brain). Nothing is steered toward the outcome: not the learning rule, not the rewards, not the mutation rate (registered, tested at both ends).
 - The main scenario is early hominins, East Africa, about 2.5 million years ago (`docs/HOMININ-PLAN.md`);
   the aim is to run down the generations and compare with the real record.
 

@@ -28,6 +28,8 @@ written so that the owner can go on alone, with a cheaper model, or with volunte
 > learn (the potential: chain length, memory, harder tool tasks); social learning and culture; life history (a longer childhood); cooperative breeding and food sharing; social complexity (the weakest driver, last). **The work for this
 > season stays stage 0 below.** Do not: add cooking, language or group-size rewards now; raise the 64-unit ceiling; change the learning rule so that more units learn longer chains (that mapping would *be* the answer — tie any such
 > change to comparative primate data, register it, test it at both ends); read a positive short-run selection slope on brain size as expansion (real expansion took about 100,000 generations).
+> **Rule (the owner, 18 Nov): no brain is gifted.** Every run of the main scenario starts at ape size (`bs` about a third of the 64-unit ceiling); the trait changes only by inheritance and mutation, generation by generation, and
+> we track whether and why it grows. Controlled test arms (founders with a different `bs`), probes outside the world (the chain probe by size) and `--sapiens` are labelled exceptions and never the main result. It is also in `CLAUDE.md`.
 
 **In one paragraph.** Genesis is a small, honest copy of East Africa about 2.5 million years ago. Its hominins get real bodies,
 real needs and a small learning brain, and nothing else: no tools, no fire, no words, no scripted behaviour. Every number comes
