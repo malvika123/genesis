@@ -1,0 +1,4 @@
+# chain probe, 10 brains, brain size 0.7 (45 units), budget 175200 steps (10.0 real-length years of waking); the world's squeezed childhood = 2880 steps
+chain 2: learned by 10/10; median 0.83 real yr (14498 steps); within a squeezed childhood 0/10; each: 13902 30010 9706 8170 22917 14498 15202 12469 13767 14702
+chain 3: learned by 5/10; median 8.35 real yr (146263 steps); within a squeezed childhood 0/10; each: 63776 - 166960 118142 - - - - 146263 150439
+chain 4: learned by 0/10; median -; within a squeezed childhood 0/10; each: - - - - - - - - - -
