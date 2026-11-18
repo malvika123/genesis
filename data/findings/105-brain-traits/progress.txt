@@ -1,0 +1,2 @@
+14:39 data/findings/105-brain-traits/default-100 done
+15:26 data/findings/105-brain-traits/slow-100 done

@@ -1,0 +1,4 @@
+18 Nov 2026, 15:30. A mistake, found because the default and "slow-eating" gene-trace summaries were byte-identical: the arms named slow-100 and slow-long were queued from the main folder, where the
+`--slow-eating` switch does not exist (it lives on the `slow-eating` branch); `fromArgs` silently ignores an unknown flag, so those arms ran the DEFAULT again. slow-100 was a duplicate of default-100 and was deleted.
+slow-long is a valid long run of the DEFAULT (8 worlds x 480 days) and is renamed default-long when it finishes. The real slow-eating arms (with --berry-dose) are queued to run from the slow-eating worktree after entry 104's berry arm.
+Lesson: a flag that a tool does not know must be an error, not ignored (see the backlog); check that every arm differs from the others in a way the summary shows.

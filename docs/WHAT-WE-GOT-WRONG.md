@@ -50,6 +50,8 @@ and sleepers sliding because the world's sleep is in many short dozes. All are f
 
 - **Entry 101: the watching chance counted foraging twice.** A sourced chance for all time together was applied only while the elder foraged, so watching ran far too low; caught by a check before the next arm, kept as arm B0.
 
+- **Entry 105: an arm that ran without its switch.** Two gene-trace arms called "slow eating" were run from a folder where the switch did not exist; the tools ignore unknown flags, so they ran the default again. Found because the two summaries were identical to every digit. The duplicate was deleted; the tools should reject unknown flags.
+
 ## Sources and numbers we got wrong
 
 - **Entry 89: a wrong paper.** The paper cited for "a late-dry-season fruit peak at Issa" is about Guinea-Bissau (Carvalho, Vicente & Marques 2015). The Issa direction comes from Piel
