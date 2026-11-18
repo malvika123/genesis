@@ -203,7 +203,7 @@ chimpanzee days and seasons (Fongoli, Issa); primate predation rates; diet isoto
 hunt success (Schaller 1972; FitzGibbon 1989); nut-cracking ages (Inoue-Nakamura & Matsuzawa 1997; Berdugo et al. 2024); knapping
 comparators (Toth et al. 1993; Snyder et al. 2022).
 
-**Stop rules (F7, in force; unchanged by the brain question, 18 Nov).** The brain-specific stop rule — *with every honest ingredient on, singly and together, selection on brain size is not positive within its interval over a stated number of worlds and generations: write it up and decide* — **belongs at the end of stage 5**, where selection is measured properly; ingredients 4–6 do not exist before then. Stop and decide again if: milestone 2 fails and the owner does not want a different brain;
+**Review points (F7; the owner, 18 Nov: the mid-February date is a checkpoint set by Fable and agreed, not a wall — reworded from "stop rules"; the date and the conditions are unchanged).** At the review we look at what we have learned and decide freely: continue, change course, or stop. Review if: The brain-specific stop rule — *with every honest ingredient on, singly and together, selection on brain size is not positive within its interval over a stated number of worlds and generations: write it up and decide* — **belongs at the end of stage 5**, where selection is measured properly; ingredients 4–6 do not exist before then. Stop and decide again if: milestone 2 fails and the owner does not want a different brain;
 milestone 3 is null on both clocks (write it up — "ape brains do not knap" is a faithful result); a month passes with no measure
 of hominin *behaviour* changing; or it stops being a pleasure. The pass mark "9 of 12 rows" is a convenience for the stop rule,
 not a sourced number — label it so.
@@ -405,6 +405,8 @@ Follow it in order. If a step is skipped, say so in the entry.
     Measure the *choice* as well as the outcome: a measure tied to the grid can hide what creatures do (entry 84).
 11. **Both ends.** For every uncertain number, run the low and the high end of its range. If the result flips, say so.
 12. **24 worlds** for anything that matters; 12 at least. Fewer is a trace, labelled "weak".
+12a. **Log every ingredient tried (added 18 Nov, the owner's trial-and-error point).** Try ten ideas and one will "work" by chance: keep a register of every ingredient or change tried for a question (`docs/TRIALS.md`), win or lose, with its entry, and judge any winner against the *number of trials made*, replicated on fresh seeds and at both ends of its uncertain numbers.
+12b. **Check a winner against evidence it was not built from (added 18 Nov).** An ingredient that makes the brain grow (or a skill spread) is a **candidate explanation**: sufficient here, maybe not necessary, maybe not what happened; test combinations and leave-one-out versions; judge it by what it predicts that we did not use to build it (the fossil record: gradual increase within lineages with stasis, Du et al. 2018; living apes' behaviour and anatomy). A theory that also predicts those has earned more; call it a hypothesis worth testing against real data, never "the answer".
 
 **Writing up**
 13. **A findings entry** in `docs/FINDINGS.md`, by the outline at its end: Version and commit · Data · what was added · the

@@ -1,0 +1,15 @@
+8 worlds, 376 hominins (200 founders), generations reached: median 1, max 4
+adults (reached maturity) 257; of them parents 92; births in the first / last third 128 / 8
+trait | founders | births first third → last third (change; in the trait's spread) | selection differential: parents − all adults (in spread) | slope of children borne per spread (95% ±)
+bs | 0.317 | 0.318 → 0.305 (-0.013; -0.51 sd; -0.5 × its per-birth mutation spread) | -0.0037 (-0.140 sd) | -0.071 ± 0.213 (n 257)
+lr | 0.997 | 0.987 → 1.057 (0.070; 0.58 sd; 0.8 × its per-birth mutation spread) | 0.0148 (0.123 sd) | 0.123 ± 0.220 (n 257)
+im | 0.896 | 0.944 → 1.167 (0.222; 0.46 sd; 2.9 × its per-birth mutation spread) | 0.0210 (0.044 sd) | 0.110 ± 0.229 (n 257)
+vl | 0.146 | 0.149 → 0.105 (-0.044; -0.46 sd; -0.5 × its per-birth mutation spread) | 0.0048 (0.050 sd) | 0.109 ± 0.214 (n 257)
+pg | 0.152 | 0.147 → 0.144 (-0.003; -0.04 sd; -0.0 × its per-birth mutation spread) | 0.0076 (0.084 sd) | 0.084 ± 0.222 (n 257)
+sh | 0.159 | 0.149 → 0.144 (-0.005; -0.06 sd; -0.1 × its per-birth mutation spread) | -0.0000 (-0.000 sd) | -0.067 ± 0.213 (n 257)
+al | 0.500 | 0.482 → 0.442 (-0.041; -0.24 sd; -0.5 × its per-birth mutation spread) | 0.0184 (0.109 sd) | 0.132 ± 0.219 (n 257)
+tm | 0.986 | 1.012 → 0.817 (-0.195; -0.56 sd; -2.3 × its per-birth mutation spread) | -0.0406 (-0.117 sd) | -0.111 ± 0.212 (n 257)
+pc | 1.020 | 1.036 → 0.825 (-0.211; -0.64 sd; -2.4 × its per-birth mutation spread) | -0.0530 (-0.160 sd) | -0.283 ± 0.202 (n 257)
+vf | 0.934 | 0.911 → 0.535 (-0.376; -0.82 sd; -4.6 × its per-birth mutation spread) | -0.0354 (-0.077 sd) | -0.004 ± 0.214 (n 257)
+nm | 0.512 | 0.486 → 0.366 (-0.120; -0.42 sd; -1.4 × its per-birth mutation spread) | -0.0245 (-0.086 sd) | -0.010 ± 0.214 (n 257)
+(the neutral marker nm changed by -0.120; it mutates by an absolute step, so it is the chance yardstick only for the other 0–1 traits (vl pg sh al); for bs lr im tm pc vf compare the change with their own per-birth mutation spread, last column of the change. The slope is the partial slope within worlds, per standard deviation, adjusted for adult years; with a few hundred adults its 95% interval is about ±0.15 or wider: a null is expected and means little.)
