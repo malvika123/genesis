@@ -439,3 +439,8 @@ Long-term goal. Smallest evidence-backed pieces in order: body mass by sex and a
 5. **The body layer, appended last** (`docs/design/body-layer.md`): body mass by sex and age; walking-against-climbing trade-off; muscle strength setting; learned swim stroke; fracture risk.
 The brain-question work (entries 108, 111, 112 and the learner switches) continues alongside when workers are free, and the default flip of slow eating plus the berry dose waits for the queue to clear.
 
+## Fixing the dying: diagnosis so far (18 Nov, from entry 104's traces; 24 worlds, about 15,600 hominin-years; deaths per 1,000 hominin-years)
+Default: predators 27.1, old age 12.2, hunger 9.1, wounds 5.6, illness 4.6, other 1.3: total 60.0 (6% a year). Slow eating + berry dose: predators 32.3, old age 12.2, hunger 10.6, illness 7.3, wounds 4.1, other 0.8: total 67.2. Total mortality is about 6–7% a year, not obviously unrealistic; predators are about half.
+**Inference (not measured):** with population change about −2.7% a year, births are only about 3.3% a year, against 4% or more in real chimpanzees: the decline is more likely a **births** shortfall than a deaths excess. Suspect: age at first birth 15.5 years in the sim against 13–14.6 in real chimpanzees (Gombe 13.3, Taï 13.7, Mahale 14.6). Next: measure births per adult female, age at first birth, and birth gaps directly (a births table with the deaths-by-cause table), then several bands.
+Rule: find what is missing; do not tune survival.
+
