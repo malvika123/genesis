@@ -458,3 +458,6 @@ If a realistic closed band still cannot last: that is the finding (populations n
 ## Found by entry 109 (frozen; for after the population is stable)
 Hominins enter deep water unskilled in numbers that real apes would not (wild apes avoid deep water): at one tenth of the swim practice rate 44 drowned in 24 worlds × 100 days (2.8 per 1,000 hominin-years against 0.8). The missing piece is avoidance of deep water (a judgement the brain should learn or an inborn wariness), not only the practice rate. Merge `swim` only with that question settled.
 
+## Found by entry 112 (frozen; for after the population is stable)
+`--size-learning` (k = 1) breaks learning outright (0–2 of 20 learn even the lookup control, at all sizes including 19 units where k is only 0.84 today): check for instability (weights clipped at ±6; step size) or a fault in the switch before reading it; ask Opus; then rerun at a milder removal (for example k = S.nh/nh halfway). Also the gate failure: 19 units learned P = 2 in 18 of 20 under today's rule: why do two brains not learn a linear task (a stuck policy? the 75% criterion?). Then the brain question's next test.
+

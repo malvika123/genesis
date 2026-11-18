@@ -3309,6 +3309,24 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: (1) at today's rate most adults swim by the end (70%); at one tenth almost none do (6%, under the predicted 10%); (2) population and other deaths unchanged within noise (5 of 24 worlds emptied in both; predators 27.1 and 26.7); drowning rose only because hominins still enter deep water unskilled, as predicted.
 **Interpretation.** The practice rate controls how many hominins can swim, but not the hominins' own judgement: at one tenth they still go into deep water in numbers that drown 44 of them in 24 worlds (0.28% of hominin-years a year, small against about 6% total mortality). Real apes avoid deep water and wade; the sim's hominins do not avoid it enough: the avoidance of deep water is the missing piece, not the rate. The rate stays an assumption (no published rates; both ends reported); the default stays 1 until the owner chooses; swimming is still an authored number, not a learned stroke (backlog: body layer). **Strength.** Moderate: 24 worlds each, clear on skill and drowning, nothing on survival. **Lesson.** A skill rule and the judgement to use it are separate things; slowing the rule exposed the missing judgement.
 
+### 112. The conjunctive probe: the combination task needs thinking units and size does not help; with the size rule removed nothing learns at all (not understood) — Nov 2026
+
+**Version.** Branch `learner` (not merged: frozen): `tools/analysis/chain-probe.js --conj` (new) with `--size-learning` (the scaling `k = S.nh/nh` removed) and `--memory-from-layout` (built, not used here). Design: Opus 18 Nov (`docs/reviews/2026-11-18-opus-learner.md` and its read of entry 108). Identical-worlds check passed with the switches off.
+
+**Data.** `data/findings/112-conjunctive-probe/` (prediction written before): the right act (TAKE or STRIKE) depends on a cue and a context shown on neutral inputs, `T_cue XOR context`; P = 2, 4, 8, 12 combinations; "learned" = at least 75% right over 2,000 steps; a control with one input per combination (a lookup). Sizes 0.3, 0.5, 0.7, 1.0 (19, 32, 45, 64 units), 20 brains each, 10 years of waking allowed.
+
+| Brains out of 20 that learn | 19 units | 32 | 45 | 64 |
+|---|---|---|---|---|
+| today's rule, combination P = 2 / 4 / 8 / 12 | 18 / 15 / 16 / 16 | 20 / 18 / 16 / 16 | 20 / 18 / 17 / 18 | 20 / 16 / 18 / 18 |
+| today's rule, control P = 2 / 4 / 8 / 12 | 20 / 19 / 20 / 20 | 20 each | 20 each | 20 each |
+| size rule removed (`--size-learning`), combination, all P | 0, 1, 0, 1 | 0 | 0 | 0 |
+| size rule removed, control, all P | 0, 2, 1, 2 | 0, 2, 0, 0 | 0, 1, 0, 0 | 0 |
+
+Median time (today's rule): the control 0.1–0.35 years of waking; the combination 0.3 years at P = 2, and about 0.8–1.9 years at P = 4–12 (4–8 times longer).
+
+**Result against the prediction.** Held in part: (a) today's rule, size makes no real difference to the combination (15–18, 16–18, 16–18 of 20 with no consistent trend; P = 12: 16, 16, 18, 18) and the control is flat (20 of 20): the combination, which no direct weights can solve for P ≥ 4, is learned by 75–90% of brains at **every** size including 19 units, 4–8 times slower than the lookup. **Not held:** (b) with the size rule removed capacity did not pay: **nothing learned, not even the control** (0–2 of 20 at every size), and the gate failed: **19 units learned P = 2 in 18 of 20, not 20 of 20** (two brains did not).
+**Interpretation.** Not understood, so not read as "capacity does not pay". Removing the scaling from 0.84 to 1 at 19 units cannot plausibly stop all learning by itself: it looks like an **instability** (the scaling may be what keeps each connection from overwriting the rest, as its comment says) or a fault in the switch; the identical-worlds check only shows that the switch changes nothing when off. Under today's rule the learner already handles the conjunction at 19 units, so the 19-unit brain is not the limit and size does not help: consistent with entries 107 and 108. **Not read, not acted on** (frozen with the other work; the Opus review of this result and a check of the instability are in the backlog). **Strength.** Strong for "today's rule: no size effect, the combination is learned"; none for the removed rule. **Lesson.** A switch that breaks the learner outright tests the break, not the idea.
+
 ### 110. Defence, measured first: per-person predation is already about real; the band is small and closed; attacks are few and nearly all fatal — Nov 2026
 
 **Version.** 0.11.0, measuring only: `tools/analysis/defence-measure.js`. Opus's read: 18 Nov (`docs/design/defence.md`, entries 102 and 103).
