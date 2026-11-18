@@ -384,3 +384,8 @@ To do, in Opus's order, after slow eating (entry 104) and the gene trace (entry 
 `bs` (`src/sim.js` ~111), which makes the life-history and cooperative-breeding ingredients test nothing; (e) only then the controlled founder arms (mixed bands, brain cost crossed on/off, a learning-frozen arm). Register the mutation rate (20% a birth, ±15% is far above real mutation: Houle) and
 run both ends before the relay. Sources to read before any number goes in code: Pontzer et al. 2016, Muthukrishna et al. 2018, Hrdy 2009, Hawkes 1998, Isler & van Schaik, Kuzawa et al. 2014, MacLean et al. 2014, Deaner et al. 2007, and endocranial volumes.
 
+
+## Caves (the owner, 18 Nov 2026: "factual reality over anything"; evidence `docs/reviews/2026-11-18-caves-sources.md`)
+At 2.5 Ma there is no evidence that hominins used caves (South African cave sites are predator lairs; first solid habitual use about 1 Ma). The sim gave caves strong cover (like a big tree, 0.9) and so a pull for sleepers and for shelter from rain and wind (`src/forest.js` `cover`).
+Caves are about 0.5% of land squares, usually none near the band (3 worlds, 30 days: 0–2% of sleeping steps in a cave). Built on branch `no-caves` behind `--no-cave-shelter` (default old until measured, then flipped: factual reality first): caves keep only the modest thermal effect (`src/climate.js`).
+**Not built:** a predator pull to caves (leopards and hyenas den in caves: Brain; but no rates), the cool-off use by choice when hot (an inference from Fongoli chimpanzees). Both are candidates with their own prediction.
