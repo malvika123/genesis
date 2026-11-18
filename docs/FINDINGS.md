@@ -3238,6 +3238,25 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Interpretation.** Hunter numbers are set by fixed caps and a newcomer rule, not by prey; they fill quickly whatever the band does. With one band and no rescue from neighbours, every downturn is final. This supports Fable's order
 (design `docs/design/defence.md`): measure, then several bands, then hunter caps from field density. **Strength.** Moderate: 8 worlds, the poorer seeds; one run.
 
+### 104. Slow eating and the berry dose: feeding time is honest, poison deaths fixed; meat is too fast (registered test failed) — Nov 2026
+
+**Version.** 0.11.0, branch `slow-eating` (not yet merged): `--slow-eating` (fruit 12.2, leaf 7.8, root 8.8, nut 12.2 kcal/min; meat at most 0.25 of a day a step) and `--berry-dose` (poison harm scaled by the amount eaten). Reviews: `docs/reviews/2026-11-18-feeding-rates-sources.md`; Opus on the result 18 Nov.
+
+**Data.** `data/findings/104-slow-eating/` (worktree `~/genesis-wt/slow-eating`): predictions written before (`prediction-written-before.txt`, `prediction-berry-dose.txt`), `comparison.txt` (default → slow eating), `comparison-berry.txt` (slow eating → + berry dose), `table.txt`, `table-berry.txt`, `identical-berry.txt`. 24 real-Earth worlds × 100 days, same seeds.
+
+| | default | slow eating | + berry dose |
+|---|---|---|---|
+| adults' eating share of awake steps | 4.5% | 30.4% | 32.0% |
+| deaths "its wounds" per 1,000 hominin-years | 5.6 | 11.8 | **4.1** |
+| worlds emptied (of 24) | — | 3 | 5 |
+| population change a year | — | −2.7% | −2.7% |
+| adult hunger deaths | 111 | 116 | 126 |
+| meat eaten per person-day | not recorded | not recorded | **~156 g** (median adult-day 177 g; 3 of 24 worlds under 50 g) |
+
+**Result against the predictions.** Held: eating share about 30% (chimpanzees about 37%); wound deaths back below the default (the poison bug fixed: child wound deaths 43 → 13); no collapse (5 of 24 emptied, stop rule more than 12). **Not held:** population change did not improve by about a point (the 95% range −6.4% to −0.1% across 19 worlds cannot detect a one-point change: below the test's power, not unexplained). **Registered test failed: meat.** About 156 g per person-day against under about 50 g per adult-day (chimpanzee year-round averages: Gombe 22 g, Ngogo males 41–55 g; Taï males 186 g, second-hand); 3–5 times over. Hyenas near hominins 8.2 → 11.7 and leopards 11.1 → 8.0 → 20.5: noisy, dominated by a few worlds.
+**Interpretation (Opus, checked).** The 50 g test was set correctly; the meat cap is not the main cause (bare-handed bites are limited to 0.25 kg a step, below it). Slow eating capped plant foods but left meat fast: bare-handed about 1 kg of raw meat an hour, about 19 kcal a minute, against fruit 12.2 and a raw-meat chewing rate of about 6–7 kcal a minute (Wrangham & Conklin-Brittain 2003, second-hand, not verified). The default's meat was never recorded, so the excess may predate slow eating. Leopard kills of adults rising 132 → 150 is the same people dying another way (saved from the poison, returned to the leopards).
+**Decision (the rule written before the run).** Slow eating + berry dose become the default together (no collapse, wounds no longer elevated), with the meat test stated as **failed** here. Next, as its own entry: re-run the default trace with the meat record already in the code (is the excess old?), then a raw-meat chewing rate as a registered hypothesis (verify first), meat logged by age, sex and source. **Owner's call before that runs:** keep the meat band at the chimpanzee year-round average (under about 50 g a day) or widen it to the Taï range (up to about 190 g for males); cut-marked bones at about 2.5 Ma support some extra meat but not how much. **Strength.** Moderate: 24 worlds each; wounds and eating share clear; population and meat uncertain. **Lesson.** A fix that makes one food honest can leave a faster food relatively more attractive: check every food's rate together.
+
 ### 107. Does a bigger brain learn more? No — chains and memory are the same at every size, and memory is a little worse at 64 units — Nov 2026
 
 **Version.** 0.11.0, measuring only: `tools/analysis/chain-probe.js --bs X` (new; the default is unchanged). The brain question's go/no-go (`docs/MASTER-PLAN.md` step 0.11; Opus's review `docs/reviews/2026-11-18-opus-brain-question.md`; the owner's rule: no brain is gifted — this is a probe outside the world, a labelled exception).

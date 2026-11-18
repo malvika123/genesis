@@ -402,3 +402,8 @@ Step 1, no decision needed: **fix the probe** (neutral inputs, random act assign
 assumption with two ends, `S.nh/nh` and `1`, both reported, never chosen by outcome; (2) whether short-term memory should come from the inherited memory region (a new mechanism of ours, supported only indirectly: Hopkins, Russell & Schaeffer 2014, heritability of chimpanzee spatial cognition) with founders' default giving the same echo as today (8 units) so an ape-like hominin stays at chimpanzee level.
 Also: note in `docs/ASSUMPTIONS.md` that one 15-minute step is far from the 0.3–2 s of dopamine credit at a synapse (Yagishita et al. 2014): not to be fixed now (a sub-step model is a big change). Gate for any change: at 19 units chain length stays within the chimpanzee range (no more than about 5) and cue holding no better than today.
 
+## After entry 104 (Opus, 18 Nov)
+- Merge `slow-eating` into `percept` and flip the defaults (`slowEat` and `berryDose` on; flags `fast-eating`, `fixed-berry-dose`; identical-worlds check against the old behaviour) **after the queue finishes** (entry 108 probe runs from the main folder).
+- New entry: meat. Re-run the default trace with `meatKgPeople` (is the excess old?); raw-meat chewing rate ~6–7 kcal/min as a registered hypothesis (verify Wrangham & Conklin-Brittain 2003 first); log meat by age, sex and source (hunted or scavenged). **Owner decides the band first.**
+- Berry avoidance learned in one try after one illness (conditioned taste aversion): separate hypothesis.
+
