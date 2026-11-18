@@ -61,6 +61,20 @@ Read this first in a new session, then **`docs/MASTER-PLAN.md` (the one plan to 
 - Pitfalls: `hunt-measure.js` and `hominin-attacks.js` re-read the code for each world (never edit `src/` while they run); in zsh
   `set -- $a` does not split words; read a hunter's stomach before its attack.
 
+## 18 Nov, NEXT TASK (ready for Sonnet): run and write up entry 104, slow eating
+
+- Built on branch `slow-eating` (worktree `~/genesis-wt/slow-eating`, commit after `percept`): `--slow-eating` caps how much a hominin eats in one 15-minute step at wild-ape intake rates (sources
+  `docs/reviews/2026-11-18-feeding-rates-sources.md`; numbers registered in `docs/ASSUMPTIONS.md` "Slow eating"). Checked: registry test passes; IDENTICAL worlds with the switch off (seeds 1–2 × 20 days).
+  Also run the 100-day identical check on one seed: `SEEDS=1 DAYS=100 tools/identical-worlds.sh percept` (from the worktree).
+- Prediction (written first): `data/findings/104-slow-eating/prediction-written-before.txt` — read it; it has the decision rule (adopt as default unless people die out in more than 12 of 24 worlds; then STOP and ask Opus/Fable).
+- Runs (from the worktree, 4 processes, `nice -n 19`, one batch at a time, never edit `src/` while they run, never commit while `npm test` runs):
+  1. `node tools/analysis/trace-eye.js SEEDS 100 data/findings/104-slow-eating/trace-slow --slow-eating` for seeds 1–24 in four processes (1,2,3,4,5,6 / 7,…,12 / 13,…,18 / 19,…,24), and the same without the switch into
+     `trace-default`; then `node tools/analysis/trace-eye.js --compare data/findings/104-slow-eating/trace-default data/findings/104-slow-eating/trace-slow` → the eat share of awake steps (adults' "eat" act), hungry steps, deaths.
+  2. `node tools/analysis/reality-check.js SEEDS 100 data/findings/104-slow-eating/rc --slow-eating` (seeds 1–24, four processes), `--summary`; compare with entry 102 (the real-Earth default).
+- Write entry 104 in `docs/FINDINGS.md` (before "## Open questions"), held/not held per item; CHANGELOG; then merge `slow-eating` into `percept` (if adopted, flip the default as entry 97 did for the eye: `slowEat` default true,
+  the setting `kind: 'off'` with flag `fast-eating`, identical check that `--fast-eating` gives the old worlds), release routine (tests, page check, merge develop, push develop alone), regenerate `docs/PREDICTIONS.md`.
+- Then: honest watching again (entry 101 follow-ups), then defence per `docs/design/defence.md`.
+
 ## 18 Nov morning: where things stand (read this first)
 
 - **Released (develop `4bc39ef`):** entries 99–103. Honest watching is merged behind six switches, all off (`--honest-watching`); experiments run on the real Earth by default (`--made-up-planet` for the old planet).
