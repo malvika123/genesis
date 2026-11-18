@@ -424,3 +424,7 @@ Also: note in `docs/ASSUMPTIONS.md` that one 15-minute step is far from the 0.3�
 - `--no-rescue` as a test arm (do not switch it off by default: rescue is sourced); `defence-measure.js`: the label "hurt or killed" counts deaths only (rename), split deaths asleep/awake and adult/child, count founding hunters separately.
 - Owner: fix infant deaths and births alongside bands? The missing predators (lions, Homotherium, Dinofelis, Chasmaporthetes, crocodiles) still your decision.
 
+## The missing predators — evidence checked 18 Nov (`docs/reviews/2026-11-18-predator-guild-sources.md`); owner said yes to adding what the evidence supports, after bands
+- Supported at about 2.5 Ma in East Africa: *Homotherium* (the sim's "sabre-tooth"), *Dinofelis*, *Pachycrocuta* (giant hyena); *Chasmaporthetes* low–moderate. **Lions: not supported** (do not add). Crocodiles: present, no hominin predation at 2.5 Ma (a water danger at most). The real guild had 15–17 large species (Werdelin & Lewis 2013) against the sim's 3.
+- Order: bands first; then the infant and birth trace; then each verified kind behind its own switch with a prediction (one at a time). Check *Megantereon* and *Chasmaporthetes* dates before adding.
+
