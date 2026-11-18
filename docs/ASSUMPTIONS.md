@@ -293,3 +293,8 @@ for Kendal et al. 2015's "expert".
   heat thresholds, the tree-sleeping numbers and the care weights.
 - Diet, still missing: sedges and other C4 foods (early Homo about 35% C4 by carbon isotopes, Cerling et al. 2013;
   Paranthropus about 75%), insects, and the energy values of fruit, roots, nuts and meat (older parts, not yet audited).
+
+## Meat (18 Nov 2026; `docs/reviews/2026-11-18-meat-sources.md`; registered after entry 104's failed meat test)
+- **Daily meat intake band: an assumption.** No measurement exists for hominins at 2.5 Ma. Range kept to wild chimpanzees (annual averages): about 20 g/day (Gombe) to about 190 g/day (Taï males; females 7–25 g). The sim reports meat per adult-day with its 95% interval and by age, sex and source; results (survival, the brain question) are reported at both ends and nothing is tuned toward a value. Hominin evidence shows meat was eaten and butchered (Bouri about 2.5 Ma), not how much.
+- **Raw-meat eating rate: a hypothesis of about 6–7 kcal/min** (Wrangham & Conklin-Brittain 2003, second-hand, "optimistic"; unverified against the paper; no measured primate rate found). Today's sim lets a bare-handed hominin eat about 19 kcal/min. Test at both ends (about 3 and 12 kcal/min); prediction before the run.
+
