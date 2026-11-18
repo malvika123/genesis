@@ -1,0 +1,15 @@
+Entry 105: are the sim hominins showing the traits that made humans human — does a bigger, better brain pay and spread? Written 18 Nov 2026, before any run (the owner: "trace if the sim hominins are
+showing those traits"). Measuring only: tools/analysis/gene-trace.js follows every hominin's inherited traits (brain size bs, learning rate lr, copying im, vocal control vl, pointing pg, shared attention sh, care
+for others al, timidity tm, parental care pc, feeling others' hurt vf, and the neutral marker nm that nothing reads) from birth to death and the children each bore.
+Runs (real Earth): (a) default, 24 worlds x 100 days; (b) --slow-eating, 24 worlds x 100 days; (c) --slow-eating, 8 worlds x 480 days (160 years, the most generations a world allows before the band ends).
+Reported against the neutral marker's change (chance drift) and with 95% intervals for the selection slopes.
+What I expect, and why:
+1. A bigger brain does NOT pay here. Brains cost energy (SOC.brainF, registered), nothing in the world rewards a bigger brain directly (a unit count, not a skill), and the README found bigger brains on their own made things worse.
+   So the slope of children borne on brain size bs is zero or negative, and the selection differential on bs is zero or negative within its interval. If it is positive beyond the interval, that is the first sign of the
+   brain-diet-learning loop and I will write it up as a surprise and ask Opus before reading anything into it.
+2. In 24 x 100 days (about 1-2 generations) no trait's mean changes by more than twice the neutral marker's change: evolution is not measurable in so few generations; only the selection differential is.
+3. Timidity tm (fear rises more, pulls away from danger) is favoured where predators kill 45% of hominins: positive slope. Copying im is not favoured (entry 86: copying fell in 17 of 18 worlds): slope zero or negative.
+   Care for others al, parental care pc: unknown, no prediction.
+4. In the 160-year runs (up to about 8 generations, fewer where bands end) the trend in any trait beyond the neutral marker's spread is unlikely; if one appears, it is the most interesting thing in the table.
+Not held if: bs shows a positive slope or differential beyond its interval (a surprise, see 1); or a trait's change exceeds twice nm's in the 100-day runs (more drift than I expect: then the mutation rule or the sample is the question).
+Strength warning: traits are inherited with one parent's value plus a small mutation; adults who bore a child are few (tens to hundreds); slopes have wide intervals; selection on one trait is entangled with others (no multivariate analysis here).
