@@ -1603,7 +1603,8 @@ function drawPerson(g, a, X, Y, k, gr, col) {
     sw = act === A_STRIKE ? (a.swf ?? bodySwing(a)) : 0,
     fem = !!a.sex,
     wet = a.wetv ?? wetOf(a),
-    swS = a.swv ?? strokeNow(),
+    // only one who has learned to swim (skill 0.5 or more, sim.js) strokes; the rest wade with their arms out, so the page does not show swimming that is not there
+    swS = wet && (a.swimv ?? ((a.swim || 0) >= 0.5 ? 1 : 0)) ? (a.swv ?? strokeNow()) : 0,
     held = a.heldv ?? (typeof carried === 'function' && a.sp === 0 && carried(a) ? 1 : 0), // a carried infant clings to its mother
     stk = a.stkv !== undefined ? a.stkv : a.stkT !== undefined && tick - a.stkT <= 1 ? a.stk : null,
     stkOk = a.okv !== undefined ? a.okv : a.stkOk !== undefined && tick - a.stkOk <= 1,

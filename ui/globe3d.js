@@ -789,7 +789,8 @@ const G3D = { ok: false };
       stkv = a.stkT !== undefined && tick - a.stkT <= 1 ? a.stk : null, // what its blow lands on, and whether it did what it was for
       okv = a.stkOk !== undefined && tick - a.stkOk <= 1 ? 1 : 0,
       wetv = wetOf(a), // in water: the arms stroke (five steps of the stroke, so only a few pictures are made)
-      swv = wetv ? Math.round(strokeNow() * 2) / 2 : 0,
+      swimv = (a.swim || 0) >= 0.5 ? 1 : 0, // can it swim (learned): only swimmers stroke
+      swv = wetv && swimv ? Math.round(strokeNow() * 2) / 2 : 0,
       key = [
         a.k,
         a.sex,
@@ -801,6 +802,7 @@ const G3D = { ok: false };
         swf,
         wetv,
         swv,
+        swimv,
         heldv,
         stkv,
         okv,
@@ -830,6 +832,7 @@ const G3D = { ok: false };
         swf,
         wetv,
         swv,
+        swimv,
         heldv,
         stkv,
         okv,
