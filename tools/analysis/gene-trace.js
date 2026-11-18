@@ -30,6 +30,13 @@ if (process.argv[2] === '--summary') {
   console.log(`adults (reached maturity) ${adults.length}; of them parents ${parents.length}; births in the first / last third ${P.filter((p) => inThird(p, 0)).length} / ${P.filter((p) => inThird(p, 2)).length}`);
   console.log('trait | founders | births first third → last third (change; in the trait\'s spread) | selection differential: parents − all adults (in spread) | slope of children borne per spread (95% ±)');
   const nmChange = mean(P.filter((p) => inThird(p, 2)).map((p) => p.g.nm)) - mean(P.filter((p) => inThird(p, 0)).map((p) => p.g.nm));
+  // The mutation rule is absolute (±mutStep/2 of the trait's own scale) for the 0–1 traits (vl, pg, sh, al, nm) and relative (±15% of the value) for bs, lr, im, tm, pc, vf (src/creatures.js, entry 86), so a
+  // trait drifts by chance in proportion to its own mutation step, not the marker's: each change is also shown in units of its per-birth mutation spread (±0.15 absolute, or ±15% of its mean: sd = step / √12).
+  const REL = new Set(['bs', 'lr', 'im', 'tm', 'pc', 'vf']),
+    MUTSD = (k, m) => ((REL.has(k) ? 0.3 * m : 0.3) / Math.sqrt(12));
+  // slopes are within worlds (each trait and the children borne centred on its world's adults) and adjusted for years lived as an adult (age and exposure)
+  const byWorld = new Map();
+  for (const p of adults) (byWorld.get(p.world) || byWorld.set(p.world, []).get(p.world)).push(p);
   for (const k of TRAITS) {
     const has = (p) => p.g[k] !== undefined,
       all = P.filter(has).map((p) => p.g[k]),
@@ -40,18 +47,26 @@ if (process.argv[2] === '--summary') {
       ad = adults.filter(has),
       pa = parents.filter(has),
       sdiff = mean(pa.map((p) => p.g[k])) - mean(ad.map((p) => p.g[k]));
-    // slope of kids on the trait (standardised): cov / var, and its standard error
-    const x = ad.map((p) => (p.g[k] - mean(ad.map((q) => q.g[k]))) / S),
-      y = ad.map((p) => p.kids),
-      my = mean(y),
-      sxx = x.reduce((t, v) => t + v * v, 0),
-      sxy = x.reduce((t, v, i) => t + v * (y[i] - my), 0),
-      beta = sxx ? sxy / sxx : NaN,
-      res = x.map((v, i) => y[i] - my - beta * v),
-      se = sxx ? Math.sqrt(res.reduce((t, r) => t + r * r, 0) / Math.max(1, ad.length - 2) / sxx) : NaN;
-    console.log(`${k} | ${f(mean(fo))} | ${f(mean(a))} → ${f(mean(b))} (${f(mean(b) - mean(a))}; ${f((mean(b) - mean(a)) / S, 2)} sd) | ${f(sdiff, 4)} (${f(sdiff / S, 3)} sd) | ${f(beta, 3)} ± ${f(1.96 * se, 3)}`);
+    const X = [], Y = [], Z = [];
+    for (const [, L] of byWorld) {
+      const l = L.filter(has);
+      if (l.length < 3) continue;
+      const mx = mean(l.map((p) => p.g[k])), my = mean(l.map((p) => p.kids)), mz = mean(l.map((p) => p.adultYears));
+      for (const p of l) (X.push((p.g[k] - mx) / S), Y.push(p.kids - my), Z.push(p.adultYears - mz));
+    }
+    // partial slope of children borne on the trait with adult years as a covariate (OLS, two regressors, no intercept: all centred)
+    const sxx = X.reduce((t, v) => t + v * v, 0), szz = Z.reduce((t, v) => t + v * v, 0), sxz = X.reduce((t, v, i) => t + v * Z[i], 0),
+      sxy = X.reduce((t, v, i) => t + v * Y[i], 0), szy = Z.reduce((t, v, i) => t + v * Y[i], 0),
+      det = sxx * szz - sxz * sxz,
+      beta = det ? (sxy * szz - szy * sxz) / det : NaN,
+      gamma = det ? (szy * sxx - sxy * sxz) / det : NaN,
+      res = X.map((v, i) => Y[i] - beta * v - gamma * Z[i]),
+      se = det ? Math.sqrt(res.reduce((t, r) => t + r * r, 0) / Math.max(1, X.length - 3) * (szz / det)) : NaN,
+      chg = mean(b) - mean(a),
+      ms = MUTSD(k, mean(fo.length ? fo : all));
+    console.log(`${k} | ${f(mean(fo))} | ${f(mean(a))} → ${f(mean(b))} (${f(chg)}; ${f(chg / S, 2)} sd; ${f(chg / ms, 1)} × its per-birth mutation spread) | ${f(sdiff, 4)} (${f(sdiff / S, 3)} sd) | ${f(beta, 3)} ± ${f(1.96 * se, 3)} (n ${X.length})`);
   }
-  console.log(`(the neutral marker nm: its change across the run, ${f(nmChange)}, is the size of change by chance; a real trend in another trait should exceed it)`);
+  console.log(`(the neutral marker nm changed by ${f(nmChange)}; it mutates by an absolute step, so it is the chance yardstick only for the other 0–1 traits (vl pg sh al); for bs lr im tm pc vf compare the change with their own per-birth mutation spread, last column of the change. The slope is the partial slope within worlds, per standard deviation, adjusted for adult years; with a few hundred adults its 95% interval is about ±0.15 or wider: a null is expected and means little.)`);
   process.exit(0);
 }
 const { createEngine } = require(path.join(root, 'tools/engine'));
@@ -82,7 +97,7 @@ for (const seed of seeds) {
     if (rec.has(a.id)) return;
     const g = {};
     for (const k of TRAITS) if (typeof a.g[k] === 'number') g[k] = +a.g[k].toFixed(4);
-    rec.set(a.id, { a, born: t > 0, t0: t, mom: a.mom ? a.mom.id : null, g, gen: a.gen ?? null, adult: a.age >= a.S.mat, death: null, kids: 0 });
+    rec.set(a.id, { a, born: t > 0, t0: t, mom: a.mom ? a.mom.id : null, g, gen: a.gen ?? null, adult: a.age >= a.S.mat, death: null, kids: 0, adultSteps: 0 });
   };
   for (const a of E.state().ag) if (a.sp === 0) see(a, 0);
   let alive = new Set(rec.keys());
@@ -96,7 +111,7 @@ for (const seed of seeds) {
         see(a, t);
         now.add(a.id);
         const r = rec.get(a.id);
-        if (a.age >= a.S.mat) r.adult = true;
+        if (a.age >= a.S.mat) (r.adult = true), r.adultSteps++;
       }
     for (const id of alive) if (!now.has(id) && rec.get(id).death === null) rec.get(id).death = t;
     alive = now;
@@ -104,7 +119,7 @@ for (const seed of seeds) {
   }
   const end = Math.min(t, steps);
   for (const r of rec.values()) if (r.mom !== null && rec.has(r.mom)) rec.get(r.mom).kids++;
-  const people = [...rec.values()].map((r) => ({ born: r.born, t0: r.t0, mom: r.mom, g: r.g, gen: r.gen ?? 0, adult: r.adult, death: r.death, kids: r.kids }));
-  fs.writeFileSync(path.join(out, 'world-' + seed + '.json'), JSON.stringify({ seed, days, flags, end, people }));
+  const people = [...rec.values()].map((r) => ({ born: r.born, t0: r.t0, mom: r.mom, g: r.g, gen: r.gen ?? 0, adult: r.adult, death: r.death, kids: r.kids, adultYears: +(r.adultSteps / TY).toFixed(3) }));
+  fs.writeFileSync(path.join(out, 'world-' + seed + '.json'), JSON.stringify({ seed, days, flags, end, people: people.map((p) => ({ ...p, world: seed })) }));
   console.log('world', seed, 'done: hominins', people.length, 'born', people.filter((p) => p.born).length, 'adults', people.filter((p) => p.adult).length);
 }

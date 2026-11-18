@@ -1,4 +1,4 @@
-# The organising question: what would make a bigger brain pay? — a draft reframing of the project, for review (18 Nov 2026)
+# The organising question: what would make a bigger brain pay? — a draft reframing; Opus's review (adopt with changes): `docs/reviews/2026-11-18-opus-brain-question.md` (18 Nov 2026)
 
 **Why.** The owner (18 Nov): "the brain makes us mostly, so the whole thing should revolve around how hominins would have expanded their brains to reach our state." Brain expansion (encephalization) is the clearest difference between our line and
 the other apes, and the long vision (millions of years, groups with their own ways, language) is a story about it. This note proposes making it the organising question, with the work done so far as its ingredients. It does **not** change
@@ -37,3 +37,16 @@ to evolve; the faithful-day table stays the realism check; F13/F14 (population-g
 3. Are the measurements right: selection gradient on `bs`, founder comparisons, chain probe by size? Can a short run really say "is there a push"?
 4. Where does the project risk building the answer in (tuning toward expansion)? What would make it honest?
 5. Order: which ingredient first, given the sim's state (honest eye, slow eating in progress, honest watching waiting)?
+
+## Revised after Opus's review (18 Nov) — pending the owner's decision
+- **A long-term frame, not this season's programme.** The brain question frames the project; stage 0 (faithful-day table, milestone 2 a 3-step chain, milestone 3 one hard skill) and the tradition question stay as the work, relabelled "can a brain of this size
+  learn anything worth paying for?". **New step 0.11 (measuring only):** entry 105 (gene trace) and the chain probe at brain sizes 0.3, 0.5, 0.7. F7's stop rule (mid-February) unchanged; the brain stop rule moves to the end of stage 5.
+- **Ingredients:** fair, but name who contests them (Navarrete et al. 2011 against the expensive-tissue gut trade-off; DeCasien et al. 2017 and González-Forero & Gardner 2018 against the social brain as first driver, so group complexity is last); add diet and
+  foraging difficulty; climate variability later; state that the sim models absolute brain size (as Du et al. 2018); cooking is out of scope at 2.5 Ma.
+- **A gap:** the mother's transfer to an infant is a flat 0.03 whatever the infant's `bs` (`src/sim.js` ~111): ingredients 4 and 5 test nothing until the cost falls on the mother and helpers.
+- **Measurements:** the selection gradient needs a power statement (a null is expected; a clear positive gradient in 30 years is suspicious); the neutral marker is not like-for-like with `bs` (absolute against relative mutation): scale by each trait's own mutation
+  spread (done in the tool); founder comparison with mixed bands, brain cost crossed on/off, a learning-frozen arm; the chain probe by size is fair and cheap (prediction: extra units will not lift chain length because the limit is credit assignment).
+- **Where the answer could be built in:** changing the learning rule so more units learn longer chains; tie any mapping from units to ability to comparative primate data (MacLean et al. 2014; Deaner et al. 2007: to verify), register it, test both ends; also register the mutation rate
+  (20% a birth, ±15% is far above real mutation) and run both ends before the relay.
+- **Order:** slow eating → entry 105 → chain probe by size → honest watching → defence and several bands → the mother's share of the brain cost → founder arms. **Not:** cooking, language, group-size rewards, raising 64 units, changing the learning rule for this question,
+  rewriting the master plan (add the brain question as its section 1 framing).

@@ -13,3 +13,12 @@ What I expect, and why:
 4. In the 160-year runs (up to about 8 generations, fewer where bands end) the trend in any trait beyond the neutral marker's spread is unlikely; if one appears, it is the most interesting thing in the table.
 Not held if: bs shows a positive slope or differential beyond its interval (a surprise, see 1); or a trait's change exceeds twice nm's in the 100-day runs (more drift than I expect: then the mutation rule or the sample is the question).
 Strength warning: traits are inherited with one parent's value plus a small mutation; adults who bore a child are few (tens to hundreds); slopes have wide intervals; selection on one trait is entangled with others (no multivariate analysis here).
+
+ADDENDUM, 18 Nov, after Opus's review and BEFORE any run of this entry (docs/reviews/2026-11-18-opus-brain-question.md):
+1. The neutral marker is not a like-for-like yardstick: nm mutates by an absolute step (±0.15), bs by a relative one (±15% of its value, about ±0.045 at 0.3), so bs drifts about 3 times less than nm. The tool now shows each trait's
+   change in units of its own per-birth mutation spread; item 2 of the prediction above ("no trait changes by more than twice the neutral marker's change") is replaced by: no trait's change exceeds about 3 x its own per-birth
+   mutation spread in the 100-day runs (more would mean drift beyond what the mutation rule gives).
+2. Power: with a few hundred adults, the 95% interval on a standardised selection slope is about ±0.15 or wider (the tool prints it); a null on brain size is EXPECTED and means little. The brain's energy cost of 3 extra units is
+   about 1.5% of energy: too small to see. Real expansion took about 100,000 generations, so a real push per generation was tiny: **a clear positive slope on bs in a 30-year run would be suspicious** (a sign of a hidden advantage or
+   of cumulative culture), not a result; if it appears, ask Opus before reading anything into it.
+3. Slopes are now within worlds (each trait and children borne centred on the world's adults) and adjusted for years lived as an adult.
