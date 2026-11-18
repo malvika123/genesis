@@ -407,3 +407,7 @@ Also: note in `docs/ASSUMPTIONS.md` that one 15-minute step is far from the 0.3�
 - New entry: meat. Re-run the default trace with `meatKgPeople` (is the excess old?); raw-meat chewing rate ~6–7 kcal/min as a registered hypothesis (verify Wrangham & Conklin-Brittain 2003 first); log meat by age, sex and source (hunted or scavenged). **Owner decides the band first.**
 - Berry avoidance learned in one try after one illness (conditioned taste aversion): separate hypothesis.
 
+
+## Digestive system for hominins (owner asked 18 Nov; checked in the code)
+- **Hominins have no gut in the sim.** `gutOn(a)` (src/sim.js) is true only for the hunter species (`a.sp === 2`); eating gives hominins energy directly. The 24-hour emptying (`SOC.digestH`, tested 12–48) applies only to the predators; the chimpanzee retention time of about 14–16 h (De Cuyper et al. 2020) is a figure to compare with a hominin gut if one is ever built, not a mismatch in today's hominins. (An earlier answer in the session said hominins already have a simple gut: that was wrong.)
+- Decision: not now. A hominin gut needs a stomach capacity, emptying time and fullness limit with no hominin numbers (invented mechanism); slow eating (entry 104) already makes feeding take real time. Revisit with the expensive-tissue idea (gut size as an inherited trait trading against brain size: Aiello & Wheeler 1995, contested by Navarrete et al. 2011), only with sources and a switch, after the learner questions.

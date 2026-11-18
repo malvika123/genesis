@@ -1,0 +1,14 @@
+# chain probe, 20 brains, brain size 1 (64 units), budget 175200 steps (10.0 real-length years of waking); the world's squeezed childhood = 2880 steps
+chain 2 starting probability of the asked act per step (median, 10th, 90th %): 0.087, 0.063, 0.117
+chain 2: learned by 20/20; median 0.12 real yr (2114 steps); within a squeezed childhood 20/20; each: 2001 2383 2001 2478 2792 2014 2564 2327 2001 2001 2001 2178 2001 2266 2114 2001 2859 2008 2350 2001
+chain 3 starting probability of the asked act per step (median, 10th, 90th %): 0.086, 0.061, 0.115
+chain 3: learned by 20/20; median 0.33 real yr (5849 steps); within a squeezed childhood 0/20; each: 4752 6606 4689 5537 7410 5443 5849 5172 4345 4468 5224 6740 7502 5914 5951 4845 8285 6346 6770 4913
+chain 4 starting probability of the asked act per step (median, 10th, 90th %): 0.084, 0.060, 0.114
+chain 4: learned by 20/20; median 1.03 real yr (18023 steps); within a squeezed childhood 0/20; each: 14299 19866 12994 18656 17777 23258 18732 18491 10268 11000 18012 22395 22137 18023 12067 11945 27478 15626 14464 20814
+chain 5 starting probability of the asked act per step (median, 10th, 90th %): 0.086, 0.060, 0.117
+chain 5: learned by 20/20; median 2.48 real yr (43432 steps); within a squeezed childhood 0/20; each: 44596 40496 33319 47144 50634 55711 48471 41749 30901 30086 50971 37779 50313 35422 28356 36565 74430 63562 43432 35356
+delay 0: held by 20/20; median 0.14 real yr (2439 steps); each: 2697 2409 3426 2286 3045 3453 2409 2469 2196 2043 2466 2334 2892 2391 2541 2277 2541 2052 2439 2271
+delay 1: held by 20/20; median 0.87 real yr (15308 steps); each: 9216 32780 15524 4436 12104 6084 6140 10400 54848 32928 11424 15308 5296 16968 15988 6096 13800 31432 16784 36400
+delay 2: held by 12/20; median 6.88 real yr (120530 steps); each: 145025 - - 18265 - 27395 124770 141270 118385 - 120530 112385 25120 - 153500 36205 - - 145115 -
+delay 4: held by 0/20; median -; each: - - - - - - - - - - - - - - - - - - - -
+delay 8: held by 0/20; median -; each: - - - - - - - - - - - - - - - - - - - -

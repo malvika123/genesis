@@ -1,0 +1,7 @@
+# chain probe, 20 brains, brain size 0.7 (45 units), budget 175200 steps (10.0 real-length years of waking); the world's squeezed childhood = 2880 steps
+chain 2 starting probability of the asked act per step (median, 10th, 90th %): 0.085, 0.065, 0.113
+chain 2: learned by 20/20; median 0.12 real yr (2135 steps); within a squeezed childhood 19/20; each: 2001 2308 2001 2637 2542 2001 2135 2001 2253 2001 2001 2189 2001 2273 2413 2001 2893 2010 2293 2001
+chain 3 starting probability of the asked act per step (median, 10th, 90th %): 0.082, 0.063, 0.113
+chain 3: learned by 20/20; median 0.33 real yr (5869 steps); within a squeezed childhood 0/20; each: 3161 6515 4803 7235 7348 6412 5072 4416 4595 6208 5432 5645 5914 5869 5536 4586 7249 6291 6958 3381
+chain 4 starting probability of the asked act per step (median, 10th, 90th %): 0.082, 0.062, 0.112
+chain 4: learned by 20/20; median 0.98 real yr (17208 steps); within a squeezed childhood 0/20; each: 12401 19501 20295 23694 18458 30680 14683 13877 10327 14461 17208 14497 19300 18014 12494 11666 26090 19683 13758 16875
