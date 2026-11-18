@@ -1,0 +1,11 @@
+Entry 107: the chain probe by brain size — does a bigger brain learn more? The brain question's go/no-go (the owner, 18 Nov; Opus's review: docs/reviews/2026-11-18-opus-brain-question.md). Written 18 Nov 2026, before any run.
+Tool: tools/analysis/chain-probe.js --bs X (new; the default is unchanged): the same child, founders' brain-size trait set to X, its units grown to that size (X = 0.30: about 19 units; 0.50: 32; 0.70: 45; 1.00: 64, the modern ceiling),
+10 brains per size on the same seeds (paired), the same tasks and budget as entry 87 (chains of 2-5 acts rewarded at the end; a cue held D = 0, 1, 2, 4, 8 steps; a real-length childhood of 10 years of waking steps).
+Entry 87 (default brains, about 0.3): chain 2 learned by all, chain 3 by about half, chains 4-5 by none; a cue held 2-4 steps.
+What I expect, and why (Opus predicted it too): the limit found in entry 87 is how credit passes back along a chain (one-try boost, backward replay), not the number of units. So extra units will NOT lift chain length or memory:
+1. Chains learned at 0.7 and 1.0 are the same as at 0.3 (2 for all, 3 for about half, 4-5 for none), within the brain-to-brain spread of 10 brains.
+2. The longest cue held is the same (2-4 steps).
+3. Time to learn chain 2 may be a little shorter or longer with more units; no consistent trend.
+Meaning if it holds: "bigger brain" means nothing in this sim until the learning rule changes; the brain question then needs a decision from the owner (change the learning rule, tied to comparative primate data and registered; or accept the finding).
+Not held if: at 0.7 or 1.0, chain 3 is learned by clearly more brains than at 0.3 (7 or more of 10, against about 5), or chain 4 by any, or a cue is held at least 2 steps longer: then extra units open something, and the ingredients are worth building.
+Strength warning: 10 brains per size; a difference of 2 brains of 10 is noise.

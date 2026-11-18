@@ -21,7 +21,8 @@ const arg = (k, d) => {
 const BRAINS = arg('brains', 10),
   STEPS = arg('steps', 175200),
   SEED = arg('seed', 1),
-  ONLY = (process.argv[process.argv.indexOf('--only') + 1] || '').split(',').filter(Boolean); // e.g. --only chain2,delay1
+  ONLY = (process.argv[process.argv.indexOf('--only') + 1] || '').split(',').filter(Boolean), // e.g. --only chain2,delay1
+  BS = process.argv.includes('--bs') ? arg('bs', 0) : null; // brain size, the share of the 64-unit ceiling the brain has grown to (entry 107: the chain probe by size); default: as before
 
 function engine() {
   return new Function(
@@ -40,6 +41,11 @@ function newLearner(E, s) {
   const a = E.mk(0, p.x, p.y, 0, E.child(p, q), 1, 0);
   a.age = Math.round(a.S.mat * 0.4); // a youngster: weaned, still plastic
   a.nh = E.grownUnits(a);
+  if (BS !== null) {
+    // the brain by size (entry 107): the same child, with the inherited size trait set and its units grown to that size (a grown brain of that size, still plastic as a youngster)
+    a.g.bs = BS;
+    a.nh = Math.max(a.S.nh, Math.round(a.h.length * BS));
+  }
   return a;
 }
 
@@ -132,7 +138,7 @@ const YR = 17520,
 const tmp = newLearner(E0, 0),
   squeezed = Math.round(tmp.S.mat); // a squeezed childhood in steps (the world's clock: TY steps a year)
 const show = (v) => (v === null ? 'not learned' : (v / YR).toFixed(2) + ' real yr (' + v + ' steps)');
-console.log(`# chain probe, ${BRAINS} brains, budget ${STEPS} steps (${(STEPS / YR).toFixed(1)} real-length years of waking); the world's squeezed childhood = ${squeezed} steps`);
+console.log(`# chain probe, ${BRAINS} brains${BS !== null ? ', brain size ' + BS + ' (' + Math.max(0, Math.round(64 * BS)) + ' units)' : ''}, budget ${STEPS} steps (${(STEPS / YR).toFixed(1)} real-length years of waking); the world's squeezed childhood = ${squeezed} steps`);
 for (const N of [2, 3, 4, 5]) {
   if (ONLY.length && !ONLY.includes('chain' + N) && process.argv.includes('--only')) continue;
   const out = [];
