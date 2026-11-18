@@ -1,0 +1,11 @@
+12 worlds x 100 days; hominin steps 2654921
+share of hominin sleeping steps up a tree: 0.041 (32477 of 783870)
+attacks on hominins by hunter kind (every attack: total; asleep or awake; hurt or killed) and the hominins' share of that kind's attacks on all prey
+Sabre-tooth: on hominins 69 of 3175 (0.022); asleep 21, awake 48; children 7; hurt or killed 50
+Hyena: on hominins 46 of 2710 (0.017); asleep 14, awake 32; children 3; hurt or killed 27
+Leopard: on hominins 139 of 3491 (0.040); asleep 34, awake 105; children 13; hurt or killed 101
+hunters seen: born in the world / newcomers by rescue
+Hyena: 202 / 118; mean alive 4.7
+Leopard: 212 / 121; mean alive 4.4
+Sabre-tooth: 203 / 60; mean alive 4.7
+mean hominins alive 23.4; years ended: 33.3 33.3 33.3 31.2 33.3 33.3 28.9 33.3 33.3 33.3 33.3 33.3

@@ -418,3 +418,9 @@ Also: note in `docs/ASSUMPTIONS.md` that one 15-minute step is far from the 0.3�
 - Second candidate task: overriding an inborn pull (MacLean et al. 2014: absolute brain volume predicts it; verify). Skills learned per life by brain size, measured in the world, after the probes (noisy, confounded).
 - Memory cap: `--memory-from-layout` keeps 8 slots; a longer memory needs more input slots (changes every world): a separate sourced decision for the owner.
 
+## Defence: next (Opus, 18 Nov, after entry 110)
+- **Build `--bands N`** (dispersal of young females between bands, merging of small bands), prediction first; arms: 1 band of 25, 4 bands of 25, 1 band of 100; held: whole populations ending within 33 years from 5 of 24 to at most 1; per-person predation 2–4% a year; not held low end: predation under about 1.5% a year (then caps from field density first); not held high end: the whole population still shrinking by 1% a year or more (births and deaths are the drain: bands do not cure it).
+- A deaths-by-cause table per 1,000 hominin-years (predators, wounds, hunger, illness) in the design; why the band shrinks about 1% a year (entry 102) and why first-year deaths are only 4% (real 10–25%): not yet traced.
+- `--no-rescue` as a test arm (do not switch it off by default: rescue is sourced); `defence-measure.js`: the label "hurt or killed" counts deaths only (rename), split deaths asleep/awake and adult/child, count founding hunters separately.
+- Owner: fix infant deaths and births alongside bands? The missing predators (lions, Homotherium, Dinofelis, Chasmaporthetes, crocodiles) still your decision.
+

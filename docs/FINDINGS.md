@@ -3215,6 +3215,8 @@ again on it. Two rows fail on both planets and are real gaps: babies die far too
 
 ### 103. The long run: on seeds 1–8 every band ended within 22–85 years, by predators; hunters filled their caps within 10 years — Nov 2026
 
+> **Correction (18 Nov 2026, entry 110 and Opus):** the statement that hunters "filled their caps" is overstated: 11–23 hunters were seen against caps adding to 24, and the measured mean alive is 4.4–5.7 per kind (caps 10, 8, 6); rescue newcomers (32%) set the floor.
+
 **Version.** 0.11.0 + the baby fix; real Earth (the default since entry 102). The owner's page world grew to 82 by year 88, then 18 hunters killed every hominin by year 157.
 
 **Data.** [Prediction, runs, summary](../data/findings/103-long-run/). `node tools/analysis/long-run.js SEEDS 480 OUT` (160 years), seeds 1–8, then `--summary`.
@@ -3289,6 +3291,26 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: chains of 3 (at least 14 of 20) and 4 (at least 5 of 20) are easy at 19 units, so entry 107's 2–3 act ceiling was the probe fighting the inborn hand reflexes; no gain from size at any chain length; cue holding no better with size (it is worse). **Not held: chain 5 was learned by all 20, and the gate written before the run fired** (more than 10 of 20 at 19 units = too easy to compare with chimpanzees).
 **Interpretation (Opus).** The gate fired because the probe was the wrong comparison, not because the learner is too good: each step's state is shown on its own input, a wrong act costs only time, and the direct sense-to-choice path can solve it with no thinking units (a lookup table of 5 labelled states). It says nothing about chimpanzee serial order (Kawai & Matsuzawa's numerals are visible together, with distractors), so **the chimpanzee gate is retired for this probe** and chain times cannot be compared with tool-use learning. Fair: "with labelled states the learner links at least 5 acts, and size neither helps nor hurts". Not fair: "the learner is not the limit for chains". Cue holding is the one place size shows (the echo loop needs thinking units), slightly worse with size, consistent with the scaling rule `k = S.nh/nh` (0.84 at 19 units, 0.25 at 64; inferred from the code, no ablation yet). Correction: there are 19 acts, so chance is 0.053 (the 0.08 start is a little above it).
 **What follows.** This pair of tasks cannot show a benefit of size however memory is built. Next: a **conjunctive probe** (entry 112; the right act depends on a combination of two inputs, so thinking units are required; 2, 4, 8, 16 combinations; a single-input control), run at both ends of `k` (`--size-learning`, built, off by default), and the chain and cue pair rerun at both ends. The owner's two decisions are in build (`--size-learning`, `--memory-from-layout`: at most 8 memory slots, so cue length cannot grow past today's until a sourced decision lifts the cap; changing NM changes every world). **Strength.** Strong for "the probe is a lookup table"; weak for any claim about brains. **Lesson.** Write the gate for what the task needs, not for a number from a different task.
+
+### 110. Defence, measured first: per-person predation is already about real; the band is small and closed; attacks are few and nearly all fatal — Nov 2026
+
+**Version.** 0.11.0, measuring only: `tools/analysis/defence-measure.js`. Opus's read: 18 Nov (`docs/design/defence.md`, entries 102 and 103).
+
+**Data.** `data/findings/110-defence-measure/` (prediction written before; `dm-1-12.txt`, `dm-13-24.txt`): 24 real-Earth worlds × 100 days (33 years), about 15,650 hominin-years, today's default eating.
+
+| | result |
+|---|---|
+| hominin sleeping steps up a tree | 4.4% (25,590 of 541,307 and 32,477 of 783,870: 4.7% and 4.1%) |
+| attacks on hominins (all three kinds) | 609: 26% on sleepers, 74% on awake hominins; children 71 |
+| attacks that ended in death (the tool's "hurt or killed" counts only `hit` or `wound` that died) | 424 of 609 (70%) |
+| attacks per 1,000 hominin-years / deaths by predators | 39 / 27 (= 2.7% a year, as entry 102; real primate median about 3%) |
+| hominins' share of each kind's attacks | leopard 4.0–4.6%, hyena 1.7–3.2%, sabre-tooth 2.2–2.6% |
+| hunters seen: born (incl. founders) / newcomers by rescue | 1,219 / 580 (32% newcomers) |
+| mean hunters alive per kind (caps 10, 8, 6) | 4.4–5.7 |
+| mean hominins alive (of 25); worlds ended before 33 years | 17.1 and 23.4; 5 of 24 |
+
+**Result against the prediction.** Held: sleeping up a tree is rare (under 15%). **Not held (three; Opus asked):** (1) attacks mostly on awake hominins (74%), not sleepers: they simply follow time spent (29% of steps asleep), so sleeping is neither riskier nor safer; (2) newcomers 32%, not under 20% (below my 40% stop line); (3) hunters well below their caps and hominins only 2–5% of attacks (predicted 10–30% for leopards; real about 10% of leopard diet is primates, Isbell 1994: sourced, not re-checked): hunters are not fixated on hominins.
+**Interpretation (Opus).** Per-person predation is about real; the collapse is mostly a small closed band (25, no dispersal or merging) under chance, runs of kills by one hunter kind, and a slow decline of about 1% a year (entry 102): other drains matter as much (births too few or other deaths too many: first-year deaths 4% against the real 10–25% means the decline would worsen if fixed). Not a bug: caps barely matter, because rescue sets the floor (hunters sit just above the rescue line of 4); entry 103's "hunters filled their caps" is overstated (11–23 hunters against caps adding to 24) and is corrected there. The mechanism nobody has examined: **attacks are rare (0.039 per hominin a year, against Boesch's 0.30 at Taï) and 70% are fatal (against about 44% at Taï, 4 of 9, a count not verified)**: escape, alarm calls or a rally would act there; sleep-high could prevent only a small slice (a tree stops only hyenas) and stays last. Lions, *Homotherium*, *Dinofelis*, *Chasmaporthetes* and crocodiles are still left out, so hunter pressure is lower than real. **Next build:** `--bands N` (dispersal of young females, merging of small bands); arms 24 worlds × 100 days: 1 band of 25, 4 bands of 25, 1 band of 100 (separates more people from more bands); prediction first; plus a deaths-by-cause table and a `--no-rescue` arm; split deaths asleep against awake and adult against child before sizing any rally. **Strength.** Good for the counts; the lethality split is not yet measured. **Lesson.** A collapse can come from a small closed population even when each person's risk is realistic.
 
 ### 107. Does a bigger brain learn more? No — chains and memory are the same at every size, and memory is a little worse at 64 units — Nov 2026
 
