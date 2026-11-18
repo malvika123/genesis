@@ -1,0 +1,8 @@
+Entry 110 - defence: measure first (written 18 Nov 2026 BEFORE the run). Measuring only: tools/analysis/defence-measure.js; real Earth (the default now), today's default eating, 24 worlds x 100 days (two workers of 12). Design: docs/design/defence.md item 1, Fable's order.
+Questions and what I expect (all from the code; none sourced yet - these are the quantities the design needs):
+1. Share of hominin sleeping steps up a tree: a smoke test (1 world x 3 days) gave 6%; I expect under 15%. Real great apes nest in trees almost every night (Pruetz et al. 2008): so the pull to climb is much too weak, and sleeping on the ground is where hominins die (most attacks on hominins hit sleepers). If most attacks hit awake hominins instead, the sleep-high change is not the priority.
+2. Hunters: most of each kind's numbers come from births (the cap fills by breeding), newcomers by rescue are a minority (under 20%). If rescue is a large share, the hunter counts are propped up from outside the world.
+3. Hominins' share of each hunter kind's attacks: leopards the highest (10-30%), hyenas and sabre-tooths lower; compared with the real shares (leopards about 10% primates, lions under 1%: Isbell 1994) this says whether hunters are too fixated on hominins.
+4. Mean hunters alive per kind is near the fixed caps (hyena 10, leopard 8, sabre-tooth 6) and does not track prey.
+Not held (and then ask Opus): share asleep up a tree above 40%; attacks mostly on awake hominins; or rescue above 40% of hunters.
+Decision: this only orders the next builds (hunters by prey, several bands, rally, sleep-high); nothing here changes the world.
