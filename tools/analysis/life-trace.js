@@ -6,6 +6,7 @@ const { createEngine } = require(path.join(root, 'tools/engine'));
 const X = require(path.join(root, 'tools/experiment-core'));
 const seed = Number(process.argv[2]);
 const S = X.fromArgs({});
+if (process.argv[3]) S.days = Number(process.argv[3]); // entry 113: the run length in days (default: the tool's own)
 const E = createEngine({ brain: S.brain });
 E.setSeed(seed); E.reset(S.cfg);
 const TY = E.TY, A_EAT = E.A_EAT, A_SLEEP = E.A_SLEEP;

@@ -461,3 +461,6 @@ Hominins enter deep water unskilled in numbers that real apes would not (wild ap
 ## Found by entry 112 (frozen; for after the population is stable)
 `--size-learning` (k = 1) breaks learning outright (0–2 of 20 learn even the lookup control, at all sizes including 19 units where k is only 0.84 today): check for instability (weights clipped at ±6; step size) or a fault in the switch before reading it; ask Opus; then rerun at a milder removal (for example k = S.nh/nh halfway). Also the gate failure: 19 units learned P = 2 in 18 of 20 under today's rule: why do two brains not learn a linear task (a stuck policy? the 75% criterion?). Then the brain question's next test.
 
+## After entry 113 (population plan)
+Step 1 done: births at the real pace (0.186 per adult female per year; crude 4.4%), deaths 6.0%, net about −1.6% a year; the earlier "births 3.3%" inference was wrong. Nothing single is wrong, so step 2 has nothing to fix yet; go to step 3, several bands (design reviewed by Opus first). Open numbers to check later, not now: nursing period `cd` 2.25 years (forager value) against wild chimpanzees' 4–5 years; age at first birth 15.5 (mating age 14 is registered from first-BIRTH sources); the ready window 6.8% of adult time with a ready male near only 25.5% of it.
+

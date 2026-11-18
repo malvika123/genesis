@@ -3309,6 +3309,28 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: (1) at today's rate most adults swim by the end (70%); at one tenth almost none do (6%, under the predicted 10%); (2) population and other deaths unchanged within noise (5 of 24 worlds emptied in both; predators 27.1 and 26.7); drowning rose only because hominins still enter deep water unskilled, as predicted.
 **Interpretation.** The practice rate controls how many hominins can swim, but not the hominins' own judgement: at one tenth they still go into deep water in numbers that drown 44 of them in 24 worlds (0.28% of hominin-years a year, small against about 6% total mortality). Real apes avoid deep water and wade; the sim's hominins do not avoid it enough: the avoidance of deep water is the missing piece, not the rate. The rate stays an assumption (no published rates; both ends reported); the default stays 1 until the owner chooses; swimming is still an authored number, not a learned stroke (backlog: body layer). **Strength.** Moderate: 24 worlds each, clear on skill and drowning, nothing on survival. **Lesson.** A skill rule and the judgement to use it are separate things; slowing the rule exposed the missing judgement.
 
+### 113. Births and deaths diagnosed: births are at the real pace; deaths are a little above births; nothing single is wrong — Nov 2026
+
+**Version.** 0.11.0, measuring only: `tools/analysis/life-trace.js SEED DAYS` (run length now an argument) and `tools/analysis/births-summary.js` (new). Step 1 of the population plan (`docs/BACKLOG.md`, FOCUS).
+
+**Data.** `data/findings/113-births/` (prediction written before; `lt-1.json` … `lt-24.json`): 24 real-Earth worlds × 100 days, default eating, same seeds as entry 104's default trace (15,645 hominin-years, 938 deaths).
+
+| | measured | real (sourced) |
+|---|---|---|
+| adult females / adult-female years / births | 370 / 3,734 / 696 | — |
+| births per adult female per year | 0.186 (one every 5.4 years) | gaps 5.0–6.5 years (Gombe 5.2, Mahale 5.6–6.0): inside |
+| birth gaps (years): median, 10th–90th | 5.2, 4.6–7.0 | inside |
+| crude birth rate (births per hominin-year) | 4.4% | chimpanzees about 4% or more (not re-verified) |
+| crude death rate (entry 104's default trace) | 6.0% | life expectancy 17.8 years, inside 13–33 |
+| net change implied | about −1.6% a year | reality-check band −1.0% to +1.5% (an assumption) |
+| adult females with 5 or more adult years and no birth | 13 of 241 (5%) | — |
+| infants lost before weaning | 144 of 696 births (21%) | — |
+| share of adult-female time "ready" / of that with a ready male within one square | 6.8% / 25.5% | — |
+
+**Result against the prediction.** Held: (1) births per adult female per year are at the real pace (0.186, inside the predicted 0.17–0.19; gaps median 5.2). **Not held:** (2) ready females have a ready male near only 25.5% of the time, not above 70%. (3) (few females reproduce; the first-mating age) was not measured here (the tool does not report age at first birth): left open. **Correction:** my earlier inference in the backlog (births only about 3.3% a year, so the decline is a births shortfall) was wrong: births are 4.4% a year; deaths 6.0%.
+**Interpretation.** Births and deaths are both inside the real ranges, and the net is a small decline of about 1.6% a year: a small closed band under chance then ends in decades (entries 103 and 110); no single number is clearly wrong. Two registered numbers stay open for later: a mother's nursing period (`cd` 2.25 years is a forager value; wild chimpanzees nurse about 4–5 years) means the sim fills the rest of the gap with waiting for a ready male (the ready window is only 6.8% of adult time, and only a quarter of it with a ready male near), and age at first birth (15.5 against 13–14.6, entry 104). **Strength.** Good for the pooled rates (696 births, 24 worlds). **Lesson.** Check an inference before building on it: births were fine and the suspect was the wrong one.
+**Next (plan step 3):** several bands with dispersal and merging; step 2 (a fix for a missing or wrong number) has nothing clear to fix yet.
+
 ### 112. The conjunctive probe: the combination task needs thinking units and size does not help; with the size rule removed nothing learns at all (not understood) — Nov 2026
 
 **Version.** Branch `learner` (not merged: frozen): `tools/analysis/chain-probe.js --conj` (new) with `--size-learning` (the scaling `k = S.nh/nh` removed) and `--memory-from-layout` (built, not used here). Design: Opus 18 Nov (`docs/reviews/2026-11-18-opus-learner.md` and its read of entry 108). Identical-worlds check passed with the switches off.
