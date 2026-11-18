@@ -428,3 +428,6 @@ Also: note in `docs/ASSUMPTIONS.md` that one 15-minute step is far from the 0.3�
 - Supported at about 2.5 Ma in East Africa: *Homotherium* (the sim's "sabre-tooth"), *Dinofelis*, *Pachycrocuta* (giant hyena); *Chasmaporthetes* low–moderate. **Lions: not supported** (do not add). Crocodiles: present, no hominin predation at 2.5 Ma (a water danger at most). The real guild had 15–17 large species (Werdelin & Lewis 2013) against the sim's 3.
 - Order: bands first; then the infant and birth trace; then each verified kind behind its own switch with a prediction (one at a time). Check *Megantereon* and *Chasmaporthetes* dates before adding.
 
+## A body layer for hominins (owner asked 18 Nov; design: `docs/design/body-layer.md`)
+Long-term goal. Smallest evidence-backed pieces in order: body mass by sex and age; one climbing-against-walking trade-off (about 6 J/kg/m, speed cap about 1.3 m/s); relative muscle strength (one tunable setting 1.35–1.5 × modern); learned swim stroke as a brain action (Opus first); fracture risk later. Not yet: Lucy's death, limb lengths, muscle fraction, throwing power, swimming buoyancy. Order against bands and the brain probes: the owner's call.
+
