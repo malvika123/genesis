@@ -431,3 +431,11 @@ Also: note in `docs/ASSUMPTIONS.md` that one 15-minute step is far from the 0.3�
 ## A body layer for hominins (owner asked 18 Nov; design: `docs/design/body-layer.md`)
 Long-term goal. Smallest evidence-backed pieces in order: body mass by sex and age; one climbing-against-walking trade-off (about 6 J/kg/m, speed cap about 1.3 m/s); relative muscle strength (one tunable setting 1.35–1.5 × modern); learned swim stroke as a brain action (Opus first); fracture risk later. Not yet: Lucy's death, limb lengths, muscle fraction, throwing power, swimming buoyancy. Order against bands and the brain probes: the owner's call.
 
+## Work order (the owner, 18 Nov: "append it, don't disturb the order")
+1. Running now: swimming rate test (entry 109) and the conjunctive probe (entry 112), both until about 00:30.
+2. Several bands (`--bands N`, dispersal, merging), with the deaths-by-cause table.
+3. The infant and birth trace (why first-year deaths are only 4–5% against 10–25%).
+4. The missing predators, each verified kind behind its own switch, one at a time (Homotherium, Dinofelis, Pachycrocuta; not lions).
+5. **The body layer, appended last** (`docs/design/body-layer.md`): body mass by sex and age; walking-against-climbing trade-off; muscle strength setting; learned swim stroke; fracture risk.
+The brain-question work (entries 108, 111, 112 and the learner switches) continues alongside when workers are free, and the default flip of slow eating plus the berry dose waits for the queue to clear.
+
