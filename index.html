@@ -749,6 +749,57 @@
         opacity: 0.7;
         cursor: default;
       }
+
+      #readme {
+        max-width: min(46rem, calc(100vw - 2rem));
+        max-height: calc(100vh - 3rem);
+        padding: 0;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--panel);
+        color: inherit;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+      }
+      #readme::backdrop {
+        background: rgba(0, 0, 0, 0.5);
+      }
+      #readme .rm-body {
+        padding: 1.2rem 1.4rem 1.4rem;
+        overflow: auto;
+        max-height: calc(100vh - 3rem);
+        line-height: 1.5;
+        font-size: 0.95rem;
+      }
+      #readme h2 {
+        margin: 0 2rem 0.2rem 0;
+        font-size: 1.25rem;
+      }
+      #readme h3 {
+        margin: 1.1rem 0 0.3rem;
+        font-size: 1rem;
+      }
+      #readme p,
+      #readme ul {
+        margin: 0.4rem 0;
+      }
+      #readme ul {
+        padding-left: 1.2rem;
+      }
+      #readme .rm-note {
+        opacity: 0.75;
+        font-size: 0.85rem;
+      }
+      #readme .rm-x {
+        position: sticky;
+        float: right;
+        top: 0;
+        border: 1px solid var(--line);
+        background: var(--panel);
+        color: inherit;
+        border-radius: 6px;
+        padding: 0.15rem 0.6rem;
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
@@ -759,6 +810,7 @@
         <button role="tab" data-tab="stats" aria-selected="false">Stats</button>
         <button role="tab" data-tab="setup" aria-selected="false">New world</button>
         <button role="tab" data-tab="about" aria-selected="false">About</button>
+        <a class="navlink" href="#readme" id="readme-open" title="What this project is, where it stands, and what it cannot yet do">README</a>
         <a class="navlink" href="research.html" title="What keeps a world alive: every test, version by version, with the data">Research ↗</a>
         <a class="navlink" href="lab.html" title="Run many seeded worlds and compare them">Lab ↗</a>
       </nav>
@@ -1123,5 +1175,61 @@
     <script src="vendor/three.min.js"></script>
     <script src="ui/globe3d.js"></script>
     <script src="ui/app.js"></script>
+    <dialog id="readme" aria-labelledby="rm-title">
+      <div class="rm-body">
+        <button class="rm-x" id="readme-close" aria-label="Close">Close</button>
+        <h2 id="rm-title">Genesis, in five minutes</h2>
+        <p class="rm-note">Written 18 November 2026, in the second week of the project. It will go out of date; the Research page and the repository have the current state.</p>
+
+        <h3>What it is</h3>
+        <p>An open, sourced simulation of early hominins in East Africa about 2.5 million years ago. Every creature has its own small neural network and learns from what its body feels; nobody scripts what it does. Tools, sharing and culture are supposed to be found by the creatures themselves, not given to them. The world follows real Earth: climate, rivers, seasons, predators, prey, plants.</p>
+
+        <h3>The question it is slowly working toward</h3>
+        <p>What would make a bigger brain pay, by inheritance and mutation alone, with nothing gifted? A result either way counts: "under these honest conditions a larger brain does not pay" is as valid as the opposite.</p>
+
+        <h3>How it is run</h3>
+        <ul>
+          <li>Every number comes from research or is listed as an assumption with the range research allows.</li>
+          <li>Every change goes behind a switch, with a prediction written <em>before</em> the run, and is tested at both ends of any uncertain number.</li>
+          <li>Mistakes are recorded openly (see "What we got wrong" in the repository).</li>
+        </ul>
+
+        <h3>Where it stands</h3>
+        <ul>
+          <li><strong>Works:</strong> honest senses (creatures are not handed labelled signals), learning by reward, watching others through the brain, a feeding day close to a chimpanzee's, a world that follows real Earth.</li>
+          <li><strong>Not yet right:</strong> only 3 of 5 sourced reality checks pass. A band of 25 dies out within decades (a small closed band under chance, not too much predation), the population shrinks, babies die less often than real ones, and meat is eaten too fast.</li>
+          <li><strong>Not built:</strong> fire, several bands, a body with bones and muscles, the full set of predators of that time, a real-length year (the year is squeezed into 3 days).</li>
+          <li><strong>Not shown:</strong> that brains grow. Runs last only a few generations, and a first test showed today's learner could not use extra brain units anyway.</li>
+        </ul>
+
+        <h3>What it cannot claim</h3>
+        <p>It does not show how humans came to be, and it is not a validated research tool. It is an honest, documented starting point that others can check and build on.</p>
+
+        <h3>Where to look next</h3>
+        <ul>
+          <li><a href="research.html">Research</a>: every test, version by version, with the data.</li>
+          <li><a href="lab.html">Lab</a>: run many seeded worlds and compare them.</li>
+          <li><a href="https://github.com/malvika123/genesis" target="_blank" rel="noopener">The repository</a>: code, documents, assumptions, findings (MIT licence).</li>
+        </ul>
+      </div>
+    </dialog>
+    <script>
+      (function () {
+        var d = document.getElementById('readme'),
+          o = document.getElementById('readme-open'),
+          x = document.getElementById('readme-close');
+        if (!d || !o || !d.showModal) return;
+        o.addEventListener('click', function (e) {
+          e.preventDefault();
+          d.showModal();
+        });
+        x.addEventListener('click', function () {
+          d.close();
+        });
+        d.addEventListener('click', function (e) {
+          if (e.target === d) d.close();
+        });
+      })();
+    </script>
   </body>
 </html>
