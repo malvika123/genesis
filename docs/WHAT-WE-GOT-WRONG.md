@@ -52,6 +52,8 @@ and sleepers sliding because the world's sleep is in many short dozes. All are f
 
 - **Entry 105: an arm that ran without its switch.** Two gene-trace arms called "slow eating" were run from a folder where the switch did not exist; the tools ignore unknown flags, so they ran the default again. Found because the two summaries were identical to every digit. The duplicate was deleted; the tools should reject unknown flags.
 
+- **Entries 87 and 107: the chain probe was confounded.** It put the chain's states on inputs that carry inborn hand reflexes (TAKE −4 while holding), so chain lengths of 2–3 and cue holding of 2–4 steps measured the reflexes as much as the learner, and entry 107's "credit passing is the limit" was too strong. Found by Opus's review of the code. Corrected in both entries; the probe is being fixed (entry 108).
+
 ## Sources and numbers we got wrong
 
 - **Entry 89: a wrong paper.** The paper cited for "a late-dry-season fruit peak at Issa" is about Guinea-Bissau (Carvalho, Vicente & Marques 2015). The Issa direction comes from Piel

@@ -7,7 +7,7 @@ and at both ends of its uncertain numbers, and checked against evidence it was n
 | # | Ingredient / change tried | Entry | Date | Result | Status |
 |---|---|---|---|---|---|
 | 1 | Baseline: brain-size trait `bs` tracked for selection and drift (no ingredient) | 105 | 18 Nov | no push on `bs` (slope −0.065 ± 0.122, 24 worlds × 100 days); no trend in 1–4 generations (bands end early) | null (weak power) |
-| 2 | Chain probe by brain size (does a bigger brain learn more?) | 107 | 18 Nov | no: chain length and cue holding the same at 19, 32, 45 and 64 units; cue holding slightly worse at 64 | null: the learner, not the size, is the limit |
+| 2 | Chain probe by brain size (does a bigger brain learn more?) | 107 | 18 Nov | no: chain length and cue holding the same at 19, 32, 45 and 64 units; cue holding slightly worse at 64 | null, but confounded by inborn hand reflexes in the probe and by a size-cancelling rule: not the brain question's answer (corrected after Opus's review) |
 | 3 | Energy: slow eating (ape intake rates) | 104 | 18 Nov | eating share 4.5% → 30%; berry-dose fix pending | in progress |
 
 ## Question 2: when does a skill become a tradition? (stage 0)
