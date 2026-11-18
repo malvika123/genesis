@@ -61,3 +61,5 @@ either have no prediction file (older entries, before the rule) or were measurin
 | 101 | [honest-watching](../data/findings/101-honest-watching/) | [`0777479`](https://github.com/malvika123/genesis/commit/077747990c32d57f75a56f5f06dc01de979e88a7) | 2026-11-17 |
 | 102 | [real-earth](../data/findings/102-real-earth/) | [`6a42ce4`](https://github.com/malvika123/genesis/commit/6a42ce476e0c6c47f786ce547d3421e8c70fa0ca) | 2026-11-17 |
 | 103 | [long-run](../data/findings/103-long-run/) | [`76e494e`](https://github.com/malvika123/genesis/commit/76e494e9b8e06394e4c0f25625bfc991cf52ae81) | 2026-11-17 |
+| 105 | [brain-traits](../data/findings/105-brain-traits/) | [`38c9be3`](https://github.com/malvika123/genesis/commit/38c9be3ab6d3cc8b8020aea2c6c41e85c3b6d994) | 2026-11-18 |
+| 107 | [chain-by-brain-size](../data/findings/107-chain-by-brain-size/) | [`117893b`](https://github.com/malvika123/genesis/commit/117893b3adc43b34de442b6bd7cd25e29019cc92) | 2026-11-18 |

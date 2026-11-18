@@ -4,6 +4,8 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **A bigger brain does not learn more here** (entry 107, measuring only; `chain-probe.js --bs X`): chains of 2–3 acts and cues of 2–4 steps at every size from 19 to 64 units; cue holding slightly worse at 64. Brain size is not the limit; the learner's credit passing is.
+
 - **Honest watching, built behind six switches, all off** (entry 101): a youngster learns only from what it can see of an elder. First test: copying of any kind barely changes how common skills are; honest watching is rare because elders eat in only 5–6% of waking steps (real chimpanzees about 37%). Tools: `watch-trace.js`, `long-run.js`.
 - **The long run** (entry 103): on seeds 1–8 every band ended within 85 years, by predators; hunters fill their fixed caps within 10 years (births and newcomers).
 

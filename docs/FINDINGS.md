@@ -3236,6 +3236,29 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Interpretation.** Hunter numbers are set by fixed caps and a newcomer rule, not by prey; they fill quickly whatever the band does. With one band and no rescue from neighbours, every downturn is final. This supports Fable's order
 (design `docs/design/defence.md`): measure, then several bands, then hunter caps from field density. **Strength.** Moderate: 8 worlds, the poorer seeds; one run.
 
+### 107. Does a bigger brain learn more? No — chains and memory are the same at every size, and memory is a little worse at 64 units — Nov 2026
+
+**Version.** 0.11.0, measuring only: `tools/analysis/chain-probe.js --bs X` (new; the default is unchanged). The brain question's go/no-go (`docs/MASTER-PLAN.md` step 0.11; Opus's review `docs/reviews/2026-11-18-opus-brain-question.md`; the owner's rule: no brain is gifted — this is a probe outside the world, a labelled exception).
+
+**Data.** [Prediction and the four tables](../data/findings/107-chain-by-brain-size/). The same young hominin brain (a child of two founders of a real world), its size trait set and its units grown to that size: 0.3 (19 units, the early hominin), 0.5 (32), 0.7 (45), 1.0 (64, the modern ceiling); 10 brains per size on the same seeds; the tasks and the 10-real-year budget of entry 87.
+
+| Brains out of 10 that | 19 units | 32 | 45 | 64 |
+|---|---|---|---|---|
+| learn a chain of 2 acts | 10 | 10 | 10 | 10 |
+| learn a chain of 3 acts | 6 | 4 | 5 | 4 |
+| learn a chain of 4 or 5 acts | 0 | 0 | 0 | 0 |
+| hold a cue 0 / 1 steps | 10 / 10 | 10 / 10 | 10 / 10 | 9 / 10 |
+| hold a cue 2 steps | **9** | 9 | 6 | **5** |
+| hold a cue 4 steps | **4** | 1 | 2 | **1** |
+| hold a cue 8 steps | 0 | 0 | 0 | 0 |
+
+**Result.** Against the prediction written before the run — **held**: (1) chains at 0.7 and 1.0 are the same as at 0.3 (2 for all, 3 for about half, none for 4–5); (2) the longest cue held is the same (2–4 steps); (3) no consistent trend in time to learn chain 2.
+The "not held" conditions (chain 3 by 7 or more of 10 at 0.7 or 1.0, any brain learning chain 4, a cue held two steps longer) did **not** occur. **Not predicted:** holding a cue gets slightly **worse** with more units (2 steps: 9, 9, 6, 5 of 10; 4 steps: 4, 1, 2, 1), consistently across sizes; with 10 brains each a difference of 2 is noise, but a monotonic fall is probably real — a larger random network starts further from useful and learns more slowly.
+
+**Interpretation.** In this sim **brain size is not what limits learning; the learner's rule for passing credit back along a chain is** (entry 87). However the world rewards size, nothing could pay for a bigger brain until that changes. This closes the first test of the brain question with a clear "no" for the current learner,
+and puts the decision on the learner (backlog; Opus consulted). Two checks against the evidence (`docs/reviews/2026-11-18-brain-size-and-learning-sources.md`): chimpanzees, with brains about the size of early hominins', learn 4–5 ordered items in lab tasks and multi-step tool use over years, so the sim's 2–3 is **at or below chimpanzee level** (the learner may be weaker than a chimpanzee, not too small);
+and the comparative data link brain size to cognition across species only loosely and say nothing about chain length. A **time-scale mismatch** also stands: one sim step is 15 minutes, so "a cue held 2–4 steps" is 30–60 minutes, while real primates hold a cue for seconds to minutes: the figures are not yet comparable with ape data. **Strength.** Moderate: 10 brains per size, four sizes, paired seeds, a consistent pattern; the memory fall is a trace. **Lesson.** Test whether the thing you plan to select for can do anything before building a world to reward it.
+
 ---
 
 ## Open questions (next tests)

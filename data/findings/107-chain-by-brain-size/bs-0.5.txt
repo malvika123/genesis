@@ -2,3 +2,9 @@
 chain 2: learned by 10/10; median 0.78 real yr (13743 steps); within a squeezed childhood 0/10; each: 11462 22842 11159 10163 20444 13685 17406 16604 13743 13415
 chain 3: learned by 4/10; median 5.44 real yr (95341 steps); within a squeezed childhood 0/10; each: 95341 159895 - 93453 - - - 82239 - -
 chain 4: learned by 0/10; median -; within a squeezed childhood 0/10; each: - - - - - - - - - -
+chain 5: learned by 0/10; median -; within a squeezed childhood 0/10; each: - - - - - - - - - -
+delay 0: held by 10/10; median 2.38 real yr (41694 steps); each: 42990 50811 3492 13317 63459 53217 23754 12966 14160 41694
+delay 1: held by 10/10; median 0.68 real yr (11964 steps); each: 11560 13608 9692 4580 20960 7948 11964 10848 24096 33456
+delay 2: held by 9/10; median 4.64 real yr (81315 steps); each: 81315 38845 172490 16095 84415 27315 116355 63555 - 122600
+delay 4: held by 1/10; median 4.29 real yr (75236 steps); each: - - - - - 75236 - - - -
+delay 8: held by 0/10; median -; each: - - - - - - - - - -
