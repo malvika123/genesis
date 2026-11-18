@@ -377,3 +377,10 @@ A bigger brain is necessary but not enough: its extra capacity must be usable an
 3. **The potential, directly:** `tools/analysis/chain-probe.js` (entry 87: chains of 2 learned, 3 by half, 4–5 none, a cue held 2–4 steps) with brains of different sizes. If extra units lift the chain length or memory, bigger brains really open what can be learned
    (the "potential"); if not, size alone is not the limit and the missing thing is elsewhere (the learning rule, the world's rewards).
 Not: raising the 64-unit ceiling (that is the modern ceiling; the early–modern range fits inside it; beyond it there is no evidence, and runs slow).
+
+## The brain question is now the master plan's frame (the owner, 18 Nov 2026: "do as Opus suggested"; `docs/MASTER-PLAN.md` section 1 and step 0.11; review `docs/reviews/2026-11-18-opus-brain-question.md`)
+To do, in Opus's order, after slow eating (entry 104) and the gene trace (entry 105): (a) **the chain probe at brain sizes 0.3, 0.5, 0.7** (the probe may need a way to set the brain's size: check `tools/analysis/chain-probe.js`), prediction first: extra units will not lift chain length;
+(b) honest watching again once feeding time is fixed (milestone 2, the tradition question); (c) defence and several bands (without them no band lasts long enough for selection); (d) **the mother's share of a child's brain cost** — today a flat transfer of 0.03 whatever the infant's
+`bs` (`src/sim.js` ~111), which makes the life-history and cooperative-breeding ingredients test nothing; (e) only then the controlled founder arms (mixed bands, brain cost crossed on/off, a learning-frozen arm). Register the mutation rate (20% a birth, ±15% is far above real mutation: Houle) and
+run both ends before the relay. Sources to read before any number goes in code: Pontzer et al. 2016, Muthukrishna et al. 2018, Hrdy 2009, Hawkes 1998, Isler & van Schaik, Kuzawa et al. 2014, MacLean et al. 2014, Deaner et al. 2007, and endocranial volumes.
+

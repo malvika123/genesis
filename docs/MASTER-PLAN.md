@@ -20,6 +20,15 @@ written so that the owner can go on alone, with a cheaper model, or with volunte
 
 ## 1. The goal
 
+> **The organising question (added 18 Nov 2026 at the owner's direction, after Opus's review: `docs/reviews/2026-11-18-opus-brain-question.md`; the draft is `docs/design/brain-question.md`).**
+> *"The brain makes us mostly, so the whole thing should revolve around how hominins would have expanded their brains to reach our state."* **Under which honest conditions does a larger brain leave more surviving
+> descendants than a smaller one, and what is the smallest set of real ingredients that makes that true?** A result either way is a finding: "ape-like learners do not expand their brains under these ingredients, here" is as valid as
+> the opposite. This is the **long-term frame**; it does not replace the stages below. "When does a skill become a tradition?" is one of its ingredients (cultural learning that makes a larger learning capacity pay), and in
+> practice the first one stage 0 can reach. The ingredients, with their evidence and who contests it: energy supply (meat, marrow; slow eating makes feeding time honest; cooking is out of scope at 2.5 Ma); what a bigger brain can
+> learn (the potential: chain length, memory, harder tool tasks); social learning and culture; life history (a longer childhood); cooperative breeding and food sharing; social complexity (the weakest driver, last). **The work for this
+> season stays stage 0 below.** Do not: add cooking, language or group-size rewards now; raise the 64-unit ceiling; change the learning rule so that more units learn longer chains (that mapping would *be* the answer — tie any such
+> change to comparative primate data, register it, test it at both ends); read a positive short-run selection slope on brain size as expansion (real expansion took about 100,000 generations).
+
 **In one paragraph.** Genesis is a small, honest copy of East Africa about 2.5 million years ago. Its hominins get real bodies,
 real needs and a small learning brain, and nothing else: no tools, no fire, no words, no scripted behaviour. Every number comes
 from research or is listed as an assumption. Nothing is tuned to make them survive or "become human". The goal is to run this
@@ -156,7 +165,7 @@ One plan. Stage 0 is running now (it began 16 Nov 2026). Time boxes are for even
 
 ### Stage 0 — A faithful day, and can they learn? (three months: to about mid-February 2027)
 
-**Goal.** Hominins whose days and lives match field numbers, and a clear answer to "can this brain learn a hard skill?".
+**Goal.** Hominins whose days and lives match field numbers, and a clear answer to "can this brain learn a hard skill?" — in the brain question's terms, **"can a brain of this size learn anything worth paying for?"** (the milestones below are that question, asked of the sim's brain).
 
 Steps, in order. F-numbers are from `docs/BACKLOG.md` section 0; G-numbers are today's gap review.
 
@@ -172,6 +181,7 @@ Steps, in order. F-numbers are from `docs/BACKLOG.md` section 0; G-numbers are t
 | 0.8 | **Milestone 1 — F2: the faithful-day table, frozen.** See below. **Since 17 Nov (entry 97) the default eye is honest; baselines re-run 17 Nov (entry 98): 3 of 7 rows pass (3 of 5 sourced); the band shrinks 3.1% a year, babies die too little, first births too late** | ~3 weeks in all | [to do] |
 | 0.9 | **Milestone 2 — a 3-step chain learned within one real-length childhood** | by ~week 6 | [to do] |
 | 0.10 | **Milestone 3 — F6: one hard skill** (cutting with a flake, made hard by physics, not by a dial): repeats rise within a hominin; young of skilled mothers start sooner than controls, with the means counted. Write the real-world comparators into the prediction file first (G14) | by ~month 3 | [to do] |
+| 0.11 | **Brain size, measuring only (added 18 Nov, Opus's review).** Entry 105, the gene trace: every inherited trait, selection on it within worlds, drift against each trait's own mutation spread; and the chain probe (`tools/analysis/chain-probe.js`) at brain sizes 0.3, 0.5 and 0.7 of the ceiling, with a prediction written first (extra units are expected not to lift chain length: the limit found in entry 87 is credit along a chain, not capacity). Changes nothing in the world; days of work | after 0.10 is not required: runs beside the steps | [queued: entry 105 waits for entry 104; the probe by size not yet run] |
 
 I moved F3 ahead of F1 because it takes a day and its answer can end the stage early. The handover has F1 first; either order works.
 
@@ -191,7 +201,7 @@ chimpanzee days and seasons (Fongoli, Issa); primate predation rates; diet isoto
 hunt success (Schaller 1972; FitzGibbon 1989); nut-cracking ages (Inoue-Nakamura & Matsuzawa 1997; Berdugo et al. 2024); knapping
 comparators (Toth et al. 1993; Snyder et al. 2022).
 
-**Stop rules (F7, in force).** Stop and decide again if: milestone 2 fails and the owner does not want a different brain;
+**Stop rules (F7, in force; unchanged by the brain question, 18 Nov).** The brain-specific stop rule — *with every honest ingredient on, singly and together, selection on brain size is not positive within its interval over a stated number of worlds and generations: write it up and decide* — **belongs at the end of stage 5**, where selection is measured properly; ingredients 4–6 do not exist before then. Stop and decide again if: milestone 2 fails and the owner does not want a different brain;
 milestone 3 is null on both clocks (write it up — "ape brains do not knap" is a faithful result); a month passes with no measure
 of hominin *behaviour* changing; or it stops being a pleasure. The pass mark "9 of 12 rows" is a convenience for the stop rule,
 not a sourced number — label it so.

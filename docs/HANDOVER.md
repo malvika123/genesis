@@ -61,6 +61,12 @@ Read this first in a new session, then **`docs/MASTER-PLAN.md` (the one plan to 
 - Pitfalls: `hunt-measure.js` and `hominin-attacks.js` re-read the code for each world (never edit `src/` while they run); in zsh
   `set -- $a` does not split words; read a hunter's stomach before its attack.
 
+## 18 Nov: the brain question is the master plan's frame (read this first)
+
+The owner (18 Nov): the project should revolve around how hominins would have expanded their brains. Opus reviewed (adopt with changes) and the owner said "do as Opus suggested": `docs/MASTER-PLAN.md` section 1 now opens with the organising question; the stages are unchanged; step 0.11
+(measuring only: entry 105, the gene trace, and the chain probe at three brain sizes) is added; the brain stop rule moves to the end of stage 5; F7's mid-February stop rule is unchanged. Opus's order: finish slow eating (104) → entry 105 (queued: `~/scratchpad/run105.sh` waits for 104) → chain probe by
+brain size → honest watching → defence and several bands → the mother's share of a child's brain cost → founder arms. Not: cooking, language, group-size rewards, raising 64 units, changing the learning rule for this. See the backlog section "The brain question is now the master plan's frame".
+
 ## 18 Nov, NEXT TASK (ready for Sonnet): run and write up entry 104, slow eating
 
 - Built on branch `slow-eating` (worktree `~/genesis-wt/slow-eating`, commit after `percept`): `--slow-eating` caps how much a hominin eats in one 15-minute step at wild-ape intake rates (sources
