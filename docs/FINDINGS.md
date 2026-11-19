@@ -3309,6 +3309,41 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: (1) at today's rate most adults swim by the end (70%); at one tenth almost none do (6%, under the predicted 10%); (2) population and other deaths unchanged within noise (5 of 24 worlds emptied in both; predators 27.1 and 26.7); drowning rose only because hominins still enter deep water unskilled, as predicted.
 **Interpretation.** The practice rate controls how many hominins can swim, but not the hominins' own judgement: at one tenth they still go into deep water in numbers that drown 44 of them in 24 worlds (0.28% of hominin-years a year, small against about 6% total mortality). Real apes avoid deep water and wade; the sim's hominins do not avoid it enough: the avoidance of deep water is the missing piece, not the rate. The rate stays an assumption (no published rates; both ends reported); the default stays 1 until the owner chooses; swimming is still an authored number, not a learned stroke (backlog: body layer). **Strength.** Moderate: 24 worlds each, clear on skill and drowning, nothing on survival. **Lesson.** A skill rule and the judgement to use it are separate things; slowing the rule exposed the missing judgement.
 
+### 118. The valley measured in metres: the band is already chimpanzee-like in size; the day's walk is too short; no thunderstorms — Nov 2026
+
+**Version.** Branch `valley` (not merged): V1a–V1c (engine variant, generated terrain, weather replayed from the globe at Gona, woody cover from the Gona statistics) and `tools/analysis/valley-measure.js` (measuring only). Design: `docs/design/valley-spec.md` (V2, Opus's audit).
+
+**Data.** `data/findings/118-valley-measure/` (prediction written before; `valley.txt`, `globe.txt`): 4 worlds each (seeds 1–4), 30 days (10 years), one band of 25, defaults; positions hourly; metres per square 250 (valley) and 3,000 (globe).
+
+| | valley | globe |
+|---|---|---|
+| nearest neighbour, median | 250 m (1 square) | 3,000 m (1 square) |
+| person-hours with nobody within 4 squares | 11.9% (1 km) | 2.6% (12 km) |
+| party size (linked within 1 square): median / mean / 90th | 1 / 2.0 / 4 | 2 / 3.0 / 7 |
+| children under 5 from their mother: median / 90th | 0 / 4.5 squares (1.1 km) | 0 / 3.6 squares (10.8 km) |
+| distance walked per person per day | 1.2 km | 10.9 km |
+| band spread (standard deviation of positions), daily | 3.5 km (14.2 squares) | 16.6 km (5.5 squares) |
+| lightning strikes per km² per year; fires lit | 0; 0 | 0.0008 (3,012 strikes); 133 |
+
+**Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
+**Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
+
+### 119. One band in the valley: the population holds for 33 years — almost certainly for the wrong reason — Nov 2026
+
+**Version.** As entry 118, plus `tools/analysis/valley-run.js` (one tool for both worlds). **Data.** `data/findings/119-valley-band/` (prediction written before): valley and globe, 12 worlds each (seeds 1–12), 100 days (33 years), one band of 25, defaults; the valley holds the same animals as the globe (a count per world: 6 hunters, the default herds and fish).
+
+| per 1,000 hominin-years | valley | globe |
+|---|---|---|
+| worlds emptied (of 12) | **0** | 3 (years 22, 23, 31) |
+| net change a year | **−0.07%** | −2.94% |
+| births / all deaths | 30.0 / 30.7 | 43.4 / 72.8 |
+| killed by a predator | **5.6** | 38.3 |
+| old age / wounds / hunger / illness | 14.4 / 9.0 / 0.6 / 0.9 | 12.8 / 6.4 / 8.4 / 5.3 |
+| mean people at the end (of 25) | 24.3 | 9.3 |
+
+**Result against the prediction.** **Not held** (predator deaths 30–60 predicted; the "not held" line: predator deaths below the globe's): predator deaths in the valley are 5.6, below the globe's 38.3, hunger deaths are 0.6, no world emptied, and the population is level (−0.07% a year); births are lower than predicted (30.0, not about 44). Opus asked before reading anything into it.
+**Interpretation (provisional; Opus to confirm).** The valley is **stable, but probably only because it has too few hunters for its area and an abundance of food**: six hunters over 3,000 km² is about 0.002 per km², against real leopard densities of about 0.055 per km² (5.5 per 100 km²: Allen et al. 2020, a code comment, unchecked) plus hyenas and the extinct cats; the same few hunters meet the band rarely, and food per 250 m square is the globe's per-square amount at 144 times the density (about 10 person-days of food per square: Opus's arithmetic). Predation per person is therefore far below the real primate median of about 3% a year (here 0.56%). Births are lower (30 against 43): not yet explained. **Do not read this as a stable population.** The next step is V2g: hunters and prey by area at field density, and food in kilograms per hectare (V2f), which will probably bring back the predation and the hunger; only then does a "lasting" result mean anything. **Strength.** Moderate for what was measured; the cause is inferred. **Lesson.** A stable result in a world with too few predators is a warning about the world, not a result about the hominins.
+
 ### 116. Several bands with the animals scaled to the bands: the bands share one fate, nothing is gained, and the map cannot separate them — Nov 2026
 
 **Version.** Branch `bands` (not merged): `--guild-per-band F` (caps of plant-eaters and hunters, the hunters' newcomer floor and the starting animals times F; F = 1 identical worlds), `tools/analysis/bands-measure.js` (cause names as the other tools), `tools/analysis/camp-gaps.js`. Opus 20 Nov (the stop rule and the map limit).
