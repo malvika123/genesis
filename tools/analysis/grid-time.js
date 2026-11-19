@@ -1,4 +1,7 @@
-const { engineSource } = require('/Users/malvikasen/genesis/tools/engine'), X = require('/Users/malvikasen/genesis/tools/experiment-core');
+// Genesis — how long does a step take on a bigger grid? (valley Stage 1 measuring, 20 Nov 2026) Swaps the engine source's grid (W x H) and times one simulated day with and without creatures. Reads only.
+// Usage: node tools/analysis/grid-time.js
+// Copyright (c) 2026 Malvika Sen. MIT License.
+const { engineSource } = require('../engine'), X = require('../experiment-core');
 const src0 = engineSource();
 const S = X.fromArgs({});
 function time(label, W, H, cfgExtra) {
