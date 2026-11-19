@@ -161,6 +161,7 @@ function updateWeather() {
   const n = W * H;
   for (let y = 0; y < H; y++) LIFT[y] = lift(y);
   for (let x = 0; x < W; x++) NIGHT[x] = isNightAt(x) ? 1 : 0;
+  const VRAIN = SOC.valley ? (() => { const rec = VALLEY_FORCE[SOC.valleySeed % VALLEY_FORCE.length]; return rec.rain[tick % rec.rain.length] * SOC.valleyRainScale; })() : 0;
   // rising air is patchy along each belt, and the patches drift over the days (refreshed now and then)
   if (!PATCH || tick % 8 === 0) {
     if (!PATCH) PATCH = new Float32Array(n);
@@ -206,7 +207,8 @@ function updateWeather() {
     }
     // rain (or snow) from heavy clouds
     let r = 0;
-    if (CLD[i] > 0.12) {
+    if (SOC.valley) r = VRAIN; // the valley: the globe's rain at Gona, the same everywhere (50 km under one weather system), times SOC.valleyRainScale (an assumption)
+    else if (CLD[i] > 0.12) {
       r = (CLD[i] - 0.12) * 0.12;
       CLD[i] -= r;
     }
@@ -231,6 +233,7 @@ function updateWeather() {
     }
   }
   STRIKES = STRIKES.filter((b) => tick - b.t < 6);
+  if (SOC.valley) return valleyForce(); // entry 117: a 50 km valley lies under one weather system: its air is the globe's air at Gona, relaxed toward it every step (no drifting storms, advection or mixing)
   moveStorms();
   advect(HUM, TMP1);
   advect(CLD, TMP1);
@@ -246,3 +249,19 @@ const stormy = (i) => THUNDER && THUNDER[i] === 1;
 const wetness = (i) => (water[i] ? 1 : clamp(0.5 + MOIST[i] * 1.25, 0, 1));
 // drinkable water at a cell: open (unfrozen) water, or a puddle
 const drinkable = (i) => (liquid(i) && !salt[i]) || PUD[i] === 1;
+
+// The valley's weather (entry 117, docs/design/valley-spec.md; V1b): humidity and cloud relax toward the globe's recorded values at the square that holds Gona (src/valleyforce.js, made by
+// tools/analysis/record-gona-weather.js); what makes one place wetter than another is local: the river and wet ground evaporate, shade, slopes lift (the code above), and then the air relaxes back.
+// The relaxation rate (SOC.valleyRelax, 0.2 a step: an assumption, nothing sourced) decides how far local evaporation can raise the humidity above the forcing.
+function valleyForce() {
+  const rec = VALLEY_FORCE[SOC.valleySeed % VALLEY_FORCE.length],
+    t = tick % rec.hum.length,
+    h = rec.hum[t],
+    c = rec.cld[t],
+    k = SOC.valleyRelax,
+    n = W * H;
+  for (let i = 0; i < n; i++) {
+    HUM[i] += k * (h - HUM[i]);
+    CLD[i] += k * (c - CLD[i]);
+  }
+}
