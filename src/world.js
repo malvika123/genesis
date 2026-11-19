@@ -45,7 +45,8 @@ function buildWorld(cfg) {
   SOC.sound = cfg.soundPhysics !== false; // off: the old rule (heard within 2.2 squares, fading evenly)
   SOC.calls = cfg.animalCalls !== false;
   SOC.modern = !!cfg.modernVoice; // the experiment: give everyone a modern human voice from the start
-  SOC.earth = !!cfg.earth; // the real Earth's land and sea, 70,000 years ago (see earth.js), or a made-up planet
+  SOC.valley = !!cfg.valley; // entry 117: the valley world (built with the valley engine: tools/engine-api.js opts.valley); never together with the real Earth
+  SOC.earth = !!cfg.earth && !cfg.valley; // the real Earth's land and sea, 70,000 years ago (see earth.js), or a made-up planet
   ERA = cfg.sapiens || cfg.scenario === 'sapiens' ? 'sapiens' : 'hominin'; // which world (state.js)
   // their bodies and lives: modern people's, or early hominins' (config.js)
   Object.assign(KBIO[0], PERSON_BIO, ERA === 'hominin' ? HOMININ : {});
