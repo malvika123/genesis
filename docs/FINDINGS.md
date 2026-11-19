@@ -3309,6 +3309,24 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: (1) at today's rate most adults swim by the end (70%); at one tenth almost none do (6%, under the predicted 10%); (2) population and other deaths unchanged within noise (5 of 24 worlds emptied in both; predators 27.1 and 26.7); drowning rose only because hominins still enter deep water unskilled, as predicted.
 **Interpretation.** The practice rate controls how many hominins can swim, but not the hominins' own judgement: at one tenth they still go into deep water in numbers that drown 44 of them in 24 worlds (0.28% of hominin-years a year, small against about 6% total mortality). Real apes avoid deep water and wade; the sim's hominins do not avoid it enough: the avoidance of deep water is the missing piece, not the rate. The rate stays an assumption (no published rates; both ends reported); the default stays 1 until the owner chooses; swimming is still an authored number, not a learned stroke (backlog: body layer). **Strength.** Moderate: 24 worlds each, clear on skill and drowning, nothing on survival. **Lesson.** A skill rule and the judgement to use it are separate things; slowing the rule exposed the missing judgement.
 
+### 114. Several bands, no dispersal: four separate bands halve the decline and lose far fewer worlds — but the cause is not yet shown — Nov 2026
+
+**Version.** Branch `bands` (not merged): `--bands N` (N bands of 25 at separate camps, hunters and newcomers kept away from every camp, birth-band tags for measuring only) and `--band-dist` (least camp gap in squares; the usable homeland allowed only about 7–8: bands overlap in range like neighbouring chimpanzee communities); `tools/analysis/bands-measure.js`, `tools/analysis/band-range.js` (a hominin stays within about 5.6 squares of its band's centre in a year, the 90th percentile within 10; a band's centre moves about 1 square a year). Design: `docs/design/bands.md` (Opus 19 Nov). Identical-worlds check passed with one band.
+
+**Data.** `data/findings/114-bands/` (worktree `~/genesis-wt/bands`; prediction written before): 24 real-Earth worlds × 100 days (33 years), default eating, same seeds; arms 1 × 25, 4 × 25 (`--bands 4`), 1 × 100 (`--extra-people 75`).
+
+| | 1 × 25 | 4 × 25 | 1 × 100 |
+|---|---|---|---|
+| worlds emptied (of 24) | 5 | 1 | 1 |
+| bands emptied | 5 of 24 (21%) | 8 of 96 (8%) | 1 of 24 (4%) |
+| births per 1,000 hominin-years | 44.5 | 45.5 | 46.3 |
+| deaths per 1,000 hominin-years | 60.0 | **52.7** | 61.2 |
+| net change a year | −1.55% | −0.72% | −1.49% |
+| mean population at the end (of 25, 100, 100 at the start) | 14.9 | 78.3 | 60.0 |
+
+**Result against the prediction.** Held: at most 1 of 24 worlds emptied in the four-band arm; births equal across arms; the single band of 100 lost no more than the 25 and the world mostly lasted. **Not held:** most bands still lost (predicted over 40%: 8%); a net decline of −1% to −2% (−0.72%); per-person rates "like one band" (deaths 52.7 against 60.0). The one band of 100 does **not** lower deaths (61.2): so the gain in four bands is not simply more people to share the same few hunters.
+**Interpretation (open).** Separate bands lower deaths by about 12% and nearly halve the decline, but the cause is not shown: deaths were not split by cause in these arms. The likely suspect named by Opus is an artefact: hunters (6 per world, fixed caps, home ranges) cannot reach every camp, so some bands live where hunters seldom come; real predators are everywhere, so this would not be a real benefit. Not a cure: the world still declines (−0.72% a year); bands help it last, as predicted, not grow. **Next:** deaths by cause in each arm; an arm with hunters scaled with the bands (`--hunters-per-band`; prediction first); then dispersal of young females. **Strength.** Moderate for the pooled rates (about 50,000 hominin-years in the four-band arm); the cause is unknown. **Lesson.** A benefit that appears with separation but not with numbers points at geography, not at group size: check where the hunters are before believing it.
+
 ### 113. Births and deaths diagnosed: births are at the real pace; deaths are a little above births; nothing single is wrong — Nov 2026
 
 **Version.** 0.11.0, measuring only: `tools/analysis/life-trace.js SEED DAYS` (run length now an argument) and `tools/analysis/births-summary.js` (new). Step 1 of the population plan (`docs/BACKLOG.md`, FOCUS).
