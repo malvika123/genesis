@@ -1905,6 +1905,7 @@ function seenOkay(a, o) {
 function ouch(a, amt, kind, died = false) {
   if (a.sp !== 0) return;
   a.hurtT = tick; // (honest watching) a hurt others can see
+  a.hurtK = kind; // what last hurt it, for measuring only (tools/analysis/valley-run.js); nothing reads it
   OUCH.push({ a, x: a.x, y: a.y, amt, kind, act: died ? -1 : a.act });
 }
 function watchOthers() {
