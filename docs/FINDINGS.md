@@ -3328,6 +3328,26 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 121. Attacks on hominins, split: the kill shares are the code's dice; nearby adults change nothing; the blind spot is small — Nov 2026
+
+**Version.** Branch `escape` (not merged): the attack record (HUNTLOG) extended (up a tree, hunter in the victim's own square, awake adult hominins within one square, victim's action, hit points; nothing reads it), `tools/analysis/attack-measure.js`. Design: `docs/design/attack-escape.md` (Opus 20 Nov). **Data.** `data/findings/121-attack-split/` (prediction written before): 24 real-Earth worlds × 100 days, defaults, same seeds as entries 110 and 113.
+
+| | attacks | killed by the roll |
+|---|---|---|
+| all (38.9 per 1,000 hominin-years = 0.039 a year) | 609 | **69.0%** |
+| hyena / leopard / sabre-tooth | 159 / 286 / 164 | 67.3% / 68.9% / 70.7% |
+| victim asleep | 161 | 88.8% |
+| awake, unweaned child | 56 | 87.5% |
+| awake juvenile | 106 | 50.0% |
+| awake adult | 286 | 61.2% |
+| up a tree / on the ground | 17 / 592 | 17.6% / 70.4% |
+| hunter in the victim's own square / a neighbouring square | 100 / 509 | 70.0% / 68.8% |
+| awake adult hominins within one square: none / 1–2 / 3 or more | 449 / 128 / 32 | 67.9% / 71.9% / 71.9% |
+| hunter's energy before the attack | median 77.6 (10th 44.3, 90th 95.2) | |
+
+**Result against the prediction.** Held: about 70% killed; sleepers 88.8%, unweaned children 87.5% (predicted 85–95%), awake adults 61.2% (55–65%); up a tree 17.6% (predicted 20–35%: n = 17, noise); **nearby adults change nothing** (71.9% with helpers against 67.9% without: within 8 points: group help does nothing in the code). **Not held:** most attacks from the victim's own square: only **16.4%** (100 of 609; the "not held" line, under 30%, fired): the blind spot is real but small: most hunters attack from a neighbouring square, where the victim's flight and climb pulls can already fire, and still 69% die because the roll is immediate on contact.
+**Interpretation.** The 70% is exactly the two registered dice (0.6 awake adults, about 0.9 sleepers and children) mixed by who is attacked; nothing the victim does after contact can change the outcome. The hold (step a of the design: a bite and a grip, then one step of choice for the victim and for the hunter) is the smallest honest change; the blind-spot fix matters for about 16% of attacks. Hunters attack when well fed (median energy 78), so hunger is not what drives them. **Strength.** Strong for the split (609 attacks); the blind spot is a small effect. **Lesson.** Check a suspected cause for its reach: a real bug can still be a small one.
+
 ### 120. Why the valley's predation is low and its births are low: hunters rarely meet the band, are better fed, and births are halved — Nov 2026
 
 **Version.** Branch `valley` (not merged): `tools/analysis/valley-run.js` with daily hunter records, wound labels (`a.hurtK`, a label nothing reads) and births per adult female. **Data.** `data/findings/120-valley-measure2/` (prediction written before): the worlds of entry 119 rerun with more records: 12 valley and 12 globe worlds, seeds 1–12, 100 days.
