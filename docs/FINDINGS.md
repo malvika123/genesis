@@ -3328,6 +3328,24 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 120. Why the valley's predation is low and its births are low: hunters rarely meet the band, are better fed, and births are halved — Nov 2026
+
+**Version.** Branch `valley` (not merged): `tools/analysis/valley-run.js` with daily hunter records, wound labels (`a.hurtK`, a label nothing reads) and births per adult female. **Data.** `data/findings/120-valley-measure2/` (prediction written before): the worlds of entry 119 rerun with more records: 12 valley and 12 globe worlds, seeds 1–12, 100 days.
+
+| | valley | globe |
+|---|---|---|
+| hunters per day: all / hyena / leopard / sabre-tooth | 17.6 / 8.2 / 5.0 / 4.5 | 14.8 / 5.7 / 4.6 / 4.5 |
+| herds per day | 215 | 53 |
+| distance from a hunter to the nearest person: median over worlds | 41.6 squares | 26.6 squares |
+| hunter-days with a hunter within 8 squares of a person | **3.7%** | 13.0% |
+| hunters' mean energy | **84** | 69 |
+| births per adult female per year | **0.093** | 0.181 |
+| age at first birth, median (observed first births) | 19.5 | 18.4 |
+| deaths per 1,000 hominin-years (as entry 119) | 30.7 | 72.8 |
+
+**Result against the prediction.** Held: (1) the valley holds as many hunters as the globe (17.6 against 14.8: the caps and the newcomer floor set them) and more herds (215 against 53); (2, in part) hunters are far from the band: only 3.7% of hunter-days have a hunter within 8 squares against 13.0% on the globe, a median of 41.6 squares against 26.6 (predicted: over 20 and under 15, and above 30%: the globe is farther and rarer than predicted); (3) valley hunters are better fed (84 against 69: 15 points); (4) births per adult female are lower in the valley: **0.093 against 0.181**, below even the predicted 0.12–0.16. Not testable: (5) every wound label is the same word ("wounds"): the label recorded does not separate kinds. Neither "not held" line fired.
+**Interpretation.** Opus's reading holds: the valley's predation is low because the hunters rarely meet the band (3.5 times less often within 8 squares) and are better fed (the prey map's abundance), and its births are **halved**: 0.093 per adult female per year (one every 10.8 years) against the real pace of about 0.17–0.19 (gaps 5.0–6.5 years); the valley hominins are far from replacing themselves in births and survive only because deaths are low (30.7 against 72.8 per 1,000 hominin-years). The mate-finding rule (a ready partner within 3 × 3 squares: 750 m in the valley, 9 km on the globe) and a more spread band are the likeliest cause (not shown). **So the valley is too safe and has too few births: not a stable population.** The order stays: V2a (the metres-per-square constant), V2d (contact rules in metres, mate finding first), then hunters by area. **Strength.** Moderate: 12 worlds each; the births gap is large and clear; the mate-finding cause is inferred. **Lesson.** In a world with the rules in squares, "stable" can come from two broken halves cancelling: too few births and too few deaths.
+
 ### 119. One band in the valley: it declines far less than on the globe, after a rise — and probably for the wrong reasons — Nov 2026
 
 **Version.** As entry 118, plus `tools/analysis/valley-run.js` (one tool for both worlds). **Data.** `data/findings/119-valley-band/` (prediction written before): valley and globe, 12 worlds each (seeds 1–12), 100 days (33 years), one band of 25, defaults; the valley holds the same animals as the globe (a count per world: 6 hunters, the default herds and fish).
