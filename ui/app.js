@@ -3107,6 +3107,9 @@ try {
   const v = localStorage.getItem('genesis-speed-v2');
   if (v !== null) $('spd').value = v;
 } catch (e) {}
+// the slider should only move when you drag it: a mouse wheel or arrow key meant for zooming or scrolling must not drag the speed to "real time" (where nothing seems to move)
+$('spd').addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
+$('spd').onchange = () => $('spd').blur();
 $('spd').oninput = () => {
   spdLabel();
   try {
