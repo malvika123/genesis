@@ -496,3 +496,6 @@ Reason (the owner): apes are strong and their hominin descendants probably were 
 ## After entry 122 (the hold)
 The hold lowers predator deaths about 25% but about three quarters of seizures end with the hunter not pressing again within 3 steps (well-fed hunters attack on a weak pull): too forgiving. Next: check the evidence on whether predators that have seized prey usually kill it (the grip as a continuing physical state with release a separate pull); the same-square blind spot fix and climbing as escape (step b); group rescue (step c); strength from the body model feeds the break-free chance (entries 123 on). Switch off by default until the hunter's follow-up is realistic.
 
+## Found by Opus's design read (23 Nov): a small bug, not fixed (fixing it changes every world)
+`src/sim.js` about 233 sets `a.bored = 0` before about 236 uses it, so the curiosity term `(1 + 2 * a.bored)` is always 1 (boredom never raises curiosity). Decide whether to fix it as a switch with its own prediction.
+
