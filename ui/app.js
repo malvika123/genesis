@@ -2863,6 +2863,7 @@ function glide() {
       tx += mx * p;
       ty += my * p;
       if (walking && mx) a.face = mx > 0 ? 1 : -1;
+      if (walking && (mx || my)) (a.fdx = mx), (a.fdy = my); // the way it last walked, north-south too (the 3D view turns it to face that way on screen)
     }
     let bx = 0,
       by = 0;

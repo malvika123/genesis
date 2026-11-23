@@ -291,9 +291,9 @@ const G3D = { ok: false };
   // riverine Combretaceae and Tamarix, all present but not common) in a grassy woodland with sizable trees; the umbrella thorn (Vachellia tortilis) today is 5-20 m tall (usually near 5-10 m) with a flat crown
   // often wider than tall. Which species stood at Hadar is NOT known: this is one modern-looking stand-in shape, drawn bigger than the other trees. Elsewhere on Earth the old round tree is kept.
   const limbG = new THREE.CylinderGeometry(0.0004, 0.0007, 0.0085, 5).translate(0, 0.00425, 0),
-    flatG = new THREE.IcosahedronGeometry(0.0052, 1).scale(1, 0.36, 1),
+    flatG = new THREE.IcosahedronGeometry(0.0042, 1).scale(1, 0.38, 1),
     limbs = new THREE.InstancedMesh(limbG, new THREE.MeshLambertMaterial({ color: 0x5a3d26 }), 3 * MAXT),
-    flats = new THREE.InstancedMesh(flatG, new THREE.MeshLambertMaterial({ color: 0x4d7a30 }), 4 * MAXT),
+    flats = new THREE.InstancedMesh(flatG, new THREE.MeshLambertMaterial({ color: 0x356529 }), 4 * MAXT),
     part = new THREE.Matrix4(),
     pq = new THREE.Quaternion(),
     pe = new THREE.Euler(),
@@ -1112,7 +1112,24 @@ const G3D = { ok: false };
         }
         n++;
         sp.visible = true;
+        // which way it faces ON SCREEN: a flat picture that always turns to the camera must look the way the creature walks as the viewer sees it, not as the map's east-west
+        // (looking south, or through a creature's eyes facing any way, east on the map is screen-left, so creatures seemed to walk backwards). Walking straight toward or away keeps the last side.
+        const savedFace = a.face;
+        if (a.fdx !== undefined) {
+          const la0 = latOfY(a.ry),
+            lo0 = lonOfX(a.rx),
+            p0 = local(la0, lo0, 1).clone(),
+            p1 = local(latOfY(a.ry + a.fdy), lonOfX(a.rx + a.fdx), 1).clone();
+          globe.updateMatrixWorld();
+          camera.updateMatrixWorld();
+          const dirW = p1.sub(p0).transformDirection(globe.matrixWorld),
+            right = new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld, 0),
+            d = dirW.dot(right);
+          if (Math.abs(d) > 0.25) a.faceS = d > 0 ? 1 : -1;
+          if (a.faceS !== undefined) a.face = a.faceS;
+        }
         sp.material.map = texFor(a, v);
+        a.face = savedFace;
         sp.material.color.setScalar(isNightAt(a.x) ? 0.45 : 1);
         sp.material.transparent = false; // solid: only the empty background of the picture is cut away
         sp.material.needsUpdate = true;
