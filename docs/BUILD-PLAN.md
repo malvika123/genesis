@@ -4,11 +4,11 @@ Written in plain words. Every item below gets: the evidence checked first, a des
 
 ## Part 1 — Food and the senses (the globe first; carried into the valley later)
 - [x] 1. **Measure what they eat** — protein and effort recorded for every hominin (built; page panel shows it; first 24-world measurement running).
-- [ ] 2. **See what they do about leaves** — a measuring step (how often hungry hominins stand among leaves and don't eat).
-- [ ] 3. **A real colour sense** — "something reddish stands out" replaces the poison-only red sense; ripe fruit, young leaves, poison berries all show up; nothing says "food". No new brain inputs.
-- [ ] 4. **Leaves they can see and eat down** — young leaves in a seasonal flush that get used up and grow back; pith and stems as the dry-season fallback.
-- [ ] 5. **Curiosity about new things (not only food)** — a pull to taste, touch and approach what is new or stands out; stronger in the young and curious, weaker when afraid, fades with use, boosted by the mother eating; no pull to any one food or colour.
-- [ ] 6. **Insects: termites and ants** — mounds as a patchy seasonal food, eaten by hand.
+- [x] 2. **See what they do about leaves** — the ledger and the full test answer it (leaves are eaten: 12% of protein across 24 worlds; entry 123).
+- [~] 3. **A real colour sense (built, on the page, under test: entry 124)** — "something reddish stands out" replaces the poison-only red sense; ripe fruit, young leaves, poison berries all show up; nothing says "food". No new brain inputs.
+- [~] 4. **Leaves they can see and eat down (built, under test; pith still to do)** — young leaves in a seasonal flush that get used up and grow back; pith and stems as the dry-season fallback.
+- [~] 5. **Curiosity about new things (taste curiosity built, on the page, under test; curiosity toward anything that stands out still to do)** — a pull to taste, touch and approach what is new or stands out; stronger in the young and curious, weaker when afraid, fades with use, boosted by the mother eating; no pull to any one food or colour.
+- [~] 6. **Insects: termites (built by hand, on the page, under test; ants and termite fishing later)** — mounds as a patchy seasonal food, eaten by hand.
 - [ ] 7. **The variety of savanna food of that time** — check the diet against the evidence (roots, sedge corms, seeds, nuts, fruit kinds, eggs, honey, meat) and fill what is missing.
 - [ ] 8. **Smell** — a primate-scale sense of smell (food ripeness, other animals, dung, carcasses, mates), with wind; built with the valley's fine scale (design: `docs/design/smell-droppings.md`).
 
@@ -23,6 +23,8 @@ Written in plain words. Every item below gets: the evidence checked first, a des
 ## Part 3 — The place (the valley)
 - [ ] 15. The valley's rules in metres and minutes (mating, attack reach, sight, food per hectare, hunters per area), then everything above carried into it.
 - [ ] 16. Several bands, young females moving between them.
+
+**Key:** [x] done · [~] built and being tested · [ ] still to do. The page has a "Realistic diet (experiment)" tick box in New world; a hominin's panel shows what it has eaten, what stands out to it, and how curious it is.
 
 ## How you will see progress
 Each item: a plain-language report, the page showing it, and this list ticked. Nothing is dropped: if something turns out to need a different order, I'll say so here.
