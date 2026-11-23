@@ -1,0 +1,5 @@
+18:24 the diet test (entry 124) finished; bundle test starts
+18:54 E-all done
+19:08 F-body-old-diet done
+19:09 identical-worlds (all switches off, the bundle branch): IDENTICAL (2 rows x 176 columns)
+19:09 all done
