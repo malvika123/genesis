@@ -363,6 +363,76 @@ function rescue() {
   }
 }
 
+// Real densities near people (plan item 29, docs/design/real-densities.md; off unless --real-densities). Each hunter kind has a
+// density (KINDS[k].dens, animals per 100 km²: leopard 6.8 Ruaha, hyena 3.6-10.8 Ruaha, lion-like 1.4 Awash; the extinct kinds are
+// assumptions, see docs/ASSUMPTIONS.md). Around every living hominin, its own square and the SOC.densZone squares around it,
+// the land holds that many hunters of each kind: when fewer are there, newcomers come (the gap spread over SOC.densTau days),
+// on the ring of the zone and never on a hominin's own square; hunters more than 3 squares beyond the zone are set aside for good
+// (like herds: no one is near). No floor, no cap, no births of hunters: the land sets the number. Separate random stream.
+function realDensities() {
+  const hum = ag.filter((a) => a.sp === 0 && !a.dead && !a.gone);
+  if (!hum.length) return;
+  const R = SOC.densZone,
+    land = (i) => !water[i] && !rock[i] && !pit[i] && alt[i] < 1.5,
+    mark = (r) => {
+      const m = new Uint8Array(W * H);
+      for (const h of hum)
+        for (let dy = -r; dy <= r; dy++)
+          for (let dx = -r; dx <= r; dx++) if (inb(h.x, h.y + dy)) m[idx(wx(h.x + dx), h.y + dy)] = 1;
+      return m;
+    },
+    inner = mark(R),
+    outer = mark(R + 3),
+    own = new Set(hum.map((h) => idx(h.x, h.y)));
+  let Z = 0;
+  const ring = [];
+  for (let i = 0; i < W * H; i++)
+    if (inner[i] && land(i)) {
+      Z++;
+      if (!own.has(i)) ring.push(i);
+    }
+  const n = [];
+  let left = false;
+  for (const a of ag) {
+    if (a.sp !== 2 || a.dead || a.gone) continue;
+    const i = idx(a.x, a.y);
+    if (!outer[i]) {
+      a.left = true;
+      left = true;
+    } else if (inner[i]) n[a.k] = (n[a.k] || 0) + 1;
+  }
+  if (left) ag = ag.filter((a) => !a.left || ((a.left = false), false));
+  USE2 = true;
+  try {
+    for (let k = 0; k < KINDS.length; k++) {
+      const K = KINDS[k];
+      if (K.sp !== 2 || !K.dens || !ring.length) continue;
+      const want = (K.dens * SOC.densMul * Z * SQKM) / 100,
+        gap = want - (n[k] || 0);
+      if (gap <= 0) continue;
+      const e = tick < DAY ? gap : gap / SOC.densTau,
+        m = Math.floor(e) + (rnd() < e - Math.floor(e) ? 1 : 0);
+      for (let q = 0; q < m; q++) {
+        let i = -1;
+        for (let t = 0; t < 40; t++) {
+          const j = ring[(rnd() * ring.length) | 0],
+            T = meanTemp(j);
+          if (K.hab && (T < K.hab.t[0] - 6 || T > K.hab.t[1] + 6)) continue;
+          i = j;
+          break;
+        }
+        if (i < 0) continue;
+        const c = mk(2, i % W, (i / W) | 0, rnd() < 0.5 ? 1 : 0, gene(2, true), 0, (KBIO[k].smat * (1 + rnd() * 0.3)) | 0, k);
+        c.newcomer = true;
+        if (c.per) c.per = newPerception(c);
+        ag.push(c);
+      }
+    }
+  } finally {
+    USE2 = false;
+  }
+}
+
 // Disease: outbreaks of a contagious illness among hominins (research log entry 46). In wild chimpanzees illness is the leading
 // cause of death — 58% of deaths with a known cause at Gombe, mostly in epidemics, mostly respiratory (Williams et al. 2008);
 // at Kanyawara respiratory illness about 27% over 30 years. In an outbreak most of a community falls sick (87–100%) and about

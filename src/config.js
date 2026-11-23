@@ -356,13 +356,13 @@ const HKINDS = {
   3: { sp: 1, n: 'Buffalo', look: 'Bison', mass: 600, fov: 330, cap: 15, swim: 0.9, share: 0.35, size: 2.3, lit: [1, 1], mat: 4 * TY, smat: 4 * TY, life: 20 * TY, gest: 0.93 * TY, cd: 0.4 * TY, dW: 4, cold: 0, hot: 34, walk: 0.05, run: 0.3, hab: { t: [15, 32], tree: [0, 0.45] } },
   // spotted hyena (Crocuta): hunts in clans and scavenges, cannot climb; about 110 days' pregnancy, usually twins,
   // first births at about 3–5, a litter every 11–21 months, living to about 20; every female breeds
-  4: { sp: 2, n: 'Hyena', look: 'Wolf', preyMax: 182, mass: 60, need: 3.9, cap: 10, swim: 0.85, share: 0.5, size: 1.1, lit: [1, 3], mat: 2 * TY, smat: 3.5 * TY, life: 20 * TY, gest: 0.3 * TY, cd: 1 * TY, nv: 1.2, cold: 0, hot: 40, pack: 1, allBreed: 1, hab: { t: [12, 32], tree: [0, 0.6] } },
+  4: { sp: 2, n: 'Hyena', dens: 7, look: 'Wolf', preyMax: 182, mass: 60, need: 3.9, cap: 10, swim: 0.85, share: 0.5, size: 1.1, lit: [1, 3], mat: 2 * TY, smat: 3.5 * TY, life: 20 * TY, gest: 0.3 * TY, cd: 1 * TY, nv: 1.2, cold: 0, hot: 40, pack: 1, allBreed: 1, hab: { t: [12, 32], tree: [0, 0.6] } },
   // leopard: climbs, and takes primates (the Swartkrans skull SK 54); about 90–106 days' pregnancy, 1–3 cubs,
   // first births at about 3, 15–24 months apart, living to about 15 in the wild
-  5: { sp: 2, n: 'Leopard', look: 'Big cat', preyMax: 40, mass: 45, need: 4.2, fov: 200, nv: 1.3, cap: 8, swim: 0.75, share: 0.3, size: 1, lit: [1, 3], mat: 2 * TY, smat: 3 * TY, life: 15 * TY, gest: 0.27 * TY, cd: 1.3 * TY, cold: 2, hot: 38, walk: 0.1, run: 0.55, climb: 1, roar: 1, hab: { t: [10, 32], tree: [0, 1] } },
+  5: { sp: 2, n: 'Leopard', dens: 6.8, look: 'Big cat', preyMax: 40, mass: 45, need: 4.2, fov: 200, nv: 1.3, cap: 8, swim: 0.75, share: 0.3, size: 1, lit: [1, 3], mat: 2 * TY, smat: 3 * TY, life: 15 * TY, gest: 0.27 * TY, cd: 1.3 * TY, cold: 2, hot: 38, walk: 0.1, run: 0.55, climb: 1, roar: 1, hab: { t: [10, 32], tree: [0, 1] } },
   // sabre-toothed cat (Megantereon, about 100 kg; in East Africa about 3.5–1.4 million years ago): extinct, so its
   // life history is a living cat's of its size (jaguar, lioness); probably a climber (an assumption)
-  6: { sp: 2, n: 'Sabre-tooth', look: 'Big cat', preyMax: 350, mass: 110, need: 8.4, fov: 200, nv: 1.3, cap: 6, swim: 0.75, share: 0.2, size: 1.8, lit: [1, 4], mat: 2.5 * TY, smat: 3.5 * TY, life: 15 * TY, gest: 0.3 * TY, cd: 1.7 * TY, cold: 2, hot: 38, walk: 0.1, run: 0.5, climb: 1, hab: { t: [12, 32], tree: [0.1, 1] } },
+  6: { sp: 2, n: 'Sabre-tooth', dens: 1.4, look: 'Big cat', preyMax: 350, mass: 110, need: 8.4, fov: 200, nv: 1.3, cap: 6, swim: 0.75, share: 0.2, size: 1.8, lit: [1, 4], mat: 2.5 * TY, smat: 3.5 * TY, life: 15 * TY, gest: 0.3 * TY, cd: 1.7 * TY, cold: 2, hot: 38, walk: 0.1, run: 0.5, climb: 1, hab: { t: [12, 32], tree: [0.1, 1] } },
 };
 
 // More of the large carnivores of the time (entry 127; docs/design/world-cast-social-smell-flora.md): ADDED after the base kinds,
@@ -375,9 +375,9 @@ const HKINDS = {
 // big cat or hyena, how many start (SOC.extraN, a pair) and prey size. Whether Dinofelis climbed, and whether Homotherium hunted
 // in groups, are unknown (Dinofelis: climbs as an assumption; Homotherium: does not).
 const EXTRA_HUNTERS = {
-  dinofelis: { sp: 2, n: 'Dinofelis', look: 'Big cat', extra: 1, preyMax: 350, mass: 149, need: 11.2, fov: 200, nv: 1.3, cap: 4, swim: 0.75, share: 0, size: 2, lit: [1, 3], mat: 2.5 * TY, smat: 3.5 * TY, life: 15 * TY, gest: 0.3 * TY, cd: 1.7 * TY, cold: 2, hot: 38, walk: 0.1, run: 0.5, climb: 1, hab: { t: [12, 32], tree: [0.1, 1] } },
-  homotherium: { sp: 2, n: 'Homotherium', look: 'Big cat', extra: 1, preyMax: 500, mass: 200, need: 15, fov: 200, nv: 1.3, cap: 3, swim: 0.75, share: 0, size: 2.3, lit: [1, 4], mat: 2.5 * TY, smat: 3.5 * TY, life: 15 * TY, gest: 0.3 * TY, cd: 1.7 * TY, cold: 2, hot: 38, walk: 0.1, run: 0.55, hab: { t: [12, 32], tree: [0, 0.6] } },
-  pachycrocuta: { sp: 2, n: 'Giant hyena', look: 'Wolf', extra: 1, preyMax: 182, mass: 105, need: 7.9, cap: 6, swim: 0.85, share: 0, size: 1.5, lit: [1, 3], mat: 2 * TY, smat: 3.5 * TY, life: 20 * TY, gest: 0.3 * TY, cd: 1 * TY, nv: 1.2, cold: 0, hot: 40, pack: 1, allBreed: 1, hab: { t: [12, 32], tree: [0, 0.6] } },
+  dinofelis: { sp: 2, dens: 1.4, n: 'Dinofelis', look: 'Big cat', extra: 1, preyMax: 350, mass: 149, need: 11.2, fov: 200, nv: 1.3, cap: 4, swim: 0.75, share: 0, size: 2, lit: [1, 3], mat: 2.5 * TY, smat: 3.5 * TY, life: 15 * TY, gest: 0.3 * TY, cd: 1.7 * TY, cold: 2, hot: 38, walk: 0.1, run: 0.5, climb: 1, hab: { t: [12, 32], tree: [0.1, 1] } },
+  homotherium: { sp: 2, dens: 1.4, n: 'Homotherium', look: 'Big cat', extra: 1, preyMax: 500, mass: 200, need: 15, fov: 200, nv: 1.3, cap: 3, swim: 0.75, share: 0, size: 2.3, lit: [1, 4], mat: 2.5 * TY, smat: 3.5 * TY, life: 15 * TY, gest: 0.3 * TY, cd: 1.7 * TY, cold: 2, hot: 38, walk: 0.1, run: 0.55, hab: { t: [12, 32], tree: [0, 0.6] } },
+  pachycrocuta: { sp: 2, dens: 3.6, n: 'Giant hyena', look: 'Wolf', extra: 1, preyMax: 182, mass: 105, need: 7.9, cap: 6, swim: 0.85, share: 0, size: 1.5, lit: [1, 3], mat: 2 * TY, smat: 3.5 * TY, life: 20 * TY, gest: 0.3 * TY, cd: 1 * TY, nv: 1.2, cold: 0, hot: 40, pack: 1, allBreed: 1, hab: { t: [12, 32], tree: [0, 0.6] } },
 };
 
 // More of the plant-eaters of the time (entry 128), ADDED after the base kinds only with --more-herds, as single animals (not herd
