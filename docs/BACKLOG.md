@@ -491,3 +491,5 @@ Reason (the owner): apes are strong and their hominin descendants probably were 
 
 ## Strength, stage 2 (the owner's point, 23 Nov; `docs/design/strength.md`): muscle that responds to daily effort and food (protein), with an inherited ceiling that can drift over generations; needs a protein-aware food model and a muscle/fat state (the body layer); evidence note first (muscle growth and loss rates, protein, chimpanzee and forager muscle against activity); only if stage 1 (strength follows body weight) shows strength changes outcomes.
 
+## Strength is built in full now (the owner, 23 Nov): see `docs/design/strength.md` DECIDED, and the plain-language gap list `docs/GAPS.md` (kept current; shown to the owner at each milestone).
+
