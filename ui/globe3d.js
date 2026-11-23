@@ -914,7 +914,7 @@ const G3D = { ok: false };
       bm = SOC.bodyModel && a.sp === 0 && a.gp !== undefined, // the body model: the figure shows how far food has let it grow, its inherited size, muscle and how well fed it is
       gr = Math.round(clamp((bm ? Math.min(a.gp, a.age) : a.age) / S.mat, 0.3, 1) * 10) / 10,
       bmKey = bm ? [Math.round((a.g.sz ?? 1) * 20), Math.round((a.msc ?? 1) * 10), Math.round(clamp(((a.eAvg ?? a.e) - 20) / 50, 0, 1) * 4), Math.round((a.g.st ?? 1) * 10)].join('/') : '',
-      pose = a.moving ? Math.round(Math.sin(a.ph || 0) * 2) : 0,
+      pose = a.moving ? Math.round(Math.sin(a.ph || 0) * 4) / 2 : 0, // nine leg positions in a stride, not five (a smoother walk)
       swf = a.act === A_STRIKE && !a.asleep ? Math.round(bodySwing(a)) : 0,
       heldv = typeof carried === 'function' && a.sp === 0 && carried(a) ? 1 : 0, // a carried infant clings to its mother
       stkv = a.stkT !== undefined && tick - a.stkT <= 1 ? a.stk : null, // what its blow lands on, and whether it did what it was for
@@ -1190,7 +1190,9 @@ const G3D = { ok: false };
         } else {
           // a carried infant is held up on its mother's front, not standing on the ground beside her
           const lift = a.sp === 0 && typeof carried === 'function' && carried(a) ? (a.asleep ? 0.06 : 0.27) * s * 0.7 : 0; // a fraction of the mother's drawn height (about 0.7 of the picture)
-          sp.position.copy(local(la, lo, ground + 0.0002 + lift));
+          // the body rises and falls a little with each step (two bobs a stride; a walking body is never level), about 2% of its height
+          const bob = a.moving && !a.asleep ? Math.abs(Math.sin(a.ph || 0)) * 0.02 * s : 0;
+          sp.position.copy(local(la, lo, ground + 0.0002 + lift + bob));
         }
         sp.scale.set(s, s, 1);
       }

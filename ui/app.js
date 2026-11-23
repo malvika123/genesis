@@ -2959,6 +2959,12 @@ function glide() {
       a.rx = (((a.rx + dx * k) % W) + W) % W;
       a.ry += dy * k;
       moved = d * k;
+      // it faces the way its body is really gliding (not the way the step was planned: a turn or a blocked step made about one animal in five face backwards, measured 24 Nov 2026)
+      if (moved > 2e-4) {
+        a.fdx = dx * k;
+        a.fdy = dy * k;
+        if (Math.abs(dx * k) > 1e-4) a.face = dx > 0 ? 1 : -1;
+      }
     }
     // legs step with the ground they actually cover (a stride is about 0.4 of a square, the size the
     // body is drawn at), so feet never slide; and never faster than a few steps a second on screen
