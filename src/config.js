@@ -380,6 +380,28 @@ const EXTRA_HUNTERS = {
   pachycrocuta: { sp: 2, n: 'Giant hyena', look: 'Wolf', extra: 1, preyMax: 182, mass: 105, need: 7.9, cap: 6, swim: 0.85, share: 0, size: 1.5, lit: [1, 3], mat: 2 * TY, smat: 3.5 * TY, life: 20 * TY, gest: 0.3 * TY, cd: 1 * TY, nv: 1.2, cold: 0, hot: 40, pack: 1, allBreed: 1, hab: { t: [12, 32], tree: [0, 0.6] } },
 };
 
+// More of the plant-eaters of the time (entry 128), ADDED after the base kinds only with --more-herds, as single animals (not herd
+// classes: the prey map and its speed are untouched), a pair of each to start (SOC.extraHerdN). Present in the Afar record at
+// 2.9-2.4 Ma (Mille-Logya, Alemseged 2020, Table 1, read in full): Elephas recki, a hippo (aff. H. protamphibius), Notochoerus and
+// Kolpochoerus (pigs; Notochoerus the most common suid), Giraffa (not particularly large; a smaller G. cf. gracilis too),
+// Ceratotherium and Diceros (rhinos, rare), Hipparionini (equids fragmentary but quite common). NO fossil body mass was found for any
+// of them, so each mass and life history is that of a LIVING relative (opened pages, Wikipedia, wild values vary): giraffe
+// 828-1,192 kg, gestation 400-460 days, first breeding 4 y, lifespan up to 38; hippo 1.37-1.48 t, 8 months, first breeding 5-6 y,
+// 40-50 y; white rhino 1.6-2.3 t, 16 months, first calving 6-7 y, 40-50 y; African elephant females 2.6-3.5 t, 22 months, first
+// breeding 10-12 y, wear-out at 40-60 y; plains zebra (for the hipparion horse) 175-322 kg, about a year, puberty before 3,
+// about 25 y; warthog (for the pigs) 45-150 kg, 5-6 months, 2-4 young, 7-11 y. The birth interval (cd), habitat, what they browse
+// and how many start are assumptions. Not simulated: aggression towards hominins (none of the plant-eaters hurts anyone in
+// this world, buffalo included: the water-danger rule for hippo and crocodile is a later step), and the drawings are the nearest
+// existing shapes (placeholders until the look of the world is built).
+const EXTRA_HERBIVORES = {
+  giraffe: { sp: 1, n: 'Giraffe', look: 'Deer', extra: 1, mass: 1000, fov: 330, cap: 6, swim: 0.3, share: 0, size: 2.2, lit: [1, 1], mat: 4 * TY, smat: 4 * TY, life: 25 * TY, gest: 1.18 * TY, cd: 0.5 * TY, cold: 5, hot: 40, browse: 1, hab: { t: [18, 32], tree: [0.1, 0.6] } },
+  hipparion: { sp: 1, n: 'Hipparion', look: 'Deer', extra: 1, mass: 250, fov: 330, cap: 10, swim: 0.7, share: 0, size: 1.4, lit: [1, 1], mat: 3 * TY, smat: 3 * TY, life: 25 * TY, gest: 1 * TY, cd: 0.5 * TY, cold: 5, hot: 38, hab: { t: [16, 32], tree: [0, 0.4] } },
+  pig: { sp: 1, n: 'Pig', look: 'Rabbit', extra: 1, mass: 100, fov: 300, cap: 12, swim: 0.7, share: 0, size: 0.8, lit: [2, 4], mat: 1.5 * TY, smat: 1.5 * TY, life: 9 * TY, gest: 0.46 * TY, cd: 0.54 * TY, cold: 5, hot: 38, hab: { t: [16, 34], tree: [0, 0.5] } },
+  hippo: { sp: 1, n: 'Hippo', look: 'Bison', extra: 1, mass: 1400, fov: 300, cap: 6, swim: 1, share: 0, size: 2.6, lit: [1, 1], mat: 5.5 * TY, smat: 5.5 * TY, life: 45 * TY, gest: 0.67 * TY, cd: 1.3 * TY, cold: 8, hot: 38, hab: { t: [18, 34], tree: [0, 0.4] } },
+  rhino: { sp: 1, n: 'Rhino', look: 'Bison', extra: 1, mass: 1900, fov: 200, cap: 4, swim: 0.6, share: 0, size: 2.8, lit: [1, 1], mat: 6.5 * TY, smat: 6.5 * TY, life: 45 * TY, gest: 1.33 * TY, cd: 1.2 * TY, cold: 5, hot: 38, hab: { t: [16, 32], tree: [0, 0.5] } },
+  elephant: { sp: 1, n: 'Elephant', look: 'Bison', extra: 1, mass: 3000, fov: 200, cap: 6, swim: 0.8, share: 0, size: 3.2, lit: [1, 1], mat: 11 * TY, smat: 11 * TY, life: 50 * TY, gest: 1.83 * TY, cd: 2.2 * TY, cold: 5, hot: 40, hab: { t: [16, 34], tree: [0.05, 0.7] } },
+};
+
 // Early hominins of about 2.5 million years ago (late australopiths and the earliest Homo): where their
 // bodies and lives differ from modern people's (the default world; world.js applies it). From the evidence
 // where there is some (docs/ASSUMPTIONS.md lists each number, its source or that it is our assumption):

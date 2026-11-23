@@ -64,6 +64,7 @@ function buildWorld(cfg) {
     Object.assign(KBIO[k], b);
   }
   // the extra large carnivores (entry 127): on top of the base hunters, not taken from them
+  SOC.extraHerdN = cfg.extraHerdN ?? 2; // how many of each extra plant-eater start (a pair: an assumption)
   SOC.extraN = cfg.extraHunterN ?? 2; // how many of each extra kind start (a pair: an assumption; the rescue effect keeps them from vanishing)
   if (ERA === 'hominin' && cfg.africaAnimals !== false && !cfg.iceAnimals) {
     if (cfg.africanMegantereon) {
@@ -73,6 +74,11 @@ function buildWorld(cfg) {
       for (const key of Object.keys(KBIO[6])) delete KBIO[6][key];
       Object.assign(KBIO[6], bioOf(KINDS[6]));
     }
+    if (cfg.moreHerds)
+      for (const name of Object.keys(EXTRA_HERBIVORES)) {
+        KINDS.push(JSON.parse(JSON.stringify(EXTRA_HERBIVORES[name])));
+        KBIO.push(bioOf(KINDS[KINDS.length - 1]));
+      }
     for (const [name, on] of [['dinofelis', cfg.moreHunters], ['homotherium', cfg.moreHunters], ['pachycrocuta', cfg.giantHyena]])
       if (on) {
         KINDS.push(JSON.parse(JSON.stringify(EXTRA_HUNTERS[name])));

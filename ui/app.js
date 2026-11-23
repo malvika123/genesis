@@ -3175,7 +3175,7 @@ const readCfg = () => ({
   retina: $('ret').checked,
   // the realistic diet (experiment): colour sight, young leaves, termites, curiosity about new foods, and the body ledger
   ...($('rdiet') && $('rdiet').checked ? { colourEye: true, youngLeaves: true, termites: true, tasteCurious: 1, bodyLedger: true } : {}),
-  ...($('rcast') && $('rcast').checked ? { moreHunters: true, giantHyena: true, africanMegantereon: true } : {}), // the extra large carnivores (entry 127)
+  ...($('rcast') && $('rcast').checked ? { moreHunters: true, giantHyena: true, africanMegantereon: true, moreHerds: true } : {}), // the extra large carnivores (entry 127)
   ...($('rbody') && $('rbody').checked ? { bodyModel: true } : {}), // the body model (experiment): growth and muscle respond to food, effort and age
   preyMap: $('pmap').checked,
   fromPage: true, // the page's checkbox may turn the prey map off (the runner's preyMap default of false does not)

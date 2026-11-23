@@ -211,7 +211,7 @@ function spawn(sp, n, inst) {
   for (let j = 0; extra < 0; j = (j + 1) % counts.length) (counts[j]++, extra++);
   // with the prey map, antelope and buffalo are herds that appear near hominins and hunters (preymap.js), not founders
   kinds.forEach((k, j) => !(SOC.preyMap && PREYK.includes(k)) && spawnKind(sp, k, counts[j], inst));
-  KINDS.forEach((K, k) => K.extra && K.sp === sp && spawnKind(sp, k, SOC.extraN, inst)); // the extra kinds, on top of the base numbers (entry 127)
+  KINDS.forEach((K, k) => K.extra && K.sp === sp && spawnKind(sp, k, sp === 1 ? SOC.extraHerdN : SOC.extraN, inst)); // the extra kinds, on top of the base numbers (entries 127, 128)
 }
 function spawnKind(sp, k, n, inst) {
   const K = KINDS[k],

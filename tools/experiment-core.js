@@ -115,6 +115,8 @@
     { key: 'colourEye', kind: 'on', def: false, flag: 'colour-eye', label: 'The red-berry sense becomes a general reddish-thing-stands-out sense (ripe fruit, young leaves, poison berries)', cfg: true },
     { key: 'tasteCurious', kind: 'num', def: 0, flag: 'taste-curious', label: 'Taste curiosity: an inborn, fading pull to try an unfamiliar food (0 = none; a registered range tested at both ends)', min: 0, max: 5, cfg: true },
     { key: 'moreHunters', kind: 'on', def: false, flag: 'more-hunters', label: 'More of the real large carnivores: Dinofelis and Homotherium, on top of the base hunters', cfg: true },
+    { key: 'moreHerds', kind: 'on', def: false, flag: 'more-herds', label: 'More of the real plant-eaters: giraffe, hipparion horse, pig, hippo, rhino, elephant (sizes of living relatives)', cfg: true },
+    { key: 'extraHerdN', kind: 'num', def: 2, flag: 'extra-herd-n', label: 'How many of each extra plant-eater start (an assumption: a pair)', min: 0, max: 20, cfg: true },
     { key: 'giantHyena', kind: 'on', def: false, flag: 'giant-hyena', label: 'The giant hyena Pachycrocuta (not found at the Awash: its own switch)', cfg: true },
     { key: 'africanMegantereon', kind: 'on', def: false, flag: 'african-megantereon', label: 'The African Megantereon (66.6 kg) instead of the 110 kg European size', cfg: true },
     { key: 'extraHunterN', kind: 'num', def: 2, flag: 'extra-hunter-n', label: 'How many of each extra hunter kind start (an assumption: a pair)', min: 0, max: 20, cfg: true },
