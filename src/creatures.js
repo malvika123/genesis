@@ -382,14 +382,14 @@ function realDensities() {
       return m;
     },
     inner = mark(R),
-    outer = mark(R + 3),
-    own = new Set(hum.map((h) => idx(h.x, h.y)));
+    outer = mark(R + Math.max(3, Math.ceil(R / 3))),
+    near = mark(Math.floor(R * 0.6)); // newcomers never appear this close to a hominin (globe, 1 square: its own square only; valley, 18 squares: within 10 squares = 2.5 km)
   let Z = 0;
   const ring = [];
   for (let i = 0; i < W * H; i++)
     if (inner[i] && land(i)) {
       Z++;
-      if (!own.has(i)) ring.push(i);
+      if (!near[i]) ring.push(i);
     }
   const n = [];
   let left = false;
@@ -407,7 +407,7 @@ function realDensities() {
     for (let k = 0; k < KINDS.length; k++) {
       const K = KINDS[k];
       if (K.sp !== 2 || !K.dens || !ring.length) continue;
-      const want = (K.dens * SOC.densMul * Z * SQKM) / 100,
+      const want = (K.dens * SOC.densMul * Z * (SOC.valley ? 0.0625 : SQKM)) / 100,
         gap = want - (n[k] || 0);
       if (gap <= 0) continue;
       const e = tick < DAY ? gap : gap / SOC.densTau,

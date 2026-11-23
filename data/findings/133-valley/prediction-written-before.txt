@@ -1,0 +1,9 @@
+Entry 133 — real hunter densities in the fine valley (250 m squares), written 24 Nov 2026 before the runs.
+Basis: on the globe a square is 3 km and a hunter in the 3x3 squares counts as in reach, so a hunter many km away attacks; entry 132 counted 4.7 tries per hominin-year even with avoidance and every band died in about 2-3 years. One valley world, 1 year (seed 1): 25 -> 27 people, 0 attacks, at most 13 hunters around.
+Run: valley engine (merged into a scratch branch), 12 worlds (seeds 1-12) x 5 years, switches as entry 131 plus --real-densities --dens-zone 18 (18 squares = 4.5 km, the globe's 3x3 radius); arms R (no avoidance) and RH (--hom-avoid). Count tries with a hominin within one square and hominin-years; measure deaths from the population.
+Predictions:
+ 1. Tries per hominin-year in the valley are at least 5 times lower than the globe's (1.85 R, 4.66 RH): at most 0.4 (R), 0.9 (RH).
+ 2. At least 8 of 12 bands survive all 5 years in R (against 0 of 12 on the globe).
+ 3. Predator deaths per 1,000 hominin-years in R fall inside 20-120 (the measured primate range 30-55 sits inside; this is the first time it can).
+ 4. RH has fewer deaths than R.
+If 1 and 2 hold the globe's coarse squares were a large cause of the deaths; if not, the cause is elsewhere (grip, mobbing, flight).
