@@ -26,6 +26,12 @@ Written in plain words. Every item below gets: the evidence checked first, a des
 
 **Key:** [x] done · [~] built and being tested · [ ] still to do. The page has a "Realistic diet (experiment)" tick box in New world; a hominin's panel shows what it has eaten, what stands out to it, and how curious it is.
 
+
+## Part 4 — Added by the owner, 24 Nov 2026 ("add these after research; keep them as real as possible, very real")
+- [ ] 17. **Smell and taste memory** — a primate sense of smell and taste bound to memory, so one smell can bring back a place, a food or a danger (research first: how primates link odour and flavour to memory; the smell design in `docs/design/smell-droppings.md` is the starting point).
+- [ ] 18. **Social behaviour** — grooming, comforting someone who is upset, making up after a fight, and play, with real time costs and real benefits (research first: chimpanzee, bonobo and baboon time budgets, reconciliation rates, effects on stress, tolerance and survival).
+- [ ] 19. **The real animals of that time** — the full predator guild (about 15–17 large predators then; lions were not there), and the herbivores and others: elephants, hippos, pigs, baboons, crocodiles, giraffes, rhinos, zebra-like horses, the real range of antelopes, with real sizes, diets, group sizes, densities and behaviour; herds that are real animals, not a drawn convenience (research first: Pliocene East African fauna).
+
 ## How you will see progress
 Each item: a plain-language report, the page showing it, and this list ticked. Nothing is dropped: if something turns out to need a different order, I'll say so here.
 **Honest size:** this is several weeks of careful work, not a few sessions. Each step is small so the world never breaks.
