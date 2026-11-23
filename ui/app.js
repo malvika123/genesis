@@ -347,6 +347,37 @@ function doingHTML(a, S, stage, night) {
   o += '<br>Energy ' + a.e.toFixed(0) + ' · water ' + a.w.toFixed(0) + ' · health ' + a.hp.toFixed(0);
   if (a.sp === 0) o += '<br>In its hand: ' + HAND[a.hand] + (a.nuts ? ' · nuts cracked: ' + a.nuts : '') + ' · swimming: ' + ((a.swim || 0) < 0.1 ? 'cannot swim' : Math.round(100 * a.swim) + '%');
   // the body ledger (entry 123; only with the switch on): what it has eaten and spent lately, in plain words
+  // the realistic diet (entry 124): what it has eaten, what stands out to it, how curious and wary it is (only when the switches are on)
+  if (a.sp === 0 && a.feedN) {
+    const ft = Object.values(a.feedN).reduce((t, v) => t + v, 0),
+      NAME = { fruit: 'fruit', leaf: 'leaves', root: 'roots', nut: 'nuts', meat: 'meat', marrow: 'marrow', insect: 'termites' };
+    if (ft)
+      o +=
+        '<br>Eaten so far: ' +
+        Object.entries(a.feedN)
+          .sort((p, q) => q[1] - p[1])
+          .map(([k, v]) => Math.round((100 * v) / ft) + '% ' + (NAME[k] || k))
+          .join(', ');
+  }
+  if (a.sp === 0 && SOC.colourEye) {
+    const here = idx(a.x, a.y);
+    o += '<br>Sees: something reddish, orange or yellow standing out against green (ripe fruit, young leaves and poison berries look alike to it; it has to taste or watch others to learn which is which)';
+    if (SOC.youngLeaves && YL && leafy(a, here)) o += '<br>Standing among young leaves it can eat (' + Math.round(100 * YL[here]) + '% of what could grow here)';
+    if (SOC.termites && TERM && TERM[here] > 0.05) o += '<br>A termite mound is within reach';
+  }
+  if (a.sp === 0 && SOC.tasteK > 0) {
+    const yrs = a.age / TY,
+      youth = Math.max(0.15, Math.min(1, 1 - (yrs - 2) / 6)),
+      t = a.tasted || {},
+      NAME2 = { fruit: 'fruit', leaf: 'leaves', root: 'roots', nut: 'nuts', meat: 'meat', marrow: 'marrow', insect: 'termites' },
+      tt = Object.entries(t).map(([k, v]) => (NAME2[k] || k) + ' ' + v).join(', ');
+    o +=
+      '<br>Curious about new foods: ' +
+      Math.round(100 * Math.min(1, (a.g.c ?? 1) * 0.5) * youth) +
+      '% (stronger when young and curious, weaker when afraid or full) · tasted so far: ' +
+      (tt || 'nothing yet') +
+      ' (each safe taste makes it bolder)';
+  }
   if (a.sp === 0 && a.ledDays)
     o +=
       '<br>Protein eaten lately: ' +
@@ -463,7 +494,7 @@ function seesText(a) {
       [5, 'a hunter'],
       [7, 'family'],
       [8, 'fish'],
-      [9, 'red berries'],
+      [9, SOC.colourEye ? 'something reddish standing out (it cannot tell fruit from poison berries by sight)' : 'red berries'],
       [14, 'nuts'],
       [13, 'stones or sticks'],
       [15, 'fire'],
@@ -3125,6 +3156,8 @@ const readCfg = () => ({
   predators: +$('prd').value || 0,
   fish: +$('fsh').value || 0,
   retina: $('ret').checked,
+  // the realistic diet (experiment): colour sight, young leaves, termites, curiosity about new foods, and the body ledger
+  ...($('rdiet') && $('rdiet').checked ? { colourEye: true, youngLeaves: true, termites: true, tasteCurious: 1, bodyLedger: true } : {}),
   preyMap: $('pmap').checked,
   fromPage: true, // the page's checkbox may turn the prey map off (the runner's preyMap default of false does not)
   earth: $('land').value === 'earth',
