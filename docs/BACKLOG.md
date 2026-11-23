@@ -493,3 +493,6 @@ Reason (the owner): apes are strong and their hominin descendants probably were 
 
 ## Strength is built in full now (the owner, 23 Nov): see `docs/design/strength.md` DECIDED, and the plain-language gap list `docs/GAPS.md` (kept current; shown to the owner at each milestone).
 
+## After entry 122 (the hold)
+The hold lowers predator deaths about 25% but about three quarters of seizures end with the hunter not pressing again within 3 steps (well-fed hunters attack on a weak pull): too forgiving. Next: check the evidence on whether predators that have seized prey usually kill it (the grip as a continuing physical state with release a separate pull); the same-square blind spot fix and climbing as escape (step b); group rescue (step c); strength from the body model feeds the break-free chance (entries 123 on). Switch off by default until the hunter's follow-up is realistic.
+

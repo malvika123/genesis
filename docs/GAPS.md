@@ -4,7 +4,7 @@ A gap is something real that our simulated hominins don't have yet, or have wron
 
 **Building now**
 - **Strength and a real body (muscle, fat, protein).** Hominins have no strength; every one is equally frail; a fight is a dice roll. Real apes are strong, and strength depends on daily effort and food. Needs protein in food, a muscle and fat state, and a strength ceiling that runs in families. *Evidence and design in progress.*
-- **Escaping an attack.** An attacked hominin used to die at once. A first change gives it one moment to get away (test running). Still to come: climbing to escape, group rescue, alarm calls, watching for danger, choosing a safe sleeping place.
+- **Escaping an attack.** An attacked hominin used to die at once. A first change gives it one moment to get away (tested: about a quarter fewer predator deaths, but mostly because hunters let go, not because victims break free: too forgiving, kept off for now). Still to come: climbing to escape, group rescue, alarm calls, watching for danger, choosing a safe sleeping place.
 
 **Next**
 - **Insects and leaves in the diet (the owner, 23 Nov).** Living apes eat young leaves, termites and ants, and some meat; our hominins get about 96% of their protein from fruit, almost none from leaves, and there are no insects at all. Real protein sources are missing, so our hominins are probably protein-poor and unlike a chimpanzee. Evidence first (what wild apes and early hominins ate: leaves, termites, ants, honey, eggs), then build. (Backlog A29 and A15 had insects as "not yet built".)
