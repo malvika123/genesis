@@ -3092,13 +3092,13 @@ function spdLabel() {
               : f(r / 86400, 'day'));
 }
 try {
-  const v = localStorage.getItem('genesis-speed');
+  const v = localStorage.getItem('genesis-speed-v2');
   if (v !== null) $('spd').value = v;
 } catch (e) {}
 $('spd').oninput = () => {
   spdLabel();
   try {
-    localStorage.setItem('genesis-speed', $('spd').value);
+    localStorage.setItem('genesis-speed-v2', $('spd').value);
   } catch (e) {}
 };
 spdLabel();
