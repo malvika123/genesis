@@ -3140,6 +3140,7 @@ const readCfg = () => ({
   predators: +$('prd').value || 0,
   fish: +$('fsh').value || 0,
   retina: $('ret').checked,
+  ...($('rbody') && $('rbody').checked ? { bodyModel: true } : {}), // the body model (experiment): growth and muscle respond to food, effort and age
   preyMap: $('pmap').checked,
   fromPage: true, // the page's checkbox may turn the prey map off (the runner's preyMap default of false does not)
   earth: $('land').value === 'earth',
