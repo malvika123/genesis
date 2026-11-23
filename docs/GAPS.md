@@ -25,3 +25,6 @@ A gap is something real that our simulated hominins don't have yet, or have wron
 - Whether several kinds of hominin lived together in the valley's region (unverified).
 
 **Things that were wrong and are fixed or corrected** (so we remember): the chain test was confounded; the poison bug that slow eating exposed; the earlier claim that several bands help (it was only a fixed number of predators); the claim that the valley population was level (it rises then falls).
+
+**A rule for every item above:** each new thing is built with its view on the page in the same step (what a hominin's panel shows, the log lines, the picture), because the page is the owner's source of truth.
+

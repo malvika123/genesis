@@ -16,3 +16,5 @@
 
 **DECIDED (the owner, 23 Nov): "I don't want simple, I want it built ... a small gap becomes their death."** Not staged: the full two-layer model is built now (protein in food; a muscle and fat state; effort and food raise and lower muscle; an inherited ceiling; strength used for breaking free and climbing), with evidence first, a design reviewed by Opus, a switch, predictions first and both ends of every invented number tested. The simple design above is stage 1 of the same build.
 
+**The page shows it too (the owner, 23 Nov: "make the UI changes too, so I can see; for me it's the source of truth"):** built in the same steps as the engine, not later: a hominin's panel shows muscle, fat, strength (today's and the ceiling it was born with) and the protein it has eaten, in plain words; the log says when a hominin is seized, breaks free, climbs away or is killed; the map shows a seized hominin differently; checked in Chrome before release.
+
