@@ -298,3 +298,12 @@ for Kendal et al. 2015's "expert".
 - **Daily meat intake band: an assumption.** No measurement exists for hominins at 2.5 Ma. Range kept to wild chimpanzees (annual averages): about 20 g/day (Gombe) to about 190 g/day (Taï males; females 7–25 g). The sim reports meat per adult-day with its 95% interval and by age, sex and source; results (survival, the brain question) are reported at both ends and nothing is tuned toward a value. Hominin evidence shows meat was eaten and butchered (Bouri about 2.5 Ma), not how much.
 - **Raw-meat eating rate: a hypothesis of about 6–7 kcal/min** (Wrangham & Conklin-Brittain 2003, second-hand, "optimistic"; unverified against the paper; no measured primate rate found). Today's sim lets a bare-handed hominin eat about 19 kcal/min. Test at both ends (about 3 and 12 kcal/min); prediction before the run.
 
+## Body ledger and muscle (23 Nov 2026; entry 123; `docs/design/strength.md`; `docs/reviews/2026-11-23-muscle-protein-sources.md`)
+All low-medium confidence unless marked; each to be tested at both ends before anything uses it.
+- **Protein per 100 kcal of food (grams):** fruit 1.4, young leaves 6.2, roots and tubers 1.2, nuts and seeds 2.7, lean meat 17.5, marrow 1.0. *Claude's conversions from dry-weight percentages remembered from the literature (fruit 3–8%, young leaves 15–25%, roots 2–6% (Marlett et al. 2001: inconsistent), nuts and seeds 10–25%, lean meat about 20 g per 100 g fresh); not verified.* Range to test: half and double.
+- **Kcal in one unit of the energy store:** 86 × W^0.792 ÷ (dE × BURN) (the inverse of the meat conversion `homKgE`; about 158 kcal at 30 kg).
+- **Protein need (to use later):** maintenance 0.8 g/kg/day (RDA, memory; test 0.6–1.0); growing children 1.2–1.6; no extra muscle gain above about 1.6 (Morton et al. 2018, checked).
+- **Muscle share of body mass (to use later):** women 0.37 (0.35–0.40), men 0.45 (0.40–0.52): captive bonobos (Zihlman & Bolter 2015, checked from a table snippet).
+- **Muscle gain with effort (to use later):** about 0.5–1% of muscle a week for beginners; loss with disuse about 0.3–0.6% a day (bed rest); sarcopenia 3–8% a decade after 30; starvation: lean tissue about 25% of weight lost (Forbes): all from memory, low-medium.
+- **Ceiling gene `st` (to use later):** heritability about 0.5–0.6 (grip strength 0.56, CI 0.46–0.67: Zempo et al. 2017, checked); chimpanzee muscle about 1.35–1.5 × human per unit (O'Neill et al. 2017, checked: three young male chimpanzees only); whether early hominins sat near chimpanzees or humans: unverified.
+

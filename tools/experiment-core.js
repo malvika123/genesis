@@ -110,6 +110,7 @@
     { key: 'noVoiceCopy', kind: 'on', def: false, flag: 'no-voice-copy', label: 'No copying of how others make calls, heard or seen (apes do not learn to make new calls)', cfg: true },
     { key: 'honestHurt', kind: 'on', def: false, flag: 'honest-hurt', label: "Seeing another hurt only in the same square by day; the felt pain teaches, not the victim's choice", cfg: true },
     { key: 'honestSuccess', kind: 'on', def: false, flag: 'honest-success', label: 'Prefer elders this watcher has seen succeed, not by their hidden health and energy', cfg: true },
+    { key: 'bodyLedger', kind: 'on', def: false, flag: 'body-ledger', label: 'Record the protein each hominin eats and the effort it spends (measuring only; the body model, step a)', cfg: true },
     { key: 'watchSteps', kind: 'num', def: 2, flag: 'watch-steps', label: 'Steps together (15 min each) before watching can happen (hypothesis: 2, tested 1-4)', min: 1, max: 8, cfg: true },
     { key: 'peerHi', kind: 'num', def: 0.5, flag: 'peer-hi', label: 'Chance a step watching an elder forage at 3-6 years holds a watched bout (hypothesis 0.37-0.62)', min: 0, max: 1, cfg: true },
     { key: 'peerLo', kind: 'num', def: 0.19, flag: 'peer-lo', label: 'The same at other ages (hypothesis 0.12-0.25)', min: 0, max: 1, cfg: true },
