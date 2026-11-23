@@ -290,11 +290,11 @@ const G3D = { ok: false };
   // Shrubs where woody cover is thin to moderate (Hadar: bushland and shrubland mosaics, Bonnefille; Awash today: Acacia, Grewia, Psiadia shrubs), grass tufts where the
   // grass is thick and green (they shrink and vanish as the grass is eaten or dries), boulders on stony ground and round rock squares (the Afar rift floor is basalt flows 1-10 m thick, Gona
   // geology). How many of each per square is a drawing choice; no density is sourced.
-  const MAXG = 14000,
-    shrubG = new THREE.IcosahedronGeometry(0.0038, 0).scale(1.3, 0.75, 1.3).translate(0, 0.0026, 0),
-    tuftG = new THREE.ConeGeometry(0.0013, 0.0065, 4).translate(0, 0.00325, 0),
-    boulderG = new THREE.DodecahedronGeometry(0.0030, 0).scale(1.2, 0.8, 1).translate(0, 0.0013, 0),
-    shrubs = new THREE.InstancedMesh(shrubG, new THREE.MeshLambertMaterial({ color: 0x3f5c2a }), MAXG),
+  const MAXG = 60000,
+    shrubG = new THREE.IcosahedronGeometry(0.0034, 1).scale(1.15, 1.0, 1.15).translate(0, 0.0032, 0),
+    tuftG = new THREE.ConeGeometry(0.0012, 0.0080, 4).translate(0, 0.0040, 0),
+    boulderG = new THREE.DodecahedronGeometry(0.0034, 0).scale(1.2, 0.8, 1).translate(0, 0.0015, 0),
+    shrubs = new THREE.InstancedMesh(shrubG, new THREE.MeshLambertMaterial({ color: 0x2c5a22 }), MAXG),
     tufts = new THREE.InstancedMesh(tuftG, new THREE.MeshLambertMaterial({ color: 0xa9a14a }), MAXG),
     boulders = new THREE.InstancedMesh(boulderG, new THREE.MeshLambertMaterial({ color: 0x77706a }), MAXG);
   shrubs.count = tufts.count = boulders.count = 0;
@@ -384,12 +384,12 @@ const G3D = { ok: false };
       }
       if (ter[i] === 2 && nb < MAXG && r01() < 0.5) put(boulders, nb++, x, y, 0.4 + 0.5 * r01());
       if (t >= 0.04 && t < 0.55 && ns < MAXG) {
-        const n = t < 0.15 ? 1 : t < 0.35 ? 3 : 2;
-        for (let k = 0; k < n; k++) put(shrubs, ns++, x, y, 0.7 + 0.6 * r01());
+        const n = t < 0.15 ? 3 : t < 0.35 ? 5 : 3;
+        for (let k = 0; k < n; k++) put(shrubs, ns++, x, y, 0.8 + 0.7 * r01());
       }
       if (food[i] > 0.25 && t < 0.5 && ter[i] !== 1 && nt < MAXG && tuftHere(i)) {
-        const n = food[i] > 0.7 ? 4 : food[i] > 0.45 ? 3 : 2;
-        for (let k = 0; k < n; k++) put(tufts, nt++, x, y, (0.6 + 0.8 * food[i]) * (0.8 + 0.4 * r01()));
+        const n = food[i] > 0.7 ? 12 : food[i] > 0.45 ? 8 : 5; // tufts come in clumps
+        for (let k = 0; k < n; k++) put(tufts, nt++, x, y, (0.6 + 0.8 * food[i]) * (0.8 + 0.5 * r01()));
       }
     }
     shrubs.count = ns;
