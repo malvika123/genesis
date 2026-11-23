@@ -292,10 +292,10 @@ const G3D = { ok: false };
   // geology). How many of each per square is a drawing choice; no density is sourced.
   const MAXG = 60000,
     shrubG = new THREE.IcosahedronGeometry(0.0034, 1).scale(1.15, 1.0, 1.15).translate(0, 0.0032, 0),
-    tuftG = new THREE.ConeGeometry(0.0012, 0.0080, 4).translate(0, 0.0040, 0),
+    tuftG = new THREE.ConeGeometry(0.0020, 0.0046, 7).translate(0, 0.0023, 0),
     boulderG = new THREE.DodecahedronGeometry(0.0034, 0).scale(1.2, 0.8, 1).translate(0, 0.0015, 0),
     shrubs = new THREE.InstancedMesh(shrubG, new THREE.MeshLambertMaterial({ color: 0x2c5a22 }), MAXG),
-    tufts = new THREE.InstancedMesh(tuftG, new THREE.MeshLambertMaterial({ color: 0xa9a14a }), MAXG),
+    tufts = new THREE.InstancedMesh(tuftG, new THREE.MeshLambertMaterial({ color: 0x8d9a45 }), MAXG),
     boulders = new THREE.InstancedMesh(boulderG, new THREE.MeshLambertMaterial({ color: 0x77706a }), MAXG);
   shrubs.count = tufts.count = boulders.count = 0;
   globe.add(shrubs);
@@ -383,12 +383,12 @@ const G3D = { ok: false };
         continue;
       }
       if (ter[i] === 2 && nb < MAXG && r01() < 0.5) put(boulders, nb++, x, y, 0.4 + 0.5 * r01());
-      if (t >= 0.04 && t < 0.55 && ns < MAXG) {
-        const n = t < 0.15 ? 3 : t < 0.35 ? 5 : 3;
+      if (t >= 0.04 && ns < MAXG) {
+        const n = t < 0.15 ? 3 : t < 0.35 ? 5 : t < 0.55 ? 3 : 2; // thin cover: most bushes; woodland keeps an understory of fewer
         for (let k = 0; k < n; k++) put(shrubs, ns++, x, y, 0.8 + 0.7 * r01());
       }
-      if (food[i] > 0.25 && t < 0.5 && ter[i] !== 1 && nt < MAXG && tuftHere(i)) {
-        const n = food[i] > 0.7 ? 12 : food[i] > 0.45 ? 8 : 5; // tufts come in clumps
+      if (t < 0.8 && ter[i] !== 1 && nt < MAXG && tuftHere(i)) {
+        const n = food[i] > 0.7 ? 12 : food[i] > 0.45 ? 8 : food[i] > 0.2 ? 5 : 3; // tufts come in clumps, fewer where the grass is eaten or shaded
         for (let k = 0; k < n; k++) put(tufts, nt++, x, y, (0.6 + 0.8 * food[i]) * (0.8 + 0.5 * r01()));
       }
     }

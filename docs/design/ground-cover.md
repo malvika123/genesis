@@ -12,3 +12,5 @@
 **Test.** Chrome page check on both views (no errors, objects visible), not a sim test.
 
 **Honesty changes (24 Nov, owner: "honest is what this project is").** Drawn only in the evidence region (the East African rift, about 25-50 °E, 10 °S-16 °N; everywhere on a made-up planet, which has no real geography); grass tufts on 30% of grassy squares (the Hadar paleosol share of C4 grass); a note on the About page says what is evidence and what is a drawing choice. Still drawing choices, not data: counts per square, sizes, one look for every bush.
+
+**Understory (24 Nov, after the owner's eye-level screenshots).** At eye level the ground was bare because bushes were drawn only in thin cover and tufts only on lush grass, and the band stands in woodland. Real woodland has an understory and grass between the trees, so now bushes appear in woodland too (fewer), and grass tufts appear on 30% of squares up to dense cover (fewer where the grass is eaten or shaded).

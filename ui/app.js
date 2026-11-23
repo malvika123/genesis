@@ -778,7 +778,7 @@ function drawTerrain(g, v, relief = true) {
         g.fill();
       }
       if (rock[i]) continue;
-      if (t >= 0.04 && t < 0.55) {
+      if (t >= 0.04) {
         g.fillStyle = '#2c5a22';
         const n = t < 0.15 ? 1 : t < 0.35 ? 3 : 2;
         for (let k = 0; k < n; k++) {
@@ -787,7 +787,7 @@ function drawTerrain(g, v, relief = true) {
           g.fill();
         }
       }
-      if (food[i] > 0.25 && t < 0.5 && ter[i] !== 1 && tuftHere(i)) {
+      if (t < 0.8 && ter[i] !== 1 && tuftHere(i)) {
         g.strokeStyle = '#a9a14a';
         g.lineWidth = 1;
         const n = food[i] > 0.8 ? 3 : 2;
