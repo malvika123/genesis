@@ -3328,6 +3328,23 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 132. Hunters passing up hominins as their real kinds do (leopard 0.55, hyena 0.03): bands last a little longer, deaths fall by about 30%, every band is still wiped out — Nov 2026
+
+**Version.** `--hom-avoid` on top of entry 131's setup (commit after 36fb169), 12 worlds per arm x 40 days, seeds 1-12. Prediction: `data/findings/132-avoid/prediction-written-before.txt`. Counting run, not the full bundle.
+
+| (12 worlds each) | R: no avoidance | RH: avoidance on |
+|---|---|---|
+| worlds emptied | 12 | 12 |
+| hominin-years lived | 310 | 446 |
+| deaths per 1,000 hominin-years (band of 25 all dead) | about 970 | about 670 |
+| median years until the band was gone | 1.9 | 2.8 |
+| tries at a hominin per hominin-year (counted, see below) | 1.85 | 4.66 |
+| tries by awake / asleep / up a tree | 424 / 115 / 34 | 1,493 / 475 / 107 |
+
+**Against the predictions.** (1) R at 1.5 or more tries per hominin-year, 5 times the real 0.30: CONFIRMED in direction (1.85). (2) "Attacks fall to a third": CANNOT BE JUDGED — my counter counts every try including the ones the new rule drops, so RH shows more tries (4.66), not fewer. The tries that count are about 0.27 of those (leopard-type 0.55, hyena-type 0.03, mixed by who tried): about 1.3 per hominin-year, 30% below R's 1.85, which matches the 30% fall in deaths. (3) "Bands last beyond 3 years, still at least 6 of 12 emptied": PARTLY WRONG — 2.8 years, 12 of 12 emptied.
+
+**What it means.** Passing up hominins as real hunters do helps a little but not enough: deaths are still about 12 to 20 times the measured rate. The more telling number is how many tries there are: a hunter next to a hominin tries again every hour, 4.7 tries per hominin-year even with avoidance. So hunters hang around hominins for a long time and nothing makes them leave. In the real record encounters are short: Taï chimpanzees chased the leopard away 9 times and rescued a caught one 11 times (Boesch 1991). This is a reading of the counts; next: measure how long a hunter stays within reach of a hominin, then test hominins chasing hunters off (mobbing) and hunters leaving after a failed or dropped try.
+
 ### 131. Real hunter densities, 36 worlds: every band was wiped out within about 2 years, and neither a lower attack success nor half the hunters changed that much — Nov 2026
 
 **Version.** `run131` (commit after de74386 + attack settings), 12 worlds per arm, seeds 1-12, 25 people, cast of entry 127, `--real-densities`. Prediction written before: `data/findings/131-densities/prediction-written-before.txt`.

@@ -20,3 +20,4 @@ Rule: every built item has a row. Status: TESTED (a check ran and the result is 
 | Flora and small animals (plan item 20) | Confirmed plants and animals only | Not built | n/a | NOT BUILT |
 | Registry test (`npm test`, 93 tests) | Every numeric setting registered with its evidence | Runs on every commit | Pass | TESTED (automatic) |
 | Identical-worlds check (`tools/identical-worlds.sh`) | Every new switch off = the old world | Run once per release | IDENTICAL (2 rows x 176 columns) at each release so far | TESTED (automatic per release) |
+| Hunters pass up hominins (`--hom-avoid`) | Fewer hunter tries become attacks; bands last longer | Entry 132 (24 worlds, counting run) | Deaths fell about 30%, every band still wiped out; my counter could not show the fall in tries | TESTED (partly; prediction 2 not judgeable, 3 partly wrong); stay-time of hunters and mobbing UNTESTED |
