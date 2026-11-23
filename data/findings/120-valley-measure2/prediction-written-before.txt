@@ -1,0 +1,10 @@
+Entry 120 - V2-0b: why the valley's predation is low and its births are lower (Opus's step 1; written 20 Nov 2026 BEFORE the run). Measuring only: tools/analysis/valley-run.js with the added daily hunter records, wound kinds (a.hurtK, set in ouch(): a label nothing reads) and births per adult female. Valley and globe, 12 worlds each (seeds 1-12), 100 days, defaults (the same worlds as entry 119: a rerun with more records).
+Questions and what I expect (Opus's reading, to test):
+1. Hunters and herds at the end: the valley holds about as many hunters as the globe (caps 10, 8 and 6 per kind and a rescue floor of 4 per kind: 12-24 in total), and its herds are as many or more.
+2. How far are the hunters from the band? The median distance from a hunter to its nearest person in the VALLEY is tens of squares (over 20) and only a small share of hunter-days (under 20%) have a hunter within 8 squares; on the GLOBE the median is under 15 squares and the share within 8 squares is above 30%. This is the cause of low predation: the hunters rarely meet the band.
+3. Hunters' energy: the valley's hunters are better fed (mean energy higher than the globe's by 10 points or more): the prey map's abundance (SQKM = 9 on 250 m squares).
+4. Births per adult female per year: lower in the valley (about 0.12-0.16 against the globe's 0.186): fewer ready male-female meetings.
+5. Wounds: the valley's 'its wounds' deaths are mostly of one kind (prey fights or poison berries) and not predator bites.
+Not held if: hunters in the valley are within 8 squares of the band as often as on the globe (then the distance does not explain predation; ask Opus); or valley births per adult female are within 10% of the globe's (then the lower births are age structure).
+Reading: if 2 and 3 hold, the order is V2a (the SQM constant) and then the hunters-by-area scan; if 4 holds, the mate-finding distance (3 x 3 squares) is a V2d item.
+Nothing is changed.

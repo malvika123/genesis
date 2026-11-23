@@ -30,7 +30,22 @@ return {
 
   // Returns a fresh, independent world: every call gets its own copy of all engine state.
   // opts.brain: the most thinking units a person's brain can grow (64 normally) — for brain-size experiments
+  // opts.valley = { W, H, lat }: the valley engine (entry 117, docs/design/valley-spec.md): a separate grid (squares of 250 m), no east-west wrap (the edge is a wall),
+  // one latitude (lat: -1 north pole ... +1 south pole; Gona about 11 N = -0.122) and one local time for every column. The globe engine is built when it is not given: identical.
+  function valleySource(src, v) {
+    const swap = (a, b) => {
+      if (src.split(a).length !== 2) throw new Error('valley variant: pattern not found exactly once: ' + a.slice(0, 50));
+      src = src.replace(a, () => b);
+    };
+    swap('const W = 128,\n  H = 80,', 'const W = ' + v.W + ',\n  H = ' + v.H + ',');
+    swap('const wx = (x) => (x >= 0 && x < W ? x : ((x % W) + W) % W),\n  dxw = (d) => (d > W / 2 ? d - W : d < -W / 2 ? d + W : d),', 'const wx = (x) => (x < 0 ? 0 : x >= W ? W - 1 : x),\n  dxw = (d) => d,');
+    swap('localTime = (x) => ((tick % DAY) / DAY + wx(x) / W) % 1,', 'localTime = (x) => ((tick % DAY) / DAY + 0.5) % 1,');
+    swap('const lat = (y) => ((y + 0.5) / H) * 2 - 1;', 'const lat = (y) => ' + v.lat + ';');
+    swap('const latOfRow = (y) => 80 * (1 - (2 * (y + 0.5)) / H);', 'const latOfRow = (y) => ' + (-v.lat * 90) + ';');
+    return src;
+  }
   function build(src, opts = {}) {
+    if (opts.valley) src = valleySource(src, opts.valley);
     if (opts.brain) {
       const n = Math.max(16, Math.round(opts.brain));
       src = src.replace('NH = 64,', 'NH = ' + Math.max(64, n) + ',').replace('hmax: 64,', 'hmax: ' + n + ',');

@@ -29,6 +29,7 @@ function initForest() {
   tcap = new Float32Array(n);
   fkind = new Uint8Array(n);
   const patch = fractal(10, 2, 0.5); // natural clearings and glades
+  if (SOC.valley) return valleyTrees(patch);
   for (let i = 0; i < n; i++) {
     if (water[i] || rock[i] || pit[i]) continue;
     const y = (i / W) | 0,
@@ -131,5 +132,43 @@ function updateDiet() {
       YL[i] += (target - YL[i]) * (target > YL[i] ? SOC.ylRate : 0.05);
     }
     if (TERM && SOC.termites && TERMCAP[i] > 0 && TERM[i] < TERMCAP[i]) TERM[i] = Math.min(TERMCAP[i], TERM[i] + SOC.termRate * TERMCAP[i]);
+  }
+}
+// The valley's woody cover (entry 117, docs/design/valley-spec.md; V1c): from the statistics of the Gona record, not from the globe's latitude guess. Woody cover on the floodplain is registered as a range
+// (SOC.valleyWoody, default 0.35: Cerling et al. 2011 found most eastern African hominin sites under 40%; Gona's floodplain about 50% grass: Quade et al. 2004; tested at 0.30 and 0.50);
+// a gallery woodland strip (Ficus, Tamarix) along the river (Hadar pollen: secondary), dense (about 0.85) within 0.5 km of it; open acacia/Commiphora steppe on the terraces and valley sides at 0.6 of the
+// floodplain's cover (an assumption). Patchiness from the same noise as the globe's glades. The scale is set so that the mean woody cover of the floodplain's non-gallery land equals the registered value.
+function valleyTrees(patch) {
+  const n = W * H,
+    SQ = 0.25;
+  let nearRiver = new Float32Array(n).fill(1e9);
+  const q = [];
+  for (let i = 0; i < n; i++) if (river[i]) (nearRiver[i] = 0), q.push(i);
+  for (let qi = 0; qi < q.length; qi++) {
+    const i = q[qi], x = i % W, y = (i / W) | 0;
+    for (const [dx, dy] of NB8.slice(0, 4)) {
+      const nx = x + dx, ny = y + dy;
+      if (nx < 0 || nx >= W || ny < 0 || ny >= H) continue;
+      const j = ny * W + nx;
+      if (nearRiver[j] > nearRiver[i] + 1) (nearRiver[j] = nearRiver[i] + 1), q.push(j);
+    }
+  }
+  const zone = (i) => (nearRiver[i] * SQ <= 0.5 ? 2 : nearRiver[i] * SQ <= 3 ? 1 : 0), // 2 gallery strip, 1 floodplain, 0 terraces and sides
+    base = new Float32Array(n);
+  let sum = 0, cnt = 0;
+  for (let i = 0; i < n; i++) {
+    if (water[i] || rock[i] || pit[i]) continue;
+    const y = (i / W) | 0, z = zone(i), ground = ter[i] === 2 ? 0.45 : 1;
+    base[i] = ground * (0.45 + 0.75 * patch(i % W, y));
+    if (z === 1) (sum += base[i]), cnt++;
+  }
+  const s = cnt ? SOC.valleyWoody / (sum / cnt) : 1;
+  for (let i = 0; i < n; i++) {
+    if (water[i] || rock[i] || pit[i]) continue;
+    const z = zone(i), y = (i / W) | 0;
+    tcap[i] = Math.min(1, z === 2 ? 0.85 * (0.8 + 0.2 * base[i]) : z === 1 ? s * base[i] : 0.6 * s * base[i]);
+    fkind[i] = tcap[i] < 0.08 ? 0 : 3; // warm savanna woodland: the same fruit kind as the globe's at Gona
+    tree[i] = tcap[i] * (0.75 + 0.25 * rnd());
+    if (tree[i] < 0.05) tree[i] = 0;
   }
 }

@@ -22,7 +22,9 @@ const { build } = require('./engine-api');
 // Returns a fresh, independent world: every call gets its own copy of all engine state.
 // opts.brain: the most thinking units a person's brain can grow (64 normally) — for brain-size experiments
 function createEngine(opts = {}) {
-  return build(engineSource(), opts);
+  // the valley engine also carries the recorded weather of the globe at Gona (src/valleyforce.js, not part of the page's engine order)
+  const src = opts.valley ? engineSource() + '\n' + fs.readFileSync(path.join(ROOT, 'src', 'valleyforce.js'), 'utf8') : engineSource();
+  return build(src, opts);
 }
 
 module.exports = { createEngine, engineSource, ORDER, ROOT };

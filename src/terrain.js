@@ -119,7 +119,8 @@ function makeTerrain() {
   poison = new Uint8Array(n);
   river = new Uint8Array(n);
 
-  // 1. height: the real Earth (see earth.js), or a made-up planet from noise
+  // 1. height: the valley (entry 117), the real Earth (see earth.js), or a made-up planet from noise
+  if (SOC.valley) return makeValleyTerrain(n);
   if (SOC.earth) {
     for (let i = 0; i < n; i++) alt[i] = (EARTH_M[i] - EARTH_SEA) / 1000;
     fractal(3, 5, 0.5), fractal(5, 3, 0.5); // (draw the same random numbers either way)
@@ -307,6 +308,64 @@ function heightsDone(n) {
         if (!inb(0, y) || dx * dx + dy * dy >= 4) continue;
         const i = idx(Math.round(bx) + dx, y);
         if (!water[i] && !rock[i] && !pit[i] && ter[i] !== 1 && rnd() < 0.5) poison[i] = 1;
+      }
+  }
+}
+
+// The valley (entry 117; docs/design/valley-spec.md): a generated stand-in for the Awash valley at Gona/Hadar about 2.6-2.5 Ma, on squares of 250 m, drawn from stated statistics, not from today's eroded relief.
+// A river runs north to south across the middle (one square wide: the Awash is under 100 m, a square is 250 m), meanders, and the land slopes down along it (about 1 m per km: assumption, the Awash's
+// lower gradient is of that order, unverified); a floodplain around it; terraces rising to the valley sides; stony cobble ground along the river (the conglomerate beds: Stout et al. 2005: place and width an assumption).
+// Nothing here is final: the first version, to get the engine running and to be checked against the specification.
+const VALLEY = { riverWidth: 1, meanderAmp: 14, meanderLen: 90, slopeKmPerKm: 0.001, floodKm: 3, sideRiseKm: 0.12, cobbleKm: 0.6 };
+function makeValleyTerrain(n) {
+  const SQ = 0.25, // km a side
+    noise = fractal(6, 4, 0.5),
+    broad = fractal(3, 3, 0.5),
+    ph = rnd() * 6.28,
+    cx = (y) => W * 0.5 + VALLEY.meanderAmp * Math.sin((2 * Math.PI * y) / VALLEY.meanderLen + ph) + 5 * Math.sin((2 * Math.PI * y) / 37 + 2 * ph);
+  const dist = new Float32Array(n);
+  for (let y = 0; y < H; y++) {
+    const c = cx(y);
+    for (let x = 0; x < W; x++) {
+      const i = y * W + x,
+        dKm = Math.abs(x - c) * SQ;
+      dist[i] = dKm;
+      // km above sea level: a base of 0.5 km (Hadar about 500 m), falling south, a low floodplain, terraces and valley sides rising away from the river, and gentle noise
+      const flood = Math.min(1, dKm / VALLEY.floodKm),
+        side = Math.max(0, (dKm - VALLEY.floodKm) / 20);
+      alt[i] = 0.5 - VALLEY.slopeKmPerKm * y * SQ + (flood * 0.012 + Math.min(1, side) * VALLEY.sideRiseKm) + 0.01 * (noise(x, y) - 0.5) + 0.04 * (broad(x, y) - 0.5) * Math.min(1, dKm / 6);
+    }
+  }
+  // the river: one square wide along the centre line (two where it bends, so that it is continuous)
+  for (let y = 0; y < H; y++) {
+    const c = Math.round(cx(y)),
+      c2 = Math.round(cx(Math.min(H - 1, y + 1)));
+    for (let x = Math.min(c, c2); x <= Math.max(c, c2); x++) {
+      const i = y * W + x;
+      water[i] = 1;
+      river[i] = 1;
+      alt[i] -= 0.006;
+    }
+  }
+  // ground: stony cobble beds close to the river (a registered assumption), a little sand on the river banks' inner bends (none for now)
+  for (let i = 0; i < n; i++) {
+    if (water[i]) continue;
+    const x = i % W,
+      y = (i / W) | 0;
+    if (dist[i] < VALLEY.cobbleKm && noise(x * 2, y * 2) > 0.45) ter[i] = 2;
+  }
+  // stony ground: some squares are bare rock; no pits, no caves (no habitual cave use at 2.5 Ma: factual-reality rule); poisonous berry patches by area as on the globe (14 and 10 per 2,560 squares: unsourced)
+  for (let i = 0; i < n; i++) if (!water[i] && ter[i] === 2 && rnd() < 0.05) rock[i] = 1;
+  const area = n / 2560;
+  for (let k = 0; k < 10 * area; k++) {
+    const bx = rnd() * W,
+      by = rnd() * H;
+    for (let dy = -2; dy <= 2; dy++)
+      for (let dx = -2; dx <= 2; dx++) {
+        const y = Math.round(by) + dy;
+        if (!inb(0, y) || dx * dx + dy * dy >= 4) continue;
+        const i = idx(Math.round(bx) + dx, y);
+        if (!water[i] && !rock[i] && ter[i] !== 1 && rnd() < 0.5) poison[i] = 1;
       }
   }
 }

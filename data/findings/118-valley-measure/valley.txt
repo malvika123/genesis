@@ -1,0 +1,12 @@
+world 1 done
+world 2 done
+world 3 done
+world 4 done
+valley: 4 worlds x 30 days (10.0 years each); 250 m a square
+nearest neighbour (m): median 250, 10th 0, 90th 1500; in squares: median 1.0
+share of person-hours with nobody within 4 squares (1000 m): 11.9%
+party sizes (linked within 1 square = 250 m): median 1, mean 2.0, 90th 4
+mother-juvenile distance, children under 5 years (m): median 0, 90th 1118, 99th 3260; in squares: median 0.0, 90th 4.5; n 15612
+distance moved (km per person per day): median over worlds 1.18
+band extent, standard deviation of positions: daily median 3548 m (14.2 squares); at the end of the run 10.3 km, 6.5 km, 8.2 km, 6.7 km
+lightning strikes per km2 per year: 0.00000 (0 strikes); fires lit 0

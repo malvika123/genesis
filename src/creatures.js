@@ -273,7 +273,7 @@ function spawnKind(sp, k, n, inst) {
   const homeSite = () => {
     for (const strict of [true, false]) {
       const c = [];
-      for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (homeland(idx(x, y), x, y, strict)) c.push([x, y]);
+      for (let y = SOC.valley ? 30 : 0; y < (SOC.valley ? H - 30 : H); y++) for (let x = SOC.valley ? 30 : 0; x < (SOC.valley ? W - 30 : W); x++) if (homeland(idx(x, y), x, y, strict)) c.push([x, y]); // the valley: not within 30 squares (7.5 km) of its walls
       if (c.length) return c[(rnd() * c.length) | 0];
     }
     return null;

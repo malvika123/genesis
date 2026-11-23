@@ -45,7 +45,12 @@ function buildWorld(cfg) {
   SOC.sound = cfg.soundPhysics !== false; // off: the old rule (heard within 2.2 squares, fading evenly)
   SOC.calls = cfg.animalCalls !== false;
   SOC.modern = !!cfg.modernVoice; // the experiment: give everyone a modern human voice from the start
-  SOC.earth = !!cfg.earth; // the real Earth's land and sea, 70,000 years ago (see earth.js), or a made-up planet
+  SOC.valleySeed = Math.abs(Math.round(cfg.valleyWeather ?? 0)); // which recorded weather the valley replays (0-3: the globe's seeds 1-4 at Gona)
+  SOC.valleyWoody = cfg.valleyWoody ?? 0.35; // woody cover of the valley's floodplain (a registered range 0.30-0.50: Cerling et al. 2011; Quade et al. 2004)
+  SOC.valleyRainScale = cfg.valleyRain ?? 1; // the valley's rain as a multiple of the globe's at Gona (an assumption: the globe's weather at Gona is a model result, not checked against real rainfall: tested 1 and 0.5)
+  SOC.valleyRelax = cfg.valleyRelax ?? 0.2; // how fast the valley's air relaxes toward the forcing (an assumption: tested 0.05 and 0.5)
+  SOC.valley = !!cfg.valley; // entry 117: the valley world (built with the valley engine: tools/engine-api.js opts.valley); never together with the real Earth
+  SOC.earth = !!cfg.earth && !cfg.valley; // the real Earth's land and sea, 70,000 years ago (see earth.js), or a made-up planet
   ERA = cfg.sapiens || cfg.scenario === 'sapiens' ? 'sapiens' : 'hominin'; // which world (state.js)
   // their bodies and lives: modern people's, or early hominins' (config.js)
   Object.assign(KBIO[0], PERSON_BIO, ERA === 'hominin' ? HOMININ : {});
