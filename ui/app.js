@@ -787,7 +787,7 @@ function drawTerrain(g, v, relief = true) {
           g.fill();
         }
       }
-      if (food[i] > 0.45 && t < 0.5 && ter[i] !== 1) {
+      if (food[i] > 0.25 && t < 0.5 && ter[i] !== 1) {
         g.strokeStyle = '#a9a14a';
         g.lineWidth = 1;
         const n = food[i] > 0.8 ? 3 : 2;

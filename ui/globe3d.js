@@ -291,9 +291,9 @@ const G3D = { ok: false };
   // grass is thick and green (they shrink and vanish as the grass is eaten or dries), boulders on stony ground and round rock squares (the Afar rift floor is basalt flows 1-10 m thick, Gona
   // geology). How many of each per square is a drawing choice; no density is sourced.
   const MAXG = 14000,
-    shrubG = new THREE.IcosahedronGeometry(0.0022, 0).scale(1.3, 0.7, 1.3).translate(0, 0.0013, 0),
-    tuftG = new THREE.ConeGeometry(0.0009, 0.0042, 4).translate(0, 0.0021, 0),
-    boulderG = new THREE.DodecahedronGeometry(0.0021, 0).scale(1.2, 0.8, 1).translate(0, 0.001, 0),
+    shrubG = new THREE.IcosahedronGeometry(0.0038, 0).scale(1.3, 0.75, 1.3).translate(0, 0.0026, 0),
+    tuftG = new THREE.ConeGeometry(0.0013, 0.0065, 4).translate(0, 0.00325, 0),
+    boulderG = new THREE.DodecahedronGeometry(0.0045, 0).scale(1.2, 0.8, 1).translate(0, 0.002, 0),
     shrubs = new THREE.InstancedMesh(shrubG, new THREE.MeshLambertMaterial({ color: 0x4d6b32 }), MAXG),
     tufts = new THREE.InstancedMesh(tuftG, new THREE.MeshLambertMaterial({ color: 0xa9a14a }), MAXG),
     boulders = new THREE.InstancedMesh(boulderG, new THREE.MeshLambertMaterial({ color: 0x77706a }), MAXG);
@@ -386,8 +386,8 @@ const G3D = { ok: false };
         const n = t < 0.15 ? 1 : t < 0.35 ? 3 : 2;
         for (let k = 0; k < n; k++) put(shrubs, ns++, x, y, 0.7 + 0.6 * r01());
       }
-      if (food[i] > 0.45 && t < 0.5 && ter[i] !== 1 && nt < MAXG) {
-        const n = food[i] > 0.8 ? 3 : 2;
+      if (food[i] > 0.25 && t < 0.5 && ter[i] !== 1 && nt < MAXG) {
+        const n = food[i] > 0.7 ? 4 : food[i] > 0.45 ? 3 : 2;
         for (let k = 0; k < n; k++) put(tufts, nt++, x, y, (0.6 + 0.8 * food[i]) * (0.8 + 0.4 * r01()));
       }
     }
