@@ -782,7 +782,9 @@ const G3D = { ok: false };
     SZ = 128;
   function texFor(a, v) {
     const S = a.S,
-      gr = Math.round(clamp(a.age / S.mat, 0.3, 1) * 10) / 10,
+      bm = SOC.bodyModel && a.sp === 0 && a.gp !== undefined, // the body model: the figure shows how far food has let it grow, its inherited size, muscle and how well fed it is
+      gr = Math.round(clamp((bm ? Math.min(a.gp, a.age) : a.age) / S.mat, 0.3, 1) * 10) / 10,
+      bmKey = bm ? [Math.round((a.g.sz ?? 1) * 20), Math.round((a.msc ?? 1) * 10), Math.round(clamp(((a.eAvg ?? a.e) - 20) / 50, 0, 1) * 4), Math.round((a.g.st ?? 1) * 10)].join('/') : '',
       pose = a.moving ? Math.round(Math.sin(a.ph || 0) * 2) : 0,
       swf = a.act === A_STRIKE && !a.asleep ? Math.round(bodySwing(a)) : 0,
       heldv = typeof carried === 'function' && a.sp === 0 && carried(a) ? 1 : 0, // a carried infant clings to its mother
@@ -811,6 +813,7 @@ const G3D = { ok: false };
         a.ptT !== undefined && tick - a.ptT <= 1 ? a.pt : -1, // pointing
         a.sp === 0 ? Math.round(skinOf(a) * 8) : 0, // skin shade
         a.sp === 0 ? ERA : '', // early hominin or modern person
+        bmKey,
       ].join();
     let t = figTex.get(key);
     if (t) return t;
@@ -824,6 +827,10 @@ const G3D = { ok: false };
         face: a.face || 1,
         sex: a.sex,
         age: gr * S.mat,
+        gp: bm ? gr * S.mat : undefined,
+        g: a.sp === 0 ? { sz: bm ? Math.round((a.g.sz ?? 1) * 20) / 20 : 1, st: bm ? Math.round((a.g.st ?? 1) * 10) / 10 : 1 } : undefined,
+        msc: bm ? Math.round((a.msc ?? 1) * 10) / 10 : undefined,
+        eAvg: bm ? 20 + Math.round(clamp(((a.eAvg ?? a.e) - 20) / 50, 0, 1) * 4) * 12.5 : undefined,
         asleep: a.asleep,
         moving: pose !== 0,
         pose: pose / 2,
@@ -844,7 +851,7 @@ const G3D = { ok: false };
       };
     // draw so that the feet touch the bottom middle of the picture
     if (a.sp === 0) {
-      const k = (SZ * 0.82) / 11.5,
+      const k = ((SZ * 0.82) / 11.5) / (SOC.bodyModel ? 1.12 : 1), // a little room above for the taller ones (body model)
         h = (5.5 + 6 * gr) * k;
       if (fake.asleep) drawCreature(g, fake, SZ / 2, SZ - h * 0.2, k, v);
       else drawCreature(g, fake, SZ / 2, SZ - h * 0.16, k, v);
