@@ -286,6 +286,22 @@ const G3D = { ok: false };
     pines = new THREE.InstancedMesh(coneG, new THREE.MeshLambertMaterial({ color: 0x24493a }), MAXT),
     leafy = new THREE.InstancedMesh(crownG, new THREE.MeshLambertMaterial({ color: 0x2f6b2a }), MAXT);
   pines.count = leafy.count = trunks.count = 0;
+  // The flat-topped acacia (24 Nov 2026, owner: "all same looking, no branches"; docs/design/trees.md), for broadleaf squares in the East African evidence region: a taller trunk, three forking
+  // limbs, and a wide flat crown of lobes, wider than tall. Evidence: Hadar pollen has Acacia among the trees (Bonnefille et al. 2004: arid-steppe trees Commiphora, Acacia, Grewia, Capparidaceae, and
+  // riverine Combretaceae and Tamarix, all present but not common) in a grassy woodland with sizable trees; the umbrella thorn (Vachellia tortilis) today is 5-20 m tall (usually near 5-10 m) with a flat crown
+  // often wider than tall. Which species stood at Hadar is NOT known: this is one modern-looking stand-in shape, drawn bigger than the other trees. Elsewhere on Earth the old round tree is kept.
+  const limbG = new THREE.CylinderGeometry(0.0004, 0.0007, 0.0085, 5).translate(0, 0.00425, 0),
+    flatG = new THREE.IcosahedronGeometry(0.0052, 1).scale(1, 0.36, 1),
+    limbs = new THREE.InstancedMesh(limbG, new THREE.MeshLambertMaterial({ color: 0x5a3d26 }), 3 * MAXT),
+    flats = new THREE.InstancedMesh(flatG, new THREE.MeshLambertMaterial({ color: 0x4d7a30 }), 4 * MAXT),
+    part = new THREE.Matrix4(),
+    pq = new THREE.Quaternion(),
+    pe = new THREE.Euler(),
+    pp = new THREE.Vector3(),
+    ps = new THREE.Vector3();
+  limbs.count = flats.count = 0;
+  globe.add(limbs);
+  globe.add(flats);
   // Ground cover (24 Nov 2026, owner: shrubs, tall grass and rocks make it real; docs/design/ground-cover.md): drawn only, no effect on the sim.
   // Shrubs where woody cover is thin to moderate (Hadar: bushland and shrubland mosaics, Bonnefille; Awash today: Acacia, Grewia, Psiadia shrubs), grass tufts where the
   // grass is thick and green (they shrink and vanish as the grass is eaten or dries), boulders on stony ground and round rock squares (the Afar rift floor is basalt flows 1-10 m thick, Gona
@@ -314,6 +330,7 @@ const G3D = { ok: false };
   function plantTrees() {
     let np = 0,
       nl = 0,
+      na = 0,
       seed = 12345;
     const r01 = () => (seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff;
     // each square's trees come from that square's own numbers, so when a forest grows or thins in one
@@ -334,17 +351,48 @@ const G3D = { ok: false };
           r = 1 + EX * heightAt(la, lo);
         pos.copy(local(la, lo, r));
         q.setFromUnitVectors(up, pos.clone().normalize());
-        const sz = (0.7 + 0.6 * r01()) * (fkind[i] === 3 ? 1.35 : 1);
+        const acacia = fkind[i] === 2 && inEvidenceRegion(x, y) && na + 1 < MAXT,
+          sz = (0.7 + 0.6 * r01()) * (fkind[i] === 3 ? 1.35 : acacia ? 1.7 : 1);
         scl.set(sz, sz, sz);
         mtx.compose(pos, q, scl);
-        trunks.setMatrixAt(np + nl, mtx);
-        if (fkind[i] === 1) pines.setMatrixAt(np++, mtx);
+        trunks.setMatrixAt(np + nl + na, mtx);
+        if (acacia) {
+          // three limbs fork from the trunk top, leaning outward; a flat lobe of leaves caps each, and one more the middle
+          const az0 = r01() * 6.283;
+          for (let b = 0; b < 3; b++) {
+            const az = az0 + (b * 2 * Math.PI) / 3 + 0.3 * (r01() - 0.5);
+            pe.set(0.62 * Math.cos(az + 1.5708), 0, -0.62 * Math.sin(az + 1.5708));
+            pq.setFromEuler(pe);
+            pp.set(0, 0.0048, 0);
+            ps.set(1, 1, 1);
+            part.compose(pp, pq, ps);
+            limbs.setMatrixAt(na * 3 + b, new THREE.Matrix4().multiplyMatrices(mtx, part));
+            // the limb tip: 0.0085 along the leaning limb
+            const tx = Math.sin(0.62) * 0.0085 * Math.cos(az),
+              tz = -Math.sin(0.62) * 0.0085 * Math.sin(az),
+              ty = 0.0048 + Math.cos(0.62) * 0.0085;
+            pp.set(tx, ty + 0.0012, tz);
+            ps.set(0.85 + 0.3 * r01(), 1, 0.85 + 0.3 * r01());
+            pq.identity();
+            part.compose(pp, pq, ps);
+            flats.setMatrixAt(na * 4 + b, new THREE.Matrix4().multiplyMatrices(mtx, part));
+          }
+          pp.set(0, 0.0048 + Math.cos(0.62) * 0.0085 + 0.0016, 0);
+          ps.set(1, 1, 1);
+          pq.identity();
+          part.compose(pp, pq, ps);
+          flats.setMatrixAt(na * 4 + 3, new THREE.Matrix4().multiplyMatrices(mtx, part));
+          na++;
+        } else if (fkind[i] === 1) pines.setMatrixAt(np++, mtx);
         else leafy.setMatrixAt(nl++, mtx);
       }
     }
     pines.count = np;
     leafy.count = nl;
-    trunks.count = np + nl;
+    trunks.count = np + nl + na;
+    limbs.count = na * 3;
+    flats.count = na * 4;
+    limbs.instanceMatrix.needsUpdate = flats.instanceMatrix.needsUpdate = true;
     pines.instanceMatrix.needsUpdate =
       leafy.instanceMatrix.needsUpdate =
       trunks.instanceMatrix.needsUpdate =
