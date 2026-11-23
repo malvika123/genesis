@@ -30,3 +30,5 @@ A gap is something real that our simulated hominins don't have yet, or have wron
 
 **A rule for every item above:** each new thing is built with its view on the page in the same step (what a hominin's panel shows, the log lines, the picture), because the page is the owner's source of truth.
 
+**The whole programme is laid out in order in `docs/BUILD-PLAN.md` (the owner, 23 Nov: build all of it).**
+
