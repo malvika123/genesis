@@ -763,6 +763,47 @@ function drawTerrain(g, v, relief = true) {
       }
     }
   g.globalAlpha = 1;
+  // ground cover, drawn only (docs/design/ground-cover.md): shrubs where woody cover is thin to moderate, grass tufts where the grass is thick, boulders on stony ground
+  for (let y = 0; y < H; y++)
+    for (let x = 0; x < W; x++) {
+      const i = y * W + x;
+      if (water[i]) continue;
+      const t = tree[i],
+        h = Math.imul(i + 1, 2654435761) >>> 0,
+        o = (k) => ((h >>> (k * 5)) & 31) / 31; // fixed offsets for this square
+      if (rock[i] || (ter[i] === 2 && o(0) > 0.45)) {
+        g.fillStyle = '#6f6862';
+        g.beginPath();
+        g.ellipse(x * C + C * (0.25 + 0.5 * o(1)), y * C + C * (0.3 + 0.5 * o(2)), C * (rock[i] ? 0.3 : 0.17), C * (rock[i] ? 0.22 : 0.13), 0, 0, 7);
+        g.fill();
+      }
+      if (rock[i]) continue;
+      if (t >= 0.04 && t < 0.55) {
+        g.fillStyle = '#4d6b32';
+        const n = t < 0.15 ? 1 : t < 0.35 ? 3 : 2;
+        for (let k = 0; k < n; k++) {
+          g.beginPath();
+          g.ellipse(x * C + C * (0.2 + 0.6 * o(k + 3)), y * C + C * (0.25 + 0.6 * o(k + 4)), C * 0.2, C * 0.13, 0, 0, 7);
+          g.fill();
+        }
+      }
+      if (food[i] > 0.45 && t < 0.5 && ter[i] !== 1) {
+        g.strokeStyle = '#a9a14a';
+        g.lineWidth = 1;
+        const n = food[i] > 0.8 ? 3 : 2;
+        for (let k = 0; k < n; k++) {
+          const gx = x * C + C * (0.15 + 0.7 * o(k + 5)),
+            gy = y * C + C * (0.45 + 0.5 * o(k + 1));
+          g.beginPath();
+          g.moveTo(gx, gy);
+          g.lineTo(gx - 1, gy - C * 0.3 * (0.6 + food[i]));
+          g.moveTo(gx, gy);
+          g.lineTo(gx + 1, gy - C * 0.25 * (0.6 + food[i]));
+          g.stroke();
+        }
+      }
+    }
+  g.globalAlpha = 1;
   // relief: light from the north-west, so slopes facing it are lit and the far sides are in shade;
   // the highest ground turns to bare grey rock (the 3D globe does its own shading)
   for (let y = 0; y < H && relief; y++)

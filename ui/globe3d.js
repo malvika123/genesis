@@ -286,6 +286,21 @@ const G3D = { ok: false };
     pines = new THREE.InstancedMesh(coneG, new THREE.MeshLambertMaterial({ color: 0x24493a }), MAXT),
     leafy = new THREE.InstancedMesh(crownG, new THREE.MeshLambertMaterial({ color: 0x2f6b2a }), MAXT);
   pines.count = leafy.count = trunks.count = 0;
+  // Ground cover (24 Nov 2026, owner: shrubs, tall grass and rocks make it real; docs/design/ground-cover.md): drawn only, no effect on the sim.
+  // Shrubs where woody cover is thin to moderate (Hadar: bushland and shrubland mosaics, Bonnefille; Awash today: Acacia, Grewia, Psiadia shrubs), grass tufts where the
+  // grass is thick and green (they shrink and vanish as the grass is eaten or dries), boulders on stony ground and round rock squares (the Afar rift floor is basalt flows 1-10 m thick, Gona
+  // geology). How many of each per square is a drawing choice; no density is sourced.
+  const MAXG = 14000,
+    shrubG = new THREE.IcosahedronGeometry(0.0022, 0).scale(1.3, 0.7, 1.3).translate(0, 0.0013, 0),
+    tuftG = new THREE.ConeGeometry(0.0009, 0.0042, 4).translate(0, 0.0021, 0),
+    boulderG = new THREE.DodecahedronGeometry(0.0021, 0).scale(1.2, 0.8, 1).translate(0, 0.001, 0),
+    shrubs = new THREE.InstancedMesh(shrubG, new THREE.MeshLambertMaterial({ color: 0x4d6b32 }), MAXG),
+    tufts = new THREE.InstancedMesh(tuftG, new THREE.MeshLambertMaterial({ color: 0xa9a14a }), MAXG),
+    boulders = new THREE.InstancedMesh(boulderG, new THREE.MeshLambertMaterial({ color: 0x77706a }), MAXG);
+  shrubs.count = tufts.count = boulders.count = 0;
+  globe.add(shrubs);
+  globe.add(tufts);
+  globe.add(boulders);
   globe.add(trunks);
   globe.add(pines);
   globe.add(leafy);
@@ -334,7 +349,52 @@ const G3D = { ok: false };
       leafy.instanceMatrix.needsUpdate =
       trunks.instanceMatrix.needsUpdate =
         true;
+    plantGround();
     treesFor = alt;
+  }
+  function plantGround() {
+    let ns = 0,
+      nt = 0,
+      nb = 0,
+      seed = 777;
+    const r01 = () => (seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff,
+      put = (mesh, k, x, y, sz) => {
+        const gx = x + 0.1 + 0.8 * r01(),
+          gy = y + 0.1 + 0.8 * r01(),
+          lo = (gx / W) * 2 * Math.PI - Math.PI,
+          la = LATMAX * (1 - (2 * gy) / H),
+          r = 1 + EX * heightAt(la, lo);
+        pos.copy(local(la, lo, r));
+        q.setFromUnitVectors(up, pos.clone().normalize());
+        scl.set(sz, sz, sz);
+        mtx.compose(pos, q, scl);
+        mesh.setMatrixAt(k, mtx);
+      };
+    for (let i = 0; i < W * H; i++) {
+      if (water[i]) continue;
+      const x = i % W,
+        y = (i / W) | 0,
+        t = tree[i];
+      seed = (i * 2246822519 + 31) & 0x7fffffff;
+      r01();
+      if (rock[i]) {
+        for (let k = 0; k < 4 && nb < MAXG; k++) put(boulders, nb++, x, y, 1.2 + 0.9 * r01());
+        continue;
+      }
+      if (ter[i] === 2 && nb < MAXG) for (let k = 0; k < 2; k++) put(boulders, nb++, x, y, 0.6 + 0.7 * r01());
+      if (t >= 0.04 && t < 0.55 && ns < MAXG) {
+        const n = t < 0.15 ? 1 : t < 0.35 ? 3 : 2;
+        for (let k = 0; k < n; k++) put(shrubs, ns++, x, y, 0.7 + 0.6 * r01());
+      }
+      if (food[i] > 0.45 && t < 0.5 && ter[i] !== 1 && nt < MAXG) {
+        const n = food[i] > 0.8 ? 3 : 2;
+        for (let k = 0; k < n; k++) put(tufts, nt++, x, y, (0.6 + 0.8 * food[i]) * (0.8 + 0.4 * r01()));
+      }
+    }
+    shrubs.count = ns;
+    tufts.count = nt;
+    boulders.count = nb;
+    shrubs.instanceMatrix.needsUpdate = tufts.instanceMatrix.needsUpdate = boulders.instanceMatrix.needsUpdate = true;
   }
   // Caves: a rocky knoll with a hollow inside and an arched mouth. From outside you see the rock and the
   // dark opening; step into the cell and you are inside the hollow, looking at dim stone walls and the
