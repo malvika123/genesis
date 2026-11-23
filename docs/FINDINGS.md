@@ -3328,6 +3328,21 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 131. Real hunter densities, 36 worlds: every band was wiped out within about 2 years, and neither a lower attack success nor half the hunters changed that much — Nov 2026
+
+**Version.** `run131` (commit after de74386 + attack settings), 12 worlds per arm, seeds 1-12, 25 people, cast of entry 127, `--real-densities`. Prediction written before: `data/findings/131-densities/prediction-written-before.txt`.
+
+| (12 worlds each) | R real densities | RA attack success 0.18 (Taï 4 of 22) | RD half the densities |
+|---|---|---|---|
+| worlds emptied | 12 | 12 | 12 |
+| hominin-years lived | 316 | 381 | 395 |
+| predator deaths per 1,000 hominin-years | 993 | 793 | 793 |
+| median years until the band was gone | 2.0 | 2.2 | 2.5 |
+
+**Against the predictions.** (1) At least 100 predator deaths per 1,000 hominin-years and 8 of 12 worlds emptied: CONFIRMED (993; 12 of 12). (2) Halving the densities cuts deaths to 70% or less: FAILED (80%). (3) Attack success at 0.18 cuts deaths to about 30% of R: FAILED (80%). (4) Run time: runs were short because bands died, not measured. The measured target is 30 to 55 per 1,000 hominin-years; real densities give 18 to 33 times that.
+
+**What it means.** The band does not die from how often an attack works nor how many hunters there are; it dies from something else, most likely how often a hunter that has found a hominin gets another try. The setting is "per 15-minute attempt" (docs/ASSUMPTIONS.md), so at 0.18 per attempt a hunter next to a hominin still wins within a few tries. That is a reading of the code, not tested. The three arms are not independent proof of insensitivity: all bands were gone in about two years, so the arms cover few hominin-years. Next test: count attempts per encounter and how a hominin gets away (tree, flight), and compare with the real 30% attack risk and 18% fatal share per encounter; check tree sleeping height and grip first, since those are the missing protections.
+
 ### 130. Hunters at real densities (first trial, one world): the whole band of 25 was killed by predators in under 2 years — Nov 2026
 
 **Version.** `--real-densities` (commit de74386) with `--more-hunters --giant-hyena --african-megantereon`, seed 1, 30 days (10 sim years). Written before: nothing (a one-world sanity trial, not a test); the combined four-arm test is still to come, with its prediction written first.
