@@ -779,7 +779,7 @@ function drawTerrain(g, v, relief = true) {
       }
       if (rock[i]) continue;
       if (t >= 0.04 && t < 0.55) {
-        g.fillStyle = '#4d6b32';
+        g.fillStyle = '#3f5c2a';
         const n = t < 0.15 ? 1 : t < 0.35 ? 3 : 2;
         for (let k = 0; k < n; k++) {
           g.beginPath();

@@ -293,8 +293,8 @@ const G3D = { ok: false };
   const MAXG = 14000,
     shrubG = new THREE.IcosahedronGeometry(0.0038, 0).scale(1.3, 0.75, 1.3).translate(0, 0.0026, 0),
     tuftG = new THREE.ConeGeometry(0.0013, 0.0065, 4).translate(0, 0.00325, 0),
-    boulderG = new THREE.DodecahedronGeometry(0.0045, 0).scale(1.2, 0.8, 1).translate(0, 0.002, 0),
-    shrubs = new THREE.InstancedMesh(shrubG, new THREE.MeshLambertMaterial({ color: 0x4d6b32 }), MAXG),
+    boulderG = new THREE.DodecahedronGeometry(0.0030, 0).scale(1.2, 0.8, 1).translate(0, 0.0013, 0),
+    shrubs = new THREE.InstancedMesh(shrubG, new THREE.MeshLambertMaterial({ color: 0x3f5c2a }), MAXG),
     tufts = new THREE.InstancedMesh(tuftG, new THREE.MeshLambertMaterial({ color: 0xa9a14a }), MAXG),
     boulders = new THREE.InstancedMesh(boulderG, new THREE.MeshLambertMaterial({ color: 0x77706a }), MAXG);
   shrubs.count = tufts.count = boulders.count = 0;
@@ -378,10 +378,10 @@ const G3D = { ok: false };
       seed = (i * 2246822519 + 31) & 0x7fffffff;
       r01();
       if (rock[i]) {
-        for (let k = 0; k < 4 && nb < MAXG; k++) put(boulders, nb++, x, y, 1.2 + 0.9 * r01());
+        for (let k = 0; k < 3 && nb < MAXG; k++) put(boulders, nb++, x, y, 0.8 + 0.6 * r01());
         continue;
       }
-      if (ter[i] === 2 && nb < MAXG) for (let k = 0; k < 2; k++) put(boulders, nb++, x, y, 0.6 + 0.7 * r01());
+      if (ter[i] === 2 && nb < MAXG && r01() < 0.5) put(boulders, nb++, x, y, 0.4 + 0.5 * r01());
       if (t >= 0.04 && t < 0.55 && ns < MAXG) {
         const n = t < 0.15 ? 1 : t < 0.35 ? 3 : 2;
         for (let k = 0; k < n; k++) put(shrubs, ns++, x, y, 0.7 + 0.6 * r01());
