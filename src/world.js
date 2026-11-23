@@ -144,6 +144,15 @@ function buildWorld(cfg) {
   SOC.growBodies = cfg.fixedBodies !== true; // hominin bodies grow with age and differ by sex (off: one body for all, the old rule)
   SOC.massF = cfg.femaleMass ?? 30; // adult female weight, kg (McHenry 1992: 29-30; tested at the ends)
   SOC.massM = cfg.maleMass ?? 42; // adult male weight, kg (McHenry 1992: 41-45; dimorphism 1.2-1.55 tested)
+  SOC.youngLeaves = cfg.youngLeaves === true; // young leaves as a real food that is eaten down and regrows with the rains (the realistic diet)
+  SOC.ylRate = cfg.ylRate ?? 0.03; // how fast young leaves regrow toward their target a step (an assumption)
+  SOC.ylRed = cfg.ylRed ?? 0.6; // the share of young leaves reddish enough to stand out against green (an assumption: tested 0.3-1; Dominy & Lucas 2001)
+  SOC.colourEye = cfg.colourEye === true; // the red-berry sense becomes a general 'reddish thing stands out' sense (fruit, young leaves, poison berries)
+  SOC.tasteK = cfg.tasteCurious ?? 0; // taste curiosity: an inborn, fading pull to try an unfamiliar food, scaled by curiosity, youth, caution and the mother eating (0 = none, as before; a registered range tested at both ends)
+  SOC.termites = cfg.termites === true; // termite mounds as a patchy food eaten by hand
+  SOC.moundDens = cfg.moundDens ?? 1; // mounds per km2 (an assumption: no source)
+  SOC.termRate = cfg.termRate ?? 0.05; // how fast a mound's termites come back a step (an assumption: within hours)
+  SOC.termVal = cfg.termVal ?? 120; // energy of a bite of termites (an assumption: about the leaf range)
   SOC.ledger = cfg.bodyLedger === true; // entry 123: the body ledger (protein eaten, effort spent), measuring only
   SOC.swimLearn = cfg.noHomininSwimming !== true; // swimming can be learned by wading and deep water (off: never)
   SOC.swimWatch = cfg.swimWatching === true; // built-in rule: those near a swimmer pick swimming up (off by default since the realism audit)
@@ -272,6 +281,7 @@ function buildWorld(cfg) {
       }
   }
   initForest();
+  initDiet();
   if (typeof initPreyMap === 'function') initPreyMap(); // (guarded: a cached old page may not load preymap.js)
   initItems();
   initTalk();

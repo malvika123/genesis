@@ -46,6 +46,7 @@ function initForest() {
 
 function updateForest() {
   const n = W * H;
+  if (SOC.youngLeaves || SOC.termites) updateDiet();
   // slow change: every few steps, each forest moves toward what the climate and the soil allow
   if (tick % 8 === 0)
     for (let i = 0; i < n; i++) {
@@ -99,3 +100,36 @@ function fruitMonth(north) {
 // build one. More branches than ever fall naturally in one place — four — have to be carried there.)
 const brush = (i) => (typeof stick === 'undefined' || !stick || !SOC.shelter ? 0 : Math.max(0, Math.min(0.8, (stick[i] - 4) / 8)));
 const cover = (i) => (water[i] ? 0 : Math.max(cave[i] ? Math.max(tree[i], 0.9) : tree[i], brush(i)));
+
+// The realistic diet (23 Nov 2026; docs/design/realistic-diet.md, docs/design/colour-eye-and-curiosity.md): young leaves and termites as real, patchy, seasonal foods that can be eaten down.
+// YL: young leaves per square (0..1), a flush that follows the rains (target = tree cover x (0.15 + 0.85 x soil moisture): an assumption: young leaves come with new growth after rain) and
+// grows back toward it (SOC.ylRate a step: an assumption), eaten down by feeding. TERM: termites a hand can reach per square (0..1): mounds stay for years, the supply is used up by eating and comes back within hours
+// (SOC.termRate); the cap scales with the mound density over the square's area (SOC.moundDens per km2, an assumption: none sourced; a globe square is 9 km2, a valley square 0.0625 km2).
+let YL = null,
+  TERM = null,
+  TERMCAP = null;
+function initDiet() {
+  const n = W * H;
+  YL = new Float32Array(n);
+  TERM = new Float32Array(n);
+  TERMCAP = new Float32Array(n);
+  const km2 = SOC.valley ? 0.0625 : 9;
+  for (let i = 0; i < n; i++) {
+    if (water[i] || rock[i]) continue;
+    if (SOC.youngLeaves) YL[i] = tree[i] * 0.5;
+    if (SOC.termites && ter[i] !== 1) {
+      TERMCAP[i] = Math.min(1, SOC.moundDens * km2 * 0.1) * (tree[i] < 0.7 ? 1 : 0.5) * (0.5 + 0.5 * rnd());
+      TERM[i] = TERMCAP[i];
+    }
+  }
+}
+function updateDiet() {
+  const n = W * H;
+  for (let i = 0; i < n; i++) {
+    if (YL && SOC.youngLeaves && tree[i] > 0.05) {
+      const target = tree[i] * (0.15 + 0.85 * clamp(MOIST[i], 0, 1));
+      YL[i] += (target - YL[i]) * (target > YL[i] ? SOC.ylRate : 0.05);
+    }
+    if (TERM && SOC.termites && TERMCAP[i] > 0 && TERM[i] < TERMCAP[i]) TERM[i] = Math.min(TERMCAP[i], TERM[i] + SOC.termRate * TERMCAP[i]);
+  }
+}

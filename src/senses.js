@@ -269,7 +269,7 @@ function sense(a, x, night) {
       // and herbivores can browse the trees
       const f =
         (a.sp === 0
-          ? Math.max(GRASSEYE * food[i], fruit[i] * 1.4, COOK[i] * 1.6, 0.6 * ROOT[i])
+          ? Math.max(GRASSEYE * food[i], fruit[i] * 1.4, COOK[i] * 1.6, 0.6 * ROOT[i], SOC.termites ? 0.5 * TERM[i] : 0)
           : a.S.omni
           ? Math.max(food[i], fruit[i] * 1.4, COOK[i] * 1.6)
           : a.sp === 1
@@ -290,7 +290,14 @@ function sense(a, x, night) {
         if (nut[i] > 0.05 && x[b + 14] < q) x[b + 14] = q;
       }
       // only eyes with three kinds of colour cone (people) tell red berries from green leaves
-      if (S.col >= 3 && poison[i] && food[i] > 0.05 && x[b + 9] < cl) x[b + 9] = cl;
+      // --colour-eye: the same sense, now 'something reddish, orange or yellow stands out against green': ripe fruit, reddish young leaves and the poison berries all show up on it, with nothing saying which is food
+      // (telling them apart needs tasting, memory, or the food sense); mature leaves, grass, bare ground and water do not (docs/design/colour-eye-and-curiosity.md)
+      if (S.col >= 3) {
+        if (SOC.colourEye) {
+          const r = Math.max(poison[i] && food[i] > 0.05 ? 1 : 0, fruit[i] > 0.05 ? Math.min(1, fruit[i] * 1.4) : 0, SOC.youngLeaves && YL ? Math.min(1, YL[i] * SOC.ylRed * 2) : 0);
+          if (r * cl > x[b + 9]) x[b + 9] = r * cl;
+        } else if (poison[i] && food[i] > 0.05 && x[b + 9] < cl) x[b + 9] = cl;
+      }
     }
     const l = G[i];
     if (l)
@@ -399,7 +406,7 @@ function sense(a, x, night) {
     const m = a.sp === 0 || a.sp === 2 ? meatAt(a.x, a.y, a.sp === 0 ? 0 : 2) : null;
     x[FOODIN + 1] = m ? Math.min(1, m.meat) * (rotten(m) ? 0.5 : 1) : 0;
   }
-  x[IB + 16] = a.sp < 2 && poison[here] && food[here] > 0.05 ? 1 : 0;
+  x[IB + 16] = a.sp < 2 && SOC.colourEye && a.sp === 0 && a.S.col >= 3 ? Math.max(poison[here] && food[here] > 0.05 ? 1 : 0, fruit[here] > 0.05 ? Math.min(1, fruit[here] * 1.4) : 0, SOC.youngLeaves && YL ? Math.min(1, YL[here] * SOC.ylRed * 2) : 0) : a.sp < 2 && poison[here] && food[here] > 0.05 ? 1 : 0;
   let hk = 0;
   if (a.sp === 0 && a.e > 40)
     for (let dy = -1; dy <= 1; dy++)
