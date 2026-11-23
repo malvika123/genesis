@@ -1,0 +1,12 @@
+Entry 131 — real hunter densities, attack success on hominins (written 24 Nov 2026, before any of these runs).
+12 worlds x 100 days per arm, seeds 1-12, 25 people, cast of entry 127 plus real densities. Comparison from entry 127/129: G (old rules) predator deaths 45.9 per 1,000 hominin-years, net -2.9%/yr.
+Arms:  R  = --real-densities (attack success as now, 0.6 / 0.9)
+       RA = --real-densities --atk-hom 0.18 --atk-hom-easy 0.27 (Boesch: 4 of 22 encounters fatal = 0.18; easy keeps the same ratio 1.5)
+       RD = --real-densities --dens-mul 0.5
+Measured target (written first, held fixed): predator deaths about 3%/yr median across primates, 5.5%/yr at Tai (= 30 to 55 per 1,000 hominin-years).
+Predictions:
+ 1. R: far more deadly than G: at least 100 predator deaths per 1,000 hominin-years; at least 8 of 12 worlds emptied.
+ 2. RD is clearly less deadly than R (the old starting-number test could not show this): predator deaths at most 70% of R's.
+ 3. RA: predator deaths about 30% of R's (0.18/0.6), i.e. still above the measured 30-55 per 1,000 hominin-years unless R is under ~150.
+ 4. Run time per step with about 90 hunters: at most 2x the old world.
+Not tuned toward survival: only atkHom is the free number, tuned to match the measured rate, not to a target population.
