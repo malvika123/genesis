@@ -338,6 +338,7 @@ function bioOf(k) {
 }
 const KBIO = KINDS.map(bioOf);
 const KDEF = [0, 1, 4, 7]; // the first kind of each role
+const NBASE = KINDS.length; // the kinds every world has; extra kinds (EXTRA_HUNTERS) are added after them, only when switched on
 
 // The animals of East Africa about 2.5 million years ago (patch 6 of docs/HOMININ-PLAN.md), each in the slot of the
 // ice-age kind it replaces in the early-hominin world (world.js swaps them in). Life histories from the living
@@ -362,6 +363,21 @@ const HKINDS = {
   // sabre-toothed cat (Megantereon, about 100 kg; in East Africa about 3.5–1.4 million years ago): extinct, so its
   // life history is a living cat's of its size (jaguar, lioness); probably a climber (an assumption)
   6: { sp: 2, n: 'Sabre-tooth', look: 'Big cat', preyMax: 350, mass: 110, need: 8.4, fov: 200, nv: 1.3, cap: 6, swim: 0.75, share: 0.2, size: 1.8, lit: [1, 4], mat: 2.5 * TY, smat: 3.5 * TY, life: 15 * TY, gest: 0.3 * TY, cd: 1.7 * TY, cold: 2, hot: 38, walk: 0.1, run: 0.5, climb: 1, hab: { t: [12, 32], tree: [0.1, 1] } },
+};
+
+// More of the large carnivores of the time (entry 127; docs/design/world-cast-social-smell-flora.md): ADDED after the base kinds,
+// only with --more-hunters / --giant-hyena, so every world without them is exactly as before. What is sourced (docs/reviews/
+// 2026-11-24-large-carnivores-evidence.md, live-checked addendum): all three kinds are in the East African record of the time
+// (Dinofelis cf. aronoki at Hadar Maka'amitalu about 2.35 Ma and cf. Dinofelis at Mille-Logya 2.9-2.4 Ma; Homotherium hadarensis at
+// Hadar, about 3.45-2.95 Ma; Pachycrocuta in the Pliocene of East Africa, not found at the Awash: its own switch); masses: Dinofelis
+// 149 kg (one study), Homotherium up to 200-250 kg, Pachycrocuta 100-110 kg on average. Everything else is a living cat's or
+// hyena's of that size (an assumption, as for the sabre-tooth above): meat need about 0.075 of body mass a day, life history of a
+// big cat or hyena, how many start (SOC.extraN, a pair) and prey size. Whether Dinofelis climbed, and whether Homotherium hunted
+// in groups, are unknown (Dinofelis: climbs as an assumption; Homotherium: does not).
+const EXTRA_HUNTERS = {
+  dinofelis: { sp: 2, n: 'Dinofelis', look: 'Big cat', extra: 1, preyMax: 350, mass: 149, need: 11.2, fov: 200, nv: 1.3, cap: 4, swim: 0.75, share: 0, size: 2, lit: [1, 3], mat: 2.5 * TY, smat: 3.5 * TY, life: 15 * TY, gest: 0.3 * TY, cd: 1.7 * TY, cold: 2, hot: 38, walk: 0.1, run: 0.5, climb: 1, hab: { t: [12, 32], tree: [0.1, 1] } },
+  homotherium: { sp: 2, n: 'Homotherium', look: 'Big cat', extra: 1, preyMax: 500, mass: 200, need: 15, fov: 200, nv: 1.3, cap: 3, swim: 0.75, share: 0, size: 2.3, lit: [1, 4], mat: 2.5 * TY, smat: 3.5 * TY, life: 15 * TY, gest: 0.3 * TY, cd: 1.7 * TY, cold: 2, hot: 38, walk: 0.1, run: 0.55, hab: { t: [12, 32], tree: [0, 0.6] } },
+  pachycrocuta: { sp: 2, n: 'Giant hyena', look: 'Wolf', extra: 1, preyMax: 182, mass: 105, need: 7.9, cap: 6, swim: 0.85, share: 0, size: 1.5, lit: [1, 3], mat: 2 * TY, smat: 3.5 * TY, life: 20 * TY, gest: 0.3 * TY, cd: 1 * TY, nv: 1.2, cold: 0, hot: 40, pack: 1, allBreed: 1, hab: { t: [12, 32], tree: [0, 0.6] } },
 };
 
 // Early hominins of about 2.5 million years ago (late australopiths and the earliest Homo): where their

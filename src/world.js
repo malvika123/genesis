@@ -3,7 +3,7 @@
 
 // cfg: {people, herbivores, predators, fish}
 const plural = (n) =>
-  n === 'Deer' || n === 'Bison' || n === 'Fish'
+  n === 'Deer' || n === 'Bison' || n === 'Fish' || n === 'Dinofelis' || n === 'Homotherium'
     ? n
     : n === 'Big cat'
       ? 'Big cats'
@@ -53,6 +53,8 @@ function buildWorld(cfg) {
   // cfg.africaAnimals is on — the default since the realism audit (gap 1, 14 Nov 2026), now that newcomers keep the hunters
   // from dying out (entry 39); --ice-animals restores the old animals. The balance of hunters to prey (about 90 kg of
   // each carnivore to 10,000 kg of prey: Carbone & Gittleman 2002); research log entry 24.
+  KINDS.length = NBASE; // a new world starts from the base kinds; extra kinds are added below
+  KBIO.length = NBASE;
   for (let k = 1; k < KINDS.length; k++) {
     const K = ERA === 'hominin' && cfg.africaAnimals !== false && !cfg.iceAnimals && HKINDS[k] ? HKINDS[k] : ICE_KINDS[k];
     for (const key of Object.keys(KINDS[k])) delete KINDS[k][key];
@@ -60,6 +62,22 @@ function buildWorld(cfg) {
     const b = bioOf(KINDS[k]);
     for (const key of Object.keys(KBIO[k])) delete KBIO[k][key];
     Object.assign(KBIO[k], b);
+  }
+  // the extra large carnivores (entry 127): on top of the base hunters, not taken from them
+  SOC.extraN = cfg.extraHunterN ?? 2; // how many of each extra kind start (a pair: an assumption; the rescue effect keeps them from vanishing)
+  if (ERA === 'hominin' && cfg.africaAnimals !== false && !cfg.iceAnimals) {
+    if (cfg.africanMegantereon) {
+      // the African Megantereon whitei weighed 66.6 kg (Wikipedia, citing the estimate), not the 110 kg of the European form the base kind was set from
+      KINDS[6].mass = 66.6;
+      KINDS[6].need = Math.round(66.6 * 0.076 * 10) / 10;
+      for (const key of Object.keys(KBIO[6])) delete KBIO[6][key];
+      Object.assign(KBIO[6], bioOf(KINDS[6]));
+    }
+    for (const [name, on] of [['dinofelis', cfg.moreHunters], ['homotherium', cfg.moreHunters], ['pachycrocuta', cfg.giantHyena]])
+      if (on) {
+        KINDS.push(JSON.parse(JSON.stringify(EXTRA_HUNTERS[name])));
+        KBIO.push(bioOf(KINDS[KINDS.length - 1]));
+      }
   }
   if (ERA === 'hominin' && cfg.humanFertility) KBIO[0].fert = PERSON_BIO.fert; // the old rule, for comparison: fertility ends at 60% of life, as in people
   if (ERA === 'hominin' && cfg.fertMax !== undefined) KBIO[0].fertMax = Number(cfg.fertMax) * TY; // test the ends of its range (years)

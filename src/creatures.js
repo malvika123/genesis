@@ -197,7 +197,7 @@ function child(p, q) {
 // band in one warm, low-lying region near fresh water, as early humans lived. Each kind of animal starts where it would live — bison on open grassland, deer at
 // the woodland edge, big cats in warm lands, bears in cool forests — in herds, a pack, or pairs.
 function spawn(sp, n, inst) {
-  const kinds = KINDS.map((k, i) => i).filter((i) => KINDS[i].sp === sp);
+  const kinds = KINDS.map((k, i) => i).filter((i) => KINDS[i].sp === sp && !KINDS[i].extra); // extra kinds are added on top, below
   // share the starting number between the kinds, at least one pair of each when there are enough
   const counts = kinds.map((k) => Math.round(n * KINDS[k].share));
   if (n >= 2 * kinds.length) counts.forEach((c, j) => (counts[j] = Math.max(2, c)));
@@ -211,6 +211,7 @@ function spawn(sp, n, inst) {
   for (let j = 0; extra < 0; j = (j + 1) % counts.length) (counts[j]++, extra++);
   // with the prey map, antelope and buffalo are herds that appear near hominins and hunters (preymap.js), not founders
   kinds.forEach((k, j) => !(SOC.preyMap && PREYK.includes(k)) && spawnKind(sp, k, counts[j], inst));
+  KINDS.forEach((K, k) => K.extra && K.sp === sp && spawnKind(sp, k, SOC.extraN, inst)); // the extra kinds, on top of the base numbers (entry 127)
 }
 function spawnKind(sp, k, n, inst) {
   const K = KINDS[k],

@@ -138,6 +138,10 @@ const LOOKRGB = {
   Hyena: [0.62, 0.54, 0.38],
   Leopard: [0.83, 0.65, 0.29],
   'Sabre-tooth': [0.69, 0.54, 0.32],
+  // coat colours of the extinct cats and the giant hyena are unknown: the nearest living animal's (an assumption)
+  Dinofelis: [0.7, 0.55, 0.3],
+  Homotherium: [0.76, 0.62, 0.4],
+  'Giant hyena': [0.58, 0.5, 0.36],
 };
 function retina(a, x, r, night) {
   // no labelled view at all: only what is within reach (food underfoot, water to drink, someone
