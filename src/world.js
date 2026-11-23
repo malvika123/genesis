@@ -153,7 +153,14 @@ function buildWorld(cfg) {
   SOC.moundDens = cfg.moundDens ?? 1; // mounds per km2 (an assumption: no source)
   SOC.termRate = cfg.termRate ?? 0.05; // how fast a mound's termites come back a step (an assumption: within hours)
   SOC.termVal = cfg.termVal ?? 120; // energy of a bite of termites (an assumption: about the leaf range)
-  SOC.ledger = cfg.bodyLedger === true; // entry 123: the body ledger (protein eaten, effort spent), measuring only
+  SOC.bodyModel = cfg.bodyModel === true; // entry 125: growth and muscle respond to food, effort and age; inherited size and muscle potential
+  SOC.bodySpread = cfg.bodySpread ?? 0.08; // spread of the inherited size potential either way; muscle potential twice that (an assumption; 0 = everyone the same)
+  SOC.growFloor = cfg.growFloor ?? 0.2; // slowest growth a food shortage can cause, as a share of the normal rate (an assumption: no source; tested 0.1 and 0.4)
+  SOC.catchUp = cfg.catchUp ?? 0.3; // extra growth speed after a lean spell (Prentice et al. 2013: real but partial; an assumption)
+  SOC.growEnd = cfg.growEnd ?? 16; // years at which the growth window closes (an assumption: Gombe males 13, females 10)
+  SOC.protW = cfg.protWeight ?? 1; // how much too little protein slows growth beyond energy (INCAP: little; tested 0 and 1)
+  SOC.effRef = cfg.effRef ?? 400; // the daily effort (kcal) of a reference adult (entry 123: women 349, men 473)
+  SOC.ledger = cfg.bodyLedger === true || cfg.bodyModel === true; // entry 123: the body ledger (protein eaten, effort spent), measuring only
   SOC.swimLearn = cfg.noHomininSwimming !== true; // swimming can be learned by wading and deep water (off: never)
   SOC.swimWatch = cfg.swimWatching === true; // built-in rule: those near a swimmer pick swimming up (off by default since the realism audit)
   SOC.homFish = cfg.homininFishing === true; // hominins catch fish (off by default: no fish in hominin diets before about 1.95 Ma)

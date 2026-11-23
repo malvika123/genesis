@@ -378,6 +378,21 @@ function doingHTML(a, S, stage, night) {
       (tt || 'nothing yet') +
       ' (each safe taste makes it bolder)';
   }
+  // the body model (entry 125; only with the switch on): weight against a well-fed one of its age and sex, how much of its growth food has allowed, muscle and strength
+  if (a.sp === 0 && SOC.bodyModel && a.gp !== undefined) {
+    const yrs = a.age / TY,
+      grown = Math.min(a.gp, SOC.growEnd * TY) / Math.max(1, Math.min(a.age, SOC.growEnd * TY)),
+      refKg = (() => { const g = a.gp; a.gp = a.age; const k = bodyKg(a); a.gp = g; return k; })(),
+      ref = (a.sex ? SOC.massF : SOC.massM),
+      str = strengthOf(a),
+      strRef = Math.pow(SOC.massF * SOC.musShareF, 2 / 3);
+    o +=
+      '<br>Body: ' + bodyKg(a).toFixed(1) + ' kg' +
+      (grown < 0.97 ? ' (a well-fed one of its age and sex would be ' + refKg.toFixed(1) + ' kg: food has held back ' + Math.round(100 * (1 - grown)) + '% of its growth)' : ' (growing as well-fed ones do)') +
+      ' · muscle ' + musKg(a).toFixed(1) + ' kg (' + Math.round(100 * (a.msc ?? 1)) + '% of a typical build for its size)' +
+      ' · strength ' + Math.round((100 * str) / strRef) + ' (a grown woman of typical build = 100)' +
+      ' · inherited ceiling: size ' + Math.round(100 * (a.g.sz ?? 1)) + '%, muscle ' + Math.round(100 * (a.g.st ?? 1)) + '% of typical';
+  }
   if (a.sp === 0 && a.ledDays)
     o +=
       '<br>Protein eaten lately: ' +
@@ -3158,6 +3173,7 @@ const readCfg = () => ({
   retina: $('ret').checked,
   // the realistic diet (experiment): colour sight, young leaves, termites, curiosity about new foods, and the body ledger
   ...($('rdiet') && $('rdiet').checked ? { colourEye: true, youngLeaves: true, termites: true, tasteCurious: 1, bodyLedger: true } : {}),
+  ...($('rbody') && $('rbody').checked ? { bodyModel: true } : {}), // the body model (experiment): growth and muscle respond to food, effort and age
   preyMap: $('pmap').checked,
   fromPage: true, // the page's checkbox may turn the prey map off (the runner's preyMap default of false does not)
   earth: $('land').value === 'earth',
