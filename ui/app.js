@@ -346,6 +346,14 @@ function doingHTML(a, S, stage, night) {
   o += '<br><br>' + (a.sex ? 'Female' : 'Male') + ' ' + stage + ', generation ' + a.gen;
   o += '<br>Energy ' + a.e.toFixed(0) + ' · water ' + a.w.toFixed(0) + ' · health ' + a.hp.toFixed(0);
   if (a.sp === 0) o += '<br>In its hand: ' + HAND[a.hand] + (a.nuts ? ' · nuts cracked: ' + a.nuts : '') + ' · swimming: ' + ((a.swim || 0) < 0.1 ? 'cannot swim' : Math.round(100 * a.swim) + '%');
+  // the body ledger (entry 123; only with the switch on): what it has eaten and spent lately, in plain words
+  if (a.sp === 0 && a.ledDays)
+    o +=
+      '<br>Protein eaten lately: ' +
+      (a.protKg || 0).toFixed(1) +
+      ' g per kg of its weight a day (a body needs about 0.8 to keep its muscle, a growing child 1.2 to 1.6) · effort yesterday: about ' +
+      Math.round(a.effLast || 0) +
+      ' kcal of work';
   if (a.sp === 0 && (a.fh || a.fsk > 0.005))
     o +=
       '<br>Fire: handled ' +
