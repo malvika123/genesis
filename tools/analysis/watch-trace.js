@@ -1,5 +1,5 @@
 // Genesis — does watching a skill pass it on? (entry 101; Fable's review of honest watching). Measuring only: reads what the world records (per hominin:
-// when it first did each skill, a.fd; when it first watched each skill being done, a.ws; its mother; the world's count of copy events, WATCHN).
+// when it first did each skill, a.fdone; when it first watched each skill being done, a.ws; its mother; the world's count of copy events, WATCHN).
 // Reports per skill: (1) the transmission rate ratio — first-time doing per 1,000 hominin-days after having watched it, against before or never having
 //     watched it (the hazard ratio of network-based diffusion, entry 55's design); (2) mother–offspring match — of young whose mother did the skill before
 //     them, the share who did it, against young whose mother never did; and the number of copy events (the dose).
@@ -29,7 +29,7 @@ if (process.argv[2] === '--compare') {
       let tA = 0, eA = 0, tB = 0, eB = 0, nW = 0, nD = 0, mY = 0, mYd = 0, mN = 0, mNd = 0;
       for (const p of P) {
         const stop = p.death ?? p.end,
-          did = p.fd[k],
+          did = p.fdone[k],
           w = p.ws[k];
         if (w !== undefined) nW++;
         if (did !== undefined) nD++;
@@ -43,7 +43,7 @@ if (process.argv[2] === '--compare') {
           if (did !== undefined) eB++;
         }
         if (p.born && p.mom) {
-          const md = p.mom.fd[k];
+          const md = p.mom.fdone[k];
           if (md !== undefined && md < (did ?? stop)) (mY++, did !== undefined && mYd++);
           else if (md === undefined) (mN++, did !== undefined && mNd++);
         }
@@ -94,11 +94,11 @@ for (const seed of seeds) {
     if (!alive.size) break;
   }
   const end = Math.min(t, steps);
-  const people = [...rec.entries()].map(([id, r]) => ({ id, enter: r.enter, born: r.born, mom: r.mom, death: r.death, fd: r.a.fd || {}, ws: r.a.ws || {} }));
+  const people = [...rec.entries()].map(([id, r]) => ({ id, enter: r.enter, born: r.born, mom: r.mom, death: r.death, fdone: r.a.fdone || {}, ws: r.a.ws || {} }));
   // ticks in fd/ws are the world's tick; the world starts at tick 0 with the first step, so step t is tick t-1: convert to steps
   const t0 = 1;
   for (const p of people) {
-    for (const k in p.fd) p.fd[k] = p.fd[k] + t0;
+    for (const k in p.fd) p.fdone[k] = p.fdone[k] + t0;
     for (const k in p.ws) p.ws[k] = p.ws[k] + t0;
   }
   const st = E.state(),

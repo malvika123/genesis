@@ -113,7 +113,8 @@ function did(a, k) {
     if (a.sex) d.f++;
   }
   // per individual: when it first did this (entry 101, measuring only: transmission and mother–offspring match)
-  const fd = a.fd || (a.fd = {});
+  // (the record has its own name: it used to share `a.fd` with the daily food-eaten counter, which is reset to 0 every day, so the record was wiped daily; found 23 Nov 2026, entry 101's watching analysis used it)
+  const fd = a.fdone || (a.fdone = {});
   if (fd[k] === undefined) fd[k] = tick;
 }
 // Copy events from watching (entry 101, measuring only): how many, and which skill each was about, per watcher (a.ws[skill] = first tick it watched it)
