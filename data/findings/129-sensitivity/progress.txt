@@ -1,0 +1,6 @@
+20:39 sensitivity queue starts
+20:51 H1 done
+21:04 H4 done
+21:21 B35 done
+21:40 B50 done
+21:40 all done
