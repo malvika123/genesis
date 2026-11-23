@@ -3328,6 +3328,23 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 133. Real hunter densities in the fine valley (250 m squares): no band wiped out in 24 worlds x 5 years, and hunters made about 30 times fewer tries — Nov 2026
+
+**Version.** Valley engine merged into a scratch branch (`valrd`), `--real-densities --dens-zone 18` (18 squares = 4.5 km, the globe's 3x3 radius; the hunters' number per square is scaled to the valley's 0.0625 km² squares), the entry-131 cast, 12 worlds x 5 years per arm, seeds 1-12; arm R no avoidance, RH `--hom-avoid`. Prediction: `data/findings/133-valley/prediction-written-before.txt`.
+
+| (12 worlds each) | R | RH | globe R / RH (entry 132) |
+|---|---|---|---|
+| bands wiped out in 5 years | 0 | 0 | 12 / 12 |
+| hominin-years lived | 1,598 | 1,648 | 310 / 446 |
+| people, start to end (12 bands) | 300 to 275 | 300 to 323 | |
+| tries at a hominin per hominin-year | 0.05 | 0.08 | 1.85 / 4.66 |
+| tries on awake / asleep / up a tree | 52 / 20 / 3 | 87 / 43 / 4 | |
+| most hunters around at once (per world) | 40 to 60 | 41 to 65 | |
+
+**Against the predictions.** (1) Tries per hominin-year at most 0.4 in R, 0.9 in RH: CONFIRMED (0.05, 0.08). (2) At least 8 of 12 bands alive after 5 years in R: CONFIRMED (12 of 12). (3) Predator deaths per 1,000 hominin-years inside 20-120: NOT MEASURED (this counting script does not count deaths; the population fell 8% over 5 years in R and rose 8% in RH, with births and all other deaths mixed in). (4) RH fewer deaths than R: NOT JUDGEABLE the same way; the tries, which the rule should lower, are higher (the counter also counts tries the rule drops, as in entry 132).
+
+**What it means.** The coarse 3 km squares of the globe were a very large part of the deaths: the same real densities at 250 m squares leave every band alive for 5 years and give a population change near flat. So the earlier worry (hunters at real density kill everyone) was mostly a resolution effect, not a wrong density or attack success. Caution: 0.05 tries per hominin-year is now well below the real figure of about 0.30 attacks per chimpanzee-year (Boesch 1991; reading of "attack risk"), so the valley may now be too safe; the deaths have to be counted and compared with the measured 3-5.5% a year before anything is tuned. The valley hunters are also close to the pinned count (40 to 65 around a band of 25 at once). Next: count predator deaths per 1,000 hominin-years in the valley (R and RH) with the valley-run tool; then the cover test (entry 134, running).
+
 ### 132. Hunters passing up hominins as their real kinds do (leopard 0.55, hyena 0.03): bands last a little longer, deaths fall by about 30%, every band is still wiped out — Nov 2026
 
 **Version.** `--hom-avoid` on top of entry 131's setup (commit after 36fb169), 12 worlds per arm x 40 days, seeds 1-12. Prediction: `data/findings/132-avoid/prediction-written-before.txt`. Counting run, not the full bundle.
