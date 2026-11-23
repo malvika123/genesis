@@ -98,7 +98,7 @@ for (const seed of seeds) {
   // ticks in fd/ws are the world's tick; the world starts at tick 0 with the first step, so step t is tick t-1: convert to steps
   const t0 = 1;
   for (const p of people) {
-    for (const k in p.fd) p.fdone[k] = p.fdone[k] + t0;
+    for (const k in p.fdone) p.fdone[k] = p.fdone[k] + t0;
     for (const k in p.ws) p.ws[k] = p.ws[k] + t0;
   }
   const st = E.state(),
