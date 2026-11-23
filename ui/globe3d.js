@@ -375,6 +375,7 @@ const G3D = { ok: false };
       const x = i % W,
         y = (i / W) | 0,
         t = tree[i];
+      if (!inEvidenceRegion(x, y)) continue; // only where there is evidence (src/earth.js)
       seed = (i * 2246822519 + 31) & 0x7fffffff;
       r01();
       if (rock[i]) {
@@ -386,7 +387,7 @@ const G3D = { ok: false };
         const n = t < 0.15 ? 1 : t < 0.35 ? 3 : 2;
         for (let k = 0; k < n; k++) put(shrubs, ns++, x, y, 0.7 + 0.6 * r01());
       }
-      if (food[i] > 0.25 && t < 0.5 && ter[i] !== 1 && nt < MAXG) {
+      if (food[i] > 0.25 && t < 0.5 && ter[i] !== 1 && nt < MAXG && tuftHere(i)) {
         const n = food[i] > 0.7 ? 4 : food[i] > 0.45 ? 3 : 2;
         for (let k = 0; k < n; k++) put(tufts, nt++, x, y, (0.6 + 0.8 * food[i]) * (0.8 + 0.4 * r01()));
       }

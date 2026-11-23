@@ -767,7 +767,7 @@ function drawTerrain(g, v, relief = true) {
   for (let y = 0; y < H; y++)
     for (let x = 0; x < W; x++) {
       const i = y * W + x;
-      if (water[i]) continue;
+      if (water[i] || !inEvidenceRegion(x, y)) continue;
       const t = tree[i],
         h = Math.imul(i + 1, 2654435761) >>> 0,
         o = (k) => ((h >>> (k * 5)) & 31) / 31; // fixed offsets for this square
@@ -787,7 +787,7 @@ function drawTerrain(g, v, relief = true) {
           g.fill();
         }
       }
-      if (food[i] > 0.25 && t < 0.5 && ter[i] !== 1) {
+      if (food[i] > 0.25 && t < 0.5 && ter[i] !== 1 && tuftHere(i)) {
         g.strokeStyle = '#a9a14a';
         g.lineWidth = 1;
         const n = food[i] > 0.8 ? 3 : 2;
