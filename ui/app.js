@@ -3078,9 +3078,9 @@ const stepsBase = () => 10 ** (SPD_LO + ((SPD_HI - SPD_LO) * +$('spd').value) / 
 // Speed follows zoom (24 Nov 2026, owner: zoomed out the hominins look slow, zoomed in they walk as in reality): what you see moves in proportion to how close you are (the camera distance falls as
 // zoom^-1.35), so zoomed out the same pace looks like crawling. The clock is sped up to keep the pace on screen about what it is at close range (zoom 8): by (8/zoom)^1.35, never below 1 and
 // at most 8 (one world step costs the page about 60 ms, so much more than that cannot be kept up with). It changes only how fast the clock runs, nothing in the world; off in the creature's-eyes view and the flat map. The slider is the pace at close range.
-let zoomFollow = true;
+let zoomFollow = false; // off unless chosen in the View menu (the owner, 24 Nov: zoomed out should look slow, close up real walking)
 try {
-  zoomFollow = localStorage.getItem('genesis-zoomspeed') !== '0';
+  zoomFollow = localStorage.getItem('genesis-zoomspeed') === '1';
 } catch (e) {}
 const zoomBoost = () => (zoomFollow && typeof view !== 'undefined' && view === 'globe' && !GL.eye ? clamp(Math.pow(8 / Math.max(GL.zoom, 0.5), 1.35), 1, 8) : 1);
 const stepsPerSec = () => stepsBase() * zoomBoost();
