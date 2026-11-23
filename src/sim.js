@@ -89,7 +89,11 @@ function sim() {
         a.cd = Math.min(a.cd, Math.round(SOC.resume * TY));
       if (--a.milk.left <= 0 || !a.kid || a.kid.gone) a.milk = null;
     }
-    if (tick % DAY === 0) a.fd = 0;
+    if (tick % DAY === 0) {
+      a.fd = 0;
+      if (SOC.ledger && a.sp === 0) ledgerDay(a);
+      if (SOC.bodyModel && a.sp === 0) bodyDay(a);
+    }
     const young = a.age < S.mat,
       baby = a.age < S.mat * S.wn,
       mom = a.mom && !a.mom.dead && !a.mom.gone ? a.mom : null,
@@ -136,7 +140,7 @@ function sim() {
     if (inW) {
       a.hp -= 3 * (1 - 0.92 * swim);
       a.painW = Math.min(1, a.painW + 0.35 * (1 - swim));
-      a.e -= 0.15 + 0.1 * swim; // swimming is hard work
+      { const w = 0.15 + 0.1 * swim; a.e -= w; ledgerWork(a, w); } // swimming is hard work
       if (!a.wasW && swim < 0.5) a.ev[1] = 'it nearly drowned on day ' + dn;
     }
     if (a.sp === 0 && (inW || wade) && !a.asleep) {
@@ -342,7 +346,23 @@ function sim() {
       // — but only on plants it could get something from: hominins cannot digest grass (entry 22), so the pull no longer fires
       // on grass alone; before, it drew hungry hominins to chew grass again and again for nothing, and their brains learned that
       // eating does not pay, even on fruit (research log entry 48). --old-plant-pull: the old rule (grass too).
-      if (!RF[A_EAT] && hu > 0.35 && !water[h] && ((SOC.grassPull && food[h] > 0.1) || ROOT[h] > 0.05 || leafy(a, h))) RF[A_EAT] = 2.5 * (hu - 0.35);
+      if (!RF[A_EAT] && hu > 0.35 && !water[h] && ((SOC.grassPull && food[h] > 0.1) || ROOT[h] > 0.05 || leafy(a, h) || (SOC.termites && TERM[h] > 0.05))) RF[A_EAT] = 2.5 * (hu - 0.35);
+      // --taste-curious K (entry 124; docs/design/colour-eye-and-curiosity.md): a general, inborn, fading pull to try an unfamiliar food where something edible is within reach: scaled by the individual's curiosity,
+      // youth (strongest in infants and juveniles, a low adult level by about 8 years), caution (rises with age, fades with each safe taste of that food kind: about 10 tastes; sickness resets it) and fear, and boosted when its mother
+      // (or others) visibly ate there. No pull to any particular food or colour; no reward for tasting (the gut and copying teach). Qualitative ranking from the evidence (juvenile with mother eating > juvenile alone >
+      // adult with others > adult alone); every strength below is a registered assumption.
+      if (SOC.tasteK > 0 && a.sp === 0 && !water[h] && a.age >= S.mat * S.wn) {
+        const kind = fruit[h] > 0.05 ? 'fruit' : ROOT[h] > 0.05 ? 'root' : leafy(a, h) ? 'leaf' : SOC.termites && TERM[h] > 0.05 ? 'insect' : null;
+        if (kind) {
+          const yrs = a.age / TY,
+            youth = clamp(1 - (yrs - 2) / 6, 0.15, 1),
+            n = (a.tasted && a.tasted[kind]) || 0,
+            caution = clamp(0.2 + 0.5 * Math.min(1, yrs / 8), 0, 0.9) * Math.exp(-n / 10),
+            mom = a.mom && !a.mom.dead && a.mom.x === a.x && a.mom.y === a.y && tick - (a.mom.ateT ?? -99) < 8 ? 2 : 1,
+            pull = SOC.tasteK * (a.g.c ?? 1) * S.cur * youth * (1 - caution) * (1 - a.fear) * mom * (a.e > 90 ? 0.3 : 1);
+          if (pull > 0) RF[A_EAT] += pull;
+        }
+      }
       // Sexual motivation is inborn: at maturity, hormones make a partner who is ready too attractive (in
       // primates hormones govern the wish to mate more than the ability: Wallen 2001; chimpanzee males seek
       // out females in full swelling, Deschner et al. 2004). A ready adult is drawn toward a ready partner it
@@ -830,7 +850,7 @@ function sim() {
       else if (act === A_CLIMB) {
         if (!a.up && tree[here] >= 0.4) {
           a.up = true;
-          a.e -= 0.2; // climbing is work
+          { a.e -= 0.2; ledgerWork(a, 0.2); } // climbing is work
           did(a, 'tree');
           if (!firsts.tree) {
             firsts.tree = 1;
@@ -893,7 +913,7 @@ function sim() {
           // thick forest is slow going
           if (!fish) a.acc -= 0.25 * cover(idx(X, Y));
           // walking costs energy (realism audit, gap 8): a hominin pays for the distance it walks
-          if (a.sp === 0 && SOC.walkE && ERA === 'hominin') a.e -= walkCost(a) * Math.hypot(MV[act][0], MV[act][1]);
+          if (a.sp === 0 && SOC.walkE && ERA === 'hominin') { const w = walkCost(a) * Math.hypot(MV[act][0], MV[act][1]); a.e -= w; ledgerWork(a, w); }
           a.x = X;
           a.y = Y;
           // her infant clings to her and comes along (the infant's grasp reflex)
@@ -1001,7 +1021,7 @@ function sim() {
         if (cutHere > 0.01) m.cut = cutHere - b * m.kgU;
         m.meat -= b;
         if (a.sp === 0 && m.kgU) eatKg.Person = (eatKg.Person || 0) + b * m.kgU; // the record (the ledger; changes nothing)
-        a.e = Math.min(100, a.e + (kgMode ? b * m.kgU * homKgE(a) : b * 110 * MEAL(a)));
+        { const u = kgMode ? b * m.kgU * homKgE(a) : b * 110 * MEAL(a), got = Math.min(u, Math.max(0, 100 - a.e)); a.e = Math.min(100, a.e + u); ledgerEat(a, got, 'meat'); }
         // rotting meat makes you sick: a chance by the amount eaten (B27, entry 76): 0.35 for every 7 kg — the old bare-handed bite of an
         // antelope, so the risk per kg is what it was — not 0.35 at every 15-minute bite, which made small bites (entry 74) far riskier
         if (rot && rnd() < (kgMode && SOC.rotByKg ? 1 - 0.65 ** ((b * m.kgU) / 7) : 0.35)) {
@@ -1029,7 +1049,7 @@ function sim() {
         // fruit from the trees: more filling than leaves and roots
         const b = Math.min(fruit[i], 0.4);
         fruit[i] -= b;
-        a.e = Math.min(100, a.e + b * 70 * MEAL(a));
+        { const u = b * 70 * MEAL(a), got = Math.min(u, Math.max(0, 100 - a.e)); a.e = Math.min(100, a.e + u); ledgerEat(a, got, 'fruit'); }
         if (hu > 0.5) a.ev[2] = 'it ate fruit after going hungry on day ' + dn;
         did(a, 'fruit');
         if (a.sp === 0 && !firsts.fruit) {
@@ -1042,12 +1062,12 @@ function sim() {
         // strike with a stick, flake or stone on the ground, below). --tool-in-hand-digs: the old rule
         const dugHere = SOC.digAct && DUG[i] > 0.02,
           pd = dugHere ? 1 : SOC.digAct ? SOC.digBare : a.hand === 2 ? SOC.digStick : a.hand === 3 ? SOC.digFlake : a.hand === 1 ? SOC.digStone : SOC.digBare;
-        if (!dugHere) a.e -= 0.15;
+        if (!dugHere) { a.e -= 0.15; ledgerWork(a, 0.15); }
         if (rnd() < pd) {
           const b = Math.min(dugHere ? DUG[i] : ROOT[i], 0.3);
           if (dugHere) DUG[i] -= b;
           else ROOT[i] -= b;
-          a.e = Math.min(100, a.e + b * SOC.rootVal * MEAL(a)); // roots and tubers (SOC.rootVal: an assumption, tested lower)
+          { const u = b * SOC.rootVal * MEAL(a), got = Math.min(u, Math.max(0, 100 - a.e)); a.e = Math.min(100, a.e + u); ledgerEat(a, got, 'root'); } // roots and tubers (SOC.rootVal: an assumption, tested lower)
           if (hu > 0.5) a.ev[2] = 'it dug up roots after going hungry on day ' + dn;
           did(a, 'root');
           if (!firsts.root) {
@@ -1065,13 +1085,25 @@ function sim() {
         // spend about a fifth of their feeding time on leaves and lean on them when fruit is scarce. They give
         // less a minute than ripe fruit (S.leaf of it: Kibale chimpanzees, Uwimbabazi et al. 2016); a band
         // of apes does not strip a forest of its leaves, so the trees are not thinned.
-        const b = 0.4;
-        a.e = Math.min(100, a.e + b * 70 * a.S.leaf * MEAL(a));
+        const b = SOC.youngLeaves ? Math.min(YL[i], 0.4) : 0.4;
+        if (SOC.youngLeaves) YL[i] -= b;
+        { const u = b * 70 * a.S.leaf * MEAL(a), got = Math.min(u, Math.max(0, 100 - a.e)); a.e = Math.min(100, a.e + u); ledgerEat(a, got, 'leaf'); }
         if (hu > 0.5) a.ev[2] = 'it ate leaves after going hungry on day ' + dn;
         did(a, 'leaves');
         if (!firsts.leaves) {
           firsts.leaves = 1;
           log(a.name + ' ate leaves from the trees.');
+        }
+      } else if (a.sp === 0 && SOC.termites && TERM[i] > 0.05) {
+        // termites from a mound, by hand: a small, patchy, seasonal food (no tool: termite fishing is a later step)
+        const b = Math.min(TERM[i], 0.15);
+        TERM[i] -= b;
+        { const u = b * SOC.termVal * MEAL(a), got = Math.min(u, Math.max(0, 100 - a.e)); a.e = Math.min(100, a.e + u); ledgerEat(a, got, 'insect'); }
+        if (hu > 0.5) a.ev[2] = 'it ate termites after going hungry on day ' + dn;
+        did(a, 'termites');
+        if (!firsts.termites) {
+          firsts.termites = 1;
+          log(a.name + ' ate termites from a mound.');
         }
       } else if (a.sp === 0 && f > 0.05) {
         // people cannot digest grass: chewing it gives almost nothing
@@ -1266,7 +1298,7 @@ function sim() {
       // What a blow does is up to the world, not the creature: a stone breaks a nut's shell; a stone
       // struck on another stone can knock a sharp flake off it; a stick or a flake just hits the ground.
       const i = idx(a.x, a.y);
-      a.e -= 0.05;
+      { a.e -= 0.05; ledgerWork(a, 0.05); }
       // for the page (entry-free, drawing only: no random numbers, nothing reads it but the drawing): what this blow hit (a.stk), when (a.stkT)
       // and when it did what it was for (a.stkOk): a nut cracked, a root loosened, a bone broken, a flake knocked off, meat cut, a stick caught
       a.stk = a.hand === 1 && stone[i] > 0 ? 'stone' : 'hit';
@@ -1318,7 +1350,7 @@ function sim() {
         a.stkOk = tick;
         const b = Math.min(nut[i], 0.25);
         nut[i] -= b;
-        a.e = Math.min(100, a.e + b * 110 * MEAL(a));
+        { const u = b * 110 * MEAL(a), got = Math.min(u, Math.max(0, 100 - a.e)); a.e = Math.min(100, a.e + u); ledgerEat(a, got, 'nut'); }
         a.nuts++;
         if (hu > 0.5) a.ev[2] = 'it cracked a nut open with a stone after going hungry on day ' + dn;
         did(a, 'nut');
@@ -1343,7 +1375,7 @@ function sim() {
           a.stkOk = tick;
           const b = Math.min(nut[i], 0.25);
           nut[i] -= b;
-          a.e = Math.min(100, a.e + b * 110 * MEAL(a));
+          { const u = b * 110 * MEAL(a), got = Math.min(u, Math.max(0, 100 - a.e)); a.e = Math.min(100, a.e + u); ledgerEat(a, got, 'nut'); }
           a.nuts++;
           if (hu > 0.5) a.ev[2] = 'it cracked a nut open with a stone after going hungry on day ' + dn;
           did(a, 'nut');
@@ -1355,7 +1387,7 @@ function sim() {
       } else if (SOC.digAct && (a.hand === 1 || a.hand === 2 || a.hand === 3) && ROOT[i] > 0.05 && !(a.hand === 3 && meatAt(a.x, a.y, 0)) && !(a.hand === 1 && (nut[i] > 0.05 || stone[i] > 0 || marrowAt(a.x, a.y)))) {
         // digging with a tool is an act (entry 85): a strike with a stick, flake or stone into the ground where roots are loosens them
         // with the tool's chance (SOC.digStick, digFlake, digStone, as before), leaving them dug up and lying ready to eat
-        a.e -= 0.15;
+        { a.e -= 0.15; ledgerWork(a, 0.15); }
         a.stk = 'dig';
         const pd = a.hand === 2 ? SOC.digStick : a.hand === 3 ? SOC.digFlake : SOC.digStone;
         if (rnd() < pd) {
@@ -1396,7 +1428,7 @@ function sim() {
         a.stkOk = tick;
         mb.marrow -= b;
         if (kgM) eatKg.Marrow = (eatKg.Marrow || 0) + b; // the record (changes nothing)
-        a.e = Math.min(100, a.e + (kgM ? (b * homKgE(a) * SOC.marrowKcal) / SOC.meatKcal : b * SOC.marrowVal * MEAL(a)));
+        { const u = kgM ? (b * homKgE(a) * SOC.marrowKcal) / SOC.meatKcal : b * SOC.marrowVal * MEAL(a), got = Math.min(u, Math.max(0, 100 - a.e)); a.e = Math.min(100, a.e + u); ledgerEat(a, got, 'marrow'); }
         did(a, 'marrow');
         if (!firsts.marrow) {
           firsts.marrow = 1;
@@ -1721,10 +1753,85 @@ const fertileAge = (a) => a.age < Math.min(a.lf * a.S.fert, a.S.fertMax ?? Infin
 // chimpanzees do (a stand-in: Gombe, Pusey et al. 2005: about 10 kg at 5, growth slowing at 10 in females and 13 in males).
 // Weight sets how much a meal fills it and how fast it burns (Kleiber, below) and how hard it is to bring down.
 // --fixed-bodies: one body for every age and sex (the old rule). Modern people keep one size.
+// The body model (entry 125, `--body-model`; docs/design/strength.md, docs/reviews/2026-11-23-nutrition-and-growth-sources.md; the owner, 23 Nov: real changes in diet must change the body).
+// Once a day each hominin: (1) GROWTH: how far along the normal growth curve it is (`a.gp`, in steps) advances by a SUPPLY FACTOR: the energy it has had (a 7-day mean of its energy store, 15 to 60 mapped to the floor to 1) and, much less, its protein (INCAP:
+// energy limits growth more than protein: only when protein falls below 60% of the need, weighted by SOC.protW); below 1 it grows more slowly (never less than SOC.growFloor), at 1 it keeps pace, and after a lean spell it catches up (up to
+// 1 + SOC.catchUp times as fast) until back on the curve; the window closes at SOC.growEnd years, so a shortfall left at that age is permanent. Adult size is also bounded by an inherited potential `g.sz`. The numbers are registered assumptions
+// (no dose-response was found): floor 0.2, catch-up 0.3, growth end 16 y, protein weight 1. (2) MUSCLE (`a.mf`: muscle as a share of its reference muscle for its weight and sex): it rises with the day's effort and good food toward a target
+// between a floor (0.8) and its inherited ceiling `g.st` (x 1.2), falls with hunger, too little protein and age, never by an inherited change (use is not passed on). Real rates are on the DAY clock (0.5% a week up, 0.3% a day down in starvation),
+// so within the sim's 3-day year they hardly move: strength differs mostly by size, sex, age, inheritance and long hunger (Opus's note). Strength = muscle kg to the 2/3 (the usual muscle scaling), `strengthOf(a)`.
+function bodyDay(a) {
+  const yrs = a.age / TY,
+    baby = a.age < a.S.mat * a.S.wn;
+  if (a.gp === undefined) a.gp = a.age;
+  a.eAvg = a.eAvg === undefined ? a.e : (a.eAvg * 6) / 7 + a.e / 7;
+  const need = a.age < a.S.mat ? 1.2 : 0.8,
+    haveProt = !baby && a.protKg !== undefined && (a.ledDays || 0) >= 7, // a real week of record first: the ledger starts empty
+    pf = haveProt ? clamp(a.protKg / (0.6 * need), 0.4, 1) : 1,
+    ef = clamp((a.eAvg - 15) / 45, SOC.growFloor, 1),
+    supply = baby ? 1 : Math.min(ef, 1 - SOC.protW * (1 - pf));
+  a.supply = supply;
+  if (yrs <= SOC.growEnd) {
+    const rate = supply < 1 ? Math.max(SOC.growFloor, supply) : a.gp < a.age ? 1 + SOC.catchUp : 1;
+    a.gp = Math.min(a.age, a.gp + DAY * rate);
+  }
+  // muscle
+  if (a.msc === undefined) a.msc = 1;
+  const E = (a.ledDays || 0) >= 2 ? (a.effLast || 0) / SOC.effRef : 1,
+    ceil = 1.2 * (a.g.st ?? 1),
+    target = clamp(0.8 + 0.2 * E, 0.8, ceil),
+    r = haveProt ? a.protKg / need : 1;
+  if (a.msc < target && r >= 1 && a.e > 50) a.msc = Math.min(target, a.msc + SOC.musGain);
+  else if (a.msc > target) a.msc = Math.max(target, a.msc - SOC.musLoss / 3);
+  if (r < 1) a.msc -= (1 - r) * SOC.musLoss;
+  if (a.e < 20) a.msc -= SOC.musLoss;
+  if (yrs > 30) a.msc *= 1 - (yrs > 60 ? 0.01 : 0.005) / (TY / DAY);
+  a.msc = clamp(a.msc, 0.5, ceil);
+}
+const musKg = (a) => bodyKg(a) * (a.sex ? SOC.musShareF : SOC.musShareM) * (a.msc ?? 1);
+const strengthOf = (a) => Math.pow(musKg(a), 2 / 3);
+// The body ledger (entry 123, `--body-ledger`; docs/design/strength.md step a; MEASURING ONLY, nothing reads it): protein eaten and effort spent, per hominin, per day.
+// Grams of protein per 100 kcal of each food class: Claude's conversions from dry-weight percentages remembered from the literature (fruit 3-8%, young leaves 15-25%, roots and tubers 2-6%, nuts and seeds 10-25%,
+// lean meat about 20 g per 100 g fresh, marrow low): LOW-MEDIUM confidence, registered assumptions (docs/ASSUMPTIONS.md), to be checked against a chimpanzee-diet test before anything uses them.
+const PROT = { fruit: 1.4, leaf: 6.2, root: 1.2, nut: 2.7, meat: 17.5, marrow: 1.0, insect: 10 }; // insect: termites about 50-60% protein of dry weight at about 5 kcal/g dry (memory: low confidence)
+// kcal in one unit of the energy store (the inverse of homKgE's conversion): 86 W^0.792 / (dE x BURN)
+const kcalOfStore = (a) => (86 * bodyKg(a) ** 0.792) / (a.S.dE * BURN(a));
+function tasteNote(a, cls) {
+  const t = a.tasted || (a.tasted = {});
+  t[cls] = (t[cls] || 0) + 1;
+}
+function ledgerEat(a, units, cls) {
+  if (SOC.tasteK > 0 && a.sp === 0) tasteNote(a, cls);
+  if (!SOC.ledger || a.sp !== 0) return;
+  a.feedN = a.feedN || {};
+  a.feedN[cls] = (a.feedN[cls] || 0) + 1;
+  const kcal = units * kcalOfStore(a);
+  a.protD = (a.protD || 0) + (kcal * PROT[cls]) / 100;
+  a.kcalD = (a.kcalD || 0) + kcal;
+  a.protBy = a.protBy || {};
+  a.protBy[cls] = (a.protBy[cls] || 0) + (kcal * PROT[cls]) / 100;
+}
+function ledgerWork(a, units) {
+  if (!SOC.ledger || a.sp !== 0) return;
+  a.effD = (a.effD || 0) + units * kcalOfStore(a);
+}
+// once a day: grams of protein per kg of body weight (today, and a 7-day running mean) and the day's effort in kcal
+function ledgerDay(a) {
+  const kg = bodyKg(a),
+    g = (a.protD || 0) / kg;
+  a.protKg = a.protKg === undefined ? g : (a.protKg * 6) / 7 + g / 7;
+  a.protLast = g;
+  a.effLast = a.effD || 0;
+  a.kcalLast = a.kcalD || 0;
+  a.ledDays = (a.ledDays || 0) + 1;
+  a.ledProt = (a.ledProt || 0) + g;
+  a.ledEff = (a.ledEff || 0) + (a.effD || 0);
+  a.protD = a.effD = a.kcalD = 0;
+}
 function bodyKg(a) {
   const S = a.S,
     pts = a.sex ? S.growF : S.growM,
-    y = a.age / TY;
+    y = (SOC.bodyModel && a.sp === 0 && a.gp !== undefined ? a.gp : a.age) / TY; // --body-model: growth PROGRESS (how far along the growth curve food has let it get), not age
   // modern people (the --sapiens thought experiment) have no growth curve here: an adult forager's weight, less when young (used only
   // for records and for the meat of a body; bug found 14 Nov 2026 when the kill record asked for it)
   if (!pts) return (S.mass || 55) * clamp(0.1 + (0.9 * a.age) / (S.mat || TY * 18), 0.1, 1);
@@ -1734,7 +1841,7 @@ function bodyKg(a) {
       f = pts[i - 1] + ((pts[i + 1] - pts[i - 1]) * (y - pts[i - 2])) / (pts[i] - pts[i - 2]);
       break;
     }
-  return f * (a.sex ? SOC.massF : SOC.massM);
+  return f * (a.sex ? SOC.massF : SOC.massM) * (SOC.bodyModel && a.sp === 0 ? a.g.sz ?? 1 : 1);
 }
 // size relative to a forager of about 52 kg (config.js)
 const bodySize = (a) => (a.sp === 0 && SOC.growBodies && a.S.growF ? bodyKg(a) / 52 : a.S.size || 1);
@@ -1828,8 +1935,8 @@ const hunterSeen = (x) => {
   for (let s = 0; s < 8; s++) if (x[s * NCH + 5] > 0.1) return true;
   return false;
 };
-const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { fullBrakeOn: true, fullBrake: 12, atkP: 0.6, atkEasy: 0.9, fruitCal: true, fruitHang: 1 / 12, mutP: 0.2, mutStep: 0.3, wireMutP: 0.03, wireMutSd: 0.4, digAct: true, preyFlight: true, campFix: true, cutAct: true, cutKg: 0.75, fleshOnly: true, fleshShare: 0.5, rotBySize: true, marrowKg: true, marrowFrac: 0.0025, marrowKcal: 7860, stickHumid: true, brandByDry: true, fireNatural: true, rotByKg: true, homMeatKg: true, biteBareKg: 0.25, biteFlakeKg: 0.75, meatKcal: 1140, herdYoung: true, youngShare: 0.25, forestPrey: 1000, meatMemory: true, keepKill: true, homStrikeKg: true, huntPull: true, atkFixed: 0.25, gut: true, gutShare: 0.25, digestH: 24, mealSleep: 2, preyMap: false, preyLevel: 5000, buffShare: 0.5, preyRegrow: 0.3, preyZone: 1, preyRule: 'soft', bigK: 2, preyMaxX: 1, smallPrey: true, maxPreyKg: 15, marrow: true, marrowShare: 0.15, marrowVal: 110, digStick: 0.55, digFlake: 0.4, digStone: 0.3, digBare: 0.15, sedges: true, sedgeCap: 0.5, africanNuts: true, rootVal: 80, voiceGenes: true, fireMaking: true, founderElders: 0.12, brainCost: true, brainF: 0.1, carry: true, carryAge: 2, walkE: true, walkJ: 4, pal: 1.7, growBodies: true, massF: 30, massM: 42, swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, needEye: false, babyNoAttack: true, watchWho: false, watchWhat: false, noPathCopy: false, noVoiceCopy: false, honestHurt: false, watchSuccess: false, watchSteps: 2, peerHi: 0.5, peerLo: 0.19, peerTool: 3, peerMom: 3, copyThin: 0, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i] && (!SOC.youngLeaves || YL[i] > 0.05);
+const SOC = { youngLeaves: false, ylRate: 0.03, ylRed: 0.6, colourEye: false, tasteK: 0, termites: false, moundDens: 1, termRate: 0.05, termVal: 120, bodyModel: false, bodySpread: 0.08, growFloor: 0.2, catchUp: 0.3, growEnd: 16, protW: 1, effRef: 400, musShareF: 0.37, musShareM: 0.45, musGain: 0.0007, musLoss: 0.003, ledger: false, fullBrakeOn: true, fullBrake: 12, atkP: 0.6, atkEasy: 0.9, fruitCal: true, fruitHang: 1 / 12, mutP: 0.2, mutStep: 0.3, wireMutP: 0.03, wireMutSd: 0.4, digAct: true, preyFlight: true, campFix: true, cutAct: true, cutKg: 0.75, fleshOnly: true, fleshShare: 0.5, rotBySize: true, marrowKg: true, marrowFrac: 0.0025, marrowKcal: 7860, stickHumid: true, brandByDry: true, fireNatural: true, rotByKg: true, homMeatKg: true, biteBareKg: 0.25, biteFlakeKg: 0.75, meatKcal: 1140, herdYoung: true, youngShare: 0.25, forestPrey: 1000, meatMemory: true, keepKill: true, homStrikeKg: true, huntPull: true, atkFixed: 0.25, gut: true, gutShare: 0.25, digestH: 24, mealSleep: 2, preyMap: false, preyLevel: 5000, buffShare: 0.5, preyRegrow: 0.3, preyZone: 1, preyRule: 'soft', bigK: 2, preyMaxX: 1, smallPrey: true, maxPreyKg: 15, marrow: true, marrowShare: 0.15, marrowVal: 110, digStick: 0.55, digFlake: 0.4, digStone: 0.3, digBare: 0.15, sedges: true, sedgeCap: 0.5, africanNuts: true, rootVal: 80, voiceGenes: true, fireMaking: true, founderElders: 0.12, brainCost: true, brainF: 0.1, carry: true, carryAge: 2, walkE: true, walkJ: 4, pal: 1.7, growBodies: true, massF: 30, massM: 42, swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, needEye: false, babyNoAttack: true, watchWho: false, watchWhat: false, noPathCopy: false, noVoiceCopy: false, honestHurt: false, watchSuccess: false, watchSteps: 2, peerHi: 0.5, peerLo: 0.19, peerTool: 3, peerMom: 3, copyThin: 0, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {

@@ -144,6 +144,23 @@ function buildWorld(cfg) {
   SOC.growBodies = cfg.fixedBodies !== true; // hominin bodies grow with age and differ by sex (off: one body for all, the old rule)
   SOC.massF = cfg.femaleMass ?? 30; // adult female weight, kg (McHenry 1992: 29-30; tested at the ends)
   SOC.massM = cfg.maleMass ?? 42; // adult male weight, kg (McHenry 1992: 41-45; dimorphism 1.2-1.55 tested)
+  SOC.youngLeaves = cfg.youngLeaves === true; // young leaves as a real food that is eaten down and regrows with the rains (the realistic diet)
+  SOC.ylRate = cfg.ylRate ?? 0.03; // how fast young leaves regrow toward their target a step (an assumption)
+  SOC.ylRed = cfg.ylRed ?? 0.6; // the share of young leaves reddish enough to stand out against green (an assumption: tested 0.3-1; Dominy & Lucas 2001)
+  SOC.colourEye = cfg.colourEye === true; // the red-berry sense becomes a general 'reddish thing stands out' sense (fruit, young leaves, poison berries)
+  SOC.tasteK = cfg.tasteCurious ?? 0; // taste curiosity: an inborn, fading pull to try an unfamiliar food, scaled by curiosity, youth, caution and the mother eating (0 = none, as before; a registered range tested at both ends)
+  SOC.termites = cfg.termites === true; // termite mounds as a patchy food eaten by hand
+  SOC.moundDens = cfg.moundDens ?? 1; // mounds per km2 (an assumption: no source)
+  SOC.termRate = cfg.termRate ?? 0.05; // how fast a mound's termites come back a step (an assumption: within hours)
+  SOC.termVal = cfg.termVal ?? 120; // energy of a bite of termites (an assumption: about the leaf range)
+  SOC.bodyModel = cfg.bodyModel === true; // entry 125: growth and muscle respond to food, effort and age; inherited size and muscle potential
+  SOC.bodySpread = cfg.bodySpread ?? 0.08; // spread of the inherited size potential either way; muscle potential twice that (an assumption; 0 = everyone the same)
+  SOC.growFloor = cfg.growFloor ?? 0.2; // slowest growth a food shortage can cause, as a share of the normal rate (an assumption: no source; tested 0.1 and 0.4)
+  SOC.catchUp = cfg.catchUp ?? 0.3; // extra growth speed after a lean spell (Prentice et al. 2013: real but partial; an assumption)
+  SOC.growEnd = cfg.growEnd ?? 16; // years at which the growth window closes (an assumption: Gombe males 13, females 10)
+  SOC.protW = cfg.protWeight ?? 1; // how much too little protein slows growth beyond energy (INCAP: little; tested 0 and 1)
+  SOC.effRef = cfg.effRef ?? 400; // the daily effort (kcal) of a reference adult (entry 123: women 349, men 473)
+  SOC.ledger = cfg.bodyLedger === true || cfg.bodyModel === true; // entry 123: the body ledger (protein eaten, effort spent), measuring only
   SOC.swimLearn = cfg.noHomininSwimming !== true; // swimming can be learned by wading and deep water (off: never)
   SOC.swimWatch = cfg.swimWatching === true; // built-in rule: those near a swimmer pick swimming up (off by default since the realism audit)
   SOC.homFish = cfg.homininFishing === true; // hominins catch fish (off by default: no fish in hominin diets before about 1.95 Ma)
@@ -271,6 +288,7 @@ function buildWorld(cfg) {
       }
   }
   initForest();
+  initDiet();
   if (typeof initPreyMap === 'function') initPreyMap(); // (guarded: a cached old page may not load preymap.js)
   initItems();
   initTalk();

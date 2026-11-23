@@ -346,6 +346,60 @@ function doingHTML(a, S, stage, night) {
   o += '<br><br>' + (a.sex ? 'Female' : 'Male') + ' ' + stage + ', generation ' + a.gen;
   o += '<br>Energy ' + a.e.toFixed(0) + ' · water ' + a.w.toFixed(0) + ' · health ' + a.hp.toFixed(0);
   if (a.sp === 0) o += '<br>In its hand: ' + HAND[a.hand] + (a.nuts ? ' · nuts cracked: ' + a.nuts : '') + ' · swimming: ' + ((a.swim || 0) < 0.1 ? 'cannot swim' : Math.round(100 * a.swim) + '%');
+  // the body ledger (entry 123; only with the switch on): what it has eaten and spent lately, in plain words
+  // the realistic diet (entry 124): what it has eaten, what stands out to it, how curious and wary it is (only when the switches are on)
+  if (a.sp === 0 && a.feedN) {
+    const ft = Object.values(a.feedN).reduce((t, v) => t + v, 0),
+      NAME = { fruit: 'fruit', leaf: 'leaves', root: 'roots', nut: 'nuts', meat: 'meat', marrow: 'marrow', insect: 'termites' };
+    if (ft)
+      o +=
+        '<br>Eaten so far: ' +
+        Object.entries(a.feedN)
+          .sort((p, q) => q[1] - p[1])
+          .map(([k, v]) => Math.round((100 * v) / ft) + '% ' + (NAME[k] || k))
+          .join(', ');
+  }
+  if (a.sp === 0 && SOC.colourEye) {
+    const here = idx(a.x, a.y);
+    o += '<br>Sees: something reddish, orange or yellow standing out against green (ripe fruit, young leaves and poison berries look alike to it; it has to taste or watch others to learn which is which)';
+    if (SOC.youngLeaves && YL && leafy(a, here)) o += '<br>Standing among young leaves it can eat (' + Math.round(100 * YL[here]) + '% of what could grow here)';
+    if (SOC.termites && TERM && TERM[here] > 0.05) o += '<br>A termite mound is within reach';
+  }
+  if (a.sp === 0 && SOC.tasteK > 0) {
+    const yrs = a.age / TY,
+      youth = Math.max(0.15, Math.min(1, 1 - (yrs - 2) / 6)),
+      t = a.tasted || {},
+      NAME2 = { fruit: 'fruit', leaf: 'leaves', root: 'roots', nut: 'nuts', meat: 'meat', marrow: 'marrow', insect: 'termites' },
+      tt = Object.entries(t).map(([k, v]) => (NAME2[k] || k) + ' ' + v).join(', ');
+    o +=
+      '<br>Curious about new foods: ' +
+      Math.round(100 * Math.min(1, (a.g.c ?? 1) * 0.5) * youth) +
+      '% (stronger when young and curious, weaker when afraid or full) · tasted so far: ' +
+      (tt || 'nothing yet') +
+      ' (each safe taste makes it bolder)';
+  }
+  // the body model (entry 125; only with the switch on): weight against a well-fed one of its age and sex, how much of its growth food has allowed, muscle and strength
+  if (a.sp === 0 && SOC.bodyModel && a.gp !== undefined) {
+    const yrs = a.age / TY,
+      grown = Math.min(a.gp, SOC.growEnd * TY) / Math.max(1, Math.min(a.age, SOC.growEnd * TY)),
+      refKg = (() => { const g = a.gp; a.gp = a.age; const k = bodyKg(a); a.gp = g; return k; })(),
+      ref = (a.sex ? SOC.massF : SOC.massM),
+      str = strengthOf(a),
+      strRef = Math.pow(SOC.massF * SOC.musShareF, 2 / 3);
+    o +=
+      '<br>Body: ' + bodyKg(a).toFixed(1) + ' kg' +
+      (grown < 0.97 ? ' (a well-fed one of its age and sex would be ' + refKg.toFixed(1) + ' kg: food has held back ' + Math.round(100 * (1 - grown)) + '% of its growth)' : ' (growing as well-fed ones do)') +
+      ' · muscle ' + musKg(a).toFixed(1) + ' kg (' + Math.round(100 * (a.msc ?? 1)) + '% of a typical build for its size)' +
+      ' · strength ' + Math.round((100 * str) / strRef) + ' (a grown woman of typical build = 100)' +
+      ' · inherited ceiling: size ' + Math.round(100 * (a.g.sz ?? 1)) + '%, muscle ' + Math.round(100 * (a.g.st ?? 1)) + '% of typical';
+  }
+  if (a.sp === 0 && a.ledDays)
+    o +=
+      '<br>Protein eaten lately: ' +
+      (a.protKg || 0).toFixed(1) +
+      ' g per kg of its weight a day (a body needs about 0.8 to keep its muscle, a growing child 1.2 to 1.6) · effort yesterday: about ' +
+      Math.round(a.effLast || 0) +
+      ' kcal of work';
   if (a.sp === 0 && (a.fh || a.fsk > 0.005))
     o +=
       '<br>Fire: handled ' +
@@ -455,7 +509,7 @@ function seesText(a) {
       [5, 'a hunter'],
       [7, 'family'],
       [8, 'fish'],
-      [9, 'red berries'],
+      [9, SOC.colourEye ? 'something reddish standing out (it cannot tell fruit from poison berries by sight)' : 'red berries'],
       [14, 'nuts'],
       [13, 'stones or sticks'],
       [15, 'fire'],
@@ -1592,7 +1646,9 @@ function drawPerson(g, a, X, Y, k, gr, col) {
   // body on shorter legs, arms reaching to the knees, no waist, a heavy brow and a projecting lower face
   // (as australopith and early-Homo skeletons show). Modern people otherwise.
   const ape = typeof ERA !== 'undefined' && ERA === 'hominin',
-    h = (5.5 + 6 * gr) * k * (ape ? 0.85 : 1), // full height
+    h = (5.5 + 6 * gr) * k * (ape ? 0.85 : 1) * (SOC.bodyModel && a.sp === 0 ? Math.cbrt(a.g.sz ?? 1) : 1), // full height (with the body model: taller or shorter by inherited size)
+    // build (with the body model): broader with muscle, thinner when poorly fed: widths of body and limbs
+    bd = SOC.bodyModel && a.sp === 0 ? clamp(0.78 + 0.22 * (a.msc ?? 1) + 0.12 * ((a.g.st ?? 1) - 1), 0.7, 1.3) * (0.82 + 0.18 * clamp(((a.eAvg ?? a.e) - 20) / 50, 0, 1)) : 1,
     tone = a.skv ?? skinOf(a),
     skin = ape ? '#4a3526' : skinCol(tone),
     shade = ape ? '#33241a' : skinCol(tone, 0.22),
@@ -1618,11 +1674,11 @@ function drawPerson(g, a, X, Y, k, gr, col) {
     hcy = top + hr * 1.1,
     neckY = top + hr * 2.15,
     sh = neckY + h * 0.035, // shoulders
-    shW = h * (adult ? (fem ? 0.115 : 0.135) : 0.1),
+    shW = h * (adult ? (fem ? 0.115 : 0.135) : 0.1) * bd,
     waist = sh + h * (ape ? 0.2 : 0.17),
     waW = ape ? shW * 0.95 : h * (fem && adult ? 0.068 : 0.078),
     hip = sh + h * (ape ? 0.33 : 0.27),
-    hiW = h * (ape ? 0.1 : fem && adult ? 0.1 : 0.088),
+    hiW = h * (ape ? 0.1 : fem && adult ? 0.1 : 0.088) * bd,
     crotch = hip + h * 0.035,
     foot = held ? crotch + h * 0.1 : h / 2,
     step = a.asleep || !a.moving || crouch || held ? 0 : Math.sin(a.ph || 0) * h * 0.14;
@@ -1632,7 +1688,7 @@ function drawPerson(g, a, X, Y, k, gr, col) {
     // a limb as two tapered segments
     g.strokeStyle = c;
     for (let s = 0; s < pts.length - 1; s++) {
-      g.lineWidth = Math.max(0.6, w0 + (w1 - w0) * (s / Math.max(1, pts.length - 2)));
+      g.lineWidth = Math.max(0.6, (w0 + (w1 - w0) * (s / Math.max(1, pts.length - 2))) * bd);
       g.beginPath();
       g.moveTo(pts[s][0], pts[s][1]);
       g.lineTo(pts[s + 1][0], pts[s + 1][1]);
@@ -2166,7 +2222,7 @@ function drawAnimal(g, a, X, Y, k) {
 function drawCreature(g, a, X, Y, k, v, dim = 1) {
   if (!isFinite(X) || !isFinite(Y) || !isFinite(k) || k <= 0) return; // a bad screen position for one frame (seen once mid-flight): skip, never crash
   const S = a.S,
-    gr = clamp(a.age / S.mat, 0.3, 1);
+    gr = clamp((SOC.bodyModel && a.sp === 0 && a.gp !== undefined ? Math.min(a.gp, a.age) : a.age) / S.mat, 0.3, 1); // with the body model: how far food has let it grow, not its age
   g.globalAlpha = (a.asleep ? 0.45 : 1) * dim;
   if (a.sp === 0) {
     g.globalAlpha = (a.asleep ? 0.8 : 1) * dim;
@@ -3117,6 +3173,9 @@ const readCfg = () => ({
   predators: +$('prd').value || 0,
   fish: +$('fsh').value || 0,
   retina: $('ret').checked,
+  // the realistic diet (experiment): colour sight, young leaves, termites, curiosity about new foods, and the body ledger
+  ...($('rdiet') && $('rdiet').checked ? { colourEye: true, youngLeaves: true, termites: true, tasteCurious: 1, bodyLedger: true } : {}),
+  ...($('rbody') && $('rbody').checked ? { bodyModel: true } : {}), // the body model (experiment): growth and muscle respond to food, effort and age
   preyMap: $('pmap').checked,
   fromPage: true, // the page's checkbox may turn the prey map off (the runner's preyMap default of false does not)
   earth: $('land').value === 'earth',
