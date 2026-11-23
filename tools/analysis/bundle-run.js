@@ -1,4 +1,6 @@
-// Genesis — population in the valley (entry 119; docs/design/valley-spec.md V3): one band, by world: people at the end, births, deaths by cause, the population each year, whether the band ended.
+// Genesis — ONE run that records everything for a bundle of changes (entry 126; the owner, 23 Nov: bundle the changes and test once): survival (births, deaths by cause, the population each year), what the hominins ate
+// (feeding steps and protein by food class), and the body at the end (weight by age and sex, growth delivered, supply, muscle, strength, inherited potential). (Copied from tools/analysis/valley-run.js and extended.)
+// Original header: population in the valley (entry 119; docs/design/valley-spec.md V3): one band, by world: people at the end, births, deaths by cause, the population each year, whether the band ended.
 // Usage: node tools/analysis/valley-run.js globe|valley SEEDS DAYS OUT_DIR [switches]    (the same tool for the globe: the comparison runs through one code path)
 // Copyright (c) 2026 Malvika Sen. MIT License.
 const fs = require('fs'), path = require('path'), { createEngine } = require('../engine'), X = require('../experiment-core');
@@ -13,7 +15,7 @@ for (const seed of seeds) {
   let births = 0, hy = 0, t = 0;
   const hunt = { days: 0, byKind: {}, herds: 0, near8: 0, nHunters: 0, dist: [], energy: [] }, wounds = {}, femaleSteps = { n: 0 }, firstBirth = [], birthsBy = new Map(), moms = new Set();
   const seenBorn = new Set();
-  const people = () => E.state().ag.filter((a) => a.sp === 0);
+  const people = () => E.state().ag.filter((a) => a.sp === 0), snap = new Map();
   for (const a of people()) { obj.set(a.id, a); alive.add(a.id); seenBorn.add(a.id); }
   for (t = 1; t <= days * E.DAY; t++) {
     E.sim();
@@ -34,9 +36,10 @@ for (const seed of seeds) {
       }
     }
     if (t % TY === 0) series.push(now.size);
+    if (t % E.DAY === 0) for (const a of people()) if (a.feedN) snap.set(a.id, { f: { ...a.feedN }, p: { ...(a.protBy || {}) }, prot: a.ledDays ? a.ledProt / a.ledDays : 0, adult: a.age >= a.S.mat });
     if (!now.size) break;
   }
   const end = Math.min(t, days * E.DAY);
-  fs.writeFileSync(path.join(out, 'world-' + seed + '.json'), JSON.stringify({ hunt: { days: hunt.days, byKind: hunt.byKind, herds: hunt.herds, nHunters: hunt.nHunters, near8: hunt.near8, distMedian: hunt.dist.slice().sort((a, b) => a - b)[hunt.dist.length >> 1], energyMean: hunt.energy.reduce((t, v) => t + v, 0) / Math.max(1, hunt.energy.length) }, wounds, femaleYears: femaleSteps.n / TY, firstBirthAge: firstBirth, births2: births, seed, mode, days, flags, end, years: end / TY, alive: alive.size, births, homininYears: hy, byCause, series }));
+  fs.writeFileSync(path.join(out, 'world-' + seed + '.json'), JSON.stringify({ feed: (() => { const f = {}, p = {}, pa = [], pc = []; for (const v of snap.values()) { for (const k in v.f) f[k] = (f[k] || 0) + v.f[k]; for (const k in v.p) p[k] = (p[k] || 0) + v.p[k]; (v.adult ? pa : pc).push(v.prot); } return { f, p, adultProt: pa, childProt: pc }; })(), body: people().map((a) => ({ age: a.age / TY, sex: a.sex ? 1 : 0, kg: E.body(a).kg, gp: (a.gp ?? a.age) / TY, supply: a.supply ?? 1, msc: a.msc ?? 1, str: E.muscle(a).strength, sz: a.g.sz ?? 1, st: a.g.st ?? 1 })), hunt: { days: hunt.days, byKind: hunt.byKind, herds: hunt.herds, nHunters: hunt.nHunters, near8: hunt.near8, distMedian: hunt.dist.slice().sort((a, b) => a - b)[hunt.dist.length >> 1], energyMean: hunt.energy.reduce((t, v) => t + v, 0) / Math.max(1, hunt.energy.length) }, wounds, femaleYears: femaleSteps.n / TY, firstBirthAge: firstBirth, births2: births, seed, mode, days, flags, end, years: end / TY, alive: alive.size, births, homininYears: hy, byCause, series }));
   console.log('world', seed, 'done: alive', alive.size, 'births', births, 'years', (end / TY).toFixed(1));
 }
