@@ -347,6 +347,21 @@ function doingHTML(a, S, stage, night) {
   o += '<br>Energy ' + a.e.toFixed(0) + ' · water ' + a.w.toFixed(0) + ' · health ' + a.hp.toFixed(0);
   if (a.sp === 0) o += '<br>In its hand: ' + HAND[a.hand] + (a.nuts ? ' · nuts cracked: ' + a.nuts : '') + ' · swimming: ' + ((a.swim || 0) < 0.1 ? 'cannot swim' : Math.round(100 * a.swim) + '%');
   // the body ledger (entry 123; only with the switch on): what it has eaten and spent lately, in plain words
+  // the body model (entry 125; only with the switch on): weight against a well-fed one of its age and sex, how much of its growth food has allowed, muscle and strength
+  if (a.sp === 0 && SOC.bodyModel && a.gp !== undefined) {
+    const yrs = a.age / TY,
+      grown = Math.min(a.gp, SOC.growEnd * TY) / Math.max(1, Math.min(a.age, SOC.growEnd * TY)),
+      refKg = (() => { const g = a.gp; a.gp = a.age; const k = bodyKg(a); a.gp = g; return k; })(),
+      ref = (a.sex ? SOC.massF : SOC.massM),
+      str = strengthOf(a),
+      strRef = Math.pow(SOC.massF * SOC.musShareF, 2 / 3);
+    o +=
+      '<br>Body: ' + bodyKg(a).toFixed(1) + ' kg' +
+      (grown < 0.97 ? ' (a well-fed one of its age and sex would be ' + refKg.toFixed(1) + ' kg: food has held back ' + Math.round(100 * (1 - grown)) + '% of its growth)' : ' (growing as well-fed ones do)') +
+      ' · muscle ' + musKg(a).toFixed(1) + ' kg (' + Math.round(100 * (a.msc ?? 1)) + '% of a typical build for its size)' +
+      ' · strength ' + Math.round((100 * str) / strRef) + ' (a grown woman of typical build = 100)' +
+      ' · inherited ceiling: size ' + Math.round(100 * (a.g.sz ?? 1)) + '%, muscle ' + Math.round(100 * (a.g.st ?? 1)) + '% of typical';
+  }
   if (a.sp === 0 && a.ledDays)
     o +=
       '<br>Protein eaten lately: ' +

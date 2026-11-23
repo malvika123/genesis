@@ -92,6 +92,7 @@ function sim() {
     if (tick % DAY === 0) {
       a.fd = 0;
       if (SOC.ledger && a.sp === 0) ledgerDay(a);
+      if (SOC.bodyModel && a.sp === 0) bodyDay(a);
     }
     const young = a.age < S.mat,
       baby = a.age < S.mat * S.wn,
@@ -1724,6 +1725,43 @@ const fertileAge = (a) => a.age < Math.min(a.lf * a.S.fert, a.S.fertMax ?? Infin
 // chimpanzees do (a stand-in: Gombe, Pusey et al. 2005: about 10 kg at 5, growth slowing at 10 in females and 13 in males).
 // Weight sets how much a meal fills it and how fast it burns (Kleiber, below) and how hard it is to bring down.
 // --fixed-bodies: one body for every age and sex (the old rule). Modern people keep one size.
+// The body model (entry 125, `--body-model`; docs/design/strength.md, docs/reviews/2026-11-23-nutrition-and-growth-sources.md; the owner, 23 Nov: real changes in diet must change the body).
+// Once a day each hominin: (1) GROWTH: how far along the normal growth curve it is (`a.gp`, in steps) advances by a SUPPLY FACTOR: the energy it has had (a 7-day mean of its energy store, 15 to 60 mapped to the floor to 1) and, much less, its protein (INCAP:
+// energy limits growth more than protein: only when protein falls below 60% of the need, weighted by SOC.protW); below 1 it grows more slowly (never less than SOC.growFloor), at 1 it keeps pace, and after a lean spell it catches up (up to
+// 1 + SOC.catchUp times as fast) until back on the curve; the window closes at SOC.growEnd years, so a shortfall left at that age is permanent. Adult size is also bounded by an inherited potential `g.sz`. The numbers are registered assumptions
+// (no dose-response was found): floor 0.2, catch-up 0.3, growth end 16 y, protein weight 1. (2) MUSCLE (`a.mf`: muscle as a share of its reference muscle for its weight and sex): it rises with the day's effort and good food toward a target
+// between a floor (0.8) and its inherited ceiling `g.st` (x 1.2), falls with hunger, too little protein and age, never by an inherited change (use is not passed on). Real rates are on the DAY clock (0.5% a week up, 0.3% a day down in starvation),
+// so within the sim's 3-day year they hardly move: strength differs mostly by size, sex, age, inheritance and long hunger (Opus's note). Strength = muscle kg to the 2/3 (the usual muscle scaling), `strengthOf(a)`.
+function bodyDay(a) {
+  const yrs = a.age / TY,
+    baby = a.age < a.S.mat * a.S.wn;
+  if (a.gp === undefined) a.gp = a.age;
+  a.eAvg = a.eAvg === undefined ? a.e : (a.eAvg * 6) / 7 + a.e / 7;
+  const need = a.age < a.S.mat ? 1.2 : 0.8,
+    haveProt = !baby && a.protKg !== undefined && (a.ledDays || 0) >= 7, // a real week of record first: the ledger starts empty
+    pf = haveProt ? clamp(a.protKg / (0.6 * need), 0.4, 1) : 1,
+    ef = clamp((a.eAvg - 15) / 45, SOC.growFloor, 1),
+    supply = baby ? 1 : Math.min(ef, 1 - SOC.protW * (1 - pf));
+  a.supply = supply;
+  if (yrs <= SOC.growEnd) {
+    const rate = supply < 1 ? Math.max(SOC.growFloor, supply) : a.gp < a.age ? 1 + SOC.catchUp : 1;
+    a.gp = Math.min(a.age, a.gp + DAY * rate);
+  }
+  // muscle
+  if (a.msc === undefined) a.msc = 1;
+  const E = (a.ledDays || 0) >= 2 ? (a.effLast || 0) / SOC.effRef : 1,
+    ceil = 1.2 * (a.g.st ?? 1),
+    target = clamp(0.8 + 0.2 * E, 0.8, ceil),
+    r = haveProt ? a.protKg / need : 1;
+  if (a.msc < target && r >= 1 && a.e > 50) a.msc = Math.min(target, a.msc + SOC.musGain);
+  else if (a.msc > target) a.msc = Math.max(target, a.msc - SOC.musLoss / 3);
+  if (r < 1) a.msc -= (1 - r) * SOC.musLoss;
+  if (a.e < 20) a.msc -= SOC.musLoss;
+  if (yrs > 30) a.msc *= 1 - (yrs > 60 ? 0.01 : 0.005) / (TY / DAY);
+  a.msc = clamp(a.msc, 0.5, ceil);
+}
+const musKg = (a) => bodyKg(a) * (a.sex ? SOC.musShareF : SOC.musShareM) * (a.msc ?? 1);
+const strengthOf = (a) => Math.pow(musKg(a), 2 / 3);
 // The body ledger (entry 123, `--body-ledger`; docs/design/strength.md step a; MEASURING ONLY, nothing reads it): protein eaten and effort spent, per hominin, per day.
 // Grams of protein per 100 kcal of each food class: Claude's conversions from dry-weight percentages remembered from the literature (fruit 3-8%, young leaves 15-25%, roots and tubers 2-6%, nuts and seeds 10-25%,
 // lean meat about 20 g per 100 g fresh, marrow low): LOW-MEDIUM confidence, registered assumptions (docs/ASSUMPTIONS.md), to be checked against a chimpanzee-diet test before anything uses them.
@@ -1758,7 +1796,7 @@ function ledgerDay(a) {
 function bodyKg(a) {
   const S = a.S,
     pts = a.sex ? S.growF : S.growM,
-    y = a.age / TY;
+    y = (SOC.bodyModel && a.sp === 0 && a.gp !== undefined ? a.gp : a.age) / TY; // --body-model: growth PROGRESS (how far along the growth curve food has let it get), not age
   // modern people (the --sapiens thought experiment) have no growth curve here: an adult forager's weight, less when young (used only
   // for records and for the meat of a body; bug found 14 Nov 2026 when the kill record asked for it)
   if (!pts) return (S.mass || 55) * clamp(0.1 + (0.9 * a.age) / (S.mat || TY * 18), 0.1, 1);
@@ -1768,7 +1806,7 @@ function bodyKg(a) {
       f = pts[i - 1] + ((pts[i + 1] - pts[i - 1]) * (y - pts[i - 2])) / (pts[i] - pts[i - 2]);
       break;
     }
-  return f * (a.sex ? SOC.massF : SOC.massM);
+  return f * (a.sex ? SOC.massF : SOC.massM) * (SOC.bodyModel && a.sp === 0 ? a.g.sz ?? 1 : 1);
 }
 // size relative to a forager of about 52 kg (config.js)
 const bodySize = (a) => (a.sp === 0 && SOC.growBodies && a.S.growF ? bodyKg(a) / 52 : a.S.size || 1);
@@ -1863,7 +1901,7 @@ const hunterSeen = (x) => {
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i];
-const SOC = { ledger: false, fullBrakeOn: true, fullBrake: 12, atkP: 0.6, atkEasy: 0.9, fruitCal: true, fruitHang: 1 / 12, mutP: 0.2, mutStep: 0.3, wireMutP: 0.03, wireMutSd: 0.4, digAct: true, preyFlight: true, campFix: true, cutAct: true, cutKg: 0.75, fleshOnly: true, fleshShare: 0.5, rotBySize: true, marrowKg: true, marrowFrac: 0.0025, marrowKcal: 7860, stickHumid: true, brandByDry: true, fireNatural: true, rotByKg: true, homMeatKg: true, biteBareKg: 0.25, biteFlakeKg: 0.75, meatKcal: 1140, herdYoung: true, youngShare: 0.25, forestPrey: 1000, meatMemory: true, keepKill: true, homStrikeKg: true, huntPull: true, atkFixed: 0.25, gut: true, gutShare: 0.25, digestH: 24, mealSleep: 2, preyMap: false, preyLevel: 5000, buffShare: 0.5, preyRegrow: 0.3, preyZone: 1, preyRule: 'soft', bigK: 2, preyMaxX: 1, smallPrey: true, maxPreyKg: 15, marrow: true, marrowShare: 0.15, marrowVal: 110, digStick: 0.55, digFlake: 0.4, digStone: 0.3, digBare: 0.15, sedges: true, sedgeCap: 0.5, africanNuts: true, rootVal: 80, voiceGenes: true, fireMaking: true, founderElders: 0.12, brainCost: true, brainF: 0.1, carry: true, carryAge: 2, walkE: true, walkJ: 4, pal: 1.7, growBodies: true, massF: 30, massM: 42, swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, needEye: false, babyNoAttack: true, watchWho: false, watchWhat: false, noPathCopy: false, noVoiceCopy: false, honestHurt: false, watchSuccess: false, watchSteps: 2, peerHi: 0.5, peerLo: 0.19, peerTool: 3, peerMom: 3, copyThin: 0, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+const SOC = { bodyModel: false, bodySpread: 0.08, growFloor: 0.2, catchUp: 0.3, growEnd: 16, protW: 1, effRef: 400, musShareF: 0.37, musShareM: 0.45, musGain: 0.0007, musLoss: 0.003, ledger: false, fullBrakeOn: true, fullBrake: 12, atkP: 0.6, atkEasy: 0.9, fruitCal: true, fruitHang: 1 / 12, mutP: 0.2, mutStep: 0.3, wireMutP: 0.03, wireMutSd: 0.4, digAct: true, preyFlight: true, campFix: true, cutAct: true, cutKg: 0.75, fleshOnly: true, fleshShare: 0.5, rotBySize: true, marrowKg: true, marrowFrac: 0.0025, marrowKcal: 7860, stickHumid: true, brandByDry: true, fireNatural: true, rotByKg: true, homMeatKg: true, biteBareKg: 0.25, biteFlakeKg: 0.75, meatKcal: 1140, herdYoung: true, youngShare: 0.25, forestPrey: 1000, meatMemory: true, keepKill: true, homStrikeKg: true, huntPull: true, atkFixed: 0.25, gut: true, gutShare: 0.25, digestH: 24, mealSleep: 2, preyMap: false, preyLevel: 5000, buffShare: 0.5, preyRegrow: 0.3, preyZone: 1, preyRule: 'soft', bigK: 2, preyMaxX: 1, smallPrey: true, maxPreyKg: 15, marrow: true, marrowShare: 0.15, marrowVal: 110, digStick: 0.55, digFlake: 0.4, digStone: 0.3, digBare: 0.15, sedges: true, sedgeCap: 0.5, africanNuts: true, rootVal: 80, voiceGenes: true, fireMaking: true, founderElders: 0.12, brainCost: true, brainF: 0.1, carry: true, carryAge: 2, walkE: true, walkJ: 4, pal: 1.7, growBodies: true, massF: 30, massM: 42, swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, needEye: false, babyNoAttack: true, watchWho: false, watchWhat: false, noPathCopy: false, noVoiceCopy: false, honestHurt: false, watchSuccess: false, watchSteps: 2, peerHi: 0.5, peerLo: 0.19, peerTool: 3, peerMom: 3, copyThin: 0, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {

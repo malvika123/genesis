@@ -21,6 +21,8 @@ const gene = (sp, inst) => ({
   w: newW(sp, inst),
   ...laterTraits(),
   nm: rnd3(), // the neutral marker (entry 86): inherited and mutated like the other 0-1 traits, read by nothing; its own stream
+  // --body-model (entry 125): inherited potential for adult size (sz) and for muscle (st), around 1, from the separate stream rnd2 so worlds are unchanged with the switch off; a spread of SOC.bodySpread either way (an assumption: 0 = everyone the same)
+  ...(SOC.bodyModel && sp === 0 ? { sz: 1 + (rnd2() * 2 - 1) * SOC.bodySpread, st: 1 + (rnd2() * 2 - 1) * SOC.bodySpread * 2 } : {}),
 });
 // Traits added later, drawn from their own random stream (state.js: rnd2) so worlds stay the same without them.
 // tm: timidity — how strongly fear rises and pulls away from danger; inborn temperament differs and is partly inherited
@@ -187,6 +189,7 @@ function child(p, q) {
     pc: mut2((rnd2() < 0.5 ? p.g.pc : q.g.pc) ?? 1, 0.3, 1.8),
     ...(SOC.vicarGene ? { vf: mut2((rnd2() < 0.5 ? p.g.vf : q.g.vf) ?? 1, 0.05, 3) } : {}),
     nm: mut3((rnd3() < 0.5 ? p.g.nm : q.g.nm) ?? 0.5),
+    ...(SOC.bodyModel && p.g.sz !== undefined ? { sz: mut2((rnd2() < 0.5 ? p.g.sz : q.g.sz) ?? 1, 0.6, 1.5), st: mut2((rnd2() < 0.5 ? p.g.st : q.g.st) ?? 1, 0.4, 2) } : {}),
     w,
   };
 }
