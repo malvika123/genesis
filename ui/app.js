@@ -1553,9 +1553,60 @@ function drawEyeHands(g, a, w, h) {
     g.ellipse(x1, y1, 40 * s, 34 * s, 0, 0, 7);
     g.fill();
   };
+  // Fingers (24 Nov 2026, owner: "give them fingers"; docs/design/hands.md): drawn only, no effect on the world. Four long curved fingers and a short thumb: Australopithecus afarensis had curved
+  // fingers built for climbing (Rolian et al. 2013; the curve is also seen in later australopith and Homo naledi hands), and a thumb whose length is disputed: fully human (Alba et al. 2003) or between
+  // gorilla and human (Rolian et al. 2013), so it is drawn short of the human proportion. The fingers curl when something is held.
+  const fingers = (x, y, dx, dy, side) => {
+    const ang = Math.atan2(dy, dx),
+      px = -Math.sin(ang),
+      py = Math.cos(ang),
+      curl = a.hand ? 0.85 : 0.32,
+      L = [0.92, 1, 0.95, 0.78];
+    g.lineCap = 'round';
+    g.lineJoin = 'round';
+    for (let i = 0; i < 4; i++) {
+      let fx = x + px * (i - 1.5) * 15 * s + Math.cos(ang) * 26 * s,
+        fy = y + py * (i - 1.5) * 15 * s + Math.sin(ang) * 26 * s,
+        fa = ang + side * 0.05 * (i - 1.5);
+      for (let j = 0; j < 3; j++) {
+        const len = [28, 22, 17][j] * L[i] * s,
+          nx = fx + Math.cos(fa) * len,
+          ny = fy + Math.sin(fa) * len;
+        g.strokeStyle = skin;
+        g.lineWidth = (17 - 2 * j) * s;
+        g.beginPath();
+        g.moveTo(fx, fy);
+        g.lineTo(nx, ny);
+        g.stroke();
+        fx = nx;
+        fy = ny;
+        fa += side * curl * (j === 0 ? 0.6 : 1); // the finger curves toward the thumb side, more at the tip
+      }
+    }
+    // the thumb: short, two joints, set to the side and leaning across
+    let tx = x - px * side * 34 * s + Math.cos(ang) * 6 * s,
+      ty = y - py * side * 34 * s + Math.sin(ang) * 6 * s,
+      ta = ang - side * 0.75;
+    for (let j = 0; j < 2; j++) {
+      const len = [24, 17][j] * s,
+        nx = tx + Math.cos(ta) * len,
+        ny = ty + Math.sin(ta) * len;
+      g.strokeStyle = skin;
+      g.lineWidth = (19 - 3 * j) * s;
+      g.beginPath();
+      g.moveTo(tx, ty);
+      g.lineTo(nx, ny);
+      g.stroke();
+      tx = nx;
+      ty = ny;
+      ta += side * (a.hand ? 0.7 : 0.25);
+    }
+  };
   g.globalAlpha = isNightAt(a.x) ? 0.55 : 1;
   arm(w * 0.1, h + 40 * s, w * 0.27, h * 0.88 + bob);
+  fingers(w * 0.27, h * 0.88 + bob, w * 0.27 - w * 0.1, h * 0.88 + bob - (h + 40 * s), -1);
   arm(w * 0.78, h + 40 * s, rx, ry);
+  fingers(rx, ry, rx - w * 0.78, ry - (h + 40 * s), 1);
   if (a.hand) drawHeld(g, a.hand, rx + 10 * s, ry - 30 * s, 320 * s, 26 * s);
   g.globalAlpha = 1;
 }
