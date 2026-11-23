@@ -1646,7 +1646,9 @@ function drawPerson(g, a, X, Y, k, gr, col) {
   // body on shorter legs, arms reaching to the knees, no waist, a heavy brow and a projecting lower face
   // (as australopith and early-Homo skeletons show). Modern people otherwise.
   const ape = typeof ERA !== 'undefined' && ERA === 'hominin',
-    h = (5.5 + 6 * gr) * k * (ape ? 0.85 : 1), // full height
+    h = (5.5 + 6 * gr) * k * (ape ? 0.85 : 1) * (SOC.bodyModel && a.sp === 0 ? Math.cbrt(a.g.sz ?? 1) : 1), // full height (with the body model: taller or shorter by inherited size)
+    // build (with the body model): broader with muscle, thinner when poorly fed: widths of body and limbs
+    bd = SOC.bodyModel && a.sp === 0 ? clamp(0.78 + 0.22 * (a.msc ?? 1) + 0.12 * ((a.g.st ?? 1) - 1), 0.7, 1.3) * (0.82 + 0.18 * clamp(((a.eAvg ?? a.e) - 20) / 50, 0, 1)) : 1,
     tone = a.skv ?? skinOf(a),
     skin = ape ? '#4a3526' : skinCol(tone),
     shade = ape ? '#33241a' : skinCol(tone, 0.22),
@@ -1672,11 +1674,11 @@ function drawPerson(g, a, X, Y, k, gr, col) {
     hcy = top + hr * 1.1,
     neckY = top + hr * 2.15,
     sh = neckY + h * 0.035, // shoulders
-    shW = h * (adult ? (fem ? 0.115 : 0.135) : 0.1),
+    shW = h * (adult ? (fem ? 0.115 : 0.135) : 0.1) * bd,
     waist = sh + h * (ape ? 0.2 : 0.17),
     waW = ape ? shW * 0.95 : h * (fem && adult ? 0.068 : 0.078),
     hip = sh + h * (ape ? 0.33 : 0.27),
-    hiW = h * (ape ? 0.1 : fem && adult ? 0.1 : 0.088),
+    hiW = h * (ape ? 0.1 : fem && adult ? 0.1 : 0.088) * bd,
     crotch = hip + h * 0.035,
     foot = held ? crotch + h * 0.1 : h / 2,
     step = a.asleep || !a.moving || crouch || held ? 0 : Math.sin(a.ph || 0) * h * 0.14;
@@ -1686,7 +1688,7 @@ function drawPerson(g, a, X, Y, k, gr, col) {
     // a limb as two tapered segments
     g.strokeStyle = c;
     for (let s = 0; s < pts.length - 1; s++) {
-      g.lineWidth = Math.max(0.6, w0 + (w1 - w0) * (s / Math.max(1, pts.length - 2)));
+      g.lineWidth = Math.max(0.6, (w0 + (w1 - w0) * (s / Math.max(1, pts.length - 2))) * bd);
       g.beginPath();
       g.moveTo(pts[s][0], pts[s][1]);
       g.lineTo(pts[s + 1][0], pts[s + 1][1]);
@@ -2220,7 +2222,7 @@ function drawAnimal(g, a, X, Y, k) {
 function drawCreature(g, a, X, Y, k, v, dim = 1) {
   if (!isFinite(X) || !isFinite(Y) || !isFinite(k) || k <= 0) return; // a bad screen position for one frame (seen once mid-flight): skip, never crash
   const S = a.S,
-    gr = clamp(a.age / S.mat, 0.3, 1);
+    gr = clamp((SOC.bodyModel && a.sp === 0 && a.gp !== undefined ? Math.min(a.gp, a.age) : a.age) / S.mat, 0.3, 1); // with the body model: how far food has let it grow, not its age
   g.globalAlpha = (a.asleep ? 0.45 : 1) * dim;
   if (a.sp === 0) {
     g.globalAlpha = (a.asleep ? 0.8 : 1) * dim;
