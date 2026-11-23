@@ -1588,7 +1588,7 @@ function drawEyeHands(g, a, w, h) {
       ty = y - py * side * 34 * s + Math.sin(ang) * 6 * s,
       ta = ang - side * 0.75;
     for (let j = 0; j < 2; j++) {
-      const len = [24, 17][j] * s,
+      const len = [24, 17][j] * s * (0.7 + 0.4 * (a.g && a.g.dx !== undefined ? a.g.dx : 0.75)), // the thumb's length follows the inherited hand precision
         nx = tx + Math.cos(ta) * len,
         ny = ty + Math.sin(ta) * len;
       g.strokeStyle = skin;
