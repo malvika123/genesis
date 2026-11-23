@@ -5,7 +5,7 @@ Written in plain words. Every item below gets: the evidence checked first, a des
 ## Part 1 — Food and the senses (the globe first; carried into the valley later)
 - [x] 1. **Measure what they eat** — protein and effort recorded for every hominin (built; page panel shows it; first 24-world measurement running).
 - [x] 2. **See what they do about leaves** — the ledger and the full test answer it (leaves are eaten: 12% of protein across 24 worlds; entry 123).
-- [~] 3. **A real colour sense (built, on the page, under test: entry 124)** — "something reddish stands out" replaces the poison-only red sense; ripe fruit, young leaves, poison berries all show up; nothing says "food". No new brain inputs.
+- [~] 3. **A real colour sense (built, on the page, tested in a bundle: entry 124; shares of foods still to be recorded: entry 126)** — "something reddish stands out" replaces the poison-only red sense; ripe fruit, young leaves, poison berries all show up; nothing says "food". No new brain inputs.
 - [~] 4. **Leaves they can see and eat down (built, under test; pith still to do)** — young leaves in a seasonal flush that get used up and grow back; pith and stems as the dry-season fallback.
 - [~] 5. **Curiosity about new things (taste curiosity built, on the page, under test; curiosity toward anything that stands out still to do)** — a pull to taste, touch and approach what is new or stands out; stronger in the young and curious, weaker when afraid, fades with use, boosted by the mother eating; no pull to any one food or colour.
 - [~] 6. **Insects: termites (built by hand, on the page, under test; ants and termite fishing later)** — mounds as a patchy seasonal food, eaten by hand.
