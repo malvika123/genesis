@@ -3328,6 +3328,23 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 135. Hand precision (`--dexterity`): half the precision gives about half the flakes; a human-like hand gives no clear gain; population change shows no dexterity effect — Nov 2026
+
+**Version.** `--dexterity` (commit b617af2): an inherited hand-precision trait `dx` (founders around `--dex-mean`, spread 10%) that multiplies the chance a strike on a stone knocks off a flake, the bite taken with a flake and the chance of digging with a flake. Globe, 12 worlds per arm x 40 days (13 sim years), seeds 1-12, entry-127 cast, real densities off. Arms: OFF, D100 (`--dex-mean 1`, Alba et al.'s human-like thumb), D50 (`--dex-mean 0.5`, Rolian et al.'s in-between hand). Prediction: `data/findings/135-dexterity/prediction-written-before.txt`. Flakes counted per step from `a.stk === 'flake'`.
+
+| (12 worlds each) | OFF | D100 | D50 |
+|---|---|---|---|
+| hominin-years lived | 3,427 | 3,247 | 3,321 |
+| flakes knocked off | 57 | 66 | 32 |
+| flakes per hominin-year | 0.017 | 0.020 | 0.010 |
+| people, start to end (12 bands of 25) | 300 to 182 | 300 to 158 | 300 to 158 |
+| bands wiped out | 1 | 0 | 0 |
+| founders' mean dx | n/a | 1.003 | 0.501 |
+
+**Against the predictions.** (1) D100 flakes within 10% of OFF: FAILED as stated (0.020 vs 0.017, +18%), but the counts are 66 and 57, and a count of 57 carries about 13% noise by itself, so this is not clearly different. (2) D50 at 40-60% of OFF: CONFIRMED, barely (0.0096 vs 0.0166, 58%; and 48% of D100). (3) Population change within 1 point of OFF: both arms are about 1.1 points a year worse than OFF (about -3.8% a year OFF; -4.9% D100; -4.9% D50), just outside the stated margin, but D100 and D50 are identical to each other, so the gap is not a dexterity effect: switching the trait on changes the random draws, so each arm is a different set of worlds, and 12 worlds do not separate a 1-point difference.
+
+**What it means.** The trait works as built: the number of flakes follows the hand's precision, roughly in proportion. Flaking is rare in this world (about 1 flake per 60 hominin-years), so even a doubling or halving cannot be seen in the population. Whether a better hand lets the hominins find stone tools earlier, or pay off in meat, is not answered here: the runs are too short and too few for that, and the effect size is my assumption (linear in `dx`). Nothing is tuned; the mean stays an assumption tested at both ends. Next, if wanted: longer runs, and the first-flake time and meat cut with flakes as outcomes.
+
 ### 134. More cover (tall grass, shrub understory, rocks) in the valley: no visible difference, at the full amounts or at half — Nov 2026
 
 **Version.** Branch `cover` (valley + real densities + `--more-cover`), valley engine, `--real-densities --dens-zone 18`, 12 worlds x 5 years per arm, seeds 1-12. C: `--more-cover` (grass 0.5, shrubs 0.35, rocks 0.5); CH: the three amounts halved. Baseline: entry 133 arm R (same seeds). Prediction: `data/findings/134-cover/prediction-written-before.txt`.
