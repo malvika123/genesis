@@ -1,0 +1,7 @@
+# More cover: tall grass, shrub understory, rocks (plan item 33) — 24 Nov 2026
+
+**Why.** The owner asked whether the world is too flat to hide in. Today only trees, caves and piled branches hide anyone; boulders only block; grass never hides.
+**What is built (`--more-cover`, off = old world).** `cover(i)` also takes: tall ungrazed grass (food layer above 0.3) up to 0.5; any square with woody plants at least 0.35; any square next to a boulder square 0.5. The same `cover()` feeds seeing distance (shorter by up to 35% of cover), the hunted's "safe" check, shade and shelter, so it hides hunters and hunted alike.
+**Evidence (live search 24 Nov).** Only qualitative: ambush cover raises lion kill success (Hopcraft et al. 2005; a "four times in tall grass" figure is UNVERIFIED); lions hunt near kopjes (Mosser et al. 2009); Hadar was a mosaic with shrubland and riparian woodland and 50% grass. NOT FOUND: grass height to cover; hominins hiding by rocks; boulder density. So the three amounts are assumptions, tested at x0.5.
+**Direction unknown.** Cover can help hominins (hide, break sight) and hunters (ambush); the sim only lets cover shorten seeing distance. The test shows the net.
+**Test (one combined run, valley engine, 12 worlds x 5 years, same seeds as entry 133).** Arms: C (`--more-cover`), CH (`--more-cover` with the three amounts halved); baseline = entry 133 arm R. Measures: tries per hominin-year, bands surviving, deaths per 1,000 hominin-years.

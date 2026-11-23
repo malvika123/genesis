@@ -27,3 +27,14 @@ const EARTH_M = (() => {
 })();
 // the longitude (°E) at the middle of a column
 const lonOf = (x) => EARTH_LON0 + ((wx(x) + 0.5) * 360) / W;
+// Where the drawn ground cover (shrubs, grass tufts, boulders) is shown: only where there is evidence for it, the East African rift and its neighbours (about 25-50 °E, 10 °S-16 °N; Hadar, Gona and Awash
+// are at about 40 °E, 11 °N). Elsewhere on the real Earth nothing is drawn, because nothing is known about it for that time. On a made-up planet there is no real geography, so it is drawn everywhere.
+const inEvidenceRegion = (x, y) => {
+  if (!SOC.earth) return true;
+  const la = 80 * (1 - (2 * (y + 0.5)) / H),
+    lo = lonOf(x);
+  return lo >= 25 && lo <= 50 && la >= -10 && la <= 16;
+};
+// Grass tufts are drawn on this share of grassy squares: about 30% of the plant cover on the Hadar floodplain was C4 grass (paleosol carbon isotopes; Quade et al. 2004), the rest woody and other plants.
+const TUFT_SHARE = 0.3;
+const tuftHere = (i) => (Math.imul(i + 7, 2654435761) >>> 0) / 4294967296 < TUFT_SHARE;

@@ -3328,6 +3328,55 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 135. Hand precision (`--dexterity`): half the precision gives about half the flakes; a human-like hand gives no clear gain; population change shows no dexterity effect — Nov 2026
+
+**Version.** `--dexterity` (commit b617af2): an inherited hand-precision trait `dx` (founders around `--dex-mean`, spread 10%) that multiplies the chance a strike on a stone knocks off a flake, the bite taken with a flake and the chance of digging with a flake. Globe, 12 worlds per arm x 40 days (13 sim years), seeds 1-12, entry-127 cast, real densities off. Arms: OFF, D100 (`--dex-mean 1`, Alba et al.'s human-like thumb), D50 (`--dex-mean 0.5`, Rolian et al.'s in-between hand). Prediction: `data/findings/135-dexterity/prediction-written-before.txt`. Flakes counted per step from `a.stk === 'flake'`.
+
+| (12 worlds each) | OFF | D100 | D50 |
+|---|---|---|---|
+| hominin-years lived | 3,427 | 3,247 | 3,321 |
+| flakes knocked off | 57 | 66 | 32 |
+| flakes per hominin-year | 0.017 | 0.020 | 0.010 |
+| people, start to end (12 bands of 25) | 300 to 182 | 300 to 158 | 300 to 158 |
+| bands wiped out | 1 | 0 | 0 |
+| founders' mean dx | n/a | 1.003 | 0.501 |
+
+**Against the predictions.** (1) D100 flakes within 10% of OFF: FAILED as stated (0.020 vs 0.017, +18%), but the counts are 66 and 57, and a count of 57 carries about 13% noise by itself, so this is not clearly different. (2) D50 at 40-60% of OFF: CONFIRMED, barely (0.0096 vs 0.0166, 58%; and 48% of D100). (3) Population change within 1 point of OFF: both arms are about 1.1 points a year worse than OFF (about -3.8% a year OFF; -4.9% D100; -4.9% D50), just outside the stated margin, but D100 and D50 are identical to each other, so the gap is not a dexterity effect: switching the trait on changes the random draws, so each arm is a different set of worlds, and 12 worlds do not separate a 1-point difference.
+
+**What it means.** The trait works as built: the number of flakes follows the hand's precision, roughly in proportion. Flaking is rare in this world (about 1 flake per 60 hominin-years), so even a doubling or halving cannot be seen in the population. Whether a better hand lets the hominins find stone tools earlier, or pay off in meat, is not answered here: the runs are too short and too few for that, and the effect size is my assumption (linear in `dx`). Nothing is tuned; the mean stays an assumption tested at both ends. Next, if wanted: longer runs, and the first-flake time and meat cut with flakes as outcomes.
+
+### 134. More cover (tall grass, shrub understory, rocks) in the valley: no visible difference, at the full amounts or at half — Nov 2026
+
+**Version.** Branch `cover` (valley + real densities + `--more-cover`), valley engine, `--real-densities --dens-zone 18`, 12 worlds x 5 years per arm, seeds 1-12. C: `--more-cover` (grass 0.5, shrubs 0.35, rocks 0.5); CH: the three amounts halved. Baseline: entry 133 arm R (same seeds). Prediction: `data/findings/134-cover/prediction-written-before.txt`.
+
+| (12 worlds each) | R (no extra cover) | C | CH |
+|---|---|---|---|
+| bands wiped out in 5 years | 0 | 0 | 0 |
+| hominin-years lived | 1,598 | 1,564 | 1,591 |
+| people, start to end | 300 to 275 | 300 to 280 | 300 to 287 |
+| tries at a hominin per hominin-year | 0.05 | 0.05 | 0.06 |
+
+**Against the predictions.** (1) Tries fall by at least 20% in C: FAILED (no change). (2) Bands alive not lower than R: CONFIRMED (all alive). (3) CH between R and C: NOT SHOWN — all three are the same within noise, so with these amounts and this way of using cover, cover does nothing visible. (4) Not measured.
+
+**What it means.** Cover as built only shortens how far anyone sees; the valley already has almost no tries (0.05 per hominin-year), so there is little left for it to cut, and it cannot be seen against 12 worlds. This is not evidence that hiding places do not matter: the three amounts are assumptions, there is no hunter ambush mechanic that uses cover, and hominins have no "slip out of sight" move. Hiding would need those to count. The switch stays off by default; the world looks no different on the page. To test hiding for real: a hunter's success rises with cover at its start (Hopcraft et al. 2005) and a hominin can step behind a boulder or into a thicket to break the line; both are mechanics to build and source first.
+
+### 133. Real hunter densities in the fine valley (250 m squares): no band wiped out in 24 worlds x 5 years, and hunters made about 30 times fewer tries — Nov 2026
+
+**Version.** Valley engine merged into a scratch branch (`valrd`), `--real-densities --dens-zone 18` (18 squares = 4.5 km, the globe's 3x3 radius; the hunters' number per square is scaled to the valley's 0.0625 km² squares), the entry-131 cast, 12 worlds x 5 years per arm, seeds 1-12; arm R no avoidance, RH `--hom-avoid`. Prediction: `data/findings/133-valley/prediction-written-before.txt`.
+
+| (12 worlds each) | R | RH | globe R / RH (entry 132) |
+|---|---|---|---|
+| bands wiped out in 5 years | 0 | 0 | 12 / 12 |
+| hominin-years lived | 1,598 | 1,648 | 310 / 446 |
+| people, start to end (12 bands) | 300 to 275 | 300 to 323 | |
+| tries at a hominin per hominin-year | 0.05 | 0.08 | 1.85 / 4.66 |
+| tries on awake / asleep / up a tree | 52 / 20 / 3 | 87 / 43 / 4 | |
+| most hunters around at once (per world) | 40 to 60 | 41 to 65 | |
+
+**Against the predictions.** (1) Tries per hominin-year at most 0.4 in R, 0.9 in RH: CONFIRMED (0.05, 0.08). (2) At least 8 of 12 bands alive after 5 years in R: CONFIRMED (12 of 12). (3) Predator deaths per 1,000 hominin-years inside 20-120: NOT MEASURED (this counting script does not count deaths; the population fell 8% over 5 years in R and rose 8% in RH, with births and all other deaths mixed in). (4) RH fewer deaths than R: NOT JUDGEABLE the same way; the tries, which the rule should lower, are higher (the counter also counts tries the rule drops, as in entry 132).
+
+**What it means.** The coarse 3 km squares of the globe were a very large part of the deaths: the same real densities at 250 m squares leave every band alive for 5 years and give a population change near flat. So the earlier worry (hunters at real density kill everyone) was mostly a resolution effect, not a wrong density or attack success. Caution: 0.05 tries per hominin-year is now well below the real figure of about 0.30 attacks per chimpanzee-year (Boesch 1991; reading of "attack risk"), so the valley may now be too safe; the deaths have to be counted and compared with the measured 3-5.5% a year before anything is tuned. The valley hunters are also close to the pinned count (40 to 65 around a band of 25 at once). Next: count predator deaths per 1,000 hominin-years in the valley (R and RH) with the valley-run tool; then the cover test (entry 134, running).
+
 ### 132. Hunters passing up hominins as their real kinds do (leopard 0.55, hyena 0.03): bands last a little longer, deaths fall by about 30%, every band is still wiped out — Nov 2026
 
 **Version.** `--hom-avoid` on top of entry 131's setup (commit after 36fb169), 12 worlds per arm x 40 days, seeds 1-12. Prediction: `data/findings/132-avoid/prediction-written-before.txt`. Counting run, not the full bundle.

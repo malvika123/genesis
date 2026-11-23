@@ -1,0 +1,7 @@
+Entry 134 — more cover (tall grass, shrubs, rocks) in the valley, written 24 Nov 2026 before the runs.
+12 worlds (seeds 1-12) x 5 years, valley engine, switches of entry 133 R plus --dens-zone 18; baseline = entry 133 arm R (same seeds). Arms: C = --more-cover; CH = --more-cover --grass-cover 0.25 --shrub-cover 0.175 --rock-cover 0.25.
+Predictions (direction was unknown before; stated honestly):
+ 1. C: tries at hominins per hominin-year fall by at least 20% against R (hunters see hominins from less far; cover shortens seeing distance for everyone).
+ 2. C: the number of bands alive at 5 years is not lower than R's.
+ 3. CH lies between R and C on both measures (a dose response); if CH equals R the cover amounts do nothing.
+ 4. Hominins' own hunting of small prey falls (they see less far too): not measured here, noted for a later read.

@@ -763,6 +763,47 @@ function drawTerrain(g, v, relief = true) {
       }
     }
   g.globalAlpha = 1;
+  // ground cover, drawn only (docs/design/ground-cover.md): shrubs where woody cover is thin to moderate, grass tufts where the grass is thick, boulders on stony ground
+  for (let y = 0; y < H; y++)
+    for (let x = 0; x < W; x++) {
+      const i = y * W + x;
+      if (water[i] || !inEvidenceRegion(x, y)) continue;
+      const t = tree[i],
+        h = Math.imul(i + 1, 2654435761) >>> 0,
+        o = (k) => ((h >>> (k * 5)) & 31) / 31; // fixed offsets for this square
+      if (rock[i] || (ter[i] === 2 && o(0) > 0.45)) {
+        g.fillStyle = '#6f6862';
+        g.beginPath();
+        g.ellipse(x * C + C * (0.25 + 0.5 * o(1)), y * C + C * (0.3 + 0.5 * o(2)), C * (rock[i] ? 0.3 : 0.17), C * (rock[i] ? 0.22 : 0.13), 0, 0, 7);
+        g.fill();
+      }
+      if (rock[i]) continue;
+      if (t >= 0.04) {
+        g.fillStyle = '#2c5a22';
+        const n = t < 0.15 ? 1 : t < 0.35 ? 3 : 2;
+        for (let k = 0; k < n; k++) {
+          g.beginPath();
+          g.ellipse(x * C + C * (0.2 + 0.6 * o(k + 3)), y * C + C * (0.25 + 0.6 * o(k + 4)), C * 0.2, C * 0.13, 0, 0, 7);
+          g.fill();
+        }
+      }
+      if (t < 0.8 && ter[i] !== 1 && tuftHere(i)) {
+        g.strokeStyle = '#a9a14a';
+        g.lineWidth = 1;
+        const n = food[i] > 0.8 ? 3 : 2;
+        for (let k = 0; k < n; k++) {
+          const gx = x * C + C * (0.15 + 0.7 * o(k + 5)),
+            gy = y * C + C * (0.45 + 0.5 * o(k + 1));
+          g.beginPath();
+          g.moveTo(gx, gy);
+          g.lineTo(gx - 1, gy - C * 0.3 * (0.6 + food[i]));
+          g.moveTo(gx, gy);
+          g.lineTo(gx + 1, gy - C * 0.25 * (0.6 + food[i]));
+          g.stroke();
+        }
+      }
+    }
+  g.globalAlpha = 1;
   // relief: light from the north-west, so slopes facing it are lit and the far sides are in shade;
   // the highest ground turns to bare grey rock (the 3D globe does its own shading)
   for (let y = 0; y < H && relief; y++)
@@ -1512,9 +1553,60 @@ function drawEyeHands(g, a, w, h) {
     g.ellipse(x1, y1, 40 * s, 34 * s, 0, 0, 7);
     g.fill();
   };
+  // Fingers (24 Nov 2026, owner: "give them fingers"; docs/design/hands.md): drawn only, no effect on the world. Four long curved fingers and a short thumb: Australopithecus afarensis had curved
+  // fingers built for climbing (Rolian et al. 2013; the curve is also seen in later australopith and Homo naledi hands), and a thumb whose length is disputed: fully human (Alba et al. 2003) or between
+  // gorilla and human (Rolian et al. 2013), so it is drawn short of the human proportion. The fingers curl when something is held.
+  const fingers = (x, y, dx, dy, side) => {
+    const ang = Math.atan2(dy, dx),
+      px = -Math.sin(ang),
+      py = Math.cos(ang),
+      curl = a.hand ? 0.85 : 0.32,
+      L = [0.92, 1, 0.95, 0.78];
+    g.lineCap = 'round';
+    g.lineJoin = 'round';
+    for (let i = 0; i < 4; i++) {
+      let fx = x + px * (i - 1.5) * 15 * s + Math.cos(ang) * 26 * s,
+        fy = y + py * (i - 1.5) * 15 * s + Math.sin(ang) * 26 * s,
+        fa = ang + side * 0.05 * (i - 1.5);
+      for (let j = 0; j < 3; j++) {
+        const len = [28, 22, 17][j] * L[i] * s,
+          nx = fx + Math.cos(fa) * len,
+          ny = fy + Math.sin(fa) * len;
+        g.strokeStyle = skin;
+        g.lineWidth = (17 - 2 * j) * s;
+        g.beginPath();
+        g.moveTo(fx, fy);
+        g.lineTo(nx, ny);
+        g.stroke();
+        fx = nx;
+        fy = ny;
+        fa += side * curl * (j === 0 ? 0.6 : 1); // the finger curves toward the thumb side, more at the tip
+      }
+    }
+    // the thumb: short, two joints, set to the side and leaning across
+    let tx = x - px * side * 34 * s + Math.cos(ang) * 6 * s,
+      ty = y - py * side * 34 * s + Math.sin(ang) * 6 * s,
+      ta = ang - side * 0.75;
+    for (let j = 0; j < 2; j++) {
+      const len = [24, 17][j] * s * (0.7 + 0.4 * (a.g && a.g.dx !== undefined ? a.g.dx : 0.75)), // the thumb's length follows the inherited hand precision
+        nx = tx + Math.cos(ta) * len,
+        ny = ty + Math.sin(ta) * len;
+      g.strokeStyle = skin;
+      g.lineWidth = (19 - 3 * j) * s;
+      g.beginPath();
+      g.moveTo(tx, ty);
+      g.lineTo(nx, ny);
+      g.stroke();
+      tx = nx;
+      ty = ny;
+      ta += side * (a.hand ? 0.7 : 0.25);
+    }
+  };
   g.globalAlpha = isNightAt(a.x) ? 0.55 : 1;
   arm(w * 0.1, h + 40 * s, w * 0.27, h * 0.88 + bob);
+  fingers(w * 0.27, h * 0.88 + bob, w * 0.27 - w * 0.1, h * 0.88 + bob - (h + 40 * s), -1);
   arm(w * 0.78, h + 40 * s, rx, ry);
+  fingers(rx, ry, rx - w * 0.78, ry - (h + 40 * s), 1);
   if (a.hand) drawHeld(g, a.hand, rx + 10 * s, ry - 30 * s, 320 * s, 26 * s);
   g.globalAlpha = 1;
 }
@@ -2100,6 +2192,7 @@ function drawAfrican(g, a, X, Y, k) {
   }
   g.restore();
 }
+const ph0b = (a) => a.ph || 0; // the stride phase (tail sway)
 function drawAnimal(g, a, X, Y, k) {
   if (AFRICAN[a.S.n]) return drawAfrican(g, a, X, Y, k);
   const L = LOOK[a.S.n] || LOOK[a.S.look] || LOOK.Deer,
@@ -2111,7 +2204,10 @@ function drawAnimal(g, a, X, Y, k) {
     bh = L.h * u,
     leg = a.asleep ? 0 : L.leg * u,
     swing = a.moving && !a.asleep ? Math.sin(a.ph || 0) * u * 0.7 : 0,
-    by = Y - leg - bh / 2 + (a.asleep ? bh * 0.3 : 0); // body centre; feet on the ground at Y
+    walkingNow = a.moving && !a.asleep,
+    // the body rises a little with each step and the head nods against it (a walking animal is never level)
+    bob = walkingNow ? Math.abs(Math.sin(a.ph || 0)) * bh * 0.05 : 0,
+    by = Y - leg - bh / 2 + (a.asleep ? bh * 0.3 : 0) - bob; // body centre; feet on the ground at Y
   g.save();
   g.lineCap = 'round';
   g.strokeStyle = L.col;
@@ -2120,14 +2216,33 @@ function drawAnimal(g, a, X, Y, k) {
   if (leg) {
     g.lineWidth = Math.max(1, u * (nm === 'Bison' || nm === 'Bear' ? 0.75 : 0.45));
     g.beginPath();
-    for (const [lx, sw] of [
-      [-0.32, swing],
-      [-0.22, -swing],
-      [0.25, -swing],
-      [0.35, swing],
+    // four legs, each with its own place in the stride. A walk lifts them one at a time (left hind, left fore, right hind, right fore, a quarter-stride apart); a faster gait (trot)
+    // moves them in diagonal pairs. Each leg bends at the knee and the foot lifts as it swings forward. Gaits of real quadrupeds: walk lateral sequence, trot diagonal pairs.
+    const ph0 = a.ph || 0,
+      trot = a.fast !== undefined ? a.fast : (a.mvv || 0) > (a.S.walk || 0.1) * 1.8;
+    for (const [lx, q] of [
+      [-0.32, 0],
+      [-0.22, 0.5],
+      [0.25, trot ? 0.5 : 0.25],
+      [0.35, trot ? 0 : 0.75],
     ]) {
-      g.moveTo(X + lx * bw, by + bh * 0.3);
-      g.lineTo(X + lx * bw + sw * 0.5, Y);
+      const hx0 = X + lx * bw,
+        hy0 = by + bh * 0.3;
+      if (!walkingNow) {
+        g.moveTo(hx0, hy0);
+        g.lineTo(hx0, Y);
+        continue;
+      }
+      const phi = ph0 - q * 2 * Math.PI,
+        sw = Math.sin(phi) * u * 0.7,
+        lift = Math.max(0, Math.cos(phi)) * u * 0.28, // the foot is off the ground while it swings forward
+        fx = hx0 + sw * 0.5,
+        fy = Y - lift,
+        kx = (hx0 + fx) / 2 + u * 0.12 * (lx < 0 ? -1 : 1) * (a.face === -1 ? -1 : 1), // the knee bends forward on fore legs, back on hind legs
+        ky = (hy0 + fy) / 2;
+      g.moveTo(hx0, hy0);
+      g.lineTo(kx, ky);
+      g.lineTo(fx, fy);
     }
     g.stroke();
   }
@@ -2144,7 +2259,7 @@ function drawAnimal(g, a, X, Y, k) {
     g.quadraticCurveTo(tx - f * bw * 0.45, by + bh * 0.6, tx - f * bw * 0.55, by - bh * 0.3);
   } else {
     g.moveTo(tx, by - bh * 0.2);
-    g.lineTo(tx - f * u * 0.5, by);
+    g.lineTo(tx - f * u * 0.5 + (walkingNow ? Math.sin(ph0b(a) * 1) * u * 0.25 : 0), by);
   }
   g.stroke();
   // body (bison have a hump at the shoulders)
@@ -2159,7 +2274,7 @@ function drawAnimal(g, a, X, Y, k) {
   // head
   const head = (nm === 'Rabbit' ? 0.7 : nm === 'Bear' || nm === 'Bison' ? 0.95 : 0.75) * bh,
     hx = X + f * (bw / 2 + head * 0.35),
-    hy = by - bh * (nm === 'Bison' ? 0.05 : 0.45) + (a.act === A_EAT ? bh * 0.7 : 0);
+    hy = by - bh * (nm === 'Bison' ? 0.05 : 0.45) + (a.act === A_EAT ? bh * 0.7 : 0) + (walkingNow ? Math.sin((a.ph || 0) * 2 + 1.2) * bh * 0.06 : 0); // the head nods with the stride
   g.beginPath();
   g.arc(hx, hy, head / 2, 0, 7);
   g.fill();
@@ -2794,7 +2909,7 @@ function glide() {
   lastGlide = now;
   // the body's clock: hands and arms move at the same pace as walking legs would at this speed of the
   // world (a stride's worth of a walking person per cycle), and stop when the world is paused
-  if (running) bodyT += dt * Math.min(3, (stepsPerSec() * SP[0].walk) / 0.4);
+  if (running) bodyT += dt * Math.min(3, (stepsBase() * SP[0].walk) / 0.4);
   // paused: nothing moves on screen (before, bodies kept gliding to catch up with frozen legs: the owner, 14 Nov 2026)
   if (!running) {
     for (const a of ag) a.moving = false;
@@ -2822,6 +2937,7 @@ function glide() {
       tx += mx * p;
       ty += my * p;
       if (walking && mx) a.face = mx > 0 ? 1 : -1;
+      if (walking && (mx || my)) (a.fdx = mx), (a.fdy = my); // the way it last walked, north-south too (the 3D view turns it to face that way on screen)
     }
     let bx = 0,
       by = 0;
@@ -2866,6 +2982,12 @@ function glide() {
       a.rx = (((a.rx + dx * k) % W) + W) % W;
       a.ry += dy * k;
       moved = d * k;
+      // it faces the way its body is really gliding (not the way the step was planned: a turn or a blocked step made about one animal in five face backwards, measured 24 Nov 2026)
+      if (moved > 2e-4) {
+        a.fdx = dx * k;
+        a.fdy = dy * k;
+        if (Math.abs(dx * k) > 1e-4) a.face = dx > 0 ? 1 : -1;
+      }
     }
     // legs step with the ground they actually cover (a stride is about 0.4 of a square, the size the
     // body is drawn at), so feet never slide; and never faster than a few steps a second on screen
@@ -2981,9 +3103,19 @@ function draw() {
 const STEP_S = 900,
   SPD_LO = Math.log10(1 / STEP_S),
   SPD_HI = Math.log10(600);
-const stepsPerSec = () => 10 ** (SPD_LO + ((SPD_HI - SPD_LO) * +$('spd').value) / 100);
+const stepsBase = () => 10 ** (SPD_LO + ((SPD_HI - SPD_LO) * +$('spd').value) / 100);
+// Speed follows zoom (24 Nov 2026, owner: zoomed out the hominins look slow, zoomed in they walk as in reality): what you see moves in proportion to how close you are (the camera distance falls as
+// zoom^-1.35), so zoomed out the same pace looks like crawling. The clock is sped up to keep the pace on screen about what it is at close range (zoom 8): by (8/zoom)^1.35, never below 1 and
+// at most 8 (one world step costs the page about 60 ms, so much more than that cannot be kept up with). It changes only how fast the clock runs, nothing in the world; off in the creature's-eyes view and the flat map. The slider is the pace at close range.
+let zoomFollow = false; // off unless chosen in the View menu (the owner, 24 Nov: zoomed out should look slow, close up real walking)
+try {
+  zoomFollow = localStorage.getItem('genesis-zoomspeed') === '1';
+} catch (e) {}
+const zoomBoost = () => (zoomFollow && typeof view !== 'undefined' && view === 'globe' && !GL.eye ? clamp(Math.pow(8 / Math.max(GL.zoom, 0.5), 1.35), 1, 8) : 1);
+const stepsPerSec = () => stepsBase() * zoomBoost();
 function spdLabel() {
-  const r = stepsPerSec() * STEP_S; // seconds of world time per real second
+  const zb = zoomBoost(),
+    r = stepsBase() * STEP_S * zb; // seconds of world time per real second
   const f = (v, u) =>
     (v < 10 ? v.toFixed(1).replace(/\.0$/, '') : Math.round(v)) + ' ' + u + (v >= 1.05 ? 's' : '');
   $('spdl').textContent =
@@ -2996,16 +3128,21 @@ function spdLabel() {
             ? f(r / 60, 'minute')
             : r < 86400
               ? f(r / 3600, 'hour')
-              : f(r / 86400, 'day'));
+              : f(r / 86400, 'day')) +
+        (zb > 1.05 ? ' (×' + Math.round(zb) + ' zoomed out)' : '');
 }
+let lastZB = 1;
 try {
-  const v = localStorage.getItem('genesis-speed');
+  const v = localStorage.getItem('genesis-speed-v2');
   if (v !== null) $('spd').value = v;
 } catch (e) {}
+// the slider should only move when you drag it: a mouse wheel or arrow key meant for zooming or scrolling must not drag the speed to "real time" (where nothing seems to move)
+$('spd').addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
+$('spd').onchange = () => $('spd').blur();
 $('spd').oninput = () => {
   spdLabel();
   try {
-    localStorage.setItem('genesis-speed', $('spd').value);
+    localStorage.setItem('genesis-speed-v2', $('spd').value);
   } catch (e) {}
 };
 spdLabel();
@@ -3135,6 +3272,10 @@ function loop() {
   lastT = now;
   if (running) {
     acc += stepsPerSec() * dt;
+    {
+      const zb = Math.round(zoomBoost());
+      if (zb !== lastZB) ((lastZB = zb), spdLabel());
+    }
     let n = 0;
     // a time budget per frame (about 25 ms): at high speeds the world runs as fast as the computer can while the
     // picture stays smooth; before, up to 10 steps a frame took half a second and creatures jumped (the owner, 14 Nov)
@@ -3491,6 +3632,15 @@ function setSpin(v) {
   $('turn').setAttribute('aria-pressed', v ? 'true' : 'false');
 }
 $('turn').onclick = () => setSpin(!GL.spin);
+$('zspd').onclick = () => {
+  zoomFollow = !zoomFollow;
+  $('zspd').textContent = zoomFollow ? 'Speed follows zoom: on' : 'Speed follows zoom: off';
+  try {
+    localStorage.setItem('genesis-zoomspeed', zoomFollow ? '1' : '0');
+  } catch (e) {}
+  spdLabel();
+};
+$('zspd').textContent = zoomFollow ? 'Speed follows zoom: on' : 'Speed follows zoom: off';
 $('sky').onclick = () => {
   showSky = !showSky;
   $('sky').textContent = showSky ? 'Hide clouds' : 'Show clouds';

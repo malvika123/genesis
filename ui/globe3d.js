@@ -286,6 +286,57 @@ const G3D = { ok: false };
     pines = new THREE.InstancedMesh(coneG, new THREE.MeshLambertMaterial({ color: 0x24493a }), MAXT),
     leafy = new THREE.InstancedMesh(crownG, new THREE.MeshLambertMaterial({ color: 0x2f6b2a }), MAXT);
   pines.count = leafy.count = trunks.count = 0;
+  // The flat-topped acacia (24 Nov 2026, owner: "all same looking, no branches"; docs/design/trees.md), for broadleaf squares in the East African evidence region: a taller trunk, three forking
+  // limbs, and a wide flat crown of lobes, wider than tall. Evidence: Hadar pollen has Acacia among the trees (Bonnefille et al. 2004: arid-steppe trees Commiphora, Acacia, Grewia, Capparidaceae, and
+  // riverine Combretaceae and Tamarix, all present but not common) in a grassy woodland with sizable trees; the umbrella thorn (Vachellia tortilis) today is 5-20 m tall (usually near 5-10 m) with a flat crown
+  // often wider than tall. Which species stood at Hadar is NOT known: this is one modern-looking stand-in shape, drawn bigger than the other trees. Elsewhere on Earth the old round tree is kept.
+  const limbG = new THREE.CylinderGeometry(0.0004, 0.0007, 0.0085, 5).translate(0, 0.00425, 0),
+    flatG = new THREE.IcosahedronGeometry(0.0042, 1).scale(1, 0.38, 1),
+    limbs = new THREE.InstancedMesh(limbG, new THREE.MeshLambertMaterial({ color: 0x5a3d26 }), 3 * MAXT),
+    flats = new THREE.InstancedMesh(flatG, new THREE.MeshLambertMaterial({ color: 0x356529 }), 4 * MAXT),
+    part = new THREE.Matrix4(),
+    pq = new THREE.Quaternion(),
+    pe = new THREE.Euler(),
+    pp = new THREE.Vector3(),
+    ps = new THREE.Vector3();
+  limbs.count = flats.count = 0;
+  globe.add(limbs);
+  globe.add(flats);
+  // Ground cover (24 Nov 2026, owner: shrubs, tall grass and rocks make it real; docs/design/ground-cover.md): drawn only, no effect on the sim.
+  // Shrubs where woody cover is thin to moderate (Hadar: bushland and shrubland mosaics, Bonnefille; Awash today: Acacia, Grewia, Psiadia shrubs), grass tufts where the
+  // grass is thick and green (they shrink and vanish as the grass is eaten or dries), boulders on stony ground and round rock squares (the Afar rift floor is basalt flows 1-10 m thick, Gona
+  // geology). How many of each per square is a drawing choice; no density is sourced.
+  const MAXG = 60000,
+    shrubG = new THREE.IcosahedronGeometry(0.0034, 1).scale(1.15, 1.0, 1.15).translate(0, 0.0032, 0),
+    tuftG = (() => {
+      // a clump of seven thin leaning blades, about knee high to a hominin (eye height 0.0055)
+      const parts = [];
+      for (let b = 0; b < 7; b++) {
+        const az = (b * 2.399) % 6.283,
+          rad = 0.0006 + 0.0004 * (b % 3),
+          g = new THREE.ConeGeometry(0.00028, 0.0026 + 0.0008 * (b % 3), 3).translate(0, 0.0013 + 0.0004 * (b % 3), 0);
+        g.rotateZ(0.18 + 0.1 * (b % 2));
+        g.rotateY(az);
+        g.translate(Math.cos(az) * rad, 0, Math.sin(az) * rad);
+        parts.push(g.toNonIndexed());
+      }
+      const n = parts.reduce((t, g) => t + g.attributes.position.count, 0),
+        pos = new Float32Array(n * 3);
+      let o = 0;
+      for (const g of parts) (pos.set(g.attributes.position.array, o), (o += g.attributes.position.array.length));
+      const m = new THREE.BufferGeometry();
+      m.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      m.computeVertexNormals();
+      return m;
+    })(),
+    boulderG = new THREE.DodecahedronGeometry(0.0034, 0).scale(1.2, 0.8, 1).translate(0, 0.0015, 0),
+    shrubs = new THREE.InstancedMesh(shrubG, new THREE.MeshLambertMaterial({ color: 0x2c5a22 }), MAXG),
+    tufts = new THREE.InstancedMesh(tuftG, new THREE.MeshLambertMaterial({ color: 0x8c9e3c }), MAXG),
+    boulders = new THREE.InstancedMesh(boulderG, new THREE.MeshLambertMaterial({ color: 0x77706a }), MAXG);
+  shrubs.count = tufts.count = boulders.count = 0;
+  globe.add(shrubs);
+  globe.add(tufts);
+  globe.add(boulders);
   globe.add(trunks);
   globe.add(pines);
   globe.add(leafy);
@@ -296,45 +347,131 @@ const G3D = { ok: false };
     mtx = new THREE.Matrix4(),
     scl = new THREE.Vector3(),
     pos = new THREE.Vector3();
+  const TREEAT = new Map(); // trunk places by square, for walking round them
   function plantTrees() {
+    TREEAT.clear();
     let np = 0,
       nl = 0,
+      na = 0,
       seed = 12345;
     const r01 = () => (seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff;
     // each square's trees come from that square's own numbers, so when a forest grows or thins in one
     // place the trees everywhere else stay exactly where they stood (they used to all shift together)
     for (let i = 0; i < W * H && np < MAXT && nl < MAXT; i++) {
       const t = tree[i];
-      if (t < 0.2 || water[i]) continue;
-      const n = t > 0.65 ? 6 : t > 0.4 ? 4 : 2,
-        x = i % W,
+      if (t < 0.18 || water[i]) continue;
+      const x = i % W,
         y = (i / W) | 0;
       seed = (i * 2654435761 + 977) & 0x7fffffff;
       r01();
-      for (let k = 0; k < n; k++) {
+      // up to six trees a square: tree k stands once the cover passes 0.18 + 0.1 k, and grows from 30% to full size over the next 0.12 of cover, so a forest thins by trees
+      // shrinking away one by one, not whole groups popping out (the owner, 24 Nov 2026: "suddenly the tree disappears")
+      for (let k = 0; k < 6; k++) {
         const gx = x + 0.15 + 0.7 * r01(),
           gy = y + 0.15 + 0.7 * r01(),
+          grow = clamp((t - (0.18 + 0.1 * k)) / 0.12, 0, 1),
+          vis = t > 0.18 + 0.1 * k,
           lo = (gx / W) * 2 * Math.PI - Math.PI,
           la = LATMAX * (1 - (2 * gy) / H),
           r = 1 + EX * heightAt(la, lo);
         pos.copy(local(la, lo, r));
         q.setFromUnitVectors(up, pos.clone().normalize());
-        const sz = (0.7 + 0.6 * r01()) * (fkind[i] === 3 ? 1.35 : 1);
+        const acacia = fkind[i] === 2 && inEvidenceRegion(x, y) && na + 1 < MAXT,
+          sz = (0.7 + 0.6 * r01()) * (fkind[i] === 3 ? 1.35 : acacia ? 1.7 : 1) * (0.3 + 0.7 * grow);
+        if (!vis) continue;
+        if (!TREEAT.has(i)) TREEAT.set(i, []);
+        TREEAT.get(i).push([gx, gy, 0.03 * (0.5 + 0.5 * grow)]); // where a trunk stands (in squares) and how far to keep from it: creatures walk round it
         scl.set(sz, sz, sz);
         mtx.compose(pos, q, scl);
-        trunks.setMatrixAt(np + nl, mtx);
-        if (fkind[i] === 1) pines.setMatrixAt(np++, mtx);
+        trunks.setMatrixAt(np + nl + na, mtx);
+        if (acacia) {
+          // three limbs fork from the trunk top, leaning outward; a flat lobe of leaves caps each, and one more the middle
+          const az0 = r01() * 6.283;
+          for (let b = 0; b < 3; b++) {
+            const az = az0 + (b * 2 * Math.PI) / 3 + 0.3 * (r01() - 0.5);
+            pe.set(0.62 * Math.cos(az + 1.5708), 0, -0.62 * Math.sin(az + 1.5708));
+            pq.setFromEuler(pe);
+            pp.set(0, 0.0048, 0);
+            ps.set(1, 1, 1);
+            part.compose(pp, pq, ps);
+            limbs.setMatrixAt(na * 3 + b, new THREE.Matrix4().multiplyMatrices(mtx, part));
+            // the limb tip: 0.0085 along the leaning limb
+            const tx = Math.sin(0.62) * 0.0085 * Math.cos(az),
+              tz = -Math.sin(0.62) * 0.0085 * Math.sin(az),
+              ty = 0.0048 + Math.cos(0.62) * 0.0085;
+            pp.set(tx, ty + 0.0012, tz);
+            ps.set(0.85 + 0.3 * r01(), 1, 0.85 + 0.3 * r01());
+            pq.identity();
+            part.compose(pp, pq, ps);
+            flats.setMatrixAt(na * 4 + b, new THREE.Matrix4().multiplyMatrices(mtx, part));
+          }
+          pp.set(0, 0.0048 + Math.cos(0.62) * 0.0085 + 0.0016, 0);
+          ps.set(1, 1, 1);
+          pq.identity();
+          part.compose(pp, pq, ps);
+          flats.setMatrixAt(na * 4 + 3, new THREE.Matrix4().multiplyMatrices(mtx, part));
+          na++;
+        } else if (fkind[i] === 1) pines.setMatrixAt(np++, mtx);
         else leafy.setMatrixAt(nl++, mtx);
       }
     }
     pines.count = np;
     leafy.count = nl;
-    trunks.count = np + nl;
+    trunks.count = np + nl + na;
+    limbs.count = na * 3;
+    flats.count = na * 4;
+    limbs.instanceMatrix.needsUpdate = flats.instanceMatrix.needsUpdate = true;
     pines.instanceMatrix.needsUpdate =
       leafy.instanceMatrix.needsUpdate =
       trunks.instanceMatrix.needsUpdate =
         true;
+    plantGround();
     treesFor = alt;
+  }
+  function plantGround() {
+    let ns = 0,
+      nt = 0,
+      nb = 0,
+      seed = 777;
+    const r01 = () => (seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff,
+      put = (mesh, k, x, y, sz) => {
+        const gx = x + 0.1 + 0.8 * r01(),
+          gy = y + 0.1 + 0.8 * r01(),
+          lo = (gx / W) * 2 * Math.PI - Math.PI,
+          la = LATMAX * (1 - (2 * gy) / H),
+          r = 1 + EX * heightAt(la, lo);
+        pos.copy(local(la, lo, r));
+        q.setFromUnitVectors(up, pos.clone().normalize());
+        scl.set(sz, sz, sz);
+        mtx.compose(pos, q, scl);
+        mesh.setMatrixAt(k, mtx);
+      };
+    for (let i = 0; i < W * H; i++) {
+      if (water[i]) continue;
+      const x = i % W,
+        y = (i / W) | 0,
+        t = tree[i];
+      if (!inEvidenceRegion(x, y)) continue; // only where there is evidence (src/earth.js)
+      seed = (i * 2246822519 + 31) & 0x7fffffff;
+      r01();
+      if (rock[i]) {
+        for (let k = 0; k < 3 && nb < MAXG; k++) put(boulders, nb++, x, y, 0.8 + 0.6 * r01());
+        continue;
+      }
+      if (ter[i] === 2 && nb < MAXG && r01() < 0.5) put(boulders, nb++, x, y, 0.4 + 0.5 * r01());
+      if (t >= 0.04 && ns < MAXG) {
+        const n = t < 0.15 ? 3 : t < 0.35 ? 5 : t < 0.55 ? 3 : 2; // thin cover: most bushes; woodland keeps an understory of fewer
+        for (let k = 0; k < n; k++) put(shrubs, ns++, x, y, 0.8 + 0.7 * r01());
+      }
+      if (t < 0.8 && ter[i] !== 1 && nt < MAXG && tuftHere(i)) {
+        const n = food[i] > 0.7 ? 8 : food[i] > 0.45 ? 6 : food[i] > 0.2 ? 4 : 2; // clumps of blades, fewer where the grass is eaten or shaded
+        for (let k = 0; k < n; k++) put(tufts, nt++, x, y, (0.6 + 0.8 * food[i]) * (0.8 + 0.5 * r01()));
+      }
+    }
+    shrubs.count = ns;
+    tufts.count = nt;
+    boulders.count = nb;
+    shrubs.instanceMatrix.needsUpdate = tufts.instanceMatrix.needsUpdate = boulders.instanceMatrix.needsUpdate = true;
   }
   // Caves: a rocky knoll with a hollow inside and an arched mouth. From outside you see the rock and the
   // dark opening; step into the cell and you are inside the hollow, looking at dim stone walls and the
@@ -785,7 +922,9 @@ const G3D = { ok: false };
       bm = SOC.bodyModel && a.sp === 0 && a.gp !== undefined, // the body model: the figure shows how far food has let it grow, its inherited size, muscle and how well fed it is
       gr = Math.round(clamp((bm ? Math.min(a.gp, a.age) : a.age) / S.mat, 0.3, 1) * 10) / 10,
       bmKey = bm ? [Math.round((a.g.sz ?? 1) * 20), Math.round((a.msc ?? 1) * 10), Math.round(clamp(((a.eAvg ?? a.e) - 20) / 50, 0, 1) * 4), Math.round((a.g.st ?? 1) * 10)].join('/') : '',
-      pose = a.moving ? Math.round(Math.sin(a.ph || 0) * 2) : 0,
+      pose = a.moving ? Math.round(Math.sin(a.ph || 0) * 4) / 2 : 0, // leg positions in a stride
+      phq = a.moving ? Math.round(((((a.ph || 0) % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI)) / ((2 * Math.PI) / 12)) % 12 : 0, // the stride in twelfths: the picture for each part of a stride (animals' legs follow the whole cycle, not just its sine)
+      fastv = (a.mvv || 0) > (a.S.walk || 0.1) * 1.8 ? 1 : 0, // a faster gait (trot): diagonal pairs of legs
       swf = a.act === A_STRIKE && !a.asleep ? Math.round(bodySwing(a)) : 0,
       heldv = typeof carried === 'function' && a.sp === 0 && carried(a) ? 1 : 0, // a carried infant clings to its mother
       stkv = a.stkT !== undefined && tick - a.stkT <= 1 ? a.stk : null, // what its blow lands on, and whether it did what it was for
@@ -799,6 +938,8 @@ const G3D = { ok: false };
         gr,
         a.asleep ? 1 : 0,
         pose,
+        phq,
+        fastv,
         a.asleep ? 0 : a.act >= 8 ? a.act : 0, // what it is doing changes its pose
         a.hand || 0,
         swf,
@@ -834,7 +975,8 @@ const G3D = { ok: false };
         asleep: a.asleep,
         moving: pose !== 0,
         pose: pose / 2,
-        ph: Math.asin(clamp(pose / 2, -1, 1)), // the leg position for this picture
+        ph: a.sp === 0 ? Math.asin(clamp(pose / 2, -1, 1)) : phq * ((2 * Math.PI) / 12), // the leg position for this picture (animals: the whole stride)
+        fast: !!fastv,
         hand: a.hand || 0,
         swf,
         wetv,
@@ -983,12 +1125,47 @@ const G3D = { ok: false };
         }
         n++;
         sp.visible = true;
+        // which way it faces ON SCREEN: a flat picture that always turns to the camera must look the way the creature walks as the viewer sees it, not as the map's east-west
+        // (looking south, or through a creature's eyes facing any way, east on the map is screen-left, so creatures seemed to walk backwards). Walking straight toward or away keeps the last side.
+        const savedFace = a.face;
+        if (a.fdx !== undefined) {
+          const la0 = latOfY(a.ry),
+            lo0 = lonOfX(a.rx),
+            p0 = local(la0, lo0, 1).clone(),
+            p1 = local(latOfY(a.ry + a.fdy), lonOfX(a.rx + a.fdx), 1).clone();
+          globe.updateMatrixWorld();
+          camera.updateMatrixWorld();
+          const dirW = p1.sub(p0).transformDirection(globe.matrixWorld),
+            right = new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld, 0),
+            d = dirW.dot(right);
+          if (Math.abs(d) > 0.25) a.faceS = d > 0 ? 1 : -1;
+          if (a.faceS !== undefined) a.face = a.faceS;
+        }
         sp.material.map = texFor(a, v);
+        a.face = savedFace;
         sp.material.color.setScalar(isNightAt(a.x) ? 0.45 : 1);
         sp.material.transparent = false; // solid: only the empty background of the picture is cut away
         sp.material.needsUpdate = true;
-        const la = latOfY(a.ry),
-          lo = lonOfX(a.rx);
+        // walking round trees: a trunk pushes a creature aside (smoothly: the push grows as it gets closer), so it passes beside a tree, not through it. Drawing only; the sim's squares are not changed.
+        let drx = a.rx,
+          dry = a.ry;
+        if (!a.asleep && !a.up && a.sp !== 3)
+          for (let ox = -1; ox <= 1; ox++)
+            for (let oy = -1; oy <= 1; oy++) {
+              const L = TREEAT.get(idx(Math.floor(a.rx) + ox, clamp(Math.floor(a.ry) + oy, 0, H - 1)));
+              if (L)
+                for (const [tx, ty, rad] of L) {
+                  let ddx = dxw(drx - tx);
+                  const ddy = dry - ty,
+                    d = Math.hypot(ddx, ddy);
+                  if (d < rad && d > 1e-6) {
+                    drx += (ddx / d) * (rad - d);
+                    dry += (ddy / d) * (rad - d);
+                  }
+                }
+            }
+        const la = latOfY(dry),
+          lo = lonOfX(drx);
         // Figures are drawn 2.5 times life size so you can find them among the trees (like the
         // exaggerated mountains), all by the same factor so people and animals keep their true sizes
         // compared with each other (each kind's own size is already in its picture).
@@ -1044,7 +1221,9 @@ const G3D = { ok: false };
         } else {
           // a carried infant is held up on its mother's front, not standing on the ground beside her
           const lift = a.sp === 0 && typeof carried === 'function' && carried(a) ? (a.asleep ? 0.06 : 0.27) * s * 0.7 : 0; // a fraction of the mother's drawn height (about 0.7 of the picture)
-          sp.position.copy(local(la, lo, ground + 0.0002 + lift));
+          // the body rises and falls a little with each step (two bobs a stride; a walking body is never level), about 2% of its height
+          const bob = a.moving && !a.asleep && a.sp === 0 ? Math.abs(Math.sin(a.ph || 0)) * 0.02 * s : 0;
+          sp.position.copy(local(la, lo, ground + 0.0002 + lift + bob));
         }
         sp.scale.set(s, s, 1);
       }

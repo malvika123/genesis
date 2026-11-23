@@ -237,6 +237,8 @@ function buildWorld(cfg) {
   SOC.youngShare = cfg.youngShare ?? 0.25; // yearlings' share of an antelope herd (about 25% of an impala population; tested 0.1 and 0.4)
   SOC.forestPrey = cfg.forestPrey ?? 1000; // forest antelope where open-country herds cannot live, kg/km² (an assumption: 300-3,000; 0 = none, the old rule) // herds are shown in squares within this many of a hominin or hunter (1: its own and the eight around)
   SOC.preyRadius = cfg.preyRadius ?? 8; // squares within which a hunter's prey must live where it starts (an assumption)
+  SOC.dexterity = cfg.dexterity === true; // an inherited precision of the hand (thumb and finger) scales flake knapping, cutting and digging with a flake (entry 135)
+  SOC.dexMean = cfg.dexMean ?? 0.75; // the founders' mean (1 = the old rates; 0.5 = Rolian's in-between hand; 1 = Alba's human-like hand; an assumption)
   SOC.homAvoid = cfg.homAvoid === true; // hunters pass up hominins as their real kinds do (leopard 0.55, spotted hyena 0.03 of their share of available prey)
   SOC.atkHom = cfg.atkHom ?? 0.6; // a hunter's base success per attack on a hominin (same as other prey, 0.6, until tuned against the measured rate)
   SOC.atkHomEasy = cfg.atkHomEasy ?? 0.9; // the same on a sleeping or young hominin

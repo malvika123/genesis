@@ -1,0 +1,10 @@
+Entry 135 — hand precision (--dexterity), written 24 Nov 2026 before the runs.
+Design: each hominin inherits dx (founders around dexMean, spread 10%); dx multiplies (a) the chance a strike on a stone knocks off a flake, (b) the bite taken when cutting meat with a flake, (c) the chance of digging with a flake. dx = 1 is the old rates. The brain gets no new output; it learns from the results as before.
+Run: globe, 12 worlds (seeds 1-12) x 40 days (13 sim years), cast and flags of entry 127 (more-hunters, giant-hyena, african-megantereon, more-herds, body-model, young-leaves, termites), real densities OFF (so bands live long enough to knap). Arms: OFF (no --dexterity), D100 (--dexterity --dex-mean 1.0, Alba's human-like hand), D50 (--dexterity --dex-mean 0.5, Rolian's in-between hand).
+Counts: flakes knocked off per hominin-year (counted from a.stk === 'flake' per step), meat eaten with a flake in hand, population start-to-end.
+Predictions:
+ 1. D100 flakes per hominin-year within 10% of OFF (dx about 1).
+ 2. D50 flakes per hominin-year at 40-60% of OFF (linear in dx).
+ 3. Population change per year: D100 and D50 both within 1 point of OFF (flakes are a small part of the food; no effect expected beyond noise).
+ 4. If 3 fails, the cause is read from the diet counts, not assumed.
+Nothing is tuned: dexMean is a registered assumption tested at both ends.

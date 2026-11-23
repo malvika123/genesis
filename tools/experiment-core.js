@@ -226,6 +226,8 @@
     { key: 'forestPrey', kind: 'num', def: 1000, flag: 'forest-prey', label: 'Prey map: forest antelope where open-country herds cannot live, kg per km² (an assumption: 300-3,000; 0 = none, the old rule)', min: 0, max: 5000, cfg: true },
     { key: 'preyZone', kind: 'num', def: 1, flag: 'prey-zone', label: 'Prey map: herds shown within this many squares of a hominin or hunter', min: 0, max: 4, cfg: true },
     { key: 'preyRadius', kind: 'num', def: 8, flag: 'prey-radius', label: 'Squares within which plant-eaters must live where a hunter starts or arrives (an assumption; tested at 8 and 4)', min: 1, max: 40, cfg: true },
+    { key: 'dexterity', kind: 'on', def: false, flag: 'dexterity', label: 'An inherited precision of the hand (thumb and finger) scales knapping flakes, cutting and digging with a flake', cfg: true },
+    { key: 'dexMean', kind: 'num', def: 0.75, flag: 'dex-mean', label: 'Founders\' hand precision (1 = human-like, 0.5 = between gorilla and human; an assumption)', min: 0.2, max: 1.2, cfg: true },
     { key: 'homAvoid', kind: 'on', def: false, flag: 'hom-avoid', label: 'Hunters take primates less than their share of the available prey (leopard 0.55, hyena 0.03)', cfg: true },
     { key: 'atkHom', kind: 'num', def: 0.6, flag: 'atk-hom', label: 'A hunter\'s base success per attack on a hominin (before size odds)', min: 0, max: 1, cfg: true },
     { key: 'atkHomEasy', kind: 'num', def: 0.9, flag: 'atk-hom-easy', label: 'The same on a sleeping or young hominin', min: 0, max: 1, cfg: true },
