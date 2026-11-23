@@ -1,0 +1,22 @@
+# Test ledger: what was built, how it is checked, and whether it passed (owner, 24 Nov 2026: "write the code so that we for sure test it, not just let go as we simply moved on")
+
+Rule: every built item has a row. Status: TESTED (a check ran and the result is in FINDINGS), FAILED (a check ran and the result was against the aim: see the note), UNTESTED (built, no check yet: it must not be called done). Update this file in the same commit as the code.
+
+| Item | What it should do | The check | Result | Status |
+|---|---|---|---|---|
+| Realistic diet: colour eye, young leaves, termites, taste curiosity (`--colour-eye` etc.) | Fewer hunger deaths; plant foods eaten in believable shares | Entries 124 and 126 (24 worlds, four strengths; shares recorded) | Net -1.55% to -0.40/-0.18/+0.06%; leaves 4%, termites 8% of steps | TESTED; termites too rich (mound density unsourced: re-test at 0.3) |
+| Body model: growth, muscle, strength (`--body-model`) | Adult weights near the reference; growth held back by a poor diet | Entry 126 | Weights right (women 29.8, men 42.0 kg); growth NOT held back by a poor diet | FAILED on diet response: the growth gate only bites below an energy store of 60; fix next |
+| Body model costs survival | None expected beyond bodies | Entry 126 (F arm 12 worlds, not matched) | Net about 0.5-1 point worse | UNTESTED properly: needs a matched on/off arm with the same seeds, with and without the size spread |
+| Page: bodies drawn taller, shorter, broader, thinner (flat map and globe) | Look follows growth, inherited size, muscle, feeding | Chrome check of the drawing with two extreme bodies; no console errors | Drew without errors | TESTED visually; the contrast at far zoom is subtle (owner to judge) |
+| More real hunters (`--more-hunters`, `--giant-hyena`, `--african-megantereon`) | Present in the world, on top of the base hunters; old world unchanged when off | Identical-worlds check; headless count of kinds; page check; entry 127 (24 worlds) | Identical; 12 hunters present; predator deaths 24.2 to 46.1 | TESTED; which kind causes the rise: UNTESTED |
+| More real plant-eaters (`--more-herds`) | Present; no effect on food or bodies | Same checks; entry 127 | No change in diet shares, bodies, hunger | TESTED for no side effects; whether they persist to the end: UNTESTED (not recorded) |
+| Starting number of each extra hunter (`--extra-hunter-n`) and band size (`--people`) | Sensitivity only | Entry 129 overnight run (H1, H4, B35, B50) | Running | UNTESTED until the run is read |
+| Real densities near people (plan item 29) | Per-km2 densities, animals appear near bands | Not built | n/a | NOT BUILT |
+| Strength used in the hold (plan item 23; hold lives in branch `escape`) | Stronger animals break free more often | Not built | n/a | NOT BUILT |
+| Climbing and tree sleeping match real numbers (plan item 32c) | Nest height about 8.7 m with a high first branch; sleep in trees at night | Not checked | n/a | UNTESTED |
+| Seasons (plan item 31) | Real rain curve, dry season effects | Gona rain measured 24 Nov | One wet season (88% of rain in 5 of 12 months) vs two rainy periods today | FAILED against the modern pattern (Pliocene unknown): to check |
+| Grooming, play, quarrels, making up, comforting (plan items 17-18) | Real time budgets and rates | Not built | n/a | NOT BUILT |
+| Smell and taste memory (plan item 17) | Short-range smell, one-trial illness memory | Not built | n/a | NOT BUILT |
+| Flora and small animals (plan item 20) | Confirmed plants and animals only | Not built | n/a | NOT BUILT |
+| Registry test (`npm test`, 93 tests) | Every numeric setting registered with its evidence | Runs on every commit | Pass | TESTED (automatic) |
+| Identical-worlds check (`tools/identical-worlds.sh`) | Every new switch off = the old world | Run once per release | IDENTICAL (2 rows x 176 columns) at each release so far | TESTED (automatic per release) |
