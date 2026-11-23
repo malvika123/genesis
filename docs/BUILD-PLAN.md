@@ -42,6 +42,7 @@ Written in plain words. Every item below gets: the evidence checked first, a des
 - [ ] 26. **A real-length year** (today a "year" is 3 days; muscle, growth and seasons all depend on it).
 - [ ] 27. **A "what a hominin perceives" page panel** (only what they truly sense, in plain words, and the gaps).
 - [ ] 28. **Tune the unknown numbers against the real record** (method in memory `tune-assumptions-to-timeline`: only assumptions, targets written first, some held out, report every fit).
+- [ ] 29. **Real densities, shown only near people** (owner, 24 Nov: "imitate the environment as it was, keep proportions real, shrink the numbers; tuning to our convenience would be wrong") - every animal kept as a REAL density per km2 (leopard 5.4-5.7 per 100 km2 Serengeti; spotted hyena 3.6-10.8 Ruaha; the rest NOT FOUND ONLINE = flagged assumptions), instantiated as agents only in the zone around a band (the way the prey map already does for herds), so no "pair of each" guess. Real densities will put MANY more hunters near a band than today (about 20 leopards in a 20 x 20 km zone), so hominin targeting must be tuned against the measured predation on primates (median about 3% a year, Tai about 5.5%, range 0 to over 15%: docs/reviews/2026-11-24-group-size-and-predation-live.md). Tune against measured demography first; check the timeline last (held out).
 
 ## How you will see progress
 Each item: a plain-language report, the page showing it, and this list ticked. Nothing is dropped: if something turns out to need a different order, I'll say so here.
