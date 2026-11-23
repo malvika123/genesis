@@ -3328,6 +3328,21 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 134. More cover (tall grass, shrub understory, rocks) in the valley: no visible difference, at the full amounts or at half — Nov 2026
+
+**Version.** Branch `cover` (valley + real densities + `--more-cover`), valley engine, `--real-densities --dens-zone 18`, 12 worlds x 5 years per arm, seeds 1-12. C: `--more-cover` (grass 0.5, shrubs 0.35, rocks 0.5); CH: the three amounts halved. Baseline: entry 133 arm R (same seeds). Prediction: `data/findings/134-cover/prediction-written-before.txt`.
+
+| (12 worlds each) | R (no extra cover) | C | CH |
+|---|---|---|---|
+| bands wiped out in 5 years | 0 | 0 | 0 |
+| hominin-years lived | 1,598 | 1,564 | 1,591 |
+| people, start to end | 300 to 275 | 300 to 280 | 300 to 287 |
+| tries at a hominin per hominin-year | 0.05 | 0.05 | 0.06 |
+
+**Against the predictions.** (1) Tries fall by at least 20% in C: FAILED (no change). (2) Bands alive not lower than R: CONFIRMED (all alive). (3) CH between R and C: NOT SHOWN — all three are the same within noise, so with these amounts and this way of using cover, cover does nothing visible. (4) Not measured.
+
+**What it means.** Cover as built only shortens how far anyone sees; the valley already has almost no tries (0.05 per hominin-year), so there is little left for it to cut, and it cannot be seen against 12 worlds. This is not evidence that hiding places do not matter: the three amounts are assumptions, there is no hunter ambush mechanic that uses cover, and hominins have no "slip out of sight" move. Hiding would need those to count. The switch stays off by default; the world looks no different on the page. To test hiding for real: a hunter's success rises with cover at its start (Hopcraft et al. 2005) and a hominin can step behind a boulder or into a thicket to break the line; both are mechanics to build and source first.
+
 ### 133. Real hunter densities in the fine valley (250 m squares): no band wiped out in 24 worlds x 5 years, and hunters made about 30 times fewer tries — Nov 2026
 
 **Version.** Valley engine merged into a scratch branch (`valrd`), `--real-densities --dens-zone 18` (18 squares = 4.5 km, the globe's 3x3 radius; the hunters' number per square is scaled to the valley's 0.0625 km² squares), the entry-131 cast, 12 worlds x 5 years per arm, seeds 1-12; arm R no avoidance, RH `--hom-avoid`. Prediction: `data/findings/133-valley/prediction-written-before.txt`.
