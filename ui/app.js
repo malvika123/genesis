@@ -2886,7 +2886,7 @@ function glide() {
   lastGlide = now;
   // the body's clock: hands and arms move at the same pace as walking legs would at this speed of the
   // world (a stride's worth of a walking person per cycle), and stop when the world is paused
-  if (running) bodyT += dt * Math.min(3, (stepsPerSec() * SP[0].walk) / 0.4);
+  if (running) bodyT += dt * Math.min(3, (stepsBase() * SP[0].walk) / 0.4);
   // paused: nothing moves on screen (before, bodies kept gliding to catch up with frozen legs: the owner, 14 Nov 2026)
   if (!running) {
     for (const a of ag) a.moving = false;
@@ -3074,9 +3074,19 @@ function draw() {
 const STEP_S = 900,
   SPD_LO = Math.log10(1 / STEP_S),
   SPD_HI = Math.log10(600);
-const stepsPerSec = () => 10 ** (SPD_LO + ((SPD_HI - SPD_LO) * +$('spd').value) / 100);
+const stepsBase = () => 10 ** (SPD_LO + ((SPD_HI - SPD_LO) * +$('spd').value) / 100);
+// Speed follows zoom (24 Nov 2026, owner: zoomed out the hominins look slow, zoomed in they walk as in reality): what you see moves in proportion to how close you are (the camera distance falls as
+// zoom^-1.35), so zoomed out the same pace looks like crawling. The clock is sped up to keep the pace on screen about what it is at close range (zoom 8): by (8/zoom)^1.35, never below 1 and
+// at most 8 (one world step costs the page about 60 ms, so much more than that cannot be kept up with). It changes only how fast the clock runs, nothing in the world; off in the creature's-eyes view and the flat map. The slider is the pace at close range.
+let zoomFollow = true;
+try {
+  zoomFollow = localStorage.getItem('genesis-zoomspeed') !== '0';
+} catch (e) {}
+const zoomBoost = () => (zoomFollow && typeof view !== 'undefined' && view === 'globe' && !GL.eye ? clamp(Math.pow(8 / Math.max(GL.zoom, 0.5), 1.35), 1, 8) : 1);
+const stepsPerSec = () => stepsBase() * zoomBoost();
 function spdLabel() {
-  const r = stepsPerSec() * STEP_S; // seconds of world time per real second
+  const zb = zoomBoost(),
+    r = stepsBase() * STEP_S * zb; // seconds of world time per real second
   const f = (v, u) =>
     (v < 10 ? v.toFixed(1).replace(/\.0$/, '') : Math.round(v)) + ' ' + u + (v >= 1.05 ? 's' : '');
   $('spdl').textContent =
@@ -3089,8 +3099,10 @@ function spdLabel() {
             ? f(r / 60, 'minute')
             : r < 86400
               ? f(r / 3600, 'hour')
-              : f(r / 86400, 'day'));
+              : f(r / 86400, 'day')) +
+        (zb > 1.05 ? ' (×' + Math.round(zb) + ' zoomed out)' : '');
 }
+let lastZB = 1;
 try {
   const v = localStorage.getItem('genesis-speed-v2');
   if (v !== null) $('spd').value = v;
@@ -3228,6 +3240,10 @@ function loop() {
   lastT = now;
   if (running) {
     acc += stepsPerSec() * dt;
+    {
+      const zb = Math.round(zoomBoost());
+      if (zb !== lastZB) ((lastZB = zb), spdLabel());
+    }
     let n = 0;
     // a time budget per frame (about 25 ms): at high speeds the world runs as fast as the computer can while the
     // picture stays smooth; before, up to 10 steps a frame took half a second and creatures jumped (the owner, 14 Nov)
@@ -3584,6 +3600,15 @@ function setSpin(v) {
   $('turn').setAttribute('aria-pressed', v ? 'true' : 'false');
 }
 $('turn').onclick = () => setSpin(!GL.spin);
+$('zspd').onclick = () => {
+  zoomFollow = !zoomFollow;
+  $('zspd').textContent = zoomFollow ? 'Speed follows zoom: on' : 'Speed follows zoom: off';
+  try {
+    localStorage.setItem('genesis-zoomspeed', zoomFollow ? '1' : '0');
+  } catch (e) {}
+  spdLabel();
+};
+$('zspd').textContent = zoomFollow ? 'Speed follows zoom: on' : 'Speed follows zoom: off';
 $('sky').onclick = () => {
   showSky = !showSky;
   $('sky').textContent = showSky ? 'Hide clouds' : 'Show clouds';
