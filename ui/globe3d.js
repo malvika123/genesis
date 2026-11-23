@@ -347,7 +347,9 @@ const G3D = { ok: false };
     mtx = new THREE.Matrix4(),
     scl = new THREE.Vector3(),
     pos = new THREE.Vector3();
+  const TREEAT = new Map(); // trunk places by square, for walking round them
   function plantTrees() {
+    TREEAT.clear();
     let np = 0,
       nl = 0,
       na = 0,
@@ -357,22 +359,28 @@ const G3D = { ok: false };
     // place the trees everywhere else stay exactly where they stood (they used to all shift together)
     for (let i = 0; i < W * H && np < MAXT && nl < MAXT; i++) {
       const t = tree[i];
-      if (t < 0.2 || water[i]) continue;
-      const n = t > 0.65 ? 6 : t > 0.4 ? 4 : 2,
-        x = i % W,
+      if (t < 0.18 || water[i]) continue;
+      const x = i % W,
         y = (i / W) | 0;
       seed = (i * 2654435761 + 977) & 0x7fffffff;
       r01();
-      for (let k = 0; k < n; k++) {
+      // up to six trees a square: tree k stands once the cover passes 0.18 + 0.1 k, and grows from 30% to full size over the next 0.12 of cover, so a forest thins by trees
+      // shrinking away one by one, not whole groups popping out (the owner, 24 Nov 2026: "suddenly the tree disappears")
+      for (let k = 0; k < 6; k++) {
         const gx = x + 0.15 + 0.7 * r01(),
           gy = y + 0.15 + 0.7 * r01(),
+          grow = clamp((t - (0.18 + 0.1 * k)) / 0.12, 0, 1),
+          vis = t > 0.18 + 0.1 * k,
           lo = (gx / W) * 2 * Math.PI - Math.PI,
           la = LATMAX * (1 - (2 * gy) / H),
           r = 1 + EX * heightAt(la, lo);
         pos.copy(local(la, lo, r));
         q.setFromUnitVectors(up, pos.clone().normalize());
         const acacia = fkind[i] === 2 && inEvidenceRegion(x, y) && na + 1 < MAXT,
-          sz = (0.7 + 0.6 * r01()) * (fkind[i] === 3 ? 1.35 : acacia ? 1.7 : 1);
+          sz = (0.7 + 0.6 * r01()) * (fkind[i] === 3 ? 1.35 : acacia ? 1.7 : 1) * (0.3 + 0.7 * grow);
+        if (!vis) continue;
+        if (!TREEAT.has(i)) TREEAT.set(i, []);
+        TREEAT.get(i).push([gx, gy, 0.03 * (0.5 + 0.5 * grow)]); // where a trunk stands (in squares) and how far to keep from it: creatures walk round it
         scl.set(sz, sz, sz);
         mtx.compose(pos, q, scl);
         trunks.setMatrixAt(np + nl + na, mtx);
@@ -914,7 +922,9 @@ const G3D = { ok: false };
       bm = SOC.bodyModel && a.sp === 0 && a.gp !== undefined, // the body model: the figure shows how far food has let it grow, its inherited size, muscle and how well fed it is
       gr = Math.round(clamp((bm ? Math.min(a.gp, a.age) : a.age) / S.mat, 0.3, 1) * 10) / 10,
       bmKey = bm ? [Math.round((a.g.sz ?? 1) * 20), Math.round((a.msc ?? 1) * 10), Math.round(clamp(((a.eAvg ?? a.e) - 20) / 50, 0, 1) * 4), Math.round((a.g.st ?? 1) * 10)].join('/') : '',
-      pose = a.moving ? Math.round(Math.sin(a.ph || 0) * 4) / 2 : 0, // nine leg positions in a stride, not five (a smoother walk)
+      pose = a.moving ? Math.round(Math.sin(a.ph || 0) * 4) / 2 : 0, // leg positions in a stride
+      phq = a.moving ? Math.round(((((a.ph || 0) % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI)) / ((2 * Math.PI) / 12)) % 12 : 0, // the stride in twelfths: the picture for each part of a stride (animals' legs follow the whole cycle, not just its sine)
+      fastv = (a.mvv || 0) > (a.S.walk || 0.1) * 1.8 ? 1 : 0, // a faster gait (trot): diagonal pairs of legs
       swf = a.act === A_STRIKE && !a.asleep ? Math.round(bodySwing(a)) : 0,
       heldv = typeof carried === 'function' && a.sp === 0 && carried(a) ? 1 : 0, // a carried infant clings to its mother
       stkv = a.stkT !== undefined && tick - a.stkT <= 1 ? a.stk : null, // what its blow lands on, and whether it did what it was for
@@ -928,6 +938,8 @@ const G3D = { ok: false };
         gr,
         a.asleep ? 1 : 0,
         pose,
+        phq,
+        fastv,
         a.asleep ? 0 : a.act >= 8 ? a.act : 0, // what it is doing changes its pose
         a.hand || 0,
         swf,
@@ -963,7 +975,8 @@ const G3D = { ok: false };
         asleep: a.asleep,
         moving: pose !== 0,
         pose: pose / 2,
-        ph: Math.asin(clamp(pose / 2, -1, 1)), // the leg position for this picture
+        ph: a.sp === 0 ? Math.asin(clamp(pose / 2, -1, 1)) : phq * ((2 * Math.PI) / 12), // the leg position for this picture (animals: the whole stride)
+        fast: !!fastv,
         hand: a.hand || 0,
         swf,
         wetv,
@@ -1133,8 +1146,26 @@ const G3D = { ok: false };
         sp.material.color.setScalar(isNightAt(a.x) ? 0.45 : 1);
         sp.material.transparent = false; // solid: only the empty background of the picture is cut away
         sp.material.needsUpdate = true;
-        const la = latOfY(a.ry),
-          lo = lonOfX(a.rx);
+        // walking round trees: a trunk pushes a creature aside (smoothly: the push grows as it gets closer), so it passes beside a tree, not through it. Drawing only; the sim's squares are not changed.
+        let drx = a.rx,
+          dry = a.ry;
+        if (!a.asleep && !a.up && a.sp !== 3)
+          for (let ox = -1; ox <= 1; ox++)
+            for (let oy = -1; oy <= 1; oy++) {
+              const L = TREEAT.get(idx(Math.floor(a.rx) + ox, clamp(Math.floor(a.ry) + oy, 0, H - 1)));
+              if (L)
+                for (const [tx, ty, rad] of L) {
+                  let ddx = dxw(drx - tx);
+                  const ddy = dry - ty,
+                    d = Math.hypot(ddx, ddy);
+                  if (d < rad && d > 1e-6) {
+                    drx += (ddx / d) * (rad - d);
+                    dry += (ddy / d) * (rad - d);
+                  }
+                }
+            }
+        const la = latOfY(dry),
+          lo = lonOfX(drx);
         // Figures are drawn 2.5 times life size so you can find them among the trees (like the
         // exaggerated mountains), all by the same factor so people and animals keep their true sizes
         // compared with each other (each kind's own size is already in its picture).
@@ -1191,7 +1222,7 @@ const G3D = { ok: false };
           // a carried infant is held up on its mother's front, not standing on the ground beside her
           const lift = a.sp === 0 && typeof carried === 'function' && carried(a) ? (a.asleep ? 0.06 : 0.27) * s * 0.7 : 0; // a fraction of the mother's drawn height (about 0.7 of the picture)
           // the body rises and falls a little with each step (two bobs a stride; a walking body is never level), about 2% of its height
-          const bob = a.moving && !a.asleep ? Math.abs(Math.sin(a.ph || 0)) * 0.02 * s : 0;
+          const bob = a.moving && !a.asleep && a.sp === 0 ? Math.abs(Math.sin(a.ph || 0)) * 0.02 * s : 0;
           sp.position.copy(local(la, lo, ground + 0.0002 + lift + bob));
         }
         sp.scale.set(s, s, 1);

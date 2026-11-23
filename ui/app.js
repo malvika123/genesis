@@ -2192,6 +2192,7 @@ function drawAfrican(g, a, X, Y, k) {
   }
   g.restore();
 }
+const ph0b = (a) => a.ph || 0; // the stride phase (tail sway)
 function drawAnimal(g, a, X, Y, k) {
   if (AFRICAN[a.S.n]) return drawAfrican(g, a, X, Y, k);
   const L = LOOK[a.S.n] || LOOK[a.S.look] || LOOK.Deer,
@@ -2203,7 +2204,10 @@ function drawAnimal(g, a, X, Y, k) {
     bh = L.h * u,
     leg = a.asleep ? 0 : L.leg * u,
     swing = a.moving && !a.asleep ? Math.sin(a.ph || 0) * u * 0.7 : 0,
-    by = Y - leg - bh / 2 + (a.asleep ? bh * 0.3 : 0); // body centre; feet on the ground at Y
+    walkingNow = a.moving && !a.asleep,
+    // the body rises a little with each step and the head nods against it (a walking animal is never level)
+    bob = walkingNow ? Math.abs(Math.sin(a.ph || 0)) * bh * 0.05 : 0,
+    by = Y - leg - bh / 2 + (a.asleep ? bh * 0.3 : 0) - bob; // body centre; feet on the ground at Y
   g.save();
   g.lineCap = 'round';
   g.strokeStyle = L.col;
@@ -2212,14 +2216,33 @@ function drawAnimal(g, a, X, Y, k) {
   if (leg) {
     g.lineWidth = Math.max(1, u * (nm === 'Bison' || nm === 'Bear' ? 0.75 : 0.45));
     g.beginPath();
-    for (const [lx, sw] of [
-      [-0.32, swing],
-      [-0.22, -swing],
-      [0.25, -swing],
-      [0.35, swing],
+    // four legs, each with its own place in the stride. A walk lifts them one at a time (left hind, left fore, right hind, right fore, a quarter-stride apart); a faster gait (trot)
+    // moves them in diagonal pairs. Each leg bends at the knee and the foot lifts as it swings forward. Gaits of real quadrupeds: walk lateral sequence, trot diagonal pairs.
+    const ph0 = a.ph || 0,
+      trot = a.fast !== undefined ? a.fast : (a.mvv || 0) > (a.S.walk || 0.1) * 1.8;
+    for (const [lx, q] of [
+      [-0.32, 0],
+      [-0.22, 0.5],
+      [0.25, trot ? 0.5 : 0.25],
+      [0.35, trot ? 0 : 0.75],
     ]) {
-      g.moveTo(X + lx * bw, by + bh * 0.3);
-      g.lineTo(X + lx * bw + sw * 0.5, Y);
+      const hx0 = X + lx * bw,
+        hy0 = by + bh * 0.3;
+      if (!walkingNow) {
+        g.moveTo(hx0, hy0);
+        g.lineTo(hx0, Y);
+        continue;
+      }
+      const phi = ph0 - q * 2 * Math.PI,
+        sw = Math.sin(phi) * u * 0.7,
+        lift = Math.max(0, Math.cos(phi)) * u * 0.28, // the foot is off the ground while it swings forward
+        fx = hx0 + sw * 0.5,
+        fy = Y - lift,
+        kx = (hx0 + fx) / 2 + u * 0.12 * (lx < 0 ? -1 : 1) * (a.face === -1 ? -1 : 1), // the knee bends forward on fore legs, back on hind legs
+        ky = (hy0 + fy) / 2;
+      g.moveTo(hx0, hy0);
+      g.lineTo(kx, ky);
+      g.lineTo(fx, fy);
     }
     g.stroke();
   }
@@ -2236,7 +2259,7 @@ function drawAnimal(g, a, X, Y, k) {
     g.quadraticCurveTo(tx - f * bw * 0.45, by + bh * 0.6, tx - f * bw * 0.55, by - bh * 0.3);
   } else {
     g.moveTo(tx, by - bh * 0.2);
-    g.lineTo(tx - f * u * 0.5, by);
+    g.lineTo(tx - f * u * 0.5 + (walkingNow ? Math.sin(ph0b(a) * 1) * u * 0.25 : 0), by);
   }
   g.stroke();
   // body (bison have a hump at the shoulders)
@@ -2251,7 +2274,7 @@ function drawAnimal(g, a, X, Y, k) {
   // head
   const head = (nm === 'Rabbit' ? 0.7 : nm === 'Bear' || nm === 'Bison' ? 0.95 : 0.75) * bh,
     hx = X + f * (bw / 2 + head * 0.35),
-    hy = by - bh * (nm === 'Bison' ? 0.05 : 0.45) + (a.act === A_EAT ? bh * 0.7 : 0);
+    hy = by - bh * (nm === 'Bison' ? 0.05 : 0.45) + (a.act === A_EAT ? bh * 0.7 : 0) + (walkingNow ? Math.sin((a.ph || 0) * 2 + 1.2) * bh * 0.06 : 0); // the head nods with the stride
   g.beginPath();
   g.arc(hx, hy, head / 2, 0, 7);
   g.fill();
