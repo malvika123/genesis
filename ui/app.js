@@ -2715,7 +2715,7 @@ function screenPos(a) {
     return [((a.rx + 0.5) * C * T.k + T.tx) / d, ((a.ry + 0.5) * C * T.ky + T.ty) / d - (r.height / H) * FZ.z * 0.5, (r.height / H) * FZ.z];
   }
   if (G3D.ok) {
-    const Q = G3D.project(a.rx, a.ry),
+    const Q = G3D.projectA ? G3D.projectA(a) : G3D.project(a.rx, a.ry),
       d = cv.width / r.width;
     return Q ? [Q[0] / d, Q[1] / d - 6, Q[2] / d] : null;
   }

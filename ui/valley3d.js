@@ -485,8 +485,9 @@
     autoTilt = () => clamp(Math.log(GL.zoom / 2) / Math.log(28 / 2), 0, 1) * 1.3; // look straight down from high up; toward the horizon close to the ground
   let lastEye = null;
   function aimEye(a) {
-    const X0 = a.rx + 0.5,
-      Z0 = a.ry + 0.5,
+    const [ex, ez] = cpos(a),
+      X0 = ex + 0.5,
+      Z0 = ez + 0.5,
       h0 = ground(X0, Z0),
       eh = (a.sp === 0 ? 1.2 * clamp(a.age / a.S.mat, 0.45, 1) : 0.9) * M, // eye height: about 1.2 m for a grown hominin standing, lower for a child (other kinds: 0.9 m, a simplification)
       tnow = performance.now(),
@@ -595,14 +596,81 @@
     HOM = 1.6 * M, // the picture's height: an adult hominin fills about 0.82 of it, so about 1.3 m tall (australopiths about 1.0-1.5 m)
     ANI = HOM * 1.096; // other kinds: the same ratio as on the globe; each kind's own size is in its picture
   const figH = (a) => (a.sp === 0 ? HOM : ANI) * 0.82;
+  // Where a creature is INSIDE its 250 m square is not simulated (the simulation knows only the square), so without this a whole band stood stacked on one
+  // spot until it stepped to the next square (the owner, 24 Nov 2026: "in real time they walk but here they look so still"). The page draws each one walking
+  // about its square at a real pace, in real seconds: a small biped walks about 1 m/s (other kinds 0.8-1.2 m/s), stops a few seconds to forage, and walks on.
+  // Hominins keep within about 30 m of a spot their square shares (a band forages near each other); other kinds roam about 90 m of the square's middle.
+  // Drawing only: the simulation's squares, and every step between squares, are unchanged. Asleep, up a tree, carried or in water: still.
+  const WALK = new WeakMap();
+  let wanderT = performance.now();
+  function wander(a, dt) {
+    let w = WALK.get(a);
+    const sd = ((a.id || 0) * 2654435761) >>> 0,
+      r = () => (w.s = (Math.imul(w.s, 1103515245) + 12345) >>> 0) / 4294967296;
+    if (!w) {
+      w = { s: sd || 7, ox: 0, oz: 0, tx: 0, tz: 0, pause: 0, dx: 0, dz: 0, walk: false };
+      const ang = r() * 6.283,
+        rad = (a.sp === 0 ? 0.1 : 0.3) * Math.sqrt(r());
+      w.ox = w.tx = Math.cos(ang) * rad;
+      w.oz = w.tz = Math.sin(ang) * rad;
+      w.pause = r() * 6;
+      WALK.set(a, w);
+    }
+    w.walk = false;
+    if (a.asleep || a.up || water[idx(Math.round(a.rx), Math.round(a.ry))] || !running) return w;
+    if (a.sp === 0 && typeof carried === 'function' && carried(a) && a.mom) {
+      const m = WALK.get(a.mom);
+      if (m) ((w.ox = m.ox), (w.oz = m.oz), (w.walk = m.walk), (w.dx = m.dx), (w.dz = m.dz));
+      return w;
+    }
+    if (w.pause > 0) {
+      w.pause -= dt;
+      return w;
+    }
+    const ddx = w.tx - w.ox,
+      ddz = w.tz - w.oz,
+      d = Math.hypot(ddx, ddz),
+      speed = (a.sp === 0 ? 1.0 : a.sp === 2 ? 1.1 : 0.8) * M * dt;
+    if (d <= speed) {
+      w.ox = w.tx;
+      w.oz = w.tz;
+      w.pause = 2 + r() * 10; // a foraging stop
+      // the next place: hominins near the spot their square shares, others anywhere about the square's middle
+      const cx = a.sp === 0 ? (fh(Math.round(a.rx) + ox(), Math.round(a.ry) + oy(), 40) - 0.5) * 0.3 : 0,
+        cz = a.sp === 0 ? (fh(Math.round(a.rx) + ox(), Math.round(a.ry) + oy(), 41) - 0.5) * 0.3 : 0,
+        ang = r() * 6.283,
+        rad = (a.sp === 0 ? 0.12 : 0.36) * Math.sqrt(r());
+      w.tx = clamp(cx + Math.cos(ang) * rad, -0.45, 0.45);
+      w.tz = clamp(cz + Math.sin(ang) * rad, -0.45, 0.45);
+      return w;
+    }
+    w.ox += (ddx / d) * speed;
+    w.oz += (ddz / d) * speed;
+    w.dx = ddx / d;
+    w.dz = ddz / d;
+    w.walk = true;
+    w.ph = (w.ph || 0) + dt * 2 * Math.PI * (a.sp === 0 ? 1.0 : 0.9); // about one stride a second
+    return w;
+  }
+  // where it is drawn, in squares (its square, plus where it is inside it)
+  const cpos = (a) => {
+    const w = WALK.get(a);
+    return w ? [a.rx + w.ox, a.ry + w.oz] : [a.rx, a.ry];
+  };
   function figures(v) {
     let n = 0;
-    const markers = [];
+    const markers = [],
+      now = performance.now(),
+      dt = Math.min(0.1, (now - wanderT) / 1000);
+    wanderT = now;
     camera.updateMatrixWorld();
     const right = new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld, 0);
+    for (const a of ag) if (a.sp !== 3 && !a.dead) wander(a, dt);
     for (const a of ag) {
       if (a === GL.eye || a.sp === 3) continue; // fish live under water: not drawn here yet
-      const P = project(a.rx, a.ry);
+      const w = WALK.get(a),
+        [px, pz] = cpos(a),
+        P = project(px, pz);
       if (!P) continue;
       if (figH(a) * P[2] < 14) {
         markers.push([a, P]);
@@ -617,19 +685,21 @@
       }
       n++;
       sp.visible = true;
+      // while it walks inside its square, its legs and the way it faces follow that walk (restored after the picture is chosen)
+      const saved = [a.face, a.moving, a.ph, a.fdx, a.fdy],
+        inner = w && w.walk && !a.moving;
+      if (inner) ((a.moving = true), (a.ph = w.ph), (a.fdx = w.dx), (a.fdy = w.dz));
       // which way it faces on screen (see globe3d): the way it walks as the viewer sees it
-      const savedFace = a.face;
       if (a.fdx !== undefined) {
         const d = a.fdx * right.x + a.fdy * right.z;
         if (Math.abs(d) > 0.25 * Math.hypot(a.fdx, a.fdy)) a.faceS = d > 0 ? 1 : -1;
         if (a.faceS !== undefined) a.face = a.faceS;
       }
       sp.material.map = figTexFor(a, v);
-      a.face = savedFace;
       sp.material.color.setScalar(isNightAt(a.x) ? 0.45 : 1);
       sp.material.needsUpdate = true;
       const s = a.sp === 0 ? HOM : ANI;
-      let [X, Z] = a.asleep || a.up ? [a.rx + 0.5, a.ry + 0.5] : pushFromTrees(a.rx + 0.5, a.ry + 0.5);
+      let [X, Z] = a.asleep || a.up ? [px + 0.5, pz + 0.5] : pushFromTrees(px + 0.5, pz + 0.5);
       let y = ground(X, Z);
       const ci = idx(Math.round(a.rx), Math.round(a.ry));
       if (water[ci])
@@ -641,6 +711,7 @@
           bob = a.moving && !a.asleep && a.sp === 0 ? Math.abs(Math.sin(a.ph || 0)) * 0.02 * s : 0;
         y += lift + bob;
       }
+      [a.face, a.moving, a.ph, a.fdx, a.fdy] = saved;
       sp.position.set(X, y, Z);
       sp.scale.set(s, s, 1);
     }
@@ -677,6 +748,7 @@
   };
   // how tall a creature looks on screen (CSS pixels), for picking it with a click
   G3D.tallOf = (a, P) => Math.max(14, figH(a) * P[2]);
+  G3D.projectA = (a) => project(...cpos(a)); // where a creature is drawn (inside its square too)
 
   let paintFrame = 0,
     lastOX = null,
@@ -750,7 +822,37 @@
     };
     if (typeof drawBodies === 'function') drawBodies(cx, sizeP(1, 0, 600), 0, 0);
     for (const [a, P] of markers) drawCreature(cx, a, P[0], P[1], clamp((P[2] / C) * 3, 0.45, 1.1), v, isNightAt(a.x) ? 0.5 : 1);
-    if (!GL.eye) drawWeatherFx(cx, sizeP(1, 0, 80), true);
+    // rain: from high up, over each raining square; near the ground, falling around you where you stand (drawn per square from the ground, far squares
+    // crowded into one band along the horizon: the owner's screenshot, 24 Nov 2026)
+    if (hc > 3 && !GL.eye) drawWeatherFx(cx, sizeP(1, 0, 80), true);
+    else {
+      drawWeatherFx(cx, sizeP(1, 0, 80), false); // lightning only
+      const ri = idx(Math.round(cX - 0.5), clamp(Math.round(cZ - 0.5), 0, H - 1)),
+        rain = typeof RAIN !== 'undefined' && showSky ? RAIN[ri] || 0 : 0;
+      if (rain > 0.002) {
+        const nS = Math.round(clamp(rain * 20000, 40, 500)),
+          t = performance.now() / 1000,
+          snow = cellT(ri) < 0;
+        cx.strokeStyle = cx.fillStyle = snow ? '#ffffff' : '#b8d2ee';
+        cx.globalAlpha = clamp(rain * 40, 0.25, 0.55);
+        cx.lineWidth = Math.max(1, h / 900);
+        cx.beginPath();
+        for (let j = 0; j < nS; j++) {
+          const sx = (((j * 0.6180339) % 1) + 0.002 * Math.sin(j)) * w,
+            speed = 0.9 + 0.5 * ((j * 0.37) % 1),
+            sy = ((((j * 0.4142) % 1) + t * speed) % 1) * h * 1.1 - h * 0.05,
+            len = h * (0.03 + 0.03 * ((j * 0.73) % 1));
+          if (snow) cx.fillRect(sx, sy, 2, 2);
+          else (cx.moveTo(sx, sy), cx.lineTo(sx - len * 0.12, sy + len));
+        }
+        cx.stroke();
+        // and the air greys a little in rain
+        cx.globalAlpha = clamp(rain * 25, 0.05, 0.25);
+        cx.fillStyle = '#8a96a3';
+        cx.fillRect(0, 0, w, h);
+        cx.globalAlpha = 1;
+      }
+    }
     drawFire(cx, sizeP(1, 0, 400));
     drawCarrion(cx, sizeP(1, 0, 200));
     drawSounds(cx, sizeP(12, 0, 1e5)); // a sound's reach is drawn in units of 3 km squares (the globe's): 12 of these squares
@@ -758,7 +860,7 @@
     drawTalk(
       cx,
       (a) => {
-        const P = project(a.rx, a.ry);
+        const P = project(...cpos(a));
         return P ? [P[0], P[1], Math.max(14, figH(a) * P[2])] : null;
       },
       Math.max(1, cv.width / cv.getBoundingClientRect().width)
@@ -776,7 +878,7 @@
       }
     }
     if (sel && !GL.eye) {
-      const P = project(sel.rx, sel.ry);
+      const P = project(...cpos(sel));
       if (P) {
         const r = Math.max(9, 0.7 * figH(sel) * P[2]);
         cx.lineWidth = 5;
