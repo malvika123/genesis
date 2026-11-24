@@ -22,3 +22,7 @@ So beyond the stand-in valley every habitat rule is an **assumption with a state
 **Switch:** `--open-valley` (off = the walled valley; off = identical worlds), with the valley switch.
 
 **Not to do:** a corridor, or a finer grid than 250 m; invented habitats presented as data; a map of today's Afar used as 2.5 Ma land.
+
+## Build log
+**Step 1 done (24 Nov 2026): the land as a function of position** (`src/openvalley.js`; `--open-valley` with `--valley`; commit below). Heights, the river's meander, the cobble beds, bare rock, poison berries and woody cover now come from the absolute square (window offset OX, OY plus the square) and one world number, by hash-based value noise, with the formulas of the walled valley. Checks: (1) test `tests/openvalley.test.js`: a window shifted 40 squares along and 30 across gives identical height, water, river, rock and poison berries in the overlap (more than 20,000 squares); (2) the open valley's overall land matches the walled valley's (6 seeds: water 0.87% in both, mean tree cover 0.2066 in both, woody share 0.0807 against 0.0806); (3) 95 of 95 tests; (4) the old-worlds check (switch off) identical.
+**Not yet:** tree cover jitter, plants, stones, sticks and the other per-square state of a freshly exposed strip (step 2 makes them with the same startup code); the moving window itself.

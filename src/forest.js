@@ -28,7 +28,7 @@ function initForest() {
   fruit = new Float32Array(n);
   tcap = new Float32Array(n);
   fkind = new Uint8Array(n);
-  const patch = fractal(10, 2, 0.5); // natural clearings and glades
+  const patch = SOC.valley && SOC.openValley ? ((f) => (x, y) => f(x + OX, y + OY))(ofractal(10, 2, 0.5, OVSEED + 55)) : fractal(10, 2, 0.5); // natural clearings and glades (the open valley: by position)
   if (SOC.valley) return valleyTrees(patch);
   for (let i = 0; i < n; i++) {
     if (water[i] || rock[i] || pit[i]) continue;
@@ -168,7 +168,7 @@ function valleyTrees(patch) {
     const z = zone(i), y = (i / W) | 0;
     tcap[i] = Math.min(1, z === 2 ? 0.85 * (0.8 + 0.2 * base[i]) : z === 1 ? s * base[i] : 0.6 * s * base[i]);
     fkind[i] = tcap[i] < 0.08 ? 0 : 3; // warm savanna woodland: the same fruit kind as the globe's at Gona
-    tree[i] = tcap[i] * (0.75 + 0.25 * rnd());
+    tree[i] = tcap[i] * (0.75 + 0.25 * (SOC.openValley ? hash2((i % W) + OX, y + OY, OVSEED + 9) : rnd()));
     if (tree[i] < 0.05) tree[i] = 0;
   }
 }

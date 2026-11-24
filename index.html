@@ -1176,7 +1176,7 @@
       // The engine's source files, in order. Normal page: loaded as before. With ?valley in the address (plan item 35, docs/design/valley-on-globe.md): the same files are fetched, patched for the
       // 200 x 240 valley grid of 250 m squares by the same function the tools use (GenesisEngineAPI.valleySource), with the recorded Gona weather added, and run as one script.
       (function () {
-        var files = ["src/config.js", "src/state.js", "src/voice.js", "src/climate.js", "src/weather.js", "src/brain.js", "src/lessons.js", "src/creatures.js", "src/earth.js", "src/terrain.js", "src/forest.js", "src/items.js", "src/talk.js", "src/fire.js", "src/preymap.js", "src/world.js", "src/senses.js", "src/mind.js", "src/whispers.js", "src/sim.js"];
+        var files = ["src/config.js", "src/state.js", "src/voice.js", "src/climate.js", "src/weather.js", "src/brain.js", "src/lessons.js", "src/creatures.js", "src/earth.js", "src/openvalley.js", "src/terrain.js", "src/forest.js", "src/items.js", "src/talk.js", "src/fire.js", "src/preymap.js", "src/world.js", "src/senses.js", "src/mind.js", "src/whispers.js", "src/sim.js"];
         if (!/[?&]valley/.test(location.search)) {
           files.forEach(function (f) {
             document.write('<script src="' + f + '"><\/script>');

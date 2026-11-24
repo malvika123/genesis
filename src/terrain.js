@@ -120,6 +120,7 @@ function makeTerrain() {
   river = new Uint8Array(n);
 
   // 1. height: the valley (entry 117), the real Earth (see earth.js), or a made-up planet from noise
+  if (SOC.valley && SOC.openValley) return makeOpenValleyTerrain(n); // the land by position (openvalley.js)
   if (SOC.valley) return makeValleyTerrain(n);
   if (SOC.earth) {
     for (let i = 0; i < n; i++) alt[i] = (EARTH_M[i] - EARTH_SEA) / 1000;

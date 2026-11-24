@@ -49,7 +49,13 @@ function buildWorld(cfg) {
   SOC.valleyWoody = cfg.valleyWoody ?? 0.35; // woody cover of the valley's floodplain (a registered range 0.30-0.50: Cerling et al. 2011; Quade et al. 2004)
   SOC.valleyRainScale = cfg.valleyRain ?? 1; // the valley's rain as a multiple of the globe's at Gona (an assumption: the globe's weather at Gona is a model result, not checked against real rainfall: tested 1 and 0.5)
   SOC.valleyRelax = cfg.valleyRelax ?? 0.2; // how fast the valley's air relaxes toward the forcing (an assumption: tested 0.05 and 0.5)
-  SOC.valley = !!cfg.valley; // entry 117: the valley world (built with the valley engine: tools/engine-api.js opts.valley); never together with the real Earth
+  SOC.valley = !!cfg.valley;
+  SOC.openValley = !!cfg.openValley && !!cfg.valley; // the open valley (plan item 36): land by position, so the window can move; off = the walled valley
+  if (SOC.openValley) {
+    OX = cfg.openValleyOX | 0; // where the window starts (squares from the world's origin; 0 at the start; set to test that the same square is the same land in any window)
+    OY = cfg.openValleyOY | 0;
+    OVSEED = (cfg.openValleySeed ?? Math.floor(rnd() * 1e9)) | 0; // drawn once per world (only when on)
+  } // entry 117: the valley world (built with the valley engine: tools/engine-api.js opts.valley); never together with the real Earth
   SOC.earth = !!cfg.earth && !cfg.valley; // the real Earth's land and sea, 70,000 years ago (see earth.js), or a made-up planet
   ERA = cfg.sapiens || cfg.scenario === 'sapiens' ? 'sapiens' : 'hominin'; // which world (state.js)
   // their bodies and lives: modern people's, or early hominins' (config.js)
