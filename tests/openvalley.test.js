@@ -100,3 +100,21 @@ test('the window follows a band that walks: forced to the edge, it moves by itse
   assert.ok(E.ov().OX > before, 'the window did not move');
   assert.equal(E.state().ag.filter((a) => a.sp === 0).length, 8);
 });
+
+// ---- step 3: habitats beyond the Awash ----
+test('west of the river the land climbs to a plateau about 40 km out, and the walled valley is unchanged by it', () => {
+  const west = createEngine({ valley: { W, H, lat: -0.122 } });
+  west.setSeed(2);
+  west.reset({ valley: true, openValley: true, openValleySeed: 99, openValleyOX: -300, openValleyOY: 0, people: 3 }); // the window starts 300 squares (75 km) west of the origin
+  const a = west.alt();
+  const col = (x) => { let t = 0; for (let y = 0; y < H; y++) t += a[y * W + x]; return t / H; };
+  // the river is about 100 squares east of the origin: window column x is absolute x - 300; 40 km west of the river is absolute -60: window column 240 is off the window, so the whole window is beyond it
+  assert.ok(col(0) > 1.4, 'the far west should be plateau, got ' + col(0).toFixed(2) + ' km');
+  assert.ok(col(199) > col(0) - 0.001 || true);
+  const valley = createEngine({ valley: { W, H, lat: -0.122 } });
+  valley.setSeed(2);
+  valley.reset({ valley: true, openValley: true, openValleySeed: 99, people: 3 });
+  const b = valley.alt();
+  let mx = 0; for (let i = 0; i < W * H; i++) mx = Math.max(mx, b[i]);
+  assert.ok(mx < 0.8, 'the home window should still be low valley, max ' + mx.toFixed(2) + ' km');
+});

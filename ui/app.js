@@ -2996,8 +2996,21 @@ function glide() {
     if (a.moving) a.ph = (a.ph || 0) + Math.min((moved / 0.4) * Math.PI, dt * cadence);
   }
 }
+let lastOX = 0,
+  lastOY = 0;
 function draw() {
   glide();
+  // the open valley's window moved (openvalley.js): the walking trails remember squares of the old window, so they move with it
+  if (VALLEY_MODE && typeof OX !== 'undefined' && (OX !== lastOX || OY !== lastOY)) {
+    const ddx = OX - lastOX,
+      ddy = OY - lastOY;
+    lastOX = OX;
+    lastOY = OY;
+    for (const a of ag) {
+      const t = TRAIL.get(a);
+      if (t) for (let i = 0; i + 1 < t.length; i += 2) ((t[i] -= ddx), (t[i + 1] -= ddy));
+    }
+  }
   const s = getComputedStyle(document.documentElement),
     v = (n) => s.getPropertyValue(n).trim();
   if (sel && sel.gone) {
@@ -3310,7 +3323,7 @@ $('play').onclick = () => {
   $('play').textContent = running ? 'Pause' : 'Play';
 };
 const readCfg = () => ({
-  ...(VALLEY_MODE ? { valley: true } : {}),
+  ...(VALLEY_MODE ? { valley: true, openValley: true } : {}), // the valley page is the open valley: the window follows the band
   people: +$('fnd').value || 2,
   herbivores: +$('hrb').value || 0,
   predators: +$('prd').value || 0,

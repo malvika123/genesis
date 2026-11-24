@@ -166,7 +166,8 @@ function valleyTrees(patch) {
   for (let i = 0; i < n; i++) {
     if (water[i] || rock[i] || pit[i]) continue;
     const z = zone(i), y = (i / W) | 0;
-    tcap[i] = Math.min(1, z === 2 ? 0.85 * (0.8 + 0.2 * base[i]) : z === 1 ? s * base[i] : 0.6 * s * base[i]);
+    // the open valley's plateau (above 1.2 km): montane woodland, more woody cover than the floodplain's terraces (VALLEY.montaneWoody, an assumption)
+    tcap[i] = Math.min(1, z === 2 ? 0.85 * (0.8 + 0.2 * base[i]) : z === 1 ? s * base[i] : 0.6 * s * base[i] * (SOC.openValley && alt[i] > 1.2 ? VALLEY.montaneWoody : 1));
     fkind[i] = tcap[i] < 0.08 ? 0 : 3; // warm savanna woodland: the same fruit kind as the globe's at Gona
     tree[i] = tcap[i] * (0.75 + 0.25 * (SOC.openValley ? hash2((i % W) + OX, y + OY, OVSEED + 9) : rnd()));
     if (tree[i] < 0.05) tree[i] = 0;

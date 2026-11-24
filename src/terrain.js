@@ -317,7 +317,7 @@ function heightsDone(n) {
 // A river runs north to south across the middle (one square wide: the Awash is under 100 m, a square is 250 m), meanders, and the land slopes down along it (about 1 m per km: assumption, the Awash's
 // lower gradient is of that order, unverified); a floodplain around it; terraces rising to the valley sides; stony cobble ground along the river (the conglomerate beds: Stout et al. 2005: place and width an assumption).
 // Nothing here is final: the first version, to get the engine running and to be checked against the specification.
-const VALLEY = { riverWidth: 1, meanderAmp: 14, meanderLen: 90, slopeKmPerKm: 0.001, floodKm: 3, sideRiseKm: 0.12, cobbleKm: 0.6 };
+const VALLEY = { riverWidth: 1, meanderAmp: 14, meanderLen: 90, slopeKmPerKm: 0.001, floodKm: 3, sideRiseKm: 0.12, cobbleKm: 0.6, escKm: 40, escSlope: 0.15, plateauRiseKm: 1.5, montaneWoody: 1.25 }; // escKm: the open valley's western escarpment, 40 km from the river (the Hadar basin lies 40 km east of the Western Plateau's escarpment: Hadar Formation geology, Geological Society memoir); escSlope, plateauRiseKm, montaneWoody: assumptions (docs/ASSUMPTIONS.md)
 function makeValleyTerrain(n) {
   const SQ = 0.25, // km a side
     noise = fractal(6, 4, 0.5),

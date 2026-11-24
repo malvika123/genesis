@@ -56,7 +56,10 @@ function makeOpenValleyTerrain(n) {
       dist[i] = dKm;
       const flood = Math.min(1, dKm / VALLEY.floodKm),
         side = Math.max(0, (dKm - VALLEY.floodKm) / 20);
-      alt[i] = 0.5 - VALLEY.slopeKmPerKm * Y * SQ + (flood * 0.012 + Math.min(1, side) * VALLEY.sideRiseKm) + 0.01 * (noise(X, Y) - 0.5) + 0.04 * (broad(X, Y) - 0.5) * Math.min(1, dKm / 6);
+      // west of the river the land climbs to the Western Plateau: the escarpment foot is VALLEY.escKm west of the river (Hadar lies 40 km east of it), then a rise of escSlope km per km up to plateauRiseKm
+      const west = (c - X) * SQ,
+        scarp = west > VALLEY.escKm ? Math.min(VALLEY.plateauRiseKm, (west - VALLEY.escKm) * VALLEY.escSlope) : 0;
+      alt[i] = 0.5 - VALLEY.slopeKmPerKm * Y * SQ + (flood * 0.012 + Math.min(1, side) * VALLEY.sideRiseKm) + 0.01 * (noise(X, Y) - 0.5) + 0.04 * (broad(X, Y) - 0.5) * Math.min(1, dKm / 6) + scarp;
     }
   }
   // the river: one square wide along the centre line (two where it bends, so that it is continuous), wherever the window is
