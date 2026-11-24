@@ -1,0 +1,8 @@
+Entry 137 — the open valley over 30 years (open valley step 5), written 24 Nov 2026 before the runs.
+12 worlds (seeds 1-12) x 30 sim years, valley, entry-133 setup (real hunter densities, dens-zone 18, cast of 127). Arms: WALLED (the valley with walls, as in entry 133) and OPEN (--open-valley: the window follows the band). Recorded per world: people at the end, bands wiped out, how far the band's centre moved (km, from absolute positions), how many times the window moved by itself, hunter tries per hominin-year.
+Predictions:
+ 1. Walls matter little in 30 years: the band's centre moves a few km, median 2-8 km (5-year runs gave 0.3-2.2 km; a random walk would give 2.4 times that, a steady drift 6 times); in at least 8 of 12 OPEN worlds the window moves 0 or 1 times, in none more than 6.
+ 2. OPEN and WALLED populations agree within 2 points a year (12 worlds; same seeds give the same world until the first window move; a band that reaches a wall in WALLED bounces, in OPEN it does not).
+ 3. No OPEN band wiped out by a shift; bands wiped out in OPEN no more than 2 more worlds than in WALLED.
+ 4. Hunter tries per hominin-year in both arms within a factor of 2 of 0.05.
+ 5. The population over 30 years: a decline of 1 to 2.5% a year in both (entry 133 5-year: -1.7%); not tuned, only read. If OPEN is clearly lower than WALLED, something real about leaving the walled start is missing, and the cause is read from counts, not guessed.
