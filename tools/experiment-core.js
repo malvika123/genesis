@@ -234,6 +234,7 @@
     { key: 'atkHomEasy', kind: 'num', def: 0.9, flag: 'atk-hom-easy', label: 'The same on a sleeping or young hominin', min: 0, max: 1, cfg: true },
     { key: 'realDensities', kind: 'on', def: false, flag: 'real-densities', label: 'Hunters at real densities near people (no rescue floor, no caps, no hunter births)', cfg: true },
     { key: 'densMul', kind: 'num', def: 1, flag: 'dens-mul', label: 'All hunter densities times this (sensitivity)', min: 0, max: 10, cfg: true },
+    { key: 'valleySpeed', kind: 'num', def: 1, flag: 'valley-speed', label: 'Valley only: multiplier on every kind\'s speed in squares per step (12 = the globe\'s km per step; an assumption)', min: 0.25, max: 24, cfg: true },
     { key: 'densZone', kind: 'num', def: 1, flag: 'dens-zone', label: 'Squares around each hominin that hold their share of hunters (an assumption)', min: 0, max: 4, cfg: true },
     { key: 'densTau', kind: 'num', def: 5, flag: 'dens-tau', label: 'Days over which newcomers fill a gap in hunter numbers (an assumption)', min: 0.5, max: 60, cfg: true },
     { key: 'rescue', kind: 'off', def: true, flag: 'no-rescue', label: 'Newcomers from the wider population arrive when a hunter kind is rare (off: a closed world, where a kind can die out for good)', cfg: true },

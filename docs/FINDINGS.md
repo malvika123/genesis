@@ -3328,6 +3328,25 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 138. Real speeds in the valley (`--valley-speed`): faster animals mean more hunter meetings and a much faster fall in numbers, from -1.5% to -10.8% (x4) and -19.6% a year (x12) — Nov 2026
+
+**Version.** `--valley --open-valley --valley-speed X` (commit after 7926189; default 1 = unchanged), entry-133 setup (real hunter densities, dens-zone 18, cast of 127), 12 worlds x 5 years per arm, seeds 1-12. Prediction: `data/findings/138-valley-speed/prediction-written-before.txt`; script `run.js`; results `x1-*`, `x4-*`, `x12-*.jsonl`. Why: valley animals covered 0.6-1.6 km a day (hominin 1.6) because each kind's speed is in squares per step as set for the globe's 3 km squares and a valley square is 250 m; real GPS records give 3-14 km a day for hyena, leopard, elephant and giraffe (nothing found for hominins). The multiplier stops at 1 square per step, the most a step can move.
+
+| (12 worlds each, 5 years) | x1 (as before) | x4 | x12 |
+|---|---|---|---|
+| km a day: hominin / hyena / leopard / elephant / giraffe (2 worlds x 6 days) | 1.7 / 1.3 / 1.0 / 0.9 / 1.1 | 6.1 / 5.2 / 4.1 / 3.8 / 4.7 | 12.0 / 11.3 / 10.6 / 10.0 / 10.6 |
+| people, start to end | 300 to 278 | 300 to 169 | 300 to 101 |
+| change per year | -1.5% | -10.8% | -19.6% |
+| bands wiped out | 0 | 0 | 0 |
+| hunter tries per hominin-year | 0.064 | 0.112 | 0.153 |
+| window moves by itself, median (range) | 0 (0-1) | 4 (0-7) | 4 (3-11) |
+
+**Against the predictions.** (1) Tries x4 within 1-3 times x1, x12 within 1-6 times: CONFIRMED (1.75 and 2.4 times). (2) Wiped out: x1 none, x4 0-3, x12 1-8: x1 and x4 CONFIRMED, x12 WRONG (none wiped out, though all 12 worlds ended with 5-12 people of 25). (3) Population change lower with speed: CONFIRMED. (4) Window moves x4 at least 2, x12 at least 4: CONFIRMED (4 and 4).
+
+**What it means.** The valley's good 5-year survival (entries 133 and 136) held only because animals and hominins barely moved. At speeds nearer the real records the band loses a fifth to a half of its people in five years and hunters are tried at twice the rate, yet the rise in hunter tries (1.75 to 2.4 times) is far smaller than the rise in the fall (7 to 13 times), so meetings with hunters are not the main cause. The cause is not read here: this run did not record deaths by cause or the energy cost of walking more (a hominin walking 6 to 12 km a day spends more energy, `SOC.walkE`). Which multiplier is right is not settled: x4 sits inside the real ranges for elephant, giraffe and leopard and below the hyena's; no real hominin figure was found; one step is 15 minutes and one square the most a step can move, so a chase or a sprint is not shown. Not tuned.
+
+**Strength.** Strong that speed lowers numbers here (same seeds: x4 ended lower than x1 in 11 of 12 worlds, x12 lower than x1 in 12 of 12 and lower than x4 in 10 of 12); the real speed itself is open.
+
 ### 137. Thirty years in the open valley against the walled valley: no difference from the walls, but both populations fall about 9% a year and 3 of 12 bands die out in each — Nov 2026
 
 **Version.** `--valley` with and without `--open-valley` (commit 6b4a98d engine), entry-133 setup (real hunter densities, `--dens-zone 18`, cast of 127), 12 worlds per arm x 30 sim years, seeds 1-12. Prediction: `data/findings/137-open-long/prediction-written-before.txt`; script `run.js`; results `OPEN-*.jsonl`, `WALLED-*.jsonl` (first attempt corrupted by a release checkout and rerun from scratch).

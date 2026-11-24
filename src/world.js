@@ -250,6 +250,7 @@ function buildWorld(cfg) {
   SOC.atkHomEasy = cfg.atkHomEasy ?? 0.9; // the same on a sleeping or young hominin
   SOC.realDens = cfg.realDensities === true; // hunters at real densities near people, no rescue floor or caps (plan item 29)
   SOC.densMul = cfg.densMul ?? 1; // all hunter densities times this (sensitivity; the extinct kinds' densities are assumptions)
+  SOC.valleySpeed = cfg.valleySpeed ?? 1; // valley only: multiplies every kind's speed in squares per step (see sim.js)
   SOC.densZone = cfg.densZone ?? 1; // squares around each hominin that hold their real share of hunters
   SOC.densTau = cfg.densTau ?? 5; // days over which a gap in the number of hunters is filled by newcomers (an assumption)
   SOC.rescue = cfg.rescue !== false; // newcomers from the wider population when a hunter kind is rare (off: the old closed world)

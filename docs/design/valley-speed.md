@@ -1,0 +1,9 @@
+# Real speeds in the valley (plan item 38) — 24 Nov 2026
+
+**Found (owner asked "do the animals and hominins move too fast or is their speed okay?").** Measured in the valley (3 worlds x 30 years, entry-133 setup): every kind covers 0.6-1.6 km a day (hominin 1.6, hyena 1.5, leopard 1.5, elephant 0.7, giraffe 0.9), and moves only 2-6% of steps. Real GPS records (live search, 24 Nov): hyena about 12 km a day (Masai Mara), leopard 2-11, savanna elephant about 3.4-4.2, giraffe 5-14; nothing found for hominins and several other kinds. Cause: each kind's speed is a number of squares per step (`walk`, `run` in config.js), set for the globe, where a square is 3 km; the valley's square is 250 m, 12 times smaller, so the same number is 12 times slower in km. This is the "valley still uses the globe's rules where they were not rewritten" gap of valley-on-globe.md.
+
+**Switch.** `--valley-speed X` (valley only; default 1 = unchanged, so old worlds are identical): multiplies each kind's speed, capped at 1 square per step (the most one step can move; one step is 15 minutes, so the cap is about 1 km an hour: it cannot show a sprint, a chase is still one square a step). 12 would give the globe's km per step but every kind then saturates at about 10-12 km a day (above the real records for elephant and giraffe); 4 sits inside the real ranges for elephant, giraffe and leopard.
+
+**Check.** Entry 138: 12 worlds x 5 years at x1, x4, x12, predictions written first (`data/findings/138-valley-speed/prediction-written-before.txt`).
+
+**Not yet:** a different speed for each kind from its own record (needs evidence for hominins and the rest); steps shorter than 15 minutes or several squares a step so a run can be faster than 1 km an hour; the hominins' own walking pace in the page is drawn separately (valley3d.js) and is unaffected.

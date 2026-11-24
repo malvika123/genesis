@@ -1,0 +1,10 @@
+Entry 138 — real speeds in the valley (`--valley-speed`), written 24 Nov 2026 before the runs.
+Why: at the globe's per-step speeds the valley's animals and hominins cover about 1-1.7 km a day (measured, 24 Nov), because a valley square is 12 times smaller than a globe square. Real GPS records (searched 24 Nov): hyena about 12 km a day (Masai Mara) to 27 (Kalahari); leopard 2-4 km (older studies) to about 11 (four males, Okavango); savanna elephant about 3.4-4.2 (one cow, a lower bound); giraffe 5-6 (one GPS study) to 14 (148 giraffes). Nothing found for hominins, chimpanzees, baboons, hippos, warthogs or hares.
+Already measured (2 worlds x 6 days, valley, entry-133 setup): daily km at x1 / x4 / x12: Person 1.7 / 6.1 / 12.0; Hyena 1.3 / 5.2 / 11.3; Leopard 1.0 / 4.1 / 10.6; Giraffe 1.1 / 4.7 / 10.6; Elephant 0.9 / 3.8 / 10.0. At x12 every kind reaches about 10-12 km (the most one step can move is one square, about half the steps), which is above the real records for elephant and giraffe; x4 sits inside the real ranges for elephant, giraffe and leopard and below the hyena's.
+Runs: valley, open valley, entry-133 setup (real hunter densities, dens-zone 18, cast of 127), 12 worlds x 5 years, seeds 1-12, arms x1 (as now), x4, x12.
+Predictions:
+ 1. Hunter tries per hominin-year (a hunter within 1 square of a hominin, as in entry 133) rise with speed: x4 within 1-3 times x1, x12 within 1-6 times x1 (more movement means more meetings; hunters are placed near people by density, so not proportionally).
+ 2. Bands wiped out in 5 years: x1 none (entry 133: 0 of 24); x4 0-3 of 12; x12 1-8 of 12.
+ 3. Population change per year: x1 about -1.5% (entry 136); x4 and x12 lower (more negative) than x1, x12 lowest. If speed alone made bands do better, that is a surprise to report.
+ 4. The window moves by itself more often (bands cover more ground): x4 median at least 2 moves in 5 years, x12 at least 4.
+Read-out only: nothing is tuned toward survival. If the real-speed arms turn out lethal, that is a finding about the valley's other rules (hunter density, attack reach), to be read from counts of tries and deaths by cause, not corrected here.
