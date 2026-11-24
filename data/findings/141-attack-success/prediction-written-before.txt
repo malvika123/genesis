@@ -1,0 +1,4 @@
+Prediction (24 Nov 2026, before the runs). Evidence: Okavango baboons 5 kills in 14 attacks by lions/leopards (0.36); Tai chimpanzees 4 of 22 leopard encounters fatal (0.18, Boesch 1991).
+Arms: atkHom 0.6 (control, entry 140 x1), 0.36, 0.18; atkHomEasy stays 0.9; valley speed x1; dens-tau 1; 6 worlds x 5 years.
+Expect: predator deaths per 1,000 hominin-years in years 3-5 fall roughly in proportion (0.36 -> about 60% of control; 0.18 -> about 30%); people left of 150 rise from 98 to about 115 and 130. I expect the climb over years to remain (it is the hunters' stomachs, entry 141a), and deaths of sleepers/children (0.9) to keep the rate above the 3-5.5% figure.
+Wrong if: deaths do not fall with attack success (then most kills are of sleepers/children).
