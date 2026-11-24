@@ -52,5 +52,5 @@ return {
     }
     return new Function(src + '\n' + API)();
   }
-  return { API, build };
+  return { API, build, valleySource };
 });

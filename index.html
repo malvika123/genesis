@@ -1171,26 +1171,32 @@
         </p>
       </div>
     </section>
-    <script src="src/config.js"></script>
-    <script src="src/state.js"></script>
-    <script src="src/voice.js"></script>
-    <script src="src/climate.js"></script>
-    <script src="src/weather.js"></script>
-    <script src="src/brain.js"></script>
-    <script src="src/lessons.js"></script>
-    <script src="src/creatures.js"></script>
-    <script src="src/earth.js"></script>
-    <script src="src/terrain.js"></script>
-    <script src="src/forest.js"></script>
-    <script src="src/items.js"></script>
-    <script src="src/talk.js"></script>
-    <script src="src/fire.js"></script>
-    <script src="src/preymap.js"></script>
-    <script src="src/world.js"></script>
-    <script src="src/senses.js"></script>
-    <script src="src/mind.js"></script>
-    <script src="src/whispers.js"></script>
-    <script src="src/sim.js"></script>
+    <script src="tools/engine-api.js"></script>
+    <script>
+      // The engine's source files, in order. Normal page: loaded as before. With ?valley in the address (plan item 35, docs/design/valley-on-globe.md): the same files are fetched, patched for the
+      // 200 x 240 valley grid of 250 m squares by the same function the tools use (GenesisEngineAPI.valleySource), with the recorded Gona weather added, and run as one script.
+      (function () {
+        var files = ["src/config.js", "src/state.js", "src/voice.js", "src/climate.js", "src/weather.js", "src/brain.js", "src/lessons.js", "src/creatures.js", "src/earth.js", "src/terrain.js", "src/forest.js", "src/items.js", "src/talk.js", "src/fire.js", "src/preymap.js", "src/world.js", "src/senses.js", "src/mind.js", "src/whispers.js", "src/sim.js"];
+        if (!/[?&]valley/.test(location.search)) {
+          files.forEach(function (f) {
+            document.write('<script src="' + f + '"><\/script>');
+          });
+          return;
+        }
+        var get = function (f) {
+            var x = new XMLHttpRequest();
+            x.open('GET', f, false);
+            x.send();
+            if (x.status !== 200) throw new Error('could not load ' + f);
+            return x.responseText;
+          },
+          src = files.map(get).join('\n') + '\n' + get('src/valleyforce.js');
+        src = GenesisEngineAPI.valleySource(src, { W: 200, H: 240, lat: -0.122 });
+        var s = document.createElement('script');
+        s.text = src;
+        document.head.appendChild(s);
+      })();
+    </script>
     <script src="vendor/three.min.js"></script>
     <script src="ui/globe3d.js"></script>
     <script src="ui/app.js"></script>

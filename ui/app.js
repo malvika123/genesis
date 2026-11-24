@@ -1,7 +1,8 @@
 // Genesis — The page: drawing the world, the Inspect and Whisper panels, the controls, and the animation loop.
 // Copyright (c) 2026 Malvika Sen. MIT License.
 
-let view = 'globe',
+const VALLEY_MODE = /[?&]valley/.test(location.search); // the fine valley world (plan item 35): flat map only for now
+let view = VALLEY_MODE ? 'flat' : 'globe',
   running = true,
   acc = 0;
 const $ = (id) => document.getElementById(id),
@@ -3309,6 +3310,7 @@ $('play').onclick = () => {
   $('play').textContent = running ? 'Pause' : 'Play';
 };
 const readCfg = () => ({
+  ...(VALLEY_MODE ? { valley: true } : {}),
   people: +$('fnd').value || 2,
   herbivores: +$('hrb').value || 0,
   predators: +$('prd').value || 0,
@@ -3619,6 +3621,7 @@ function setView(v) {
   fit();
 }
 $('view').onclick = () => {
+  if (VALLEY_MODE) return; // the valley has no globe view yet (plan item 35, step 3)
   setView(view === 'globe' ? 'flat' : 'globe');
   $('turn').hidden = view !== 'globe';
 };
@@ -3792,5 +3795,5 @@ new ResizeObserver(fit).observe($('stage'));
 window.addEventListener('resize', fit);
 reset(readCfg());
 fillIdeas();
-setView('globe');
+setView(VALLEY_MODE ? 'flat' : 'globe');
 loop();
