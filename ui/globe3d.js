@@ -334,6 +334,21 @@ const G3D = { ok: false };
     tufts = new THREE.InstancedMesh(tuftG, new THREE.MeshLambertMaterial({ color: 0x8c9e3c }), MAXG),
     boulders = new THREE.InstancedMesh(boulderG, new THREE.MeshLambertMaterial({ color: 0x77706a }), MAXG);
   shrubs.count = tufts.count = boulders.count = 0;
+  // A pin where the valley is (Hadar and Awash, about 40 °E 11 °N on the real Earth map, which begins at 160 °W): seen from space only; the valley itself is at true size on its own page (the valley link)
+  const pinG = new THREE.ConeGeometry(0.014, 0.07, 8).rotateX(Math.PI).translate(0, 0.035, 0),
+    valleyPin = new THREE.Mesh(pinG, new THREE.MeshLambertMaterial({ color: 0xf0a020, emissive: 0x663300 }));
+  let pinPlacedFor = null;
+  const placePin = () => {
+    if (pinPlacedFor === alt) return;
+    const gx = ((40 + 160) / 360) * W + 0.5,
+      gy = (H / 2) * (1 - 11 / 80),
+      lo = (gx / W) * 2 * Math.PI - Math.PI,
+      la = LATMAX * (1 - (2 * gy) / H);
+    valleyPin.position.copy(local(la, lo, 1 + EX * heightAt(la, lo)));
+    valleyPin.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), valleyPin.position.clone().normalize());
+    pinPlacedFor = alt;
+  };
+  globe.add(valleyPin);
   globe.add(shrubs);
   globe.add(tufts);
   globe.add(boulders);
@@ -1245,6 +1260,8 @@ const G3D = { ok: false };
     if (treesFor !== alt || treeFrame++ % 600 === 0) plantTrees();
     if (cavesFor !== cave || shapedFor !== alt) plantCaves();
     pines.visible = leafy.visible = trunks.visible = GL.zoom > 1.8;
+    placePin();
+    valleyPin.visible = !(typeof VALLEY_MODE !== 'undefined' && VALLEY_MODE) && GL.zoom < 6 && !GL.eye;
     // things lying on the ground, close up (picked up and put down often, so refreshed every second or so)
     const itemsOn = GL.zoom >= 5 || !!GL.eye;
     stonesI.visible = flakesI.visible = pyriteI.visible = sticksI.visible = nutsI.visible = itemsOn;

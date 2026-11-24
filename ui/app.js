@@ -2996,6 +2996,23 @@ function glide() {
     if (a.moving) a.ph = (a.ph || 0) + Math.min((moved / 0.4) * Math.PI, dt * cadence);
   }
 }
+// Where the band is on the real Earth (the open valley; plan item 35): the window starts centred on Hadar and Awash (about 40 °E, 11 °N); a square is 250 m, x grows east and y south.
+const HADAR = { lat: 11, lon: 40 },
+  KM_DEG = 111.2;
+function valleyPlace() {
+  const hs = ag.filter((a) => a.sp === 0 && !a.dead);
+  if (!hs.length || typeof OX === 'undefined') return '';
+  const cx = hs.reduce((t, a) => t + a.x, 0) / hs.length + OX - 100,
+    cy = hs.reduce((t, a) => t + a.y, 0) / hs.length + OY - 120,
+    lat = HADAR.lat - (cy * 0.25) / KM_DEG,
+    lon = HADAR.lon + (cx * 0.25) / (KM_DEG * Math.cos((lat * Math.PI) / 180));
+  return 'Band at ' + lon.toFixed(3) + '°E ' + lat.toFixed(3) + '°N (' + Math.abs(cx * 0.25).toFixed(1) + ' km ' + (cx >= 0 ? 'east' : 'west') + ', ' + Math.abs(cy * 0.25).toFixed(1) + ' km ' + (cy >= 0 ? 'south' : 'north') + ' of the start)';
+}
+if (VALLEY_MODE) {
+  $('vlink').textContent = 'The globe ↗';
+  $('vlink').href = 'index.html';
+  $('vlink').title = 'The planet: a small model Earth, about 100 times smaller than the real one';
+}
 let lastOX = 0,
   lastOY = 0;
 function draw() {
@@ -3085,7 +3102,8 @@ function draw() {
         .join('') +
       [
         'Year ' + Math.floor(tick / TY) + ', day ' + dayN(),
-        'North: ' + seasonName(0) + ' · South: ' + seasonName(H - 1),
+        VALLEY_MODE ? 'Season: ' + seasonName(0) : 'North: ' + seasonName(0) + ' · South: ' + seasonName(H - 1),
+        ...(VALLEY_MODE ? [valleyPlace()] : []),
       ]
         .map((t) => '<span>' + t + '</span>')
         .join('');
