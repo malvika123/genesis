@@ -3328,6 +3328,25 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 137. Thirty years in the open valley against the walled valley: no difference from the walls, but both populations fall about 9% a year and 3 of 12 bands die out in each — Nov 2026
+
+**Version.** `--valley` with and without `--open-valley` (commit 6b4a98d engine), entry-133 setup (real hunter densities, `--dens-zone 18`, cast of 127), 12 worlds per arm x 30 sim years, seeds 1-12. Prediction: `data/findings/137-open-long/prediction-written-before.txt`; script `run.js`; results `OPEN-*.jsonl`, `WALLED-*.jsonl` (first attempt corrupted by a release checkout and rerun from scratch).
+
+| (12 worlds each) | WALLED | OPEN |
+|---|---|---|
+| people, start to end | 300 to 16 | 300 to 21 |
+| change per year | -9.3% | -8.5% |
+| bands died out | 3 (years 21.5, 24.6, 25.9) | 3 (years 19.8, 20.2, 28.8) |
+| band centre moved, median (range) | 28 km (2-43) | 47 km (7-103) |
+| window moves by themselves | - | 6 to 30 in 11 of 12 worlds (0 in one) |
+| hunter tries per hominin-year | 0.130 | 0.133 |
+
+**Against the predictions.** (1) Bands move a few km, median 2-8 km, window moves 0-1 in 8 of 12: WRONG. Bands wander far: median 47 km in the open valley (up to 103 km), and in the walled valley 28 km, which is most of the box's width, so the walls were reached. (2) OPEN and WALLED within 2 points a year: CONFIRMED (0.8 points). (3) No extra deaths from window moves: CONFIRMED (3 against 3). (4) Hunter tries within a factor of 2 of 0.05: WRONG (0.13, 2.6 times; the 5-year runs gave 0.05-0.06, so tries rise as the band shrinks or ages). (5) A decline of 1-2.5% a year: WRONG, about 9% a year in both.
+
+**What it means.** The open valley does what it was built for: bands that walk 50 to 100 km are not stopped, and opening the walls changes neither survival nor hunter pressure. But the 30-year run shows the bigger problem the 5-year runs hid: the population is not stable over a generation; it shrinks about 9% a year and a quarter of bands die out. The cause is not read here (this run did not record causes of death); the next step is to count deaths by cause and births per woman over 30 years in the valley before changing anything (realism rules: find what is missing, do not tune).
+
+**Strength.** Moderate for "the walls make no difference" (12 paired worlds, 0.8 points); strong for "the 30-year population falls" (24 of 24 worlds fell, 6 died out).
+
 ### 136. The moving window (open valley step 2): the 250 m world moves with the band, nothing is lost, and sixty forced moves change nothing measurable — Nov 2026
 
 **Version.** `--valley --open-valley` (commit after 9a0d6bd): the window moves by itself once a day when a hominin is within 30 squares (7.5 km) of an edge, centred on the band; the land of the new strip comes from the same startup code as a new world; everything that stays is copied back; creatures, remembered places, lying bodies, parked herds, storms and the home site move with it. Prediction: `data/findings/136-open-window/prediction-written-before.txt`.
