@@ -1,0 +1,10 @@
+Entry 139 — sleeping up trees in the valley (`--tree-min`, `--nest-pull`), written 24 Nov 2026 before the runs.
+Why: at realistic speed (x4) predators kill about 125 per 1,000 hominin-years (8 times the x1 rate); 40% of the victims were asleep, none up a tree; only 6-7% of sleeping hominins are up a tree, and only 3% of 250 m valley squares reach the 0.4 tree cover a hominin needs to climb (a threshold set for the globe's 3 km squares). Of sleepers in squares where they can climb, only 15% do. Real savanna chimpanzees nest in trees on about 88-97% of nights (ground nests 3-12%; second-hand figures, 24 Nov search); Lucy's anatomy suggests some tree use (debated).
+Arms (valley, open valley, entry-133 setup, --valley-speed 4, 6 worlds x 5 years, seeds 1-6): A as now (tree-min 0.4, nest-pull 1); B tree-min 0.05; C tree-min 0.05 nest-pull 3; D tree-min 0.05 nest-pull 6. Recorded: share of sleeping hominins up a tree (a sample every 8 steps), deaths by cause per 1,000 hominin-years, how many predator victims were asleep and up a tree, falls, people at the end.
+Predictions (the shares are guesses, not data):
+ 1. Share of sleepers up a tree: A 6-12%; B 12-35%; C 35-70%; D 55-90%.
+ 2. Predator deaths of sleepers per 1,000 hominin-years fall as the share rises: D at most half of A. Leopards climb, so some up-tree sleepers will still be killed.
+ 3. All predator deaths per 1,000 hominin-years: A near 125; D 70-110 (a smaller fall, since 60% of victims are awake and many are alone).
+ 4. Deaths by falling stay under 5% of all deaths.
+ 5. Population change a year: A about -10.8% (entry 138); D at least 3 points better than A. If it is not, tree sleeping is not the main protection and being alone is, which is then the next thing to read.
+Read-out: the arm whose tree share lands inside the chimpanzee range (88-97%) is the evidence-matched one; nothing is tuned toward survival, and every arm is reported.

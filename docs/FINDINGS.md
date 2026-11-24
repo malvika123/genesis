@@ -3328,6 +3328,26 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 139. Sleeping up trees in the valley (`--tree-min`, `--nest-pull`): up to 63% of sleepers in trees, predator deaths fall by a fifth, and the population still falls 8% a year — Nov 2026
+
+**Version.** `--valley --open-valley --valley-speed 4 --tree-min X --nest-pull Y` (commit after ba310a7; defaults 0.4 and 1 = unchanged), entry-133 setup, 6 worlds x 5 years per arm, seeds 1-6. Prediction: `data/findings/139-tree-nests/prediction-written-before.txt`; script `run.js`; results `A-D.jsonl`. Why: at realistic speed predators kill 125 per 1,000 hominin-years; only 6-7% of sleepers were up a tree and only 3% of 250 m squares reach the 0.4 tree cover needed to climb (set for 3 km squares). Real savanna chimpanzees nest in trees on about 88-97% of nights (ground nests 3-12%, second-hand figures); hominin sleep sites are not known (Lucy's anatomy suggests some tree use, debated).
+
+| (6 worlds each, x4 speed) | A: now (0.4, pull 1) | B: tree-min 0.05 | C: 0.05, pull 3 | D: 0.05, pull 6 |
+|---|---|---|---|---|
+| sleepers up a tree | 6% | 12% | 51% | 63% |
+| predator deaths per 1,000 hominin-years | 125 | 131 | 103 | 98 |
+| victims asleep (all / up a tree) | 34 / 0 | 39 / 3 | 22 / 16 | 27 / 20 |
+| asleep victims per 1,000 hominin-years | 50 | 58 | 32 | 38 |
+| deaths by falling | 0 | 0 | 0 | 0 |
+| people, 150 to | 77 | 77 | 86 | 97 |
+| change per year | -12.5% | -12.5% | -10.5% | -8.3% |
+
+**Against the predictions.** (1) Tree shares A 6-12, B 12-35, C 35-70, D 55-90: CONFIRMED (6, 12, 51, 63). (2) Sleepers killed per 1,000 hominin-years in D at most half of A: WRONG (38 against 50, a fall of a quarter). (3) All predator deaths in D 70-110: CONFIRMED (98). (4) Falls under 5% of deaths: CONFIRMED (none). (5) Change a year in D at least 3 points better than A: CONFIRMED but weak (4.2 points; 77 against 97 people of 150, 6 worlds).
+
+**What it means.** Letting hominins climb ordinary trees and giving dusk a stronger pull to climb moves sleepers into trees (6% to 63%) and cuts predator deaths by about a fifth, but no arm reached the chimpanzee share (88-97%) and the band still shrinks 8% a year. Trees protect less than expected: of 36 victims up a tree in C and D, 19 were killed by leopards (they climb; `S.climb` is set for leopard, sabre-tooth and Dinofelis, the latter two not checked against evidence here), and a hunter's success against a sleeper up a tree is only reduced to 0.35 times (an earlier rule, not checked here). Also, 60% of victims were awake and many were alone. So tree sleeping is a real, partial protection and not the main fix. Stronger pulls (12, 20) that would reach the chimpanzee share were not run.
+
+**Strength.** Moderate for "more tree sleeping lowers predator deaths" (6 worlds per arm; D 98 against A 125 per 1,000; ends 97 against 77); strong that cover, not pull, was the first limit (B barely moved: 6% to 12%).
+
 ### 138. Real speeds in the valley (`--valley-speed`): faster animals mean more hunter meetings and a much faster fall in numbers, from -1.5% to -10.8% (x4) and -19.6% a year (x12) — Nov 2026
 
 **Version.** `--valley --open-valley --valley-speed X` (commit after 7926189; default 1 = unchanged), entry-133 setup (real hunter densities, dens-zone 18, cast of 127), 12 worlds x 5 years per arm, seeds 1-12. Prediction: `data/findings/138-valley-speed/prediction-written-before.txt`; script `run.js`; results `x1-*`, `x4-*`, `x12-*.jsonl`. Why: valley animals covered 0.6-1.6 km a day (hominin 1.6) because each kind's speed is in squares per step as set for the globe's 3 km squares and a valley square is 250 m; real GPS records give 3-14 km a day for hyena, leopard, elephant and giraffe (nothing found for hominins). The multiplier stops at 1 square per step, the most a step can move.

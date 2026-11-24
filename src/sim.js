@@ -298,7 +298,7 @@ function sim() {
       RF[A_TAKE] = RF[A_DROP] = RF[A_STRIKE] = RF[A_CLIMB] = -40;
       RFV[0] = 40; // only people have a voice here
     } else if (!a.asleep) {
-      if (ERA !== 'hominin' || !SOC.trees || (!a.up && tree[idx(a.x, a.y)] < 0.4)) RF[A_CLIMB] = -40; // nothing to climb (or not a climber)
+      if (ERA !== 'hominin' || !SOC.trees || (!a.up && tree[idx(a.x, a.y)] < SOC.treeMin)) RF[A_CLIMB] = -40; // nothing to climb (or not a climber)
       // Two calls are inborn in every human: a baby cries when hungry, hurt or cold, and anyone
       // screams when badly hurt — while still running, since the voice is its own. And a parent is
       // drawn toward the cry of its own young child.
@@ -432,7 +432,7 @@ function sim() {
             1.5 * x[s * NCH + 2]);
       const here = idx(a.x, a.y);
       // apes settle for the night up a tree: under a big one, a pull to climb it first
-      if (a.sp === 0 && ERA === 'hominin' && SOC.trees && !a.up && tree[here] >= 0.4) RF[A_CLIMB] += 2 * k;
+      if (a.sp === 0 && ERA === 'hominin' && SOC.trees && !a.up && tree[here] >= SOC.treeMin) RF[A_CLIMB] += 2 * k * SOC.nestPull;
       let safe = cover(here) > 0.4 ? 1 : 0;
       for (let s = 0; s < 8 && !safe; s++) if (x[s * NCH + 7] > 0.6 || x[s * NCH + own] > 0.6) safe = 1;
       RF[A_SLEEP] += safe ? 2 * k : 0;
@@ -474,7 +474,7 @@ function sim() {
         if (pmax > 0.1) {
           for (let s = 0; s < 8; s++) RF[s] += wary * pmax * x[s * NCH + 12];
           // under a big tree, a pull to climb it; up one, a pull to stay (the brain may still choose otherwise)
-          if (ERA === 'hominin' && SOC.trees) RF[A_CLIMB] += (a.up ? -1 : 1) * wary * pmax * (a.up || tree[idx(a.x, a.y)] >= 0.4 ? 1 : 0);
+          if (ERA === 'hominin' && SOC.trees) RF[A_CLIMB] += (a.up ? -1 : 1) * wary * pmax * (a.up || tree[idx(a.x, a.y)] >= SOC.treeMin ? 1 : 0);
         }
       }
       // and a grown person with food in its belly is moved to feed a hungry child close by: its own young
@@ -848,9 +848,9 @@ function sim() {
     // real danger for apes; one may have killed "Lucy": Kappelman et al. 2016).
     if (a.sp === 0 && ERA === 'hominin' && SOC.trees) {
       const here = idx(a.x, a.y);
-      if (baby) a.up = !!(a.mom && a.mom.up && a.mom.x === a.x && a.mom.y === a.y && tree[here] >= 0.4);
+      if (baby) a.up = !!(a.mom && a.mom.up && a.mom.x === a.x && a.mom.y === a.y && tree[here] >= SOC.treeMin);
       else if (act === A_CLIMB) {
-        if (!a.up && tree[here] >= 0.4) {
+        if (!a.up && tree[here] >= SOC.treeMin) {
           a.up = true;
           { a.e -= 0.2; ledgerWork(a, 0.2); } // climbing is work
           did(a, 'tree');
@@ -865,7 +865,7 @@ function sim() {
           }
         } else if (a.up) a.up = false;
       } else if (a.up && act < 8) a.up = false; // it climbs down to go anywhere
-      if (a.up && tree[here] < 0.4) a.up = false;
+      if (a.up && tree[here] < SOC.treeMin) a.up = false;
       if (a.up && a.asleep && rnd() < 0.00005) {
         a.up = false;
         a.asleep = false;
@@ -1949,7 +1949,8 @@ const hunterSeen = (x) => {
   return false;
 };
 const leafy = (a, i) => a.sp === 0 && SOC.leaves && a.S.leaf > 0 && tree[i] > 0.3 && !water[i] && (!SOC.youngLeaves || YL[i] > 0.05);
-const SOC = { valleySpeed: 1, openValley: false, dexterity: false, dexMean: 0.75, homAvoid: false, atkHom: 0.6, atkHomEasy: 0.9, realDens: false, densMul: 1, densZone: 1, densTau: 5, extraN: 2, extraHerdN: 2, youngLeaves: false, ylRate: 0.03, ylRed: 0.6, colourEye: false, tasteK: 0, termites: false, moundDens: 1, termRate: 0.05, termVal: 120, bodyModel: false, bodySpread: 0.08, growFloor: 0.2, catchUp: 0.3, growEnd: 16, protW: 1, effRef: 400, musShareF: 0.37, musShareM: 0.45, musGain: 0.0007, musLoss: 0.003, ledger: false, fullBrakeOn: true, fullBrake: 12, atkP: 0.6, atkEasy: 0.9, fruitCal: true, fruitHang: 1 / 12, mutP: 0.2, mutStep: 0.3, wireMutP: 0.03, wireMutSd: 0.4, digAct: true, preyFlight: true, campFix: true, cutAct: true, cutKg: 0.75, fleshOnly: true, fleshShare: 0.5, rotBySize: true, marrowKg: true, marrowFrac: 0.0025, marrowKcal: 7860, stickHumid: true, brandByDry: true, fireNatural: true, rotByKg: true, homMeatKg: true, biteBareKg: 0.25, biteFlakeKg: 0.75, meatKcal: 1140, herdYoung: true, youngShare: 0.25, forestPrey: 1000, meatMemory: true, keepKill: true, homStrikeKg: true, huntPull: true, atkFixed: 0.25, gut: true, gutShare: 0.25, digestH: 24, mealSleep: 2, preyMap: false, preyLevel: 5000, buffShare: 0.5, preyRegrow: 0.3, preyZone: 1, preyRule: 'soft', bigK: 2, preyMaxX: 1, smallPrey: true, maxPreyKg: 15, marrow: true, marrowShare: 0.15, marrowVal: 110, digStick: 0.55, digFlake: 0.4, digStone: 0.3, digBare: 0.15, sedges: true, sedgeCap: 0.5, africanNuts: true, rootVal: 80, voiceGenes: true, fireMaking: true, founderElders: 0.12, brainCost: true, brainF: 0.1, carry: true, carryAge: 2, walkE: true, walkJ: 4, pal: 1.7, growBodies: true, massF: 30, massM: 42, swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, needEye: false, babyNoAttack: true, watchWho: false, watchWhat: false, noPathCopy: false, noVoiceCopy: false, honestHurt: false, watchSuccess: false, watchSteps: 2, peerHi: 0.5, peerLo: 0.19, peerTool: 3, peerMom: 3, copyThin: 0, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
+// treeMin: the cover a square needs to have a tree to sleep up (0.4 was set for the globe's 3 km squares, where it means a forest); nestPull: how strongly dusk pulls an ape up it (both: docs/design/tree-nests.md)
+const SOC = { treeMin: 0.4, nestPull: 1, valleySpeed: 1, openValley: false, dexterity: false, dexMean: 0.75, homAvoid: false, atkHom: 0.6, atkHomEasy: 0.9, realDens: false, densMul: 1, densZone: 1, densTau: 5, extraN: 2, extraHerdN: 2, youngLeaves: false, ylRate: 0.03, ylRed: 0.6, colourEye: false, tasteK: 0, termites: false, moundDens: 1, termRate: 0.05, termVal: 120, bodyModel: false, bodySpread: 0.08, growFloor: 0.2, catchUp: 0.3, growEnd: 16, protW: 1, effRef: 400, musShareF: 0.37, musShareM: 0.45, musGain: 0.0007, musLoss: 0.003, ledger: false, fullBrakeOn: true, fullBrake: 12, atkP: 0.6, atkEasy: 0.9, fruitCal: true, fruitHang: 1 / 12, mutP: 0.2, mutStep: 0.3, wireMutP: 0.03, wireMutSd: 0.4, digAct: true, preyFlight: true, campFix: true, cutAct: true, cutKg: 0.75, fleshOnly: true, fleshShare: 0.5, rotBySize: true, marrowKg: true, marrowFrac: 0.0025, marrowKcal: 7860, stickHumid: true, brandByDry: true, fireNatural: true, rotByKg: true, homMeatKg: true, biteBareKg: 0.25, biteFlakeKg: 0.75, meatKcal: 1140, herdYoung: true, youngShare: 0.25, forestPrey: 1000, meatMemory: true, keepKill: true, homStrikeKg: true, huntPull: true, atkFixed: 0.25, gut: true, gutShare: 0.25, digestH: 24, mealSleep: 2, preyMap: false, preyLevel: 5000, buffShare: 0.5, preyRegrow: 0.3, preyZone: 1, preyRule: 'soft', bigK: 2, preyMaxX: 1, smallPrey: true, maxPreyKg: 15, marrow: true, marrowShare: 0.15, marrowVal: 110, digStick: 0.55, digFlake: 0.4, digStone: 0.3, digBare: 0.15, sedges: true, sedgeCap: 0.5, africanNuts: true, rootVal: 80, voiceGenes: true, fireMaking: true, founderElders: 0.12, brainCost: true, brainF: 0.1, carry: true, carryAge: 2, walkE: true, walkJ: 4, pal: 1.7, growBodies: true, massF: 30, massM: 42, swimLearn: true, swimDeep: 0.02, swimShallow: 0.004, swimWatch: false, homFish: false, huntP: 0.25, flakeP: 0.05, cutFlake: 0.35, cutBare: 0.12, hairy: true, hardNuts: true, nutP0: 0.02, nutCeil: 0.83, nutG: 1 - Math.pow(0.2, 1 / 500), copyNuts: true, fireWatch: false, copying: true, copyByResult: true, copySeq: true, copyClose: true, copyWorked: true, backReplay: true, calmValue: true, grassPull: false, disease: true, diseaseRate: 1 / 7, cycleChance: true, conceive: 0.2, nearPrey: true, preyRadius: 8, rescue: true, rescueRate: 1, rescueBelow: 4, newMating: true, maleWaitH: 1, vicarGene: true, peopleCap: false, apeCare: true, refeed: true, refeedAt: 20, momPull: true, needEye: false, babyNoAttack: true, watchWho: false, watchWhat: false, noPathCopy: false, noVoiceCopy: false, honestHurt: false, watchSuccess: false, watchSteps: 2, peerHi: 0.5, peerLo: 0.19, peerTool: 3, peerMom: 3, copyThin: 0, cycle: true, mood: true, oneMove: true, temper: true, pcare: true, hungerFirst: true, hungerK: 6, practice: false, flight: true, kleiber: true, grassEye: false, loss: true, resume: 74 / 365, lust: 2, leaves: true, vic: true, pick: true, sound: true, calls: true, modern: false, home: true, earth: false, care: true, shelter: true, shield: false, trees: true },
   OUCH = [],
   PREPARED = { bitten: 1, killed: 1, prey: 0.9, fire: 1, fall: 1, drowned: 1, berries: 1, meat: 1, lightning: 0.6, wounds: 0.5 },
   OUCHW = {

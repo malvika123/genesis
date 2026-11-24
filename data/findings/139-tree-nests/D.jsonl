@@ -1,0 +1,6 @@
+{"arm":"D","seed":1,"aliveEnd":18,"homininYears":120.3,"sleepSamples":1279,"upSamples":782,"kills":{"asleep":5,"up":3,"total":10,"leopardUp":1},"deaths":{"killed by a predator":10,"old age":2,"its wounds":1}}
+{"arm":"D","seed":2,"aliveEnd":20,"homininYears":124.4,"sleepSamples":1368,"upSamples":889,"kills":{"asleep":2,"up":2,"total":8,"leopardUp":1},"deaths":{"old age":3,"killed by a predator":8,"its wounds":1}}
+{"arm":"D","seed":3,"aliveEnd":18,"homininYears":131.9,"sleepSamples":1439,"upSamples":919,"kills":{"asleep":4,"up":2,"total":11,"leopardUp":0},"deaths":{"illness":1,"old age":3,"killed by a predator":11}}
+{"arm":"D","seed":4,"aliveEnd":11,"homininYears":98.1,"sleepSamples":1062,"upSamples":703,"kills":{"asleep":5,"up":2,"total":13,"leopardUp":1},"deaths":{"illness":3,"killed by a predator":13,"old age":3}}
+{"arm":"D","seed":5,"aliveEnd":17,"homininYears":127.2,"sleepSamples":1337,"upSamples":807,"kills":{"asleep":5,"up":7,"total":14,"leopardUp":5},"deaths":{"killed by a predator":14,"old age":1,"its wounds":1}}
+{"arm":"D","seed":6,"aliveEnd":13,"homininYears":115.5,"sleepSamples":1242,"upSamples":746,"kills":{"asleep":6,"up":4,"total":14,"leopardUp":4},"deaths":{"old age":2,"killed by a predator":14,"its wounds":2}}
