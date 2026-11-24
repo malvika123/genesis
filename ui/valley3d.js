@@ -131,8 +131,29 @@
     geo.computeBoundingSphere();
     shapedFor = alt;
   }
-  // the ground's height (in squares) at a place in the scene, smoothly between square middles
+  // the ground's height (in squares) anywhere: inside the window from the simulation's own heights, beyond it from the open valley's land rule (openAltAt)
   function ground(X, Z) {
+    if (X >= 0.5 && X <= W - 0.5 && Z >= 0.5 && Z <= H - 0.5) return groundFlat(X, Z);
+    if (SKH) {
+      // the land drawn around the view, exactly as drawn (its points are SK squares apart), so the camera never sinks into it
+      const gx = (X - SKH.x0) / SK,
+        gz = (Z - SKH.z0) / SK,
+        j = Math.floor(gx),
+        k = Math.floor(gz);
+      if (j >= 0 && k >= 0 && j < SKH.n - 1 && k < SKH.n - 1) {
+        const tx = gx - j,
+          tz = gz - k,
+          hh = (a, b) => SKH.h[b * SKH.n + a];
+        // the same two triangles per cell as the mesh (split along the cell's diagonal from its top-right to bottom-left corner)
+        return tx + tz <= 1
+          ? hh(j, k) + (hh(j + 1, k) - hh(j, k)) * tx + (hh(j, k + 1) - hh(j, k)) * tz
+          : hh(j + 1, k + 1) + (hh(j, k + 1) - hh(j + 1, k + 1)) * (1 - tx) + (hh(j + 1, k) - hh(j + 1, k + 1)) * (1 - tz);
+      }
+    }
+    if (typeof openAltAt === 'function' && typeof SOC !== 'undefined' && SOC.openValley) return Math.max(0, openAltAt(OX + X - 0.5, OY + Z - 0.5)) * KM - 0.004;
+    return groundFlat(X, Z);
+  }
+  function groundFlat(X, Z) {
     const gx = clamp(X - 0.5, 0, W - 1.001),
       gz = clamp(Z - 0.5, 0, H - 1.001),
       x0 = Math.floor(gx),
@@ -179,18 +200,39 @@
   // The simulation runs only in the 50 x 60 km window around the band, but the open valley's land is a rule of position (src/openvalley.js openAltAt), so the land carries on
   // around it: the same hills, river and plateau, 75 km out on every side. Nothing lives or grows there in the simulation, so it is drawn plain, in the window's average colour,
   // without plants or animals; when the band walks that way, the window moves and that land comes alive.
-  const SK = 2, // squares between the skirt's points
-    SKR = 300; // how far it reaches beyond the window (squares: 75 km)
-  let skirt = null,
-    skirtFor = null;
+  // It is drawn as a round piece of the Earth 240 km across, centred on the window (the owner, 24 Nov 2026: "why is it boxed ... can't we have the circular or spherical?").
+  const SK = 4, // squares between its points
+    RD = 480, // its radius (squares: 120 km)
+    SKR = RD; // reach from the window's middle
+  let SKH = null, // the heights of the land drawn around the view, for ground()
+    skirt = null,
+    skirtFor = null,
+    skirtC = [100, 120]; // the middle of the land drawn around the view
   const skirtCol = new THREE.Color(0x5f7f3a),
     skirtMat = new THREE.MeshLambertMaterial({ vertexColors: true, color: skirtCol }); // its colour is the window's average land colour (set after each repaint)
+  // its outer part fades into the sky by distance across the ground, so it has no edge you can see from any height
+  skirtMat.onBeforeCompile = (sh) => {
+    sh.uniforms.uC = { value: new THREE.Vector2(100, 120) };
+    sh.uniforms.uR = { value: RD };
+    sh.uniforms.uSky = { value: new THREE.Color() };
+    skirtMat.userData.sh = sh;
+    sh.vertexShader = sh.vertexShader
+      .replace('#include <common>', '#include <common>\nvarying vec2 vXZ;')
+      .replace('#include <begin_vertex>', '#include <begin_vertex>\nvXZ = (modelMatrix * vec4(transformed, 1.0)).xz;');
+    sh.fragmentShader = sh.fragmentShader
+      .replace('#include <common>', '#include <common>\nvarying vec2 vXZ;\nuniform vec2 uC;\nuniform float uR;\nuniform vec3 uSky;')
+      .replace('#include <fog_fragment>', '#include <fog_fragment>\ngl_FragColor.rgb = mix(gl_FragColor.rgb, uSky, smoothstep(0.55, 0.97, length(vXZ - uC) / uR));');
+  };
   function buildSkirt(v) {
     if (typeof openAltAt !== 'function' || !SOC.openValley) return;
     if (skirt) (scene.remove(skirt), skirt.geometry.dispose());
-    const nx = Math.round((W + 2 * SKR) / SK) + 1,
-      nz = Math.round((H + 2 * SKR) / SK) + 1,
+    // centred where you are looking (like a game's render distance: the land is made around the viewer, wherever it goes)
+    const X00 = Math.round((skirtC[0] - RD) / SK) * SK,
+      Z00 = Math.round((skirtC[1] - RD) / SK) * SK,
+      nx = Math.round((2 * RD) / SK) + 1,
+      nz = Math.round((2 * RD) / SK) + 1,
       pos = new Float32Array(nx * nz * 3),
+      hs = new Float32Array(nx * nz),
       col = new Float32Array(nx * nz * 3),
       ix = [],
       wc = new THREE.Color(0.55, 0.95, 2.6), // times the land colour below: water blue
@@ -199,8 +241,8 @@
       c = new THREE.Color();
     for (let k = 0; k < nz; k++)
       for (let j = 0; j < nx; j++) {
-        const X = -SKR + j * SK,
-          Z = -SKR + k * SK,
+        const X = X00 + j * SK,
+          Z = Z00 + k * SK,
           aX = OX + X - 0.5,
           aZ = OY + Z - 0.5,
           a = Math.max(0, openAltAt(aX, aZ)),
@@ -208,6 +250,7 @@
           q = k * nx + j;
         pos[q * 3] = X;
         pos[q * 3 + 1] = a * KM - (inside ? 0.05 : 0.004);
+        hs[q] = a * KM - 0.004;
         pos[q * 3 + 2] = Z;
         const wet = Math.abs(aX - openRiverX(aZ)) < 1.2;
         c.copy(base).lerp(hill, clamp((a - 0.6) / 0.8, 0, 1)); // the plateau's montane bush is darker
@@ -218,8 +261,9 @@
       }
     for (let k = 0; k < nz - 1; k++)
       for (let j = 0; j < nx - 1; j++) {
-        const X0 = -SKR + j * SK,
-          Z0 = -SKR + k * SK;
+        const X0 = X00 + j * SK,
+          Z0 = Z00 + k * SK;
+        if (Math.hypot(X0 + SK / 2 - skirtC[0], Z0 + SK / 2 - skirtC[1]) > RD) continue; // round: the haze hides its edge
         if (X0 >= 0 && X0 + SK <= W && Z0 >= 0 && Z0 + SK <= H) continue; // the window itself is drawn in full detail
         const a = k * nx + j;
         ix.push(a, a + nx, a + 1, a + 1, a + nx, a + nx + 1);
@@ -230,8 +274,9 @@
     g.setIndex(ix);
     g.computeVertexNormals();
     skirt = new THREE.Mesh(g, skirtMat);
+    SKH = { x0: X00, z0: Z00, n: nx, h: hs };
     scene.add(skirt);
-    skirtFor = OX + ',' + OY + ',' + OVSEED;
+    skirtFor = OX + ',' + OY + ',' + OVSEED + ',' + skirtC.join();
   }
 
   // ---------- plants and stones at true size, near the camera ----------
@@ -476,12 +521,12 @@
   const sqX = () => ((GL.lon0 + Math.PI) / (2 * Math.PI)) * W,
     sqZ = () => (1 - GL.lat0 / LATMAX) * (H / 2),
     setSq = (X, Z) => {
-      X = clamp(X, 0, W);
-      Z = clamp(Z, 0, H);
+      X = clamp(X, -4000, W + 4000); // you can look anywhere along the land (1,000 km); only the window around the band is simulated
+      Z = clamp(Z, -4000, H + 4000);
       GL.lon0 = (X / W) * 2 * Math.PI - Math.PI;
       GL.lat0 = LATMAX * (1 - (2 * Z) / H);
     };
-  const dist = () => 340 / Math.pow(clamp(GL.zoom, 1, 40), 2.6), // from 85 km up (the whole valley) to about 6 m from the ground
+  const dist = () => 340 / Math.pow(clamp(GL.zoom, 0.5, 40), 2.6), // from 85 km up (the whole valley) to about 6 m from the ground
     autoTilt = () => clamp(Math.log(GL.zoom / 2) / Math.log(28 / 2), 0, 1) * 1.3; // look straight down from high up; toward the horizon close to the ground
   let lastEye = null;
   function aimEye(a) {
@@ -774,7 +819,13 @@
     lastOX = typeof OX !== 'undefined' ? OX : 0;
     lastOY = typeof OY !== 'undefined' ? OY : 0;
     if (shapedFor !== alt) shape();
-    if (typeof OX !== 'undefined' && skirtFor !== OX + ',' + OY + ',' + OVSEED) buildSkirt(v);
+    // the land around the view is remade when you have moved a quarter of the way to its edge (or the window moved)
+    {
+      const vx = GL.eye ? GL.eye.rx : sqX(),
+        vz = GL.eye ? GL.eye.ry : sqZ();
+      if (Math.hypot(vx - skirtC[0], vz - skirtC[1]) > RD / 4) skirtC = [Math.round(vx / 40) * 40, Math.round(vz / 40) * 40];
+    }
+    if (typeof OX !== 'undefined' && skirtFor !== OX + ',' + OY + ',' + OVSEED + ',' + skirtC.join()) buildSkirt(v);
     if (paintFrame++ % 90 === 0) paint(v);
     // gently follow a creature you asked to see
     if (GL.follow && GL.follow === sel && !GL.follow.gone && !GL.held) setSq(sqX() + (sel.rx + 0.5 - sqX()) * 0.08, sqZ() + (sel.ry + 0.5 - sqZ()) * 0.08);
@@ -800,13 +851,19 @@
     sun.intensity = 0.95 * day;
     sun.color.setRGB(1, 0.75 + 0.25 * clamp(up / 0.4, 0, 1), 0.55 + 0.45 * clamp(up / 0.4, 0, 1)); // a low sun is warm
     hemi.intensity = 0.12 + 0.48 * day;
-    skyC.setRGB(0.03 + 0.58 * day, 0.05 + 0.72 * day, 0.12 + 0.8 * day);
+    // haze far off: about 20 km seen from the ground; none when looking down from high up
+    const hc = camera.position.y - ground(camera.position.x, camera.position.z),
+      space = clamp((hc / KM - 15) / 45, 0, 1); // the sky darkens with height: most of the air is below about 15 km, and by 60 km it is nearly black
+    skyC.setRGB((0.03 + 0.58 * day) * (1 - space) + 0.005 * space, (0.05 + 0.72 * day) * (1 - space) + 0.008 * space, (0.12 + 0.8 * day) * (1 - space) + 0.02 * space);
     scene.background = skyC;
     scene.fog.color.copy(skyC);
-    // haze far off: about 20 km seen from the ground; none when looking down from high up
-    const hc = camera.position.y - ground(camera.position.x, camera.position.z);
+    // the land drawn around the view fades into the sky before its edge, at any height (a render distance: beyond it nothing is drawn)
     scene.fog.near = 20 + hc * 3;
     scene.fog.far = 90 + hc * 8;
+    if (skirtMat.userData.sh) {
+      skirtMat.userData.sh.uniforms.uC.value.set(skirtC[0], skirtC[1]);
+      skirtMat.userData.sh.uniforms.uSky.value.copy(skyC);
+    }
     if (landMat.userData.sh) landMat.userData.sh.uniforms.detailAmt.value = clamp(1.3 - hc / 3, 0, 1); // the grain only close to the ground (from high up it would shimmer)
     const far = !GL.eye && dist() > 30;
     acacias.visible = rounds.visible = shrubs.visible = tufts.visible = boulders.visible = !far;
