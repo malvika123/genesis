@@ -3328,6 +3328,25 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 140. The hunter fill rate (`--dens-tau 1`): hunters now hold the real density from year 1, but deaths still climb from nothing to 20-25% of the band a year, at every speed — Nov 2026
+
+**Version.** `--valley --open-valley --dens-tau 1 --valley-speed X` (no code change; commit ba310a7 / 0ff186f), entry-133 setup, 6 worlds x 5 years per arm, seeds 1-6, speeds x1, x2, x4. Prediction: `data/findings/140-hunter-fill/prediction-written-before.txt`; script `run.js`; results `x*-*.jsonl`. Found first (audit of entries 138-139 runs): hunters around the band reached only 6.5, 10, 11.7, 13.3, 14 per 100 km2 in years 1-5 against about 21.6 meant. Cause: the top-up runs once per sim day and closes 1/`densTau` of the gap with `densTau` = 5 "days", but a sim year is 3 days (BACKLOG B6, the two clocks), so 5 days is about 1.7 life-years. All earlier valley runs (133, 136, 138, 139) had hunters under-filled in their first years.
+
+| (6 worlds each, 5 years, hunters at full density) | x1 | x2 | x4 |
+|---|---|---|---|
+| hunters per 100 km2 in the zone, years 1-5 | 21.2, 21.8, 20.9, 21.1, 21.5 | 21.5, 21.6, 21.5, 21.7, 21.9 | 20.9, 21.1, 21.2, 21.7, 21.8 |
+| predator deaths per 1,000 hominin-years, years 1-5 | 0, 6, 74, 204, 224 | 0, 67, 217, 293, 137 | 7, 169, 353, 318, 179 |
+| hunter tries per hominin-year, years 1-5 | 0.000, 0.024, 0.142, 0.422, 0.295 | 0.000, 0.140, 0.336, 0.329, 0.160 | 0.013, 0.212, 0.471, 0.376, 0.276 |
+| years 2-5 averaged | 115 (11.5% a year) | 171 (17.1%) | 251 (25.1%) |
+| people, 150 to | 98 (-8.2% a year) | 80 (-11.8%) | 54 (-18.5%) |
+| bands wiped out | 0 | 0 | 0 |
+
+**Against the predictions.** (1) Density at least 18 from year 1 and 15-25 throughout: CONFIRMED (20.9-21.9 everywhere). (2) Year 1 above 0 at x4 and years 3-5 within 40% of the old rates: CONFIRMED (7; 353, 318, 179 against 130, 246, 225 at the old fill, within or just outside the band: year 3 is 2.7 times the old). (3) Years 2-5 deaths per 1,000: x1 30-90: WRONG (115); x2 60-200: CONFIRMED (171); x4 150-350: CONFIRMED (251). (4) No wipe-out at x1: CONFIRMED; two or more of six at x4: WRONG (none).
+
+**What it means.** With the fill fixed, the hunters hold the real density, and the deaths are still near zero in year 1 and climb for three years, so the climb is not the fill. At the end (years 4-5) the rate is about 140-290 per 1,000 whatever the speed (x1 204, 224; x2 293, 137; x4 318, 179), so speed is not what sets it: something about the hunters (their hunger, how often they attack, how often they win) does. Even at x1 the rate over years 2-5 (115) is two to four times the real predation figure noted earlier (3-5.5% a year; not re-checked today). An untested guess for the climb: hunters, new ones too, start with full stomachs and take a couple of sim years to reach their usual hunger. Not tuned; nothing changed but the setting.
+
+**Strength.** Strong for the density fix (it moved from 6.5 to 21 in year 1, 18 of 18 world-years inside 15-25) and for "deaths climb whatever the speed" (all three arms); the cause of the climb is open.
+
 ### 139. Sleeping up trees in the valley (`--tree-min`, `--nest-pull`): up to 63% of sleepers in trees, predator deaths fall by a fifth, and the population still falls 8% a year — Nov 2026
 
 **Version.** `--valley --open-valley --valley-speed 4 --tree-min X --nest-pull Y` (commit after ba310a7; defaults 0.4 and 1 = unchanged), entry-133 setup, 6 worlds x 5 years per arm, seeds 1-6. Prediction: `data/findings/139-tree-nests/prediction-written-before.txt`; script `run.js`; results `A-D.jsonl`. Why: at realistic speed predators kill 125 per 1,000 hominin-years; only 6-7% of sleepers were up a tree and only 3% of 250 m squares reach the 0.4 tree cover needed to climb (set for 3 km squares). Real savanna chimpanzees nest in trees on about 88-97% of nights (ground nests 3-12%, second-hand figures); hominin sleep sites are not known (Lucy's anatomy suggests some tree use, debated).
