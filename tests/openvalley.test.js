@@ -118,3 +118,19 @@ test('west of the river the land climbs to a plateau about 40 km out, and the wa
   let mx = 0; for (let i = 0; i < W * H; i++) mx = Math.max(mx, b[i]);
   assert.ok(mx < 0.8, 'the home window should still be low valley, max ' + mx.toFixed(2) + ' km');
 });
+test('the land drawn beyond the window (openAltAt) has the same heights as the window itself', () => {
+  const E = createEngine({ valley: { W, H, lat: -0.122 } });
+  E.setSeed(5);
+  E.reset({ valley: true, openValley: true, openValleySeed: 123456, openValleyOX: 17, openValleyOY: -9, people: 5 });
+  const alt = E.alt(), st = E.state(), o = E.ov();
+  let n = 0, worst = 0;
+  for (let y = 0; y < H; y += 3)
+    for (let x = 0; x < W; x += 3) {
+      const i = y * W + x;
+      if (st.river[i]) continue;
+      n++;
+      worst = Math.max(worst, Math.abs(alt[i] - E.openAltAt(x + o.OX, y + o.OY)));
+    }
+  assert.ok(n > 4000);
+  assert.ok(worst < 1e-5, 'largest difference ' + worst + ' km');
+});

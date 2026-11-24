@@ -164,6 +164,74 @@
     drawRivers(lg, v, v('--water'), 0.32);
     lg.setTransform(1, 0, 0, 1, 0, 0);
     landTex.needsUpdate = true;
+    // the window's average land colour, for the land beyond it
+    const d = tg.getImageData(0, 0, W, H).data;
+    let r = 0,
+      gg = 0,
+      b = 0,
+      n = 0;
+    for (let i = 0; i < W * H; i++) if (!water[i]) ((r += d[i * 4]), (gg += d[i * 4 + 1]), (b += d[i * 4 + 2]), n++);
+    if (n) skirtCol.setRGB(r / n / 255, gg / n / 255, b / n / 255).convertSRGBToLinear();
+    skirtMat.color.copy(skirtCol);
+  }
+
+  // ---------- the land beyond the window ----------
+  // The simulation runs only in the 50 x 60 km window around the band, but the open valley's land is a rule of position (src/openvalley.js openAltAt), so the land carries on
+  // around it: the same hills, river and plateau, 75 km out on every side. Nothing lives or grows there in the simulation, so it is drawn plain, in the window's average colour,
+  // without plants or animals; when the band walks that way, the window moves and that land comes alive.
+  const SK = 2, // squares between the skirt's points
+    SKR = 300; // how far it reaches beyond the window (squares: 75 km)
+  let skirt = null,
+    skirtFor = null;
+  const skirtCol = new THREE.Color(0x5f7f3a),
+    skirtMat = new THREE.MeshLambertMaterial({ vertexColors: true, color: skirtCol }); // its colour is the window's average land colour (set after each repaint)
+  function buildSkirt(v) {
+    if (typeof openAltAt !== 'function' || !SOC.openValley) return;
+    if (skirt) (scene.remove(skirt), skirt.geometry.dispose());
+    const nx = Math.round((W + 2 * SKR) / SK) + 1,
+      nz = Math.round((H + 2 * SKR) / SK) + 1,
+      pos = new Float32Array(nx * nz * 3),
+      col = new Float32Array(nx * nz * 3),
+      ix = [],
+      wc = new THREE.Color(0.55, 0.95, 2.6), // times the land colour below: water blue
+      base = new THREE.Color(1, 1, 1),
+      hill = new THREE.Color(0.78, 0.78, 0.78),
+      c = new THREE.Color();
+    for (let k = 0; k < nz; k++)
+      for (let j = 0; j < nx; j++) {
+        const X = -SKR + j * SK,
+          Z = -SKR + k * SK,
+          aX = OX + X - 0.5,
+          aZ = OY + Z - 0.5,
+          a = Math.max(0, openAltAt(aX, aZ)),
+          inside = X > 0.5 && X < W - 0.5 && Z > 0.5 && Z < H - 0.5,
+          q = k * nx + j;
+        pos[q * 3] = X;
+        pos[q * 3 + 1] = a * KM - (inside ? 0.05 : 0.004);
+        pos[q * 3 + 2] = Z;
+        const wet = Math.abs(aX - openRiverX(aZ)) < 1.2;
+        c.copy(base).lerp(hill, clamp((a - 0.6) / 0.8, 0, 1)); // the plateau's montane bush is darker
+        if (wet) c.copy(wc);
+        col[q * 3] = c.r;
+        col[q * 3 + 1] = c.g;
+        col[q * 3 + 2] = c.b;
+      }
+    for (let k = 0; k < nz - 1; k++)
+      for (let j = 0; j < nx - 1; j++) {
+        const X0 = -SKR + j * SK,
+          Z0 = -SKR + k * SK;
+        if (X0 >= 0 && X0 + SK <= W && Z0 >= 0 && Z0 + SK <= H) continue; // the window itself is drawn in full detail
+        const a = k * nx + j;
+        ix.push(a, a + nx, a + 1, a + 1, a + nx, a + nx + 1);
+      }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    g.setAttribute('color', new THREE.BufferAttribute(col, 3));
+    g.setIndex(ix);
+    g.computeVertexNormals();
+    skirt = new THREE.Mesh(g, skirtMat);
+    scene.add(skirt);
+    skirtFor = OX + ',' + OY + ',' + OVSEED;
   }
 
   // ---------- plants and stones at true size, near the camera ----------
@@ -634,6 +702,7 @@
     lastOX = typeof OX !== 'undefined' ? OX : 0;
     lastOY = typeof OY !== 'undefined' ? OY : 0;
     if (shapedFor !== alt) shape();
+    if (typeof OX !== 'undefined' && skirtFor !== OX + ',' + OY + ',' + OVSEED) buildSkirt(v);
     if (paintFrame++ % 90 === 0) paint(v);
     // gently follow a creature you asked to see
     if (GL.follow && GL.follow === sel && !GL.follow.gone && !GL.held) setSq(sqX() + (sel.rx + 0.5 - sqX()) * 0.08, sqZ() + (sel.ry + 0.5 - sqZ()) * 0.08);

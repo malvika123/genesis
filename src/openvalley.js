@@ -102,6 +102,21 @@ function makeOpenValleyTerrain(n) {
     }
 }
 
+// The land's height (km) at any absolute square, by the same formula as makeOpenValleyTerrain (before the river is cut in). Not used by the simulation: the page draws the land beyond
+// the window with it (ui/valley3d.js), so the window does not float in empty sky. Checked equal to the window's own heights in tests/openvalley.test.js.
+let OVNOISE = null;
+function openAltAt(X, Y) {
+  if (!OVNOISE || OVNOISE.seed !== OVSEED) OVNOISE = { seed: OVSEED, noise: ofractal(6, 4, 0.5, OVSEED + 11), broad: ofractal(3, 3, 0.5, OVSEED + 23) };
+  const SQ = 0.25,
+    c = openRiverX(Y),
+    dKm = Math.abs(X - c) * SQ,
+    flood = Math.min(1, dKm / VALLEY.floodKm),
+    side = Math.max(0, (dKm - VALLEY.floodKm) / 20),
+    west = (c - X) * SQ,
+    scarp = west > VALLEY.escKm ? Math.min(VALLEY.plateauRiseKm, (west - VALLEY.escKm) * VALLEY.escSlope) : 0;
+  return 0.5 - VALLEY.slopeKmPerKm * Y * SQ + (flood * 0.012 + Math.min(1, side) * VALLEY.sideRiseKm) + 0.01 * (OVNOISE.noise(X, Y) - 0.5) + 0.04 * (OVNOISE.broad(X, Y) - 0.5) * Math.min(1, dKm / 6) + scarp;
+}
+
 // ---- the moving window (step 2; docs/design/open-valley.md) ----
 // When a hominin comes within OVMARGIN squares of an edge, the 250 m window moves so the band is back in the middle. The new land is made by the same startup code as a new world, for
 // the new offset (OX, OY), and what stays is copied back from the old layers; the creatures and everything that remembers a place move with the window.

@@ -14,3 +14,5 @@
 **Not yet.** Fish (not drawn in 3D); things lying on the ground (stones, flakes, sticks, nuts) and huts in 3D; seasons in the sun's path (an equinox sun at 11 °N); the window's edge simply ends; zooming from the globe's Hadar pin straight into this view (next step).
 
 **Checked (Chrome, 24 Nov):** no errors on either page; scroll zoom, drag, Shift-drag turn and tilt, the Eyes view through a hominin child's eyes; about 57 frames a second at 130 m up in woodland; the globe page unchanged; 99 of 99 tests.
+
+**The land beyond the window (24 Nov, owner: "why not whole window?").** The simulation runs only in the 50 x 60 km window, which floated in empty sky. The open valley's land is a rule of position, so `openAltAt` (src/openvalley.js; tested equal to the window's own heights) gives the hills, river and plateau 75 km out on every side; it is drawn plain, in the window's average colour, with no plants or animals, because nothing is simulated there. The window shows as the detailed patch in the middle; when the band walks toward an edge the window moves and that land comes alive. Not the sim: drawing only.
