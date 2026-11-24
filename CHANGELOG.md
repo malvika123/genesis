@@ -4,6 +4,9 @@ Genesis follows the version in `package.json`. Experiments should state the vers
 
 ## Unreleased
 
+- **The valley in 3D, at true size** (`ui/valley3d.js`, docs/design/valley-3d.md): on the valley page, zoom from 85 km up down to the ground, drag, turn and tilt like a map app; trees, bushes, grass and boulders at real sizes near the camera; hominins about 1.3 m tall; the Eyes view works in the valley again. Drawing only.
+- **Entry 137:** 30 years open valley against walled: the walls make no difference, but both fall about 9% a year (cause not yet counted).
+
 - **A bigger brain does not learn more here** (entry 107, measuring only; `chain-probe.js --bs X`): chains of 2–3 acts and cues of 2–4 steps at every size from 19 to 64 units; cue holding slightly worse at 64. Brain size is not the limit; the learner's credit passing is.
 
 - **Honest watching, built behind six switches, all off** (entry 101): a youngster learns only from what it can see of an elder. First test: copying of any kind barely changes how common skills are; honest watching is rare because elders eat in only 5–6% of waking steps (real chimpanzees about 37%). Tools: `watch-trace.js`, `long-run.js`.

@@ -2905,7 +2905,7 @@ function focusOn(a) {
   if (view === 'globe') {
     GL.lon0 = lonOfX(a.x);
     GL.lat0 = latOfY(a.y);
-    GL.zoom = Math.max(GL.zoom, 2.6);
+    GL.zoom = Math.max(GL.zoom, VALLEY_MODE ? 12 : 2.6); // the valley: down to about 130 m from it
     setSpin(false);
     GL.vel = 0;
     GL.follow = a; // keep it in view as it walks, until you drag the planet
@@ -3562,7 +3562,7 @@ function selectAt(e) {
     if (!P) continue;
     const feet = P[1] + (view === 'globe' ? 6 : P[2] / 2),
       // how tall it looks on screen: a close-up figure (2.5× life size, see globe3d) or a marker
-      tall = close ? Math.max(14, P[2] * (a.sp === 0 ? 0.11 : 0.08)) : Math.max(14, P[2] * 0.9),
+      tall = G3D.tallOf ? G3D.tallOf(a, P) : close ? Math.max(14, P[2] * (a.sp === 0 ? 0.11 : 0.08)) : Math.max(14, P[2] * 0.9),
       half = Math.max(12, tall * 0.4),
       cy = feet - tall / 2,
       inside = Math.abs(qx - P[0]) <= half && qy >= feet - tall - 4 && qy <= feet + 8,
@@ -3636,6 +3636,12 @@ cv.addEventListener('pointermove', (e) => {
     return;
   }
   if (view !== 'globe') return;
+  if (VALLEY_MODE && G3D.drag && ptr.size === 1) {
+    // the 3D valley: the ground follows the pointer; right button or Shift turns and tilts the view
+    const r = cv.getBoundingClientRect();
+    G3D.drag(e.clientX - r.left, e.clientY - r.top, dx, dy, e.shiftKey || (e.buttons & 2) === 2);
+    return;
+  }
   if (ptr.size === 2) {
     const [a, b] = [...ptr.values()];
     if (pinch0) {
@@ -3690,17 +3696,17 @@ cv.addEventListener(
   { passive: false }
 );
 function setView(v) {
-  if (VALLEY_MODE) v = 'flat'; // the valley has no globe view yet: drawing its 200 x 240 grid as a sphere is wrong and very slow (the owner: the world got laggy after using the eyes)
+  if (VALLEY_MODE && !G3D.ok) v = 'flat'; // on the valley page the 3D view is the valley itself at true size (ui/valley3d.js), not a planet
   view = v;
-  $('view').textContent = v === 'globe' ? 'Flat map' : 'Globe';
+  $('view').textContent = v === 'globe' ? 'Flat map' : VALLEY_MODE ? '3D valley' : 'Globe';
   $('ghint').hidden = v !== 'globe';
+  if (VALLEY_MODE) $('ghint').textContent = 'Drag to move · scroll to zoom · right-drag or Shift-drag to turn and tilt · tap a creature';
   cv.classList.toggle('round', v === 'globe');
   $('v-world').classList.toggle('space', v === 'globe');
   if (G3D.ok) G3D.show(v === 'globe');
   fit();
 }
 $('view').onclick = () => {
-  if (VALLEY_MODE) return; // the valley has no globe view yet (plan item 35, step 3)
   setView(view === 'globe' ? 'flat' : 'globe');
   $('turn').hidden = view !== 'globe';
 };
@@ -3848,7 +3854,6 @@ document.querySelectorAll('[data-dt]').forEach(
 // See through its eyes: the camera stands where it stands, at its eye height, facing where it faces,
 // with its field of view — and for animals that see two colours, red and green look alike.
 function setEye(a) {
-  if (VALLEY_MODE) return; // no creature's-eyes view in the valley yet (it needs the 3D valley of plan item 35, step 3)
   GL.eye = a;
   $('deye').setAttribute('aria-pressed', a ? 'true' : 'false');
   $('deye').textContent = a ? 'Map' : 'Eyes';
@@ -3856,10 +3861,7 @@ function setEye(a) {
   if (!a && G3D.eyeOff) G3D.eyeOff();
 }
 $('deye').onclick = () => setEye(GL.eye ? null : sel);
-if (VALLEY_MODE) {
-  $('deye').disabled = true;
-  $('deye').title = 'Not in the valley yet: the creature\'s-eyes view needs the 3D valley (planned)';
-}
+cv.addEventListener('contextmenu', (e) => VALLEY_MODE && view === 'globe' && e.preventDefault()); // right-drag turns the 3D valley
 $('dlisten').onclick = () => {
   listen = !listen;
   $('dlisten').setAttribute('aria-pressed', listen ? 'true' : 'false');
@@ -3879,5 +3881,5 @@ new ResizeObserver(fit).observe($('stage'));
 window.addEventListener('resize', fit);
 reset(readCfg());
 fillIdeas();
-setView(VALLEY_MODE ? 'flat' : 'globe');
+setView('globe');
 loop();
