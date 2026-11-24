@@ -3581,7 +3581,7 @@ function selectAt(e) {
 // whatever you are zooming in on stays in view — like a map app.
 function zoomAt(z, cx, cy) {
   const z0 = GL.zoom,
-    z1 = clamp(z, 1, 40);
+    z1 = clamp(z, VALLEY_MODE ? 0.5 : 1, 40); // the valley: out to about 500 km up, to see the round piece of the Earth
   if (z1 === z0) return;
   const P = G3D.ok && G3D.pick ? G3D.pick(cx, cy) : null;
   GL.zoom = z1;
@@ -3592,8 +3592,14 @@ function zoomAt(z, cx, cy) {
     G3D.aim();
     const Q = G3D.pick(cx, cy);
     if (!Q) break;
-    GL.lon0 += Math.atan2(Math.sin(P.lon - Q.lon), Math.cos(P.lon - Q.lon));
-    GL.lat0 = clamp(GL.lat0 + (P.lat - Q.lat), -1.45, 1.45);
+    if (VALLEY_MODE) {
+      // the valley's land is flat and goes on in every direction: no wrapping round, no poles
+      GL.lon0 += P.lon - Q.lon;
+      GL.lat0 += P.lat - Q.lat;
+    } else {
+      GL.lon0 += Math.atan2(Math.sin(P.lon - Q.lon), Math.cos(P.lon - Q.lon));
+      GL.lat0 = clamp(GL.lat0 + (P.lat - Q.lat), -1.45, 1.45);
+    }
   }
   GL.follow = null;
 }
