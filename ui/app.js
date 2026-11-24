@@ -2426,6 +2426,22 @@ function drawCreature(g, a, X, Y, k, v, dim = 1) {
 
 // ---------- flat map ----------
 const FLAT = { c: null, g: null, n: 0 };
+// The flat map's zoom and pan: FZ.z (1 = the whole map; up to 32, about 6 squares or 1.5 km across in the valley) and the square at the middle of the view
+const FZ = { z: 1, cx: null, cy: null };
+function flatClamp() {
+  if (FZ.cx === null) ((FZ.cx = W / 2), (FZ.cy = H / 2));
+  FZ.z = clamp(FZ.z, 1, 32);
+  const hw = W / (2 * FZ.z),
+    hh = H / (2 * FZ.z);
+  FZ.cx = clamp(FZ.cx, hw, W - hw);
+  FZ.cy = clamp(FZ.cy, hh, H - hh);
+}
+function flatXform() {
+  flatClamp();
+  const k = (FZ.z * cv.width) / (W * C),
+    ky = (FZ.z * cv.height) / (H * C);
+  return { k, ky, tx: cv.width / 2 - FZ.cx * C * k, ty: cv.height / 2 - FZ.cy * C * ky };
+}
 function drawFlat(v) {
   // the land and sky change slowly, so they are drawn to a cached picture a few times a second
   if (!FLAT.c) {
@@ -2466,8 +2482,11 @@ function drawFlat(v) {
   }
   cx.setTransform(1, 0, 0, 1, 0, 0);
   cx.imageSmoothingEnabled = true;
-  cx.drawImage(FLAT.s, 0, 0, cv.width, cv.height);
-  cx.setTransform(cv.width / (W * C), 0, 0, cv.height / (H * C), 0, 0);
+  cx.clearRect(0, 0, cv.width, cv.height);
+  // the flat map zooms and pans (the owner, 24 Nov 2026: "i can't zoom into valley, its like a static page"): FZ.z times closer, centred on square (FZ.cx, FZ.cy)
+  const fzT = flatXform();
+  cx.setTransform(fzT.k, 0, 0, fzT.ky, fzT.tx, fzT.ty);
+  cx.drawImage(FLAT.s, 0, 0);
   for (const a of ag) drawCreature(cx, a, a.rx * C + C / 2, a.ry * C + C / 2, 1, v);
   drawWeatherFx(cx, (x, y) => [x * C + C / 2, y * C + C / 2, C], false);
   drawFire(cx, (x, y) => [x * C + C / 2, y * C + C / 2, C]);
@@ -2690,7 +2709,11 @@ function drawGlobe(v) {
 // where a creature is on screen, in CSS pixels relative to the canvas; null if out of view
 function screenPos(a) {
   const r = cv.getBoundingClientRect();
-  if (view === 'flat') return [((a.rx + 0.5) / W) * r.width, (a.ry / H) * r.height, r.height / H];
+  if (view === 'flat') {
+    const T = flatXform(),
+      d = cv.width / r.width;
+    return [((a.rx + 0.5) * C * T.k + T.tx) / d, ((a.ry + 0.5) * C * T.ky + T.ty) / d - (r.height / H) * FZ.z * 0.5, (r.height / H) * FZ.z];
+  }
   if (G3D.ok) {
     const Q = G3D.project(a.rx, a.ry),
       d = cv.width / r.width;
@@ -3604,6 +3627,14 @@ cv.addEventListener('pointermove', (e) => {
   p.x = e.clientX;
   p.y = e.clientY;
   if (Math.hypot(e.clientX - p.x0, e.clientY - p.y0) > 5) dragged = true;
+  if (view === 'flat') {
+    // drag to move around the flat map
+    const r = cv.getBoundingClientRect();
+    FZ.cx -= (dx * W) / (r.width * FZ.z);
+    FZ.cy -= (dy * H) / (r.height * FZ.z);
+    flatClamp();
+    return;
+  }
   if (view !== 'globe') return;
   if (ptr.size === 2) {
     const [a, b] = [...ptr.values()];
@@ -3635,6 +3666,22 @@ cv.addEventListener('pointercancel', endPtr);
 cv.addEventListener(
   'wheel',
   (e) => {
+    if (view === 'flat') {
+      // zoom toward the place under the cursor: it stays under the cursor
+      e.preventDefault();
+      const r = cv.getBoundingClientRect(),
+        fx = (e.clientX - r.left) / r.width,
+        fy = (e.clientY - r.top) / r.height;
+      flatClamp();
+      const wx0 = FZ.cx + (fx - 0.5) * (W / FZ.z),
+        wy0 = FZ.cy + (fy - 0.5) * (H / FZ.z);
+      FZ.z *= Math.exp(-e.deltaY * 0.0015);
+      flatClamp();
+      FZ.cx = wx0 - (fx - 0.5) * (W / FZ.z);
+      FZ.cy = wy0 - (fy - 0.5) * (H / FZ.z);
+      flatClamp();
+      return;
+    }
     if (view !== 'globe') return;
     e.preventDefault();
     const r = cv.getBoundingClientRect();
