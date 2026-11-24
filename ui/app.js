@@ -3612,6 +3612,7 @@ cv.addEventListener(
   { passive: false }
 );
 function setView(v) {
+  if (VALLEY_MODE) v = 'flat'; // the valley has no globe view yet: drawing its 200 x 240 grid as a sphere is wrong and very slow (the owner: the world got laggy after using the eyes)
   view = v;
   $('view').textContent = v === 'globe' ? 'Flat map' : 'Globe';
   $('ghint').hidden = v !== 'globe';
@@ -3769,6 +3770,7 @@ document.querySelectorAll('[data-dt]').forEach(
 // See through its eyes: the camera stands where it stands, at its eye height, facing where it faces,
 // with its field of view — and for animals that see two colours, red and green look alike.
 function setEye(a) {
+  if (VALLEY_MODE) return; // no creature's-eyes view in the valley yet (it needs the 3D valley of plan item 35, step 3)
   GL.eye = a;
   $('deye').setAttribute('aria-pressed', a ? 'true' : 'false');
   $('deye').textContent = a ? 'Map' : 'Eyes';
@@ -3776,6 +3778,10 @@ function setEye(a) {
   if (!a && G3D.eyeOff) G3D.eyeOff();
 }
 $('deye').onclick = () => setEye(GL.eye ? null : sel);
+if (VALLEY_MODE) {
+  $('deye').disabled = true;
+  $('deye').title = 'Not in the valley yet: the creature\'s-eyes view needs the 3D valley (planned)';
+}
 $('dlisten').onclick = () => {
   listen = !listen;
   $('dlisten').setAttribute('aria-pressed', listen ? 'true' : 'false');
