@@ -98,3 +98,114 @@ function makeOpenValleyTerrain(n) {
         }
     }
 }
+
+// ---- the moving window (step 2; docs/design/open-valley.md) ----
+// When a hominin comes within OVMARGIN squares of an edge, the 250 m window moves so the band is back in the middle. The new land is made by the same startup code as a new world, for
+// the new offset (OX, OY), and what stays is copied back from the old layers; the creatures and everything that remembers a place move with the window.
+const OVMARGIN = 30; // squares (7.5 km)
+let OVSHIFTS = 0; // how many times the window has moved
+// every layer that holds one number per square (found by running a valley world and testing each name), as the engine keeps them
+const windowArrays = () =>
+  [alt, BURNT, cave, CLD, CONV, COOK, CT, deep, DUG, FIRE, fkind, flake, food, fruit, HUM, MOIST, nut, OLIFT, pit, poison, PUD, PW, pyrite, RAIN, river, rock, ROOT, salt, SEDGE, SLIFT, SMOL, soil, stick, stone, tcap, ter, TERM, TERMCAP, THUNDER, tree, water, YL, ...(PREY || []), ...(PCAP || [])].filter(
+    (a) => a && a.length === W * H
+  );
+function shiftWindow(dx, dy) {
+  dx = Math.round(dx);
+  dy = Math.round(dy);
+  if (!dx && !dy) return false;
+  const hom = ag.filter((a) => a.sp === 0 && !a.dead && !a.gone);
+  for (const a of hom) {
+    const x = a.x - dx,
+      y = a.y - dy;
+    if (x < 4 || x > W - 5 || y < 4 || y > H - 5) return false; // never shift a hominin out of its world
+  }
+  const before = windowArrays(),
+    old = before.map((a) => a.slice()),
+    bodies = BODIES,
+    park = PARK,
+    pstat = PREYSTAT;
+  OX += dx;
+  OY += dy;
+  // the land and everything that grows on it, afresh, for the new offset (the same calls as a new world; not the weather, fire or talk, which carry state of their own)
+  makeTerrain();
+  updateClimate();
+  for (let i = 0; i < W * H; i++)
+    food[i] = rock[i] || pit[i] ? 0 : water[i] ? rnd() * 0.5 : (0.35 + rnd() * 0.5) * TF[ter[i]] * Math.min(1, growthAt(i) + 0.2);
+  initForest();
+  initDiet();
+  if (typeof initPreyMap === 'function') initPreyMap();
+  initItems();
+  for (let i = 0; i < W * H; i++) food[i] *= 1 - 0.35 * tree[i];
+  const after = windowArrays();
+  // what stays: copy it back from the old layers. A layer the startup code did not make again (weather, fire) is the same object as before: there the new strip is filled from the nearest old square
+  after.forEach((cur, k) => {
+    const o = old[k],
+      same = before[k] === cur;
+    for (let y = 0; y < H; y++) {
+      const sy = y + dy;
+      for (let x = 0; x < W; x++) {
+        const sx = x + dx,
+          i = y * W + x;
+        if (sx >= 0 && sx < W && sy >= 0 && sy < H) cur[i] = o[sy * W + sx];
+        else if (same) cur[i] = o[Math.min(H - 1, Math.max(0, sy)) * W + Math.min(W - 1, Math.max(0, sx))];
+      }
+    }
+  });
+  // everything that remembers a place moves with the window; animals that fall outside it are dropped (they live where nobody is: herds and hunters come back near people by themselves)
+  const inside = (o) => o.x >= 0 && o.x < W && o.y >= 0 && o.y < H;
+  for (const a of ag) {
+    a.x -= dx;
+    a.y -= dy;
+    if (a.rx !== undefined) {
+      a.rx -= dx;
+      a.ry -= dy;
+    }
+    for (const m of [a.mw, a.mf]) if (m) ((m.x -= dx), (m.y -= dy));
+    if (!inside(a)) a.left = true;
+  }
+  ag = ag.filter((a) => !a.left || ((a.left = false), false));
+  BODIES = bodies.filter((b) => ((b.x -= dx), (b.y -= dy), inside(b)));
+  if (park && PARK && park !== PARK) {
+    for (const [, a] of park) {
+      a.x -= dx;
+      a.y -= dy;
+      if (inside(a)) PARK.set(idx(a.x, a.y) * 2 + a.pc, a);
+    }
+    PREYSTAT = pstat;
+  }
+  for (const s of STORMS) ((s.x -= dx), (s.y -= dy));
+  if (BANDAT) BANDAT = [BANDAT[0] - dx, BANDAT[1] - dy];
+  CALLS.length = 0;
+  OUCH.length = 0;
+  STRIKES.length = 0;
+  OVSHIFTS++;
+  return true;
+}
+// once a day: if any hominin is within OVMARGIN squares of an edge, move the window so that the band is in the middle (as far as keeps every hominin 4 squares inside)
+function maybeShiftWindow() {
+  const hom = ag.filter((a) => a.sp === 0 && !a.dead && !a.gone);
+  if (!hom.length) return;
+  let minX = 1e9,
+    maxX = -1e9,
+    minY = 1e9,
+    maxY = -1e9,
+    cx = 0,
+    cy = 0;
+  for (const a of hom) {
+    minX = Math.min(minX, a.x);
+    maxX = Math.max(maxX, a.x);
+    minY = Math.min(minY, a.y);
+    maxY = Math.max(maxY, a.y);
+    cx += a.x;
+    cy += a.y;
+  }
+  cx /= hom.length;
+  cy /= hom.length;
+  const nearX = minX < OVMARGIN || maxX > W - 1 - OVMARGIN,
+    nearY = minY < OVMARGIN || maxY > H - 1 - OVMARGIN;
+  if (!nearX && !nearY) return;
+  const lim = (v, lo, hi) => (lo > hi ? 0 : Math.min(hi, Math.max(lo, v)));
+  const dx = nearX ? lim(Math.round(cx - W / 2), maxX - (W - 5), minX - 4) : 0,
+    dy = nearY ? lim(Math.round(cy - H / 2), maxY - (H - 5), minY - 4) : 0;
+  shiftWindow(dx, dy);
+}

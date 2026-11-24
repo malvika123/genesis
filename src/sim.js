@@ -12,6 +12,7 @@ function sim() {
   updateBodies();
   passCalls();
   updateFire();
+  if (SOC.openValley && tick % DAY === 0) maybeShiftWindow(); // the open valley: the 250 m window follows the band (openvalley.js)
   if (SOC.realDens && tick % DAY === 0) realDensities(); // hunters at real densities near people (creatures.js)
   if (SOC.rescue && !SOC.realDens && tick % DAY === 0) rescue(); // newcomers when a hunter kind is rare (creatures.js)
   if (SOC.disease) disease(); // outbreaks of illness among hominins (creatures.js)

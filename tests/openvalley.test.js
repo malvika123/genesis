@@ -27,3 +27,76 @@ test('with the open valley off the walled valley is unchanged by the new code (s
   const mk = () => { const E = createEngine({ valley: { W, H, lat: -0.122 } }); E.setSeed(3); E.reset({ valley: true, people: 5 }); return Array.from(E.alt().slice(0, 4000)); };
   assert.deepEqual(mk(), mk());
 });
+
+// ---- step 2: the moving window ----
+const mkWorld = (seed = 4, people = 12) => {
+  const E = createEngine({ valley: { W, H, lat: -0.122 } });
+  E.setSeed(seed);
+  E.reset({ valley: true, openValley: true, openValleySeed: 777, people });
+  return E;
+};
+test('a window shift keeps everything that stays, makes new land that matches a fresh world there, and keeps every hominin where it was', () => {
+  const E = mkWorld();
+  for (let t = 0; t < 300; t++) E.sim();
+  const hom0 = E.state().ag.filter((a) => a.sp === 0).map((a) => ({ id: a.id, ax: a.x + E.ov().OX, ay: a.y + E.ov().OY }));
+  const arrs = E.windowArrays(),
+    old = arrs.map((a) => Array.from(a));
+  const dx = 7, dy = -5; // move the window east and north (new squares open at the east and the north? dx>0: east; dy<0: the window moves north)
+  assert.ok(E.shiftWindow(dx, dy), 'the shift was refused');
+  const now = E.windowArrays();
+  assert.equal(now.length, old.length);
+  let bad = 0, n = 0;
+  for (let k = 0; k < now.length; k++)
+    for (let y = 0; y < H; y++)
+      for (let x = 0; x < W; x++) {
+        const sx = x + dx, sy = y + dy;
+        if (sx < 0 || sx >= W || sy < 0 || sy >= H) continue;
+        n++;
+        if (now[k][y * W + x] !== old[k][sy * W + sx]) bad++;
+      }
+  assert.ok(n > 40 * 40000);
+  assert.equal(bad, 0, bad + ' retained values differ');
+  // the new strip's land is a fresh world's land at that offset
+  const F = createEngine({ valley: { W, H, lat: -0.122 } });
+  F.setSeed(1);
+  F.reset({ valley: true, openValley: true, openValleySeed: 777, openValleyOX: E.ov().OX, openValleyOY: E.ov().OY, people: 3 });
+  const fs = F.state(), ns = E.state(), ff = F.forest(), nf = E.forest();
+  let stripBad = 0, stripN = 0;
+  for (let y = 0; y < H; y++)
+    for (let x = 0; x < W; x++) {
+      const sx = x + dx, sy = y + dy;
+      if (sx >= 0 && sx < W && sy >= 0 && sy < H) continue; // only the new squares
+      stripN++;
+      const i = y * W + x;
+      for (const [a, b] of [[ns.water, fs.water], [ns.river, fs.river], [ns.rock, fs.rock], [ns.poison, fs.poison], [nf.tcap, ff.tcap]]) if (a[i] !== b[i]) stripBad++;
+      if (E.alt()[i] !== F.alt()[i]) stripBad++;
+    }
+  assert.ok(stripN > 2000);
+  assert.equal(stripBad, 0, 'the new strip differs from a fresh world at that offset');
+  // every hominin keeps its absolute place; none lost
+  const hom1 = E.state().ag.filter((a) => a.sp === 0);
+  assert.equal(hom1.length, hom0.length);
+  for (const h of hom0) {
+    const a = hom1.find((q) => q.id === h.id);
+    assert.ok(a, 'a hominin was lost');
+    assert.equal(a.x + E.ov().OX, h.ax);
+    assert.equal(a.y + E.ov().OY, h.ay);
+  }
+  // and the world runs on
+  for (let t = 0; t < 100; t++) E.sim();
+  assert.ok(E.state().ag.filter((a) => a.sp === 0).length > 0);
+});
+test('a shift that would push a hominin out of its world is refused', () => {
+  const E = mkWorld(5, 6);
+  assert.equal(E.shiftWindow(150, 0), false);
+});
+test('the window follows a band that walks: forced to the edge, it moves by itself and nobody is lost', () => {
+  const E = mkWorld(6, 8);
+  // put the whole band 20 squares from the east edge, then let a day pass
+  const ag = E.state().ag.filter((a) => a.sp === 0);
+  ag.forEach((a, k) => { a.x = W - 20 - (k % 3); a.y = 100 + k; });
+  const before = E.ov().OX;
+  for (let t = 0; t < 100; t++) E.sim(); // a day is 96 steps
+  assert.ok(E.ov().OX > before, 'the window did not move');
+  assert.equal(E.state().ag.filter((a) => a.sp === 0).length, 8);
+});

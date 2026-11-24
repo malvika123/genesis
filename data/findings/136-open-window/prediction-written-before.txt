@@ -1,0 +1,9 @@
+Entry 136 — the moving window (open valley step 2), written 24 Nov 2026 before the build is tested.
+Design: shiftWindow(dx, dy): the window's offset (OX, OY) moves; every per-square layer is generated afresh for the new offset by the same startup code, then the squares that stay are copied back from the old layers; creatures' coordinates (x, y, drawn position, remembered food and water places), lying bodies, parked herds, storms and the band's home site are moved with it; animals that fall outside are dropped; hominins never (a shift that would put one within 4 squares of an edge is refused). The window moves by itself once a day when a hominin is within 30 squares (7.5 km) of an edge, centred on the band.
+Tests (written first):
+ 1. After a shift, every per-square layer in the squares that stay is bit-for-bit what it was before (43 layers + prey maps).
+ 2. The newly exposed strip's land (height, water, river, rock, poison berries, tree capacity) equals what a fresh world at that offset makes there.
+ 3. Every hominin keeps its absolute position (x + OX, y + OY) and none is lost.
+ 4. The world runs on after a shift with no error for 100 steps.
+ 5. A long run with a shift forced every 100 days (about every 30 sim years is too rare; every simulated year is the test): 12 worlds x 5 years, valley, open-valley, entry-133 setup. Prediction: no exceptions, no hominin lost by the shift; population change per year within 1.5 points of the same worlds without forced shifts (12 worlds cannot show less); hunter tries per hominin-year within a factor of 2 of the walled valley's 0.05.
+Nothing is tuned. A failure of 1 to 4 is a bug to fix, not a number to adjust.

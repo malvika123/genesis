@@ -3328,6 +3328,26 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 136. The moving window (open valley step 2): the 250 m world moves with the band, nothing is lost, and sixty forced moves change nothing measurable — Nov 2026
+
+**Version.** `--valley --open-valley` (commit after 9a0d6bd): the window moves by itself once a day when a hominin is within 30 squares (7.5 km) of an edge, centred on the band; the land of the new strip comes from the same startup code as a new world; everything that stays is copied back; creatures, remembered places, lying bodies, parked herds, storms and the home site move with it. Prediction: `data/findings/136-open-window/prediction-written-before.txt`.
+
+**Checks 1-4 (tests in `tests/openvalley.test.js`, run on every `npm test`).** (1) After a shift every one of the 43 per-square layers and the prey maps is bit-for-bit what it was in the squares that stay (more than 1.6 million values compared, none differ): PASS. (2) The new strip's height, water, river, rock, poison berries and tree capacity equal a fresh world's at that offset: PASS. (3) Every hominin keeps its absolute position and none is lost; a shift that would push one within 4 squares of an edge is refused: PASS. (4) A band pushed to 20 squares from the east edge makes the window move by itself within a day, nobody lost; the world runs on: PASS. 98 of 98 tests.
+
+**Check 5, the long run (valley, open valley, entry-133 setup with real hunter densities, 12 worlds x 5 years, seeds 1-12).**
+| (12 worlds each) | no forced shifts | a shift forced every year (10 squares, alternating direction) |
+|---|---|---|
+| people, start to end | 300 to 278 | 300 to 283 |
+| change per year | -1.5% | -1.2% |
+| hunter tries per hominin-year | 0.064 | 0.062 |
+| bands wiped out | 0 | 0 |
+| shifts done / refused | 3 by themselves | 60 forced, 0 refused |
+| hominins lost in a shift | 0 | 0 |
+
+**Against the predictions.** No exceptions: CONFIRMED. No hominin lost: CONFIRMED (0 in 63 moves). Population change within 1.5 points: CONFIRMED (0.3). Hunter tries within a factor of 2 of the walled valley's 0.05: CONFIRMED (0.064 and 0.062). Not predicted: with no forcing the window still moved by itself 3 times in 12 worlds in 5 years, so a band does come within 7.5 km of an edge (the earlier edge measurement already showed 29 to 74 squares at closest).
+
+**What it means.** The fine world can follow the band without walls and without changing what happens to it: nothing is lost, the land joins, and the population and hunter tries are the same within the noise (12 worlds cannot show less than about a point). What is still true: each new strip is made by the same valley rules, so far from Hadar the land is the stand-in valley again, not real land (step 3 gives the places beyond the Awash their own rules); and the page does not yet redraw after a move (the flat map keeps its old picture until step 4's drawing work).
+
 ### 135. Hand precision (`--dexterity`): half the precision gives about half the flakes; a human-like hand gives no clear gain; population change shows no dexterity effect — Nov 2026
 
 **Version.** `--dexterity` (commit b617af2): an inherited hand-precision trait `dx` (founders around `--dex-mean`, spread 10%) that multiplies the chance a strike on a stone knocks off a flake, the bite taken with a flake and the chance of digging with a flake. Globe, 12 worlds per arm x 40 days (13 sim years), seeds 1-12, entry-127 cast, real densities off. Arms: OFF, D100 (`--dex-mean 1`, Alba et al.'s human-like thumb), D50 (`--dex-mean 0.5`, Rolian et al.'s in-between hand). Prediction: `data/findings/135-dexterity/prediction-written-before.txt`. Flakes counted per step from `a.stk === 'flake'`.
