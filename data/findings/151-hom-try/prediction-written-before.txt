@@ -1,0 +1,6 @@
+Target and prediction (26 Nov 2026, written before the runs). Real target: forest chimpanzees are attacked by leopards about 0.3 times a person-year (Boesch 1991) = 0.082% attacks per person-day on the real year; 4 of 22 encounters fatal (18% of attacks).
+New switch --hom-try X: of a hunter's tries at a hominin that remain after --hom-avoid, only share X go ahead (1 = the old rule). Setup: the standard bundle (valley-standard.md) with 60 people, real year (yearDays 365), 30 sim days, 3 worlds (seeds 1-3), X = 1, 0.1, 0.03, 0.01.
+Measured: attacks on hominins and predator kills per person-day in days 11-30 (the busy days).
+Expect: attacks fall in proportion to X from about 8% (X=1; entries 150: kills 3.5-6.4% at 56% fatal) to about 0.8% (0.1), 0.24% (0.03) and 0.08% (0.01, at the real target); kills about 0.45%, 0.13% and 0.045% a person-day. Calibrated value: about 0.01.
+Wrong if: attacks fall by much less than X (hunters retry at once, so the cooldown of 4 steps would matter), or the fatal share changes by more than 10 points.
+Any fitted X is to be reported with all the others; it is a calibration of an unknown, not a measured quantity.

@@ -1,0 +1,3 @@
+{"homTry":0.01,"attacks":[0,1,6],"attRate":[0,0.171,1.093],"people":60,"seed":1,"pd":[596,585,549],"kills":[0,1,5],"rate":[0,0.17,0.91],"hunters":[40,71,94],"alive":52}
+{"homTry":0.01,"attacks":[0,1,4],"attRate":[0,0.17,0.726],"people":60,"seed":2,"pd":[600,589,551],"kills":[0,1,4],"rate":[0,0.17,0.73],"hunters":[52,87,130],"alive":50}
+{"homTry":0.01,"attacks":[0,3,2],"attRate":[0,0.537,0.385],"people":60,"seed":3,"pd":[596,558,519],"kills":[0,0,1],"rate":[0,0,0.19],"hunters":[38,62,99],"alive":50}
