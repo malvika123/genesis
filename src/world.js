@@ -245,6 +245,7 @@ function buildWorld(cfg) {
   SOC.preyRadius = cfg.preyRadius ?? 8; // squares within which a hunter's prey must live where it starts (an assumption)
   SOC.dexterity = cfg.dexterity === true; // an inherited precision of the hand (thumb and finger) scales flake knapping, cutting and digging with a flake (entry 135)
   SOC.dexMean = cfg.dexMean ?? 0.75; // the founders' mean (1 = the old rates; 0.5 = Rolian's in-between hand; 1 = Alba's human-like hand; an assumption)
+  SOC.valleyPrey = cfg.valleyPrey === true; // the prey map's level is per km2 and a valley square is 0.0625 km2, not 9 (entry 148; off = the old, 144 times too much prey)
   SOC.kidPull = cfg.kidPull ?? 1; // a multiplier on the child's pull to stay near its carers (entry 146; 1 = as before; the strengths 3 and 1.5 are assumptions)
   SOC.noBigAtk = cfg.noBigAtk === true; // hominins do not attack prey heavier than SOC.maxPreyKg (entry 144; the sim already gave them no chance of bringing it down, but the attempt still hurt them)
   SOC.homAvoid = cfg.homAvoid === true; // hunters pass up hominins as their real kinds do (leopard 0.55, spotted hyena 0.03 of their share of available prey)

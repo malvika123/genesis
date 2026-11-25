@@ -1,0 +1,3 @@
+{"arm":"on","seed":1,"alive":27,"dead":{"old age":2,"illness":2,"killed by a predator":1},"day1KgPerKm2":325,"meanKgPerKm2":140,"meanHunterE":85.8,"attacks":{"hom":1,"other":424}}
+{"arm":"on","seed":2,"alive":19,"dead":{"killed by a predator":8,"old age":2,"hunger":1},"day1KgPerKm2":368,"meanKgPerKm2":194,"meanHunterE":84.9,"attacks":{"hom":13,"other":494}}
+{"arm":"on","seed":3,"alive":25,"dead":{"old age":2,"killed by a predator":6},"day1KgPerKm2":358,"meanKgPerKm2":179,"meanHunterE":86.3,"attacks":{"hom":7,"other":434}}
