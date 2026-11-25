@@ -1,0 +1,4 @@
+Prediction (25 Nov 2026, before the runs). Owner chose "slow life down" (BACKLOG B6): the year becomes 365 days. Pilot: build option yearDays = 3 (as now), 30, 365; 'full' setup (dens-tau 1, --hom-avoid, --no-big-attacks), 15 sim days, 3 worlds (seeds 1-3).
+Expect: predator deaths per person-day about the same in all three (hunters act on the day clock): about 2.5% a person-day (entry 143/145), so about 25-30 of the 75 people dead in 15 days in every arm; births per day about 10 times fewer at yearDays 30 than at 3 and about 120 times fewer at 365 (pregnancy and nursing stretch with the year); illness and old age deaths fewer at 30 and 365. So a band at the real clock would lose half its people in about 25 days and be gone in a few months.
+Wrong if: predator deaths per person-day differ by more than 30% between arms (then hunters or something else depend on the year), or births per day do not fall.
+Also measured: seconds per run, to see what a real-clock run costs.

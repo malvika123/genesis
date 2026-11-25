@@ -47,6 +47,8 @@ return {
   }
   function build(src, opts = {}) {
     if (opts.valley) src = valleySource(src, opts.valley);
+    // opts.yearDays: how many days a year lasts (BACKLOG B6; default 3 = 288 steps; 365 = the real year). Ageing, nursing, pregnancy, the seasons and the cycle all run on this year
+    if (opts.yearDays) src = src.replace('TY = 288,', 'TY = ' + Math.round(96 * opts.yearDays) + ',');
     if (opts.brain) {
       const n = Math.max(16, Math.round(opts.brain));
       src = src.replace('NH = 64,', 'NH = ' + Math.max(64, n) + ',').replace('hmax: 64,', 'hmax: ' + n + ',');
