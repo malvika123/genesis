@@ -1,0 +1,6 @@
+{"passCd":384,"homTry":0.01,"attacks":[0,0,1],"attRate":[0,0,0.176],"people":60,"seed":1,"pd":[596,585,567],"kills":[0,0,1],"rate":[0,0,0.18],"hunters":[40,73,116],"alive":56}
+{"passCd":384,"homTry":0.01,"attacks":[0,0,0],"attRate":[0,0,0],"people":60,"seed":2,"pd":[600,600,600],"kills":[0,0,0],"rate":[0,0,0],"hunters":[51,91,138],"alive":60}
+{"passCd":384,"homTry":0.01,"attacks":[0,1,0],"attRate":[0,0.176,0],"people":60,"seed":3,"pd":[596,568,538],"kills":[0,0,0],"rate":[0,0,0],"hunters":[37,69,136],"alive":53}
+{"passCd":384,"homTry":0.01,"attacks":[0,0,0],"attRate":[0,0,0],"people":60,"seed":4,"pd":[596,584,566],"kills":[0,0,0],"rate":[0,0,0],"hunters":[35,73,130],"alive":55}
+{"passCd":384,"homTry":0.01,"attacks":[0,0,0],"attRate":[0,0,0],"people":60,"seed":5,"pd":[600,580,557],"kills":[0,0,0],"rate":[0,0,0],"hunters":[52,100,164],"alive":55}
+{"passCd":384,"homTry":0.01,"attacks":[0,0,0],"attRate":[0,0,0],"people":60,"seed":6,"pd":[599,590,586],"kills":[0,0,0],"rate":[0,0,0],"hunters":[38,97,186],"alive":58}
