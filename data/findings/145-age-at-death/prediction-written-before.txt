@@ -1,0 +1,3 @@
+Prediction (25 Nov 2026, before the runs). Mean age at death (sim years of 288 steps) in 6 worlds x 5 years for four arms: base (dens-tau 5, entry 138-139 setting), fill (dens-tau 1), avoid (+ --hom-avoid), full (+ --no-big-attacks).
+Expect: number of deaths falls 140ish (base) -> about 120 (fill) -> about 90 (avoid) -> about 80 (full); mean age at death rises only a little (a few sim years) because most extra survivors die later, not never; the share of deaths that are under 5 sim years falls (children and young); in all arms most deaths among people born in the sim are before age 15.
+Wrong if: mean age at death does not rise from base to full, or the share of child deaths does not fall.
