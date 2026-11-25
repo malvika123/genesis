@@ -3328,6 +3328,16 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 142. Hunters that pass up primates as their real kinds do (`--hom-avoid`, existing switch): kills fall by 39% and 125 of 150 people are left, the climb over the years stays — Nov 2026
+
+**Version.** `--valley --open-valley --dens-tau 1 --hom-avoid`, valley speed x1, 6 worlds x 5 years (seeds 1-6), same setup as entry 141's control. No code change. Prediction: `data/findings/142-hom-avoid/prediction-written-before.txt`; data and script in the same folder.
+
+**Evidence.** The switch drops a hunter's try at a hominin with chance 1 minus a factor taken from prey-preference papers (Hayward et al.): leopard 0.55 (2.8% of kills against 5.1% of available prey), spotted hyena 0.03 (0.75% against 26.1%). The extinct cats (sabre-tooth, Dinofelis, Homotherium) use 0.55 and the giant hyena 0.03: assumptions (docs/ASSUMPTIONS.md).
+
+**Result against the prediction.** Predicted: kills fall to about 36% of the control (hyenas, 36% of kills, nearly vanish; cats at 55%), people left 130-140, deaths per 1,000 hominin-years in years 3-5 about 25 / 75 / 80. Seen: kills 67 to 41 (61% of control), people left 98 to 125 of 150, deaths per 1,000 hominin-years 0, 0, 12, 93, 173 for years 1-5 (control 0, 6, 74, 204, 224). The "wrong if" line (kills fall by less than half) was met: the drop was 39%. The survivors are near the predicted range.
+
+**Interpretation.** Passing up primates is evidence-based and helps, but the hyena share of kills was smaller than I assumed or the cats and the rising hunger over the years carry the rest: year 5 is still 173 per 1,000 (about 17% a year, against the 3-5.5% noted earlier). Not tested: which hunter kinds make the kills with the switch on; the cats' factor (borrowed from the living leopard); more than 6 worlds.
+
 ### 141. Who dies, and why so fast: attack success, sleepers, hunger and the two clocks (measuring, plus `--atk-hom` 0.36 / 0.18) — Nov 2026
 
 **Version.** `--valley --open-valley --dens-tau 1`, valley speed x1, 6 worlds x 5 years (seeds 1-6); only a two-line measuring hook (`startLog`, `huntLog`) added to `tools/engine-api.js`; no change to the simulation. Data: `data/findings/141-attack-success/` (prediction written before: `prediction-written-before.txt`).

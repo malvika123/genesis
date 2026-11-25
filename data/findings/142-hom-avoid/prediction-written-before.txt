@@ -1,0 +1,4 @@
+Prediction (25 Nov 2026, before the runs). --hom-avoid (existing switch, off in entries 138-141): a hunter's try at a hominin is dropped with chance 1 - factor; leopard 0.55, spotted hyena 0.03 (Hayward prey-preference papers), the extinct cats 0.55 and giant hyena 0.03 assumed like their living kin.
+Arms: control = entry 140 x1 (0.6 attack success; deaths per 1,000 hominin-years years 1-5: 0, 6, 74, 204, 224; people left of 150: 98); --hom-avoid, speed x1, dens-tau 1, 6 worlds x 5 years (seeds 1-6, mult argument unused).
+Expect: hyena and giant hyena kills nearly vanish (they were 24 of 67 kills = 36%); cat kills fall to about 55%; so total kills fall to about 0.36*0.03 + 0.64*0.55 = about 36% of control; deaths per 1,000 years 3-5 about 25 / 75 / 80; people left of 150 about 130-140. The climb with the years remains.
+Wrong if: kills fall by less than half (then the cats and the many tries per hunter hold the rate), or people left stays under 110.
