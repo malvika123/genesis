@@ -3328,6 +3328,18 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 146. A stronger pull for children to stay near their carers (`--kid-pull` x2, x4): no clear effect on child deaths — Nov 2026
+
+**Version.** `--valley --open-valley --dens-tau 1 --hom-avoid --no-big-attacks --kid-pull X` (new multiplier on the child's pull to stay near its carers, default 1 = as before; commit after 6fd40b8), valley speed x1, 6 worlds x 5 years (seeds 1-6), X = 1, 2, 4. 100 of 100 tests; old worlds identical (`tools/identical-worlds.sh 6fd40b8`). Prediction: `data/findings/146-kid-pull/prediction-written-before.txt`; data `kp*.out`, `ages2.js`.
+
+**Evidence.** Entry 145 follow-up: 31 children killed by predators in 6 worlds x 5 years (setup fill); 22 of them had a living mother, but her distance was 250 m in 5 cases, 500 m to 1.25 km in 14 and more in 3; no adult within 500 m in 11; 11 were asleep; none up a tree. Young chimpanzees often travel, nest and forage alongside their mothers until maturity (qualitative; no distances found), so the strength is an assumption tested as a sensitivity (docs/ASSUMPTIONS.md).
+
+**Results.** Control x1 reproduces entry 145 (55 deaths). Predator deaths of people under 15: x1 15, x2 19, x4 11; of people 15 and older: 13 / 13 / 12. Deaths under 5: 13 / 15 / 9. Total deaths 55 / 62 / 49; people left of 150: 137 / 133 / 143; mean age at death 21.2 / 21.0 / 24.7. Causes shift between arms (illness 11 / 11 / 5, hunger 1 / 0 / 3).
+
+**Against the prediction.** Predicted child predator deaths falling to about 11 (x2) and 8 (x4). Seen: up at x2 (19), down at x4 (11), so no clear dose-response; with 11-19 deaths per arm and worlds that diverge once anything changes, the differences are within noise. Adult deaths unchanged (held).
+
+**Interpretation.** No evidence that a stronger pull protects children in this model; the direction at x4 is the predicted one but x2 went the other way. Not tested: more worlds; a pull from the mother's side after weaning; children's sleeping place; whether the distance is the cause at all.
+
 ### 145. Age at death in four setups: 40% fewer deaths, but the mean age at death hardly moves, and the old "base" setting was never a valid baseline — Nov 2026
 
 **Version.** Valley, open valley, speed x1, 6 worlds x 5 years (seeds 1-6) per setup: base (`--dens-tau` 5), fill (`--dens-tau 1`), avoid (fill + `--hom-avoid`), full (avoid + `--no-big-attacks`). Prediction: `data/findings/145-age-at-death/prediction-written-before.txt`; data `ages_*.out`, `ages.js`. Age in sim years (288 steps, 3 sim days: BACKLOG B6).

@@ -229,6 +229,7 @@
     { key: 'openValley', kind: 'on', def: false, flag: 'open-valley', label: 'The open valley: the valley land comes from its position, so the 250 m window can move along the valley (with --valley; plan item 36)', cfg: true },
     { key: 'dexterity', kind: 'on', def: false, flag: 'dexterity', label: 'An inherited precision of the hand (thumb and finger) scales knapping flakes, cutting and digging with a flake', cfg: true },
     { key: 'dexMean', kind: 'num', def: 0.75, flag: 'dex-mean', label: 'Founders\' hand precision (1 = human-like, 0.5 = between gorilla and human; an assumption)', min: 0.2, max: 1.2, cfg: true },
+    { key: 'kidPull', kind: 'num', def: 1, flag: 'kid-pull', label: 'Multiplier on the child\'s pull to stay near its carers (1 = the old strength: 3 under 5 years, 1.5 after)', min: 0, max: 10, cfg: true },
     { key: 'noBigAtk', kind: 'on', def: false, flag: 'no-big-attacks', label: 'Hominins do not attack prey heavier than the largest they can bring down (chimpanzees take prey of a few kg)', cfg: true },
     { key: 'homAvoid', kind: 'on', def: false, flag: 'hom-avoid', label: 'Hunters take primates less than their share of the available prey (leopard 0.55, hyena 0.03)', cfg: true },
     { key: 'atkHom', kind: 'num', def: 0.6, flag: 'atk-hom', label: 'A hunter\'s base success per attack on a hominin (before size odds)', min: 0, max: 1, cfg: true },
