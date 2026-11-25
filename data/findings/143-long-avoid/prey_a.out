@@ -1,0 +1,3 @@
+{"seed":1,"days":9,"meanHerbivoresNear":219,"meanHuntersNear":29,"meanHominins":26.7,"attacksByPrey":{"Antelope":{"att":169,"hit":105},"Buffalo":{"att":106,"hit":15},"Hominin":{"att":2,"hit":1}}}
+{"seed":2,"days":9,"meanHerbivoresNear":276,"meanHuntersNear":37,"meanHominins":25.9,"attacksByPrey":{"Antelope":{"att":227,"hit":137},"Buffalo":{"att":128,"hit":14},"Fish":{"att":11,"hit":8},"Hominin":{"att":1,"hit":1},"Pig":{"att":1,"hit":1}}}
+{"seed":3,"days":9,"meanHerbivoresNear":214,"meanHuntersNear":31,"meanHominins":29,"attacksByPrey":{"Antelope":{"att":219,"hit":133},"Buffalo":{"att":148,"hit":11},"Rhino":{"att":1,"hit":0},"Fish":{"att":1,"hit":1}}}
