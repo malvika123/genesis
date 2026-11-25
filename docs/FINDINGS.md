@@ -3328,6 +3328,18 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 144. Hominins that do not attack prey they cannot bring down (`--no-big-attacks`): wound deaths 14 to 1, people left 77 to 96 of 150 — Nov 2026
+
+**Version.** `--valley --open-valley --dens-tau 1 --hom-avoid --no-big-attacks` (new switch, off by default; commit after 750fd94), valley speed x1, 6 worlds x 10 years (seeds 1-6). Old worlds with the switch off identical (`tools/identical-worlds.sh 750fd94`), 100 of 100 tests. Prediction: `data/findings/144-no-big-attacks/prediction-written-before.txt`; data `c4_*.out`, `causes4.js`.
+
+**Evidence.** Entry 143's addendum: every injury death was a hominin hurt by a buffalo or antelope it attacked, although the sim already gave hominins no chance of bringing down prey over 15 kg. Chimpanzees take prey of a few kg (Gombe median red colobus about 4 kg); the larger animals' cut-marked bones at Dikika and Bouri were probably scavenged; no evidence found of hominins attacking adult buffalo. Registered in `docs/ASSUMPTIONS.md` (chimpanzee stand-in, uses `SOC.maxPreyKg`).
+
+**Results (all deaths, 6 worlds, 10 years; control = entry 143).** Wounds 14 to 1; predator kills 97 to 89 (within the +-30% noise); old age 17 to 19; illness 4 to 11; hunger 0 to 2; total deaths 132 to 122; births 59 to 68; people left 77 to 96 of 150. Predator kills by year 0, 1, 4, 13, 10, 20, 14, 8, 10, 9 (control 0, 0, 2, 15, 24, 16, 14, 9, 9, 8).
+
+**Against the prediction.** Held: wound deaths about 0; predator kills within noise; people left rose. Slightly above the predicted 85-95 (96). Illness rose from 4 to 11 and two died of hunger: the worlds diverge once anything changes, so these may be noise; not tested.
+
+**Interpretation.** About 13 injury deaths no longer happen and the survivors have more children; predators still take 73% of deaths. Not tested: more worlds; whether hunting small prey (still allowed) is itself costly; why illness rose.
+
 ### 143. Ten years with hunters passing up primates (`--hom-avoid`): predators are the only real killer, the death rate levels off near 10% a year, and births follow the founders' wave, not a collapse — Nov 2026
 
 **Version.** `--valley --open-valley --dens-tau 1 --hom-avoid`, valley speed x1, 6 worlds x 10 years (seeds 1-6), entry-142 setup. No code change. Prediction: `data/findings/143-long-avoid/prediction-written-before.txt`; scripts and output in the same folder (README.txt).
