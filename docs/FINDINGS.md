@@ -3328,6 +3328,16 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 150. Band size by day: a bigger band does not dilute the risk once the hunters are hungry; attacks on people are about 65 times the real rate — Nov 2026
+
+**Version.** Standard bundle (`docs/design/valley-standard.md`) without `--people`, the real year (`yearDays` 365), 30 sim days, 3 worlds (seeds 1-3) at 25, 60 and 100 people; predator deaths per person-day by block of 10 days. Prediction: `data/findings/150-band-size-by-day/prediction-written-before.txt`; data `sd*.out`, `sizeday.js`. Also entry 147's 60-person real-clock pilot (45 days, 3 worlds: 143 of 180 killed by predators, 3.13% a person-day; predicted 0.3-0.8%: wrong by 4-10 times, `data/findings/147-real-clock/c60_*.out`).
+
+**Results.** Predator kills per person-day, days 1-10 / 11-20 / 21-30: 25 people 0.95% / 4.41% / 4.49%; 60 people 0.56% / 3.52% / 6.36%; 100 people 0.54% / 4.94% / 5.45%. Hunters within 4.5 km of the band: 32 / 52 / 57 (25), 42 / 73 / 99 (60), 52 / 87 / 146 (100). People alive at day 30: 7, 9, 13 of 25; 17, 18, 22 of 60; 34, 21, 38 of 100.
+
+**Against the prediction.** Held: late-day rates about 2-4% or higher at every size (seen 3.5-6.4%, a little above); the 100-person late rate is not below 60% of the 25-person rate (5.45 against 4.49); hunters near the band rise with band size. Entry 149's conclusion (a bigger band halves each person's risk) is withdrawn.
+
+**Interpretation.** The risk per person is set by what a hunter does near a person, not by density or band size. Target from real data: forest chimpanzees are attacked by leopards about 0.3 times a person-year with 4 of 22 encounters fatal (Boesch 1991, docs/ASSUMPTIONS.md); the sim makes about 0.054 attacks per person-day (entry 141: 120 attacks in 2,207 person-days), about 20 a year, about 65 times that. Not tested: what brings the attack rate down (the hunters' noticing, stalking and ambush; leopards' night activity); a calibration of the unknown against the 0.3 a year (to be written as a target before any change).
+
 ### 149. Band size at the start (25, 60, 100 people): the risk per person falls by about half from 25 to 60 and stays there — Nov 2026
 
 **Version.** `--valley --open-valley --dens-tau 1 --hom-avoid --no-big-attacks --valley-prey-scale --people N`, N = 25, 60, 100, valley x1, 3 worlds (seeds 1-3) x 5 years. No code change. Prediction: `data/findings/149-band-size/prediction-written-before.txt`; data `s25.out`, `s60.out`, `s100.out`, `size148.js`.
@@ -3337,6 +3347,8 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Results.** Predator kills per person-day: 25 people 1.27% (15 kills in 1,179 person-days; 71 of 75 alive at year 5), 60 people 0.55% (16 in 2,911; 187 of 180), 100 people 0.57% (29 in 5,058; 330 of 300). Attacks on hominins 21 / 21 / 39 of about 1,350 / 1,700 / 2,200 attacks in all; all deaths 24 / 50 / 77.
 
 **Against the prediction.** Held: a fall of at least 30% from 25 to 100 (seen 55%), and 0.3-0.7% at 100 (seen 0.57%). The rate did not keep falling past 60 (predicted 0.5-1% at 60, seen 0.55%, inside).
+
+**CORRECTION (26 Nov, entry 150): the conclusion below is withdrawn.** The rates above average 15 days that include the quiet first days (hunters start with full stomachs); counted by day (entry 150) the busy-day rate is 3.5-6.4% a person-day at every band size, because hunters are held at a fixed density around every person and a bigger band brings proportionally more of them (57 near 25 people, 146 near 100). The earlier reading follows, kept for the record.
 
 **Interpretation.** The risk per person falls as the band grows, as the sparse-population reasoning says, and bands of 60 and 100 grow. At 0.55% a person-day the real-clock band (entry 147) would still lose half its people in about 130 days, with a pregnancy of 274 days: about 40 times the real rate noted earlier is still open. Not tested: more worlds; whether a bigger band also brings more hunters (the zone around people grows with it); a real Pliocene band size.
 
