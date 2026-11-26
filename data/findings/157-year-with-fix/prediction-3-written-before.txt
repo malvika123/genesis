@@ -1,0 +1,5 @@
+Entry 158 part 2, written before the run (26 Nov 2026).
+Seen: hunger deaths are spread evenly over the year (0-5 per 30 days), band mean energy stays 81-94 all year; victims are mostly adults 15-41 (not toddlers: 5-7 of 45 are under 3), and by day 330 only 4 adult women are left of the first ~15.
+Question: are the starving people separated from the band?
+Expect: in the 10 days before a hunger death, the victim is on average more than 3 squares (750 m) farther from the band's middle than the average person is, in at least 60% of victims.
+Wrong if: victims sit about as close to the band as everyone else (then it is not separation).

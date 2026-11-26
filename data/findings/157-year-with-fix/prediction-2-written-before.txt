@@ -1,0 +1,4 @@
+Entry 158 prediction (26 Nov 2026), written before the run.
+Same setup as entry 157, seeds 1 and 2, 330 days, logging hunger deaths by day, age class, mother/nursing state, plus band energy every 10 days.
+Expect: hunger deaths bunch in one stretch of days (a lean season) rather than spreading evenly; in that stretch band mean energy falls below 75 and more than a quarter of the band is under 40 energy; most victims are adults (not toddlers).
+Wrong if: deaths are spread evenly over the days, or band mean energy stays above 85 throughout (individual failure, not a lean season).

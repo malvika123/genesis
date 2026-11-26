@@ -3328,6 +3328,18 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 158. Who dies of hunger at the real clock: spread evenly through the year, and the band is not a band any more — people scatter 25-30 km apart — Nov 2026
+
+**Version.** Same as entry 157 (commit bf8c485, no code change), seeds 1 and 2, 330 days, with logging of hunger deaths (day, age, sex, refusals), band energy every 10 days, and each person's distance from the band's middle (median position) every day. Files: `data/findings/157-year-with-fix/` (`diag4.js`, `diag5.js`, `dh*.out`, `di*.out`, two predictions written before).
+
+**Results.** (1) Hunger deaths (18 and 27) fall evenly: 0-5 per 30 days, no lean season; the band's mean energy stays 81-94 all year. (2) Victims are mostly adults of 15-41 (5-7 of 45 under 3). By day 330 only 4 adult women are alive per world. (3) Only 6 of 45 victims had refused the berries over 100 times (entry 156 fix works). (4) The average person's distance from the band's middle grows from about 4 squares (1 km) at day 10 to about 100-120 squares (25-30 km) from day 100 on. 24 of 45 victims were more than 3 squares farther out than that average (53%).
+
+**Against the prediction.** Lean season: predicted, not seen (WRONG). Victims at least 3 squares farther than average in 60% or more: seen 53% (just under, WRONG as written). The unexpected finding is the scatter: the "band" of 60 is, after a few months, tens of people spread over a 50-60 km stretch.
+
+**Interpretation.** Starvation here is individual, not band-wide, and happens to people living alone or in small groups far from others, where nothing shares food or warns of danger. Real chimpanzee communities of this size keep to home ranges of about 10-40 km2 (a few km across), so a 25-30 km spread is probably not real. Whether the scatter is an inborn drift (the open valley has no walls) or a missing pull to stay near others (bonds) is not yet known.
+
+**Trust.** Moderate for the scatter (both worlds, steady growth); not yet checked against a wall-bound valley. Next: measure spread by day, with and without `--open-valley`, and find what holds a group together in the code.
+
 ### 157. Eleven months at the real clock with the berry fix: 25-26 of 60 alive, 2-3 babies born, hunger is now the main killer — Nov 2026
 
 **Version.** Commit 2ff0438 (entry 156): standard bundle, 60 people, `--hom-try 0.01 --pass-cd 96`, `--berry-aversion 30`, yearDays 365, seeds 1 and 2, 330 days. Files: `data/findings/157-year-with-fix/`.
