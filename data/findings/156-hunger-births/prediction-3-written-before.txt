@@ -1,0 +1,5 @@
+Entry 156 part 3, written before the run (26 Nov 2026).
+Change: a person refusing the berries gets no pull to eat on that square.
+Same 2 worlds (seeds 1, 3), 110 days, --berry-aversion 30.
+Expect: hunger deaths with refused > 100 fall from 15 of 22 (per 2 worlds: 8+7... ) to fewer than 4; hunger deaths per world fall from 11 to 3-6; alive at day 110 rises from 44/43 to 46-52.
+Wrong if: the 'eat for days' deaths remain (the brain keeps choosing eat from learned habit, not from the pull).

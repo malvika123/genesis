@@ -1,0 +1,6 @@
+Entry 156 prediction (26 Nov 2026), written before the run.
+Setup: standard bundle, 60 people, --hom-try 0.01 --pass-cd 96, --berry-aversion 30, yearDays 365, 3 worlds, 120 days.
+Question: who dies of hunger at the real clock, and why are there no births?
+Expect HUNGER: the 3-11 deaths are mostly old/adult people or mothers/children, with energy falling slowly over days (not sudden); mean energy of the band stays near 85 (so deaths are individuals who fail to feed, e.g. wounded or separated), not a band-wide shortage.
+Expect BIRTHS: about 12-18 adult females; new pregnancies started in 120 days 0-3 (a real conception rate is about 1 per 4-5 years per female, so 15 females x 120/365 / 4.5 = about 1 expected), so 0 births in 120 days is NORMAL because pregnancy is 274 days; the real test of births needs 400+ days.
+Wrong if: pregnancies started are 0 while females ovulating and males near are many (then mating is blocked), or hunger deaths are not individuals but the whole low-energy tail.

@@ -390,6 +390,8 @@ function sim() {
         if (x[HB + 1]) RF[A_DRINK] += SOC.hungerK * clamp((th - 0.3) / 0.7, 0, 1);
       }
     }
+    // --berry-aversion (entry 156): a person who refuses the red berries is not drawn to eat on that square (else it stood there choosing to eat and starved)
+    if (SOC.aversionDays > 0 && a.sp === 0 && a.poisonT !== undefined && tick - a.poisonT < SOC.aversionDays * DAY && poison[idx(a.x, a.y)]) RF[A_EAT] = 0;
     if (a.sp === 2) RF[A_ATK] = (5 + (SOC.huntPull ? 7 * (1 - SOC.atkFixed) : 0)) * hu * x[HB + 2]; // the hungry part of the pull to attack (A32)
     // The satiety brake (entry 92; --no-full-brake: none): a full stomach damps the urge to attack, as a gorged cat lets prey pass and a
     // bigger meal delays a leopard's next kill (Wilmers et al. 2017). Felt hunger is scaled to the long store, so it hardly falls after a

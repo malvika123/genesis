@@ -3328,6 +3328,18 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 156. Hunger deaths and births at the real clock: the berry refusal was starving people; fixed, hunger deaths fall to 3-4 per world — Nov 2026
+
+**Version.** Standard bundle, 60 people, `--hom-try 0.01 --pass-cd 96`, `--berry-aversion 30`, yearDays 365, 110-120 days. Code change: a person refusing the red berries gets no pull to eat on that square (`src/sim.js`, only when the aversion switch is on). Files: `data/findings/156-hunger-births/` (three predictions written before).
+
+**Hunger deaths (before the fix, 3 worlds, 120 days).** 3, 3 and 11 per world, each a slow fall from full to zero energy over 4-10 days (a person not eating, not a band-wide shortage: band mean energy 86-91). Most were "eat" every day with no meal; 15 of 22 in two worlds had refused the berries 20-571 times. So entry 155's rise in hunger deaths was partly my own side effect: a person standing on the berry square kept choosing to eat and got nothing.
+
+**After the fix (seeds 1 and 3, 110 days).** Hunger deaths 3 and 4 (was 11 and 11); alive 51 and 48 (was 44 and 43); deaths that had refused over 100 times: 0 (was 15 of 22). Predictions: hunger 3-6 (right), alive 46-52 (right), refusal deaths under 4 (right). Remaining hunger deaths: scattered (two toddlers with no meal for 40+ days, probably orphaned or unweaned; a few adults; one drinking).
+
+**Births.** In 120 days 5-7 pregnancies started per world (predicted 0-3: wrong, too low), 4-5 women pregnant at day 120. Zero births by day 120 is the 274-day pregnancy, not a failure; whether babies are born and live needs a run past day 300.
+
+**Trust.** Moderate (2 worlds for the fix, same direction as the 3-world cause count). Next: a 400-day run with the fix.
+
 ### 155. One-trial taste aversion to the poison berries (`--berry-aversion D`): the berry deaths vanish, the band keeps 44-49 of 60 at 120 days instead of 31-37, and hunger deaths rise — Nov 2026
 
 **Version.** New switch `--berry-aversion D` (days a person refuses the red berries after one sickness; default 0 = the old rule, bite every time), registered as an assumption (one-trial learning sourced in squirrel monkeys and marmosets; wild baboon avoidance mostly social; no figure found for how long it lasts; no data on wild chimpanzee plant-poisoning deaths). Standard bundle, 60 people, `--hom-try 0.01 --pass-cd 96`, real year (yearDays 365), 3 worlds (seeds 1-3), 120 sim days, D = 0, 30, 365. Files: `data/findings/155-berry-aversion/`.

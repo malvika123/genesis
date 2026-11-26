@@ -1,0 +1,4 @@
+Entry 156 part 2, written before the run (26 Nov 2026).
+Seen so far: most hunger deaths are people whose action is "eat" every day for 4-10 days while energy falls 8-10 a day (day since last visible meal grows).
+Hypothesis: with --berry-aversion, a person standing on the red-berry square keeps choosing "eat" but the refused bite gives nothing, so they starve in place (a side effect of my change).
+Expect: of the hunger deaths seen as "eat" for 3+ days, most (more than half) have refused > 100 counted refusals. If refused is 0 for most, the hypothesis is wrong.
