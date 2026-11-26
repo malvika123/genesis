@@ -1,0 +1,5 @@
+Entry 157 prediction (26 Nov 2026), written before the run.
+Setup: standard bundle, 60 people, --hom-try 0.01 --pass-cd 96, --berry-aversion 30 (with the no-pull fix), yearDays 365, seeds 1 and 2, 330 days.
+Expect: alive at day 330 about 28-40 of 60 (day 110 was 48-51; losses so far about 0.1 a day: predators 5-9 and hunger 3-4 per 110 days => about 25 more by day 330, minus births).
+Births: pregnancies from days 1-60 come due on days 275-335, so 3-8 births per world by day 330.
+Wrong if: alive under 25, or births 0.

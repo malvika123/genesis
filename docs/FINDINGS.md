@@ -3328,6 +3328,18 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 157. Eleven months at the real clock with the berry fix: 25-26 of 60 alive, 2-3 babies born, hunger is now the main killer — Nov 2026
+
+**Version.** Commit 2ff0438 (entry 156): standard bundle, 60 people, `--hom-try 0.01 --pass-cd 96`, `--berry-aversion 30`, yearDays 365, seeds 1 and 2, 330 days. Files: `data/findings/157-year-with-fix/`.
+
+**Results.** Seed 1: alive 25; deaths: predators 19, hunger 18, illness 1; births 3. Seed 2: alive 26; hunger 27, predators 9; births 2. (Entry 154, no fix, 400 days: 11-13 alive of 60.)
+
+**Against the prediction.** Alive 28-40 predicted, seen 25-26 (a little under, and my "wrong if under 25" line is just missed); births 3-8 predicted, seen 3 and 2 (one world under). The loss of about 35 of 60 in 11 months is mostly hunger (18-27 per world, against 3-4 in the first 110 days: so hunger deaths pick up later) and predators (9-19).
+
+**Interpretation.** A band now survives the first 11 months and starts breeding, but loses more than half. The hunger deaths later in the year are not explained: the first 110 days showed few. Not yet known whether it is the dry season, food running low where the band stays, or mothers and toddlers.
+
+**Trust.** Weak to moderate (2 worlds). Next: when in the year the hunger deaths fall, who they are (age, sex, mother or child), and what the food is doing then.
+
 ### 156. Hunger deaths and births at the real clock: the berry refusal was starving people; fixed, hunger deaths fall to 3-4 per world — Nov 2026
 
 **Version.** Standard bundle, 60 people, `--hom-try 0.01 --pass-cd 96`, `--berry-aversion 30`, yearDays 365, 110-120 days. Code change: a person refusing the red berries gets no pull to eat on that square (`src/sim.js`, only when the aversion switch is on). Files: `data/findings/156-hunger-births/` (three predictions written before).
