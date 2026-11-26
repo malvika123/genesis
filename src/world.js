@@ -245,6 +245,7 @@ function buildWorld(cfg) {
   SOC.preyRadius = cfg.preyRadius ?? 8; // squares within which a hunter's prey must live where it starts (an assumption)
   SOC.dexterity = cfg.dexterity === true; // an inherited precision of the hand (thumb and finger) scales flake knapping, cutting and digging with a flake (entry 135)
   SOC.dexMean = cfg.dexMean ?? 0.75; // the founders' mean (1 = the old rates; 0.5 = Rolian's in-between hand; 1 = Alba's human-like hand; an assumption)
+  SOC.aversionDays = cfg.berryAversion ?? 0; // days a person refuses the berries it got sick on (entry 155; 0 = never learns in one trial, the old rule; an assumption, duration not measured)
   SOC.passCd = cfg.passCd ?? 4; // steps a hunter leaves a hominin alone after passing it by (entry 152; 4 = the old retry within the hour; an assumption, no source for its length)
   SOC.homTry = cfg.homTry ?? 1; // the share of a hunter's tries at a hominin that go ahead (entry 151; 1 = all, the old rule)
   SOC.valleyPrey = cfg.valleyPrey === true; // the prey map's level is per km2 and a valley square is 0.0625 km2, not 9 (entry 148; off = the old, 144 times too much prey)

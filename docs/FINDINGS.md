@@ -3328,6 +3328,30 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 155. One-trial taste aversion to the poison berries (`--berry-aversion D`): the berry deaths vanish, the band keeps 44-49 of 60 at 120 days instead of 31-37, and hunger deaths rise — Nov 2026
+
+**Version.** New switch `--berry-aversion D` (days a person refuses the red berries after one sickness; default 0 = the old rule, bite every time), registered as an assumption (one-trial learning sourced in squirrel monkeys and marmosets; wild baboon avoidance mostly social; no figure found for how long it lasts; no data on wild chimpanzee plant-poisoning deaths). Standard bundle, 60 people, `--hom-try 0.01 --pass-cd 96`, real year (yearDays 365), 3 worlds (seeds 1-3), 120 sim days, D = 0, 30, 365. Files: `data/findings/155-berry-aversion/`.
+
+**Results (deaths by cause per world, seeds 1/2/3; alive at day 120; births).** D = 0: wounds 19/18/13, hunger 4/5/6, predators 5/6/4, alive 32/31/37, births 0. D = 30: wounds 0/0/0, hunger 11/3/11, predators 5/9/6, alive 44/48/43. D = 365: wounds 0/0/0, hunger 11/8/7, predators 5/8/4, alive 44/44/49.
+
+**Against the prediction.** Wound deaths: predicted 3-8 at D = 30 (seen 0, better) and 0-3 at D = 365 (seen 0, right). Alive: predicted 45-55 / 50-58, seen 43-48 / 44-49 (a little under, because the people saved die of other things). Predicted hunger and predator deaths unchanged: WRONG for hunger (rose from 4-6 to 3-11 per world) and predators (5 to 4-9); the berry deaths were hiding later deaths from other causes. D = 30 and D = 365 cannot be told apart.
+
+**Interpretation.** The poison-berry deaths in the real-clock bands (entry 154) were all of one cause and one learned avoidance removes them. Even one 30-day memory is enough. This is a built assumption, not a measured fact: how long wild primates remember a toxic plant is not known. Births are still 0 at 120 days. The next killers are hunger (scattered individuals) and, over a year, the failure of births on the real clock.
+
+**Trust.** Moderate for "the berry rule was the cause" (13-19 deaths down to 0 in all three worlds); weak for the survivor numbers (3 worlds).
+
+### 154. A full real year with calibrated hunters: the band collapses to 11-13 of 60 by day 400, from poison berries and hunger — Nov 2026
+
+**Version.** Standard bundle, 60 people, `--hom-try 0.01 --pass-cd 96`, `yearDays` 365, 400 sim days, 3 worlds (`y1-y3.out`), plus `w2_1.out`, `bites1.out`. No code change.
+
+**Results.** Alive at day 400: 11-13 of 60. Per world about 26 wound deaths, 11-13 hunger deaths, about 11 predator kills; 0-1 births. The wound deaths were all poison berries (about 25 per world; first at day 17; 32 of 60 people bitten within 40 days, 1-6 bites each; energy about 96 at death, so not hunger). Hunger deaths were scattered individuals (band mean energy about 85).
+
+**Against the prediction.** Predicted survivors 45-55, seen 11-13: WRONG, and for a cause (berries) I had not seen at the short clock.
+
+**Interpretation.** At real time the people meet the berries again and again over 400 days. This led to entry 155.
+
+**Trust.** Moderate (3 worlds, same direction in all).
+
 ### 153. Calibration result: hunters that let 1 in 100 tries at a hominin go ahead and then leave it alone for a day reproduce the real attack rate on chimpanzees — Nov 2026
 
 **Version.** Standard bundle (`docs/design/valley-standard.md`) with 60 people, the real year (`yearDays` 365), 30 sim days, 6 worlds (seeds 1-6) per pair (X, C) = (`--hom-try`, `--pass-cd`): (0.01, 96), (0.03, 384), (0.01, 384). No code change after entry 152. Prediction: `data/findings/153-calibration-final/prediction-written-before.txt`; data `r_*.out`, `calib2.js`. Target (Boesch 1991, forest chimpanzees with leopards): about 0.3 attacks a person-year = 0.082% a person-day, 18% fatal = about 0.015% kills a person-day.

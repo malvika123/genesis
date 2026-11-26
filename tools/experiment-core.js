@@ -229,6 +229,7 @@
     { key: 'openValley', kind: 'on', def: false, flag: 'open-valley', label: 'The open valley: the valley land comes from its position, so the 250 m window can move along the valley (with --valley; plan item 36)', cfg: true },
     { key: 'dexterity', kind: 'on', def: false, flag: 'dexterity', label: 'An inherited precision of the hand (thumb and finger) scales knapping flakes, cutting and digging with a flake', cfg: true },
     { key: 'dexMean', kind: 'num', def: 0.75, flag: 'dex-mean', label: 'Founders\' hand precision (1 = human-like, 0.5 = between gorilla and human; an assumption)', min: 0.2, max: 1.2, cfg: true },
+    { key: 'berryAversion', kind: 'num', def: 0, flag: 'berry-aversion', label: 'Days a person refuses the poison berries it got sick on (0 = never learns in one trial; one-trial taste aversion in monkeys)', min: 0, max: 3650, cfg: true },
     { key: 'passCd', kind: 'num', def: 4, flag: 'pass-cd', label: 'Steps a hunter leaves a hominin alone after passing it by (4 = retried within the hour; 96 = a day)', min: 1, max: 960, cfg: true },
     { key: 'homTry', kind: 'num', def: 1, flag: 'hom-try', label: 'The share of a hunter\'s tries at a hominin that go ahead (1 = all; calibrated against the real attack rate on chimpanzees)', min: 0, max: 1, cfg: true },
     { key: 'valleyPrey', kind: 'on', def: false, flag: 'valley-prey-scale', label: 'In the valley, the prey map holds its kg per km2 over a 0.0625 km2 square, not a 9 km2 one (the old rule gave 144 times too much prey)', cfg: true },
