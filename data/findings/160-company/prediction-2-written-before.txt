@@ -1,0 +1,5 @@
+Entry 160 part 2, written before the run (27 Nov 2026).
+Seen at K = 3: spread at day 80 was 51 and 61 (K = 0: 53 and 83), lonely share 19-21%: the first prediction (under 30) was wrong; the pull helps a little.
+Target written now (from real chimpanzee party/home range of a few km across, about 5 km = 20 squares mean distance): mean distance from the median at day 80 under 20 squares.
+Expect: K = 6 gives 35-50, K = 10 gives 25-45 (still above 20: a memory of where others were is not enough, since the others move too).
+Wrong if: K = 10 gives under 20 (then the pull strength was the only problem).

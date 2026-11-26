@@ -258,6 +258,18 @@ function sim() {
         a.bonus[7] += 0.1;
         a.ev[7] = 'it found others after being alone on day ' + dn;
       }
+      if (SOC.company > 0 && a.sp === 0) {
+        // --company (entry 160): it remembers where, roughly, it last saw its own kind: the nearest sector the eye reported, at the nearness it reported
+        let bs = -1,
+          bv = 0;
+        for (let s = 0; s < 8; s++) if (x[s * NCH + own] > bv) (bv = x[s * NCH + own]), (bs = s);
+        if (bs >= 0) {
+          const d = (1 - bv) * (Math.max(1.5, a.g.v) + 1),
+            L = Math.hypot(MV[bs][0], MV[bs][1]);
+          a.cx = a.x + (MV[bs][0] / L) * d;
+          a.cy = a.y + (MV[bs][1] / L) * d;
+        }
+      }
       a.bond = Math.min(1, a.bond + 0.004);
       a.lo = Math.max(0, a.lo - 0.05);
     } else {
@@ -327,6 +339,24 @@ function sim() {
             RF[s] += (w * (MV[s][0] * dx + MV[s][1] * dy)) / (L * L0);
           }
         }
+      }
+      // --follow K (entry 161): while it sees others of its own kind a little way off, it is drawn toward them, harder the farther they are, and not at all once they are close (primate groups travel together by followers matching neighbours' moves; baboons follow near neighbours). A pull, not a command; off = 0.
+      if (SOC.follow > 0 && !a.asleep)
+        for (let s = 0; s < 8; s++) {
+          const c = x[s * NCH + own];
+          if (c > 0) RF[s] += SOC.follow * (1 - c);
+        }
+      // --company (entry 160): a lonely person is drawn back, by an inborn pull, to the place it last saw its own kind (apes and monkeys rejoin their party); a pull, not a command, and gone once it has got there and found no one
+      if (SOC.company > 0 && a.cx !== undefined && a.lo > 0.3 && !a.asleep) {
+        const dx = dxw(a.cx - a.x),
+          dy = a.cy - a.y,
+          L0 = Math.hypot(dx, dy);
+        if (L0 < 1.5) a.cx = undefined;
+        else
+          for (let s = 0; s < 8; s++) {
+            const L = Math.hypot(MV[s][0], MV[s][1]);
+            RF[s] += (SOC.company * a.lo * (MV[s][0] * dx + MV[s][1] * dy)) / (L * L0);
+          }
       }
       const o = HEAR;
       if (x[o] > 0 && a.kid && !a.kid.gone && a.kid.age < a.kid.S.mat)

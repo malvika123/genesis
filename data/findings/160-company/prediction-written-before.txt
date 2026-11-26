@@ -1,0 +1,5 @@
+Entry 160 prediction (27 Nov 2026), written before the run.
+Change: --company K: a person who is lonely (loneliness > 0.3) is pulled with strength K x loneliness toward the place (estimated from what the eye reported) where it last saw its own kind; the pull ends when it arrives and finds no one. Off by default.
+Test: standard bundle, 60 people, hom-try 0.01, pass-cd 96, berry-aversion 30, yearDays 365, open valley, 80 days, seeds 1 and 2, K = 0 (the entry 159 numbers) and K = 3.
+Expect: mean distance from the band's median at day 80 falls from 53 and 83 (K = 0) to under 30 at K = 3 (both seeds), lonely share at day 80 falls below 20%.
+Wrong if: spread at day 80 is still above 40 at K = 3 (then a memory of the last place is not enough: people drift faster than the pull, or the group has moved on), or the band clumps into one tight ball under 3 squares (pull too strong).

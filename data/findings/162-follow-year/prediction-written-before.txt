@@ -1,0 +1,6 @@
+Entry 162 prediction (27 Nov 2026), written before the run.
+Seen (entry 161): at day 80, --follow 10 leaves 10-11 clusters, 5-6 alone (K = 0: 46 clusters, 41 alone); the pull back to the last place seen added little (K = 6 + company 6: 25 and 13 clusters against K = 6 alone 23 and 30). Predicted 14-24 clusters for K = 10: WRONG (better than predicted).
+Question: does staying together help them survive and breed over 330 days (entry 157: 25 and 26 alive of 60, births 3 and 2, with no follow)?
+Setup: same as entry 157, plus --follow 10; seeds 1 and 2, 330 days.
+Expect: alive at day 330 of 34-44 (against 25-26); births 4-9 per world; hunger deaths fall to 8-15 per world (against 18 and 27) because fewer are alone; predator deaths stay 9-19 (group size does not dilute the hunters, entries 149-150).
+Wrong if: alive is 30 or fewer, or hunger deaths are not lower than 18.

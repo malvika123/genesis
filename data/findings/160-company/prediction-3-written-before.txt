@@ -1,0 +1,5 @@
+Entry 160 part 3, written before the run (27 Nov 2026).
+Seen: K = 6 gave spread 65 and 64 at day 80, K = 10 gave 56 and 77 (K = 0: 53 and 83). Predicted 35-50 and 25-45: WRONG (higher). Pull strength is not the problem; the pull does nothing measurable.
+New question: what does the scatter look like? Single world, seed 1, K = 0, 80 days (the walled-valley copy matched the open one so the open valley is used). At days 20, 40, 60, 80 log: number of clusters (people within 4 squares of each other chained together), size of the biggest, number alone (singletons), and for each person net distance from start and total path walked since day 0.
+Expect: by day 80 the band is split in 4-10 clusters with 5-15 people alone; people walk about 150-400 squares in total, ending 40+ squares from their start (they wander, no common direction), i.e. net distance well below path length.
+Wrong if: one big cluster plus a few singletons (then the mean distance is the few singletons) or all clusters travelling together in one direction.

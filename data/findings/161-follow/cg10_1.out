@@ -1,0 +1,1 @@
+[{"day":20,"n":58,"clusters":1,"sizes":[58],"alone":0,"meanNet":3,"meanPath":26},{"day":40,"n":58,"clusters":3,"sizes":[53,4,1],"alone":1,"meanNet":7,"meanPath":55},{"day":60,"n":56,"clusters":5,"sizes":[49,4,1,1,1],"alone":3,"meanNet":18,"meanPath":85},{"day":80,"n":56,"clusters":10,"sizes":[27,16,4,2,2,1,1,1,1,1],"alone":5,"meanNet":45,"meanPath":177}]

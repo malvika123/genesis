@@ -3328,6 +3328,30 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 161. An inborn pull toward others seen a little way off (`--follow K`) holds the band together much longer; at 10 it keeps 10-11 clusters at day 80 instead of 46 — Nov 2026
+
+**Version.** New switch `--follow K` (while a person sees others of its kind, a pull toward them of K x (1 - nearness) per direction, none when beside them; default 0 = off; registered as an assumption with the range 1-6, now tested to 10; the basis is that primate groups travel together by followers matching near neighbours, quoted from memory, not re-checked). Standard bundle, 60 people, yearDays 365, open valley, `--berry-aversion 30`, 80 days, seeds 1 and 2 (K = 10, K = 6 + company 6) or 1 and 2 (K = 3, 6). Clusters: people chained within 4 squares (1 km). Files: `data/findings/161-follow/`.
+
+**Results at day 80 (clusters / alone).** K = 0 (one world): 46 / 41. K = 3: 36 and 37 / 28 and 24. K = 6: 23 and 30 / 10 and 17. K = 10: 10 and 11 / 5 and 6 (largest groups 27 + 16 and 23 + 14). K = 6 + company 6: 25 and 13 / 14 and 2.
+
+**Against the predictions.** K = 6 clusters 4-12: WRONG (23-30). K = 10 clusters 14-24: WRONG (better: 10-11). Company 6 added to K = 6 gave no clear gain. Target written beforehand (under 8 clusters, under 5 alone): not yet met (10-11, 5-6).
+
+**Interpretation.** The pull works in proportion to its strength and only helps while others are in sight; the memory pull is useless. The band at K = 10 stays as two or three travelling groups, which is closer to the party structure of real chimpanzees. Strength 10 is a fitted assumption, not a measured number.
+
+**Trust.** Moderate for the direction (6 worlds); weak for the size. Next: entry 162, a year of survival with K = 10.
+
+### 160. A memory of where others were, and a pull back to it when lonely (`--company K`), does nothing — Nov 2026
+
+**Version.** New switch `--company K` (off by default; registered assumption). Standard bundle as entry 159, 80 days, seeds 1 and 2, K = 3, 6, 10. Files: `data/findings/160-company/`.
+
+**Results (mean distance from the band's median at day 80; K = 0: 53 and 83).** K = 3: 51 and 61; K = 6: 65 and 64; K = 10: 56 and 77. Lonely share 11-21%. Where the band goes: with K = 0 the band is, by day 80, 46 clusters among 53 people, 41 alone, each person walking 217 squares and ending 58 from the start (one world, `cl1.out`).
+
+**Against the predictions.** Spread under 30 at K = 3: WRONG. 35-50 at K = 6 and 25-45 at K = 10: WRONG (higher). The pull toward the last place seen has no measurable effect on the spread, however strong.
+
+**Interpretation.** By the time a person feels lonely they are already out of sight and the group has moved; a pull to a stale place cannot find them. The band dissolves into individuals in 20-40 days; what is missing is something that acts while others are still in sight (entry 161). Kept off by default.
+
+**Trust.** Moderate (6 worlds, no effect at any strength).
+
 ### 159. The scatter is not caused by the open valley, and loneliness grows but does not bring people back — Nov 2026
 
 **Version.** Commit fccc0a9, no code change. Standard bundle, 60 people, `--hom-try 0.01 --pass-cd 96`, `--berry-aversion 30`, yearDays 365, 80 days, seeds 1 and 2, open valley and walled valley (no `--open-valley`). Files: `data/findings/159-scatter/`.

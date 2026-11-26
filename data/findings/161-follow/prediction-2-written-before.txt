@@ -1,0 +1,5 @@
+Entry 161 part 2, written before the run (27 Nov 2026).
+Seen at day 80 (follow K = 3 / 6, two worlds each): clusters 36, 37 / 23, 30; alone 28, 24 / 10, 17 (K = 0: 46 clusters, 41 alone). So follow delays the break-up (K = 6: 8-10 clusters at day 40 against 33) but does not stop it. Predicted K = 6 clusters 4-12 at day 80: WRONG (23-30).
+Next: K = 10, and K = 6 together with --company 6 (the pull back to the last place seen). Seeds 1 and 2, 80 days.
+Expect: K = 10 gives 14-24 clusters at day 80, alone 5-12; K = 6 + company 6 gives 12-22 clusters, alone 4-10 (the two pulls together help a little more than alone).
+Wrong if: either gives under 8 clusters (then the cause was only pull strength) or more than 28 clusters (pulls do not matter beyond K = 6).
