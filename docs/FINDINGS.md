@@ -3328,6 +3328,18 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 162. A year with the band held together (`--follow 10`): fewer killed by predators, more dead of hunger, no gain in survival — Nov 2026
+
+**Version.** Commit faecf00. Standard bundle, 60 people, `--hom-try 0.01 --pass-cd 96`, `--berry-aversion 30`, `--follow 10`, yearDays 365, 330 days, seeds 1 and 2. Files: `data/findings/162-follow-year/`.
+
+**Results (against entry 157, same seeds, no follow).** Alive at day 330: 21 and 26 (was 25 and 26). Hunger deaths 35 and 31 (was 18 and 27). Killed by a predator 6 and 6 (was 19 and 9). Births 2 and 3 (was 3 and 2).
+
+**Against the prediction.** Alive 34-44: WRONG (21-26). Births 4-9: WRONG (2-3). Hunger deaths below 18: WRONG (higher, 31-35). Predator deaths staying 9-19: WRONG (fewer, 6 and 6); the earlier finding that band size does not dilute the hunters was about band size, not about whether people are alone.
+
+**Interpretation.** Staying together roughly halves the predator deaths and costs about the same number again in hunger deaths, so survival does not change. A likely reason (not tested): a crowd of 40-60 feeding in one place empties the food around it faster than it grows back, which is why real chimpanzees split into small parties for feeding (the costs of grouping in fission-fusion societies, Lehmann et al. 2007, in the search results). Not yet measured here.
+
+**Trust.** Moderate for the direction (2 worlds each way, the same sign in both); the cause of the extra hunger is a guess.
+
 ### 161. An inborn pull toward others seen a little way off (`--follow K`) holds the band together much longer; at 10 it keeps 10-11 clusters at day 80 instead of 46 — Nov 2026
 
 **Version.** New switch `--follow K` (while a person sees others of its kind, a pull toward them of K x (1 - nearness) per direction, none when beside them; default 0 = off; registered as an assumption with the range 1-6, now tested to 10; the basis is that primate groups travel together by followers matching near neighbours, quoted from memory, not re-checked). Standard bundle, 60 people, yearDays 365, open valley, `--berry-aversion 30`, 80 days, seeds 1 and 2 (K = 10, K = 6 + company 6) or 1 and 2 (K = 3, 6). Clusters: people chained within 4 squares (1 km). Files: `data/findings/161-follow/`.
