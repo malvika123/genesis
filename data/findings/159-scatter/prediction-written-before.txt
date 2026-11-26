@@ -1,0 +1,5 @@
+Entry 159 prediction (27 Nov 2026), written before the run.
+Owner idea: apes and early hominins lived in groups, so the people should feel closeness to their group. Code check: a loneliness feeling already exists (a.lo, rises when no own kind is in view, falls on seeing one; a reward penalty the brain can learn from, weight S.social x gene), plus bonds to mother, mate, child; it has no inborn pull and no way to sense a group beyond sight.
+Test: standard bundle, 60 people, hom-try 0.01, pass-cd 96, berry-aversion 30, yearDays 365, 80 days, seeds 1 and 2, with the open valley and with the walled valley (no --open-valley). Log every 10 days: mean distance from the band's median, share of people seeing no one of their kind (lo > 0.5), mean lo.
+Expect: spread grows in both (the scatter is not caused by the open valley): mean distance at day 80 above 40 squares in both, within a factor of 1.5 of each other. Share lonely (lo > 0.5) at day 80 above 30%.
+Wrong if: the walled valley's spread stays under 20 squares at day 80 (then the open valley causes it), or lonely share is under 10% (then loneliness is not what is missing).

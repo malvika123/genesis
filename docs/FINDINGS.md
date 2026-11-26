@@ -3328,6 +3328,18 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 159. The scatter is not caused by the open valley, and loneliness grows but does not bring people back — Nov 2026
+
+**Version.** Commit fccc0a9, no code change. Standard bundle, 60 people, `--hom-try 0.01 --pass-cd 96`, `--berry-aversion 30`, yearDays 365, 80 days, seeds 1 and 2, open valley and walled valley (no `--open-valley`). Files: `data/findings/159-scatter/`.
+
+**Results (mean distance from the band's median, squares of 250 m; share lonely = no one of their kind in view, loneliness above 0.5).** Open, day 10 / 40 / 80: seed 1: 6.6 / 25.8 / 52.6; seed 2: 6.2 / 34.6 / 83.1. Walled: seed 1: 8.0 / 22.4 / 55.1; seed 2: 4.9 / 28.3 / 72.3. Lonely share at day 80: open 53% and 41%, walled 34% and 29%. The spread grows about 0.6-1 square a day, about the same in the walled and open valleys.
+
+**Against the prediction.** Spread above 40 at day 80 in both: right (53-83). Within a factor of 1.5 of each other: right (open mean 68, walled mean 64). Lonely above 30% at day 80: right in 3 of 4 worlds (29% in the fourth). Walled spread under 20: not seen. So the open valley is not the cause and the missing piece is not a lack of the loneliness feeling.
+
+**Interpretation.** The people feel more and more alone as they drift apart, but nothing makes a lonely person go back. The loneliness exists only as a penalty their brain has to learn to avoid, and the learning does not happen within weeks. Real chimpanzees and other apes use calls and an inborn pull to rejoin their party (evidence in the owner's request; not checked for early hominins).
+
+**Trust.** Moderate (4 worlds, both setups agree). Next: how loneliness and calling are wired in the code, then a switch that gives a lonely person an inborn pull toward the sound or sight of their own kind (with the pull's size registered as an assumption).
+
 ### 158. Who dies of hunger at the real clock: spread evenly through the year, and the band is not a band any more — people scatter 25-30 km apart — Nov 2026
 
 **Version.** Same as entry 157 (commit bf8c485, no code change), seeds 1 and 2, 330 days, with logging of hunger deaths (day, age, sex, refusals), band energy every 10 days, and each person's distance from the band's middle (median position) every day. Files: `data/findings/157-year-with-fix/` (`diag4.js`, `diag5.js`, `dh*.out`, `di*.out`, two predictions written before).
