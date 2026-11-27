@@ -1,0 +1,6 @@
+Entry 164 prediction (27 Nov 2026), written before the run.
+Seen: hunger victims are 25 women and 20 men (about the population's sex ratio), ages 15-41, mostly alone or in small groups; 22% of the band dies of hunger in 330 days while the band's mean energy stays 86-91.
+Question: do people who later starve differ from people who do not, early on (before the first death)?
+Setup: standard bundle, 60 people, hom-try 0.01, pass-cd 96, berry-aversion 30, no follow, yearDays 365, open valley, seeds 1-3, 200 days. Record for each founder its inherited traits (all g.* numbers), age, sex, and mean energy over days 5-40; then who dies of hunger by day 200 versus who is alive at day 200.
+Expect: victims had a lower mean energy over days 5-40 than survivors (at least 8 points lower) and at least one inherited trait (timidity, curiosity, vision, learning speed or sociability) differs by more than 0.5 standard deviations between the groups.
+Wrong if: early energy is the same in both groups (then starvation is a late accident, not a poor forager from the start) and no trait differs by more than 0.3 standard deviations.
