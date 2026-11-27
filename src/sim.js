@@ -428,6 +428,16 @@ function sim() {
     }
     // --berry-aversion (entry 156): a person who refuses the red berries is not drawn to eat on that square (else it stood there choosing to eat and starved)
     if (SOC.aversionDays > 0 && a.sp === 0 && a.poisonT !== undefined && tick - a.poisonT < SOC.aversionDays * DAY && poison[idx(a.x, a.y)]) RF[A_EAT] = 0;
+    // --starve K (entry 173): a person below SOC.starveAt % energy stops everything but finding and eating food: a strong pull to eat anything edible where it stands, and none to mate, give food away or stand still (hunger overrides the other urges; fasting animals turn sharply to feeding, Koubi et al. 1991; mice: Burnett et al. 2016). A pull, not a command; sleep stays.
+    if (SOC.starve > 0 && a.sp === 0 && !a.asleep && a.e < SOC.starveAt) {
+      const need = (SOC.starveAt - a.e) / SOC.starveAt,
+        hs = idx(a.x, a.y),
+        ms = meatAt(a.x, a.y, 0);
+      if (!water[hs] && (fruit[hs] > 0.05 || COOK[hs] > 0.05 || (ms && !rotten(ms) && ms.meat > 0.05) || ROOT[hs] > 0.05 || leafy(a, hs) || (TERM && TERM[hs] > 0.05))) RF[A_EAT] += SOC.starve * (0.5 + need);
+      RF[A_MATE] -= SOC.starve * need;
+      RF[A_GIVE] -= SOC.starve * need;
+      RF[A_STAY] -= SOC.starve * need;
+    }
     if (a.sp === 2) RF[A_ATK] = (5 + (SOC.huntPull ? 7 * (1 - SOC.atkFixed) : 0)) * hu * x[HB + 2]; // the hungry part of the pull to attack (A32)
     // The satiety brake (entry 92; --no-full-brake: none): a full stomach damps the urge to attack, as a gorged cat lets prey pass and a
     // bigger meal delays a leopard's next kill (Wilmers et al. 2017). Felt hunger is scaled to the long store, so it hardly falls after a

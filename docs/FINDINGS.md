@@ -3328,6 +3328,18 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 173. A starvation override (`--starve 8`): no effect on hunger deaths — Nov 2026
+
+**Version.** New switch `--starve K` (below 30% energy: pull of K x (0.5 + need) to eat anything edible under the feet, and pulls of K x need against mating, giving food away and standing still; default 0 = off; registered assumption, basis: fasting animals turn sharply to feeding, hunger overrides other urges in mice). Standard bundle, 60 people, `--berry-aversion 30`, yearDays 365, 110 days, seeds 1-3, K = 8. Files: `data/findings/173-starve/`.
+
+**Results (starve 8 / control from entry 168).** Hunger deaths 7, 5, 3 / 3, 10, 4 (means 5.0 / 5.7); alive 48, 51, 48 / 51, 49, 48; predators 5, 4, 9 / 6, 1, 8.
+
+**Against the prediction.** Hunger deaths down to 3 or fewer per world (by at least a third): WRONG (5.0 against 5.7, inside the spread). Alive up by 1 or more: WRONG (49 against 49.3).
+
+**Interpretation.** A strong pull to eat anything at hand when below 30% does not change the number who starve. So the collapse starts earlier than energy 30 (the starved were at 46 on average over their last 10 days), or the food is not under their feet, or what stops them is not a missing urge. Not yet known. Kept off by default.
+
+**Trust.** Weak to moderate (3 worlds, no sign of an effect).
+
 ### 172. The starved ate more than the others for weeks, then intake collapsed in the last 10 days — Nov 2026
 
 **Version.** Commit 24915de, no code change; `--body-ledger` (measuring only). Standard bundle, 60 people, `--berry-aversion 30`, yearDays 365, 110 days, seeds 1-3 (17 starved of 165 founders and births). Files: `data/findings/172-intake/`.

@@ -1,0 +1,6 @@
+Entry 173 prediction (27 Nov 2026), written before the run.
+Owner (27 Nov): "when hunger is bad they have to eat anything they find."
+Change: --starve K: below 30% energy a person has a pull of K x (0.5 + need) to eat if anything edible is under its feet, and pulls of K x need against mating, giving food away and standing still. Off by default.
+Test: standard bundle, 60 people, hom-try 0.01, pass-cd 96, berry-aversion 30, yearDays 365, open valley, 110 days, seeds 1-3, --starve 8. Control (same code, no starve): hunger deaths 3, 10, 4; alive 51, 49, 48 (entry 168 control runs).
+Expect: hunger deaths fall from 5.7 a world to 3 or fewer (by at least a third); alive rises by 1 or more.
+Wrong if: hunger deaths are not lower (then the brain's learned choices beat the pull, or the cause is before energy 30).

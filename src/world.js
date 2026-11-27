@@ -248,6 +248,8 @@ function buildWorld(cfg) {
   SOC.aversionDays = cfg.berryAversion ?? 0; // days a person refuses the berries it got sick on (entry 155; 0 = never learns in one trial, the old rule; an assumption, duration not measured)
   SOC.company = cfg.company ?? 0; // entry 160: strength of the pull of a lonely person back to where it last saw its own kind (0 = none, the old rule; an assumption)
   SOC.follow = cfg.follow ?? 0; // entry 161: pull toward own kind seen a little way off, harder the farther (0 = none, the old rule; an assumption)
+  SOC.starve = cfg.starve ?? 0; // entry 173: strength of the starvation override (0 = off, the old rule; an assumption)
+  SOC.starveAt = cfg.starveAt ?? 30; // the energy %, below which it acts
   SOC.traces = cfg.traces === true; // entry 168: place memory as traces (off = the old one-slot memory of a place with plants)
   SOC.traceK = cfg.traceK ?? 0.1;
   SOC.traceTau = cfg.traceTau ?? 120;
