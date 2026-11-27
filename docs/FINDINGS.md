@@ -3328,6 +3328,18 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 165. The target the band is measured against: wild chimpanzee adults lose about 4-7% a year; ours lose more than half in 330 days — Nov 2026
+
+**Version.** Evidence search only (27 Nov 2026), no code change.
+
+**Evidence.** Wild chimpanzee adult mortality is about 3.9% a year (ages 10-35, Kanyawara) up to about 6.8% at other long-term sites; Hill et al. 2001 argued for a downward revision of earlier, higher rates ([Hill et al. 2001, Journal of Human Evolution](https://pubmed.ncbi.nlm.nih.gov/11322804/); the percentages are from a review of the same data, not read in the paper itself). Those who reach adulthood (about 14 years) live about 15 more years. At Gombe the leading known cause of death was illness (58% of deaths with a known cause), then aggression within the species (20%) ([Williams et al. 2008](https://pubmed.ncbi.nlm.nih.gov/18506732/)); predation by leopards and lions is documented at some sites. No source on starvation as a cause of death in wild primates, or on fasting limits of apes, turned up (two searches).
+
+**Comparison.** In the real-clock runs with the berry fix (entries 157, 162, 163), about 55% of a band of 60 died in 330 days, about 22-30% of it of hunger: a death rate on the order of ten times the real adult rate, with starvation rare or unrecorded in the wild and illness leading. In our worlds illness kills 0-1.
+
+**Interpretation.** A faithful band should lose about 1 in 20 adults a year, mostly to illness and fights. The hunger deaths (and the 10-14-day fasting limit of entry 164) are the most obviously unrealistic part. This is now the standing target: adult yearly loss of 4-7%.
+
+**Trust.** Moderate for the 4-7% (two sources, several sites); the comparison with our runs is rough (our runs start with all ages, 330 days, 2-3 worlds).
+
 ### 164. Who starves: mostly chance, with a mild tilt toward high metabolism and low sociability; people go from full to dead in 10-14 days of not eating — Nov 2026
 
 **Version.** Commit bf3bd82, no code change. Standard bundle, 60 people, `--hom-try 0.01 --pass-cd 96`, `--berry-aversion 30`, no follow, yearDays 365, 200 days, seeds 1-3 (180 founders). Files: `data/findings/164-who-starves/`.
