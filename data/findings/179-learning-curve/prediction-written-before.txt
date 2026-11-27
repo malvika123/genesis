@@ -1,0 +1,6 @@
+Entry 179 prediction (27 Nov 2026), written before the run.
+Question (plan step 1, docs/design/foraging-brain-plan.md): does foraging improve with experience?
+Setup: standard bundle, 60 people, hom-try 0.01, pass-cd 96, berry-aversion 30, --body-ledger, yearDays 365, open valley, no follow, seeds 1 and 2, 330 days. For every person alive through months 1, 6 and 11 (days 1-30, 150-180, 300-330): mean kcal a day eaten; and for each hunger episode (energy falls under 50 after being above 70) the hours until energy next rises 5 or more points (time to a real meal), by month.
+Expect (if the brain learns foraging): time to a meal falls by at least 25% from month 1 to month 6 and 11, and kcal a day does not fall by more than the fruit supply falls (entry 177: fruit supply falls by 90% in 90 days, so a flat or falling intake would mean no learning gain large enough to show).
+Wrong if: time to a meal does not fall (stays within 10%) or rises: then people do not get better at foraging in a year, whatever the supply.
+Confound stated: the fruit supply falls over the same months, so a flat result mixes no learning with less food; the first month (fruit grows in from zero) is also atypical.

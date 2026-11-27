@@ -1,0 +1,5 @@
+Entry 181 prediction (27 Nov 2026), written before the run.
+Seen (entry 180, 110 days): GAM 0.95 gives hunger 1-2 and alive 52-55 of 60; 0.90 gives hunger 1-3 and alive 52-57.
+Test: GAM 0.95 and 0.90, standard bundle, 60 people, hom-try 0.01, pass-cd 96, berry-aversion 30, yearDays 365, 330 days, seeds 1 and 2. Control (0.97): alive 25 and 26, hunger 18 and 27, predators 19 and 9, births 3 and 2. Target (entry 165): adult loss 4-7% a year, i.e. at least 54 of 60 alive after a year; far from reach.
+Expect: hunger deaths 3-8 per world; alive 36-46 of 60 (predators become the main killer, 10-18); births 3-8.
+Wrong if: alive 30 or fewer (then the gain seen at 110 days fades) or hunger above 12.

@@ -1,0 +1,6 @@
+Entry 180 part 2, written before the run (27 Nov 2026).
+Seen: GAM 0.99 (longer reach) gave 29, 33, 31 hunger deaths in 110 days (control 0.97: 3, 10, 4): about ten times more; predicted a fall by a third: WRONG, strongly the other way. Alive 27, 22, 24 (control 51, 49, 48).
+So starvation is very sensitive to the learning's discount, and in the direction that a longer reach is much worse.
+Next: GAM 0.95 (about 20 steps, 5 hours) and 0.90 (about 10 steps, 2.5 hours), same setup, seeds 1-3, 110 days.
+Expect: 0.95 gives hunger deaths of 3 or fewer per world (a shorter reach learns the nearby eat-and-move link more cleanly); 0.90 about the same as 0.95 or a little worse.
+Wrong if: 0.95 gives more than the control's mean of 5.7 hunger deaths (then 0.97 is already the best value).

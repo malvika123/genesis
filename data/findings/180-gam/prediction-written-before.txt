@@ -1,0 +1,6 @@
+Entry 180 prediction (27 Nov 2026), written before the run.
+Plan step 2 (docs/design/foraging-brain-plan.md): learning credits a reward to choices about 30 steps back (GAM 0.97 per step, about 8 hours); a walk to a food patch is longer, so it may be learned poorly.
+Test: GAM 0.99 (about 100 steps, 25 hours) as an engine option (tools only, a test lever; the default stays 0.97), standard bundle, 60 people, hom-try 0.01, pass-cd 96, berry-aversion 30, yearDays 365, 110 days, seeds 1-3. Control (0.97): hunger deaths 3, 10, 4; alive 51, 49, 48.
+Expect: if the learning reach is a limit, hunger deaths fall by a third or more (to 3 or fewer).
+Wrong if: no change (then the reach is not the limit); also report any rise.
+Cost to watch: a longer reach may slow or destabilise learning (check alive and predator deaths for a rise).

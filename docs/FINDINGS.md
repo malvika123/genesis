@@ -3328,6 +3328,30 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 180. The learning's reach decides who starves: a longer reach (0.99) is ten times worse, a shorter one (0.95, 0.90) cuts hunger deaths to about one third — Nov 2026
+
+**Version.** New test option `gam` (engine tools only: the learning's discount per step, `GAM` in `src/config.js`, default 0.97 = credit reaches back about 30 steps, 8 hours at 4 steps an hour). Standard bundle, 60 people, `--hom-try 0.01 --pass-cd 96`, `--berry-aversion 30`, yearDays 365, 110 days, seeds 1-3. Files: `data/findings/180-gam/`.
+
+**Results (hunger / predators / alive, seeds 1, 2, 3).** 0.97 (control): hunger 3, 10, 4 / predators 6, 1, 8 / alive 51, 49, 48. 0.99: hunger 29, 33, 31 / 3, 3, 5 / 27, 22, 24. 0.95: hunger 1, 2, 2 / 4, 4, 6 / 55, 54, 52. 0.90: hunger 3, 3, 1 / 0, 4, 7 / 57, 53, 52.
+
+**Against the prediction.** 0.99 gives a fall by a third: WRONG (nearly ten times more hunger deaths). 0.95 gives 3 or fewer hunger deaths per world: right (1-2). 0.90 about the same: right (1-3). "Wrong if 0.95 above 5.7": not met.
+
+**Interpretation.** How far back the brain credits a reward changes starvation more than anything else tried (food supply, memory, urges, digging, band size). A long reach blurs which choice earned which meal, so people learn to forage worse; a short one ties eating to the step that fed them. GAM is a modelling number with no direct real-world source (a discount per 15-minute step), so it is a fitted assumption and the evidence for 0.95 is this result and the real-mortality target of entry 165. The change is not adopted yet: it needs the 330-day runs (entry 181) and the identical-worlds and test checks, since the learning rule underlies everything.
+
+**Trust.** Strong for the direction (3 worlds at each value, 0.99 against 0.95 is an order of magnitude); moderate for which value is best.
+
+### 179. Does foraging improve with experience? Inconclusive: time to a meal is noisy (medians 5-27 hours), and daily intake falls 17-27% over the year with the fruit — Nov 2026
+
+**Version.** Commit 23573ca, no code change. Standard bundle, 60 people, `--berry-aversion 30`, `--body-ledger`, yearDays 365, 330 days, seeds 1 and 2; the 25 and 26 who lived to the end. Time to a meal: hours from energy falling under 50 (after being above 70) until it next rises 5 points, per episode. Files: `data/findings/179-learning-curve/`.
+
+**Results (seed 1 / seed 2).** Kcal a day by period (days 1-30, 31-90, 91-150, 151-210, 211-270, 271-330): 1,970, 1,862, 1,746, 1,597, 1,540, 1,430 / 1,956, 1,794, 1,755, 1,730, 1,705, 1,615. Median hours to a meal: 9.8, 15.8, 10.5, 14.2, 27, 7 / 8.5, 5.3, 14.5, 7, 12.7, 6 (13-25 episodes per period).
+
+**Against the prediction.** Time to a meal falling by 25% from month 1 to months 6 and 11: not shown (month 6: +45% and -18%; month 11: -29% and -29%, but the months in between swing from 5 to 27 hours on 14-25 episodes each). "Wrong if within 10% or rising": not met either. Intake falls steadily by 17% and 27%, with the fruit supply (entry 177).
+
+**Interpretation.** I cannot tell from this whether the brain learns to forage better: the signal is swamped by the shrinking food supply and small counts. A typical hungry person takes about half a day (6-15 hours) to get a real meal. A cleaner test of learning is to change the learning itself and look at the result (entry 180).
+
+**Trust.** Weak (episodes small, supply falling alongside).
+
 ### 178. A smaller band (30 or 20 people) does not do better over 330 days: the share who starve and the share killed stay about the same — Nov 2026
 
 **Version.** Commit 73be70e, no code change. Standard bundle with `--people 30` and `--people 20`, `--berry-aversion 30`, yearDays 365, 330 days, seeds 1 and 2. Files: `data/findings/178-band-size-year/`.
