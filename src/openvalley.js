@@ -178,7 +178,7 @@ function shiftWindow(dx, dy) {
       a.rx -= dx;
       a.ry -= dy;
     }
-    for (const m of [a.mw, a.mf]) if (m) ((m.x -= dx), (m.y -= dy));
+    for (const m of [a.mw, a.mf, ...(a.tr || [])]) if (m) ((m.x -= dx), (m.y -= dy));
     if (!inside(a)) a.left = true;
   }
   ag = ag.filter((a) => !a.left || ((a.left = false), false));

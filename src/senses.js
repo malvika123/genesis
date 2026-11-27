@@ -353,7 +353,7 @@ function sense(a, x, night) {
   }
   const MEM = S.mem * DAY;
   if (a.mw && tick - a.mwT > MEM) a.mw = null;
-  if (a.mf && tick - a.mfT > MEM) a.mf = null;
+  if (a.mf && tick - a.mfT > MEM && !(SOC.traces && a.sp === 0)) a.mf = null;
   if (a.mw) {
     const dx = dxw(a.mw.x - a.x),
       dy = a.mw.y - a.y,
@@ -365,7 +365,7 @@ function sense(a, x, night) {
     const dx = dxw(a.mf.x - a.x),
       dy = a.mf.y - a.y,
       d = Math.hypot(dx, dy) || 1;
-    if (d < 1.5 && (a.sp === 2 && SOC.meatMemory && !a.S.omni ? !meatAt(a.mf.x, a.mf.y, 2) : food[idx(a.mf.x, a.mf.y)] < 0.15)) a.mf = null; // a hunter's place: until the meat is gone (A38)
+    if (d < 1.5 && !(SOC.traces && a.sp === 0) && (a.sp === 2 && SOC.meatMemory && !a.S.omni ? !meatAt(a.mf.x, a.mf.y, 2) : food[idx(a.mf.x, a.mf.y)] < 0.15)) a.mf = null; // a hunter's place: until the meat is gone (A38)
     else {
       x[IB + 14] = (dx / d) * te;
       x[IB + 15] = (dy / d) * te;

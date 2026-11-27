@@ -3328,6 +3328,18 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 168. Place memory as traces (`--traces`): a small gain in a year, not the large one predicted; memory is a part of the hunger, not the main cause — Nov 2026
+
+**Version.** New switch `--traces` (off by default): a person keeps up to 6 traces of places where eating gave energy; a meal strengthens a trace by 0.1 per energy unit gained, time weakens it (120 days), a visit that finds no real food leaves it 30%, and when energy is below 70 a trace comes to mind by chance (strong and near ones more often) and becomes the remembered place the brain already reads. The old rule (remember any square with plants) is off for people when on. All four numbers are registered assumptions; the existence and reward-dependence of the memory is sourced (Janmaat et al. 2013; Ban, Boesch & Janmaat 2014). Standard bundle, 60 people, `--hom-try 0.01 --pass-cd 96`, `--berry-aversion 30`, yearDays 365. Files: `data/findings/168-traces/`.
+
+**Results.** 110 days, seeds 1-3 (traces / old memory): hunger 4, 4, 5 / 3, 10, 4; alive 46, 49, 50 / 51, 49, 48; births 0 in all. 330 days, seeds 1-2 (traces / entry 157): alive 29, 29 / 25, 26; hunger 17, 21 / 18, 27; predators 16, 13 / 19, 9; births 2, 3 / 3, 2.
+
+**Against the prediction.** 110 days: hunger down by a third (to 3 or fewer): WRONG (4.3 against 5.7). 330 days: hunger 10-16 and alive 30-38: WRONG (17 and 21; 29 and 29, just under); "wrong if hunger above 20": met in one world (21).
+
+**Interpretation.** Better memory gives a gain of about 3-4 people alive in a year and slightly fewer hunger deaths (17 and 21 against 18 and 27), within the world-to-world spread for two worlds. So memory is not the main cause of the starvation. Roughly 17-21 of 60 still starve in 330 days with food within reach (entry 166). What else makes a person with food near and a memory of it still lose 8-10 energy points a day is not yet known.
+
+**Trust.** Weak (2-3 worlds each, differences inside the spread). Kept off by default; the switch stays for later tests.
+
 ### 167. A memory problem: the people who starve mostly have no memory of real food, and where they do, it is more often a grass field — Nov 2026
 
 **Version.** Commit a06ffec plus an engine-API change that exposes the fruit, root and termite maps to test scripts (no sim change). Standard bundle, 60 people, `--berry-aversion 30`, yearDays 365, open valley, seed 2, 110 days; 10 people starved. Files: `data/findings/167-food-memory/`.

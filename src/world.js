@@ -248,6 +248,10 @@ function buildWorld(cfg) {
   SOC.aversionDays = cfg.berryAversion ?? 0; // days a person refuses the berries it got sick on (entry 155; 0 = never learns in one trial, the old rule; an assumption, duration not measured)
   SOC.company = cfg.company ?? 0; // entry 160: strength of the pull of a lonely person back to where it last saw its own kind (0 = none, the old rule; an assumption)
   SOC.follow = cfg.follow ?? 0; // entry 161: pull toward own kind seen a little way off, harder the farther (0 = none, the old rule; an assumption)
+  SOC.traces = cfg.traces === true; // entry 168: place memory as traces (off = the old one-slot memory of a place with plants)
+  SOC.traceK = cfg.traceK ?? 0.1;
+  SOC.traceTau = cfg.traceTau ?? 120;
+  SOC.traceMax = cfg.traceMax ?? 6;
   SOC.followCap = cfg.followCap ?? 99; // entry 163: the follow pull stops once others are seen in this many of the 8 directions (99 = never, the old rule; an assumption)
   SOC.passCd = cfg.passCd ?? 4; // steps a hunter leaves a hominin alone after passing it by (entry 152; 4 = the old retry within the hour; an assumption, no source for its length)
   SOC.homTry = cfg.homTry ?? 1; // the share of a hunter's tries at a hominin that go ahead (entry 151; 1 = all, the old rule)

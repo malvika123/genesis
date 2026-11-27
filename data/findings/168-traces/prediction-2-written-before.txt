@@ -1,0 +1,6 @@
+Entry 168 part 2, written before the run (27 Nov 2026).
+Seen at 110 days (traces / old memory, seeds 1-3): hunger 4, 4, 5 / 3, 10, 4 (means 4.3 / 5.7); alive 46, 49, 50 / 51, 49, 48. Predicted a drop of a third or more (to 3 or fewer): NOT seen (-24%, inside the spread).
+Hunger deaths were only 3-4 per 110 days in earlier runs and 18-27 per 330 days, so memory, which builds over time, may only matter later.
+Test: the same, 330 days, seeds 1 and 2, with --traces; control = entry 157 (same seeds, no follow, old memory): alive 25 and 26, hunger 18 and 27, predators 19 and 9, births 3 and 2.
+Expect (if memory is a main cause): hunger deaths 10-16 and alive 30-38.
+Wrong if: hunger deaths above 20 per world or alive 28 or fewer (then trace memory does not help foraging).

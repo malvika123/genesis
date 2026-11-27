@@ -243,6 +243,7 @@ function sim() {
     if (a.wh && (a.asleep || (a.fear < 0.2 && a.painA < 0.2 && rnd() < 0.02))) deliver(a);
     a.xl.set(a.xi); // what it sensed when it made its last choice
     const lastAct = a.act;
+    if (SOC.traces && a.sp === 0) traceStep(a);
     sense(a, a.xi, night);
     const x = a.xi,
       own = a.sp === 3 ? 8 : a.sp === 1 ? 3 : a.sp === 0 ? 4 : 5;
@@ -1010,7 +1011,7 @@ function sim() {
     } else if (act === A_EAT && (a.sp < 2 || a.S.omni) && !wade) {
       const i = idx(a.x, a.y),
         f = food[i];
-      if (f > 0.3 && !poison[i]) {
+      if (f > 0.3 && !poison[i] && !(SOC.traces && a.sp === 0)) {
         a.mf = { x: a.x, y: a.y };
         a.mfT = tick;
       }
@@ -1648,6 +1649,7 @@ function sim() {
           HUNTLOG.push({ k: a.S.n, adult: a.age >= a.S.mat, prey: t.sp === 0 ? 'Hominin' : T.n, kg: t.sp === 0 ? bodyKg(t) : T.mass ? preyKg(t) : 0, asleep: !!t.asleep, young: t.age < T.mat * T.wn, eating: t.act === A_EAT, fear: t.fear || 0, hungry: e0, gut: gut0, sinceGulp: g0 === undefined ? null : (tick - g0) / 4, hit, wound: !hit && !!t.dead, tick });
       }
     }
+    if (SOC.traces && a.sp === 0 && act === A_EAT && a.e > eAct) traceGain(a, a.e - eAct);
     if (a.sp === 0 && act === A_EAT && a.e > eAct) a.ateT = tick; // (honest watching) it visibly ate: no random numbers, nothing else reads it
     if (a.age % 48 === a.id % 48 && a.age > 48) lessons(a);
     // the first time someone sleeps inside a heap of branches people carried together
@@ -2109,6 +2111,59 @@ function watchOthers() {
 }
 
 // ---------- losing someone ----------
+
+// ---------- place memory as traces (entry 168; --traces) ----------
+// Wild chimpanzees keep a long-term what-where memory of valuable fruit trees (months to years) and travel farther to places that fed them
+// well (Janmaat et al. 2013; Ban, Boesch & Janmaat 2014). Here a person keeps a few traces of places where eating gave energy: a good meal
+// strengthens a trace in proportion to the energy gained, time weakens it, a visit that finds no real food weakens it sharply, a full store
+// pushes out the weakest. Nothing says which places to keep: that comes from what the person lived through. When hungry, a trace comes to mind
+// by chance (stronger and nearer ones more often) and becomes the remembered food place the brain already reads (a.mf, its memory region);
+// if none comes to mind it searches as before. Rates and sizes are assumptions (docs/ASSUMPTIONS.md).
+function realFoodAt(i) {
+  return fruit[i] > 0.05 || ROOT[i] > 0.05 || (TERM && TERM[i] > 0.05);
+}
+function traceGain(a, gain) {
+  const T = a.tr || (a.tr = []);
+  let t = T.find((o) => Math.hypot(dxw(o.x - a.x), o.y - a.y) <= 1.5);
+  const add = Math.min(1, SOC.traceK * gain);
+  if (t) {
+    t.s = Math.min(1, t.s + add);
+    t.x = a.x;
+    t.y = a.y;
+  } else {
+    T.push((t = { x: a.x, y: a.y, s: add }));
+    if (T.length > SOC.traceMax) T.splice(T.indexOf(T.reduce((m, o) => (o.s < m.s ? o : m))), 1);
+  }
+}
+function traceStep(a) {
+  const T = a.tr;
+  if (!T || !T.length) {
+    if (a.mf) a.mf = null;
+    return;
+  }
+  if ((tick + a.id) % DAY === 0) {
+    const f = Math.exp(-1 / SOC.traceTau);
+    for (const o of T) o.s *= f;
+  }
+  if ((tick + a.id) % 24 === 0) {
+    for (const o of T) {
+      if (Math.hypot(dxw(o.x - a.x), o.y - a.y) <= 1.5 && !a.asleep && !realFoodAt(idx(Math.round(o.x), Math.round(o.y)))) o.s *= 0.3;
+    }
+    a.tr = T.filter((o) => o.s > 0.03);
+    // coming to mind: only when hungry; chance, favouring strong and near traces
+    if (a.e < 70) {
+      let best = null,
+        bv = 0;
+      for (const o of a.tr) {
+        const v = (o.s * (0.5 + rnd())) / (1 + Math.hypot(dxw(o.x - a.x), o.y - a.y) / 20);
+        if (v > bv) ((bv = v), (best = o));
+      }
+      a.mf = best && bv > 0.05 ? { x: best.x, y: best.y } : null;
+      a.mfT = tick;
+    } else a.mf = null;
+  } else if (a.mf) a.mfT = tick;
+}
+
 // The bond is inborn, as in all mammals: being apart from your partner, your mother (while young) or
 // your young child hurts, the way separation distress does in infants and their mothers. What is NOT
 // given is any knowledge of death. Nobody is told when someone dies. A creature only has its senses:
