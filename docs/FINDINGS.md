@@ -3328,6 +3328,32 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 167. A memory problem: the people who starve mostly have no memory of real food, and where they do, it is more often a grass field — Nov 2026
+
+**Version.** Commit a06ffec plus an engine-API change that exposes the fruit, root and termite maps to test scripts (no sim change). Standard bundle, 60 people, `--berry-aversion 30`, yearDays 365, open valley, seed 2, 110 days; 10 people starved. Files: `data/findings/167-food-memory/`.
+
+**Code reading.** A person remembers one place as food (`a.mf`, kept up to 60 days) whenever it chooses to eat on a square whose plant biomass is above 0.3, whether or not it gained anything. Hominins cannot digest grass (entry 22), so the square can hold no fruit, roots or termites. The memory is dropped on arrival only if plant biomass is below 0.15. When hungry, the memory pulls toward the place.
+
+**Results (share of person-days; last 8 days of the starved, against everyone else).** No food memory: 32% against 8%. Memory of a square with real food: 29% against 72%. Memory of a plant-only square (no real food): 38% against 20%; sitting within 2 squares of it: 37% against 17%.
+
+**Against the prediction.** More than half of the starving person-days sitting on a false memory: WRONG (37%). Others under 15%: WRONG (17%). The direction is right and strong: seven in ten of the starving person-days have no memory of any real food, against one in four for everyone else.
+
+**Interpretation.** Starving people are mostly those with no useful food memory, and some are held by a false one. The one-slot memory is both too crude and wrongly set. Better memory (strengthened by real meals, forgotten with time, weakened when a visit finds nothing) is the next build (entry 168).
+
+**Trust.** Moderate for the pattern (78 starving person-days, one world); weak for the exact shares.
+
+### 166. The people who starve are not in empty places: they have as much food within reach as others, but less fruit — Nov 2026
+
+**Version.** Same code as entry 167. Seeds 1-3, 110 days; 3, 10 and 4 people starved. Files: `data/findings/166-food-near-starving/`.
+
+**Results (squares within 3 squares holding fruit, roots or termites above 0.05, out of 49; starved in their last 8 days against everyone else).** Seed 1: 47 against 42; seed 2: 33 against 41; seed 3: 21 against 42. Fruit squares only: 1.3 / 11.8 / 6.1 against 18.3 / 14.4 / 20. Energy fell on 81-93% of their last days.
+
+**Against the prediction.** At least 2 times less food nearby: WRONG in two worlds of three (the third, 21 against 42, matches). Food is within reach for most of the starving; fruit is thinner around them.
+
+**Interpretation.** Starvation here is a failure to find and use the food that is there, not an empty land (the owner's point, 27 Nov: starving among so many foods is suspicious). Entry 167 looks at memory as one cause.
+
+**Trust.** Moderate for "food is near" (3 worlds, 17 people); weak for the comparison of fruit.
+
 ### 165. The target the band is measured against: wild chimpanzee adults lose about 4-7% a year; ours lose more than half in 330 days — Nov 2026
 
 **Version.** Evidence search only (27 Nov 2026), no code change.

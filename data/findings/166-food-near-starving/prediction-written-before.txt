@@ -1,0 +1,6 @@
+Entry 166 prediction (27 Nov 2026), written before the run.
+Owner (27 Nov): "i have never seen monkeys die of hunger ... how can anyone starve with meat, leaves, small animals, roots, insects, fruit, fish." Agreed: starvation with food around is suspicious (entry 165: real adults lose 4-7% a year).
+Question: do the people who starve have food within reach, or not?
+Setup: standard bundle, 60 people, hom-try 0.01, pass-cd 96, berry-aversion 30, yearDays 365, open valley, no follow, seeds 1-3, 110 days. Every day for each person count the squares within 3 squares (7 x 7 = 49) holding fruit, roots or termites above 0.05 (edible squares), and the energy change. For those who die of hunger take their last 8 days; compare with everyone else's days.
+Expect: starving people are in places with at least 2 times fewer edible squares nearby than other people's average (starving = no food near), and a day's energy change is negative in most of their last 8 days.
+Wrong if: edible squares near the starving are about the same as for others (then food is there and the failure is in finding and eating it, a behaviour problem).

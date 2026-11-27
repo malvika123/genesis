@@ -1,0 +1,7 @@
+Entry 167 prediction (27 Nov 2026), written before the run.
+Owner (27 Nov): "can you check if there is a problem with memory?"
+Code reading (src/sim.js ~1010, src/senses.js 356-370): a person remembers a place as food (a.mf, kept up to S.mem = 60 days) whenever it chooses to eat on a square whose plant biomass food[i] is above 0.3, whether or not it gained anything; hominins cannot digest grass (entry 22), so such squares can be grass with no fruit, root or termite. The memory is dropped on arrival only if food[i] < 0.15, so a grassy square keeps it. When hungry, the memory pulls toward the place.
+Hypothesis: people who starve are stuck in this false memory: they go to remembered grass squares and keep choosing to eat for days without gain.
+Setup: standard bundle, 60 people, hom-try 0.01, pass-cd 96, berry-aversion 30, yearDays 365, open valley, no follow, seed 2, 110 days. Every day for each person: whether it has a food memory, its distance to it, and whether the remembered square holds fruit, roots or termites above 0.05 (real food) or only plants (food above 0.3, nothing else); its action; energy. For those who die of hunger take the last 8 days.
+Expect: in the starving people's last 8 days, more than 50% of person-days have a food memory that points to a square with no real food and is within 2 squares of it (they are sitting on it); among everyone else under 15%.
+Wrong if: starving people's food memories point to real food or they have none (then memory is not the cause).
