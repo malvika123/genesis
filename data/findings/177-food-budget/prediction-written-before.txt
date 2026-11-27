@@ -1,0 +1,6 @@
+Entry 177 prediction (27 Nov 2026), written before the run.
+Question: how much food energy does the valley hold near the band, in days of the band's need? (Food per area was never fitted to real kg per km2: docs/GAPS.md.)
+Units: one store unit is about 170 kcal (28 kg body); a person burns about 11 store units a day (1,900 kcal), the band of 60 about 660. A bite of fruit is worth fruit_amount x 70 x MEAL; MEAL = 1/bodySize = 1.86 for 28 kg (so fruit_amount x 130); roots x 80 x 1.86 = 149; termites x 120 x 1.86 = 223; young leaves x 70 x 0.64 x 1.86 = 83; meat not counted here.
+Setup: standard bundle, 60 people, hom-try 0.01, pass-cd 96, berry-aversion 30, yearDays 365, open valley, seeds 1 and 2, 90 days. At days 1, 30, 60, 90: sum the standing crop of fruit, roots, termites and young leaves in store units over the squares within 12 squares (3 km) of the band's median position, and in 24 squares (6 km), as days of the band's need (660).
+Expect: fruit within 3 km is worth at least 10 days of the band's need on day 1 and falls to under 3 days by day 90; roots and young leaves each worth more than 20 days (they are the standing stock; the band does not use them fast).
+Wrong if: fruit stays above 10 days at day 90 (then the supply is not what runs short) or is under 3 days at day 1 (then the valley is food-poor from the start).
