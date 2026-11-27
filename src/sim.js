@@ -341,11 +341,16 @@ function sim() {
         }
       }
       // --follow K (entry 161): while it sees others of its own kind a little way off, it is drawn toward them, harder the farther they are, and not at all once they are close (primate groups travel together by followers matching neighbours' moves; baboons follow near neighbours). A pull, not a command; off = 0.
-      if (SOC.follow > 0 && !a.asleep)
-        for (let s = 0; s < 8; s++) {
-          const c = x[s * NCH + own];
-          if (c > 0) RF[s] += SOC.follow * (1 - c);
-        }
+      // --follow-cap N (entry 163): no pull once others are seen in N or more of the 8 directions (a stand-in for a party of about N): small parties, not one crowd and not alone (fission-fusion: chimpanzees feed in small parties that split and join)
+      if (SOC.follow > 0 && !a.asleep) {
+        let nk = 0;
+        for (let s = 0; s < 8; s++) if (x[s * NCH + own] > 0) nk++;
+        if (nk < SOC.followCap)
+          for (let s = 0; s < 8; s++) {
+            const c = x[s * NCH + own];
+            if (c > 0) RF[s] += SOC.follow * (1 - c);
+          }
+      }
       // --company (entry 160): a lonely person is drawn back, by an inborn pull, to the place it last saw its own kind (apes and monkeys rejoin their party); a pull, not a command, and gone once it has got there and found no one
       if (SOC.company > 0 && a.cx !== undefined && a.lo > 0.3 && !a.asleep) {
         const dx = dxw(a.cx - a.x),

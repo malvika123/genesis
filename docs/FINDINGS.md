@@ -3328,6 +3328,18 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 163. Small parties instead of one crowd (`--follow-cap N`): the predator saving stays, hunger deaths stay high, survival gains little — Nov 2026
+
+**Version.** New switch `--follow-cap N` (with `--follow K`: the pull stops once others are seen in N or more of the 8 directions; default 99 = never; registered as an assumption, range 2-6, tested 3 and 5; the owner's idea of "small groups of even 2, not alone"). Standard bundle, 60 people, `--follow 10`, `--berry-aversion 30`, yearDays 365, 330 days, seeds 1 and 2. Files: `data/findings/163-small-parties/`.
+
+**Results (seeds 1 / 2).** No follow (entry 157): alive 25 / 26, hunger 18 / 27, predators 19 / 9, births 3 / 2. Follow 10 without a cap (entry 162): alive 21 / 26, hunger 35 / 31, predators 6 / 6. N = 3: alive 19 / 24, hunger 31 / 27, predators 12 / 12, births 2 / 3. N = 5: alive 26 / 29, hunger 29 / 25, predators 9 / 9, births 4 / 3.
+
+**Against the prediction.** N = 3 hunger 15-25 and alive 28-38: WRONG (27-31; 19-24). N = 5 hunger 20-30, alive 25-35, predators 6-14: right (25-29; 26-29; 9). N = 3 predators 6-14: right (12). "Wrong if hunger stays above 30": met in part (31 in one world of N = 3).
+
+**Interpretation.** Whatever the group structure (alone, small parties, one crowd), 25-35 people starve in 330 days: the hunger deaths are not set by crowding. Staying in parties of about five keeps the predator saving (9 a world instead of 19 and 9) and gives the best result, 26 and 29 alive against 25 and 26, a gain too small to trust on two worlds. Hunger, not company, is what must be explained next.
+
+**Trust.** Weak (two worlds each; differences of 2-4 people are inside the spread).
+
 ### 162. A year with the band held together (`--follow 10`): fewer killed by predators, more dead of hunger, no gain in survival — Nov 2026
 
 **Version.** Commit faecf00. Standard bundle, 60 people, `--hom-try 0.01 --pass-cd 96`, `--berry-aversion 30`, `--follow 10`, yearDays 365, 330 days, seeds 1 and 2. Files: `data/findings/162-follow-year/`.
