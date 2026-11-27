@@ -3328,6 +3328,30 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 171. Eating fruit works: energy rises on every eat step for hungry people — so the failure is the choice, not the eating — Nov 2026
+
+**Version.** Commit 8ff3775, no code change. Every person, every step, 110 days, seeds 1-3, steps choosing to eat on a square with fruit above 0.05, no poison. Files: `data/findings/171-eating-fruit/`.
+
+**Results.** Energy under 40: 98 steps, fruit falls in 82%, energy rises in 100%. 40-70: 1,432 steps, 92%, 100%. Over 70: 8,954 steps, 97%, 95%.
+
+**Against the prediction.** Fruit falls on 90% or more: right except for the hungry group (82%, a few steps where another branch took the bite). Energy rises on 70% or more: right (100%). So eating fruit raises energy for anyone who does it; entry 170's zero gains on fruit squares for the starved came from a handful of eat steps (27) on poison-berry squares, where the aversion makes the bite do nothing.
+
+**Interpretation.** The eating rule works; whether they eat is the problem.
+
+**Trust.** Strong for this narrow point (10,484 steps).
+
+### 170. What the starving stand on: roots (82%), and they almost never eat there (2.7%) — Nov 2026
+
+**Version.** Same as entry 169, seeds 1-3, 110 days, 17 starved; 1,081 of their last-2-days steps were on squares with fruit, roots or termites above 0.05. Files: `data/findings/170-food-type/`.
+
+**Results.** Fruit squares 18% of those steps (ate in 14%); root squares 82% (ate in 2.7%, gained in 0.1%); termite squares 0%.
+
+**Against the prediction.** Over 70% roots or termites: right (82%). Eat under 5% on roots: right (2.7%). Eat over 20% on fruit: WRONG (14%, still five times the root rate).
+
+**Interpretation.** The starved are standing on roots, a food that bare hands dig up with a 15% chance per try (`SOC.digBare`, an assumption) at a small cost per try, so most eat steps on roots lose energy and the brain learns not to choose them; with little fruit around them and leaves and termites a weak substitute, they sit among food they cannot use. This is a reading of the code and the numbers, not a tested cause.
+
+**Trust.** Moderate.
+
 ### 169. The last two days of the starving: they stand and sleep on food squares and mate, and eat in only 15% of their steps — Nov 2026
 
 **Version.** Commit ae93fc2, no code change. Standard bundle, 60 people, `--hom-try 0.01 --pass-cd 96`, `--berry-aversion 30`, no follow, no traces, yearDays 365, 110 days, seeds 1-3; 17 people starved. Every step: action, energy change, whether the square holds fruit, roots or termites above 0.05. The last 192 steps (2 days) of each, 3,264 steps in all. Files: `data/findings/169-last-two-days/`.

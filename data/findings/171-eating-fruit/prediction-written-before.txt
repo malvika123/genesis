@@ -1,0 +1,6 @@
+Entry 171 prediction (27 Nov 2026), written before the run.
+Seen (entry 170): in the starving's last 2 days, on squares with fruit they chose to eat in 14% of steps and gained energy in none of them; on root squares they ate in 2.7% and gained in 0.1%.
+Question: does eating on a fruit square ever raise energy, for anyone? (If not, the problem is the eating rule and not the choice.)
+Setup: as entry 169, seeds 1-3, 110 days. For every person at every step with act 9 (eat) on a square with fruit above 0.05, no poison and no meat or cooked food: record energy before and after, fruit before and after, the person's energy band (under 40, 40-70, over 70).
+Expect: fruit falls on at least 90% of such steps (fruit is eaten), energy rises on at least 70% of them for people under 40 energy.
+Wrong if: fruit does not fall (eat is a no-op there) or energy rises on under 30% (the bite is smaller than the burn).
