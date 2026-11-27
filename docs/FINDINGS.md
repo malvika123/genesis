@@ -3328,6 +3328,18 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 181. A shorter learning reach helps over a year, but less than at 110 days: hunger 13-23 per world, alive 30-41 of 60 (control 25-26) — Nov 2026
+
+**Version.** Commit 2744e32 plus the `gam` test option; no change to the default. Standard bundle, 60 people, `--hom-try 0.01 --pass-cd 96`, `--berry-aversion 30`, yearDays 365, 330 days, seeds 1 and 2.
+
+**Results (hunger / predators / births / alive of 60).** GAM 0.95: seed 1: 13 / 11 / 3 / 39; seed 2: 23 / 10 / 3 / 30. GAM 0.90: seed 1: 20 / 9 / 4 / 35; seed 2: 14 / 9 / 4 / 41. Control 0.97 (entry 179 worlds): hunger 18 and 27, predators 19 and 9, births 3 and 2, alive 25 and 26.
+
+**Against the prediction.** Hunger 3-8 per world: WRONG (13, 23, 20, 14, all above the 12 I set as the failure line). Alive 36-46: half right (39, 41 inside; 30 and 35 outside; 30 is on the failure line). Births 3-8: right (3-4). Predators 10-18: right (9-11).
+
+**Interpretation.** The short reach gain seen at 110 days (hunger 1-3) mostly fades over a year: hunger still kills 13-23 of 60. It does beat 0.97: 30-41 alive against 25-26, and fewer predator deaths in seed 1. So the learning reach is part of the starvation problem, not all of it. Food falls as the year goes (entries 177 and 179), and the brain has no fat buffer, no seek-food instinct and no lasting memory of places. Births are still only 3-4, far from a population that grows.
+
+**Trust.** Moderate for the direction (4 worlds, all better than the 2 controls, but 2 controls only); weak for which of 0.95 and 0.90 is better (the spread inside each is as large as the gap).
+
 ### 180. The learning's reach decides who starves: a longer reach (0.99) is ten times worse, a shorter one (0.95, 0.90) cuts hunger deaths to about one third — Nov 2026
 
 **Version.** New test option `gam` (engine tools only: the learning's discount per step, `GAM` in `src/config.js`, default 0.97 = credit reaches back about 30 steps, 8 hours at 4 steps an hour). Standard bundle, 60 people, `--hom-try 0.01 --pass-cd 96`, `--berry-aversion 30`, yearDays 365, 110 days, seeds 1-3. Files: `data/findings/180-gam/`.
