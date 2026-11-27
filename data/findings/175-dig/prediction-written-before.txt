@@ -1,0 +1,5 @@
+Entry 175 prediction (27 Nov 2026), written before the run.
+Seen (entry 174): the starved stand on roots (82% of their food-square steps) and eat there 2.7% of the time; bare-handed digging succeeds 15% of tries (SOC.digBare, assumption, range not sourced).
+Test: --dig-bare 0.4, standard bundle, 60 people, hom-try 0.01, pass-cd 96, berry-aversion 30, yearDays 365, 110 days, seeds 1-3. Control (same code, 0.15): hunger deaths 3, 10, 4; alive 51, 49, 48.
+Expect: if roots are the fallback that should save people, hunger deaths fall by at least a third (to 3 or fewer per world).
+Wrong if: no change in hunger deaths (then the people do not use roots because of the choice, not because digging fails often).

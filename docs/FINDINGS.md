@@ -3328,6 +3328,18 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 175. Easier root digging (`--dig-bare 0.4`) does not reduce hunger deaths — Nov 2026
+
+**Version.** `--dig-bare P` now settable (the chance a bare-handed try at digging roots succeeds, `SOC.digBare`, default 0.15 unchanged, an assumption). Standard bundle, 60 people, `--berry-aversion 30`, yearDays 365, 110 days, seeds 1-3, P = 0.4. Files: `data/findings/175-dig/`.
+
+**Results (0.4 / control 0.15).** Hunger deaths 7, 4, 8 / 3, 10, 4 (means 6.3 / 5.7); alive 51, 51, 43 / 51, 49, 48; predators 2, 5, 9 / 6, 1, 8.
+
+**Against the prediction.** Hunger deaths down by a third or more: WRONG (no change; if anything slightly up).
+
+**Interpretation.** The low success rate of digging is not why the starved do not use roots: they do not choose to dig (2.7% of steps on root squares, entry 170), and making each try three times as productive changes nothing in 110 days. Kept at 0.15 (no source for the number either way).
+
+**Trust.** Weak to moderate (3 worlds, no sign of an effect).
+
 ### 174. The onset of starvation: no injury or illness, a slow shutdown of movement and a standing-still rise, and eating attempts that mostly find nothing — Nov 2026
 
 **Version.** Commit 6207b7a, no code change. Standard bundle, 60 people, `--berry-aversion 30`, yearDays 365, 110 days, seeds 1-3; 15 people starved (with 26 or more days of record). Per day: share of steps by action, energy, fear, pain, hit points, mood; the 25 days before death. Files: `data/findings/174-onset/`.
