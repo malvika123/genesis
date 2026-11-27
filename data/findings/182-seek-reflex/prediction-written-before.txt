@@ -1,0 +1,5 @@
+Entry 182 prediction (28 Nov 2026), written before the run.
+Question: when a hungry person (energy under 35, awake, not standing on food) has fruit or roots within 6 squares, do they walk toward it?
+Measure: per step, nearest food square within 6 (fruit above 0.05, or root above 0.05, or termite above 0.05); did the distance fall, stay, or grow after the step. Split fruit vs roots only. Standard bundle, berry-aversion 30, yearDays 365, 110 days, seeds 1 and 2.
+Expect: with food in range, distance falls in 35-50% of steps (random walking alone would give about 25%), grows in 15-25%; for roots only the fall share is below the fruit share by at least 10 points (roots are seen at 0.6 strength).
+Wrong if: the fall share is 55% or more (they already home in well, so the reflex is not the problem), or 30% or less (they barely home in).

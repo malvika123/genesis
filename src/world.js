@@ -249,6 +249,7 @@ function buildWorld(cfg) {
   SOC.company = cfg.company ?? 0; // entry 160: strength of the pull of a lonely person back to where it last saw its own kind (0 = none, the old rule; an assumption)
   SOC.follow = cfg.follow ?? 0; // entry 161: pull toward own kind seen a little way off, harder the farther (0 = none, the old rule; an assumption)
   SOC.digBare = cfg.digBare ?? 0.15; // chance a bare-handed dig for roots succeeds (an assumption, entry 175 tested 0.4)
+  SOC.seekGain = cfg.seekGain ?? 1; // entry 182: strength of the hungry pull toward seen food (1 = the old strength; an assumption)
   SOC.starve = cfg.starve ?? 0; // entry 173: strength of the starvation override (0 = off, the old rule; an assumption)
   SOC.starveAt = cfg.starveAt ?? 30; // the energy %, below which it acts
   SOC.traces = cfg.traces === true; // entry 168: place memory as traces (off = the old one-slot memory of a place with plants)

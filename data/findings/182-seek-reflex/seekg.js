@@ -1,0 +1,11 @@
+const H=process.env.HOME+'/genesis/';const { createEngine } = require(H+'tools/engine'), X = require(H+'tools/experiment-core');
+const seed=+process.argv[2], DAYS=+process.argv[3]; const f={}; const toks='--more-hunters --giant-hyena --african-megantereon --more-herds --real-densities --dens-zone 18 --body-model --young-leaves --termites --hom-avoid --no-big-attacks --valley-prey-scale --people 60 --hom-try 0.01 --pass-cd 96'.split(/\s+/);
+for(let i=0;i<toks.length;i++){ if(!toks[i].startsWith('--'))continue; const k=toks[i].slice(2); f[k]=(i+1<toks.length&&!toks[i+1].startsWith('--'))?+toks[i+1]:true; }
+f['valley-speed']=1; if(process.env.SG) f['seek-gain']=+process.env.SG; f['berry-aversion']=30; f['dens-tau']=1; const S=X.fromArgs(f);
+const E=createEngine({valley:{W:200,H:240,lat:-0.122},yearDays:365});E.setSeed(seed);E.reset({...S.cfg,valley:true,openValley:true});
+const W=200,Hh=240,R=6;
+function nearest(st,x,y,kind){let best=1e9,bx=-1,by=-1;for(let dy=-R;dy<=R;dy++)for(let dx=-R;dx<=R;dx++){const X2=x+dx,Y2=y+dy;if(X2<0||X2>=W||Y2<0||Y2>=Hh)continue;const i=Y2*W+X2;if(st.water[i]||st.poison[i])continue;const ok=kind==='fruit'?st.fruit[i]>0.05:(st.ROOT[i]>0.05&&!(st.fruit[i]>0.05));if(!ok)continue;const d=Math.hypot(dx,dy);if(d<best){best=d;bx=X2;by=Y2;}}return best<1e9?[best,bx,by]:null;}
+const c={fruit:{n:0,fall:0,same:0,grow:0,moved:0},root:{n:0,fall:0,same:0,grow:0,moved:0}};
+for(let t=1;t<=E.DAY*DAYS;t++){const st0=E.state();const pre=[];for(const a of st0.ag){if(a.sp===0&&!a.dead&&!a.gone&&!a.asleep&&a.e<35&&a.x>=0&&a.x<W&&a.y>=0&&a.y<Hh){const i=a.y*W+a.x;if(st0.fruit[i]>0.05||st0.ROOT[i]>0.05)continue;const nf=nearest(st0,a.x,a.y,'fruit');const nr=nf?null:nearest(st0,a.x,a.y,'root');const n=nf||nr;if(n)pre.push([a,a.x,a.y,nf?'fruit':'root',n[1],n[2],n[0]]);}}
+ E.sim();for(const [a,x,y,k,bx,by,d0] of pre){if(a.dead||a.gone)continue;const d1=Math.hypot(a.x-bx,a.y-by);const o=c[k];o.n++;if(a.x!==x||a.y!==y)o.moved++;if(d1<d0-0.01)o.fall++;else if(d1>d0+0.01)o.grow++;else o.same++;}}
+const fs=E.state();const al=fs.ag.filter(a=>a.sp===0&&!a.dead&&!a.gone).length;console.log(JSON.stringify({seed,SG:process.env.SG||1,DAYS,c,alive:al,deaths:fs.deaths&&fs.deaths.length!==undefined?fs.deaths.length:fs.deaths}));

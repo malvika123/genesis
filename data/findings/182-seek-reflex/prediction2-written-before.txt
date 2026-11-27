@@ -1,0 +1,5 @@
+Entry 182, second prediction (28 Nov 2026), written before the run.
+Seen: hungry people with fruit or roots within 6 squares moved in only 2-5% of steps and walked closer in under 1% (prediction of 35-50% was wrong). The steps are spread over about 20 people each repeating one action (mate, give, eat off food, act 6); the inborn pull toward seen food is at most about 1.3 while the move choice carries a penalty of 2.08 and learned preferences can be larger.
+Test: new option seek-gain (the pull's strength, default 1 = unchanged): 1, 3, 6, same measure (110 days, seeds 1 and 2) plus hunger deaths and alive.
+Expect: share of steps with a move toward the food: 1 -> under 1%; 3 -> 8-20%; 6 -> 20-40%. Hunger deaths in 110 days fall from 3-10 to 1-4 at gain 6.
+Wrong if: the move share at 6 is under 10% (the pull cannot beat the learned habits; the fix is in learning), or hunger deaths do not fall.
