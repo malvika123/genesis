@@ -1,0 +1,5 @@
+Entry 169 prediction (27 Nov 2026), written before the run.
+Question: in the last 2 days of a person who starves (food near, memory of it, entry 166-168), where does the energy go?
+Setup: standard bundle, 60 people, hom-try 0.01, pass-cd 96, berry-aversion 30, yearDays 365, open valley, no follow, no traces, seeds 1-3, 110 days. Every step, for every person, record the action, energy change and whether its square holds real food (fruit, roots or termites above 0.05). For each person who dies of hunger, sum its last 192 steps (2 days) by action: steps, energy change, steps standing on real food.
+Expect: the starved spend at least 30% of their last 2 days choosing "eat" and gain on fewer than a quarter of those eat steps; walking and standing cost about the same as in others.
+Wrong if: the starved rarely choose eat (under 10% of steps), which would mean they do not act on hunger, or gain on most of their eat steps (then intake is simply too low for the burn, not failed eating).
