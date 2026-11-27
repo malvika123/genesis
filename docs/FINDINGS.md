@@ -3328,6 +3328,20 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 176. The override works as built (72-91% eating on food squares); and a correction to entries 169-170: the "empty" eat steps were mostly leaves, meat and nuts — Nov 2026
+
+**Version.** Commit c030612, no code change. As entry 173 (`--starve 8` and none), seeds 2 and 3, 110 days. Every step of every person under 30% energy: asleep or not; on a square with fruit, roots or termites above 0.05 (no water, no poison); whether it chose to eat. Files: `data/findings/176-override-check/`.
+
+**Results (low-energy steps, awake / on such a square / eating there / eating elsewhere).** With the override: seed 2: 1,586 / 196 / 142 (72%) / 476; seed 3: 2,023 / 164 / 149 (91%) / 511. Without: seed 2: 3,701 / 1,098 / 218 (20%) / 504; seed 3: 1,437 / 197 / 72 (37%) / 289.
+
+**Against the prediction.** At least 70% eating on edible squares with the override: right (72% and 91%). Without it under 20%: right in one world (20%), WRONG in the other (37%). Under 40% of low-energy steps on such a square: right (12-14% with the override; 30% and 14% without). So the override reaches the choice; it changes nothing because the starved are on such a square in only 12-30% of their low-energy steps.
+
+**Correction (entries 169 and 170).** I wrote that 89% of the starved's eat steps were "on squares with nothing to eat". My test counted only fruit, roots and termites as food. Entry 172 shows the starved took 26% of their bites from leaves, 14% from meat and 5% from nuts, none of which I counted. So most of those eat steps were leaves, meat and nuts, not empty squares; "they eat where there is nothing" is withdrawn. What stands: they stand and sleep on food squares much of the time, and eat roots rarely.
+
+**Interpretation.** The starved live on the weaker foods: leaves (a fraction of fruit's yield per bite), little fruit around them (entry 166), and cannot make up the burn of 8-9 points a day. The question is the food supply itself: how much energy the valley's food holds per person, which was never calibrated to real kilograms per area (docs/GAPS.md: "Food that is realistic per area"). That is the next measurement.
+
+**Trust.** Moderate (two worlds; the override test is narrow and clear).
+
 ### 175. Easier root digging (`--dig-bare 0.4`) does not reduce hunger deaths — Nov 2026
 
 **Version.** `--dig-bare P` now settable (the chance a bare-handed try at digging roots succeeds, `SOC.digBare`, default 0.15 unchanged, an assumption). Standard bundle, 60 people, `--berry-aversion 30`, yearDays 365, 110 days, seeds 1-3, P = 0.4. Files: `data/findings/175-dig/`.

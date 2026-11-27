@@ -1,0 +1,5 @@
+Entry 176 prediction (27 Nov 2026), written before the run.
+Question: did the starvation override (entry 173) work as built? With --starve 8, a person below 30% energy standing on a square with fruit, roots, termites, leaves or meat should choose to eat in nearly all of those steps.
+Setup: as entry 173, seed 2 and seed 3, 110 days, --starve 8 and no starve. Every step of every person with energy under 30: whether its square holds something edible (fruit, root, termite above 0.05, young leaves above 0.05 on a tree square, or meat) and whether it chose to eat (act 9).
+Expect: with the override, at least 70% of low-energy steps on edible squares are eating steps (without it: under 20%); and the share of low-energy steps on an edible square is under 40%, which limits the override.
+Wrong if: with the override on, eating on edible squares stays under 40% (then the pull is not reaching the choice: a bug or the learned weights beat it).
