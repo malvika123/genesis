@@ -3328,6 +3328,18 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 178. A smaller band (30 or 20 people) does not do better over 330 days: the share who starve and the share killed stay about the same — Nov 2026
+
+**Version.** Commit 73be70e, no code change. Standard bundle with `--people 30` and `--people 20`, `--berry-aversion 30`, yearDays 365, 330 days, seeds 1 and 2. Files: `data/findings/178-band-size-year/`.
+
+**Results (alive at the end / hunger / predators / births).** 30 people: seed 1: 12 (40%) / 7 / 11 / 0; seed 2: 10 (33%) / 12 / 9 / 1. 20 people: seed 1: 10 (50%) / 4 / 7 / 1; seed 2: 7 (35%) / 7 / 7 / 1. Control, 60 people (entry 157): 25 and 26 alive (42%), hunger 18 and 27, predators 19 and 9.
+
+**Against the prediction.** At least 60% alive for 30 people: WRONG (33-40%). At least 65% for 20: WRONG (35-50%). At most 6 hunger deaths for 30: WRONG (7 and 12).
+
+**Interpretation.** The share who starve (23-40% of the founders at 30, 20-35% at 20, 30-45% at 60) and the share killed by predators do not fall with fewer people, so crowding on a limited fruit crop (entry 177) is not what drives the hunger deaths: it happens at about the same rate when each person has three times the food. Whatever starves people works per person, not per band. That points back at how each person finds and uses food (what their brain learns), not at the supply.
+
+**Trust.** Moderate (4 worlds, same result in each; the 60-person control is from the earlier code and identical by the old-worlds check).
+
 ### 177. The band eats its fruit down: fruit within 3 km is worth 16-20 days of the band's need at day 30 and 1.5-3.5 days by day 90; the world starts with no fruit; roots hold 40-55 days and are barely used — Nov 2026
 
 **Version.** Commit f2c2eb8, no code change. Standard bundle, 60 people, `--berry-aversion 30`, yearDays 365, 90 days, seeds 1 and 2. At days 0, 30, 60, 90: the standing crop of fruit, roots and termites within 12 squares (3 km) and 24 squares (6 km) of the band's median position, in store units (fruit x 130, roots x 149, termites x 223, from `MEAL` for a 28 kg body) as days of the band's need (660 units a day: 60 people x 11 units, about 1,900 kcal each). Young leaves are not exposed to the scripts and are left out; meat is not counted. Files: `data/findings/177-food-budget/`.

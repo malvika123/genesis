@@ -1,0 +1,5 @@
+Entry 178 prediction (27 Nov 2026), written before the run.
+Seen (entry 177): the band of 60 eats the fruit within 3 km down to 1.5-3.5 days of its need in 90 days. Real chimpanzee densities in Kibale are 1.5-5 per km2 (Kibale study, PMC4102508); the density of a Hadar woodland band was not found (the 60 is an assumption, range 30-80, docs/ASSUMPTIONS.md).
+Test: standard bundle with --people 30 and --people 20 (instead of 60), hom-try 0.01, pass-cd 96, berry-aversion 30, yearDays 365, open valley, no follow, 330 days, seeds 1 and 2. Control (60): alive 25 and 26 (42%), hunger 18 and 27 (about 36% of the founders), predators 19 and 9.
+Expect: with fewer people the share alive at day 330 is higher: 30 gives at least 60% alive (18 or more) with at most 6 hunger deaths; 20 gives at least 65% alive; the lower the band, the fewer die of hunger as a share.
+Wrong if: the share alive is no higher than 42% for 30 or 20 (then the food runs short for another reason, not the number eating it).
