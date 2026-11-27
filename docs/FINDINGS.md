@@ -3328,6 +3328,18 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 172. The starved ate more than the others for weeks, then intake collapsed in the last 10 days — Nov 2026
+
+**Version.** Commit 24915de, no code change; `--body-ledger` (measuring only). Standard bundle, 60 people, `--berry-aversion 30`, yearDays 365, 110 days, seeds 1-3 (17 starved of 165 founders and births). Files: `data/findings/172-intake/`.
+
+**Results.** Days 1-30 (starved / alive): intake 2,680 / 2,046 kcal a day; effort 437 / 411 kcal; body 28.4 / 27.9 kg; energy store 78 / 83. Last 10 days of the starved: intake 743, effort 133, energy 46; last 3 days: intake 364, effort 77, energy 17. Share of bites (starved / alive): fruit 28% / 32%, root 27% / 33%, leaf 26% / 14%, meat 14% / 6%, nuts 5% / 15%.
+
+**Against the prediction.** Part 1: starved eat at least 30% less in days 1-30: WRONG (they ate 31% more). Fruit share lower: right but small (28% against 32%). Part 2: intake under 800 in the last 10 days: right (743). Effort within 20% of survivors': WRONG (133 against 411; they stop moving). Effort or weight 20% higher in days 1-30: WRONG (6% and 2%).
+
+**Interpretation.** The starved are not people who always ate too little: they eat as much or more for weeks (and stay a few points thinner on the energy store, so they burn more), then their intake falls to a third and effort to a third in the last 10 days, when they sleep, mate and stand (entry 169). So starvation here is a collapse in feeding that sets in, not a long shortage. What sets it off is not known (candidates: pain or illness, being alone, a lost food place, a stronger competing urge such as mating). The energy store is a single number with no body fat or buffer.
+
+**Trust.** Moderate (17 people, three worlds, same pattern).
+
 ### 171. Eating fruit works: energy rises on every eat step for hungry people — so the failure is the choice, not the eating — Nov 2026
 
 **Version.** Commit 8ff3775, no code change. Every person, every step, 110 days, seeds 1-3, steps choosing to eat on a square with fruit above 0.05, no poison. Files: `data/findings/171-eating-fruit/`.

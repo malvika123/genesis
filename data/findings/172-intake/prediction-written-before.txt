@@ -1,0 +1,5 @@
+Entry 172 prediction (27 Nov 2026), written before the run.
+Question: how many kcal a day does each person eat, compared with what it burns, and by which foods?
+Setup: standard bundle, 60 people, hom-try 0.01, pass-cd 96, berry-aversion 30, --body-ledger (measuring only), yearDays 365, open valley, no follow, no traces, seeds 1-3, 110 days. Each day, each person's kcal eaten (a.kcalLast) and the number of eating bites by food class (a.feedN). Group: later starved of hunger within 110 days, against alive at day 110.
+Expect: survivors eat 900-1,800 kcal a day on average; the starved ate at least 30% less than survivors in days 1-30 (before any of them were thin); the starved had a lower share of fruit bites than survivors.
+Wrong if: both groups eat about the same (then the difference is in what they burn, not what they eat), or the band's mean intake is below 600 kcal a day (then the whole band is underfed and only luck decides).
