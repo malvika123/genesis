@@ -1,0 +1,6 @@
+Entry 174 prediction (27 Nov 2026), written before the run.
+Seen: the starved eat as much as others for weeks, then intake and effort collapse in the last 10 days (entry 172); a pull to eat below energy 30 does nothing (entry 173).
+Question: what changes in a person when the collapse begins? Day-by-day behaviour of each starved person for the 25 days before death, with fear, pain, hit points and mood.
+Setup: as before, seeds 1-3, 110 days. Every step record the action; per day: share of steps moving (acts 0-7), staying (8), eating (9), sleeping (11), mating (12), giving (14), other; and at day end energy, fear, pain (painA), hp, mood.
+Expect: 10-15 days before death the share of moving falls and staying plus sleeping rises by at least 15 points while hp stays above 80 and pain stays under 0.2 (a shutdown with no injury); fear rises above 0.4 in at least a third of them.
+Wrong if: hp or pain shows an injury or illness at the start of the collapse (then it is a wound or sickness and not hunger), or behaviour stays the same until the last 3 days.

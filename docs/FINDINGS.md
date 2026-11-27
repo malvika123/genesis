@@ -3328,6 +3328,18 @@ caps within a decade, and the band whittled down by one kind or another until no
 **Result against the prediction.** Held: the valley band's spread in squares is 2.6 times the globe's (above the 1.5 threshold). **Not held:** valley lightning at about 100 times the globe's per km²: it is **zero** (the valley has no thunderstorms: its rain is replayed from outside; a limit that matters later for fire). Borderline: mother–juvenile distance (median 0; 90th 4.5 squares, under 5; 99th 3.3 km).
 **Interpretation.** In metres the valley band is **chimpanzee-sized already**: a spread of about 3.5 km is about a savanna chimpanzee range (63–85 km²; radius about 5 km); parties average 2.0 (Ugalla 3.1); mothers and children stay together. The smoke run's "12 km spread" was mostly units. **The real mismatch is the day's walk:** 1.2 km against about 3.3 km at Fongoli (Pruetz & Bertolani 2009). **Strength.** Moderate: 4 worlds each, one measure of spread (not the chimpanzee's own). **Lesson.** Convert before worrying: the same spread in squares and in metres tells opposite stories.
 
+### 174. The onset of starvation: no injury or illness, a slow shutdown of movement and a standing-still rise, and eating attempts that mostly find nothing — Nov 2026
+
+**Version.** Commit 6207b7a, no code change. Standard bundle, 60 people, `--berry-aversion 30`, yearDays 365, 110 days, seeds 1-3; 15 people starved (with 26 or more days of record). Per day: share of steps by action, energy, fear, pain, hit points, mood; the 25 days before death. Files: `data/findings/174-onset/`.
+
+**Results (mean of the 15; day 0 = death).** Moving: 0.32 (day -24), 0.39 (-15), 0.28 (-12), 0.22 (-6), 0.17 (-3, 0). Standing still: 0.03, 0.06, 0.07, 0.12, 0.11. Eating: 0.06-0.16 all the way, 0.13 at day -3 with energy 37. Mating: 0.10-0.13 throughout. Sleeping 0.29-0.34. Energy: 82-86 until day -15, 77 (-9), 63 (-6), 37 (-3), 6 (0): a fall of 8-9 points a day. Hit points 97-100 and pain 0-0.07 all the way; fear 0.19-0.35 (below 0.4); mood about 0.
+
+**Against the prediction.** No injury or illness at the start (hp over 80, pain under 0.2): right. A shutdown 10-15 days before death with moving down and standing plus sleeping up by 15 points or more: partly right (moving down by 0.2; standing + sleeping up by 0.13). Fear above 0.4 in a third of them: WRONG (the mean is under 0.35).
+
+**Interpretation.** This is a pure feeding failure in a healthy body: energy slides at 8-9 points a day for about 10 days while they spend about 12% of their steps trying to eat (entry 170: nine in ten of those eat steps are on squares with nothing to eat) and move less and less (a learned choice: no rule in the code slows a weak person). That is the opposite of real fasting animals, which become more active as reserves fall. There is no cushion: a person at 80 energy is at 0 in 10 days. Candidate fixes to test next, each against the target of entry 165: a body-fat buffer (entry on stored energy), a sharper seeking drive when hungry, and the yield of the fallback foods (roots dug with bare hands succeed 15% of the time, `SOC.digBare`, an assumption).
+
+**Trust.** Moderate (15 people, three worlds, same shape).
+
 ### 173. A starvation override (`--starve 8`): no effect on hunger deaths — Nov 2026
 
 **Version.** New switch `--starve K` (below 30% energy: pull of K x (0.5 + need) to eat anything edible under the feet, and pulls of K x need against mating, giving food away and standing still; default 0 = off; registered assumption, basis: fasting animals turn sharply to feeding, hunger overrides other urges in mice). Standard bundle, 60 people, `--berry-aversion 30`, yearDays 365, 110 days, seeds 1-3, K = 8. Files: `data/findings/173-starve/`.
